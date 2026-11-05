@@ -1,0 +1,26 @@
+param([Parameter(Mandatory=$true)][int]$QueueProcess)
+$ErrorActionPreference = 'Stop'
+$root = 'D:/information-boltzmann-v1'
+$results = Join-Path $root 'results/cgb_language_navigation_v2_20261104'
+$python = 'D:/conda_envs/vox/python.exe'
+Set-Location -LiteralPath $root
+$p = Get-CimInstance Win32_Process -Filter "ProcessId=$QueueProcess"
+if ($null -ne $p -and $p.CommandLine -notmatch 'run_navigation_v2_queue.ps1') {
+    throw 'Queue process identity mismatch'
+}
+while ($null -ne (Get-Process -Id $QueueProcess -ErrorAction SilentlyContinue)) {
+    Start-Sleep -Seconds 10
+}
+$output = Join-Path $results 'final_report.json'
+& $python -m scripts.ib_local.report_navigation_v2 $results --output $output *> (Join-Path $results 'final_report.log')
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+$arms = @('fresh_active_merge','fresh_random_merge','fresh_silence_merge','fresh_active_fifo','fresh_active_no_latent')
+foreach ($arm in $arms) {
+    $before = Join-Path $results "$arm/last.pt"
+    $after = Join-Path $results "${arm}_revisit/last.pt"
+    if ((Test-Path -LiteralPath $before) -and (Test-Path -LiteralPath $after)) {
+        $audit = Join-Path $results "${arm}_slot_audit.json"
+        & $python -m scripts.ib_local.audit_v2_revisit_retention $before $after --output $audit *> (Join-Path $results "${arm}_slot_audit.log")
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    }
+}

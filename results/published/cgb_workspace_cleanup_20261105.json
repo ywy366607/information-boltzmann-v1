@@ -1,0 +1,229 @@
+{
+  "workspace": "D:\\information-boltzmann-v1",
+  "date": "2026-11-05",
+  "archives": [
+    {
+      "source": "scripts/theorem_interp_group1.py",
+      "destination": "scripts/archive/theorem_interpretations_20261105/theorem_interp_group1.py.txt",
+      "sha256": "43f3b3a1a90e05649b04194387923df082ae28f45b881ab2ad43df399f2bc419",
+      "reason": "one-off interpretation seeds; retained as historical text, current index maintenance uses incremental_sync_theorems.py"
+    },
+    {
+      "source": "scripts/theorem_interp_group2.py",
+      "destination": "scripts/archive/theorem_interpretations_20261105/theorem_interp_group2.py.txt",
+      "sha256": "c8946d46930a74aa6d21067317b9ebc0ad61887f0a50ae3621fdef0c69bbe26a",
+      "reason": "one-off interpretation seeds; retained as historical text, current index maintenance uses incremental_sync_theorems.py"
+    },
+    {
+      "source": "scripts/theorem_interp_group3.py",
+      "destination": "scripts/archive/theorem_interpretations_20261105/theorem_interp_group3.py.txt",
+      "sha256": "7fc2f2f0391de6f44889beee2350dd71a701051b337c1392535e52b39245129e",
+      "reason": "one-off interpretation seeds; retained as historical text, current index maintenance uses incremental_sync_theorems.py"
+    },
+    {
+      "source": "scripts/theorem_interp_group4.py",
+      "destination": "scripts/archive/theorem_interpretations_20261105/theorem_interp_group4.py.txt",
+      "sha256": "c48411673a932dfd41c79dcfbf01cbb73f6f9ac505237ede4eb1b7a0d6e0db48",
+      "reason": "one-off interpretation seeds; retained as historical text, current index maintenance uses incremental_sync_theorems.py"
+    },
+    {
+      "source": "scripts/theorem_interp_group5.py",
+      "destination": "scripts/archive/theorem_interpretations_20261105/theorem_interp_group5.py.txt",
+      "sha256": "0c8d3683dd56554c97e6ca2ca6b195cf0f68acfcf25c5e58194d8da880d79d9e",
+      "reason": "one-off interpretation seeds; retained as historical text, current index maintenance uses incremental_sync_theorems.py"
+    },
+    {
+      "source": "scripts/build_all_interpretations.py",
+      "destination": "scripts/archive/theorem_interpretations_20261105/build_all_interpretations.py.txt",
+      "sha256": "9818a2d5fbc6834733d34b33ce555621b36147b53b69aa861cae33067158fc05",
+      "reason": "one-off interpretation seeds; retained as historical text, current index maintenance uses incremental_sync_theorems.py"
+    },
+    {
+      "source": "scripts/generate_missing_interpretations.py",
+      "destination": "scripts/archive/theorem_interpretations_20261105/generate_missing_interpretations.py.txt",
+      "sha256": "857a6399f8cee58298acb9028622e3a856409f9a1e15c2f221151b8c97398e83",
+      "reason": "one-off interpretation seeds; retained as historical text, current index maintenance uses incremental_sync_theorems.py"
+    },
+    {
+      "source": "scripts/ib_local/run_navigation_v2_queue.ps1",
+      "destination": "scripts/archive/navigation_v2_20261105/run_navigation_v2_queue.ps1.txt",
+      "sha256": "6da1fb7be82e329b6e8f37bc1e238fd1cc8bbf0d49b7882ada4f482613008193",
+      "reason": "expired PID-wait queue for completed v2 runs; replaced by explicit current entry point"
+    },
+    {
+      "source": "scripts/ib_local/finish_navigation_v2.ps1",
+      "destination": "scripts/archive/navigation_v2_20261105/finish_navigation_v2.ps1.txt",
+      "sha256": "2472122a1df0a710cb9f9fb93601d046a8892214e8890d2c4963314d4c2bca52",
+      "reason": "expired PID-wait queue for completed v2 runs; replaced by explicit current entry point"
+    }
+  ],
+  "deletions": [
+    {
+      "path": "scratch_dummy",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "reason": "empty temporary file"
+    },
+    {
+      "path": "lean/_scratch_tanh_deriv.lean",
+      "sha256": "066418c7fec8611811fe6f6ab156088b1699f2a9786a920e8aa1a71e695d77d7",
+      "bytes": 1277,
+      "reason": "derivative already present as GenerationContactPlasticity.tanh_offset_deriv in audited production source"
+    }
+  ],
+  "in_place_historical_docs": [
+    "CGB_CURRENT_WITNESS_20261105.md",
+    "CGB_REPRESENTATIVE_WITNESS_20261105.md",
+    "CGB_TYPED_WOOD_20261105.md",
+    "CGB_DESIGN_BRIEF_20261102.md",
+    "CGB_CLAUDE_HANDOFF_20261103.md",
+    "CGB_E3_DESIGN_V1_20261102.md",
+    "CGB_MINIMAL_GENERATOR_20261103.md",
+    "CGB_NAVIGATION_V2_PREREG_20261104.md",
+    "CGB_NAVIGATION_V3_ASSEMBLY_20261104.md",
+    "CGB_NAVIGATION_V3_WORLD_20261104.md",
+    "CGB_NAVIGATION_V3_TURNS_20261104.md"
+  ],
+  "preserved_checkpoints": [
+    "results/cgb_symbol_navigation_20261105/last.pt.gz",
+    "results/cgb_learning_rooms_joint_20261105/last.pt.gz",
+    "results/cgb_observed_gain_joint_20261105/last.pt.gz"
+  ],
+  "no_processes_killed": true,
+  "frozen_execution_sources": [
+    {
+      "source": "scratch/run_learning_rooms_20261105.py",
+      "archive": "scripts/archive/observed_gain_run_20261105/scratch/run_learning_rooms_20261105.py.txt",
+      "sha256": "37e2769629bef2b168cb4843055f8a7716cc6192211d1e73ec0b7538f39b835d"
+    },
+    {
+      "source": "scripts/ib_local/learning_rooms_world.py",
+      "archive": "scripts/archive/observed_gain_run_20261105/scripts/ib_local/learning_rooms_world.py.txt",
+      "sha256": "52e0662a15be770d5807c110fad1b91c7a02941a9a71af82294f6cab5d72c1d6"
+    },
+    {
+      "source": "scripts/ib_local/navigation_live_witness.py",
+      "archive": "scripts/archive/observed_gain_run_20261105/scripts/ib_local/navigation_live_witness.py.txt",
+      "sha256": "79888ec3da665289395b0cc70308187b0a6c7ac9efb945e1c9c437e0e934cf2a"
+    },
+    {
+      "source": "scripts/ib_local/language_navigation_kanli_v4t.py",
+      "archive": "scripts/archive/observed_gain_run_20261105/scripts/ib_local/language_navigation_kanli_v4t.py.txt",
+      "sha256": "7ae1f6ad10a73b456fe61d067b38b0c194b7d8ccd2dc704f1eca9f8379abed71"
+    },
+    {
+      "source": "scripts/ib_local/navigation_settlement.py",
+      "archive": "scripts/archive/observed_gain_run_20261105/scripts/ib_local/navigation_settlement.py.txt",
+      "sha256": "2ea153046fef84044e0aa9d052536a7b9a637e6b3501b3a62c9aaabc20eba530"
+    },
+    {
+      "source": "scripts/ib_local/navigation_value_scale.py",
+      "archive": "scripts/archive/observed_gain_run_20261105/scripts/ib_local/navigation_value_scale.py.txt",
+      "sha256": "1889be01b1f5d03a1ac0ccdcdd0dfa7c5902101925232e8b0facea6c6e9e78a1"
+    },
+    {
+      "source": "scripts/ib_local/navigation_checkpoint.py",
+      "archive": "scripts/archive/observed_gain_run_20261105/scripts/ib_local/navigation_checkpoint.py.txt",
+      "sha256": "932ae1619ac16c06beaa2727670e42a4dd109b75d652a5a408422d5a5aa7e092"
+    },
+    {
+      "source": "scripts/ib_local/language_navigation_kanli_v4b.py",
+      "archive": "scripts/archive/observed_gain_run_20261105/scripts/ib_local/language_navigation_kanli_v4b.py.txt",
+      "sha256": "33052ab97ef827071dd8db147a89a4a2309a17d9a28b50f908850a8b1c42698d"
+    },
+    {
+      "source": "scripts/ib_local/language_navigation_kanli_v4c.py",
+      "archive": "scripts/archive/observed_gain_run_20261105/scripts/ib_local/language_navigation_kanli_v4c.py.txt",
+      "sha256": "650703f5813306eafca04ddd315ae1524d951201873846dffb763a362721104b"
+    },
+    {
+      "source": "scripts/ib_local/language_navigation_kanli_v4p.py",
+      "archive": "scripts/archive/observed_gain_run_20261105/scripts/ib_local/language_navigation_kanli_v4p.py.txt",
+      "sha256": "9149294a10f2e9c3ec291e8ffd19c548762e60559f7bb8a0f6a9764f94b2f791"
+    },
+    {
+      "source": "scripts/ib_local/language_navigation_kanli_v4q.py",
+      "archive": "scripts/archive/observed_gain_run_20261105/scripts/ib_local/language_navigation_kanli_v4q.py.txt",
+      "sha256": "454b5f009c87be1ea1dcc082e7d803090dcf5e17127ab5264c36e993233d0e65"
+    }
+  ],
+  "promoted_runner": {
+    "source": "scratch/run_learning_rooms_20261105.py",
+    "destination": "scripts/ib_local/run_learning_rooms.py",
+    "sha256": "37e2769629bef2b168cb4843055f8a7716cc6192211d1e73ec0b7538f39b835d"
+  },
+  "inherited_readme_archive": "docs/archive/FINE_GRAIN_VISION_README_20261105.md",
+  "research_tree_schema_repair": {
+    "id_aliases": {
+      "CGB_CAUSAL_GENERATOR_CORE_20261103": "CGB_GENERATOR_CORE_20261103",
+      "CGB_RECURRENT_BACKBONE_REUSE_20261103": "CGB_BACKBONE_REUSE_20261103",
+      "IB_CONTACT_FULL_LINEAR_DECODER_20261101": "IB_FULL_LINEAR_DECODER_20261101",
+      "IB_CONTACT_PENDING_FACTOR_LOAD_20261101": "IB_PENDING_FACTOR_LOAD_20261101",
+      "IB_CONTACT_SHARED_POOL_READ_OWT_20261101": "IB_POOL_READ_OWT_20261101",
+      "IB_CONTACT_SHARED_POOL_LOAD_OWT_20261101": "IB_POOL_LOAD_OWT_20261101",
+      "IB_CONTACT_TYPED_DELAY_CARRIER_20261101": "IB_TYPED_DELAY_CARRIER_20261101",
+      "IB_CONTACT_S_LOCAL_PLASTICITY_20261101": "IB_S_LOCAL_PLASTICITY_20261101",
+      "IB_CGB_SYSTEM23_REAL_LANGUAGE_JOINT_20261101": "IB_SYSTEM23_LANGUAGE_20261101",
+      "IB_CGB_LANGUAGE_BODY_SEARCH_20261102": "IB_LANGUAGE_BODY_SEARCH_20261102"
+    },
+    "status_normalization": [
+      {
+        "id": "CGB_CAUSAL_GENERATOR_CORE_20261103",
+        "old": "same_body_action_bridge_validated_immediate_policy_benefit_not_established",
+        "new": "partially_reusable"
+      },
+      {
+        "id": "CGB_N_USE_REVIEW_20261103",
+        "old": "agent_reviewed_source_checked",
+        "new": "partially_reusable"
+      },
+      {
+        "id": "CGB_RECURRENT_BACKBONE_REUSE_20261103",
+        "old": "interface_verified_not_body_admitted",
+        "new": "partially_reusable"
+      },
+      {
+        "id": "CGB_JOINT_REINVESTMENT_20261103",
+        "old": "conditional_reference_only",
+        "new": "partially_reusable"
+      },
+      {
+        "id": "IB_CONTACT_LOCAL_GATE_20261101",
+        "old": "interface_verified",
+        "new": "partially_reusable"
+      },
+      {
+        "id": "IB_CONTACT_SHARED_POOL_20261101",
+        "old": "interface_verified",
+        "new": "partially_reusable"
+      },
+      {
+        "id": "IB_CONTACT_TYPED_DELAY_CARRIER_20261101",
+        "old": "interface_verified",
+        "new": "partially_reusable"
+      },
+      {
+        "id": "IB_CONTACT_S_LOCAL_PLASTICITY_20261101",
+        "old": "interface_verified",
+        "new": "partially_reusable"
+      }
+    ],
+    "policy": "Preserve original IDs via aliases/legacy_id and detailed status via status_detail; no claims promoted to confirmed and no evidence removed."
+  },
+  "preexisting_tracked_deletions": [
+    {
+      "path": "missing_402_theorems.json",
+      "previous_blob_sha256": "14afaaaa0296c7cfb2043cf8b39c0309d06c0b8d382c21142b79c447d12601ca",
+      "previous_bytes": 409977,
+      "reason": "Superseded missing-theorem list; audited 1807-item index and interpretation registry are current.",
+      "recovery_commit": "2c3209e"
+    },
+    {
+      "path": "scripts/audit_cgb_column_value_teaching.py",
+      "previous_blob_sha256": "6ec0a75b45cb05bf757d962dbc38d255d33a066d03a2eba42db3c6df56348ef7",
+      "previous_bytes": 9993,
+      "reason": "Rejected historical teaching candidate; prior executable remains recoverable from Git and numerical evidence is retained.",
+      "recovery_commit": "2c3209e"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+"""Generate accurate, concise one-sentence interpretations for newly audited CGB theorems.
+Adheres strictly to the user requirement: 说明定理是干嘛的（输入什么、怎么处理、输出什么），简洁客观，严禁过度类比。
+"""
+import json
+from pathlib import Path
+import sys
+
+sys.path.insert(0, 'scripts')
+import build_proven_index as base
+
+INVENTORY_PATH = base.INVENTORY
+INTERPRETATIONS_PATH = Path('docs/information_boltzmann/CGB_THEOREM_INTERPRETATIONS.json')
+
+def get_group1_dict():
+    """Group 1: 28 theorems across 7 small modules."""
+    return {
+        # CGBAxioms.LanguageLifeAdmission (1)
+        "CGB.LanguageLifeAdmission.joint_admission":
+            "输入满足因果候选约化的语言生命候选模型，经联合准入条件检验，输出同一物理状态同时保证因果压缩、选择性写入、预测性收益增益以及主动推理生存闭包四项基础契约。",
+
+        # CGBAxioms.LanguageLifeKernel (1)
+        "CGB.LanguageLifeKernel.delayed_action_credit_requires_state_separation":
+            "输入单步状态推进函数、信用分配规则及初始状态下的两个不同动作，若两动作产生相同后继状态但目标信用不同，经确定性映射矛盾推导，输出确定性后继状态无法同时赋予不同延迟信用（证明延迟动作归因必然要求状态可分离）。",
+
+        # CGBAxioms.InformationEconomics (3)
+        "CGB.InformationEconomics.causal_carrier_contract_iff":
+            "输入历史空间编码函数、目标读出与后继推进算子，经同态等价分析，输出存在相容因果载体读出与推进算子充要等同于编码状态具有读出确定性与状态转移同态不变性。",
+        "CGB.InformationEconomics.predictive_growth_contract":
+            "输入真实环境分布与正值预测配置分布，经对数财富增长分解，输出预测增长率精确等于字符集最大熵减去交叉熵，且受真实香农熵上限严格约束。",
+        "CGB.InformationEconomics.selective_write_contract":
+            "输入因果候选支撑判定器、有限内存池及当前上下文与观测，经内存步进算子过滤，输出相容候选全保留且零手续费，不相容候选被剔除并消耗单位手续费储备。",
+
+        # CGBAxioms.GenerationColumnRefinement (5)
+        "CGB.Generation.BodyCausalCarrier.merged_history_preserves_read_and_successor":
+            "输入多柱物理介质载体对象，经历史合并状态等价性检验，输出在编码状态相同时保证目标读出严格一致，且对任意到达输入其后继推进状态依然严格相等。",
+        "CGB.Generation.BodyCausalCarrier.satisfies_causal_carrier_contract":
+            "输入物理多柱因果载体，经载体算子抽象提升，输出存在一致的读出算子与推进算子，使编码物理状态精确复现历史依赖的读出与推进契约。",
+        "CGB.Generation.LocalColumnProjections.activity_unchanged_outside":
+            "输入局部柱投影算子、介质动作与局部性公理P1b，经空间动作支持集分离分析，输出动作作用外部件的柱节点内部活动状态在动作施加后严格保持不变。",
+        "CGB.Generation.LocalColumnProjections.carrier_unchanged_outside":
+            "输入局部柱投影算子、动作输入与局部性公理P1b，经局部载体支持分析，输出非动作作用范围外部件的底层物质载体在转移后严格不变。",
+        "CGB.Generation.LocalColumnProjections.contact_unchanged_outside":
+            "输入局部柱投影算子、介质动作与公理P1b，经外周接触面隔离判定，输出不在动作作用区域内的柱节点接触面状态在系统动作后保持不变。",
+
+        # CGBAxioms.GenerationActiveInference (5)
+        "CGB.ActiveInference.action_condition_required":
+            "输入动作敏感的环境条件响应算子与动作盲目的预测器，经反证法推导，输出动作盲目预测器无法在所有动作条件下精确拟合动作敏感环境的实际响应。",
+        "CGB.ActiveInference.active_closure":
+            "输入策略序列、可用生存信号、动作敏感响应算子与预测器，经主动推理生存闭包推演，输出长期维持生存排除了最终被动策略，且动作敏感环境排除了动作盲目预测器。",
+        "CGB.ActiveInference.not_unbounded_of_bounded":
+            "输入累积信号有上界的信号生成序列，经有界性检验，输出该信号序列必然无法满足生命体长期存活所需的发散无界信号条件。",
+        "CGB.ActiveInference.silence_condition_required":
+            "输入字节级世界响应模型与无条件预测器，经动作干预导致零字节（沉默）概率变化的判据，输出盲目预测器无法拟合由自身动作干预引起的条件输出概率。",
+        "CGB.ActiveInference.viable_not_eventually_passive":
+            "输入长期策略、可用累积信号与初始参考动作，经生存必要性规约，输出若生存需要无界累积信号且所有最终被动策略仅产生有界信号，则存活策略绝不能最终停滞于被动状态。",
+
+        # CGBAxioms.GenerationColumnMemory (6)
+        "CGB.Generation.binary_delta_crossEntropy_decreases":
+            "输入当前预测概率、二值真实目标与学习步长，经Delta规则更新概率，输出更新后概率严格保持在有效区间且对目标标签的交叉熵损失严格单调下降。",
+        "CGB.Generation.reused_key_tracks_and_rewrites":
+            "输入单位模长键向量、初始状态与值序列，经多步键态外积动力学迭代，输出第t+1步键方向投影精确追踪上一时刻目标值，且目标改变时状态发生有效重写。",
+        "CGB.Generation.self_listening_frozen_state_counterexample":
+            "输入自监听状态反例赋值，经数值代数验证，输出当自反馈状态被固化时，反馈项不再提供有效增益导数（验证自反馈非冻结的必要性）。",
+        "CGB.Generation.self_listening_frozen_state_gap":
+            "输入自监听系数、内部状态与参数敏感度，经线性代数展开，输出自变状态更新与冻结状态更新之间的差值精确等于自反馈耦合增量项。",
+        "CGB.Generation.self_listening_increment":
+            "输入自监听状态推进算子的前后两组参数与状态，经双变量变动展开，输出更新步长增量精确分解为状态变化项与参数敏感度项的二阶线性耦合。",
+        "CGB.Generation.tied_write_cross_read":
+            "输入写入键、查询键、当前状态、更新率与写入值，经绑定写入变换后沿查询键投影读出，输出读出改变量精确等于写入误差项乘以两键之间的几何内积。",
+
+        # CGBAxioms.GenerationClosedLoopCredit (7)
+        "CGB.ClosedLoopCredit.constant_likelihood_posterior":
+            "输入归一化先验分布与严格正的常数似然函数，经贝叶斯后验概率归一化变换，输出后验分布严格等于原先验分布（证明常数似然不提供关于未知状态的新证据）。",
+        "CGB.ClosedLoopCredit.log_policy_deriv":
+            "输入可微的正值策略分布，经复合函数对数求导法则，输出策略对数概率对参数的导数严格等于策略导数与当前策略概率的比值（得分函数标准形式）。",
+        "CGB.ClosedLoopCredit.missing_score_derivative_counterexample":
+            "输入参数基线反例，经闭环目标导数计算，输出若仅计算策略得分项而忽略直接得分导数，则策略估计梯度为零而实际目标导数为一，证实必须引入三因子闭环直接梯度。",
+        "CGB.ClosedLoopCredit.objective_deriv":
+            "输入参数化策略、环境转移核与奖赏损失函数，经乘积求导法则，输出闭环目标函数的全导数严格分解为策略探索导数项与价值直接导数项之和。",
+        "CGB.ClosedLoopCredit.objective_deriv_advantage":
+            "输入参数化策略、环境核、目标值与任意标量基线函数，经优势重整化变换，输出闭环导数在标量基线减免下保持无偏，精确表示为优势加权的得分三因子项与直接得分导数项。",
+        "CGB.ClosedLoopCredit.policy_deriv_sum_zero":
+            "输入概率归一化的参数化策略，经对全动作求和并交换求导次序，输出策略导数在全动作空间上的积分严格为零。",
+        "CGB.ClosedLoopCredit.scalar_baseline_zero":
+            "输入条件概率核、全空间积分为零的策略导数与常数基线，经双重求和展开，输出常数基线与策略导数的乘积在全空间期望值恒等于零。"
+    }

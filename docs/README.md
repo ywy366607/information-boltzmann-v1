@@ -1,5 +1,7 @@
 # Architecture Documents
 
+**CGB / 梦漓独立工作区入口：** [项目导航](information_boltzmann/README.md)与[2026-11-05平台里程碑](information_boltzmann/CGB_MILESTONE_CLOSED_LOOP_20261105.md)。下文保留继承的视觉/多模态架构文档；其状态不覆盖CGB的当前交互闭环。
+
 ## Source of truth
 
 - [`NORTH_STAR.md`](NORTH_STAR.md) — the locked Slice full-resolution vision–language co-evolution contract, active-inference claim boundary, unified ports, and generation gates.

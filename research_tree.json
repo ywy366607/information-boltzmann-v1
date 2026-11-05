@@ -1,8 +1,512 @@
 {
   "title": "Slice Full-Resolution Joint-Evolution VLM Research Tree",
-  "updated": "2026-10-31",
+  "updated": "2026-11-05",
   "source_of_truth": "docs/NORTH_STAR.md",
   "nodes": [
+    {
+      "id": "CGB_GENERATOR_CORE_20261103",
+      "action_gain_read_fix_20261105": "Implemented zero-training fix after reporting the completed observed-memory run: existing action/count metadata now gates observed conditional-gain reads, shared with migration, so mixed-action means cannot be recalled under the latest option or admit reusable words. Content, measured means and legacy TD reads remain; no added persistent arrays/schema/parameters. Actual 512-turn terminal checkpoint:730 occupied,308 old observed-readable slots,272 after guard;36 ambiguous/incomplete labels filtered, checkpoint SHA and memory tensors unchanged. Existing memory state restore and actual-helper regression checks cover same/mixed actions and content access. No post-fix whole-loop training yet. Evidence results/published/cgb_action_gain_read_fix_20261105.json and nested interface spec10.2.",
+      "nested_five_phase_interfaces_20261105": "Document-only functional specification: CGB_NESTED_FIVE_PHASE_INTERFACE_20261105.md defines 25 contextual roles and five cross-phase handoffs in the same body-world transition, separates forecast calibration from realized-gain settlement, and records initial organ/meridian analogies as candidate responsibilities and paths. Existing execution references and three restricted Lean premises are explicit. No new state, model changes, training, theorem counts or verified self-regulation claims. Diagnostic rules and v4 handover link this specification; old column-only descriptions are marked historical.",
+      "nested_phase_trace_20261105": "Read-only completed-run trace: turn74 content in slot456 was reused verbatim at turn496 after216394 intervening external bytes. All512 joint-g and previous-observation handoffs reconcile;409 complete measured-mean checks pass. Actual-helper CPU reproduction identifies an unresolved mixed-action attribution path: wood replay invalidates the mixed label, while observed reward recall still groups its averaged gain under the latest action. No body files changed, optimizer/world steps0, no new theorem coverage. See nested interface specification sections9-10 and results/published/cgb_nested_phase_trace_20261105.json; fix specification reuses existing action/count metadata across read ports.",
+      "continuation_settlement_20261105": "Completed one continuing-body settlement intervention, 512 turns, same source/world as historical witness control; 263168 external bytes, 2048 updates, 16384 replay samples, no new neural parameters, 8192 bytes of label-provenance metadata. Late familiar occupancy 59.0% to 8.2%; familiar probability when alternatives available 75.0% to 36.4%. First true post-flip arrival266 vs274; candidate already in changed room at257, so257 is exposure not navigated return. Final changed-room NLL .44483 vs .48094, but five-room average .43552 vs .41958 and reward/future Spearman +.084/-.383 fail joint acceptance. Full transition/candidate replay, 30 tests, local Lean admission, default-mode exact prefix replay and next-step parameter error0 pass. Posthoc replay of saved turn257 preserves all91 runtime fields: response table contribution +.364104, neural/latent -.000983, joint +.363121, while cached continuation reward -.000794. This localizes omitted fast-table learning; not a general score guarantee. Next fix same-body continuation scoring, not wood or reservoir constants. Reports in results/cgb_learning_rooms_progress_20261105; no new theorem coverage or long training running.",
+      "learning_rooms_20261105": "User-authorized five-room mechanism test on the fully continuing symbol individual, same 894916 parameters and unchanged g/update. Direct-address revision completed 512 rounds, 263168 external bytes, 2048 updates, 16384 replay samples. All rooms reached by turn24; easy/hard final frozen-current-table future NLL .4663/.4169. Rule flip at257, revisit274, changed-room risk 1.5108 to .4809 (preflip .5093). Noise 51/512 turns; conditional noise probability .4206 to .3453 with 80 vs15 opportunities. Familiar occupancy 37 to151 per half: persistent progress-seeking not established. Historical g vs balanced current-future score correlation -.0017 overall; postflip -.5626, 20% sign agreement. Distinguish old retention from new generalization before changing wood. A local-address/noise-hallway branch stopped at300; its training not merged. 24 tests, full transition/candidate replay, read-only probe invariants and exact next-step restoration pass. No new theorem-coverage count. See CGB_LEARNING_ROOMS_20261105.md and results/cgb_learning_rooms_direct_20261105/RESULT.md.",
+      "symbol_navigation_20261105": "User-authorized semantic-free mechanism diagnostic completed: same v4t architecture and trained neural weights, new transfer buffers. 512 rounds, 262144 external bytes, 2047 optimizer updates, 16352 replay samples. Final periodic/random NLL .003422/.695213 (random floor ln2=.693147). Both rooms visited, 220 moves, full transition replay and exact next-step restoration. Late F NLL32 MSE .013464 vs unconditional .007274; partial periodic-region gain is suppressed by current mixture. A 4-period/256-response/32-utterance alias makes all 51 late periodic speeches end in b and exit to noise. Next five-room mechanism diagnostic must remove this interface alias and log available destinations. No added production theorems or global capability claim. See CGB_SYMBOL_WORLD_20261105.md and result report.",
+      "language_navigation_v4t_20261105": "Existing match channel now emits Bernoulli probabilities with Brier training and replay; no new neural parameters (894916 total). Same complete v4s body continued 256 real OWT reply rounds, 245760 external bytes, 1024 optimizer updates, 8192 replay samples. Late used match Brier .030978 vs action-base .031086, chiefly reuse; match-only decision TV 9.35e-6, nonzero in 108/128 late rounds. Heldout NLL 1.474686 to 1.461355 along this continuation; this is not paired evidence that the probability link caused the language gain. Five existing declarations instantiated locally as one scoring family; cross-version assessed entries 17 to 22, production index unchanged at 1807. Fifteen numeric tests and six local Lean examples pass; complete saved state and exact in-memory next-step replay. Progress/usefulness distribution and useful navigation remain open. See CGB_TYPED_WOOD_20261105.md and results/cgb_navigation_typed_wood_20261105/RESULT.md.",
+      "language_navigation_v4s_20261105": "Equal-opportunity 32-slot witness admission implemented on current fast-table scoring; one 256-turn real OWT continuation, 245760 external bytes, 1024 optimizer updates. Held-out NLL 1.473756 to 1.474686, intermediate best 1.463925. Late progress prediction MSE .00115324 vs base .00115231: preregistered useful progress-prediction criterion failed. Match prediction improves but does not establish navigation value. Ten numeric tests and two anonymous local sampling Lean examples pass. Full carried state saved; in-memory exact next-step replay passes. No scale-up; see CGB_REPRESENTATIVE_WITNESS_20261105.md and result report.",
+      "language_navigation_v4p_20261104": "Action-conditioned past means plus calibrated latent residual implemented in the same OWT reply loop; 128 turns, seed11, 122880 external bytes, 511 optimizer steps. Late match MSE .02967 vs action-blind .23507; progress error .001349 remains worse than blind .000590. Nonzero but small policy TV .002545, residual-only .0000807. Validation 1.59803 to 1.60473. Basic law delivery supported; useful contextual prediction and overall benefit not established. Action EMA lags shared progress drift. 15 numerical/interface tests and four local Lean examples pass; results/cgb_navigation_v4p_20261104/RESULT.md. Fixed diagnostic budget, no convergence or complete life claim.",
+      "layer": "mechanism",
+      "direction": "deduction",
+      "status": "partially_reusable",
+      "language_navigation_v3_world_20261104": "Reservoir-sampled real-OWT index and state-restorable stochastic tied-match selection implemented separately without modifying the running v2 experiment. Fixed v2 active utterance replay: source-position repetition 92.48% in original index, 60.13% with reservoir on the same source, 50.34% with larger 40,128,875-byte source. These are fixed-query environment diagnostics, not an adaptive training result or semantic novelty. Sequential-response world provides a speak/self-hear control but is not wired to training. Variable-time action, action-outcome memory and the joint individual remain unimplemented; v2 queue continues.",
+      "title": "Compress compatible requirements into a causal generative core",
+      "language_navigation_v2_20261104": "Single-body two-horizon state-addressed transition memory with bounded merge/LRU, observed-state SIGReg, generated byte utterances, self-hearing and OWT indexed action consequences. The initial trial was stopped because previously exposed source positions were counted as unseen; its logs and frozen code remain. A fresh trial uses a bounded world-side provenance bitmap to mark heldout passages whose positions were not previously exposed; this does not establish semantic novelty. Policy credit remains stale and partial. A same-budget model-sampled action control without policy-credit learning replaces the corpus-sampled query, which introduced extra external bytes. Lean establishes restricted local merge bounds and fixed-encoder-path identities. Five-arm single-seed comparison and continuous A-B-A are queued; no completed comparison yet. Full production index is 1807; 17 declarations have body-specific dispositions, seven restricted local instances in v2, and 1790 remain unreviewed. Claude's concurrent document and production Lean are preserved.",
+      "latent_navigation_20261104": "Optional latent transition memory now reads the existing causal body features and injects them into a later GDN recurrence. One 32-update real-OWT engineering continuation and 27 numerical/interface tests pass; a matched two-window read intervention changes recurrent state. This does not establish language benefit, action-conditioned dialogue, tag capture or active life. Of 1768 indexed declarations, 13 source declarations have been audited for the two bodies, including five restricted local instances; 1755 remain unreviewed. See CGB_LATENT_NAVIGATION_BODY_20261104.md and the machine ledger. Claude's parallel v2 is not merged or overwritten.",
+      "claim": "Same GDN+finite table emits commands that change real OWT exposure and self-hears without counting commands as external evidence. Fourteen numerical checks pass. Three 5000-update seed-11 arms complete: coupled final validation 1.471824, randomized 1.516226, matched-exposure direct-language replay 1.467263. Coupled and randomized ten-check validation means are nearly equal; replay matches all 5000 response hashes and terminal table exactly. Keep the action interface, do not promote immediate-NLL policy credit as a demonstrated learning improvement. No new neural parameters, latch, food account, or life-admission claim.",
+      "evidence": "Primary derivation plus independent mathematical review; 24 numerical checks including same-parameter latch/release, KL dissipation, current pullbacks and tag-erasure counterexample. Restricted interaction/evidence/content deletions are documented. Global maximum/minimum and learned useful self-organization are not established. Whole-inventory reconciliation: 1768 unique entries; merged proposals R186/M226/W53/N1303. Current slice references only 44; 1724 do not yet have slice dispositions. Reference coverage is not satisfaction coverage. First inside-out frontier: two Luna extraction passes cover 24 declarations; parent reads 8 connecting/contract declarations and corrects namespace/transfer interpretations. Existing joint delta-write and associative-NLL proof chains identified; no new implementation admission. All-class frontier now has 40 source-read seeds and 202 resolved dependency theorems (R32/M25/W4/N141), plus 29 semantic neighbors pending review. These are support counts, not jointly satisfied body properties. 63 dependency names absent from the audit declaration inventory remain explicitly unresolved. W/N source review constrains world predictability, safe-action closure, bit capacity and same-object memory witnesses. Second-ring parent source review adds 56 declarations (96 seeds total); resolved support is now 294 theorems R53/M62/W8/N171, 345 definitions, with 65 unresolved audit nodes and 34 semantic neighbors. Corrected necessity-versus-construction overclaims. Existing delta writes compose into realized-path retention and language-readout bounds; eight numerical identity families pass, including moving learned queries/heads and a double-budget counterexample.",
+      "artifacts": [
+        "docs/information_boltzmann/CGB_NAVIGATION_V2_PREREG_20261104.md",
+        "scripts/ib_local/latent_navigation_v2.py",
+        "scripts/ib_local/language_navigation_v2.py",
+        "scripts/ib_local/language_navigation_world.py",
+        "scripts/ib_local/run_language_navigation_v2.py",
+        "scripts/ib_local/continue_navigation_v2_revisit.py",
+        "lean/CGBAxioms/reviews/latent_transition_merge_20261104.lean",
+        "docs/information_boltzmann/CGB_LATENT_NAVIGATION_BODY_20261104.md",
+        "results/published/cgb_latent_body_coverage_20261104.json",
+        "scripts/ib_local/latent_navigation.py",
+        "lean/CGBAxioms/reviews/latent_navigation_admission_20261104.lean",
+        "docs/information_boltzmann/CGB_RETRIEVED_CREDIT_20261103.md",
+        "results/published/cgb_retrieved_credit_20261103.json",
+        "docs/information_boltzmann/CGB_THEOREM_CONSISTENT_CORE_20261103.md",
+        "results/published/cgb_generator_causal_core_20261103.json",
+        "results/published/cgb_generator_joint_law_audit_20261103.json",
+        "scripts/audit_cgb_joint_reinvestment.py",
+        "results/published/cgb_generator_self_review_20261103.json",
+        "results/published/cgb_generator_exchange_construct_20261103.json",
+        "results/published/cgb_generator_frontier_support_20261103.json",
+        "results/published/cgb_generator_association_transport_20261103.json",
+        "scripts/review_theorem_n.py",
+        "docs/information_boltzmann/CGB_MINIMAL_GENERATOR_20261103.md",
+        "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean",
+        "results/published/cgb_generator_content_budget_20261103.json",
+        "scripts/ib_local/gated_deltanet.py",
+        "results/published/cgb_generator_joint_content_exchange_20261103.json",
+        "results/published/cgb_joint_language_prereg_20261103.json",
+        "results/published/cgb_joint_language_gpu_20261103.json",
+        "results/published/cgb_contact_exchange_body_20261103.json",
+        "results/published/cgb_available_contact_body_20261103.json",
+        "results/published/cgb_joint_evaluation_20261103.json",
+        "docs/information_boltzmann/LIFELONG_EVALUATION.md",
+        "scripts/ib_local/evaluate_lambada.py",
+        "docs/information_boltzmann/CGB_LANGUAGE_ACTION_20261104.md",
+        "results/published/cgb_language_action_20261104.json",
+        "scripts/ib_local/language_action.py",
+        "tests/test_language_action.py",
+        "scripts/ib_local/replay_language_action.py"
+      ],
+      "next_action": "Reuse future-language-usefulness contracts to connect action credit to actual subsequent capability change. Preserve the same-body interface; do not tune latch or policy multipliers based on a favorable endpoint. Long-horizon original-write credit and autonomous survival remain open.",
+      "evaluation_progress": "Paired OWT context sweep and complete LAMBADA development (4869 passages) finished on three existing checkpoints. All have zero exact target-prefix matches; current task performance is at floor, not an architecture-capacity verdict. Old logs recover 57600 matched revisit target bytes with positive savings in all three; further learning and memory effects are not isolated. No new training or body edits. Real-document QA, sufficiently trained budget curves and fine live recovery remain open.",
+      "invalidation": "Fixed-field potential descent does not establish a learning-wide Lyapunov function; stable pattern recovery does not imply exact material-tag retention. Locality, double budgets, microscopic axioms, modern read/write mapping and real-language usefulness remain joint construction obligations.",
+      "parent": "CGB_N_USE_REVIEW_20261103",
+      "source_status": "source_review_lean_proof_and_cpu_cuda_identity_audit_independent_review_pending",
+      "current_version": "V1.12",
+      "implementation_followup": {
+        "status": "runtime_integrated_lean_invariants_numerical_joint_stability_not_language_admission",
+        "configuration": "recurrence=evidence_exchange, content_budget>0",
+        "implementation": "scripts/ib_local/gated_deltanet.py",
+        "reference": "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean",
+        "evidence": "results/published/cgb_generator_joint_content_exchange_20261103.json",
+        "tests": "tests/test_gated_deltanet.py: 32 passed including GPU capture and complete learner restoration",
+        "state": "a>=0, sum(a)=1; weighted actual content M_i=a_i*c_i; ||M_i||_1<=a_i*b",
+        "transition": [
+          "r=softmax(g*a+address-0.5*||bounded_value-M_i/a_i||^2)",
+          "a_next=(1-rate)*a+rate*r",
+          "M_next=(1-rate)*M+rate*r*bounded_value^T",
+          "read=M_next^T*q"
+        ],
+        "additional_state_per_head": "key_dimension scalars",
+        "additional_parameters": 0,
+        "numerical_hypothesis": "Unit-variance Gaussian latent value likelihood; not exact language-byte posterior",
+        "formal_results": [
+          "joint_exchange_budget",
+          "actual_weighted_read",
+          "joint_fixed_lift",
+          "exchanged_gains_equal_losses"
+        ],
+        "numerical_conditions": "Two rows, matching common content, neutral address, gain=2 ln 3, rate=0.3; stable joint allocations 1/4 and 3/4; finite counterevidence switches branches.",
+        "full_joint_jacobian_radius": 0.9471877649503246,
+        "not_established": [
+          "useful_language_latching",
+          "general_anti_monopoly",
+          "long_horizon_credit",
+          "global_life_admission"
+        ],
+        "source_support_count_change": 0,
+        "new_production_theorems": 0,
+        "independent_review": false,
+        "comparison_caveat": "Total content L1<=b here; older row/column retraction allows total L1<=keys*b. Same b is not same feasible domain.",
+        "next": "Calibrate complete model numerical behavior, cost and matched baselines before real-language learning/retention/release evaluation; retain anti-monopoly and delayed-credit obligations."
+      },
+      "language_experiment": {
+        "status": "completed_no_demonstrated_long_memory_advantage",
+        "report": "results/published/cgb_joint_language_gpu_20261103.json",
+        "tests": "35 GDN and 5 shared-trainer tests passed",
+        "graph_fix": "Stable gradient buffers required for accumulation across graph replays; both recurrences agree with eager updates.",
+        "results": {
+          "exchange_minus_delta_final_validation_nll": -0.003873586654663086,
+          "exchange_wall_update_slowdown": 2.199419545182942,
+          "conclusion": "Near-equal final held-out score. Exchange is slower and has a much smaller measured cross-chunk matrix contribution. No demonstrated useful long-memory/latch benefit. Both learn language; all parameter tensors changed.",
+          "allocation": "Strong concentration, but some heads switch under real input; concentration alone is neither healthy retention nor permanent freezing.",
+          "next": "Keep delta reference. Diagnose how allocation preference relates to actual content retention/readout before altering rules or increasing budget.",
+          "organism_admitted": false,
+          "convergence_established": false,
+          "independent_review": false
+        },
+        "updates_per_arm": 5000,
+        "exposures_per_arm": 640000
+      },
+      "retention_diagnosis": {
+        "status": "conditional_refinement_implemented_with_direct_C_storage; see contact_exchange_implementation",
+        "problem": "Allocation can be stable while conditional associations are uniformly overwritten. Real-language causal attribution remains open.",
+        "executed_rule_obstruction": "For posterior r=a, conditional c_i_next=(1-gamma)*c_i+gamma*v; row contrasts shrink by 1-gamma independently of row participation.",
+        "minimal_conditional_refinement": {
+          "state": "Reuse (a,M), c_i=M_i/a_i only for positive a_i. No new permanent fields or learned parameters proposed.",
+          "transient_rate": "lambda_i=gamma*r_i, sum(lambda)=gamma",
+          "proposal": "a_next=(1-gamma)*a+gamma*r; c_i_next=(1-lambda_i)*c_i+lambda_i*v; M_i_next=a_i_next*c_i_next",
+          "status": "implemented as contact_exchange with direct conditional C storage; old (a,M) reference remains historical",
+          "formal_scope": "Local content L1 bound, total write-rate budget, zero-contact hold, matching-content no-write, exact local difference and actual-read decomposition",
+          "unresolved": [
+            "Weighted read may still suppress retained content when its share falls",
+            "Softmax has strictly positive contacts in exact arithmetic; exact zero-contact hold does not imply actual inactive rows exist",
+            "Posterior likelihood/positive feedback can still concentrate allocation",
+            "Division by tiny shares and finite-precision loss need explicit treatment",
+            "State-dependent rates/injections differ between histories; fixed-rate retention is conditional",
+            "Real-language benefit and efficiency not measured"
+          ]
+        },
+        "formal_review": "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean",
+        "new_review_theorems": [
+          "fixed_allocation_content_contrast",
+          "selective_contact_budget",
+          "contact_write_retention",
+          "selective_actual_read"
+        ],
+        "new_production_theorems": 0,
+        "verification": {
+          "lean": "pass; base axioms only",
+          "runtime_identity": "2 passed: CPU/CUDA float64 actual V1.7 kernel with posterior=prior",
+          "test": "tests/test_gated_deltanet.py::test_fixed_exchange_allocation_still_erases_content_contrast"
+        },
+        "competing_explanations": [
+          "content overwrite even at fixed allocation",
+          "weighted-content/output-scale restriction",
+          "allocation feedback dominating bounded latent evidence"
+        ],
+        "next": "Close retained-content to future-read relation under changing allocation before runtime replacement; keep the delta reference.",
+        "independent_review": false,
+        "organism_admitted": false
+      },
+      "current_frontier": {
+        "direct_source_seeds": 148,
+        "proof_support": {
+          "total": 357,
+          "by_label": {
+            "M": 72,
+            "N": 195,
+            "R": 80,
+            "W": 10
+          },
+          "pending_or_unknown": []
+        },
+        "definitions": 376,
+        "unresolved_dependencies": 65,
+        "semantic_neighbors_pending_review": 40,
+        "satisfied": null
+      },
+      "broad_frontier_expansion": {
+        "review": "results/published/cgb_generator_causal_core_20261103.json#inside_out_frontier.fourth_ring_review",
+        "new_source_seeds": 34,
+        "additional_generators": 0,
+        "additional_state_fields": 0,
+        "areas": [
+          "contact-local causal interfaces",
+          "history-dependent structural differentiation",
+          "driven circulation versus adaptive rest versus latching",
+          "world conditions for learning benefit",
+          "changing teaching and response",
+          "joint world viability and self-consequence representation"
+        ],
+        "runtime_admission": false,
+        "independent_review": false
+      },
+      "contact_exchange_implementation": {
+        "status": "implemented_tests_and_gpu_engineering_calibration_passed",
+        "report": "results/published/cgb_contact_exchange_body_20261103.json",
+        "mode": "contact_exchange",
+        "state": "C and a; actual weighted content M=a*C; same bytes as evidence_exchange",
+        "theorem_to_runtime": [
+          {
+            "theorems": [
+              "selective_contact_budget",
+              "contact_write_retention"
+            ],
+            "premises": "normalized nonnegative r, gamma in [0,1], bounded C/v",
+            "runtime": "same snapshot posterior; lambda=gamma*r; C_next=(1-lambda)*C+lambda*v",
+            "verified": "CPU/CUDA formula, gradcheck, row bounds and local retention identity"
+          },
+          {
+            "theorems": [
+              "joint_exchange_budget",
+              "exchanged_gains_equal_losses"
+            ],
+            "premises": "nonnegative normalized a,r and gamma in [0,1]",
+            "runtime": "unchanged a_next=(1-gamma)*a+gamma*r",
+            "verified": "share budget and actual checkpoint sum error 1.19e-7; joint_exchange_budget applies to the share part, not its OLD content update"
+          },
+          {
+            "theorems": [
+              "decoded_content_budget",
+              "selective_actual_read"
+            ],
+            "premises": "conditional rows bounded; nonnegative normalized next share",
+            "runtime": "real read C_next.T@(a_next*q)",
+            "verified": "layer read and next state versus explicit reference; weighted capacity bound"
+          }
+        ],
+        "extra_state_bytes": 0,
+        "extra_parameters": 0,
+        "tests_passed": 43,
+        "gpu_calibration": {
+          "artifact": "results\\cgb_joint_gpu_20261103\\contact_calibration_20\\summary.json",
+          "updates": 20,
+          "byte_exposures": 2560,
+          "parameters": 765088,
+          "persistent_state_bytes": 86016,
+          "peak_allocated_mib": 58.67724609375,
+          "peak_reserved_mib": 92.0,
+          "training_bytes_per_second": 1090.6556374687375,
+          "initial_validation_nll": 5.55164098739624,
+          "final_validation_nll": 4.514858245849609,
+          "convergence_established": false,
+          "capability_claim": false,
+          "final_checkpoint_checks": {
+            "all_parameter_tensors_changed": true,
+            "parameter_tensor_count": 62,
+            "optimizer_steps": [
+              20
+            ],
+            "conditional_row_mass_max": 0.6563879251480103,
+            "decoded_total_mass_max": 0.6507616639137268,
+            "share_total_max_error": 1.1920928955078125e-07,
+            "all_state_finite": true
+          }
+        },
+        "independent_review": false,
+        "joint_357_theorem_admission": false
+      },
+      "availability_contact_implementation": {
+        "status": "implemented_and_5000_updates_complete_predictive_regression_observed",
+        "report": "results/published/cgb_available_contact_body_20261103.json",
+        "configuration": "contact_exchange, contact_availability=True",
+        "state": "existing C,a; additional persistent state bytes=0; additional learned parameters=0",
+        "joint_relation": "Same pre-event availability-weighted evidence controls content writing, conserved allocation and actual future read.",
+        "theorem_to_runtime": [
+          {
+            "theorems": [
+              "simplex_has_available_contact",
+              "available_posterior_contract"
+            ],
+            "premises": "at least two rows, simplex a, strictly positive exact-real scores",
+            "runtime": "log-space normalization of score*(1-a), exact full row excluded",
+            "verified": "CPU/CUDA oracle, full-corner finite gradients, permutation equivariance"
+          },
+          {
+            "theorems": [
+              "available_weight_anti",
+              "CGB.Generation.shared_pool_marginal_admission_is_anti_dominant"
+            ],
+            "premises": "fixed positive incoming score",
+            "runtime": "same a supplies remaining room 1-a",
+            "verified": "formal reuse; state-dependent positive feedback is not removed"
+          },
+          {
+            "theorems": [
+              "available_joint_contract",
+              "contact_write_retention",
+              "selective_actual_read"
+            ],
+            "premises": "same normalized posterior, gamma in [0,1], bounded C and v",
+            "runtime": "lambda=gamma*p; simultaneous C and a update; actual read C.T@(a*q)",
+            "verified": "joint budgets, local hold, full-contact release; layer reference, derivatives and restore"
+          }
+        ],
+        "latch_reachability": {
+          "level": "numerical conditional joint-state dynamics",
+          "conditions": "two rows, common C=v, neutral address, gain=4 ln 3, gamma=0.3; a=(1/4,3/4) or reverse",
+          "test": "test_available_contact_joint_latch_survives_and_releases",
+          "claim": "stable joint basins and finite counterevidence switching remain possible; not a useful-language-latch proof"
+        },
+        "unchanged_generator_count": 3,
+        "tests_passed": 50,
+        "independent_review": false,
+        "remaining_joint_obligations": [
+          "useful_language_retention_and_retrieval",
+          "general_anti_monopoly",
+          "beyond_window_credit",
+          "action_niche_closure",
+          "microscopic_Medium_instantiation"
+        ],
+        "source_support_count": 357,
+        "source_support_is_runtime_admission": false,
+        "language_result": {
+          "report": "results\\published\\cgb_available_contact_body_20261103.json",
+          "final_validation_nll": 1.9026787281036377,
+          "cross_chunk_matrix_erasure_nll_cost": 0.0038834810256958008,
+          "predictive_upgrade": false,
+          "organism_admitted": false,
+          "all_parameters_updated": true
+        },
+        "association_review": {
+          "report": "results/published/cgb_available_contact_body_20261103.json#association_and_sinkhorn_review",
+          "sinkhorn_in_runtime": false,
+          "delta_read_invariants_transferred": false,
+          "counterexample_verified_cpu_cuda": true
+        }
+      },
+      "association_review": "CPU/CUDA algebraic counterexamples establish that current contact recurrence does not inherit tied delta no-write-on-correct-read or orthogonal-read preservation. Historical Sinkhorn acts on optimizer allocation, not current signed content. No runtime changes or new training.",
+      "joint_construction_status": "Unfinished. 24 source statements and 15 causal arrows reviewed; joint history/readout/transition compatibility guides next shared-state construction. Existing joint theorems are conditional material, not completed specifications.",
+      "shared_memory_learning_bridge": {
+        "report": "results/published/cgb_shared_memory_learning_20261103.json",
+        "status": "current-event memory-mediated learning verified; joint generator unfinished",
+        "new_review_theorems": 2,
+        "new_runtime_state": 0,
+        "training_runs": 0
+      },
+      "retention_retrieval_bridge": {
+        "status": "conditional_same_state_algebra_and_runtime_interface_verified",
+        "review_theorem": "BudgetedAssociationWriteReview.decayed_write_joint_retention_retrieval",
+        "runtime_report": "results/published/cgb_retention_retrieval_20261103.json",
+        "body_modified": false,
+        "training_runs": 0,
+        "healthy_regenerative_latch_proved": false
+      },
+      "feedback_renewal_bridge": {
+        "status": "conditional_readback_joint_mode_formally_verified_tensor_embedding_numerically_checked",
+        "runtime_report": "results/published/cgb_feedback_renewal_20261103.json",
+        "body_modified": false,
+        "training_runs": 0,
+        "joint_body_satisfaction": null,
+        "resource_limit": "Per-event nonlinear state feedback loses the existing affine-in-state associative scan. A compatible GPU schedule/representation and measured cost are required before body installation.",
+        "ttt_potential_bridge": {
+          "status": "selected_coordinate_potential_and_endogenous_target_derivative_formalized",
+          "formal_declarations": [
+            "BudgetedAssociationWriteReview.endogenous_target_error_derivative",
+            "BudgetedAssociationWriteReview.feedback_potential_step"
+          ],
+          "primitive": "Integral of softResponse; derivative proved by continuity and FTC without assuming an antiderivative",
+          "matrix_scope": "Exact gradient identity and fixed-event descent bound derived on paper and checked numerically; matrix theorem not yet formalized",
+          "runtime_report": "results/published/cgb_feedback_renewal_20261103.json#ttt_potential_bridge",
+          "new_review_theorems": 2,
+          "matrix_gradient_checks": 48,
+          "not_claimed": [
+            "language_NLL_descent",
+            "published_TTT_Linear_implementation_equivalence",
+            "changed_event_global_potential_descent",
+            "complete_living_body"
+          ],
+          "additional_persistent_arrays": 0
+        },
+        "implementation": {
+          "status": "initial_pair_stopped_followup_three_seed_validation_complete",
+          "run_root": "results/cgb_feedback_pair_20261103_5000",
+          "admission_report": "results/published/cgb_feedback_runtime_admission_20261103.json",
+          "recurrence": "feedback_delta",
+          "cue": "existing learned value projection",
+          "additional_parameters": 32,
+          "additional_recurrent_state_bytes": 0,
+          "tests_passed": 71,
+          "steps_per_arm": 5000,
+          "bytes_per_arm": 2560000,
+          "capability_verdict": "no_measured_net_owt_gain_at_tested_budget",
+          "organism_admitted": false,
+          "initial_run_actual_steps": {
+            "decay_then_delta": 5000,
+            "feedback_delta": 3800
+          },
+          "followup_report": "results/cgb_feedback_birth_20261103/RESULT.md"
+        }
+      },
+      "latest_execution_review": {
+        "date": "2026-11-03",
+        "status": "feedback_language_stage_complete_no_measured_net_gain",
+        "handoff": "docs/information_boltzmann/CGB_CLAUDE_HANDOFF_20261103.md",
+        "evidence": [
+          "results/cgb_feedback_birth_20261103/RESULT.md",
+          "results/cgb_long_memory_diagnosis_20261103/README.md",
+          "results/cgb_recall_t1b_20261103/RESULT.md",
+          "results/cgb_gdn_fast_table_20261103/RESULT.md"
+        ],
+        "feedback_validation_nll_mean_paired_delta": 0.0007,
+        "feedback_off_nll_cost_range": [
+          0.015,
+          0.022
+        ],
+        "interpretation": "Path used, no net advantage over independently trained control. Increased history use does not imply improved final NLL. Recall failure does not isolate latch lifetime.",
+        "candidate": "existing GDN plus bounded fast table; not final architecture admission",
+        "table_mib_approx": 908,
+        "resource_matched_superiority": false,
+        "remaining": [
+          "table-aware independent evaluation",
+          "complete neural/table/optimizer restore",
+          "total bounded resource accounting",
+          "same-body action-world closure"
+        ],
+        "mode_task": "Existing diagnostic; full result not reviewed here; not organism admission or an extra language-training prerequisite",
+        "organism_admitted": false,
+        "coverage_count_changed": false
+      },
+      "joint_continuation_settlement_20261105": "Completed 512 rounds: final balanced NLL .409597 vs witness .419583 and cached .435519; actual changed-room return261 vs274. Fixed40 audit mean1.16655 vs.78408 worse; critic RMS peak355.53, wood influence small. Full next-step restore0;512 reward deliveries checked. Keep joint body/table settlement; next inspect score-value-precision scale. Evidence results/cgb_learning_rooms_joint_20261105/RESULT.md. No new theorem/body coverage count.",
+      "value_scale_candidate_20261105": "FAILED after166 completed cycles, guard exception on167. Finite logged values grew to2.104e8 despite actual joint progress.002798; bootstrapped y1.683e6, normalizer2.357e7. Instantaneous output preservation and8-cycle gates did not establish closed-loop stability. Guard magnitude-vs-availability defect fixed (38tests); no resume. Keep unnormalized continuation_joint reference .409597. Need joint update-to-raw-output-to-TD/recall gain admission. Evidence results/cgb_value_scale_joint_20261105/STOPPED.md; source/logs/snapshot128 retained.",
+      "value_feedback_no_training_20261105": "No training/world steps. Recorded TD reconstruction exact. Frozen rebase166: FP32 drift.2727, FP64 2.88e-10; outer-only affine would change fixed output3.30e9. At checkpoint128 frozen query, normalized-weight perturbation norm.0003 changes raw V162.59; TD-memory local gain1.50826 matches finite difference (local map initially amplifies then settles, not exact original trajectory). Chosen repair specification: memory retains observedg; TD estimate trains critic/credit without overwriting observedg; historical label migration needed, no new pool. Removing estimate-to-observed-memory write gives zero recall change in fixed-query witness. Runtime body unchanged; no new training. Evidence results/cgb_value_scale_joint_20261105/NO_TRAINING_AUDIT.md.",
+      "observed_gain_memory_repair_20261105": "Implemented optional observed memory semantics; defaulttd retained. Existing slots contain measuredg/mergedmean; critic and delayed actor still use TD. No new parameter/persistent arrays. Conservative migration recovers409/590 known observed slots in source/joint512, unknown13/68 excluded by existing validity; current joint usable182. Actual write/read function tests on copies: TD +-1e6 produces zero repaired recall difference; legacy control changes49m/88m (artificial diagnostic extremes). Local Lean admission compiles;46 relevant tests pass. Zero optimizer/world steps, originals unchanged, no training. Evidence results/cgb_observed_gain_repair_20261105/RESULT.md; remaining full-loop stability/performance untested.",
+      "remaining_value_update_gate_20261105": "No optimizer/world steps. Analytic AdamW proposals from actual saved moments evaluated with functional_call, never installed. Stable512 old TD-memory maxV change.012509 vs observed-migration.001245; failed PopArt128 frozen-scale maxV change179.223 despite maxparamchange.000191 and improved fitted residual. Local TD value-input gain~.8 alone is not full learned-loop stability. No additional runtime algorithm changes; observed-only, unnormalized joint-settlement candidate awaits authorized full learning run. Evidence results/cgb_observed_gain_repair_20261105/remaining_update_gate.json.",
+      "observed_gain_learning_20261105": "Authorized single512-cycle background run started: continuation_joint + observed memory + no PopArt, source symbol512 complete state, control existing joint/td.8 actual steps pass mean provenance max1.144e-6, restore0,32updates. Main budget starts fresh, no multi-seed scan. Require endpoint no worse than.409597 and fixed40 audit mean below1.16655 together; report actual return/relearn/noise/opportunities/wood. Automatic result or failure-status capture. results/cgb_observed_gain_joint_20261105.status.json.",
+      "motivation": "Connect the reviewed theorem premises through one bounded language-body/world transition, avoiding independently assembled witnesses.",
+      "action": "Retain the existing body, evidence and same-state condition trace; continue only the earliest unresolved whole-loop handoff.",
+      "status_detail": "same_body_action_bridge_validated_immediate_policy_benefit_not_established",
+      "confidence": "D",
+      "legacy_id": "CGB_CAUSAL_GENERATOR_CORE_20261103"
+    },
+    {
+      "id": "CGB_N_USE_REVIEW_20261103",
+      "layer": "theorem",
+      "direction": "induction",
+      "status": "partially_reusable",
+      "title": "Recover uses of all 1403 N-class declarations without imposing one body design",
+      "claim": "Three lightweight reviewers covered all original N declarations, with source-bound premises, use roles, and cross-checks. Proposed traversal labels are R17/M52/W31/N1303; they do not change the classification registry or gate obligations.",
+      "evidence": "Exact 1403-name coverage, unique related-declaration resolution, signature hashes and 127 source hashes verified. Joint witnesses are local to their actual carriers; the nine-item body synthesis is not proved jointly realizable or maximal. One low-confidence language-trajectory interpretation remains flagged.",
+      "artifacts": [
+        "docs/information_boltzmann/CGB_THEOREM_N_REVIEW_20261103.md",
+        "docs/information_boltzmann/CGB_THEOREM_CONSISTENT_CORE_20261103.md",
+        "scripts/review_theorem_n.py",
+        "results/published/cgb_theorem_n_review_20261103.jsonl",
+        "results/published/cgb_theorem_n_review_20261103.summary.json"
+      ],
+      "next_action": "Search for maximal compatible constraint coverage on one common carrier/transition, actively adopting conditional constructions with their premises. Universal necessity or architectural uniqueness is not required; distinguish actual conflicts from missing joint constructions and use as few shared generative laws as possible.",
+      "invalidation": "Semantic classifications are model-assisted review proposals, not new Lean conclusions. Separate witnesses and target assumptions do not establish complete language life or joint body-family existence.",
+      "parent": null,
+      "source_status": "semantic_review_with_coverage_and_provenance_checks",
+      "motivation": "Recover constraints, counterexamples and joint witnesses hidden by the earlier N classification.",
+      "action": "Preserve exact-name coverage and source-bound review notes; use them as design support without promoting them to body satisfaction.",
+      "status_detail": "agent_reviewed_source_checked",
+      "confidence": "D"
+    },
+    {
+      "id": "CGB_BACKBONE_REUSE_20261103",
+      "layer": "algorithm",
+      "direction": "deduction",
+      "status": "partially_reusable",
+      "title": "Reuse the existing recurrent language backbone for joint prediction and learning",
+      "claim": "Explicit decay-before-delta, optional SwiGLU and causal QKV convolution with SiLU extend the existing GatedDeltaNet baseline, preserving its legacy defaults. The raw convolution history and recurrent matrix share one fixed-size state and prediction/learning path.",
+      "evidence": "17 affected tests pass including CUDA Graph execution, whole/chunk/token prediction and split-gradient equivalence, convolution order, cache-reset negative control, nonzero gradients and complete learner restore. Legacy outputs and gradients match bitwise. Conv-4 profiles cover 35.91M and 1.001B parameters; a zero-learning-rate GPU interface calibration used 756771840 peak allocated bytes, with no language capability claim. Official Qwen architecture and concrete Axolotl/SWIFT recipes are compared in the live specification.",
+      "artifacts": [
+        "docs/information_boltzmann/CGB_LANGUAGE_LIFE_MODEL_V1_20261025.md",
+        "scripts/ib_local/gated_deltanet.py",
+        "tests/test_gated_deltanet.py",
+        "results/published/cgb_recurrent_backbone_admission_20261103.json"
+      ],
+      "next_action": "Derive how the same recurrent read/write state can support releasable retention, local historical credit and a meaningful conserved allocation before whole-body admission and real-language training.",
+      "invalidation": "This is not a Qwen replica or a certified living body. Local delta learning, gradient availability and bounded state size do not establish healthy latching, learned compartments, conserved allocation, beyond-window credit or language capability.",
+      "parent": null,
+      "source_status": "implementation_checked_conditional_candidate",
+      "motivation": "Reuse modern recurrent language components while preserving causal finite-state interfaces and existing baselines.",
+      "action": "Keep admitted numerical interfaces and existing defaults; assess joint language-body consequences through the continuing instance.",
+      "status_detail": "interface_verified_not_body_admitted",
+      "confidence": "D",
+      "legacy_id": "CGB_RECURRENT_BACKBONE_REUSE_20261103"
+    },
+    {
+      "id": "CGB_JOINT_REINVESTMENT_20261103",
+      "layer": "mechanism",
+      "direction": "deduction",
+      "status": "partially_reusable",
+      "title": "Shared current-event credit for content and conserved allocation",
+      "claim": "Under a mixture readout, reinvestment responsibility also weights the G14 content score. A shared parameter requires both the routing and content pullbacks. This conditional reference is not a voxel-body refinement.",
+      "evidence": "Seven numerical checks passed on CUDA float64 with 256 labels; maximum instantaneous-gradient error 1.67e-16. An additive-energy readout gives different credit, so it cannot silently reuse mixture responsibilities.",
+      "artifacts": [
+        "docs/information_boltzmann/CGB_MINIMAL_GENERATOR_20261103.md",
+        "scripts/audit_cgb_joint_reinvestment.py",
+        "results/published/cgb_joint_reinvestment_audit_20261103.json"
+      ],
+      "next_action": "Retain as a mixture-readout reference. The authorized recurrent-backbone reuse is tracked by CGB_RECURRENT_BACKBONE_REUSE_20261103; do not impose mixture responsibilities on its feature/softmax readout or on voxel energy readout.",
+      "invalidation": "No learned context, physical local implementation, adaptive long-history credit, healthy latch, or language capability has been established by this numerical reference. Voxel finite-time occupancy is not assumed to equal an equilibrium mixture law.",
+      "parent": null,
+      "source_status": "numerically_checked_conditional_design",
+      "motivation": "Determine when the same readout responsibility can govern content credit and allocation.",
+      "action": "Retain the conditional algebra and numerical audit; do not transfer mixture credit to an incompatible additive readout.",
+      "status_detail": "conditional_reference_only",
+      "confidence": "D"
+    },
     {
       "id": "N0D7DA392E4",
       "layer": "theorem",
@@ -10390,118 +10894,364 @@
       "confidence": "D"
     },
     {
-        "id": "IB_CGB_COLUMN_BODY_G2_20261031",
-        "parent": "NC6D2C95201",
-        "layer": "algorithm",
-        "direction": "deduction",
-        "status": "partially_reusable",
-        "title": "Shared H/C/S recurrent column-body candidate",
-        "claim": "CGBColumnLanguageBody is one finite persistent state with bounded activity H, natural/precision carrier C, and four-neighbour source-typed low-rank participation S. Its configured contact basis is part of S rather than a separate eligibility page: exact recovery of m independent local causal distinctions across its eight typed contacts requires m ≤ 8r, where r is the per-contact basis rank. Each touched geometric contact obtains a shared endpoint-local drive and updates its reciprocal S readings together; prediction precedes the arriving byte write, while Trace and Demand are read from C/S rather than stored as additional state.",
-        "evidence": "Existing Lean gates: GenerationColumnRefinement common-state contract; AssociationCapacity.exact_decoder_capacity; GDN G14 local affine-head update; GDNLife.step_source_irrelevant boundary; LanguageLifeKernel delayed_action_credit_requires_state_separation and observable-transfer limits; and the matched reciprocal-contact identities reciprocal_shared_update_mismatch/reciprocal_iter_mismatch. Eighteen deterministic runtime checks cover source separation, target-blind pre-update routing/scoring, P1b-style remote nonparticipant stability at zero elapsed time, sparse carrier writes, reciprocal typed-contact agreement, rank expansion within the same S page, the causal S-to-H read and its mute control, zero-total local edge flux, G14 arrival-head improvement, empty-time C-only release, state detachment and complete H/C/S snapshot accounting. After deleting the unadmitted signed teaching phase, a same-configuration CUDA 100k OWT regression reproduced all four arm BPB values exactly while reducing persistent state from 20,744 to 18,696 FP32 bytes.",
-        "artifacts": [
-            "information_boltzmann/core/cgb_column_body.py",
-            "tests/test_cgb_column_body.py",
-            "docs/information_boltzmann/CGB_LANGUAGE_LIFE_MODEL_V1_20261025.md"
-        ],
-        "next_action": "Formally refine the actual H/C/S transition against ColumnRefinement. The immediate reciprocal contact read has passed a real-language causal ablation. The attempted surprise-gated signed-S teaching phase was deleted after its matched OWT admission worsened validation BPB; no online three-factor path is active. Before another teaching path, declare the required local causal distinctions, select the smallest S basis rank that can decode them, and require a self-assembled local direction measured against the exact G14 future score without preset transpose weights.",
-        "invalidation": "This is an interface-verified G2 candidate only. It is not a Lean Medium witness, a complete online learning rule, a trained language model, an active world closure or a language-life claim. A bounded surprise amplitude alone is insufficient as a language teaching mechanism in the deleted admission.",
-        "external_id": "IB_CGB_COLUMN_BODY_G2_20261031",
-        "source_status": "interface_verified",
-        "motivation": "Record the single-body implementation boundary so later language or optimizer work cannot turn its projections into parallel memory systems.",
-        "action": "Keep all additions classified as H, C or S; use the exact-decoder capacity bound (m ≤ 8r for m column-local distinctions) to set the smallest required S basis rank before introducing further state.",
-        "confidence": "I"
+      "id": "IB_CGB_COLUMN_BODY_G2_20261031",
+      "parent": "NC6D2C95201",
+      "layer": "algorithm",
+      "direction": "deduction",
+      "status": "partially_reusable",
+      "title": "Shared H/C/S recurrent column-body candidate",
+      "claim": "CGBColumnLanguageBody is one finite persistent state with bounded activity H, natural/precision carrier C, and four-neighbour source-typed low-rank participation S. Its configured contact basis is part of S rather than a separate eligibility page: exact recovery of m independent local causal distinctions across its eight typed contacts requires m ≤ 8r, where r is the per-contact basis rank. Each touched geometric contact obtains a shared endpoint-local drive and updates its reciprocal S readings together; prediction precedes the arriving byte write, while Trace and Demand are read from C/S rather than stored as additional state.",
+      "evidence": "Existing Lean gates: GenerationColumnRefinement common-state contract; AssociationCapacity.exact_decoder_capacity; GDN G14 local affine-head update; GDNLife.step_source_irrelevant boundary; LanguageLifeKernel delayed_action_credit_requires_state_separation and observable-transfer limits; and the matched reciprocal-contact identities reciprocal_shared_update_mismatch/reciprocal_iter_mismatch. Eighteen deterministic runtime checks cover source separation, target-blind pre-update routing/scoring, P1b-style remote nonparticipant stability at zero elapsed time, sparse carrier writes, reciprocal typed-contact agreement, rank expansion within the same S page, the causal S-to-H read and its mute control, zero-total local edge flux, G14 arrival-head improvement, empty-time C-only release, state detachment and complete H/C/S snapshot accounting. After deleting the unadmitted signed teaching phase, a same-configuration CUDA 100k OWT regression reproduced all four arm BPB values exactly while reducing persistent state from 20,744 to 18,696 FP32 bytes.",
+      "artifacts": [
+        "information_boltzmann/core/cgb_column_body.py",
+        "tests/test_cgb_column_body.py",
+        "docs/information_boltzmann/CGB_LANGUAGE_LIFE_MODEL_V1_20261025.md"
+      ],
+      "next_action": "Formally refine the actual H/C/S transition against ColumnRefinement. The immediate reciprocal contact read has passed a real-language causal ablation. The attempted surprise-gated signed-S teaching phase was deleted after its matched OWT admission worsened validation BPB; no online three-factor path is active. Before another teaching path, declare the required local causal distinctions, select the smallest S basis rank that can decode them, and require a self-assembled local direction measured against the exact G14 future score without preset transpose weights.",
+      "invalidation": "This is an interface-verified G2 candidate only. It is not a Lean Medium witness, a complete online learning rule, a trained language model, an active world closure or a language-life claim. A bounded surprise amplitude alone is insufficient as a language teaching mechanism in the deleted admission.",
+      "external_id": "IB_CGB_COLUMN_BODY_G2_20261031",
+      "source_status": "interface_verified",
+      "motivation": "Record the single-body implementation boundary so later language or optimizer work cannot turn its projections into parallel memory systems.",
+      "action": "Keep all additions classified as H, C or S; use the exact-decoder capacity bound (m ≤ 8r for m column-local distinctions) to set the smallest required S basis rank before introducing further state.",
+      "confidence": "I"
     },
     {
-        "id": "IB_CGB_COLUMN_G14_OWT_20261031",
-        "parent": "IB_CGB_COLUMN_BODY_G2_20261031",
-        "layer": "experiment",
-        "direction": "deduction",
-        "status": "partially_reusable",
-        "title": "Continuous OWT admission for the shared H/C/S column body",
-        "claim": "In one CUDA prequential OpenWebText UTF-8 byte stream, the reciprocal-contact H/C/S G14 readout reached 4.700 BPB on 99,950 training bytes and 4.620 BPB on a continuing 99,954-byte validation stream. The matched bias-only G14 control reached 4.923 and 4.706 BPB, so the H/C/S feature contributed -0.223 and -0.086 BPB beyond byte-marginal adaptation. Muting only the S-to-H read while retaining the identical reciprocal S write reduced that contribution to -0.207 and -0.064 BPB, establishing an incremental causal contribution from the contact read in this fixed-body run.",
-        "evidence": "The paired published records fix data revision, document-hash split rule, seed, state accounting, ten-point curves and protocol. Prediction is scored before each byte is written; H/C/S is never reset between train and validation; no autograd history or BPTT is retained. Within each arm frozen, bias-only, and state-feature heads share one body trajectory because none feeds back into H/C/S. The enabled and muted runs share all initialization, persistent state size, reciprocal S write, data, head protocol and CUDA-Graph execution; only the S-to-H read matrix is zeroed in the mute control. CUDA Graph execution was checked against eager CPU on the same 100-byte stream before the runs.",
-        "artifacts": [
-            "scripts/run_cgb_column_language_admission.py",
-            "results/published/cgb_column_reciprocal_contact_g14_owt100k_20261031.json",
-    "results/published/cgb_column_reciprocal_contact_muted_g14_owt100k_20261031.json",
-            "information_boltzmann/core/cgb_column_body.py"
-        ],
-        "next_action": "Use the causal S-to-H difference as a gate: construct a learned local teaching signal only if its sign/cosine alignment with the exact G14 future score is measured on the same OWT protocol, with random and frozen-teaching controls. Then test whether the same H/C/S carrier can preserve that signal across delayed consequences.",
-        "invalidation": "This is one small 32-wide 8x8 body and one seed. The validation stream continues online adaptation, and only the affine readout learns; S-to-H has fixed random parameters, not self-assembled teaching weights. It does not establish learned body dynamics, delayed three-factor credit, active language behaviour, large-model capability, or life closure.",
-        "external_id": "IB_CGB_COLUMN_G14_OWT_20261031",
-        "source_status": "single_seed_real_owt_prequential",
-        "motivation": "Separate the real-data contribution of the common H/C/S state from the much larger byte-frequency gain of an online output bias.",
-        "action": "Treat the state-feature delta as a bounded admission signal, not a capability claim; preserve the matched bias-only control in future runs.",
-        "confidence": "D"
+      "id": "IB_CGB_COLUMN_G14_OWT_20261031",
+      "parent": "IB_CGB_COLUMN_BODY_G2_20261031",
+      "layer": "experiment",
+      "direction": "deduction",
+      "status": "partially_reusable",
+      "title": "Continuous OWT admission for the shared H/C/S column body",
+      "claim": "In one CUDA prequential OpenWebText UTF-8 byte stream, the reciprocal-contact H/C/S G14 readout reached 4.700 BPB on 99,950 training bytes and 4.620 BPB on a continuing 99,954-byte validation stream. The matched bias-only G14 control reached 4.923 and 4.706 BPB, so the H/C/S feature contributed -0.223 and -0.086 BPB beyond byte-marginal adaptation. Muting only the S-to-H read while retaining the identical reciprocal S write reduced that contribution to -0.207 and -0.064 BPB, establishing an incremental causal contribution from the contact read in this fixed-body run.",
+      "evidence": "The paired published records fix data revision, document-hash split rule, seed, state accounting, ten-point curves and protocol. Prediction is scored before each byte is written; H/C/S is never reset between train and validation; no autograd history or BPTT is retained. Within each arm frozen, bias-only, and state-feature heads share one body trajectory because none feeds back into H/C/S. The enabled and muted runs share all initialization, persistent state size, reciprocal S write, data, head protocol and CUDA-Graph execution; only the S-to-H read matrix is zeroed in the mute control. CUDA Graph execution was checked against eager CPU on the same 100-byte stream before the runs.",
+      "artifacts": [
+        "scripts/run_cgb_column_language_admission.py",
+        "results/published/cgb_column_reciprocal_contact_g14_owt100k_20261031.json",
+        "results/published/cgb_column_reciprocal_contact_muted_g14_owt100k_20261031.json",
+        "information_boltzmann/core/cgb_column_body.py"
+      ],
+      "next_action": "Use the causal S-to-H difference as a gate: construct a learned local teaching signal only if its sign/cosine alignment with the exact G14 future score is measured on the same OWT protocol, with random and frozen-teaching controls. Then test whether the same H/C/S carrier can preserve that signal across delayed consequences.",
+      "invalidation": "This is one small 32-wide 8x8 body and one seed. The validation stream continues online adaptation, and only the affine readout learns; S-to-H has fixed random parameters, not self-assembled teaching weights. It does not establish learned body dynamics, delayed three-factor credit, active language behaviour, large-model capability, or life closure.",
+      "external_id": "IB_CGB_COLUMN_G14_OWT_20261031",
+      "source_status": "single_seed_real_owt_prequential",
+      "motivation": "Separate the real-data contribution of the common H/C/S state from the much larger byte-frequency gain of an online output bias.",
+      "action": "Treat the state-feature delta as a bounded admission signal, not a capability claim; preserve the matched bias-only control in future runs.",
+      "confidence": "D"
     },
     {
-        "id": "IB_CGB_PARAMETER_PATHS_20261101",
-        "parent": "IB_CGB_VPATH_TEACH_20261101",
-        "layer": "algorithm",
-        "direction": "deduction",
-        "status": "partially_reusable",
-        "title": "Three-event causal coverage of continuing column parameters",
-        "claim": "After removing the two birth-only degrees of freedom, every one of the 24 continuing parameter groups in CGBColumnLanguageBody has a finite causal path to a future OpenWebText byte score from a detached persistent H/C/S state: four within one event, fifteen within two events, and five S-formation groups within three events. This is reachability only, not an implemented local learning rule.",
-        "evidence": "The published audit warms a real UTF-8 OpenWebText body for 48 events without gradients, detaches the full H/C/S state, then separately retains only each 1-3 event score path to measure exact nonzero parameter sensitivity. It writes no parameter. The continuing body has 33,389 parameters and 24,840 FP32 bytes of persistent H/C/S state.",
-        "artifacts": [
-            "information_boltzmann/core/cgb_column_body.py",
-            "scripts/audit_cgb_column_parameter_paths.py",
-            "results/published/cgb_column_parameter_paths_owt_20261101.json"
-        ],
-        "next_action": "Construct one common boundary teaching message and reconstruct the required one-, two-, and three-event local eligibility from H/C/S. Do not use the retained audit graph as an online update; admit each generated local direction against its exact future score.",
-        "invalidation": "Finite score reachability neither supplies a BPTT-free update law nor proves self-assembled feedback alignment, long delayed credit, language capability, or life closure.",
-        "external_id": "IB_CGB_PARAMETER_PATHS_20261101",
-        "source_status": "single_seed_real_owt_gradient_audit",
-        "motivation": "Replace the vague request that every parameter learn with a minimal causal-depth contract, while removing birth-only parameters that a continuous individual could never revise.",
-        "action": "Use the three depth classes as the sole eligibility design target; reject any proposed update that needs an additional persistent history page or silently retains longer BPTT.",
-        "confidence": "D"
+      "id": "IB_CGB_PARAMETER_PATHS_20261101",
+      "parent": "IB_CGB_VPATH_TEACH_20261101",
+      "layer": "algorithm",
+      "direction": "deduction",
+      "status": "partially_reusable",
+      "title": "Three-event causal coverage of continuing column parameters",
+      "claim": "After removing the two birth-only degrees of freedom, every one of the 24 continuing parameter groups in CGBColumnLanguageBody has a finite causal path to a future OpenWebText byte score from a detached persistent H/C/S state: four within one event, fifteen within two events, and five S-formation groups within three events. This is reachability only, not an implemented local learning rule.",
+      "evidence": "The published audit warms a real UTF-8 OpenWebText body for 48 events without gradients, detaches the full H/C/S state, then separately retains only each 1-3 event score path to measure exact nonzero parameter sensitivity. It writes no parameter. The continuing body has 33,389 parameters and 24,840 FP32 bytes of persistent H/C/S state.",
+      "artifacts": [
+        "information_boltzmann/core/cgb_column_body.py",
+        "scripts/audit_cgb_column_parameter_paths.py",
+        "results/published/cgb_column_parameter_paths_owt_20261101.json"
+      ],
+      "next_action": "Construct one common boundary teaching message and reconstruct the required one-, two-, and three-event local eligibility from H/C/S. Do not use the retained audit graph as an online update; admit each generated local direction against its exact future score.",
+      "invalidation": "Finite score reachability neither supplies a BPTT-free update law nor proves self-assembled feedback alignment, long delayed credit, language capability, or life closure.",
+      "external_id": "IB_CGB_PARAMETER_PATHS_20261101",
+      "source_status": "single_seed_real_owt_gradient_audit",
+      "motivation": "Replace the vague request that every parameter learn with a minimal causal-depth contract, while removing birth-only parameters that a continuous individual could never revise.",
+      "action": "Use the three depth classes as the sole eligibility design target; reject any proposed update that needs an additional persistent history page or silently retains longer BPTT.",
+      "confidence": "D"
     },
     {
-        "id": "IB_RECIP_BOUNDARY_OWT_20261101",
-        "parent": "IB_CGB_VPATH_TEACH_20261101",
-        "layer": "experiment",
-        "direction": "deduction",
-        "status": "pruned",
-        "title": "Reciprocal language-boundary pairing does not validate the current S trace",
-        "claim": "A forward byte head and independently initialized byte-to-body boundary contact were updated with the same innovation-by-feature statistic and C-derived release. Their Frobenius mismatch contracted from 9.77 to 0.0 after 99,950 OWT bytes, yet the proposed S times demand direction had mean exact one-next-byte gradient cosine -0.0360, 46.3% positive dots, and did not exceed its byte-permutation null. Pairwise reciprocity alone therefore does not validate the current trace as a contact eligibility.",
-        "evidence": "A CUDA-Graph OWT warmup was followed by 512 detached two-event exact-gradient checks. The reverse boundary contact was independently initialized and learned only through the shared local statistic; no S/body update was applied.",
-        "artifacts": [
-            "results/published/cgb_column_reciprocal_boundary_alignment_owt_20261101.json"
-        ],
-        "next_action": "Derive the actual contact eligibility: next-score read support, local activity response including saturation, and neighbourhood overlap. Then test whether those factors are reconstructable from existing H/C/S; if not, prove the minimal distinguishable S refinement required rather than adding a history page.",
-        "invalidation": "This rejects this executable teaching direction, not the reciprocal-update theorem or a future self-assembled feedback path.",
-        "external_id": "IB_RECIP_BOUNDARY_OWT_20261101",
-        "source_status": "single_seed_real_owt_gradient_audit",
-        "motivation": "Separate contraction of a reciprocal boundary pair from end-to-end future-score alignment.",
-        "action": "Do not rerun or tune this candidate. Use it as the precise omission test for the successor derivation.",
-        "pruning_record": {
-            "reason": "The measured direction is anti-aligned on average and does not improve over its permutation null, despite exact reciprocal-pair contraction.",
-            "pruning_commit": "pending-commit",
-            "recovery_note": "Retain the OWT record; reconstruct the omitted local eligibility factors before proposing another update."
-        },
-        "confidence": "D"
+      "id": "IB_RECIP_BOUNDARY_OWT_20261101",
+      "parent": "IB_CGB_VPATH_TEACH_20261101",
+      "layer": "experiment",
+      "direction": "deduction",
+      "status": "pruned",
+      "title": "Reciprocal language-boundary pairing does not validate the current S trace",
+      "claim": "A forward byte head and independently initialized byte-to-body boundary contact were updated with the same innovation-by-feature statistic and C-derived release. Their Frobenius mismatch contracted from 9.77 to 0.0 after 99,950 OWT bytes, yet the proposed S times demand direction had mean exact one-next-byte gradient cosine -0.0360, 46.3% positive dots, and did not exceed its byte-permutation null. Pairwise reciprocity alone therefore does not validate the current trace as a contact eligibility.",
+      "evidence": "A CUDA-Graph OWT warmup was followed by 512 detached two-event exact-gradient checks. The reverse boundary contact was independently initialized and learned only through the shared local statistic; no S/body update was applied.",
+      "artifacts": [
+        "results/published/cgb_column_reciprocal_boundary_alignment_owt_20261101.json"
+      ],
+      "next_action": "Derive the actual contact eligibility: next-score read support, local activity response including saturation, and neighbourhood overlap. Then test whether those factors are reconstructable from existing H/C/S; if not, prove the minimal distinguishable S refinement required rather than adding a history page.",
+      "invalidation": "This rejects this executable teaching direction, not the reciprocal-update theorem or a future self-assembled feedback path.",
+      "external_id": "IB_RECIP_BOUNDARY_OWT_20261101",
+      "source_status": "single_seed_real_owt_gradient_audit",
+      "motivation": "Separate contraction of a reciprocal boundary pair from end-to-end future-score alignment.",
+      "action": "Do not rerun or tune this candidate. Use it as the precise omission test for the successor derivation.",
+      "pruning_record": {
+        "reason": "The measured direction is anti-aligned on average and does not improve over its permutation null, despite exact reciprocal-pair contraction.",
+        "pruning_commit": "pending-commit",
+        "recovery_note": "Retain the OWT record; reconstruct the omitted local eligibility factors before proposing another update."
+      },
+      "confidence": "D"
     },
     {
-        "id": "IB_CGB_VPATH_TEACH_20261101",
-        "parent": "IB_CGB_COLUMN_G14_OWT_20261031",
-        "layer": "experiment",
-        "direction": "deduction",
-        "status": "partially_reusable",
-        "title": "No-new-state value-path contact-teaching audit",
-        "claim": "After 99,950 continuous OWT bytes of established G14 head plus direct C-value learning, the existing value path projected the arrived language innovation into an S-to-H contact direction with mean two-event exact-gradient cosine 0.02096, versus -0.01609 after permuting only byte-to-C value rows. This establishes a weak non-random teaching signal, not a safe update direction: only 53.3% of individual future-score dot products were positive.",
-        "evidence": "The candidate used no new parameter or persistent state: (arrived-predicted) @ event_value(byte_embedding) times the old C/S trace at the post-arrival write route. Each reference retained only the current and next causal event, then detached the body. The paired byte-value permutation preserved data, state, receipt, norms, reference gradient and all computation except the learned language-to-C correspondence.",
-        "artifacts": [
-            "information_boltzmann/core/cgb_column_body.py",
-            "scripts/audit_cgb_column_value_teaching.py",
-            "results/published/cgb_column_value_teaching_alignment_owt_20261101.json"
-        ],
-        "next_action": "Do not apply this weak direction. Use the reciprocal shared-statistic theorem only to construct a self-assembling local teaching path with common local release, then require materially stronger exact-future alignment and matched OWT learning controls before enabling contact updates.",
-        "invalidation": "The result is a 32-wide, rank-4, one-seed numerical admission audit. It neither proves a learned feedback path, meets the pointwise positive-alignment premise, nor establishes delayed credit, language capability or life closure.",
-        "external_id": "IB_CGB_VPATH_TEACH_20261101",
-        "source_status": "single_seed_real_owt_gradient_audit",
-        "motivation": "Test whether an existing C value map carries usable language teaching information before adding a feedback matrix or updating S.",
-        "action": "Keep the direction audit-only; preserve the byte-value permutation null as the minimal causal control for any successor.",
-        "confidence": "D"
+      "id": "IB_CGB_VPATH_TEACH_20261101",
+      "parent": "IB_CGB_COLUMN_G14_OWT_20261031",
+      "layer": "experiment",
+      "direction": "deduction",
+      "status": "pruned",
+      "title": "No-new-state value-path contact-teaching audit",
+      "claim": "After 99,950 continuous OWT bytes of established G14 head plus direct C-value learning, the existing value path projected the arrived language innovation into an S-to-H contact direction with mean two-event exact-gradient cosine 0.02096, versus -0.01609 after permuting only byte-to-C value rows. This establishes a weak non-random teaching signal, not a safe update direction: only 53.3% of individual future-score dot products were positive.",
+      "evidence": "The candidate used no new parameter or persistent state: (arrived-predicted) @ event_value(byte_embedding) times the old C/S trace at the post-arrival write route. Each reference retained only the current and next causal event, then detached the body. The paired byte-value permutation preserved data, state, receipt, norms, reference gradient and all computation except the learned language-to-C correspondence.",
+      "artifacts": [
+        "results/published/cgb_column_value_teaching_alignment_owt_20261101.json"
+      ],
+      "next_action": "Do not restore or tune this candidate. The exact one-next-event contact gate now supplies the omitted local response factor; first test a bounded H/S decoder across delay, then derive any remaining typed low-rank refinement before enabling contact updates.",
+      "invalidation": "The result is a 32-wide, rank-4, one-seed numerical admission audit. It neither proves a learned feedback path, meets the pointwise positive-alignment premise, nor establishes delayed credit, language capability or life closure.",
+      "external_id": "IB_CGB_VPATH_TEACH_20261101",
+      "source_status": "single_seed_real_owt_gradient_audit",
+      "motivation": "Test whether an existing C value map carries usable language teaching information before adding a feedback matrix or updating S.",
+      "action": "Retain the published failure and its byte-value permutation null as a causal control; remove the executable candidate from the active body.",
+      "confidence": "D",
+      "pruning_record": {
+        "reason": "Weak mean alignment did not establish a safe local update: only 53.3% of tested future-score dot products were positive. The candidate is not an admitted S learning rule.",
+        "pruning_commit": "cgb-closed-loop-20261105",
+        "recovery_note": "Recover the previous executable with git show 2c3209e:scripts/audit_cgb_column_value_teaching.py; retain the published numerical/null evidence. This milestone tag records the rejection, not deletion of evidence."
+      }
+    },
+    {
+      "id": "IB_CONTACT_LOCAL_GATE_20261101",
+      "parent": "IB_RECIP_BOUNDARY_OWT_20261101",
+      "layer": "algorithm",
+      "direction": "deduction",
+      "status": "partially_reusable",
+      "title": "Exact local contact eligibility separates occupancy from response",
+      "claim": "For the shared column contact read, the one-next-byte score direction factors exactly into the arrived next-byte innovation, its current read coefficient and route, the write-event saturation gate, and pre-write typed S participation. Occupancy times demand alone is therefore not a contact eligibility. The pre-response-gated S exchange retained identical occupancy for an unsaturated effective contact and a saturated ineffective contact. The later shared-edge gate records an aggregate response distinction, but S alone is still not admitted as a complete delayed contact-credit carrier.",
+      "evidence": "GenerationContactEligibility proves the scalar forward finite-difference: an unsaturated contact changes activity by delta times participation, while a retained saturated face changes it by zero. CGBColumnLanguageBody reconstructs the full one-next-byte tensor direction without a parameter write or saved graph; its deterministic two-event autograd check agrees exactly. In the pre-response-gated body, a matched state-pair test held the reciprocal S update fixed while changing only the contact read from unsaturated to saturated, producing identical post-event S and opposite response gates. The current gate patch replaces that collision check with a response-write check; neither establishes recovery of the full historic local participation vector.",
+      "artifacts": [
+        "lean/CGBAxioms/CGBAxioms/GenerationContactEligibility.lean",
+        "information_boltzmann/core/cgb_column_body.py",
+        "tests/test_cgb_column_body.py"
+      ],
+      "next_action": "Use GenerationAssociationCapacity's exact and bounded decoder contracts to test whether the existing H/S rank factorization retains the required multiple response directions across a declared delay. If it merges histories with different later credit, derive the minimal typed low-rank S refinement; do not allocate a fourth history page or enable contact learning first.",
+      "invalidation": "This establishes a one-next-event local derivative and an S-only collision. It does not establish a multi-event eligibility recurrence, a learned teaching path, self-generated outcome modulation, OWT learning benefit, healthy latch, action credit, or language-life closure.",
+      "external_id": "IB_CONTACT_LOCAL_GATE_20261101",
+      "source_status": "lean_and_deterministic_gradient_interface_verified",
+      "motivation": "Replace the rejected occupancy-times-demand proxy with the minimal causal factors that the actual H/C/S transition requires, before searching for any self-assembling teaching circuit.",
+      "action": "Treat the current exact direction as a short-horizon oracle only. Preserve the saturation gate and pre-write participation distinction when deriving the multi-scale carrier; reject any update that assumes the present S occupancy already encodes it.",
+      "confidence": "D",
+      "status_detail": "interface_verified"
+    },
+    {
+      "id": "IB_FULL_LINEAR_DECODER_20261101",
+      "parent": "IB_CONTACT_LOCAL_GATE_20261101",
+      "layer": "experiment",
+      "direction": "deduction",
+      "status": "partially_reusable",
+      "title": "A strict full-factor linear decoder is not admitted for the current column instance",
+      "claim": "On the registered independent OpenWebText train/validation streams, a linear readout of post-delay local H/C/S and the present C causal code did not reconstruct the entire historic D-by-F response-factor matrix to any declared uniform tolerance. Across 0, 1, 2, 4, 8 and 16 later events, held-out maximum coordinate error remained above 1.0; the test therefore does not admit this particular full-matrix linear decoder.",
+      "evidence": "The audit records the exact transient hard-saturation gate times pre-arrival typed S at each local column, detaches every event state, fits only a diagnostic linear decoder on 256 train anchors, and scores 128 validation anchors. It writes no body parameter and retains no graph. The full 32-wide, rank-4 target has 1024 coordinates per column while the state probe has 129 coordinates; all numerical details and data hashes are in the published record.",
+      "artifacts": [
+        "scripts/audit_cgb_column_eligibility_decoder.py",
+        "results/published/cgb_column_eligibility_decoder_owt_20261101.json"
+      ],
+      "next_action": "Do not infer that low-rank eligibility is impossible. Each individual event factor is gate times S, hence rank one; derive and audit a compartment-local sum of a bounded number of such unresolved factors, including the number simultaneously required before a third factor arrives. Test its explicit factor decoder against the same held-out protocol before changing persistent H/C/S state.",
+      "invalidation": "This is intentionally stronger than the required factorized carrier and uses an untrained shared body. It neither disproves nonlinear/factorized H/S decoding nor establishes a lower bound on the number of biological compartments, a learning rule, language capability, or life closure.",
+      "external_id": "IB_FULL_LINEAR_DECODER_20261101",
+      "source_status": "single_seed_real_owt_structural_diagnostic",
+      "motivation": "Exclude the tempting but biologically and computationally excessive design that materializes every local D-by-F eligibility matrix before attempting a minimal rank-one accumulation mechanism.",
+      "action": "Keep this as a failed overly strong decoder control. The successor must store or reconstruct factors, not allocate a dense eligibility page.",
+      "confidence": "D",
+      "legacy_id": "IB_CONTACT_FULL_LINEAR_DECODER_20261101"
+    },
+    {
+      "id": "IB_PENDING_FACTOR_LOAD_20261101",
+      "parent": "IB_CONTACT_LOCAL_GATE_20261101",
+      "layer": "experiment",
+      "direction": "deduction",
+      "status": "partially_reusable",
+      "title": "Local delayed credit presents a small, nontrivial rank-one factor load",
+      "claim": "In the current 8-by-8 shared column body on 512 real OpenWebText byte events, each event's exact local eligibility is rank one, but multiple unresolved events in one compartment accumulate independent factors. For delay window 8, the local factor-span rank has median 4 and 95th percentile 7; for window 16, median 8 and 95th percentile 13. Their summed D-by-F matrices are lower rank (medians 2 and 3 respectively), demonstrating genuine low-rank compression without supporting a universal rank-one claim.",
+      "evidence": "The CUDA audit keeps no graph and writes no parameter. At 16-event sampling intervals it computes each local hard-saturation-gate outer pre-arrival-S factor, the span rank of the unresolved factor set, and the rank after linear superposition. The entire protocol, tolerance, state footprint, source hash and summary are published.",
+      "artifacts": [
+        "scripts/audit_cgb_column_pending_factor_load.py",
+        "results/published/cgb_column_pending_factor_load_owt_20261101.json"
+      ],
+      "next_action": "Derive an availability-sensitive compartment allocation rule from the existing local reservoir and anti-dominance theorems. It must preserve a bounded set of factor locations, spill load from occupied compartments to available neighbours or addresses, and be tested against this measured local load before adding any persistent coordinate.",
+      "invalidation": "The body is untrained and the measurement supplies neither a required global rank nor proof that its present H/C/S state retains the observed factors. It does not establish a third-factor circuit, online contact learning, language capability, or life closure.",
+      "external_id": "IB_PENDING_FACTOR_LOAD_20261101",
+      "source_status": "single_seed_real_owt_structural_diagnostic",
+      "motivation": "Choose capacity from the number of simultaneously distinguishable local histories, not from a dense per-synapse derivative and not from an assumed biological module count.",
+      "action": "Treat contact rank as a local delayed-credit capacity budget. Use factorization and local allocation before considering wider persistent state; never reintroduce a global eligibility matrix.",
+      "confidence": "D",
+      "legacy_id": "IB_CONTACT_PENDING_FACTOR_LOAD_20261101"
+    },
+    {
+      "id": "IB_CONTACT_SHARED_POOL_20261101",
+      "parent": "IB_PENDING_FACTOR_LOAD_20261101",
+      "layer": "algorithm",
+      "direction": "deduction",
+      "status": "partially_reusable",
+      "title": "Shared finite reservoir for typed local contact participation",
+      "claim": "Within each reciprocal physical contact of CGBColumnLanguageBody, the two source types and all S time-scale factors now share one bounded occupancy pool. New participation enters only through the implicit free mass 1-sum(S); a full contact accepts no further admission, release returns capacity to the same pool, and a more occupied bundle has strictly lower marginal admission. The causal byte address and GDN direct value path remain unchanged.",
+      "evidence": "GenerationContactCompetition proves the aggregate shared-pool exchange, full-pool admission block, strict local anti-dominance of remaining capacity, and closed-gate hold. The executable body applies the same exchange only after the fixed byte route selects a reciprocal contact, materializing no pool or history tensor. Deterministic tests establish bundle mass at most one across live events, reciprocal equality, full-pool blocking, unchanged H/C/S page count, and preservation of the existing exact value-to-next-byte score derivative test.",
+      "artifacts": [
+        "lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean",
+        "information_boltzmann/core/cgb_column_body.py",
+        "tests/test_cgb_column_body.py"
+      ],
+      "next_action": "Use the measured pending factor load to derive a reconstructible multi-event factor allocation within this fixed-address shared pool. Do not vary the byte write address by S availability or add an address/history page; first establish which factor identity can be decoded from H/C/S after delay.",
+      "invalidation": "This verifies an edge-local scarcity and release mechanism, not a full compartment-wide Sinkhorn allocation, a delayed three-factor learning rule, language capability, or a complete anti-winner proof at organism scale.",
+      "external_id": "IB_CONTACT_SHARED_POOL_20261101",
+      "source_status": "Lean theorem plus deterministic executable invariant checks",
+      "motivation": "Replace independent per-coordinate saturation with real finite local competition while retaining the already admitted causal address contract.",
+      "action": "Admit only fixed-address S competition that preserves H/C/S-only reconstruction; reject dynamic availability gates on the historical byte route.",
+      "status_detail": "interface_verified",
+      "confidence": "D"
+    },
+    {
+      "id": "IB_POOL_READ_OWT_20261101",
+      "parent": "IB_CONTACT_SHARED_POOL_20261101",
+      "layer": "experiment",
+      "direction": "deduction",
+      "status": "partially_reusable",
+      "title": "Shared-pool S read has a matched continuous-language contribution",
+      "claim": "On the registered continuous OpenWebText byte protocol, enabling the shared-pool S-to-H contact read improved validation local-G14 BPB from 4.18574 to 4.15945 (delta -0.02629), while the exact C-value-credit arm improved from 4.16783 to 4.14884 (delta -0.01899). The bias-only arm was exactly identical at 4.70643, as required because it does not read H/C/S features.",
+      "evidence": "The paired CUDA-Graph runs fix seed, source split, 8x8/32/rank-1 body shape, all state bytes, G14/value update rules and reciprocal shared-pool S transition. The mute intervention zeros only contact_to_activity; it leaves the same S write and capacity competition in place. The published comparison records every arm and both original complete run records.",
+      "artifacts": [
+        "results/published/cgb_column_shared_pool_g14_owt100k_20261101.json",
+        "results/published/cgb_column_shared_pool_muted_g14_owt100k_20261101.json",
+        "results/published/cgb_column_shared_pool_read_ablation_owt100k_20261101.json"
+      ],
+      "next_action": "Keep the shared pool fixed. Derive whether its bounded typed/rank factors preserve the required response identity across the measured multi-event delay; do not convert this short-horizon read contribution into an unverified contact-learning rule.",
+      "invalidation": "This is one seeded small-body prequential ablation. It does not isolate shared-pool competition from all other S dynamics, prove delayed credit, establish a third factor, or support a general language-capability claim.",
+      "external_id": "IB_POOL_READ_OWT_20261101",
+      "source_status": "single_seed_real_owt_matched_read_ablation",
+      "motivation": "Check that finite local S competition remains functionally connected to language prediction while preserving the fixed-address GDN credit path.",
+      "action": "Retain this paired result as the S-read baseline for later factor-identity work; require the same control whenever a longer-credit mechanism is added.",
+      "confidence": "D",
+      "legacy_id": "IB_CONTACT_SHARED_POOL_READ_OWT_20261101"
+    },
+    {
+      "id": "IB_POOL_LOAD_OWT_20261101",
+      "parent": "IB_CONTACT_SHARED_POOL_20261101",
+      "layer": "experiment",
+      "direction": "deduction",
+      "status": "partially_reusable",
+      "title": "Shared contact competition does not replace multi-event factor identity",
+      "claim": "With the shared finite S-contact pool active, the real OWT structural audit still finds nontrivial simultaneous local factor demand: over delay window 8, factor-span rank has median 4 and 95th percentile 7; over window 16, median 7 and 95th percentile 13. Shared scarcity controls which existing typed/rank factors can be occupied, but does not collapse causally distinct unresolved events into a single factor.",
+      "evidence": "The CUDA audit runs a 32-wide 8x8 rank-4 body for 1,024 lexical OWT events after 128-event warmup, detaching H/C/S at every event and writing no parameter. It measures the exact transient saturation-gate outer pre-arrival-S factor only as a diagnostic. The older non-shared record used 512 events, so this node does not claim a numerical before/after rank improvement.",
+      "artifacts": [
+        "scripts/audit_cgb_column_pending_factor_load.py",
+        "results/published/cgb_column_shared_pool_pending_factor_load_owt_20261101.json"
+      ],
+      "next_action": "Derive the smallest reconstructible bounded factor basis for a declared delay workload. The basis must use existing H/C/S fields and the fixed causal address; do not claim that competition itself supplies delayed credit.",
+      "invalidation": "This is an untrained one-seed structural measurement. It supplies neither a minimal required rank nor an online three-factor update, and it does not test language capability or organism closure.",
+      "external_id": "IB_POOL_LOAD_OWT_20261101",
+      "source_status": "single_seed_real_owt_structural_diagnostic",
+      "motivation": "Separate the useful role of finite competition from the distinct necessity of preserving future-relevant causal distinctions.",
+      "action": "Retain shared-pool S competition as a capacity rule and continue with factor-identity reconstruction, not another route gate.",
+      "confidence": "D",
+      "legacy_id": "IB_CONTACT_SHARED_POOL_LOAD_OWT_20261101"
+    },
+    {
+      "id": "IB_TYPED_DELAY_CARRIER_20261101",
+      "parent": "IB_CONTACT_SHARED_POOL_20261101",
+      "layer": "algorithm",
+      "direction": "deduction",
+      "status": "partially_reusable",
+      "title": "Actual typed S history with coordinatewise release and a shared response gate",
+      "claim": "The existing shared S pool with rank-specific release has nonnegative coordinates, total occupancy at most one and conservation with its implicit free partner under the stated rate bounds. Its actual coordinate recurrence is retained occupation plus admitted participation, hence S is a source/rank-typed, retention-weighted admission history. Both directed edge readings now use max(mean(H-response at either endpoint)), so one responsive endpoint can write the shared contact without breaking reciprocal equality. No state field, rank, parameter, history queue or delayed derivative array is added.",
+      "evidence": "GenerationContactCompetition proves the vector-release transition, constant-release reduction, simplex bounds, implicit complement balance and symmetric bounded edge gate. GenerationResponseGatedCarrier connects that same transition to its finite forward history expansion, zero-injection retention, equal-actual-injection difference product, source contrast and positive-demand readout. All 33 column-body interface tests pass, including unequal endpoint response, vector release, forward-history identities and CPU/CUDA Graph agreement with no capture-generated event. The complete Lean build, trust/coverage audit and index refresh pass.",
+      "artifacts": [
+        "lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean",
+        "lean/CGBAxioms/CGBAxioms/GenerationResponseGatedCarrier.lean",
+        "information_boltzmann/core/cgb_column_body.py",
+        "tests/test_cgb_column_body.py"
+      ],
+      "next_action": "Reuse this finite typed participation statistic in the optional current-spatial S-contact proxy learner. Its local return and current-pool VJP are implemented and interface-verified separately; neither reconstructs old pre nor establishes historical parameter attribution. Actual future-language benefit remains to be evaluated in a later authorized continuous-stream run.",
+      "invalidation": "The distinction theorem requires the same actual retention and admitted amounts, not merely the same external bytes. The current statistic does not recover every old contact_pre or H response direction, provide an automatic geometric long-tail bound, or constitute delayed S-row learning, all-parameter learning, a language capability result or life closure. The history sum is proof notation only; runtime memory remains fixed in stream length.",
+      "external_id": "IB_TYPED_DELAY_CARRIER_20261101",
+      "source_status": "lean_and_deterministic_cpu_cuda_interface_verified",
+      "motivation": "Close the existing shared-pool implementation/refinement gap before assigning delayed teaching to S allocation and release; do not reinterpret aggregate occupancy as a complete historical gradient.",
+      "action": "Reuse this actual typed-history bridge and unchanged H/C/S state. Keep the admitted one-transition H credit separate from later S-contact learning and do not revive the rejected value-path or reciprocal-boundary teaching candidates.",
+      "confidence": "D",
+      "status_detail": "interface_verified",
+      "legacy_id": "IB_CONTACT_TYPED_DELAY_CARRIER_20261101"
+    },
+    {
+      "id": "IB_S_LOCAL_PLASTICITY_20261101",
+      "parent": "IB_TYPED_DELAY_CARRIER_20261101",
+      "layer": "algorithm",
+      "direction": "deduction",
+      "status": "partially_reusable",
+      "title": "Language-return-modulated current-pool S plasticity",
+      "claim": "The shared contact field's allocation and retain rows now have an optional local update. An issued language innovation returns through one original H/flux-to-S contact using its numerical weight snapshot, saturation gate, read route and periodic flux adjoint. Existing input-state S times C demand modulates this return; an instantaneous VJP of the same current shared-pool kernel generates both S-row directions. No cross-event pullback or history Jacobian is retained, and current pre is not presented as historic pre.",
+      "evidence": "GenerationContactPlasticity proves contact and flux return identities, actual normalized pool allocation cancellation, endpoint sigmoid responses, allocation/retain coefficients and the frozen-coefficient local potential derivative. All 45 column-body and S-plasticity tests pass, including single-event score finite differences, local-potential VJP, two-source/endpoint contributions, weight-snapshot independence, unchanged issued prediction, CPU/CUDA Graph capture restoration and learning-receipt phase continuation. Full Lean build/audit passes with 10 guards and 1638 source theorems. At width32/grid8/rank1, 1/64/256 repeated current-pool VJPs each peak at 53248 temporary allocated bytes with zero final live increment; this excludes return and graph-capture storage.",
+      "artifacts": [
+        "lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean",
+        "information_boltzmann/core/cgb_column_body.py",
+        "scripts/run_cgb_column_language_admission.py",
+        "tests/test_cgb_s_contact_plasticity.py",
+        "results/published/cgb_column_s_contact_local_interface_20261101.json"
+      ],
+      "next_action": "The first authorized real-language joint run is complete: continuing S learning was slightly favorable on the two first-pass segments but unfavorable on revisit and later fresh text. Reuse the saved continuous states to distinguish local-proxy/actual-outcome mismatch from accumulated interaction with H/route/C learning; do not infer general benefit from the local derivative or add named five-phase controllers.",
+      "invalidation": "The frozen local potential is an explicit surrogate, not issued prequential CE or actual future value. The tests establish its implementation, not a correct long-horizon parameter gradient, universal teaching alignment, full-parameter learning, action credit or life closure. A tag can retain old participation without retaining each old input direction.",
+      "external_id": "IB_S_LOCAL_PLASTICITY_20261101",
+      "source_status": "lean_and_deterministic_cpu_cuda_interface_verified",
+      "motivation": "Make S-rate plasticity an instantaneous derivative of the same spatial contact kernel, modulated by existing physical participation history and actual language feedback rather than a new reward or eligibility page.",
+      "action": "Enable only explicitly with --s-contact-step; default zero retains the prior learning paths. Count the 1600-byte extra one-event return snapshot separately from unchanged 18696-byte H/C/S state at width32/grid8/rank1. Keep receipt continuation and all teaching snapshots causal.",
+      "confidence": "D",
+      "status_detail": "interface_verified",
+      "legacy_id": "IB_CONTACT_S_LOCAL_PLASTICITY_20261101"
+    },
+    {
+      "id": "IB_SYSTEM23_LANGUAGE_20261101",
+      "parent": "IB_S_LOCAL_PLASTICITY_20261101",
+      "layer": "experiment",
+      "direction": "deduction",
+      "status": "partially_reusable",
+      "title": "Continuous language system-2/3 learning exposes mixed S-plasticity effects",
+      "claim": "A 34716-parameter shared H/C/S body completed one common all-learning warmup and a matched S-continue/S-pause branch experiment on cached real OpenWebText. Both branches kept forward S, other learning, complete receipts and the same measured packet-arrival clock. Continuing S slow learning changed 1064/1096 S parameters relative to the paused branch and retained positive admission/release, but its weighted NLL difference was -0.002113 on A first-pass, -0.001107 on B first-pass, +0.004420 on explicit A replay and +0.002935 on later fresh A text. The rule is not admitted as uniformly beneficial.",
+      "evidence": "The fixed protocol delivered 392000 common raw tokens and 684000 arm-cumulative raw exposures (683778 scored bytes), without resets, frozen-brain evaluation, test-split tuning, actions, questions or mother calls. Eighty interface/protocol tests passed. Source identity and final checkpoint log offsets match. All window distributions, actual transfer totals, source timestamps, profiles and both final states are retained. Five-phase names interpret contextual interactions; no ten-pipe control scheme was installed.",
+      "artifacts": [
+        "scripts/run_cgb_column_language_living.py",
+        "scripts/run_cgb_column_language_admission.py",
+        "tests/test_cgb_column_living_runner.py",
+        "tests/test_cgb_column_living_protocol.py",
+        "results/published/cgb_column_language_system23_20261101.json",
+        "results/cgb_column_language_living_20261101/summary.json",
+        "results/cgb_column_language_living_20261101/latest.pt",
+        "results/cgb_column_language_living_20261101/best.pt",
+        "docs/information_boltzmann/CGB_LANGUAGE_SYSTEM23_CONTINUOUS_20261101.md",
+        "docs/information_boltzmann/CGB_FIVE_PHASE_DIAGNOSTIC_RULES.md"
+      ],
+      "next_action": "Preserve the current individuals and separate two falsifiable explanations before changing dynamics: a mismatch between the stopped local proxy and real later effects, or accumulated interaction with the other learning paths. Use actual saved states and professional language continuations; do not treat unverified functional relations as missing code edges, require system 4 first, or simply tune a five-phase target.",
+      "invalidation": "This is one common-birth, one-seed budget-limited comparison, not convergence, significance, modern-language capability, complete long-horizon credit, all-parameter learning or life closure. Pausing S slow updates is not removing S. B remains learning-enabled validation-source first-pass; the source change is not automatically a domain shift. Replay is labeled and excluded from first-pass best selection. Current body-clock protocol differs from older fixed special-token time-unit runs.",
+      "external_id": "IB_SYSTEM23_LANGUAGE_20261101",
+      "source_status": "single_common_birth_real_owt_budget_limited_mixed_result",
+      "motivation": "Test perception/prediction/compression and memory/learning/plasticity together under existing maintenance/organization conditions; local S correctness cannot substitute for their coupled effect, and actions are not a prerequisite for this stage.",
+      "action": "Keep latest.pt for actual continuation and best.pt only as the predeclared best-observed first-pass window artifact. No automatic rollback, additional sweep or independently installed wood-controls-earth mechanism follows from this result.",
+      "confidence": "D",
+      "legacy_id": "IB_CGB_SYSTEM23_REAL_LANGUAGE_JOINT_20261101"
+    },
+    {
+      "id": "IB_LANGUAGE_BODY_SEARCH_20261102",
+      "parent": "IB_SYSTEM23_LANGUAGE_20261101",
+      "external_id": "IB_LANGUAGE_BODY_SEARCH_20261102",
+      "layer": "experiment",
+      "direction": "induction",
+      "time": "2026-11-02",
+      "status": "active",
+      "title": "Carrier search on real text: exact-suffix context cells pass the default-deny language gate",
+      "claim": "Under one 1 MiB budget and one real byte stream, cells addressed by exact recent suffixes and read through a log-opinion pool meet all non-deferred language obligations, where the column body, GDNLife, the 10-28 matrix columns and a one-tick window network do not. This is a compressor-class starting point, not evidence of life, semantics or learned representation.",
+      "evidence": "context_cells ADMITTED with 20 passed and 2 deferred; A_fresh 1.537 nats/byte against order-1 2.526 and the old column 2.649; on unused text +3M and +15M pass 20, +9M fails O17 at 0.0188 against 0.02; a 3 M byte stream plateaus near 1.52 at a hard 1 MiB bound.",
+      "action": "Treat this body as the floor to beat or grow from. Keep any later body under the same gate, with replication on unused text and a long stream. Round two decides fly and 3D medium; H/C/S attribution and system 4 remain open.",
+      "artifacts": [
+        "docs/information_boltzmann/CGB_LANGUAGE_BODY_SEARCH_20261102.md",
+        "docs/information_boltzmann/CGB_HARD_OBLIGATIONS.json",
+        "scripts/cgb_language_gate.py",
+        "scripts/cgb_language_gate_replicate.py",
+        "scripts/cgb_language_long_run.py",
+        "scripts/cgb_language_candidates.py",
+        "lean/CGBAxioms/CGBAxioms/GenerationContextBody.lean",
+        "results/published/cgb_language_body_search_20261102.json"
+      ],
+      "motivation": "The column body scored below bigram and the existing gates compared it only with itself.",
+      "invalidation": "The claim is invalid if a rerun of the gate on the recorded code does not reproduce these reports, or if a hidden growth or future read is found in the body.",
+      "confidence": "I",
+      "legacy_id": "IB_CGB_LANGUAGE_BODY_SEARCH_20261102"
     }
   ],
   "status_migration_note": "Normalize historical workflow labels for repository validator; original labels retained as legacy_status. No new experimental conclusions introduced.",
@@ -10510,5 +11260,18 @@
     "IB_FROZEN_DISSIPATION_CONTROLS_20260910": "IB_FROZEN_DISSIPATION_C_20260910",
     "IB_EMERGENT_ORGANIZATION_HYPOTHESIS_20260910": "IB_EMERGENT_ORGANIZATIO_20260910",
     "IB_SLICE_LBM_CHANNEL_HYPOTHESIS_20260910": "IB_SLICE_LBM_CHANNEL_HY_20260910"
-  }
+  },
+  "id_aliases": {
+    "CGB_CAUSAL_GENERATOR_CORE_20261103": "CGB_GENERATOR_CORE_20261103",
+    "CGB_RECURRENT_BACKBONE_REUSE_20261103": "CGB_BACKBONE_REUSE_20261103",
+    "IB_CONTACT_FULL_LINEAR_DECODER_20261101": "IB_FULL_LINEAR_DECODER_20261101",
+    "IB_CONTACT_PENDING_FACTOR_LOAD_20261101": "IB_PENDING_FACTOR_LOAD_20261101",
+    "IB_CONTACT_SHARED_POOL_READ_OWT_20261101": "IB_POOL_READ_OWT_20261101",
+    "IB_CONTACT_SHARED_POOL_LOAD_OWT_20261101": "IB_POOL_LOAD_OWT_20261101",
+    "IB_CONTACT_TYPED_DELAY_CARRIER_20261101": "IB_TYPED_DELAY_CARRIER_20261101",
+    "IB_CONTACT_S_LOCAL_PLASTICITY_20261101": "IB_S_LOCAL_PLASTICITY_20261101",
+    "IB_CGB_SYSTEM23_REAL_LANGUAGE_JOINT_20261101": "IB_SYSTEM23_LANGUAGE_20261101",
+    "IB_CGB_LANGUAGE_BODY_SEARCH_20261102": "IB_LANGUAGE_BODY_SEARCH_20261102"
+  },
+  "cgb_current_entry": "docs/information_boltzmann/CGB_MILESTONE_CLOSED_LOOP_20261105.md"
 }

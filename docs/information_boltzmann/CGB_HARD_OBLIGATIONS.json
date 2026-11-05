@@ -1,0 +1,444 @@
+{
+ "version": 4,
+ "date": "2026-11-03",
+ "purpose": "Default-deny obligations for any body that claims to be the MengLi language organism. A theorem name states where the requirement comes from; a body discharges an obligation only through the listed check.",
+ "rule": "An obligation is met only when its check runs on that body and passes. Not run, not applicable without a recorded reason, and not implemented all count as failed.",
+ "owner": "Claude. Change an entry only with a stated reason; classification of the other theorems lives in CGB_THEOREM_CLASSES.json.",
+ "check_kinds": {
+  "lean": "The named Lean declaration exists for this body in the audit inventory.",
+  "runtime": "A deterministic check runs on the real implementation.",
+  "language": "A check runs on real OpenWebText with learning on, against thresholds fixed here.",
+  "deferred": "Applies only after system 4 is connected. Reported as deferred, never as passed.",
+  "declared": "The body's manifest names, per cited theorem, either a Lean declaration for this body or why the theorem's premise does not hold for it. A recorded reason gives `not_applicable`, which is reported as such and never as passed. The reason is the author's claim; review it."
+ },
+ "language_thresholds": {
+  "adapt_margin_nats": 0.02,
+  "floor_margin_nats": 0.0,
+  "revisit_drop_nats": 0.3,
+  "decode_lags": [
+   2,
+   4,
+   8
+  ],
+  "decode_margin_accuracy": 0.0,
+  "repeat_ratio": 0.5,
+  "separation_js": 0.02,
+  "one_shot_ratio": 1.5,
+  "one_shot_min": 0.02,
+  "selective_margin": 0.02,
+  "dominance_max_share": 0.2,
+  "dominance_min_effective_fraction": 0.25,
+  "carrier_lag": 8,
+  "carrier_margin": 0.05,
+  "pays_margin_nats": 0.2,
+  "novel_context_order": 4,
+  "interaction_min_nats": 0.05,
+  "interaction_ratio": 0.1,
+  "interaction_probes": 120
+ },
+ "obligations": [
+  {
+   "id": "O01",
+   "system": "5",
+   "title": "The body is a Medium",
+   "requires": "The actual transition is a Lean Medium satisfying P1 to P3 at the declared abstraction.",
+   "theorems": [
+    "finite_reachable"
+   ],
+   "check": {
+    "kind": "lean",
+    "id": "medium_instance"
+   }
+  },
+  {
+   "id": "O22",
+   "system": "5",
+   "title": "The Medium instance is not one exposed site",
+   "requires": "The instance has more units than any one event touches, by a bound independent of the number of units. A single exposed site satisfies every clause with an arbitrary table, so O01 alone says nothing about the body.",
+   "theorems": [
+    "arbitrary_driven_tables_admitted"
+   ],
+   "check": {
+    "kind": "lean",
+    "id": "medium_locality"
+   }
+  },
+  {
+   "id": "O02",
+   "system": "1,2,3",
+   "title": "One body, readable projections",
+   "requires": "H, C, S, Trace and Demand are readings of one state and ColumnRefinement has an instance for this body.",
+   "theorems": [
+    "merged_history_preserves_read_and_successor"
+   ],
+   "check": {
+    "kind": "lean",
+    "id": "column_refinement_instance"
+   }
+  },
+  {
+   "id": "O03",
+   "system": "1,3",
+   "title": "Finite state and history-independent work",
+   "requires": "Persistent state and per-event work do not grow with stream length. The size checked is the worst the body can ever reach.",
+   "change": "Version 3, 2026-11-02: the size was read once mid-stream, and a body whose cells kept gaining symbols passed at 1.28 MB and reached 2.1 MB by 1.75 M bytes.",
+   "theorems": [
+    "separated_histories_capacity"
+   ],
+   "check": {
+    "kind": "runtime",
+    "id": "finite_state"
+   }
+  },
+  {
+   "id": "O04",
+   "system": "2",
+   "title": "Prediction cannot read the future",
+   "requires": "The score of byte t is unchanged by any byte at or after t.",
+   "theorems": [
+    "preparation_uses_only_elapsed"
+   ],
+   "check": {
+    "kind": "runtime",
+    "id": "causal_prediction"
+   }
+  },
+  {
+   "id": "O05",
+   "system": "1,5",
+   "title": "Complete continuation",
+   "requires": "Saved state and learning receipts continue identically to an uninterrupted run.",
+   "theorems": [
+    "history_transition_exists_iff"
+   ],
+   "check": {
+    "kind": "runtime",
+    "id": "exact_resume"
+   }
+  },
+  {
+   "id": "O06",
+   "system": "2,3",
+   "title": "Future distinctions are held and readable",
+   "requires": "On real text the body predicts better than an order-1 count table on the same scored bytes.",
+   "theorems": [
+    "causal_carrier_contract_iff",
+    "history_readout_exists_iff",
+    "merged_histories_binary_logloss_floor",
+    "loses_future_language_distinction_iff_not_preserved",
+    "future_reserve_recoverable_iff"
+   ],
+   "check": {
+    "kind": "language",
+    "id": "beats_order1"
+   }
+  },
+  {
+   "id": "O07",
+   "system": "2,3",
+   "title": "Order is held",
+   "requires": "The memory state distinguishes two orderings of the same arrivals, in Lean for the actual write.",
+   "theorems": [
+    "assimilate_order_blind",
+    "no_read_separates_order",
+    "context_write_separates_order"
+   ],
+   "check": {
+    "kind": "lean",
+    "id": "order_separation"
+   }
+  },
+  {
+   "id": "O08",
+   "system": "1,3",
+   "title": "Experience becomes reserve",
+   "requires": "Revisiting seen text scores at least the threshold better than its first pass.",
+   "theorems": [
+    "futureReservePreserved",
+    "observed_memory_information_le",
+    "conserving_calm_needs_organizational_viability"
+   ],
+   "check": {
+    "kind": "language",
+    "id": "revisit_drop"
+   }
+  },
+  {
+   "id": "O09",
+   "system": "2",
+   "title": "Memory horizon is earned",
+   "requires": "Held-out decoding of past bytes from state is not worse than an untrained reservoir at every listed lag.",
+   "theorems": [
+    "histories_merge",
+    "linear_hold_keeps_error",
+    "bank_power_law_lower_bound"
+   ],
+   "check": {
+    "kind": "language",
+    "id": "decode_horizon"
+   }
+  },
+  {
+   "id": "O21",
+   "system": "2",
+   "title": "Knowledge generalizes to unseen contexts",
+   "requires": "On bytes whose order-4 context never appeared before, the body beats the finite context table on those same bytes. A lookup table cannot pass this.",
+   "theorems": [],
+   "check": {
+    "kind": "language",
+    "id": "generalizes"
+   },
+   "source": "Engineering requirement from CGB_LANGUAGE_LIFE_MODEL section 5: scalable language capability, and a small table is no capability witness. Not a necessity theorem."
+  },
+  {
+   "id": "O10",
+   "system": "3,5",
+   "title": "Key capacity exceeds the required contexts",
+   "requires": "On revisited text the body at its declared budget beats itself at a quarter budget, so more keys actually retain more.",
+   "theorems": [
+    "exact_decoder_capacity",
+    "exact_key_capacity",
+    "collision_of_excess_keys",
+    "association_readout_interference_bound"
+   ],
+   "check": {
+    "kind": "language",
+    "id": "capacity_curve"
+   }
+  },
+  {
+   "id": "O11",
+   "system": "1,3",
+   "title": "Finite intake forces selective release",
+   "requires": "After saturating filler, text seen three times keeps a larger advantage than text seen once.",
+   "theorems": [
+    "export_forced",
+    "write_only_intake_bounded",
+    "retention_needs_selectivity",
+    "unselective_export_forgets",
+    "selective_write_contract"
+   ],
+   "check": {
+    "kind": "language",
+    "id": "selective_retention"
+   }
+  },
+  {
+   "id": "O12",
+   "system": "3,5",
+   "title": "Competition without winner-take-all",
+   "requires": "No region takes the writes: the largest region share stays bounded and the effective region count stays high.",
+   "theorems": [
+    "column_budget_allows_wta",
+    "local_anti_dominance_requires_demand_readout",
+    "symmetric_stays_symmetric"
+   ],
+   "check": {
+    "kind": "language",
+    "id": "no_dominance"
+   }
+  },
+  {
+   "id": "O13",
+   "system": "3",
+   "title": "Gain is local and follows evidence",
+   "requires": "One exposure moves a rare context far more than a frequent one.",
+   "theorems": [
+    "no_fixed_gain_for_two_volatilities",
+    "no_global_gain_for_heterogeneous_compartments",
+    "process_noise_gain_floor"
+   ],
+   "check": {
+    "kind": "runtime",
+    "id": "one_shot_gain"
+   }
+  },
+  {
+   "id": "O14",
+   "system": "2,3",
+   "title": "Recent language determines state and older language can matter",
+   "requires": "Predictions after the same eight bytes agree much more closely than predictions sharing only the last byte, and those last-byte pairs still differ.",
+   "theorems": [
+    "contraction_unique_rest",
+    "latch_needs_unit_gain",
+    "no_latch_below_unit_gain",
+    "silent_rest_unique",
+    "common_suffix_address_bound",
+    "held_coordinate_survives_suffix",
+    "contraction_has_no_two_latches"
+   ],
+   "check": {
+    "kind": "runtime",
+    "id": "state_repeatable"
+   }
+  },
+  {
+   "id": "O15",
+   "system": "3",
+   "title": "Credit acts on held distinctions",
+   "requires": "The state holds a distinction at the stated delay better than the current byte alone, before any delayed update may rely on it.",
+   "theorems": [
+    "delayed_credit_requires_history_carrier",
+    "delayed_action_credit_requires_state_separation",
+    "no_visible_only_delayed_credit_rule"
+   ],
+   "check": {
+    "kind": "language",
+    "id": "credit_has_carrier"
+   }
+  },
+  {
+   "id": "O16",
+   "system": "1",
+   "title": "Time is real",
+   "requires": "Silence and elapsed time act through the declared release, with no invented arrivals.",
+   "theorems": [
+    "precision_distinguishes_equal_mean_histories",
+    "process_noise_gain_floor"
+   ],
+   "check": {
+    "kind": "runtime",
+    "id": "elapsed_time"
+   }
+  },
+  {
+   "id": "O17",
+   "system": "1",
+   "title": "Learning stays honest about its limits",
+   "requires": "After reading another real source, the same unseen bytes of that source score better than before, and the return to the first source is not worse than its first pass.",
+   "change": "Version 3, 2026-11-02: replaced a windowed trend on OWT validation, which has no source change. The excess against frozen order-1 stayed between -0.66 and -0.84 with no trend on the context table, so that clause had no power.",
+   "theorems": [
+    "finite_body_stationary_loss_eventually_constant",
+    "strict_descent_has_no_finite_exact_readout",
+    "recurrent_gain_excludes_eventual_stationary_descent",
+    "precision_binary_sample_gain_not_future_guarantee",
+    "no_uniform_positive_lower"
+   ],
+   "check": {
+    "kind": "language",
+    "id": "drift_recovery"
+   },
+   "changes": [
+    "2026-11-03: added no_uniform_positive_lower. A uniform positive irreversible loss per block rules out any positive survival floor, so loss after a source switch must be recoverable; the same switch-and-return check tests it."
+   ]
+  },
+  {
+   "id": "O18",
+   "system": "1",
+   "title": "Language pays",
+   "requires": "Code length saved against online order-0 reaches the stated margin, with no food or energy field.",
+   "theorems": [
+    "predictive_growth_contract",
+    "no_allocation_persists"
+   ],
+   "check": {
+    "kind": "language",
+    "id": "language_pays"
+   }
+  },
+  {
+   "id": "O19",
+   "system": "4",
+   "title": "Self-hearing is not external evidence",
+   "requires": "Source is typed in state and copied bytes do not count as new external information.",
+   "theorems": [
+    "step_source_irrelevant",
+    "self_not_externallyUseful"
+   ],
+   "check": {
+    "kind": "deferred",
+    "id": "source_typed"
+   }
+  },
+  {
+   "id": "O20",
+   "system": "4",
+   "title": "Active closure",
+   "requires": "Action changes later reachable language and is predicted conditionally on the action.",
+   "theorems": [
+    "active_closure",
+    "action_condition_required",
+    "silence_condition_required",
+    "recurrent_external_information_forces_activity",
+    "viable_not_eventually_passive",
+    "observational_record_does_not_fix_intervention",
+    "open_world_body_prediction_iff",
+    "indistinguishable_joint_worlds_cannot_both_stay_viable",
+    "record_state_lower_bound"
+   ],
+   "check": {
+    "kind": "deferred",
+    "id": "active_closure"
+   },
+   "changes": [
+    "2026-11-03: added record_state_lower_bound. Its records pair an action with a content reading (SensoryMaintenance), so it binds only once the body acts."
+   ]
+  },
+  {
+   "id": "O23",
+   "system": "2",
+   "title": "Prediction carries interaction between past arrivals",
+   "requires": "On real text, swapping the byte two back and the byte one back gives a non-zero interaction contrast f(a,b)-f(a,b')-f(a',b)+f(a',b') of the next byte's log-probability: mean absolute contrast at least interaction_min_nats and at least interaction_ratio of the mean absolute single-swap effect. An additive body has contrast zero for every pair.",
+   "theorems": [
+    "interaction_needs_nonadditive",
+    "additive_no_interaction",
+    "additive_error_floor",
+    "additive_logit_cannot_separate",
+    "linear_read_of_superposed_state",
+    "linear_recurrence_no_interaction",
+    "linear_stack_no_interaction",
+    "linear_stack_superposes"
+   ],
+   "check": {
+    "kind": "language",
+    "id": "interaction"
+   },
+   "source": "The theorems say an additive map (linear recurrence, linear stack, linear read of a superposed state, or a softmax over additive logits) has zero interaction and cannot fit a target with one. The two thresholds are engineering choices for 'detectably non-zero', not theorem constants."
+  },
+  {
+   "id": "O24",
+   "system": "3",
+   "title": "A retrieval channel returns the distinction the answer needs",
+   "requires": "If the body keeps history outside its counted state and reads it back, two histories with the same internal state but different required answers must get different returned views. A body with no such store records why.",
+   "theorems": [
+    "external_causal_readout_exists_iff",
+    "external_trace_requires_retrieved_distinction"
+   ],
+   "check": {
+    "kind": "declared",
+    "id": "external_retrieval"
+   },
+   "source": "LanguageLifeKernel. Applies to retrieval designs (credit by reactivation, external memory). The runtime test for a declared store is not implemented yet, so a body with a store fails until it is."
+  },
+  {
+   "id": "O25",
+   "system": "3",
+   "title": "Stimulus-dependent plasticity sits at the boundary",
+   "requires": "A Lean declaration for this body: whenever a transition rate differs between two stimuli, a changed unit or its contact scope is a boundary unit.",
+   "theorems": [
+    "modulation_needs_boundary"
+   ],
+   "check": {
+    "kind": "lean",
+    "id": "boundary_modulation"
+   },
+   "source": "G9. Follows from P1b and OnlyBoundarySenses, so any Medium instance can state it; for a body whose every event already includes the sense unit it is close to vacuous."
+  },
+  {
+   "id": "O26",
+   "system": "3",
+   "title": "Learning drift is balanced, and no balanced unit reads three parts",
+   "requires": "For each cited theorem the manifest names a Lean declaration for this body or why its premise does not hold: drive and free phases with drift proportional to the likelihood gradient need equal weight (G14c); the same for reward phases (G15d); a unit in detailed balance with a product factor reads at most two independent parts (G8b).",
+   "theorems": [
+    "phases_must_balance",
+    "reward_phases_must_balance",
+    "three_part_balance_impossible"
+   ],
+   "check": {
+    "kind": "declared",
+    "id": "balanced_learning"
+   },
+   "source": "Generation G8b, G14c, G15d. These are conditional design constraints. A body whose events are all driven has no balanced unit, so for it they are not applicable, not satisfied."
+  }
+ ]
+}

@@ -1,0 +1,259 @@
+# scripts/theorem_interp_group2.py
+# 118 theorems across 7 modules:
+# GenerationGraceMemory (13), GenerationSeedMemory (15), GenerationAssociationCapacity (15),
+# GenerationSurvivalBounds (16), GenerationInformationProjection (17),
+# GenerationLanguageExistence (18), GenerationConservedMemory (24)
+
+GROUP2 = {
+    # CGBAxioms.GenerationGraceMemory (13)
+    "CGB.GraceMemory.actual_event_law_four":
+        "输入初始状态与第4步延迟，经注册事件转移概率迭代，输出实际事件发生概率律等于预计算的分步前向稀疏概率矩阵。",
+    "CGB.GraceMemory.kernel_table":
+        "输入外周信号与细胞离散状态，经忽略实际事件标签的本体转移核约化，输出本体确定性转移核等同于按控制位与信号计算的确定性单点概率。",
+    "CGB.GraceMemory.natural_law_early":
+        "输入不超过4步的时间步数与细胞环境状态，经本体感知前向迭代，输出在不展开历史笛卡尔积的情况下本体前向概率律等于稀疏行迭代矩阵。",
+    "CGB.GraceMemory.one_write_information":
+        "输入4步单次写入联合转移概率律，经条件互信息算子计算，输出写入后的条件互信息精确等于一比特（ln 2 nats）。",
+    "CGB.GraceMemory.one_write_joint":
+        "输入两代细胞状态与环境初态，经环境边际化求和，输出非零联合转移概率严格集中在三个离散输出取值上，质量分别为1/4、1/4和1/2。",
+    "CGB.GraceMemory.remembers":
+        "输入优雅恢复机制下的本体与环境系统，经长期条件互信息保持性检验，输出系统满足生命记忆保持公理Remembers。",
+    "CGB.GraceMemory.remembers_with_reachable_action_change":
+        "输入优雅恢复本体与自然过程，经正概率转移轨迹复合，输出系统在维持记忆保持公理的同时存在可达轨迹使不同内部状态选择不同的外周动作。",
+    "CGB.GraceMemory.retained_information":
+        "输入任意静息延迟步数，经静息期转移算子迭代，输出在任意长延迟下保持的条件互信息恒等于ln 2。",
+    "_private.CGBAxioms.GenerationGraceMemory.0.CGB.GraceMemory.one_write_marginal":
+        "输入步数与单步推进核，经环境积分分解，输出单步写入的联合记忆概率分解为第n步本体边际概率与当前感知转移核的乘积。",
+    "_private.CGBAxioms.GenerationGraceMemory.0.CGB.GraceMemory.policy_table":
+        "输入离散细胞状态，经查表匹配，输出对应动作为0（A分支）、1（B分支）或2（其他非活动状态）。",
+    "_private.CGBAxioms.GenerationGraceMemory.0.CGB.GraceMemory.sum_cells":
+        "输入细胞状态上的实值函数，经全空间有限枚举，输出全状态求和展开为真空态、搜索态及各分支状态函数值之和。",
+    "_private.CGBAxioms.GenerationGraceMemory.0.CGB.GraceMemory.sum_configs":
+        "输入配置空间函数，经配置空间求和展开，输出其求和展开为真空、搜索与对应分支配对项之和。",
+    "_private.CGBAxioms.GenerationGraceMemory.0.CGB.GraceMemory.sum_env":
+        "输入环境状态函数，经环境状态枚举，输出求和展开为环境各离散状态函数值之和。",
+
+    # CGBAxioms.GenerationSeedMemory (15)
+    "CGB.SeedMemory.clocked":
+        "输入种子环境时钟算子，经结构事件界校验，输出系统满足有限离散时钟界公理Clocked。",
+    "CGB.SeedMemory.first_hop_act":
+        "输入初始种子状态与输入动作，经介质动作推进，输出首步跳跃后的状态严格等于预设的写入前状态。",
+    "CGB.SeedMemory.first_hop_pos":
+        "输入初始状态与写入前状态，经物理核单步积分，输出首步转移概率严格大于零。",
+    "CGB.SeedMemory.law_one":
+        "输入物理介质、世界模型与首步感知调度，经单步转移律坍缩，输出单步联合概率等于世界转移项与介质转移核的标量乘积。",
+    "CGB.SeedMemory.partial_has_hop":
+        "输入部分占据的4位环状布尔微观状态，经邻接关系搜索，输出必然存在相邻的一对占据与非占据节点允许发生跳跃。",
+    "CGB.SeedMemory.partial_hold_bound":
+        "输入部分占据的种子微观态与调度序列，经多步保持核连乘分析，输出连续n步未离开当前微观态的保持概率受(1 - 1/18)^n几何衰减约束。",
+    "CGB.SeedMemory.partial_rate_one":
+        "输入部分占据微观态与任意外部刺激，经动作空间检验，输出存在速率为1的合法跳跃动作使物理状态发生非平凡改变。",
+    "CGB.SeedMemory.physical_memory_component":
+        "输入种子物理介质与世界模型，经公理检验与静息分析，输出该介质同时满足物理公理、有界时钟、记忆保持公理以及具有非平凡静息状态转移。",
+    "CGB.SeedMemory.prefix_pos":
+        "输入布尔输入标签，经单步可达性验证，输出该标签在写入前状态具有严格正的生成概率。",
+    "CGB.SeedMemory.quiet_has_nontrivial_event":
+        "输入静息条件下的种子介质，经反应事件搜索，输出存在正速率物理事件能够改变本体微观状态（静息不等于恒等静止）。",
+    "CGB.SeedMemory.quiet_preserves":
+        "输入静息转移对，经粗粒化观测算子投影，输出任意正概率静息跳跃均严格保持宏观读出观测值不变。",
+    "CGB.SeedMemory.remembers":
+        "输入种子物理介质与世界模型，经实际正概率前缀与摄入通道的条件互信息综合，输出系统满足条件互信息记忆保持公理Remembers。",
+    "CGB.SeedMemory.write_act":
+        "输入写入前微观态与写入动作，经物质源摄入动作变换，输出状态精确转变为写入后微观态。",
+    "CGB.SeedMemory.write_pos":
+        "输入写入动作刺激与写入前后状态，经转移核求值，输出写入转移概率严格大于零。",
+    "CGB.SeedMemory.write_totals":
+        "输入写入前后状态，经总占有数求和算子，输出写入动作使系统物质总占有数从1严格增加到2。",
+
+    # CGBAxioms.GenerationAssociationCapacity (15)
+    "CGB.Generation.associationState_row":
+        "输入键矩阵与值矩阵，经矩阵外积V Kᵀ行展开，输出关联矩阵的每个输出维度行精确表示为标量值加权的键向量线性叠加。",
+    "CGB.Generation.association_readout_interference_bound":
+        "输入键矩阵、查询矩阵与有界值矩阵，经三角不等式与读出展开，输出查询读出误差受关联矩阵与对角阵之差的行绝对和一致上界控制。",
+    "CGB.Generation.association_slot_retention":
+        "输入关联矩阵与槽位衰减系数，经逐槽自然参数衰减变换，输出等价于将每个存储键向量按相同槽位因子线性缩放后的新关联状态。",
+    "CGB.Generation.association_state_readout":
+        "输入关联状态矩阵与查询向量，经双线性读出投影，输出每个输出维度的读出值严格等于各样本值与键查询内积的加权和。",
+    "CGB.Generation.bounded_decoder_association_readout":
+        "输入有界ε-解码器假设与有界值矩阵，经线性解码算子作用，输出存在解码算子使读出值与真实目标值的最大偏差不超过ε。",
+    "CGB.Generation.collision_of_excess_keys":
+        "输入特征维度小于样本数的键向量集，经线性代数维数定理，输出存在两组不同系数使线性叠加状态碰撞（证明联想矩阵超过维度容量必发生混叠）。",
+    "CGB.Generation.exact_decoder_association_readout":
+        "输入精确逆解码算子与值矩阵，经线性映射求值，输出关联状态经解码后精确恢复原始目标值向量。",
+    "CGB.Generation.exact_decoder_capacity":
+        "输入具有精确解码器的键向量集，经满秩映射维数约束，输出存储样本数必须小于等于特征空间维度。",
+    "CGB.Generation.exact_decoder_is_bounded_decoder":
+        "输入精确解码器假设，经零误差特化，输出精确解码器自动构成容差为0的有界解码器。",
+    "CGB.Generation.exact_key_capacity":
+        "输入在特征空间线性无关的键向量集，经线性代数维数定理，输出线性无关键向量个数必须小于等于向量空间维度。",
+    "CGB.Generation.normalized_assimilation_decoder_bound":
+        "输入旧关联矩阵、新到达键值对、写入权重与精度归一化参数，经归一化自然参数写入分解，输出全解码误差受新键解码误差与残余旧态贡献之和上界控制。",
+    "CGB.Generation.precision_assimilation_gain_bounds":
+        "输入正的先验精度与正写入权重，经精度更新增益求导分析，输出槽位增益参数严格介于0到1之间且受限于权重与先验精度之比。",
+    "CGB.Generation.precision_assimilation_is_innovation":
+        "输入旧均值、新观测值与精度增益系数，经自然参数精度步进变换，输出均值更新严格等价于基于预测误差（新观测减去旧均值）的新息更新形式。",
+    "CGB.Generation.probeFamilyAccurate_mono":
+        "输入探测族容差单调参数，经集合包含性比较，输出精度在较小容差下的探测族保证自动在较大容差下单调成立。",
+    "CGB.Generation.process_noise_gain_floor":
+        "输入正的过程方差与到达精度下界，经滤波更新方差展开，输出系统增益存在严格正的下界（保证过程噪声下持续保持非零学习率）。",
+
+    # CGBAxioms.GenerationSurvivalBounds (16)
+    "CGB.SurvivalBounds.cumulative_risk_lower":
+        "输入存活概率序列与非负风险序列，经裂项求和不等式推导，输出第n步存活概率下界由初始概率减去累积风险严格控制（无需独立性假设）。",
+    "CGB.SurvivalBounds.decay_eventually_lt":
+        "输入几何衰减率与正阈值，经阿基米德性与几何级数分析，输出经过有限时间步后存活度量最终严格低于指定正阈值。",
+    "CGB.SurvivalBounds.expectedLifetime_strict_of_row_gap":
+        "输入有限状态吸收马尔可夫链的行转移间隙，经预期寿命级数求和，输出在无不死吸收态的前提下个体的预期存活寿命严格有限。",
+    "CGB.SurvivalBounds.expected_step":
+        "输入非负单步存活期望，经过单步期望算子递推，输出下一时刻预期存活度量由当前转移算子下界严格约束。",
+    "CGB.SurvivalBounds.finite_window_lifetime_transfer":
+        "输入有限存活观测窗口与正耗散率，经过时间截断估计，输出窗口内的有限存活界可有效传递至全时域寿命上界。",
+    "CGB.SurvivalBounds.geometric_lower":
+        "输入每步乘性保持率下界，经指数连乘归纳，输出总体存活概率保持不低于单步因子的几何幂次下界。",
+    "CGB.SurvivalBounds.geometric_tail_bound":
+        "输入几何收缩转移过程，经尾部几何级数放缩，输出吸收态之外的残余概率尾部具有指数几何衰减上界。",
+    "CGB.SurvivalBounds.mean_contraction":
+        "输入收缩转移算子与有界可观测量，经积分压缩映射求值，输出可观测量的期望值按严格小于1的比例单步收缩。",
+    "CGB.SurvivalBounds.mean_initial":
+        "输入系统初始概率测度与评估函数，经期望定义展开，输出零时刻可观测量的期望值精确等于初始状态处的函数值。",
+    "CGB.SurvivalBounds.mean_retention_step":
+        "输入单步乘性保持率与物理转移律，经过马尔可夫期望传递，输出后继步的均值保持率不低于前一步均值乘以下界因子。",
+    "CGB.SurvivalBounds.mean_risk_step":
+        "输入单步可加风险余量与转移机模型，经局部加性风险传递，输出均值演化在无独立性假设下满足单步风险扣除下界。",
+    "CGB.SurvivalBounds.mean_unit_interval":
+        "输入取值在单位区间[0, 1]内的可观测量与任意时间步，经过转移律非负归一化性质，输出该可观测量在任意时刻的期望值仍严格落在[0, 1]内。",
+    "CGB.SurvivalBounds.no_uniform_positive_lower":
+        "输入单步具有一致不可逆耗散损失的衰减序列，经反证法推导，输出该序列不可能存在全局一致为正的下确界下界。",
+    "CGB.SurvivalBounds.normal_cut_eventual_gap":
+        "输入正常与截断两组转移机、初始状态及可观测量，经前缀风险预算对截断收缩的差分放大，输出在有限步后两过程的期望值差异必严格大于正间隙(1-δ)/2。",
+    "CGB.SurvivalBounds.prefix_gap_persists":
+        "输入前缀阶段累积优势超出尾部允许总量的两过程，经后继积分放缩，输出该前缀优势在之后任意时间视界内持续保持。",
+    "CGB.SurvivalBounds.risk_budget_uniform_lower":
+        "输入具有累积有界风险预算δ的单步风险序列，经求和放缩，输出系统在所有时间步上的存活概率全局一致不低于1 - δ。",
+
+    # CGBAxioms.GenerationInformationProjection (17)
+    "CGB.InformationProjection.condMutualInfo_eq_kl":
+        "输入三变量非负联合分布，经对数求和恒等变换，输出条件互信息形式精确等价于联合分布与其条件独立乘积参考分布之间的相对熵（KL散度）。",
+    "CGB.InformationProjection.condMutualInfo_nonneg":
+        "输入有限离散变量上的非负联合分布，经相对熵非负性推导，输出非归一化条件互信息恒大于等于零。",
+    "CGB.InformationProjection.condMutualInfo_pos_of_missing_rectangle":
+        "输入具有正边际矩形但内部存在零概率条目的非负联合分布，经相对熵支撑集分析，输出其条件互信息严格大于零。",
+    "CGB.InformationProjection.condMutualInfo_project_le":
+        "输入确定性粗粒化投影函数与联合分布，经对数和不等式展开，输出投影后的粗粒化条件互信息小于等于原始条件互信息（信息投影数据处理不等式）。",
+    "CGB.InformationProjection.gibbs_term_supported":
+        "输入相容非负实数对，经吉布斯点态对数放缩，输出x (ln y - ln x) ≤ y - x在允许零支撑的条件下普遍成立。",
+    "CGB.InformationProjection.kl_nonneg_supported":
+        "输入同支撑集且归一化的离散概率分布，经琴生不等式，输出两分布间的相对熵恒大于等于零。",
+    "CGB.InformationProjection.kl_pos_of_support_gap":
+        "输入同等总质量的非负测度且存在支撑集间隙（x(i)=0而y(i)>0），经单项非负分解，输出相对熵严格大于零。",
+    "CGB.InformationProjection.kl_project_le":
+        "输入确定性投影函数与两组相容测度，经纤维化对数和分解，输出投影后的粗粒化相对熵小于等于原测度相对熵。",
+    "CGB.InformationProjection.log_sum_le":
+        "输入非负实数序列，经对数函数凹性分析，输出有限项对数和不等式∑ x ln(∑ x / ∑ y) ≤ ∑ x ln(x / y)成立。",
+    "CGB.InformationProjection.project_nonneg":
+        "输入非负测度与确定性投影映射，经原像非负累加求和，输出投影后测度在目标空间各点的值恒非负。",
+    "CGB.InformationProjection.reference_nonneg":
+        "输入二元非负测度，经边际乘积归一化构造，输出参考分布在所有状态对上的取值恒非负。",
+    "CGB.InformationProjection.reference_pos_of_pos":
+        "输入在某点处严格为正的二元测度，经边际正性传递，输出对应的乘积参考测度在该点严格大于零。",
+    "CGB.InformationProjection.reference_project":
+        "输入第三变量投影函数与双变量测度，经求和算子交换，输出参考测度的边际投影与投影测度的参考测度严格可交换。",
+    "CGB.InformationProjection.reference_sum":
+        "输入有限双变量测度，经双重求和展开，输出乘积参考测度的全空间总质量精确等于原始测度的总质量。",
+    "CGB.InformationProjection.sum_project":
+        "输入测度与投影映射，经划分重组求和，输出投影后测度的全空间积分精确等于原测度全空间积分。",
+    "_private.CGBAxioms.GenerationInformationProjection.0.CGB.InformationProjection.marginals_pos":
+        "输入正概率点处的非负测度，经分量边际求和，输出该点所在的两边缘边际和及总质量均严格大于零。",
+    "_private.CGBAxioms.GenerationInformationProjection.0.CGB.InformationProjection.project_sum":
+        "输入二元测度与投影函数，经求和与投影算子交换，输出边际求和后投影等价于先投影后边际求和。",
+
+    # CGBAxioms.GenerationLanguageExistence (18)
+    "CGB.LanguageExistence.assimilate_unit_memory":
+        "输入处于有界单位内存流形的状态与到达字节，经GDN吸收推进变换，输出吸收后的后继状态依然严格保持在有界单位内存集合内。",
+    "CGB.LanguageExistence.bounded_mean":
+        "输入有界单位内存状态，经槽位均值范数投影，输出各槽位均值参数均受预设绝对值界限控制。",
+    "CGB.LanguageExistence.bounded_precision":
+        "输入有界单位内存状态，经精度对角元提取，输出所有槽位的自然精度均落在正的有界闭区间内。",
+    "CGB.LanguageExistence.finite_body_stationary_loss_eventually_constant":
+        "输入有限状态物理本体与固定的稳态预测损失，经有限值域非增实数列分析，输出在有限物理轨迹上稳态损失必在有限步后恒定为常数，无法持续严格下降。",
+    "CGB.LanguageExistence.finite_range_nonincreasing_eventually_constant":
+        "输入值域有限的单调非增实数序列，经有限鸽巢与下确界原理，输出该实数序列必在有限步后恒定为常数。",
+    "CGB.LanguageExistence.gdn_alternative_arrival_bias":
+        "输入不同字节输入到达同一准备好的本体状态，经头偏置写入求导，输出不同输入字符在输出层生成可区分的头偏置位移。",
+    "CGB.LanguageExistence.gdn_prior_preserves_bias":
+        "输入物理时间先验步进算子，经输出头参数线性传递，输出无观测下的物理时间先验转移绝对不会重写或抹除已学习的输出头偏置。",
+    "CGB.LanguageExistence.gdn_silent_continuation_bias":
+        "输入连续静息输入序列，经物理先验多步复合，输出任意长度的静息转移过程均保持既有输出头偏置结构不变。",
+    "CGB.LanguageExistence.gdn_written_distinction_survives_silence":
+        "输入不同输入字符写入的内部状态差异，经任意步静息物理演化，输出该状态差异在静息期后仍保持非零，不被静息时间重置。",
+    "CGB.LanguageExistence.no_global_finite_gdn_codec":
+        "输入有限状态物理存储器与连续实数GDN状态集，经基数势能分析，输出不存在有限物理编码器能无损精确表示所有GDN实数连续状态。",
+    "CGB.LanguageExistence.p1a_no_global_real_codec":
+        "输入公理P1a（有限物理位点）与连续实参数空间，经可数性与紧致性分析，输出有限物理载体排除全局连续实状态精确编解码器。",
+    "CGB.LanguageExistence.precision_assimilation_is_two_state_step":
+        "输入离散二状态转移系统，经转移速率映射，输出其群体稳态动力学在平均意义下精确等价于GDN精度吸收步进方程。",
+    "CGB.LanguageExistence.precision_two_state_rates_valid":
+        "输入有界占有率目标，经速率归一化核算，输出构建的二状态跳跃速率严格落在有效概率区间[0, 1]内。",
+    "CGB.LanguageExistence.prior_unit_memory":
+        "输入物理时间先验转移算子与单位内存状态，经先验衰减收缩，输出演化后的状态保持在单位内存有效几何集合内。",
+    "CGB.LanguageExistence.recurrent_gain_excludes_eventual_stationary_descent":
+        "输入具有循环反馈增益的预测系统，经能量平衡分析，输出非零循环增益排除了稳态预测损失无限严格单调下降的可能性。",
+    "CGB.LanguageExistence.restricted_fold_refines":
+        "输入受限序列折叠算子，经子流形结构保持性验证，输出受限轨迹折叠精确精化原始系统转移轨迹。",
+    "CGB.LanguageExistence.restricted_step_refines":
+        "输入单步受限推进算子，经条件限制验证，输出单步受限状态推进与全空间动力学相容。",
+    "CGB.LanguageExistence.step_unit_memory":
+        "输入有界字符嵌入向量与先验状态，经完整GDN前向吸收算子，输出完整步进后的内存均值与方差全局有界。",
+    "CGB.LanguageExistence.strict_descent_has_no_finite_exact_readout":
+        "输入单条真实物理轨迹上的预测损失，经有限物理状态集矛盾推导，输出有限本体不可能在单一轨迹上无限维持严格损失下降且具有精确读出。",
+
+    # CGBAxioms.GenerationConservedMemory (24)
+    "CGB.ConservedMemory.conserving_calm_needs_organizational_viability":
+        "输入静息守恒系统且存活准则仅读取物质总量，经条件互信息不变性检验，输出若系统维持长期记忆则存活准则必须扩展至组织结构可观测量而不仅是简单物质总量。",
+    "CGB.ConservedMemory.event_observable_kernel":
+        "输入局部事件可观测量不变性前提，经均匀化静息核提升，输出局部守恒律提升为全局静息马尔可夫核下的严格条件期望不变性。",
+    "CGB.ConservedMemory.historical_persistence_requires_alive_change":
+        "输入历史持久性记忆公理，经静息状态分析，输出为了抵抗物理耗散，静息动力学必须能够对微观存活可观测量施加非平凡的内部状态演化。",
+    "CGB.ConservedMemory.observable_indicator_preserved":
+        "输入保持某可观测量的随机转移核，经指示函数期望展开，输出该随机核精确保持该可观测量任意水平集的示性函数期望值不变。",
+    "CGB.ConservedMemory.observable_test_preserved":
+        "输入守恒可观测量与任意实检验函数，经算子交换，输出检验函数的条件期望在转移核下保持恒定。",
+    "CGB.ConservedMemory.observed_memory_as_project":
+        "输入确定性粗粒化投影，经分布前推算子，输出可观测记忆测度严格等同于微观分布沿投影映射的前推测度。",
+    "CGB.ConservedMemory.observed_memory_information_le":
+        "输入微观本体分布与其粗粒化可观测投影，经数据处理不等式，输出粗粒化记忆条件互信息为微观全状态条件互信息的保证下界。",
+    "CGB.ConservedMemory.observed_memory_nonneg":
+        "输入粗粒化转移概率，经概率测度非负性判定，输出可观测记忆测度在所有配置下非负。",
+    "CGB.ConservedMemory.observed_write_pos_of_transition":
+        "输入正概率转移与正概率前缀，经前推测度组合，输出粗粒化写入状态转移具有严格正的生成概率。",
+    "CGB.ConservedMemory.one_write_body_marginal":
+        "输入单次写入世界模型，经环境边际化求和，输出首步写入后的本体边际概率分布等于世界归一化后继转移律的边际投射。",
+    "CGB.ConservedMemory.one_write_observed_mass":
+        "输入单次写入的粗粒化观测测度，经可观测输出全求和，输出总质量精确等于真实前缀历史的概率质量。",
+    "CGB.ConservedMemory.one_write_observed_row":
+        "输入前缀历史与单步观测转移，经联合条件概率展开，输出粗粒化转移矩阵的单行精确等于前缀质量乘以单步条件观测概率。",
+    "CGB.ConservedMemory.quiet_event_observable_kernel":
+        "输入静息事件算子，经局部事件不变性特化，输出静息事件算子精确保持宏观可观测量的条件期望值。",
+    "CGB.ConservedMemory.quiet_observable_memory_marginal":
+        "输入未来任意延迟时刻的静息演化，经观测守恒提升，输出未来各步的粗粒化可观测边际分布恒等于首步写入后的边际分布。",
+    "CGB.ConservedMemory.quiet_total_kernel":
+        "输入静息物理事件，经正反应速率约束，输出守恒律在所有实际发生（正速率）的静息反应中精确成立。",
+    "CGB.ConservedMemory.quiet_total_memory_marginal":
+        "输入封闭静息动力学与公理P2a（物质守恒），经条件概率边缘化，输出系统微观总物质含量的边际分布在闭合静息演化下恒定不变。",
+    "CGB.ConservedMemory.registered_event_kernel_pos":
+        "输入正速率登记物理事件，经主方程对角化分解，输出该事件在微观马尔可夫转移核中对应严格正的单步转移概率。",
+    "CGB.ConservedMemory.remembers_of_conserved_observable":
+        "输入写入守恒可观测量的非零互信息与守恒保持核，经多步延迟推演，输出系统在任意长延迟下满足记忆保持公理Remembers。",
+    "CGB.ConservedMemory.remembers_of_quiet_and_actual_write":
+        "输入反事实实际写入与静息保持算子，经条件互信息差分分析，输出单次实际写入产生严格正的信息，且在静息演化下长期得以保留。",
+    "CGB.ConservedMemory.seed_calm_event_conserves":
+        "输入四位点物理种子模型，经静息期外周关闭判定，输出静息动力学切断储备池端口，严格守恒内部物理微观粒子数。",
+    "CGB.ConservedMemory.seed_calm_has_nontrivial_event":
+        "输入四位点物理种子模型，经内部跳跃动力学求值，输出静息状态下内部具有正速率的非平凡跳跃事件，微观状态持续动态演化。",
+    "CGB.ConservedMemory.seed_event_clocked":
+        "输入种子模型的反应图谱，经反应通道有限计数，输出系统至多包含18个登记事件，且每个微观态的出度转移速率和不超过18（满足严格时钟界）。",
+    "CGB.ConservedMemory.seed_quiet_total_memory_marginal":
+        "输入种子模型储备端口写入的粒子区别，经静息期孤立系统分析，输出写入的总物质差异在静息期后依然精确保留在边际分布中。",
+    "CGB.ConservedMemory.tagged_memory_nonneg":
+        "输入记忆定义中带标签的历史概率核，经测度非负性验证，输出带标签的记忆测度在所有支持点上均大于等于零。"
+}

@@ -1,176 +1,51 @@
-# Fine-Grain Vision
+# CGB / 梦漓 MengLi
 
-**Content-adaptive slice pooling vs fixed patch grids** for fine-grained visual structure.
+面向无限信息流、有限状态与有限计算资源的持续学习系统。研究目标是让记忆、预测、学习、选择性保持与行动在同一身体—世界过程中共同形成，走向用户定义的无限流生命体。Alan T0 是整个项目完成后的命名愿景，CGB 为架构，MengLi（梦漓）为生命体。
 
-Self-contained PyTorch experiments. No external datasets required — all tasks are synthetic and reproducible.
+**当前平台点：2026-11-05，可续接的同体交互闭环。** 已有真实语言学习与行动接线；最近在低语义机制世界完成观察收益记忆的512轮同源验证，过程改善、终点略好。最新动作归属修复通过接口及真实存档检查，尚未整圈训练。
 
-> Architectural comparison at tiny scale (depth 3, dim 64). Numbers are **not** comparable to production VLMs (MoonViT, Qwen-VL, …).
+## 从这里开始
 
-### Transolver3 multimodal (product direction)
+- [项目导航与当前/历史文档分层](docs/information_boltzmann/README.md)
+- [本次里程碑：结果、恢复点、版本边界与下一步](docs/information_boltzmann/CGB_MILESTONE_CLOSED_LOOP_20261105.md)
+- [AGENTS.md：用户定义、主链、五系统与工作方法](AGENTS.md)
+- [Lean定理索引](docs/information_boltzmann/CGB_PROVEN_INDEX.md) / [主题导航](docs/information_boltzmann/CGB_THEOREMS/README.md)
+- [关系式五行规范](docs/information_boltzmann/CGB_FIVE_PHASE_DIAGNOSTIC_RULES.md) / [大小五行接口与实际周转](docs/information_boltzmann/CGB_NESTED_FIVE_PHASE_INTERFACE_20261105.md)
 
-**Architecture source of truth:** [`docs/NORTH_STAR.md`](docs/NORTH_STAR.md).
-It defines the locked full-resolution `X ↔ Slice ↔ H` graph, the limits of the
-active-inference claim, all six ports as boundary conditions, and the generation
-gates. See [`docs/README.md`](docs/README.md) for document status.
+## 平台包含什么
 
-**Not** permanent vision slice tokens into the LLM.  
-**Yes** full-res fields + temporary shared workspace \(U\) (Read/Write) + deslice
-write-back; each modality keeps topology. See
-[`results/published/TRANSOLVER3_MULTIMODAL.md`](results/published/TRANSOLVER3_MULTIMODAL.md),
-[`NATIVE_MULTIMODAL_WORKSPACE.md`](results/published/NATIVE_MULTIMODAL_WORKSPACE.md).  
-Code: `fine_grain/cross_modal_slice_loop.py` (`B_xmodal`).  
-Legacy `SliceFrontend` (B tokens) = ablation/history only.
+同一Gated DeltaNet语言基底、有限字节快表与经历库，具体话语的内言和实际表达，世界返回、自听、同体在线学习、实测结算与历史取用。当前目标是沿这条共同运动继续生成功能，不按定理或生物名称逐个拼装模块。
 
-## Question
+| 已完成的观察收益记忆运行 | 同源控制 | 修复候选 |
+|---|---:|---:|
+| 终点均衡NLL | 0.409597 | 0.409162 |
+| 固定40审计点平均NLL | 1.166549 | 0.926529 |
 
-Modern VLM vision stacks remove *resize* but keep a **fixed patch grid**. Is that grid what buries small structure, or is the real bottleneck effective resolution / re-acquisition?
+这两行属于单种子机制诊断。真实语言结果、完整协议、后续动作归属修复及未完成目标分别在里程碑中列明，避免把不同实验混作同一个成绩。
 
-This repo measures both sides under a matched token budget:
+## 验证与运行
 
-| Arm | Mechanism |
-|-----|-----------|
-| `patch4` / `patch8` / `patch16` | ViT-style patchify + MHSA (baseline; deliberately **not** weakened) |
-| `slice` / `slice_loc_nogumbel` | Transolver++-style soft assignment + mass-normalized pooling |
-| `slice_*_st` | + Stiefel directions via Newton–Schulz (Muon coefficients) |
-| controls | `slice_const`, `slice_sum`, Gumbel on/off, sparse deslice write |
+Python 3.10+、PyTorch；实验GPU环境需匹配本地CUDA/Triton。项目脚本从仓库根目录以模块方式运行：
 
-## Key findings (pre-registered where noted)
-
-| ID | Result |
-|----|--------|
-| **P1/P4** | Patch accuracy tracks **s/p** (object size / patch size), not absolute s. Raising resolution buys fine grain at 4× tokens. |
-| **P6** | Thin **lines** survive patch grids; **point-like** needles do not — fine ≠ small. |
-| **P7** | **Mass normalization** is the size-invariance mechanism (not per-pixel tokens alone). |
-| **Oracle** | Glyph memorization failure is largely **optimization** (Gumbel noise), not expressivity. |
-| **Line recon (fair)** | RGB pure-red 1px polylines, res 64, 600 steps. **slice** Dice **1.00** by ~step 100. **patch16** with fair head `Linear→unpatchify`: Dice **0.215** (IoU 0.12, recall 0.88). Legacy bilinear head was **~0.15** — fair head helps a little, **does not close the gap**. Stiefel is mainly **anti-collapse**, not recon magic. See [`results/published/line_recon_64_fair.json`](results/published/line_recon_64_fair.json). |
-| **Caveats** | (1) Prefer **RGB** over luma (luma≈0.299 shortcut on red lines). (2) Default patch recon head is unpatchify; `--patch-decoder bilinear` is legacy only. (3) Spectrum wipe figure uses **patch mean** as illustration — real stem is learned `Conv2d(k=p,s=p)`; claim is **capacity/SNR falls with s/p**, not “inevitably wipes 1px lines.” |
-
-Published JSON snapshots live in [`results/published/`](results/published/).
-
-## Next experiment: native Slice-MoT VLM
-
-The first realistic vision-language integration is now preregistered in
-[`docs/native_slice_mot_vlm_experiment.md`](docs/native_slice_mot_vlm_experiment.md).
-It replaces frozen-LLM frontend probes with a six-layer model trained jointly
-from random initialization: a persistent full-resolution point field and a
-language stream communicate at every depth through modality-specific
-Mixture-of-Transformers experts. The primary decision gate requires at least
-64M loss-bearing public-data tokens before an architecture conclusion.
-
-This is an experiment design, not a reported result.
-
-## Layout
-
-```text
-fine_grain/           # installable package
-  models.py           # AdaTempSlice, SliceNet, PatchNet, ARMS registry
-  native_mot.py       # product: full-res point field X, ephemeral SliceRead, MoT, Deslice
-  bayesian_surprise.py
-  unified_arch.py     # one residual-write graph for all I/O ports
-  tasks.py            # needle / glyph / lines / connect / kinks generators
-  train_utils.py      # optim, pool, collapse probes
-scripts/
-  train_benchmark.py  # classification sweeps (main benchmark)
-  line_recon.py       # dense polyline mask recon
-  train_omni_probe.py
-  build_kinks_dataset.py
-tests/
-docs/
-  NORTH_STAR.md       # architecture source of truth and generation contract
-research_tree.json    # hypotheses, evidence, conflicts, invalidation tree
-present/              # HTML showcase + figures
-reference/            # notes on Transolver++ / MoonViT
-results/published/    # key metrics + Native MoT / Transolver3 specs
+```powershell
+python -m pytest tests/test_navigation_observed_gain.py tests/test_navigation_settlement.py tests/test_navigation_residual_wood.py -q
+python -m scripts.ib_local.run_learning_rooms --help
+# Lean使用lean/CGBAxioms/lean-toolchain固定的工具链
+python lean/CGBAxioms/scripts/audit.py --check-index
 ```
 
-## Install
+训练入口、同源检查点要求和完整命令见里程碑。数据、原始日志及检查点不进Git；精选证据在 `results/published/`，参数、优化器、记忆与来源状态必须一起恢复。
 
-```bash
-python -m venv .venv
-# Windows: .venv\Scripts\activate
-source .venv/bin/activate
-pip install -r requirements.txt
-pip install transformers modelscope tokenizers
-# optional editable install
-pip install -e .
-```
+## 仓库布局
 
-**Model weights / caches:** use **ModelScope on D:** (not C:, not HF if blocked):
+| 路径 | 用途 |
+|---|---|
+| `information_boltzmann/` | 介质、历史载体与共同算子 |
+| `scripts/ib_local/` | 当前语言身体、训练/评估入口和数值工具 |
+| `lean/CGBAxioms/` | 公理、定理、构造及审计 |
+| `docs/information_boltzmann/` | 定义、当前规格、定理导航与历史记录 |
+| `results/published/` | 精选报告和验证哈希 |
+| `tests/` | 数值、因果、恢复与接口回归 |
+| `scripts/archive/` | 已退出当前入口的一次性工具原文 |
 
-```bash
-set ML_CACHE_ROOT=D:\ml_cache
-python scripts/train_vlm_frontends.py --mode smoke --prefer local
-# or try: --prefer gemma / --prefer pythia  (ModelScope download → D:\ml_cache)
-```
-
-GPU (CUDA) is optional but recommended for full sweeps.
-
-## Quickstart
-
-```bash
-# unit tests (CPU, seconds)
-python tests/test_deslice_scatter_and_gate.py
-# or: pytest -q
-
-# needle size sweep (tiny default steps for smoke)
-python scripts/train_benchmark.py --task needle --arms patch4,slice --steps 50 --seeds 1
-
-# glyph shape task
-python scripts/train_benchmark.py --task glyph --arms patch4,slice_loc_nogumbel --steps 1500
-
-# line reconstruction @ 64^2 (fair patch head = unpatchify by default)
-python scripts/line_recon.py --arms slice_loc_nogumbel,patch16 --res 64 --steps 600 --rgb
-# legacy unfair patch head (bilinear + 1x1), for comparing old numbers only
-python scripts/line_recon.py --arms patch16 --patch-decoder bilinear --rgb
-
-# optional: materialize kinks dataset to disk
-python scripts/build_kinks_dataset.py --out data/kinks256 --n_train 6000 --n_val 600
-
-# A/B/C vision → frozen small LLM (ModelScope/local tinylm on D:\ml_cache)
-set ML_CACHE_ROOT=D:\ml_cache
-python scripts/train_vlm_frontends.py --mode sweep --prefer local --res 32 --T_list 64 32 16 --steps 60 --amp
-# frontends: A=patch, B=slice tokens (T scalable, ST+topk2), C=patch+slice
-```
-
-Speed micro-bench (CUDA):
-
-```bash
-python scripts/train_benchmark.py --bench --device cuda
-```
-
-## Tasks
-
-| Task | Label | What it stresses |
-|------|-------|------------------|
-| `needle` | 4 signal colors | Point-like objects vs patch size |
-| `glyph` | 4 shapes (color-matched to BG) | Local shape without color shortcut |
-| `lines` | line color | Extended 1–4 px structures |
-| `connect` | same-polyline? | Topology (often near chance at this scale) |
-| `kinks` | kink count 5–10 | Thin red polyline geometry |
-| line recon | dense mask | Pixel-level recovery of the polyline |
-
-## Showcase
-
-Open [`present/showcase.html`](present/showcase.html) in a browser for figures (needle curves, spectrum wipe, line-recon gallery).
-
-## Design notes
-
-- **Baseline fidelity (classification):** patch arms get no extras (no RoPE freebies). `patch4` is *stronger* than real MoonViT (which pixel-shuffles 2×2 before projection) — intentional for classification sweeps.
-- **Line-recon head (dense):** slice uses per-point logits (full HxW). Patch default is **unpatchify** so within-patch structure is expressible; do not cite bilinear-head Dice as pure encoder failure.
-- **Patchify ≠ mean pool:** stem is `Conv2d(3 → dim-2, kernel=p, stride=p)` — a learned linear map over the p²×3 window. Mean pooling is only a special case; high-frequency directions *can* survive in the subspace of the kernel. The hard claim is **s/p-limited capacity/SNR and addressing**, not spectral annihilation.
-- **Slice stack:** mass-norm soft pool (**read**) + optional **sparse deslice write** (primary soft-scatter fix: `deslice_topk` / threshold). Optional Qwen gate: residual-dependent post-attn form (arXiv:2505.06708) and/or residual-stream `σ(W x) ⊙ mix`. Optional `recur_T` multi-pass is **fallback only**. Stride-1 DW 3×3 for locality without downsampling.
-- **`G ≤ C` (slice collapse geometry):** slice/query directions live in \(\mathbb{R}^{C}\) with \(C =\) `heads × dim_head` (or full `dim`). At most **C** independent axes. If **`slice_num G > C`** (e.g. 64 queries in 32-d), high `cos_tok` / dead slots are **rank-forced**, not only optim — lower **G** or raise **C**. Defaults here: `G=32`, `C=4×16=64`. See module docstring in `fine_grain/models.py`.
-- **Current published-result scope:** real OCR/characters are not yet a published
-  result (glyph = 4 geometric shapes only). The native Slice-MoT VLM document
-  above defines the next experiment; it does not retroactively extend the claims
-  of the synthetic benchmarks.
-
-## Citation / lineage
-
-- Transolver++ physics attention: [thuml/Transolver_plus](https://github.com/thuml/Transolver_plus) (ICML 2025)
-- Newton–Schulz Stiefel / Muon coefficients: PyTorch `torch.optim._muon`
-- Qwen gated attention (optional residual / SDPA gate): Qiu et al., arXiv:2505.06708
-
-## License
-
-MIT — see [LICENSE](LICENSE).
+本独立工作区继承自视觉/多模态项目。其源码与既有证据继续保留；[原README](docs/archive/FINE_GRAIN_VISION_README_20261105.md)已归档，视觉主图规格仍见 [NORTH_STAR](docs/NORTH_STAR.md)。CGB操作不擅自改变该独立研究线的要求。

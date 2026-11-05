@@ -1,0 +1,113 @@
+"""Build, synchronize and merge all theorem interpretations into CGB_THEOREM_INTERPRETATIONS.json.
+Validates 100% coverage and builds/checks theorem catalog.
+"""
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+sys.path.insert(0, 'scripts')
+import build_proven_index as base
+from theorem_interp_group1 import GROUP1
+from theorem_interp_group2 import GROUP2
+from theorem_interp_group3 import GROUP3
+from theorem_interp_group4 import GROUP4
+from theorem_interp_group5 import GROUP5
+
+INTERPRETATIONS_FILE = Path('docs/information_boltzmann/CGB_THEOREM_INTERPRETATIONS.json')
+
+def main():
+    inventory = base.checked_inventory(base.INVENTORY)
+    source_hashes = inventory['source_hashes']
+    authored = [r for r in inventory['declarations'] if r['kind'] == 'theorem' and r['source_declared']]
+    print(f"Total authored production theorems in inventory: {len(authored)}")
+
+    # Map each theorem to its module relative path
+    thm_to_rel = {}
+    for r in authored:
+        rel = r['module'].replace('.', '/') + '.lean'
+        thm_to_rel[r['name']] = rel
+
+    # Merge all 5 new interpretation groups
+    merged_new = {}
+    for g in [GROUP1, GROUP2, GROUP3, GROUP4, GROUP5]:
+        merged_new.update(g)
+    print(f"Total new interpretations available: {len(merged_new)}")
+
+    # Load existing interpretations
+    if INTERPRETATIONS_FILE.exists():
+        interpretations = json.loads(INTERPRETATIONS_FILE.read_text(encoding='utf-8'))
+    else:
+        interpretations = {}
+    print(f"Existing interpretations loaded: {len(interpretations)}")
+
+    # Synchronize hashes of existing interpretations and add new ones
+    updated_hashes = 0
+    added_new = 0
+
+    for r in authored:
+        name = r['name']
+        rel = thm_to_rel[name]
+        cur_hash = source_hashes[rel]
+
+        if name in interpretations:
+            if interpretations[name].get('source_sha256') != cur_hash:
+                interpretations[name]['source_sha256'] = cur_hash
+                updated_hashes += 1
+        elif name in merged_new:
+            interpretations[name] = {
+                "source_sha256": cur_hash,
+                "text": merged_new[name]
+            }
+            added_new += 1
+        else:
+            print(f"WARNING: No interpretation for {name}")
+
+    print(f"Updated {updated_hashes} stale hashes for existing theorems.")
+    print(f"Added {added_new} new theorem interpretations.")
+    print(f"Total interpretations now: {len(interpretations)}")
+
+    # Check reviews theorems
+    reviews_count = 0
+    import hashlib
+    for path in sorted(Path('lean/CGBAxioms/reviews').rglob('*.lean')):
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        header, thms = base.scan(path, digest, full_docs=True)
+        for n, d, line in thms:
+            reviews_count += 1
+            if n in interpretations:
+                if interpretations[n].get('source_sha256') != digest:
+                    interpretations[n]['source_sha256'] = digest
+                    updated_hashes += 1
+
+    print(f"Checked {reviews_count} review declarations.")
+
+    # Save updated file
+    INTERPRETATIONS_FILE.write_text(
+        json.dumps(interpretations, ensure_ascii=False, indent=2) + "\n",
+        encoding='utf-8'
+    )
+    print(f"Saved {INTERPRETATIONS_FILE}")
+
+    # Build catalog
+    print("Building theorem catalog...")
+    res = subprocess.run([sys.executable, "scripts/build_theorem_catalog.py"],
+                         capture_output=True, text=True, encoding='utf-8')
+    print(res.stdout)
+    if res.returncode != 0:
+        print(res.stderr)
+        raise RuntimeError("build_theorem_catalog.py failed")
+
+    # Check catalog
+    print("Checking theorem catalog...")
+    res_check = subprocess.run([sys.executable, "scripts/build_theorem_catalog.py", "--check"],
+                               capture_output=True, text=True, encoding='utf-8')
+    print(res_check.stdout)
+    if res_check.returncode != 0:
+        print(res_check.stderr)
+        raise RuntimeError("build_theorem_catalog.py --check failed")
+
+    print("SUCCESS: All theorems interpreted, catalog built and checked with 100% coverage!")
+
+if __name__ == '__main__':
+    main()

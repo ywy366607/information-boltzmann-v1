@@ -1,0 +1,6 @@
+# Historical source snapshots are byte-verifiable evidence, not formatted live code.
+scripts/archive/** -text -whitespace
+
+# Lean audit inventories hash source bytes; do not rewrite line endings on checkout.
+lean/CGBAxioms/*.lean -text
+lean/CGBAxioms/**/*.lean -text

@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-05",
+  "scope": "Milestone workspace consolidation; no training started",
+  "pytest": {
+    "affected_files": 30,
+    "passed": 301,
+    "failed": 0,
+    "known_warning": "existing non-writeable NumPy input warning in utterance copying"
+  },
+  "lean": {
+    "source_theorems": 1807,
+    "production_modules": 136,
+    "declarations": 7347,
+    "audit_guard_checks": 10,
+    "build_trust_and_index_check": "passed",
+    "staged_source_byte_hashes_match": 139
+  },
+  "theorem_interpretations": {
+    "production": 1807,
+    "reviews": 289,
+    "stale_hashes": 0,
+    "missing": 0,
+    "check": "passed"
+  },
+  "research_tree": {
+    "nodes": 309,
+    "strict_errors": 0,
+    "strict_warnings": 0,
+    "prior_ids_and_status_details_preserved": true
+  },
+  "source_hygiene": {
+    "text_files_scanned": 443,
+    "secret_pattern_hits": 0,
+    "changed_python_parse_errors": 0,
+    "frozen_run_sources": 11,
+    "frozen_source_hash_check": "passed"
+  },
+  "additional_repairs": {
+    "feedback_pair_test": "fixture now includes existing CLI default fields",
+    "historical_candidate_restore": "preserve unstepped accumulated Parameter.grad across aliased model/optimizer deepcopy; causal/resume suite passes"
+  },
+  "runtime_entrypoint": "python -m scripts.ib_local.run_learning_rooms --help passes",
+  "checkpoint_policy": "No checkpoint/data/raw evidence deletions; paths listed in cleanup manifest"
+}

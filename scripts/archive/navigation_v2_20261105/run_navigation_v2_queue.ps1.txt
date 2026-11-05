@@ -1,0 +1,91 @@
+param([Parameter(Mandatory=$true)][int]$WaitForProcess)
+
+$ErrorActionPreference = 'Stop'
+$taskRoot = 'D:/information-boltzmann-v1'
+$taskResults = Join-Path $taskRoot 'results/cgb_language_navigation_v2_20261104'
+$taskPython = 'D:/conda_envs/vox/python.exe'
+Set-Location -LiteralPath $taskRoot
+$env:OMP_NUM_THREADS = '1'
+$env:MKL_NUM_THREADS = '1'
+
+function Write-QueueStatus([string]$Status,[string]$Arm,[int]$ExitCode=0) {
+    $value = @{ status=$Status; arm=$Arm; exit_code=$ExitCode; time=(Get-Date).ToString('o') }
+    $pending = Join-Path $taskResults 'queue_status.pending.json'
+    $value | ConvertTo-Json | Set-Content -LiteralPath $pending -Encoding utf8
+    Move-Item -LiteralPath $pending -Destination (Join-Path $taskResults 'queue_status.json') -Force
+}
+
+$process = Get-CimInstance Win32_Process -Filter "ProcessId=$WaitForProcess"
+if ($null -ne $process -and $process.CommandLine -notmatch 'cgb_language_navigation_v2_20261104/fresh_active_merge') {
+    Write-QueueStatus 'failed_wait_pid_mismatch' 'fresh_active_merge' 1
+    exit 1
+}
+Write-QueueStatus 'waiting_for_active' 'fresh_active_merge'
+while ($null -ne (Get-Process -Id $WaitForProcess -ErrorAction SilentlyContinue)) {
+    Start-Sleep -Seconds 5
+}
+$summaryPath = Join-Path $taskResults 'fresh_active_merge/summary.json'
+if (-not (Test-Path -LiteralPath $summaryPath) -or
+    (Get-Content -LiteralPath $summaryPath -Raw | ConvertFrom-Json).status -ne 'complete') {
+    Write-QueueStatus 'active_incomplete' 'fresh_active_merge' 1
+    exit 1
+}
+
+function Run-Revisit([string]$ArmName) {
+    $armPath = Join-Path $taskResults $ArmName
+    $revisitPath = Join-Path $taskResults ($ArmName + '_revisit')
+    if (Test-Path -LiteralPath (Join-Path $revisitPath 'summary.json')) { return }
+    if (Test-Path -LiteralPath $revisitPath) {
+        Write-QueueStatus 'revisit_incomplete_preserved' $ArmName 1
+        exit 1
+    }
+    Write-QueueStatus 'running_revisit' $ArmName
+    & $taskPython -m scripts.ib_local.continue_navigation_v2_revisit `
+        --checkpoint (Join-Path $armPath 'last.pt') --output $revisitPath `
+        --updates-per-phase 200 --validation-bytes 32768 *>> (Join-Path $taskResults ($ArmName + '_revisit.log'))
+    if ($LASTEXITCODE -ne 0) {
+        Write-QueueStatus 'revisit_failed' $ArmName $LASTEXITCODE
+        exit $LASTEXITCODE
+    }
+}
+
+Run-Revisit 'fresh_active_merge'
+
+$arms = @(
+    @{ name='fresh_random_merge'; mode='random'; memory='merge'; disable=$false },
+    @{ name='fresh_silence_merge'; mode='silence'; memory='merge'; disable=$false },
+    @{ name='fresh_active_fifo'; mode='active'; memory='fifo'; disable=$false },
+    @{ name='fresh_active_no_latent'; mode='active'; memory='merge'; disable=$true }
+)
+foreach ($arm in $arms) {
+    $armPath = Join-Path $taskResults $arm.name
+    $armSummary = Join-Path $armPath 'summary.json'
+    if (Test-Path -LiteralPath $armSummary) {
+        $existing = Get-Content -LiteralPath $armSummary -Raw | ConvertFrom-Json
+        if ($existing.status -eq 'complete') { Run-Revisit $arm.name; continue }
+    }
+    $extra = @()
+    if ($arm.disable) { $extra += '--disable-latent' }
+    if (Test-Path -LiteralPath $armPath) {
+        if (-not (Test-Path -LiteralPath (Join-Path $armPath 'last.pt'))) {
+            Write-QueueStatus 'incomplete_without_checkpoint' $arm.name 1
+            exit 1
+        }
+        $extra += '--resume'
+    }
+    Write-QueueStatus 'running' $arm.name
+    $runLog = Join-Path $taskResults ($arm.name + '.log')
+    $runner = 'scripts.ib_local.run_language_navigation_v2'
+    if ($arm.mode -eq 'random') { $runner = 'scripts.ib_local.run_unreinforced_navigation_v2' }
+    & $taskPython -m $runner `
+        --checkpoint results/cgb_retrieved_credit_20261103/off/last.pt `
+        --output $armPath --mode $arm.mode --memory $arm.memory --threshold 0.7 `
+        --cycles 2500 --validate-every 250 --validation-bytes 32768 @extra *>> $runLog
+    if ($LASTEXITCODE -ne 0) {
+        Write-QueueStatus 'failed' $arm.name $LASTEXITCODE
+        exit $LASTEXITCODE
+    }
+    Write-QueueStatus 'completed_arm' $arm.name
+    Run-Revisit $arm.name
+}
+Write-QueueStatus 'complete' 'all'

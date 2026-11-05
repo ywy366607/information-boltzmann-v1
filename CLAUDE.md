@@ -1,6 +1,10 @@
 # CLAUDE.md
 
+> **CGB当前平台入口（2026-11-05）：** `docs/information_boltzmann/README.md` 与 `CGB_MILESTONE_CLOSED_LOOP_20261105.md`。已有同体行动—回应—学习—实测结算—记忆取用；最新动作归属读口已修，但未整圈训练。下方旧阶段说明按历史上下文使用；用户原始定义、主链和五系统仍以AGENTS及其原文来源为准。
+
 > **架构唯一来源：** `docs/NORTH_STAR.md`。修改多模态主图、统一端口或生成前必须先读该文档与 `research_tree.json`。必须保留全分辨率点场、瞬态 Slice、语言联合演化和 Slice/Deslice 语义写回；不得以独立生图模型绕过核心框架。
+
+> **CGB 必读规范：** 分析、设计、修改或验收前读 `docs/information_boltzmann/CGB_FIVE_PHASE_DIAGNOSTIC_RULES.md` 及活规格五系统段，压缩/新窗口后同样适用。五行从情境中的功能相互作用命名，不是五实体或十条待人工安装的管道；没有 H→precision 直连不能判木克土缺失。当前以系统1/5为条件，在真实语言中共同检验2/3，不把系统4的动作/提问/母亲接口设为前置；局部通过不代替整体作用。
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
