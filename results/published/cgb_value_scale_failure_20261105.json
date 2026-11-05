@@ -1,0 +1,23 @@
+{
+  "status": "failed_candidate",
+  "completed_cycles": 166,
+  "failing_cycle": 167,
+  "completed_external_bytes": 85324,
+  "completed_self_bytes": 3232,
+  "completed_optimizer_steps": 664,
+  "final_logged_max_abs_value": 210411872.0,
+  "last_joint_progress": 0.0027979910373687744,
+  "last_td_target": 1683294.9761344087,
+  "last_normalization_scale": 23567828.426102754,
+  "recovery_snapshot_cycle": 128,
+  "immediate_exception": "ValueError: max() arg is an empty sequence in choice replay filter",
+  "guard_fix": "Availability follows habit mask, not magnitude of sampled logits; nonfinite logits explicitly rejected.",
+  "dynamics": "Scalar target normalization preserves instantaneous output but did not stabilize coupled AdamW update, raw recalled inputs and bootstrapped TD targets. The candidate diverged before the guard exception.",
+  "checkpoint_sensitivity": {
+    "cycle": 128,
+    "raw_value_last_weight_max_sensitivity": 541965.0,
+    "scale": 1965.533393937294
+  },
+  "decision": "Reject this PopArt-only candidate; no automatic resume. Keep stable continuation_joint without normalization as reference.",
+  "boundary": "Round167 world/table forward was reached, but no complete scored row was emitted; completed totals refer only to166 recorded cycles. No final512 comparison is claimed."
+}

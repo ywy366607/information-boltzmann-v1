@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOrganismEcoliMsS0.lean#L52)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：Ecoli
+
+分类说明：大肠杆菌特定趋化/代谢动力学生物实例化见证。
+
 解释：大肠杆菌 MsS0 基础形态发生模型实例严格满足 CGB 物理介质六公理。
 
 源码说明：**The organism is a model of the CGB axioms** (M3: unique free state, and every rule between two interior pages conserves content).
@@ -23,6 +27,10 @@ CGB.Organisms.EcoliMsS0.medium.Axioms
 ## CGB.Organisms.EcoliMsS0.metabolizes
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOrganismEcoliMsS0.lean#L58)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：Ecoli
+
+分类说明：大肠杆菌特定趋化/代谢动力学生物实例化见证。
 
 解释：大肠杆菌 MsS0 模型存在非零动作能够改变局部机体质量总量，具备真实新陈代谢能力。
 
@@ -40,6 +48,10 @@ CGB.Organisms.EcoliMsS0.medium.Axioms
 ## CGB.Organisms.EcoliMsS0.exposed
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOrganismEcoliMsS0.lean#L65)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：Ecoli
+
+分类说明：大肠杆菌特定趋化/代谢动力学生物实例化见证。
 
 解释：大肠杆菌 MsS0 模型具有暴露于外部世界驱动的有效外边界通道。
 

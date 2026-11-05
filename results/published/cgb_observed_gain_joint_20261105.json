@@ -1,0 +1,566 @@
+{
+  "summary": {
+    "cycles": 512,
+    "elapsed_seconds": 1150.6664399000001,
+    "settlement": "continuation_joint",
+    "value_normalization": "none",
+    "reward_memory": "observed",
+    "external_bytes": 263168,
+    "self_bytes": 12800,
+    "optimizer_steps": 2048,
+    "replay_samples": 16384,
+    "parameter_count": 894916,
+    "initial_nll": {
+      "familiar": 0.0070804309216327965,
+      "noise": 13.27157974243164,
+      "easy": 13.925566673278809,
+      "hard": 13.67544174194336,
+      "changing": 13.688800811767578
+    },
+    "final_nll": {
+      "familiar": 0.009123438037931919,
+      "noise": 0.6936517655849457,
+      "easy": 0.48161813616752625,
+      "hard": 0.420445054769516,
+      "changing": 0.4409704655408859
+    },
+    "visits": {
+      "familiar": 89,
+      "noise": 47,
+      "easy": 92,
+      "hard": 170,
+      "changing": 114
+    },
+    "moves": 321,
+    "choices": {
+      "silence": 112,
+      "generate": 293,
+      "reuse": 107
+    },
+    "max_policy_replay_error": 1.9073486328125e-06,
+    "exact_next_step_parameter_error": 0.0,
+    "peak_cuda_bytes": 201845760,
+    "scope": "semantic-free mechanism diagnostic, one continuing individual; no real-language capability claim"
+  },
+  "analysis": {
+    "transition_and_candidate_replay": true,
+    "external_sha256": "49ae87d202e7efe96c165db176932e0b2e933b8e1b7bd5ea8285bf01d188d7ba",
+    "entropy_floors_nats": {
+      "familiar": 0.0,
+      "noise": 0.6931471805599453,
+      "easy": 0.42270908780599087,
+      "hard": 0.42270908780599087,
+      "changing": 0.42270908780599087
+    },
+    "blocks": [
+      {
+        "start": 1,
+        "end": 64,
+        "visits": {
+          "familiar": 14,
+          "noise": 2,
+          "easy": 15,
+          "hard": 23,
+          "changing": 10
+        },
+        "choices": {
+          "silence": 12,
+          "generate": 48,
+          "reuse": 4
+        },
+        "g": {
+          "familiar": 0.0001553348298070237,
+          "noise": 8.226407170295715,
+          "easy": 0.8191220780213674,
+          "hard": 0.6891308673050093,
+          "changing": 1.448079589009285
+        },
+        "multiroom_opportunities": 57,
+        "offered": {
+          "familiar": 39,
+          "noise": 5,
+          "easy": 33,
+          "hard": 45,
+          "changing": 22
+        },
+        "noise_when_learning_alternative": {
+          "n": 5,
+          "policy_noise_probability": 0.37838216610252856,
+          "uniform_candidate_noise_probability": 0.39999999999999997,
+          "actual_noise_fraction": 0.4
+        },
+        "heldout_nll": [
+          0.001375052859657444,
+          1.0481749176979065,
+          0.5007829666137695,
+          0.6034615635871887,
+          0.4987373650074005
+        ],
+        "witnesses": {
+          "familiar": 30,
+          "noise": 0,
+          "easy": 2,
+          "hard": 0,
+          "changing": 0,
+          "mixed": 0
+        }
+      },
+      {
+        "start": 65,
+        "end": 128,
+        "visits": {
+          "familiar": 8,
+          "noise": 6,
+          "easy": 17,
+          "hard": 24,
+          "changing": 9
+        },
+        "choices": {
+          "silence": 8,
+          "generate": 48,
+          "reuse": 8
+        },
+        "g": {
+          "familiar": 0.0007624785073119256,
+          "noise": 0.07960295677185059,
+          "easy": 0.027622603318270517,
+          "hard": 0.005542286982138951,
+          "changing": 0.016262554460101657
+        },
+        "multiroom_opportunities": 63,
+        "offered": {
+          "familiar": 30,
+          "noise": 19,
+          "easy": 40,
+          "hard": 45,
+          "changing": 22
+        },
+        "noise_when_learning_alternative": {
+          "n": 17,
+          "policy_noise_probability": 0.3386686045457335,
+          "uniform_candidate_noise_probability": 0.3529411764705882,
+          "actual_noise_fraction": 0.29411764705882354
+        },
+        "heldout_nll": [
+          0.0031742394203320146,
+          0.8983317911624908,
+          0.4627624452114105,
+          0.43277671933174133,
+          0.5209466814994812
+        ],
+        "witnesses": {
+          "familiar": 24,
+          "noise": 2,
+          "easy": 1,
+          "hard": 1,
+          "changing": 4,
+          "mixed": 0
+        }
+      },
+      {
+        "start": 129,
+        "end": 192,
+        "visits": {
+          "familiar": 17,
+          "noise": 7,
+          "easy": 11,
+          "hard": 22,
+          "changing": 7
+        },
+        "choices": {
+          "silence": 11,
+          "generate": 36,
+          "reuse": 17
+        },
+        "g": {
+          "familiar": 0.0016090732191086693,
+          "noise": 0.018967602934156145,
+          "easy": 0.017002707177942448,
+          "hard": -0.00707770206711509,
+          "changing": 0.024786055088043213
+        },
+        "multiroom_opportunities": 64,
+        "offered": {
+          "familiar": 42,
+          "noise": 14,
+          "easy": 27,
+          "hard": 48,
+          "changing": 21
+        },
+        "noise_when_learning_alternative": {
+          "n": 11,
+          "policy_noise_probability": 0.3705399673093449,
+          "uniform_candidate_noise_probability": 0.36363636363636365,
+          "actual_noise_fraction": 0.5454545454545454
+        },
+        "heldout_nll": [
+          0.004540169727988541,
+          0.7028065323829651,
+          0.5005601048469543,
+          0.4379603713750839,
+          0.444790780544281
+        ],
+        "witnesses": {
+          "familiar": 24,
+          "noise": 1,
+          "easy": 2,
+          "hard": 3,
+          "changing": 2,
+          "mixed": 0
+        }
+      },
+      {
+        "start": 193,
+        "end": 256,
+        "visits": {
+          "familiar": 10,
+          "noise": 7,
+          "easy": 16,
+          "hard": 20,
+          "changing": 11
+        },
+        "choices": {
+          "silence": 16,
+          "generate": 30,
+          "reuse": 18
+        },
+        "g": {
+          "familiar": 0.0018362413917202502,
+          "noise": 0.05387688534600394,
+          "easy": 0.008579190820455551,
+          "hard": -0.002116557955741882,
+          "changing": 0.012386584823781794
+        },
+        "multiroom_opportunities": 62,
+        "offered": {
+          "familiar": 29,
+          "noise": 16,
+          "easy": 34,
+          "hard": 43,
+          "changing": 22
+        },
+        "noise_when_learning_alternative": {
+          "n": 14,
+          "policy_noise_probability": 0.47289796120354105,
+          "uniform_candidate_noise_probability": 0.42857142857142844,
+          "actual_noise_fraction": 0.5
+        },
+        "heldout_nll": [
+          0.007322490913793445,
+          0.7746835947036743,
+          0.4640776365995407,
+          0.42787688970565796,
+          0.4522687792778015
+        ],
+        "witnesses": {
+          "familiar": 24,
+          "noise": 1,
+          "easy": 2,
+          "hard": 2,
+          "changing": 3,
+          "mixed": 0
+        }
+      },
+      {
+        "start": 257,
+        "end": 320,
+        "visits": {
+          "familiar": 12,
+          "noise": 6,
+          "easy": 3,
+          "hard": 32,
+          "changing": 11
+        },
+        "choices": {
+          "silence": 14,
+          "generate": 47,
+          "reuse": 3
+        },
+        "g": {
+          "familiar": 0.00194626290309922,
+          "noise": 0.08099029461542766,
+          "easy": 0.010141313076019287,
+          "hard": 0.00039776042103767395,
+          "changing": 0.1006963388486342
+        },
+        "multiroom_opportunities": 62,
+        "offered": {
+          "familiar": 38,
+          "noise": 18,
+          "easy": 21,
+          "hard": 48,
+          "changing": 24
+        },
+        "noise_when_learning_alternative": {
+          "n": 16,
+          "policy_noise_probability": 0.400413129478693,
+          "uniform_candidate_noise_probability": 0.35416666666666663,
+          "actual_noise_fraction": 0.3125
+        },
+        "heldout_nll": [
+          0.005253062234260142,
+          0.7183443903923035,
+          0.5221610814332962,
+          0.4160313606262207,
+          0.4841630756855011
+        ],
+        "witnesses": {
+          "familiar": 20,
+          "noise": 2,
+          "easy": 3,
+          "hard": 3,
+          "changing": 4,
+          "mixed": 0
+        }
+      },
+      {
+        "start": 321,
+        "end": 384,
+        "visits": {
+          "familiar": 8,
+          "noise": 3,
+          "easy": 16,
+          "hard": 17,
+          "changing": 20
+        },
+        "choices": {
+          "silence": 14,
+          "generate": 35,
+          "reuse": 15
+        },
+        "g": {
+          "familiar": 0.0012633870828722138,
+          "noise": 0.05366148551305135,
+          "easy": 0.011551283299922943,
+          "hard": 0.0006285362383898566,
+          "changing": 0.012294216454029084
+        },
+        "multiroom_opportunities": 59,
+        "offered": {
+          "familiar": 28,
+          "noise": 11,
+          "easy": 32,
+          "hard": 40,
+          "changing": 37
+        },
+        "noise_when_learning_alternative": {
+          "n": 11,
+          "policy_noise_probability": 0.2753562873060053,
+          "uniform_candidate_noise_probability": 0.36363636363636365,
+          "actual_noise_fraction": 0.2727272727272727
+        },
+        "heldout_nll": [
+          0.0032939088996499777,
+          0.759973555803299,
+          0.4646614044904709,
+          0.4502038210630417,
+          0.4750874191522598
+        ],
+        "witnesses": {
+          "familiar": 18,
+          "noise": 2,
+          "easy": 4,
+          "hard": 3,
+          "changing": 5,
+          "mixed": 0
+        }
+      },
+      {
+        "start": 385,
+        "end": 448,
+        "visits": {
+          "familiar": 9,
+          "noise": 9,
+          "easy": 7,
+          "hard": 11,
+          "changing": 28
+        },
+        "choices": {
+          "silence": 19,
+          "generate": 14,
+          "reuse": 31
+        },
+        "g": {
+          "familiar": 0.0011080004903002798,
+          "noise": 0.013232575522528755,
+          "easy": 0.011227011680603027,
+          "hard": -0.0018397163261066783,
+          "changing": 0.007623012576784406
+        },
+        "multiroom_opportunities": 59,
+        "offered": {
+          "familiar": 25,
+          "noise": 19,
+          "easy": 22,
+          "hard": 29,
+          "changing": 46
+        },
+        "noise_when_learning_alternative": {
+          "n": 18,
+          "policy_noise_probability": 0.41809858319660026,
+          "uniform_candidate_noise_probability": 0.40740740740740733,
+          "actual_noise_fraction": 0.4444444444444444
+        },
+        "heldout_nll": [
+          0.0026190191274508834,
+          0.7585954368114471,
+          0.4667406529188156,
+          0.41795139014720917,
+          0.43662430346012115
+        ],
+        "witnesses": {
+          "familiar": 18,
+          "noise": 2,
+          "easy": 3,
+          "hard": 2,
+          "changing": 7,
+          "mixed": 0
+        }
+      },
+      {
+        "start": 449,
+        "end": 512,
+        "visits": {
+          "familiar": 11,
+          "noise": 7,
+          "easy": 7,
+          "hard": 21,
+          "changing": 18
+        },
+        "choices": {
+          "silence": 18,
+          "generate": 35,
+          "reuse": 11
+        },
+        "g": {
+          "familiar": 0.0006642962821801616,
+          "noise": 0.022201427391597202,
+          "easy": 0.012726319687707084,
+          "hard": -0.0016298294067382812,
+          "changing": 0.004980819092856513
+        },
+        "multiroom_opportunities": 63,
+        "offered": {
+          "familiar": 28,
+          "noise": 12,
+          "easy": 23,
+          "hard": 55,
+          "changing": 35
+        },
+        "noise_when_learning_alternative": {
+          "n": 12,
+          "policy_noise_probability": 0.3915468646834294,
+          "uniform_candidate_noise_probability": 0.3611111111111111,
+          "actual_noise_fraction": 0.5833333333333334
+        },
+        "heldout_nll": [
+          0.009123438037931919,
+          0.6936517655849457,
+          0.48161813616752625,
+          0.420445054769516,
+          0.4409704655408859
+        ],
+        "witnesses": {
+          "familiar": 19,
+          "noise": 1,
+          "easy": 3,
+          "hard": 2,
+          "changing": 7,
+          "mixed": 0
+        }
+      }
+    ],
+    "noise_opportunities": {
+      "first_half": {
+        "n": 47,
+        "policy_noise_probability": 0.390335919256223,
+        "uniform_candidate_noise_probability": 0.38297872340425515,
+        "actual_noise_fraction": 0.425531914893617
+      },
+      "second_half": {
+        "n": 57,
+        "policy_noise_probability": 0.37999765097833516,
+        "uniform_candidate_noise_probability": 0.3742690058479532,
+        "actual_noise_fraction": 0.40350877192982454
+      }
+    },
+    "first_visit": {
+      "familiar": 4,
+      "noise": 47,
+      "easy": 1,
+      "hard": 8,
+      "changing": 3
+    },
+    "change": {
+      "turn": 257,
+      "prechange_nll": 0.4522687792778015,
+      "new_rule_first_nll_before_learning": 1.9653279185295105,
+      "first_return": 271,
+      "returned_within_128": true,
+      "prechange_visits": 37,
+      "postchange_visits": 77,
+      "final_nll": 0.4409704655408859
+    },
+    "gold_future_alignment": {
+      "overall": {
+        "n": 40,
+        "pearson": 0.9553378316708551,
+        "spearman": 0.06772983114446529,
+        "material_n": 39,
+        "material_sign_agreement": 0.3333333333333333
+      },
+      "first_half": {
+        "n": 20,
+        "pearson": 0.9612208848466961,
+        "spearman": 0.13984962406015036,
+        "material_n": 20,
+        "material_sign_agreement": 0.4
+      },
+      "second_half": {
+        "n": 20,
+        "pearson": -0.019313981723623946,
+        "spearman": -0.051127819548872175,
+        "material_n": 19,
+        "material_sign_agreement": 0.2631578947368421
+      }
+    },
+    "continuation_future_alignment": {
+      "overall": {
+        "n": 40,
+        "pearson": 0.9551267747658401,
+        "spearman": 0.0300187617260788,
+        "material_n": 38,
+        "material_sign_agreement": 0.4473684210526316
+      },
+      "first_half": {
+        "n": 20,
+        "pearson": 0.9609866532967178,
+        "spearman": 0.006015037593984962,
+        "material_n": 19,
+        "material_sign_agreement": 0.5263157894736842
+      },
+      "second_half": {
+        "n": 20,
+        "pearson": 0.09667075537714935,
+        "spearman": -0.05413533834586466,
+        "material_n": 19,
+        "material_sign_agreement": 0.3684210526315789
+      }
+    },
+    "note": "Future bank is a researcher diagnostic, not reward. Empirical allocation is not causal attribution to the neural F; opportunities are reported separately."
+  },
+  "source_hashes": {
+    "D:\\information-boltzmann-v1\\scratch\\run_learning_rooms_20261105.py": "37e2769629bef2b168cb4843055f8a7716cc6192211d1e73ec0b7538f39b835d",
+    "scripts\\ib_local\\learning_rooms_world.py": "52e0662a15be770d5807c110fad1b91c7a02941a9a71af82294f6cab5d72c1d6",
+    "scripts\\ib_local\\navigation_live_witness.py": "79888ec3da665289395b0cc70308187b0a6c7ac9efb945e1c9c437e0e934cf2a",
+    "scripts\\ib_local\\language_navigation_kanli_v4t.py": "7ae1f6ad10a73b456fe61d067b38b0c194b7d8ccd2dc704f1eca9f8379abed71",
+    "scripts\\ib_local\\navigation_settlement.py": "2ea153046fef84044e0aa9d052536a7b9a637e6b3501b3a62c9aaabc20eba530",
+    "scripts\\ib_local\\navigation_value_scale.py": "1889be01b1f5d03a1ac0ccdcdd0dfa7c5902101925232e8b0facea6c6e9e78a1",
+    "scripts\\ib_local\\navigation_checkpoint.py": "932ae1619ac16c06beaa2727670e42a4dd109b75d652a5a408422d5a5aa7e092",
+    "scripts\\ib_local\\language_navigation_kanli_v4b.py": "33052ab97ef827071dd8db147a89a4a2309a17d9a28b50f908850a8b1c42698d",
+    "scripts\\ib_local\\language_navigation_kanli_v4c.py": "650703f5813306eafca04ddd315ae1524d951201873846dffb763a362721104b",
+    "scripts\\ib_local\\language_navigation_kanli_v4p.py": "9149294a10f2e9c3ec291e8ffd19c548762e60559f7bb8a0f6a9764f94b2f791",
+    "scripts\\ib_local\\language_navigation_kanli_v4q.py": "454b5f009c87be1ea1dcc082e7d803090dcf5e17127ab5264c36e993233d0e65"
+  },
+  "protocol": "docs/information_boltzmann/CGB_LEARNING_ROOMS_20261105.md"
+}

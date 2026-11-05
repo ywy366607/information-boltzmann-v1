@@ -53,8 +53,16 @@ def render_page(path: Path, page: Path, header: str, entries: list[dict], audite
         out += [f"模块源码说明：{header}", ""]
     for e in entries:
         out += [f"## {e['name']}", "", f"[源码位置]({relative_link(page, path, e['line'])})", ""]
+        if e.get("classification"):
+            c = e["classification"]
+            out += [f"分类：{c['class']}；适用范围：{c.get('scope') or '未定'}；审核：{c['status']}"
+                    + (f"；候选：{c['candidate']}" if c.get("candidate") else ""), ""]
+            if c.get("note"):
+                out += ["分类说明：" + c["note"], ""]
         if e.get("interpretation"):
             out += ["解释：" + e["interpretation"], ""]
+        if e.get("interpretation_stale"):
+            out += ["原中文解释对应旧源码，待复核；请以以下形式陈述和当前源码为准。", ""]
         if e["doc"]:
             out += ["源码说明：" + e["doc"], ""]
         else:
@@ -70,8 +78,11 @@ def main() -> None:
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     inventory = base.checked_inventory(args.inventory)
+    classifications = json.loads(base.CLASSES.read_text(encoding="utf-8"))["theorems"]
     explanations = json.loads(INTERPRETATIONS.read_text(encoding="utf-8")) if INTERPRETATIONS.exists() else {}
     authored = [r for r in inventory["declarations"] if r["kind"] == "theorem" and r["source_declared"]]
+    if set(classifications) != {r["name"] for r in authored}:
+        raise ValueError("Classification inventory mismatch")
     by_module: dict[str, list[dict]] = {}
     for record in authored:
         by_module.setdefault(record["module"], []).append(record)
@@ -94,10 +105,11 @@ def main() -> None:
             seen.add(record["name"])
             no_doc += not bool(doc)
             explanation = explanations.get(record["name"], {})
-            if explanation and explanation.get("source_sha256") != inventory["source_hashes"][rel]:
-                raise ValueError(f"Interpretation source changed: {record['name']}")
+            interpretation_stale = bool(explanation and explanation.get("source_sha256") != inventory["source_hashes"][rel])
             entries.append(dict(name=record["name"], doc=doc, line=line, signature=record["signature"],
-                                interpretation=explanation.get("text", "")))
+                                interpretation="" if interpretation_stale else explanation.get("text", ""),
+                                interpretation_stale=interpretation_stale,
+                                classification=classifications[record["name"]]))
         page = DEST / "production" / (path.stem + ".md")
         pages[page] = render_page(path, page, header, entries, True)
         modules.append((path.stem, page, entries))
@@ -133,9 +145,12 @@ def main() -> None:
               "最后核对源码中的定义、前提及实现对应。主题由名称关键词匹配，只是检索辅助，不是完整语义分类。", "",
               "按关键词查询：`python scripts/search_theorems.py gain --limit 10`；"
               "多个关键词要求同时匹配，`--scope production` 或 `--scope reviews` 可限制范围。", "",
+              f"逐条分类（class / scope）：已审核 {sum(c['status'] == 'reviewed' for c in classifications.values())} 条，"
+              f"未审核 {sum(c['status'] != 'reviewed' for c in classifications.values())} 条；"
+              "draft 仅为待核验的种子。详见 [分类统计](../CGB_THEOREM_BASIS_20261030.md)。", "",
               f"生产区：{len(authored)} 条已审计源码定理/引理，{len(modules)} 个有定理的模块；"
               f"其中 {no_doc} 条没有源码文字说明，页面提供完整形式陈述并明确标记。", "",
-              f"已逐条补充中文解释：{len(explanations)} 条。解释与模块源码哈希绑定；源码变化时生成器会提示复核。", "",
+              f"已有中文解释记录：{len(explanations)} 条。解释与模块源码哈希绑定；源码变化时标记待复核并隐藏旧解释。", "",
               f"探索区：{sum(len(e) for _, _, e in reviews)} 条源码声明，来自 {len(reviews)} 个文件；"
               "独立列出，未视为生产区审计通过。", "",
               "需要新增机制前，也检索 [未入 Lean 的手工推导](../CGB_HAND_DERIVATIONS.md)、"

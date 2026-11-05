@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableRecoveryCertificate.lean#L12)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：给出可再生恢复证书中各机体构型对应输出动作控制律的分段显式查找表。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -33,6 +37,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableRecoveryCertificate.lean#L19)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：有效机体在支持集内的状态均具有非零正维持成本，从而排除平凡真空状态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -48,6 +56,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableRecoveryCertificate.lean#L22)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：在非空有效生存态下机体必定处于激活工作状态并产生可观测动作。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -61,6 +73,10 @@
 ## _private.CGBAxioms.RenewableRecoveryCertificate.0.CGB.RenewableRecoveryCertificate.next_good
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableRecoveryCertificate.lean#L26)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：良性状态在一步环境交互演化后仍以概率1保持在良性恢复集合中。
 
@@ -79,6 +95,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableRecoveryCertificate.lean#L32)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：沿任意支持的交互历史演化，机体状态序列始终严格受限于良性状态集合内部。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -94,6 +114,10 @@
 ## _private.CGBAxioms.RenewableRecoveryCertificate.0.CGB.RenewableRecoveryCertificate.unmarked_progress
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableRecoveryCertificate.lean#L55)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：未标记的微观状态进展保持持续的局部能量平衡与生存通量传递。
 
@@ -113,6 +137,10 @@
 ## CGB.RenewableRecoveryCertificate.survival_by_criterion
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableRecoveryCertificate.lean#L94)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：由局域可再生证书可严格导出机体全时期生存概率下界，完成了局域物理证书到全时生存性的逻辑闭环。
 

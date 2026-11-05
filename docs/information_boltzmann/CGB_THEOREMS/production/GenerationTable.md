@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationTable.lean#L34)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Table
+
+分类说明：针对 Table 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：反应规则的双向应用满足对合性，即沿着正向非平庸改写后再执行反向规则，精确复原原有状态对。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -24,6 +28,10 @@
 ## CGB.tableCRN.axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationTable.lean#L72)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Table
+
+分类说明：针对 Table 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在静默化学势为零、空位唯一且非边界反应守恒的条件下，查表化学反应网络导出的物理介质严格满足基础 CGB 六公理。
 

@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLatchHealth.lean#L27)
 
+分类：necessity；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：无摄入吸收陷阱状态内部不可自愈的不可行性。
+
 解释：若状态集合对个体自身事件封闭且其中没有任何可摄入状态，则集合内每个状态都无法通过自身事件恢复摄入。
 
 源码说明：**H1 (lock-in is death)**: if the set `B` is closed under the organism's own events and no state in it can take content in, no state in it is recoverable.
@@ -25,6 +29,10 @@
 ## CGB.Medium.trap_insensitive
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLatchHealth.lean#L41)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在某状态下，如果所有事件的速率和作用均与刺激无关，那么该状态的一步转移核也与刺激无关。
 
@@ -43,6 +51,10 @@
 ## CGB.PairCRN.pair_rate_ratio
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLatchHealth.lean#L59)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在给定双体反应介质中，不同刺激下同一事件速率之比由储库势变化与内容变化的指数因子给出。
 

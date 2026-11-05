@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableEncoding.lean#L56)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：可再生编码在比特串与其抽象规则表示之间满足无损双向编解码。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -23,6 +27,10 @@
 ## CGB.RenewableEncoding.book_layout
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableEncoding.lean#L58)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：可再生规则书的二进制数据布局与各字段偏移量的严格结构规范。
 
@@ -41,6 +49,10 @@ CGB.RenewableEncoding.book.base.sites = 1 ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableEncoding.lean#L62)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：从编码数据中通过索引检索规则表行的操作具有确定性与正确性。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -54,6 +66,10 @@ CGB.RenewableEncoding.book.base.sites = 1 ∧
 ## _private.CGBAxioms.RenewableEncoding.0.CGB.RenewableEncoding.transfer_lookup
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableEncoding.lean#L65)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：微观物质转移查找表在解码后能够精确恢复原物质传输规格。
 
@@ -73,6 +89,10 @@ CGB.RenewableEncoding.book.base.sites = 1 ∧
 ## CGB.RenewableEncoding.compiled_rows
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableEncoding.lean#L72)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：编译后的离散规则行集合与原系统动作规范严格逐行对应。
 
@@ -103,6 +123,10 @@ CGB.RenewableEncoding.book.base.sites = 1 ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableEncoding.lean#L82)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：编译规则表中的数值转移速率精确等于原始物理模型中定义的离散跃迁率。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -118,6 +142,10 @@ CGB.RenewableEncoding.book.base.sites = 1 ∧
 ## _private.CGBAxioms.RenewableEncoding.0.CGB.RenewableEncoding.data_balance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableEncoding.lean#L92)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：规则数据各部分在编码序列中的分布满足严格的数据流平衡方程。
 
@@ -140,6 +168,10 @@ CGB.RenewableEncoding.book.base.sites = 1 ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableEncoding.lean#L99)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：可再生规则书的所有离散动作转移均受可审计的局部账本严密追踪。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -154,6 +186,10 @@ CGB.RenewableEncoding.book.Accountable
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableEncoding.lean#L137)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：任何合法非平凡可再生规则书的编码长度严格为正。
 
 源码说明：Necessary bit count for EVERY book under the registered convention. This does not evaluate an enormous Gödel number or change the encoding language.
@@ -167,6 +203,10 @@ CGB.RenewableEncoding.book.Accountable
 ## CGB.RenewableEncoding.small_reference_obstruction
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableEncoding.lean#L141)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：过小的参考图架构无法容纳完整可再生机体的布线规范（容量瓶颈阻碍）。
 
@@ -183,6 +223,10 @@ CGB.RenewableEncoding.book.Accountable
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableEncoding.lean#L147)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：在极小基因组容量假设下，不存在任何能满足1%开销的可再生机体描述。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -198,6 +242,10 @@ CGB.RenewableEncoding.book.Accountable
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableEncoding.lean#L151)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：给出环境丰富度对维持可再生机体生命描述复杂度的必要信息论下界。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -211,6 +259,10 @@ CGB.RenewableEncoding.book.Accountable
 ## CGB.RenewableEncoding.no_encoded_candidate
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableEncoding.lean#L160)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：形式否定存在可在超低比特限制下同时实现全部可再生学习功能的候选机体。
 

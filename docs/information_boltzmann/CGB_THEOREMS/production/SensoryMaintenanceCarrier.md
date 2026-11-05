@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceCarrier.lean#L28)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：双隔室感知维持系统的各个局部组件在转移前后严格满足各自独立的存量与通量守恒规则。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -29,6 +33,10 @@
 ## CGB.SensoryMaintenanceCarrier.component_sums
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceCarrier.lean#L36)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：两个子组件的微观物质存量、输入通量与输出通量求和精确还原全局感知维持系统的宏观对应量。
 
@@ -50,6 +58,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceCarrier.lean#L78)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：微观缓冲载体在具有正演化概率时，其粗粒化投影后的宏观交互机跃迁概率同样严格为正。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -67,6 +79,10 @@
 ## _private.CGBAxioms.SensoryMaintenanceCarrier.0.CGB.SensoryMaintenanceCarrier.count_sum
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceCarrier.lean#L117)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：复合感知维护载体在各个空间位置的总物质计数等于其分解子载体在该位置计数之和。
 
@@ -88,6 +104,10 @@
 ## _private.CGBAxioms.SensoryMaintenanceCarrier.0.CGB.SensoryMaintenanceCarrier.moved_sum
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceCarrier.lean#L125)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：微观空间各位置间迁移的总物质数量等于第一与第二子系统微观迁移量的代数和。
 
@@ -114,6 +134,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceCarrier.lean#L136)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：双隔室感知维持系统的微观载体模型完全实现了宏观感知维持动力学规则。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -133,6 +157,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceCarrier.lean#L167)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：感知维持系统中外源物质库的微观储备量在演化中恒定维持在4单位。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -148,6 +176,10 @@
 ## CGB.SensoryMaintenanceCarrier.recharge_paid
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceCarrier.lean#L176)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：外源向机体输送的物质通量与从汇回流充电的物质流在微观上严格平衡。
 
@@ -170,6 +202,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceCarrier.lean#L195)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：物理微观感知载体过程的首次恢复命中概率与宏观感知维持系统的恢复度量严格一致。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -189,6 +225,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceCarrier.lean#L212)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：物理感知维持系统的全时存活评分与宏观感知机体的生存概率指标完全相等。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -206,6 +246,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceCarrier.lean#L260)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：感知维持物理系统在初态赋予外源物质库的可用能量储备严格等于12单位。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -222,6 +266,10 @@
 ## CGB.SensoryMaintenanceCarrier.source_energy_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceCarrier.lean#L269)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：沿感知维持过程外源储能变化与物质释放流严格由外界驱动输入能量精确维系。
 

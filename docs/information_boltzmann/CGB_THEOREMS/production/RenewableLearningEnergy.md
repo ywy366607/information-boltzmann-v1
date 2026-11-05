@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningEnergy.lean#L16)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：可再生学习状态转移的正概率事件必须由底层植物反应网络的对应事件支撑。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -28,6 +32,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningEnergy.lean#L81)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：可再生学习过程的能量分配矩阵行和与列和满足守恒双预算。
 
 源码说明：Allocating credit uses part of the specified food input. Effective writes and destroyed credit use part of total specified consumption.
@@ -44,6 +52,10 @@
 ## _private.CGBAxioms.RenewableLearningEnergy.0.CGB.RenewableLearningEnergy.telescope
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningEnergy.lean#L86)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：能量账户的伸缩求和恒等式：终端期望储能加累计耗能等于初始储量加累计补给。
 
@@ -69,6 +81,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningEnergy.lean#L107)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：可再生学习的燃料消耗与输入通量之差受储存燃料状态的单调下界保护。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -92,6 +108,10 @@
 ## CGB.RenewableLearningEnergy.credit_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningEnergy.lean#L114)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：信用分配通量受可再生学习账户的可用余额与补给上限联合约束。
 

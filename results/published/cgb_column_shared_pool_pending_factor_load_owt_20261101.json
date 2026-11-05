@@ -1,0 +1,155 @@
+{
+  "status": "local_pending_rank_one_factor_load_audit",
+  "claim_scope": "Real-OpenWebText measurement of simultaneous local rank-one response factors over declared delay windows. No parameter or persistent-state update is applied.",
+  "not_claimed": [
+    "that current H/C/S preserves this factor set",
+    "a required global rank",
+    "an online learning rule",
+    "language capability",
+    "life closure"
+  ],
+  "factor": "hard-saturation response gate outer-product pre-arrival typed S participation",
+  "interpretation": "factor_span_rank is the number of independent historic factor directions in a compartment before a third factor could distinguish them; summed_outer_product_rank is the rank after their linear superposition. Both are local, not a demand to materialize a global dense eligibility matrix.",
+  "result_by_delay_window": {
+    "1": {
+      "factor_span_rank": {
+        "mean": 0.451416015625,
+        "median": 0.0,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "summed_outer_product_rank": {
+        "mean": 0.451416015625,
+        "median": 0.0,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "nonzero_unresolved_factor_count": {
+        "mean": 0.451416015625,
+        "median": 0.0,
+        "p95": 1.0,
+        "max": 1.0
+      }
+    },
+    "2": {
+      "factor_span_rank": {
+        "mean": 0.913330078125,
+        "median": 1.0,
+        "p95": 2.0,
+        "max": 2.0
+      },
+      "summed_outer_product_rank": {
+        "mean": 0.8291015625,
+        "median": 1.0,
+        "p95": 2.0,
+        "max": 2.0
+      },
+      "nonzero_unresolved_factor_count": {
+        "mean": 0.913330078125,
+        "median": 1.0,
+        "p95": 2.0,
+        "max": 2.0
+      }
+    },
+    "4": {
+      "factor_span_rank": {
+        "mean": 1.82958984375,
+        "median": 2.0,
+        "p95": 4.0,
+        "max": 4.0
+      },
+      "summed_outer_product_rank": {
+        "mean": 1.4814453125,
+        "median": 1.0,
+        "p95": 3.0,
+        "max": 4.0
+      },
+      "nonzero_unresolved_factor_count": {
+        "mean": 1.829833984375,
+        "median": 2.0,
+        "p95": 4.0,
+        "max": 4.0
+      }
+    },
+    "8": {
+      "factor_span_rank": {
+        "mean": 3.653076171875,
+        "median": 4.0,
+        "p95": 7.0,
+        "max": 8.0
+      },
+      "summed_outer_product_rank": {
+        "mean": 2.63427734375,
+        "median": 3.0,
+        "p95": 5.0,
+        "max": 8.0
+      },
+      "nonzero_unresolved_factor_count": {
+        "mean": 3.65869140625,
+        "median": 4.0,
+        "p95": 7.0,
+        "max": 8.0
+      }
+    },
+    "16": {
+      "factor_span_rank": {
+        "mean": 7.274658203125,
+        "median": 7.0,
+        "p95": 13.0,
+        "max": 16.0
+      },
+      "summed_outer_product_rank": {
+        "mean": 4.77294921875,
+        "median": 5.0,
+        "p95": 9.0,
+        "max": 13.0
+      },
+      "nonzero_unresolved_factor_count": {
+        "mean": 7.30126953125,
+        "median": 7.0,
+        "p95": 13.0,
+        "max": 16.0
+      }
+    }
+  },
+  "model": {
+    "d_model": 32,
+    "grid_shape": [
+      8,
+      8
+    ],
+    "active_columns": 8,
+    "contact_rank": 4,
+    "parameter_numbers": 33389,
+    "persistent_state_bytes_fp32": {
+      "H_activity": 8192,
+      "C_natural": 8192,
+      "C_precision": 256,
+      "C_causal_token": 8,
+      "S_participation": 8192,
+      "total": 24840
+    }
+  },
+  "protocol": {
+    "warmup_events": 128,
+    "steps": 1024,
+    "windows": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "rank_sample_every_events": 16,
+    "rank_tolerance": 1e-05,
+    "parameter_write": false,
+    "state_history": "the body state is detached after each event; no retained autograd graph",
+    "seed": 20261101,
+    "device": "cuda"
+  },
+  "source": {
+    "path": "data\\ib_owt_10000\\train.npy",
+    "sha256": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+    "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d"
+  }
+}

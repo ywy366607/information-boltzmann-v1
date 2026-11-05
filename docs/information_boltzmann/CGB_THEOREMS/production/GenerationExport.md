@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L25)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Export
+
+分类说明：针对 Export 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在每拍内容守恒且容量有界时，累计摄入不超过累计排出加容量。
 
 源码说明：**G16a (export is forced)**: with the content ledger and a capacity bound, cumulative export is at least cumulative intake minus the capacity.
@@ -26,6 +30,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L42)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Export
+
+分类说明：针对 Export 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当只有摄入而无排出且内容不超过容量时，任意有限时段的累计摄入不超过该容量。
 
 源码说明：**G16b (write-only bodies starve)**: with no export, total lifetime intake is at most the capacity.
@@ -40,6 +48,10 @@
 ## CGB.Generation.endless_intake_endless_export
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L50)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Export
+
+分类说明：针对 Export 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在内容守恒与容量有界的条件下，如果累计摄入可以超过任意界，则累计排出也可以超过任意界。
 
@@ -58,6 +70,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L67)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Export
+
+分类说明：针对 Export 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若每次排出删除某内容的概率至少为 q₀ 且不超过一，其经过 n 次排出的存活量不超过 (1−q₀)^n。
 
 源码说明：**G17a (unselective export forgets)**: if every export removes the item with probability at least `q₀ > 0` (for example `1/C` when the exported unit is drawn without regard to what it holds), survival is at most `(1 - q₀)^n`.
@@ -73,6 +89,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L79)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Export
+
+分类说明：针对 Export 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若每次删除概率有正下界且不超过一，则经过足够多次排出后，该内容的存活量会低于任何正阈值。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -87,6 +107,10 @@
 ## CGB.Generation.retention_needs_selectivity
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationExport.lean#L90)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Export
+
+分类说明：针对 Export 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若内容在任意次数排出后始终有正的存活下界，则其各次删除概率不可能始终高于同一个正数。
 

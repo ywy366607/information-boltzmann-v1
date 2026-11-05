@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintAudit.lean#L38)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在指定有限性条件下，介质的 Axioms 结构等价于其原子化条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -24,6 +28,10 @@
 ## CGB.Medium.p1a_iff_finite_and_unique
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintAudit.lean#L58)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：P1a 等价于局部状态类型有限且零内容状态唯一。
 
@@ -40,6 +48,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintAudit.lean#L71)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：若位置身份标签是单射，则介质满足所定义的刚性。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -55,6 +67,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintAudit.lean#L77)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：介质刚性成立时，P2c 重标记等变性成立。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -68,6 +84,10 @@
 ## CGB.Medium.initial_invariant_of_rigid
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintAudit.lean#L82)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：若介质刚性成立，则初始状态对每个自同构保持不变。
 
@@ -84,6 +104,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintAudit.lean#L88)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：若每个位置都是边界，则介质自动满足只有边界感知条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -98,6 +122,10 @@
 ## CGB.Medium.p2a_of_every_event_open
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintAudit.lean#L95)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：若所有事件都不是闭事件，则 P2a 的闭事件守恒条件真空成立。
 
@@ -114,6 +142,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintAudit.lean#L98)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：若事件只写参与位置且某事件参与集为空，则该事件对任意状态没有作用。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -129,6 +161,10 @@
 ## CGB.Medium.jump_equivariant
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintAudit.lean#L106)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：若 P2c 成立，则在任意介质自同构下同步重标记刺激和状态可保持跳跃速率。
 
@@ -150,6 +186,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintAudit.lean#L124)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：空边界、只有边界感知及 P2b 成立时，任意刺激下的跳跃过程都可逆。
 
 源码说明：P3 with no boundary removes ALL stimulus dependence. Combined with P2b, every stimulus then gives the same reversible aggregate kernel.
@@ -165,6 +205,10 @@
 ## CGB.Medium.rescale_jump
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintAudit.lean#L142)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：将介质速率按非负系数缩放后，每个聚合跳跃速率按同一系数缩放。
 
@@ -182,6 +226,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintAudit.lean#L150)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：将满足公理的介质所有速率乘任意非负系数后，所得介质仍满足这些公理。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -196,6 +244,10 @@
 ## CGB.Medium.rescale_changes_nonzero_jump
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintAudit.lean#L173)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：若某跳跃速率为正，将介质速率乘二会严格改变该跳跃速率。
 
@@ -213,6 +265,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintAudit.lean#L192)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：由正权重和对称非负电导构造的跳跃过程满足可逆性。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -227,6 +283,10 @@
 ## CGB.JumpProcess.reversible_conductance_representation
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintAudit.lean#L200)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：任意可逆跳跃过程都可表示为对称非负电导除以正平衡权重。
 

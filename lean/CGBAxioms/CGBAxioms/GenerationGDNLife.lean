@@ -275,6 +275,57 @@ theorem likelihoodSoftplus_deriv (r : ℝ) :
   convert hlog using 1
   simp
 
+/-- The floor-free posterior mean used by the executable C carrier after a
+single positive-confidence arrival.  The full analytic model has an additional
+safety floor; the runtime carrier maintains strictly positive precision, so
+this is the exact local arithmetic whose sensitivity is used for learning. -/
+noncomputable def likelihoodPosteriorMean
+    (natural precision arrivalWeight value raw : ℝ) : ℝ :=
+  (natural + arrivalWeight * likelihoodSoftplus raw * value) /
+    (precision + arrivalWeight * likelihoodSoftplus raw)
+
+/-- The local C sensitivity of that posterior mean to the learned confidence
+logit.  It is reconstructed from the existing material state and last causal
+byte; it is not stored as another eligibility state. -/
+noncomputable def likelihoodPosteriorSlope
+    (natural precision arrivalWeight value raw : ℝ) : ℝ :=
+  arrivalWeight * likelihoodSlope raw *
+    (value - likelihoodPosteriorMean natural precision arrivalWeight value raw) /
+      (precision + arrivalWeight * likelihoodSoftplus raw)
+
+/-- Exact local posterior sensitivity for the learned likelihood logit.  A
+confidence update changes both C's natural numerator and its precision, so the
+usable direction is their quotient-rule combination, rather than the natural
+write alone.  This is the runtime refinement of the preceding two arrival
+sensitivity identities; it adds no trace and no reverse-time graph. -/
+theorem likelihood_posterior_mean_deriv
+    (natural precision arrivalWeight value raw : ℝ)
+    (hden : precision + arrivalWeight * likelihoodSoftplus raw ≠ 0) :
+    HasDerivAt
+      (fun θ : ℝ => likelihoodPosteriorMean natural precision arrivalWeight value (raw + θ))
+      (likelihoodPosteriorSlope natural precision arrivalWeight value raw) 0 := by
+  have hsoft := likelihoodSoftplus_deriv raw
+  have hnum : HasDerivAt
+      (fun θ : ℝ => natural + arrivalWeight * likelihoodSoftplus (raw + θ) * value)
+      (arrivalWeight * likelihoodSlope raw * value) 0 := by
+    convert ((hsoft.const_mul (arrivalWeight * value)).const_add natural) using 1
+    · ext θ
+      ring
+    · ring
+  have hprecision : HasDerivAt
+      (fun θ : ℝ => precision + arrivalWeight * likelihoodSoftplus (raw + θ))
+      (arrivalWeight * likelihoodSlope raw) 0 := by
+    simpa [mul_comm] using ((hsoft.const_mul arrivalWeight).const_add precision)
+  have hquot := hnum.div hprecision (by simpa using hden)
+  change HasDerivAt
+    ((fun θ : ℝ => natural + arrivalWeight * likelihoodSoftplus (raw + θ) * value) /
+      fun θ : ℝ => precision + arrivalWeight * likelihoodSoftplus (raw + θ))
+    (likelihoodPosteriorSlope natural precision arrivalWeight value raw) 0
+  convert hquot using 1
+  simp only [likelihoodPosteriorSlope, likelihoodPosteriorMean]
+  field_simp [hden]
+  ring_nf
+
 /-- A perturbation of the existing likelihood logit for one byte.  It changes
 no state field, value, address or query; its positivity is inherited from the
 same softplus parametrization used by the runtime. -/
@@ -998,6 +1049,27 @@ theorem head_update_logits (η : ℝ) (s : State k d) (f : Fin d → ℝ) (targe
       (η * (1 + ∑ i, f i * f i)) * innovation s f target b := by
   have hsum : (∑ i, (s.head b i + η * innovation s f target b * f i) * f i) =
       (∑ i, s.head b i * f i) + (η * innovation s f target b) * ∑ i, f i * f i := by
+    rw [mul_sum, ← sum_add_distrib]
+    apply sum_congr rfl
+    intro i _
+    ring
+  simp only [logits, headUpdate]
+  rw [hsum]
+  ring
+
+/-- A G14 head update remains a rank-one change when read on a later feature.
+The complete effect of this *one known update* is recoverable from its boundary
+receipt (`innovation`, saved feature) and the later feature through one inner
+product.  This does not supply the derivative of the later feature with
+respect to an earlier contact parameter; that separate causal factor is the
+open long-credit obligation. -/
+theorem head_update_other_feature (η : ℝ) (s : State k d)
+    (written read : Fin d → ℝ) (target b : Byte) :
+    logits (headUpdate η s written target) read b = logits s read b +
+      η * innovation s written target b * (1 + ∑ i, written i * read i) := by
+  have hsum : (∑ i, (s.head b i + η * innovation s written target b * written i) * read i) =
+      (∑ i, s.head b i * read i) +
+        (η * innovation s written target b) * ∑ i, written i * read i := by
     rw [mul_sum, ← sum_add_distrib]
     apply sum_congr rfl
     intro i _

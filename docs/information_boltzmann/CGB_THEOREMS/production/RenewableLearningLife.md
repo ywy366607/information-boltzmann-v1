@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningLife.lean#L19)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：给出可再生学习生命模型中细胞各构型对应策略动作的完整分段查找表。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -33,6 +37,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningLife.lean#L26)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：良性状态集中的机体单元构型必非真空空虚态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -48,6 +56,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningLife.lean#L29)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：非真空机体在良性状态下始终处于激活运动状态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -61,6 +73,10 @@
 ## _private.CGBAxioms.RenewableLearningLife.0.CGB.RenewableLearningLife.next_good
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningLife.lean#L33)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：良性状态在一步环境交互演化后仍以概率1保持在良性集合内。
 
@@ -79,6 +95,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningLife.lean#L39)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：沿任意受支持的历史演化轨迹，机体状态严格包含在良性集合内部。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -94,6 +114,10 @@
 ## _private.CGBAxioms.RenewableLearningLife.0.CGB.RenewableLearningLife.law_invariant
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningLife.lean#L61)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：自然演化概率分布测度在良性状态子空间上保持平稳不变性。
 
@@ -113,6 +137,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningLife.lean#L82)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：从初始状态出发可达的全部机体构型均严格属于良性状态集。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -129,6 +157,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningLife.lean#L91)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：单单元机体构型空间全状态函数的求和展开等价性。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -142,6 +174,10 @@
 ## _private.CGBAxioms.RenewableLearningLife.0.CGB.RenewableLearningLife.sum_env
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningLife.lean#L95)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：九状态环境空间全状态实值函数的完整展开求和恒等式。
 
@@ -165,6 +201,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningLife.lean#L106)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：给出机体恢复度函数在k+1步上的单步向后动态规划递推方程。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -187,6 +227,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningLife.lean#L117)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：只要当前步存在正摄入通量，机体的多步恢复度量在当前步瞬时达到1。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -204,6 +248,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningLife.lean#L123)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：良性状态机体在两步时间视界内的物质恢复度量严格等于1。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -218,6 +266,10 @@
 ## _private.CGBAxioms.RenewableLearningLife.0.CGB.RenewableLearningLife.alive_good
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningLife.lean#L143)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：处于良性状态集内的机体在任意时刻的存活指示测度恒等于1。
 
@@ -237,6 +289,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningLife.lean#L162)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：在自然无干扰的环境输入流驱动下，机体在任意有限步内的存活概率恒等于1。
 
 源码说明：Every supported continuation remains viable through missed food, paid reopening, probing, identification and actual resource-funded renewal.
@@ -253,6 +309,10 @@
 ## CGB.RenewableLearningLife.persistence
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningLife.lean#L189)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：可再生学习生命机体满足参数为0的无限时间持续生存公理。
 

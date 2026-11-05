@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L17)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入相容非负实数对，经吉布斯点态对数放缩，输出x (ln y - ln x) ≤ y - x在允许零支撑的条件下普遍成立。
 
 源码说明：Gibbs' pointwise bound on compatible, possibly zero, supports.
@@ -23,6 +27,10 @@
 ## CGB.InformationProjection.log_sum_le
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L25)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入非负实数序列，经对数函数凹性分析，输出有限项对数和不等式∑ x ln(∑ x / ∑ y) ≤ ∑ x ln(x / y)成立。
 
@@ -42,6 +50,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L71)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入同支撑集且归一化的离散概率分布，经琴生不等式，输出两分布间的相对熵恒大于等于零。
 
 源码说明：The existing relative entropy is nonnegative for normalized compatible supports. The strictly positive case reuses `InformationEnergy.kl_nonneg` unchanged.
@@ -58,6 +70,10 @@
 ## CGB.InformationProjection.kl_pos_of_support_gap
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L82)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入同等总质量的非负测度且存在支撑集间隙（x(i)=0而y(i)>0），经单项非负分解，输出相对熵严格大于零。
 
@@ -76,6 +92,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L108)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入非负测度与确定性投影映射，经原像非负累加求和，输出投影后测度在目标空间各点的值恒非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -91,6 +111,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L114)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入测度与投影映射，经划分重组求和，输出投影后测度的全空间积分精确等于原测度全空间积分。
 
 源码说明：Observation preserves total mass, including zero total mass.
@@ -105,6 +129,10 @@
 ## CGB.InformationProjection.kl_project_le
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L123)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入确定性投影函数与两组相容测度，经纤维化对数和分解，输出投影后的粗粒化相对熵小于等于原测度相对熵。
 
@@ -125,6 +153,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L151)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入正概率点处的非负测度，经分量边际求和，输出该点所在的两边缘边际和及总质量均严格大于零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -141,6 +173,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L163)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入二元非负测度，经边际乘积归一化构造，输出参考分布在所有状态对上的取值恒非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -155,6 +191,10 @@
 ## CGB.InformationProjection.reference_pos_of_pos
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L171)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入在某点处严格为正的二元测度，经边际正性传递，输出对应的乘积参考测度在该点严格大于零。
 
@@ -171,6 +211,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L179)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入有限双变量测度，经双重求和展开，输出乘积参考测度的全空间总质量精确等于原始测度的总质量。
 
 源码说明：The conditional-product reference has exactly the source's total mass, including when that mass is zero.
@@ -185,6 +229,10 @@
 ## CGB.InformationProjection.condMutualInfo_eq_kl
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L192)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入三变量非负联合分布，经对数求和恒等变换，输出条件互信息形式精确等价于联合分布与其条件独立乘积参考分布之间的相对熵（KL散度）。
 
@@ -204,6 +252,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L212)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入有限离散变量上的非负联合分布，经相对熵非负性推导，输出非归一化条件互信息恒大于等于零。
 
 源码说明：Nonnegative, unnormalized finite conditional mutual information.
@@ -218,6 +270,10 @@
 ## CGB.InformationProjection.condMutualInfo_pos_of_missing_rectangle
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L229)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入具有正边际矩形但内部存在零概率条目的非负联合分布，经相对熵支撑集分析，输出其条件互信息严格大于零。
 
@@ -236,6 +292,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L254)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入二元测度与投影函数，经求和与投影算子交换，输出边际求和后投影等价于先投影后边际求和。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -251,6 +311,10 @@
 ## CGB.InformationProjection.reference_project
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L263)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入第三变量投影函数与双变量测度，经求和算子交换，输出参考测度的边际投影与投影测度的参考测度严格可交换。
 
@@ -268,6 +332,10 @@
 ## CGB.InformationProjection.condMutualInfo_project_le
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean#L282)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationProjection
+
+分类说明：针对 InformationProjection 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入确定性粗粒化投影函数与联合分布，经对数和不等式展开，输出投影后的粗粒化条件互信息小于等于原始条件互信息（信息投影数据处理不等式）。
 

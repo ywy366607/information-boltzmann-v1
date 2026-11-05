@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L20)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：若时变核的正概率转移在集合内封闭且均不标记目标事件，则从该集合出发任意有限期限的首次命中概率为零。
 
 源码说明：Protocol-dependent extension of zero_on_closed, also valid for the future marginal-ghost cut. An observer cannot create a marked transition.
@@ -26,6 +30,10 @@
 ## CGB.Operational.recovery_zero_without_intake
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L44)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：若所有身体状态都不可能摄入，则任意指定协议、联合状态和有限期限的操作化摄入恢复概率为零。
 
@@ -46,6 +54,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L62)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：若所有身体状态都不可能摄入，则任意协议、时刻和联合状态的操作化生命指标为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -65,6 +77,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L69)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：若所有身体状态都不可能摄入，则任意指定协议和时刻的操作化生存评分为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -83,6 +99,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L74)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：若所有身体状态都不可能摄入，则任意实数 δ 下操作化持续生存条件不成立。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -99,6 +119,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L81)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：若所有身体状态都不可能摄入，则指定操作化闭环相对断环的自维持条件不成立。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -114,6 +138,10 @@
 ## CGB.Operational.not_persists_of_frozen
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L92)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：若所有状态与刺激下的正速率事件均保持身体状态，则任意实数 δ 下操作化持续生存条件不成立。
 
@@ -132,6 +160,10 @@
 ## CGB.Operational.not_persists_of_closed_moments_and_empty_boundary
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L104)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：若所有刺激下闭事件的一阶及二阶内容漂移为零且边界为空，则操作化持续生存条件不成立。
 
@@ -153,6 +185,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L126)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：若某状态在任何刺激下的所有正速率事件都保持该状态，则从该状态出发的一步核仅在原状态取一。
 
 源码说明：The full initial state need only be absorbing for all possible stimuli. Other states of the same medium may still possess intake events.
@@ -169,6 +205,10 @@
 ## CGB.Operational.recovery_zero_from_frozen_state
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L149)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：若某身体状态在所有刺激下的正速率事件均保持该状态，则该状态在任意指定协议与有限期限下的操作化摄入恢复概率为零。
 
@@ -189,6 +229,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L172)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：若某身体状态在所有刺激下的正速率事件均保持该状态，则该状态在任意时刻和世界状态的操作化生命指标为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -206,6 +250,10 @@
 ## CGB.Operational.not_persists_of_frozen_initial
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L181)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：若初始身体状态在所有刺激下被正速率事件保持，则任意实数 δ 下操作化持续生存条件不成立。
 
@@ -225,6 +273,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L199)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：构造的被动吸收身体满足当前 Axioms 结构。
 
 源码说明：The existing passive-absorption control also satisfies all six physical clauses; its failure of the life target is not a violation of those clauses.
@@ -239,6 +291,10 @@ CGB.RecoveryControls.body.Axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L232)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：指定被动吸收身体在空状态存在可能的内容摄入事件。
 
 源码说明：Passive absorption really occurs, so this is stronger than a frozen body with no intake transition anywhere. It still does not certify ongoing life.
@@ -252,6 +308,10 @@ CGB.RecoveryControls.body.CanTakeIn fun x => false
 ## CGB.RecoveryControls.passive_full_frozen
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L238)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：指定被动身体为满状态时，任意刺激下的正速率事件都保持该状态。
 
@@ -269,6 +329,10 @@ CGB.RecoveryControls.body.CanTakeIn fun x => false
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L245)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：对任意满足时钟条件的世界和指定协议，满状态被动身体的操作化生命指标为零。
 
 源码说明：The current actual-world alive test excludes the full passive state for both normal and cut futures, at every horizon and in every world.
@@ -285,6 +349,10 @@ CGB.RecoveryControls.body.CanTakeIn fun x => false
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L256)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：构造的满载被动身体满足当前 Axioms 结构。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -298,6 +366,10 @@ CGB.RecoveryControls.filledPassive.Axioms
 ## CGB.RecoveryControls.filledPassive_clock
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L260)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：构造的满载被动身体满足速率一的旧版离散状态时钟条件。
 
@@ -313,6 +385,10 @@ CGB.RecoveryControls.filledPassive.Clocked 1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L262)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：对任意世界、满足时钟条件的指定满载被动身体以及任意实数 δ，操作化持续生存条件不成立。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -327,6 +403,10 @@ CGB.RecoveryControls.filledPassive.Clocked 1
 ## CGB.RecoveryControls.passive_intake_not_persistence
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L269)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：该满载被动身体满足公理、时钟、初始正内容及某状态可摄入，但对任意实数 δ 都不满足指定世界中的操作化持续生存。
 
@@ -348,6 +428,10 @@ CGB.RecoveryControls.filledPassive.Clocked 1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L284)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：对任意刺激，seed 的闭事件跳跃过程与总内容乘法算子满足指定可观测对称性。
 
 源码说明：Existing admissible seed: its closed-event content symmetry is certified.
@@ -361,6 +445,10 @@ CGB.RecoveryControls.filledPassive.Clocked 1
 ## CGB.NoetherControls.toggle_fails_closed_moments
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L289)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：twinToggle 不满足“每种刺激下闭事件的一阶和二阶内容漂移均为零”的联合条件。
 
@@ -379,6 +467,10 @@ CGB.RecoveryControls.filledPassive.Clocked 1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L303)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：指定三状态跳跃过程对 signedValue 在每个状态的一阶生成元漂移均为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -393,6 +485,10 @@ CGB.RecoveryControls.filledPassive.Clocked 1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L307)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：指定三状态见证中，signedValue 的平方在状态零处的生成元漂移等于二。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -406,6 +502,10 @@ CGB.NoetherControls.meanOnly.gen (fun x => CGB.NoetherControls.signedValue x ^ 2
 ## CGB.NoetherControls.meanOnly_not_conserved
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LifeControls.lean#L310)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：指定三状态见证的 signedValue 不是逐跳守恒量，说明一阶漂移为零本身不足以推出守恒。
 

@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/OperationalLife.lean#L23)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：OperationalLife
+
+分类说明：特定生命层级或操作闭合的具体模型见证。
+
 解释：由正内容与恢复阈值条件构造的二值生命指标始终处于零和一之间。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -24,6 +28,10 @@
 ## CGB.Viability.survival_bounds
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/OperationalLife.lean#L32)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：OperationalLife
+
+分类说明：特定生命层级或操作闭合的具体模型见证。
 
 解释：若状态评分位于零到一之间且状态分布非负归一，则加权生存评分也位于零到一之间。
 
@@ -42,6 +50,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/OperationalLife.lean#L68)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：OperationalLife
+
+分类说明：特定生命层级或操作闭合的具体模型见证。
+
 解释：操作化生命模型中，无论闭环或断环协议，有限时段材料恢复概率均处于零到一之间。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -58,6 +70,10 @@
 ## CGB.Operational.natural_recovery
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/OperationalLife.lean#L74)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：OperationalLife
+
+分类说明：特定生命层级或操作闭合的具体模型见证。
 
 解释：对自然未断环且持续感知世界的协议，时变操作化恢复概率与实际世界恢复概率一致。
 
@@ -76,6 +92,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/OperationalLife.lean#L89)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：OperationalLife
+
+分类说明：特定生命层级或操作闭合的具体模型见证。
+
 解释：操作化生命模型中，在时钟与世界条件成立时，闭环或断环协议的生存评分均处于零到一之间。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -92,6 +112,10 @@
 ## CGB.Operational.persistence_parameter_bounds
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/OperationalLife.lean#L113)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：OperationalLife
+
+分类说明：特定生命层级或操作闭合的具体模型见证。
 
 解释：若操作化持续生存已经成立，则失效容忍参数非负、恢复期限为正且恢复概率阈值不超过一。
 

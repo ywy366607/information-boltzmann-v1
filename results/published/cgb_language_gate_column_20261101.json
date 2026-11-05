@@ -1,0 +1,221 @@
+{
+  "body": "column",
+  "admitted": false,
+  "reference_only": false,
+  "manifest_present": false,
+  "inventory": {
+    "fresh": true,
+    "trusted": true
+  },
+  "unknown_theorems": [],
+  "budget_kib": null,
+  "state_bytes": 157560,
+  "microseconds_per_byte": null,
+  "phases": {
+    "A_firstpass": 2.705949336402443,
+    "A_revisit": 2.6807711037662876,
+    "A_fresh": 2.6487044743776464
+  },
+  "counts": {
+    "pass": 4,
+    "fail": 9,
+    "not_run": 7,
+    "deferred": 2
+  },
+  "open_obligations": [
+    "O01",
+    "O22",
+    "O02",
+    "O03",
+    "O06",
+    "O07",
+    "O08",
+    "O09",
+    "O21",
+    "O10",
+    "O11",
+    "O12",
+    "O13",
+    "O14",
+    "O16",
+    "O17"
+  ],
+  "rows": [
+    {
+      "id": "O01",
+      "system": "5",
+      "title": "The body is a Medium",
+      "check": "medium_instance",
+      "status": "fail",
+      "detail": "no Lean declaration is named for this body"
+    },
+    {
+      "id": "O22",
+      "system": "5",
+      "title": "The Medium instance is not one exposed site",
+      "check": "medium_locality",
+      "status": "fail",
+      "detail": "no Lean declaration is named for this body"
+    },
+    {
+      "id": "O02",
+      "system": "1,2,3",
+      "title": "One body, readable projections",
+      "check": "column_refinement_instance",
+      "status": "fail",
+      "detail": "no Lean declaration is named for this body"
+    },
+    {
+      "id": "O03",
+      "system": "1,3",
+      "title": "Finite state and history-independent work",
+      "check": "finite_state",
+      "status": "not_run",
+      "detail": "no size against a declared budget"
+    },
+    {
+      "id": "O04",
+      "system": "2",
+      "title": "Prediction cannot read the future",
+      "check": "causal_prediction",
+      "status": "pass",
+      "detail": "reading a prediction changes nothing"
+    },
+    {
+      "id": "O05",
+      "system": "1,5",
+      "title": "Complete continuation",
+      "check": "exact_resume",
+      "status": "pass",
+      "detail": "replay is exact"
+    },
+    {
+      "id": "O06",
+      "system": "2,3",
+      "title": "Future distinctions are held and readable",
+      "check": "beats_order1",
+      "status": "fail",
+      "detail": "2.6487 vs order-1 2.5262"
+    },
+    {
+      "id": "O07",
+      "system": "2,3",
+      "title": "Order is held",
+      "check": "order_separation",
+      "status": "fail",
+      "detail": "no Lean declaration is named for this body"
+    },
+    {
+      "id": "O08",
+      "system": "1,3",
+      "title": "Experience becomes reserve",
+      "check": "revisit_drop",
+      "status": "fail",
+      "detail": "drop 0.0252"
+    },
+    {
+      "id": "O09",
+      "system": "2",
+      "title": "Memory horizon is earned",
+      "check": "decode_horizon",
+      "status": "fail",
+      "detail": "t-2 0.307/0.968; t-4 0.189/0.718; t-8 0.132/0.383"
+    },
+    {
+      "id": "O21",
+      "system": "2",
+      "title": "Knowledge generalizes to unseen contexts",
+      "check": "generalizes",
+      "status": "not_run",
+      "detail": "no per-byte scores"
+    },
+    {
+      "id": "O10",
+      "system": "3,5",
+      "title": "Key capacity exceeds the required contexts",
+      "check": "capacity_curve",
+      "status": "not_run",
+      "detail": "no smaller-budget run"
+    },
+    {
+      "id": "O11",
+      "system": "1,3",
+      "title": "Finite intake forces selective release",
+      "check": "selective_retention",
+      "status": "not_run",
+      "detail": "selective protocol did not run"
+    },
+    {
+      "id": "O12",
+      "system": "3,5",
+      "title": "Competition without winner-take-all",
+      "check": "no_dominance",
+      "status": "not_run",
+      "detail": "this body reports no regions"
+    },
+    {
+      "id": "O13",
+      "system": "3",
+      "title": "Gain is local and follows evidence",
+      "check": "one_shot_gain",
+      "status": "not_run",
+      "detail": "no learning run"
+    },
+    {
+      "id": "O14",
+      "system": "2,3",
+      "title": "Recent language determines state and older language can matter",
+      "check": "state_repeatable",
+      "status": "fail",
+      "detail": "same 8 bytes 0.0011, last byte only 0.0028"
+    },
+    {
+      "id": "O15",
+      "system": "3",
+      "title": "Credit acts on held distinctions",
+      "check": "credit_has_carrier",
+      "status": "pass",
+      "detail": "0.132 vs current byte 0.053"
+    },
+    {
+      "id": "O16",
+      "system": "1",
+      "title": "Time is real",
+      "check": "elapsed_time",
+      "status": "fail",
+      "detail": "zero elapsed no-op=True, elapsed acts=False"
+    },
+    {
+      "id": "O17",
+      "system": "1",
+      "title": "Learning stays honest about its limits",
+      "check": "drift_recovery",
+      "status": "not_run",
+      "detail": "no source switch"
+    },
+    {
+      "id": "O18",
+      "system": "1",
+      "title": "Language pays",
+      "check": "language_pays",
+      "status": "pass",
+      "detail": "saves 0.6033 against order-0"
+    },
+    {
+      "id": "O19",
+      "system": "4",
+      "title": "Self-hearing is not external evidence",
+      "check": "source_typed",
+      "status": "deferred",
+      "detail": "applies after system 4 is connected"
+    },
+    {
+      "id": "O20",
+      "system": "4",
+      "title": "Active closure",
+      "check": "active_closure",
+      "status": "deferred",
+      "detail": "applies after system 4 is connected"
+    }
+  ]
+}

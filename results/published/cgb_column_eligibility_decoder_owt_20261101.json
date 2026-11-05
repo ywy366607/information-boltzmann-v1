@@ -1,0 +1,196 @@
+{
+  "status": "bounded_local_eligibility_decoder_audit",
+  "claim_scope": "Held-out OpenWebText diagnostic of whether an explicit linear readout of existing local H/C/S can reconstruct a bounded exact one-event response factor after a stated delay. The organism and its parameters are never trained or updated.",
+  "not_claimed": [
+    "a universal BoundedEpsilonDecoder proof",
+    "an online learning rule",
+    "long-horizon credit",
+    "language capability",
+    "life closure"
+  ],
+  "target": "per-column transient hard-saturation response gate times pre-arrival typed S participation",
+  "state_read": "post-delay local H activity, C natural/precision, S participation, and C causal-token code only",
+  "theorem_connection": "GenerationAssociationCapacity: exact_decoder_capacity prohibits claiming universal exact recovery beyond independent key dimension; this finite held-out bounded probe instead reports its declared coordinatewise residual.",
+  "result_by_delay_events": {
+    "0": {
+      "input_coordinates": 129,
+      "target_coordinates": 1024,
+      "train_local_samples": 16384,
+      "validation_local_samples": 8192,
+      "ridge": 0.001,
+      "held_out_mean_abs_error": 0.10244110226631165,
+      "held_out_max_abs_error": 2.1527974605560303,
+      "zero_decoder_mean_abs_error": 0.08897034823894501,
+      "relative_mean_abs_error_to_zero": 1.151407241821289,
+      "held_out_explained_target_energy": 0.36751359701156616,
+      "coordinate_fraction_within_epsilon": {
+        "0.05": 0.6381844282150269,
+        "0.1": 0.688043475151062,
+        "0.2": 0.7679352760314941
+      },
+      "max_coordinate_error_minus_epsilon": {
+        "0.05": 2.102797508239746,
+        "0.1": 2.052797555923462,
+        "0.2": 1.9527974128723145
+      }
+    },
+    "1": {
+      "input_coordinates": 129,
+      "target_coordinates": 1024,
+      "train_local_samples": 16384,
+      "validation_local_samples": 8192,
+      "ridge": 0.001,
+      "held_out_mean_abs_error": 0.09872427582740784,
+      "held_out_max_abs_error": 2.629391670227051,
+      "zero_decoder_mean_abs_error": 0.09207019209861755,
+      "relative_mean_abs_error_to_zero": 1.0722718238830566,
+      "held_out_explained_target_energy": 0.435333788394928,
+      "coordinate_fraction_within_epsilon": {
+        "0.05": 0.6633592844009399,
+        "0.1": 0.6979131698608398,
+        "0.2": 0.7599612474441528
+      },
+      "max_coordinate_error_minus_epsilon": {
+        "0.05": 2.5793917179107666,
+        "0.1": 2.5293917655944824,
+        "0.2": 2.429391622543335
+      }
+    },
+    "2": {
+      "input_coordinates": 129,
+      "target_coordinates": 1024,
+      "train_local_samples": 16384,
+      "validation_local_samples": 8192,
+      "ridge": 0.001,
+      "held_out_mean_abs_error": 0.1479259580373764,
+      "held_out_max_abs_error": 10.85956859588623,
+      "zero_decoder_mean_abs_error": 0.09304140508174896,
+      "relative_mean_abs_error_to_zero": 1.5898938179016113,
+      "held_out_explained_target_energy": -2.5267117023468018,
+      "coordinate_fraction_within_epsilon": {
+        "0.05": 0.661916971206665,
+        "0.1": 0.6917241811752319,
+        "0.2": 0.7489417791366577
+      },
+      "max_coordinate_error_minus_epsilon": {
+        "0.05": 10.809568405151367,
+        "0.1": 10.759568214416504,
+        "0.2": 10.659568786621094
+      }
+    },
+    "4": {
+      "input_coordinates": 129,
+      "target_coordinates": 1024,
+      "train_local_samples": 16384,
+      "validation_local_samples": 8192,
+      "ridge": 0.001,
+      "held_out_mean_abs_error": 0.11543305218219757,
+      "held_out_max_abs_error": 4.580194473266602,
+      "zero_decoder_mean_abs_error": 0.09358301758766174,
+      "relative_mean_abs_error_to_zero": 1.2334829568862915,
+      "held_out_explained_target_energy": -0.03574478626251221,
+      "coordinate_fraction_within_epsilon": {
+        "0.05": 0.6744476556777954,
+        "0.1": 0.7006678581237793,
+        "0.2": 0.7507554292678833
+      },
+      "max_coordinate_error_minus_epsilon": {
+        "0.05": 4.530194282531738,
+        "0.1": 4.480194568634033,
+        "0.2": 4.380194664001465
+      }
+    },
+    "8": {
+      "input_coordinates": 129,
+      "target_coordinates": 1024,
+      "train_local_samples": 16384,
+      "validation_local_samples": 8192,
+      "ridge": 0.001,
+      "held_out_mean_abs_error": 0.1302265077829361,
+      "held_out_max_abs_error": 9.619357109069824,
+      "zero_decoder_mean_abs_error": 0.0937747210264206,
+      "relative_mean_abs_error_to_zero": 1.3887165784835815,
+      "held_out_explained_target_energy": -1.173304796218872,
+      "coordinate_fraction_within_epsilon": {
+        "0.05": 0.6805210113525391,
+        "0.1": 0.7046418190002441,
+        "0.2": 0.752619743347168
+      },
+      "max_coordinate_error_minus_epsilon": {
+        "0.05": 9.569356918334961,
+        "0.1": 9.519356727600098,
+        "0.2": 9.419357299804688
+      }
+    },
+    "16": {
+      "input_coordinates": 129,
+      "target_coordinates": 1024,
+      "train_local_samples": 16384,
+      "validation_local_samples": 8192,
+      "ridge": 0.001,
+      "held_out_mean_abs_error": 0.09616764634847641,
+      "held_out_max_abs_error": 7.838594436645508,
+      "zero_decoder_mean_abs_error": 0.09270504862070084,
+      "relative_mean_abs_error_to_zero": 1.0373506546020508,
+      "held_out_explained_target_energy": 0.4537237882614136,
+      "coordinate_fraction_within_epsilon": {
+        "0.05": 0.6900767087936401,
+        "0.1": 0.7087794542312622,
+        "0.2": 0.7503291368484497
+      },
+      "max_coordinate_error_minus_epsilon": {
+        "0.05": 7.7885942459106445,
+        "0.1": 7.7385945320129395,
+        "0.2": 7.638594627380371
+      }
+    }
+  },
+  "model": {
+    "d_model": 32,
+    "grid_shape": [
+      8,
+      8
+    ],
+    "active_columns": 8,
+    "contact_rank": 4,
+    "parameter_numbers": 33389,
+    "persistent_state_bytes_fp32": {
+      "H_activity": 8192,
+      "C_natural": 8192,
+      "C_precision": 256,
+      "C_causal_token": 8,
+      "S_participation": 8192,
+      "total": 24840
+    }
+  },
+  "protocol": {
+    "warmup_events": 128,
+    "train_anchors": 256,
+    "validation_anchors": 128,
+    "delays": [
+      0,
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "ridge": 0.001,
+    "tolerances": [
+      0.05,
+      0.1,
+      0.2
+    ],
+    "parameter_write": false,
+    "state_history": "each event state is detached before the next event; no retained autograd graph",
+    "seed": 20261101,
+    "device": "cuda"
+  },
+  "source": {
+    "train": "data\\ib_owt_10000\\train.npy",
+    "validation": "data\\ib_owt_10000\\validation.npy",
+    "train_sha256": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+    "validation_sha256": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c",
+    "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d"
+  }
+}

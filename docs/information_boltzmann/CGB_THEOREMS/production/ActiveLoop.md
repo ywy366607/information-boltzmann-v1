@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveLoop.lean#L48)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ActiveLoop
+
+分类说明：针对 ActiveLoop 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：主动环路状态中存在唯一的零成本真空基态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -23,6 +27,10 @@
 ## CGB.ActiveLoop.body_clock
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveLoop.lean#L77)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ActiveLoop
+
+分类说明：针对 ActiveLoop 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：主动环路生命机体受速率为1的全局时钟严格节拍驱动。
 
@@ -38,6 +46,10 @@ CGB.ActiveLoop.body.Clocked 1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveLoop.lean#L91)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ActiveLoop
+
+分类说明：针对 ActiveLoop 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：主动环路生命机体完全满足局部非负性与概率守恒等公理体系。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -52,6 +64,10 @@ CGB.ActiveLoop.body.Axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveLoop.lean#L122)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ActiveLoop
+
+分类说明：针对 ActiveLoop 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：六状态有限环境空间上任意实值函数的求和展开等价性。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -65,6 +81,10 @@ CGB.ActiveLoop.body.Axioms
 ## CGB.ActiveLoop.worldMoves_nonneg
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveLoop.lean#L151)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ActiveLoop
+
+分类说明：针对 ActiveLoop 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在机体状态作用下环境状态转移矩阵元素恒非负。
 
@@ -81,6 +101,10 @@ CGB.ActiveLoop.body.Axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveLoop.lean#L155)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ActiveLoop
+
+分类说明：针对 ActiveLoop 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：环境在机体任意固定构型驱动下的转移概率归一性（行和为1）。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -95,6 +119,10 @@ CGB.ActiveLoop.body.Axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveLoop.lean#L180)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ActiveLoop
+
+分类说明：针对 ActiveLoop 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：主动环路机体的内部演化仅读取环境边界接触信息而满足马尔可夫毯隔离。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -108,6 +136,10 @@ CGB.ActiveLoop.body.ReadsBoundary CGB.ActiveLoop.world
 ## CGB.ActiveLoop.active_expected_first_law
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveLoop.lean#L234)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ActiveLoop
+
+分类说明：针对 ActiveLoop 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：沿真实主动闭环耦合过程机体与环境的平均能量满足热力学第一定律（内能增量等于功、驱动力、物质流与热流之和）。
 

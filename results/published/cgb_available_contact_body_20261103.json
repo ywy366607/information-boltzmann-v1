@@ -1,0 +1,345 @@
+{
+  "version": "V1.12",
+  "status": "implemented_and_5000_updates_complete_predictive_regression_observed",
+  "model": "existing GatedDeltaNetLM contact_exchange, contact_availability=True",
+  "state": "existing conditional content C and simplex share a; no new persistent state or learned parameter",
+  "transition": [
+    "score=exp(g*a+address-0.5*||C-v||^2)",
+    "p=score*(1-a)/sum(score*(1-a))",
+    "lambda=gamma*p",
+    "C_next=(1-lambda)*C+lambda*v",
+    "a_next=(1-gamma)*a+gamma*p",
+    "read=C_next.T@(a_next*q)"
+  ],
+  "theorem_reference": "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean",
+  "new_results": [
+    "simplex_has_available_contact",
+    "available_weight_anti",
+    "available_posterior_contract",
+    "available_joint_contract"
+  ],
+  "shared_existing_result": "CGB.Generation.shared_pool_marginal_admission_is_anti_dominant",
+  "proof_scope": "Real arithmetic, at least two contacts, simplex a, positive scores, gamma in [0,1], bounded C and v. Joint conservation, per-event write budget, conditional and decoded content bounds, full-contact release. Fixed-score anti-dominance is not global anti-monopoly.",
+  "numerical_scope": "50 affected tests passed: CPU/CUDA, actual joint update, derivatives, graph/eager optimizer equivalence, full restore; numerical same-state latch stability and counterevidence release, not a capability experiment.",
+  "calibration_protocol": {
+    "dataset": "registered OpenWebText UTF8",
+    "seed": 11,
+    "updates": 20,
+    "bytes_per_update": 128,
+    "chunk": 32,
+    "validation_bytes": 1024,
+    "d": 128,
+    "layers": 4,
+    "heads": 4,
+    "mlp_hidden": 256,
+    "conv_kernel": 4,
+    "content_budget": 1.0,
+    "precision": "FP32",
+    "purpose": "engineering calibration only",
+    "stopping_rule": "20 updates; abort on nonfinite loss or recurrent state",
+    "configuration": "contact_exchange, contact_availability=True",
+    "acceptance": "finite updates and all parameters updated; capability not judged at this budget"
+  },
+  "language_protocol": {
+    "status": "preregistered",
+    "date": "2026-11-03",
+    "purpose": "Check language learning of the joint body at the existing matched budget. Changes both selective writing and availability relative to evidence_exchange; not a causal isolation of availability.",
+    "arms": [
+      "contact_exchange with contact_availability=True"
+    ],
+    "seed": 11,
+    "parameters_each": 765088,
+    "model": {
+      "vocab": 256,
+      "width": 128,
+      "layers": 4,
+      "heads": 4,
+      "mlp_hidden": 256,
+      "causal_conv": 4
+    },
+    "updates_each": 5000,
+    "bytes_per_update": 128,
+    "fixed_bptt_window": 32,
+    "exposures_each": 640000,
+    "unique_train_bytes": 576000,
+    "phases_updates": {
+      "A_first": [
+        0,
+        3500
+      ],
+      "B_fresh": [
+        3500,
+        4000
+      ],
+      "A_revisit": [
+        4000,
+        4500
+      ],
+      "C_fresh": [
+        4500,
+        5000
+      ]
+    },
+    "revisit_source_bytes": [
+      384000,
+      448000
+    ],
+    "phase_boundaries": "All actual bridge transitions scored; live state and optimizer never reset.",
+    "optimizer": {
+      "type": "AdamW",
+      "lr": 0.0003,
+      "weight_decay": 0.01,
+      "lexical_and_dynamics_grad_clip": 1
+    },
+    "validation": {
+      "split": "validation",
+      "scored_bytes": 16384,
+      "warmup_bytes": 32,
+      "every_updates": 1000,
+      "mode": "frozen sidecar; live learner untouched; test split untouched"
+    },
+    "controls": "Same common weights at birth except semantically different alpha bias; identical parameter counts and byte stream. Additional share state 2048 bytes. Candidate content budget=1 is a declared initial choice, not an optimum.",
+    "limitations": [
+      "The recurrences have different feasible content domains and read scales; cannot attribute difference to latching alone.",
+      "A/B are source intervals, not externally labeled tasks.",
+      "No long-horizon gradient or anti-monopoly guarantee.",
+      "5000 updates is budget-limited unless convergence is observed; no strong architecture verdict."
+    ],
+    "decisions": {
+      "nonfinite": "stop failed arm and diagnose numerical failure before training further",
+      "candidate_worse": "keep delta reference; inspect actual memory use, scale and posterior concentration before adding mechanisms",
+      "candidate_better": "retain as conditional runtime evidence; causally isolate mechanism before claiming useful latch",
+      "near_equal": "report no demonstrated advantage"
+    },
+    "engineering": {
+      "backend": "CUDA Graph FP32; projections/MLP vectorized within chunks; exact nonlinear recurrence sequential",
+      "calibration_exchange_bytes_s": 1026.25,
+      "calibration_delta_bytes_s": 2248.55,
+      "calibration_peak_allocated_mib": 58.69,
+      "graph_gradient_fix": "Preallocate stable gradient buffers before graph capture; 2-update multi-chunk eager equivalence passed in both arms"
+    },
+    "qualification": "50 tests and Lean joint contract passed; calibrate whole GPU model before 5000 updates",
+    "independent_review": false,
+    "reference_runs": [
+      "results/cgb_joint_gpu_20261103/delta_5000",
+      "results/cgb_joint_gpu_20261103/exchange_5000"
+    ]
+  },
+  "acceptance": {
+    "engineering": "finite full forward/backward/optimizer, all parameter tensors updated, same 84 KiB persistent state, bounded decoded content",
+    "language": "report independent validation and live phase curves at fixed 5000-update budget, no convergence claim; no promotion on local invariants alone",
+    "retain_reference": "preserve previous checkpoints and reference path regardless of outcome"
+  },
+  "unresolved": [
+    "Task-useful long-term retention and learned retrieval",
+    "Broad anti-monopoly and useful differentiation",
+    "Outside-window result-conditioned credit",
+    "Action and niche closure",
+    "Full microscopic Medium instantiation"
+  ],
+  "source_support": {
+    "count": 357,
+    "runtime_satisfied": null,
+    "meaning": "proof-support closure, not admitted runtime theorems"
+  },
+  "independent_review": false,
+  "source_sha256": {
+    "scripts/ib_local/gated_deltanet.py": "452f80c0e1dc467f07e47c65db839b9d8a21eb1204ac644cbd224f8b8734172a",
+    "scripts/ib_local/train_gated_deltanet.py": "c3f0dcd3c547cc51e08799a112212f9e80324e8e94e18c9dea913695adbc4ade",
+    "tests/test_gated_deltanet.py": "0afe37692eba3e5b35fe8ad3001940ff722da1d5641bc77eca041056761e2087",
+    "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean": "d173e6a6a4a90e33a76f769f90cd63b6ec0561bcec1d99063a84eefe9eb760cd"
+  },
+  "calibration": {
+    "artifact": "results/cgb_joint_gpu_20261103/available_contact_calibration_20/summary.json",
+    "step": 20,
+    "initial_validation_nll": 5.55164098739624,
+    "final_validation_nll": 4.514858245849609,
+    "training_bytes_per_second": 959.9030498359718,
+    "peak_allocated_mib": 58.67724609375,
+    "peak_reserved_mib": 94.0,
+    "convergence_established": false,
+    "organism_admitted": false,
+    "parameters": 765088,
+    "persistent_state_bytes": 86016,
+    "byte_exposures": 2560,
+    "capability_claim": false
+  },
+  "calibration_checks": {
+    "all_parameter_tensors_changed": true,
+    "parameter_tensor_count": 62,
+    "state_finite": true,
+    "optimizer_steps": [
+      20
+    ]
+  },
+  "body_ledger": "docs/information_boltzmann/CGB_MINIMAL_GENERATOR_20261103.md#v112-同一占据产生接纳限制写入竞争保持释放共同进入身体",
+  "language_result": {
+    "artifact": "results\\cgb_joint_gpu_20261103\\available_contact_5000\\summary.json",
+    "updates": 5000,
+    "byte_exposures": 640000,
+    "unique_train_bytes": 576000,
+    "validation_bytes": 16384,
+    "parameters": 765088,
+    "persistent_state_bytes": 86016,
+    "checks": {
+      "all_parameter_tensors_changed": true,
+      "parameter_tensor_count": 62,
+      "optimizer_steps": [
+        5000
+      ],
+      "all_state_finite": true,
+      "conditional_row_l1_max": 0.9953222870826721,
+      "decoded_total_l1_max": 0.9953216910362244,
+      "share_total_max_error": 2.384185791015625e-07,
+      "share_min": 2.488485684182251e-08,
+      "share_max": 0.9999991655349731,
+      "final_snapshot_heads_over_99_percent": 6,
+      "head_count": 16,
+      "final_snapshot_effective_contacts_mean": 9.24734115600586
+    },
+    "comparison": {
+      "delta_5000": {
+        "final_validation_nll": 1.8641149997711182,
+        "cross_chunk_memory_nll_cost": 0.012943267822265625,
+        "training_bytes_per_second": 2261.052661100847,
+        "peak_allocated_mib": 63.61083984375,
+        "phase_prequential_nll": {
+          "A_first": 2.020741571903229,
+          "B_fresh": 1.765755431175232,
+          "A_revisit": 1.6158699111938477,
+          "C_fresh": 1.8000047068595886
+        },
+        "state_bytes": 83968
+      },
+      "exchange_5000": {
+        "final_validation_nll": 1.860241413116455,
+        "cross_chunk_memory_nll_cost": 0.00024235248565673828,
+        "training_bytes_per_second": 1028.0224462189994,
+        "peak_allocated_mib": 63.66552734375,
+        "phase_prequential_nll": {
+          "A_first": 2.045589341912951,
+          "B_fresh": 1.7919493248462677,
+          "A_revisit": 1.665845341205597,
+          "C_fresh": 1.8222010264396666
+        },
+        "state_bytes": 86016
+      },
+      "available_contact_5000": {
+        "final_validation_nll": 1.9026787281036377,
+        "cross_chunk_memory_nll_cost": 0.0038834810256958008,
+        "training_bytes_per_second": 959.4979426973243,
+        "peak_allocated_mib": 63.65771484375,
+        "phase_prequential_nll": {
+          "A_first": 2.090605060066496,
+          "B_fresh": 1.828699970960617,
+          "A_revisit": 1.7188333103656768,
+          "C_fresh": 1.8602050352096557
+        },
+        "state_bytes": 86016
+      }
+    },
+    "validation_curve": [
+      {
+        "kind": "validation_frozen_sidecar",
+        "step": 1000,
+        "validation_nll": 2.212980031967163
+      },
+      {
+        "kind": "validation_frozen_sidecar",
+        "step": 2000,
+        "validation_nll": 2.1006765365600586
+      },
+      {
+        "kind": "validation_frozen_sidecar",
+        "step": 3000,
+        "validation_nll": 1.9862918853759766
+      },
+      {
+        "kind": "validation_frozen_sidecar",
+        "step": 4000,
+        "validation_nll": 1.9689744710922241
+      },
+      {
+        "kind": "validation_frozen_sidecar",
+        "step": 5000,
+        "validation_nll": 1.9026787281036377
+      }
+    ],
+    "convergence_established": false,
+    "organism_admitted": false
+  },
+  "interpretation": {
+    "prediction": "At matched single-seed budget, available contact NLL is worse by 0.04243731498718262 nats/byte versus evidence exchange. Language learning remains, but no predictive upgrade.",
+    "memory_probe": "Erasing only previous chunk matrix contents while preserving convolution and share state increases NLL by 0.003883481, versus 0.000242352 for evidence exchange and 0.012943268 for delta. Increased dependence on cross-chunk content is not a long-horizon retention or causal-isolation result.",
+    "competition": "Strong concentration still occurs in actual training despite full-corner release and fixed-score anti-dominance.",
+    "decision": "Keep this explicitly configured structural candidate and the better predictive references. Repair useful retention-to-read coupling in the same body; do not mark all source-support theorems admitted or add a separate memory controller."
+  },
+  "association_and_sinkhorn_review": {
+    "status": "read_only_runtime_review_and_algebraic_counterexamples_verified",
+    "runtime_changed": false,
+    "training_runs": 0,
+    "sinkhorn_in_current_body": false,
+    "historical_implementation": "information_boltzmann/conservative_cycle_optimizer.py::_matrix_allocation",
+    "historical_scope": "Nonnegative update allocation for actual parameter rows/columns; finite alternating scaling with residual measured. Not conservation of signed weights or exact finite-iteration marginal equality.",
+    "reviewed_theorems": [
+      "CGB.Continual.column_budget_allows_wta",
+      "CGB.Continual.row_budget_allows_copies",
+      "CGB.Continual.doubly_budgeted_max_iff_permutation",
+      "CGB.Continual.doubly_budgeted_max_differentiates",
+      "CGB.Generation.exact_prediction_no_write",
+      "CGB.Generation.tied_write_cross_read"
+    ],
+    "double_budget_transfer_gap": "Specified 2x2 nonnegative allocation and equal row/column budgets plus payoff maximum; current simplex vector and signed content are different objects. Need same-association endpoint semantics before selecting a balancing algorithm.",
+    "delta_transfer_gap": "Current contact update can change an already-correct weighted read and a read orthogonal to the standard write key, even with the same starting weighted content. Individual C_i innovation is not the aggregate key-read residual.",
+    "isolated_counterexample": {
+      "C": [
+        [
+          0.4,
+          0
+        ],
+        [
+          0,
+          0.2
+        ]
+      ],
+      "a": [
+        0.5,
+        0.5
+      ],
+      "q": [
+        1,
+        0
+      ],
+      "value": [
+        0.2,
+        0
+      ],
+      "gain": 0,
+      "rate": 0.5,
+      "address": "0.5*row_squared_distance(C,value), making posterior uniform",
+      "old_read": [
+        0.2,
+        0
+      ],
+      "new_read": [
+        0.175,
+        0
+      ],
+      "share_changed": false
+    },
+    "tests": {
+      "body_counterexamples": "2 passed CPU/CUDA; test_contact_exchange_does_not_inherit_delta_read_invariants",
+      "historical_matrix_budgets": "2 passed CPU/CUDA; test_resource_optimizer_allocates_actual_matrix_budgets (32 iterations)"
+    },
+    "decision": "Keep body unchanged pending multi-axis evaluation in LIFELONG_EVALUATION.md. No immediate Sinkhorn insertion. Delta read identities are optional candidate properties; non-equivalence and short-budget NLL do not establish harm or its cause. Organism-definition obligations retain priority.",
+    "source_sha256": {
+      "scripts/ib_local/gated_deltanet.py": "452f80c0e1dc467f07e47c65db839b9d8a21eb1204ac644cbd224f8b8734172a",
+      "tests/test_gated_deltanet.py": "502b6a8e3f854bc97b31c1ab6db0844f3d1130a5a3f11580ad04e8929c24a999",
+      "information_boltzmann/conservative_cycle_optimizer.py": "56ab6b386edc2f7677f4feebe9e5651727bbbfc2cac44df7e5d3b7de5b73e675",
+      "lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean": "aba276d7f2d9997fdbd9b7174b42375b8f7bc3ed4c75652cbb5ff13f0d415956",
+      "lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad"
+    },
+    "source_support_count_change": 0,
+    "independent_review": false
+  }
+}

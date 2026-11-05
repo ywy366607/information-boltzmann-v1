@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L46)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Persistence
+
+分类说明：针对 Persistence 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：正平衡权重满足逐边细致平衡时，任一有限循环的正向速率乘积等于反向乘积。
 
 源码说明：**A (Kolmogorov, one direction)**: detailed balance with a positive weight balances the rate products around every cycle `c 0 → c 1 → … → c (n-1) → c 0`.
@@ -27,6 +31,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L61)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Persistence
+
+分类说明：针对 Persistence 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若某有限循环正反速率乘积不相等，则不存在满足所有边细致平衡的严格正权重。
 
 源码说明：**A**: a cycle with unequal forward and reverse rate products (net circulation) admits no positive detailed-balance weight: self-repeating activity needs a drive.
@@ -43,6 +51,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L73)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Persistence
+
+分类说明：针对 Persistence 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：非零增益的积分反馈达到固定点时，其反馈观测恰等于目标值。
 
 源码说明：**B (integral feedback adapts perfectly)**: if the reference update `m ↦ m + γ (f (s - m) - a₀)` with `γ ≠ 0` has `m` as a fixed point, the activity there is `a₀`, whatever the input `s`.
@@ -56,6 +68,10 @@
 ## CGB.Generation.adapted_gap_zero
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L82)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Persistence
+
+分类说明：针对 Persistence 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：积分反馈达到固定点且增益非零时，输出偏离目标为零，故任何在零处取零的偏差函数也为零。
 
@@ -71,6 +87,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L92)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Persistence
+
+分类说明：针对 Persistence 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若实函数以严格小于一的统一常数收缩距离，则它的任意两个不动点必相同。
 
 源码说明：**C**: a loop map with gain `L < 1` has at most one rest state: tonic activity without enough loop gain is monostable.
@@ -84,6 +104,10 @@
 ## CGB.Generation.latch_needs_unit_gain
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean#L102)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Persistence
+
+分类说明：针对 Persistence 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：可微实函数若有两个不同不动点，则两点之间至少有一点的导数等于一。
 

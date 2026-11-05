@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L48)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：有界内容池按整数 d 成功移动后，再按 −d 移动可回到原状态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -24,6 +28,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L61)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：有界内容池按整数 d 成功移动后，新池值等于旧池值加 d。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -37,6 +45,10 @@
 ## CGB.NestedWorld.sdir_not
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L191)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：切换规则方向后，指定的两个内容变化量分别变为原值的负数。
 
@@ -53,6 +65,10 @@
 ## CGB.NestedWorld.drain_content
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L279)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若集合 S 内的初始值均为 a，将其更新为 b 后，总内容与原总内容满足加上 S 大小乘对应内容的等式。
 
@@ -72,6 +88,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L294)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若集合内所有位置初始值相同，先写入另一值再写回原值可恢复整个内部状态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -86,6 +106,10 @@
 ## CGB.NestedWorld.canDrain_drain
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L302)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若给定集合和内部状态满足 canDrain，则将该集合替换为任意值后满足对应的新 canDrain 条件。
 
@@ -102,6 +126,10 @@
 ## CGB.NestedWorld.gateCount_drain
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L305)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若分裂页不同于门页且满足 canDrain，指定排空操作保持内部门计数。
 
@@ -120,6 +148,10 @@
 ## CGB.NestedWorld.move_exchanges
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L374)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：当前后位置及燃料、运动状态满足定理条件时，指定双体移动事件按所列公式交换两位置的主体字段并更新燃料状态。
 
@@ -140,6 +172,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L402)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定池导率对两个池值的次序对称。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -154,6 +190,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L405)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定有界池导率对任意自然数参数非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -167,6 +207,10 @@
 ## CGB.NestedWorld.poolFactor_symm
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L411)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：指定嵌套世界的池因子交换两个单元状态后保持不变。
 
@@ -183,6 +227,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L414)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定嵌套世界任意两个单元状态之间的池因子非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -198,6 +246,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L417)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：两个池值均不超过容量时，指定池导率严格为正。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -211,6 +263,10 @@
 ## CGB.NestedWorld.poolFactor_pos
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L428)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：指定嵌套世界任意两个单元状态之间的池因子严格为正。
 
@@ -227,6 +283,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L432)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：同一池值之间的指定池导率等于一。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -241,6 +301,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L435)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定池导率在 m 到 m+1 之间等于 √((m+1)(V−m))。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -254,6 +318,10 @@
 ## CGB.NestedWorld.mass_action_up
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L442)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：池未满时，指定向上池导率与自由能指数因子的乘积化简为 (V−m)exp(−D/2)。
 
@@ -274,6 +342,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L458)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：池未满时，指定向下池导率与自由能指数因子的乘积化简为 (m+1)exp(−D/2)。
 
 源码说明：... and a one-quantum loss of a pool with `m + 1` quanta at a rate `∝ m + 1` (its quanta).
@@ -292,6 +364,10 @@
 ## CGB.NestedWorld.uniport_selectivity
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L479)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在两池均未满且反应系数为正时，指定单池转运的正反速率比等于 (m+1)/(V−q)·exp(−D)。
 
@@ -316,6 +392,10 @@
 ## CGB.NestedWorld.antiport_selectivity
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L497)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在池值均未满且反应系数为正时，指定双池反向转运的正反速率比等于所列占据因子乘 exp(−D)。
 
@@ -349,6 +429,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L556)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若二体规则输入输出内容和相等，则任意方向和身份条件下应用该规则保持两端内容总和。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -364,6 +448,10 @@
 ## CGB.NestedWorld.sum_pair_update
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L569)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若两个不同位置的替换前后 g 值之和相等，则更新两个位置保持整个有限内部状态的 g 值总和。
 
@@ -381,6 +469,10 @@
 ## CGB.NestedWorld.pair_back
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L579)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：两个不同内部位置先被替换，再用原来的对应值替换，可以恢复原内部状态。
 
@@ -400,6 +492,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L590)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若燃料规则前后的内部内容之和相等，则指定燃料操作保持整个内部状态的内容总和。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -417,6 +513,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L599)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定内部二体操作确实改变状态时，切换方向再次操作可恢复原状态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -432,6 +532,10 @@
 ## CGB.NestedWorld.fuelAct_back
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L618)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：指定燃料操作确实改变内部状态时，切换方向再次操作可恢复原状态。
 
@@ -449,6 +553,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L637)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：更新一个不属于门页面的位置不会改变门计数。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -464,6 +572,10 @@
 ## CGB.NestedWorld.innerAct_delta
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L652)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在规则表平衡且内部操作有效改变状态时，内部内容总和的变化与两个池的方向变化满足所列守恒等式。
 
@@ -484,6 +596,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L690)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若内部规则的两个身份页均不同于门页，则该规则的内部操作保持门计数。
 
 源码说明：A pair rule away from the membrane page leaves the membrane as it is.
@@ -500,6 +616,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L715)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定嵌套世界的单体事件电导非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -514,6 +634,10 @@
 ## CGB.NestedWorld.c2_nonneg
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L727)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：指定嵌套世界的双体事件电导非负。
 
@@ -531,6 +655,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L761)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：内部状态与头部类型有限时，嵌套单元内容有有限子水平集、统一上界和唯一零态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -547,6 +675,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L791)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：位置标识不属于指定边界页集合时，其按九分组的商既不是一也不是二。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -560,6 +692,10 @@
 ## CGB.NestedWorld.sum_update_nat
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L795)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：替换单个内部位置后，内容总和等于原总和减旧位置内容加新位置内容。
 
@@ -575,6 +711,10 @@
 ## CGB.NestedWorld.cons1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L805)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若规则表满足 SpecBalanced，且单体事件所在身份页不属于世界边界页，则该事件保持单元总内容。
 
@@ -593,6 +733,10 @@
 ## CGB.NestedWorld.cons2
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L878)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若燃料规则保持内部内容和且分裂规则满足给定内容关系，则任意指定双体事件保持两单元总内容之和。
 
@@ -613,6 +757,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L962)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定单体交换事件的作用等于按方向选择输入、输出状态后的 xchEff 操作。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -629,6 +777,10 @@
 ## CGB.NestedWorld.xchEff_gate
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L969)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若交换页不同于门页，则指定交换操作保持所在世界单元的门计数。
 
@@ -647,6 +799,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L982)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定交换操作确实改变单元状态时，交换输入输出类型再次操作可恢复原状态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -662,6 +818,10 @@
 ## CGB.NestedWorld.back1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1003)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在指定单体事件有效改变状态时，配对反向事件恢复原状态。
 
@@ -679,6 +839,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1086)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定双体扩散事件的作用等于按方向选择正一或负一位移量的 diffEff 操作。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -694,6 +858,10 @@
 ## CGB.NestedWorld.diffEff_back
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1090)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：指定池扩散操作确实改变状态时，反向移动相同量可恢复原状态。
 
@@ -711,6 +879,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1111)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在指定双体事件有效改变状态时，配对反向事件恢复原状态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -726,6 +898,10 @@
 ## CGB.NestedWorld.div_gate
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1201)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若指定分裂页不同于门页，则该分裂事件保持第一世界单元的门计数。
 
@@ -745,6 +921,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1214)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若内部规则的两个身份页均不同于门页，则该单体内部事件不改变所在世界单元的门计数。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -761,6 +941,10 @@
 ## CGB.NestedWorld.axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1235)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在规则平衡、门页分离、燃料与分裂内容关系等定理所列前提下，指定嵌套晶格介质满足 Axioms。
 
@@ -785,6 +969,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1324)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：两个世界单元包含相同个体字段时，它们的个体内部内容相同。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -799,6 +987,10 @@
 ## CGB.NestedWorld.orgIn_inner
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1332)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在规则表平衡且指定内部规则对两个外部池的净变化之和为零时，该单体事件保持主体内部内容。
 
@@ -818,6 +1010,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1352)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定单体供给事件不改变世界单元中可选主体字段。
 
 源码说明：The world's supply rules never touch the organism.
@@ -833,6 +1029,10 @@
 ## CGB.NestedWorld.intake_is_exchange
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1362)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：平衡规则下，单体事件使已有主体的内容增加时，该事件是指定边界交换或带池变化的内部规则。
 
@@ -862,6 +1062,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1401)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在规则平衡、单元含主体及门计数为零时，若单体事件使主体内部内容增加，则其电导为零或事件属于所列非门控交换或非门控内部规则分支。
 
 源码说明：**Death** (`Part.CanTakeIn` fails through the organism's own doing): with no intact membrane unit, every event that would raise the organism's content has rate zero, except an ungated exchange: physics the organism does not control (the reverse of a leak, membrane re-forming from the cell's pools). Every rate of the medium is a positive multiple of `exp`, so `Part.Recoverable` alone never fails; without the membrane factor, intake would not depend on the body at all, structure would have no use and selection could drop its upkeep.
@@ -884,6 +1088,10 @@
 ## CGB.NestedWorld.dead_output_is_physics
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1420)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：当门计数为零且单体事件使主体内部内容减少时，其电导为零或事件属于定理列出的非门控交换、非门控内部规则或溶解分支。
 
@@ -908,6 +1116,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1461)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在该规则表中，若单体事件将非空主体字段变为空，则该事件属于指定正向溶解分支。
 
 源码说明：**Only dissolution empties a place** (with G26c `corpses_must_go`, why the table needs it): every single-cell event that turns a cell holding a body into a cell without one is the dissolution of a body. (A move only carries the body to the next cell.) Without this event no place ever loses its body, and a world of endless mortal lives fills with corpses. Only a body without intact membrane dissolves (its conductance is zero otherwise), with everything it holds; by P2b the reverse exists too: a dead body forming from waste, suppressed by the entropy of gathering `B` and more quanta.
@@ -923,6 +1135,10 @@
 ## CGB.NestedWorld.births_only_by_division
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1488)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在该嵌套规则表中，若一次双体事件使两个位置的主体数增加，则该事件属于正向分裂分支。
 
@@ -941,6 +1157,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1522)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若内部所有对应身份页的位置都不具备所需伙伴状态，则指定内部二体操作保持原内部状态。
 
 源码说明：A pair rule whose partner state is absent leaves the organism as it is.
@@ -957,6 +1177,10 @@
 ## CGB.NestedWorld.gated_exit_blocked
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1537)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若交换规则被标记为门控且世界单元门计数为零，则对应单体事件的电导为零。
 
@@ -975,6 +1199,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1541)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：容量未满的有界池可以成功增加一单位，且新值为原值加一。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -988,6 +1216,10 @@
 ## CGB.NestedWorld.leak_bound
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1553)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在内部势能有界、指定交换非门控及其余定理条件下，该单体事件的电导与指数因子乘积满足给定下界。
 
@@ -1022,6 +1254,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1621)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若指定食品交换规则将内部内容加一、内部页和初态匹配且外部食物池至少有一单位，则该事件使外部池减一并按规则更新内部位置。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -1044,6 +1280,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1636)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若交换目标状态的内容比来源状态多一，且选定位置处于来源状态，则替换该位置使内部内容总和增加一。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -1061,6 +1301,10 @@
 ## CGB.NestedWorld.metabolizes_of_intake
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1654)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若指定门控食物交换满足正系数、内容增一、页匹配、门计数和容量等条件，则所构造主体部分满足 Metabolizes。
 
@@ -1087,6 +1331,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1681)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若指定门控食物交换满足正系数、内容增一、页匹配、正门计数及容量至少二等条件，则所构造主体部分满足 Senses。
 
 源码说明：**Nested sensing** (`Part.Senses`): the same intake event, from the same organism, fires at different rates when only the cell's food differs (one quantum or two).
@@ -1111,6 +1359,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1753)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定环形世界的相邻关系对称。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -1125,6 +1377,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1761)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定二维环面世界的相邻关系对称。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -1138,6 +1394,10 @@
 ## CGB.NestedWorld.axioms_torus
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1787)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在嵌套规则平衡和门页、分裂等前提下，以指定二维环面邻接构造的介质满足 Axioms。
 
@@ -1161,6 +1421,10 @@
 ## CGB.NestedWorld.axioms_ring
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNestedWorld.lean#L1799)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：NestedWorld
+
+分类说明：针对 NestedWorld 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在嵌套规则平衡和门页、分裂等前提下，以指定环形邻接构造的介质满足 Axioms。
 

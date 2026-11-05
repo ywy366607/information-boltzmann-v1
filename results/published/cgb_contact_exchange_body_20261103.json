@@ -1,0 +1,82 @@
+{
+  "status": "implemented_tests_and_gpu_engineering_calibration_passed",
+  "model": "same GatedDeltaNetLM, recurrence=contact_exchange",
+  "scope": "implementation admission; no capability or convergence claim",
+  "state": "(C,a), same matrix and share dimensions; actual read uses a*C",
+  "transition": [
+    "r=softmax(g*a+k-0.5*||C-v||^2)",
+    "lambda=gamma*r",
+    "C_next=(1-lambda)*C+lambda*v",
+    "a_next=(1-gamma)*a+gamma*r",
+    "read=C_next.T@(a_next*q)"
+  ],
+  "theorem_reference": "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean",
+  "new_reference_result": "decoded_content_budget",
+  "existing_reference_results": [
+    "selective_contact_budget",
+    "contact_write_retention",
+    "selective_actual_read"
+  ],
+  "additional_state_bytes_vs_evidence_exchange": 0,
+  "additional_learned_parameters": 0,
+  "checkpoint_warning": "C encoding differs from old weighted M; no reinterpretation or implicit migration. At zero share C cannot be recovered from M. All calibration starts from seed.",
+  "checks": {
+    "affected_tests": "43 passed including CPU/CUDA, derivatives, full restore and graph accumulation",
+    "lean": "reference compiled; base axioms only"
+  },
+  "protocol": {
+    "dataset": "registered OpenWebText UTF8",
+    "seed": 11,
+    "updates": 20,
+    "bytes_per_update": 128,
+    "chunk": 32,
+    "validation_bytes": 1024,
+    "d": 128,
+    "layers": 4,
+    "heads": 4,
+    "mlp_hidden": 256,
+    "conv_kernel": 4,
+    "content_budget": 1.0,
+    "precision": "FP32",
+    "purpose": "engineering calibration only",
+    "stopping_rule": "20 updates; abort on nonfinite loss or recurrent state"
+  },
+  "unresolved": [
+    "Concentration is still permitted by allocation law",
+    "Low share still attenuates current actual read",
+    "Useful long-term language retention not established",
+    "357 source-support theorems are not 357 admitted runtime properties"
+  ],
+  "independent_review": false,
+  "source_sha256": {
+    "scripts\\ib_local\\gated_deltanet.py": "a586fce344a14f305f1839913655835e5f4db9d58af947b3dc0e6290500e5a37",
+    "scripts\\ib_local\\train_gated_deltanet.py": "73b7eaa01c3d9b55487c25cc50a8b84d696ab0bc1f589ea9efd1aa94cffeeb4b",
+    "tests\\test_gated_deltanet.py": "e9c0ac68d73e4e7da9ec9db98d4d8808ee6e5330ca2e91acd250e41637e81097",
+    "lean\\CGBAxioms\\reviews\\budgeted_association_write_20261103.lean": "0bc2c84f47baf505fddb0bc6fb1bc099135f928fbed01f4afe329cec5798f426"
+  },
+  "calibration": {
+    "artifact": "results\\cgb_joint_gpu_20261103\\contact_calibration_20\\summary.json",
+    "updates": 20,
+    "byte_exposures": 2560,
+    "parameters": 765088,
+    "persistent_state_bytes": 86016,
+    "peak_allocated_mib": 58.67724609375,
+    "peak_reserved_mib": 92.0,
+    "training_bytes_per_second": 1090.6556374687375,
+    "initial_validation_nll": 5.55164098739624,
+    "final_validation_nll": 4.514858245849609,
+    "convergence_established": false,
+    "capability_claim": false,
+    "final_checkpoint_checks": {
+      "all_parameter_tensors_changed": true,
+      "parameter_tensor_count": 62,
+      "optimizer_steps": [
+        20
+      ],
+      "conditional_row_mass_max": 0.6563879251480103,
+      "decoded_total_mass_max": 0.6507616639137268,
+      "share_total_max_error": 1.1920928955078125e-07,
+      "all_state_finite": true
+    }
+  }
+}

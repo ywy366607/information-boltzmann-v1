@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceLimits.lean#L10)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：若时变性质在初态成立且沿核的每个正概率转移保持，则任意时刻违反该性质的状态概率为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -27,6 +31,10 @@
 ## _private.CGBAxioms.SensoryMaintenanceLimits.0.CGB.SensoryMaintenanceLimits.loss_closed
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceLimits.lean#L36)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：处于感知缺失损伤态的机体集合在持续无输入环境下保持前向不变封闭性。
 
@@ -46,6 +54,10 @@
 ## CGB.SensoryMaintenanceLimits.blackout_body_empty
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceLimits.lean#L63)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在指定连续感官中断协议中，若中断长度至少三拍，则从中断开始第三拍起所有正概率支持的身体状态为 empty。
 
@@ -68,6 +80,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceLimits.lean#L81)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：对指定连续感官中断协议，中断长度至少三拍且时刻不早于开始后三拍时，交换生存评分为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -87,6 +103,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceLimits.lean#L98)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：对指定有限感知维护见证，任何 T≥3 都不满足误差参数为零的 T 拍感官丢失耐受定义。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -100,6 +120,10 @@
 ## CGB.SensoryMaintenanceLimits.no_input_active_duration
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceLimits.lean#L108)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：沿指定 next 轨迹，若前 n 拍均非 calm、内容成本为正且输入为零，则 n 不超过初始内容成本。
 
@@ -118,6 +142,10 @@
 ## CGB.SensoryMaintenanceLimits.fuel_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceLimits.lean#L155)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：对指定联合过程和账本，任意有限期限的平均剩余内容加累计输出等于初始内容四加累计输入。
 

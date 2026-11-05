@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L104)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：介质总转移速率不超过正时钟速率时，其离散一步转移核的每项非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -25,6 +29,10 @@
 ## CGB.Medium.kernel_sum
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L111)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：按介质离散核定义，对下一状态求和得到一；非负性另需时钟条件。
 
@@ -42,6 +50,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L131)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：有限身体状态与世界状态的四重求和可以交换前后两组变量的顺序。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -56,6 +68,10 @@
 ## CGB.Medium.law_sum
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L138)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：按定义演化的身体—世界联合权重在每个时刻总和为一。
 
@@ -73,6 +89,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L175)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：如果身体状态沿自身事件无法再到达可摄入状态，则任何一步自身事件的后继也不可恢复。
 
 源码说明：**Losing recoverability is irreversible**: no event leads from an irrecoverable state back to a recoverable one.
@@ -87,6 +107,10 @@
 ## CGB.Medium.kernel_up_zero
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L196)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：若所有状态都不能摄入内容，则任何内容严格增加的身体转移在离散核中的权重为零。
 
@@ -104,6 +128,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L211)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在旧版有利刺激菜单的恢复定义下，若任何身体状态都不能摄入内容，则任意期限的恢复评分为零。
 
 源码说明：Without any possible intake, recovery is impossible.
@@ -120,6 +148,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L229)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在旧版生命指标下，若没有任何可能摄入且世界恢复阈值为正，则每个状态的生命指标均为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -135,6 +167,10 @@
 ## CGB.Medium.stepSum
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L242)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：当世界核归一且身体核保持测试函数时，一步联合更新保持该测试函数的加权和。
 
@@ -154,6 +190,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L261)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：若身体转移核不依赖世界状态且世界核归一，联合更新后的身体边缘分布可由原身体边缘单独递推。
 
 源码说明：One joint step of the organism's marginal, when its kernel ignores the world.
@@ -171,6 +211,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L276)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：用于断环对照的独立身体混合世界转移，在输入联合权重总和为一时仍具有单位行和。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -186,6 +230,10 @@
 ## CGB.Medium.lawCut_sum
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L291)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：按断环对照递推得到的身体—世界联合权重在每个时刻总和为一。
 
@@ -203,6 +251,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L311)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：按旧版生命指标，如果没有任何可能摄入，则任何感官安排下的生命评分在所有时刻为零。
 
 源码说明：An organism that can never take anything in is never alive, whatever it senses.
@@ -218,6 +270,10 @@
 ## CGB.Medium.not_persists_of_no_intake
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L332)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：按旧版持续生存定义，若所有状态均不可能摄入内容，则无法满足持续生存条件。
 
@@ -235,6 +291,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L367)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：按旧版闭环自维持定义，若介质的事件速率和作用完全不受刺激影响，则闭环无法相对断环获得要求的持续收益。
 
 源码说明：An organism that ignores its stimuli cannot self-maintain: its own law does not depend on the world, so cutting the loop changes nothing.
@@ -250,6 +310,10 @@
 ## CGB.Medium.not_selfMaintains_of_closedMatter
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L397)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：按旧版基于摄入的自维持定义，若所有正速率事件都不改变总内容，则不能满足闭环自维持。
 
@@ -267,6 +331,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L431)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：旧版 Lives 条件包含闭环自维持，因此满足它的介质必定有事件速率或作用依赖感官刺激。
 
 源码说明：A living organism necessarily senses its world.
@@ -282,6 +350,10 @@
 ## CGB.Medium.Lives.metabolizes
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Life.lean#L435)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Life 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：旧版 Lives 条件要求至少存在一个正速率事件改变主体总内容，即满足所定义的内容交换条件。
 

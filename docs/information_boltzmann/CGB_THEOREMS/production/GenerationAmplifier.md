@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L42)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Amplifier
+
+分类说明：针对 Amplifier 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：logistic 占用率对任意实输入都不超过该输入的指数。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -23,6 +27,10 @@
 ## CGB.Generation.one_sub_occupancy_le_exp
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L49)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Amplifier
+
+分类说明：针对 Amplifier 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：logistic 空余率对任意实输入都不超过输入负值的指数。
 
@@ -38,6 +46,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L61)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Amplifier
+
+分类说明：针对 Amplifier 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：logistic 占用率对任意实输入都不超过一。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -52,6 +64,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L68)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Amplifier
+
+分类说明：针对 Amplifier 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当低层势不超过其阈值时，指定高层占用率不超过 exp(−Δ)。
 
 源码说明：**G25a (H stays off below threshold)**: while the low page is at most half full, the high page is occupied at most `e^{-Δ}`.
@@ -65,6 +81,10 @@
 ## CGB.Generation.switch_width
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L78)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Amplifier
+
+分类说明：针对 Amplifier 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：当低层容量非负时，两种势之间的内容增量受高层占用增量与低层指数尾项之和约束。
 
@@ -83,6 +103,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L90)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Amplifier
+
+分类说明：针对 Amplifier 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：单量子平衡占用率的对数几率等于势差 μ−φ，即对势差的系数为一。
 
 源码说明：**G25c (equilibrium Hill coefficient is one)**: the log-odds of occupation is exactly the potential above the unit's energy, so it moves one-for-one with the sensed potential.
@@ -96,6 +120,10 @@
 ## CGB.Generation.quanta_hill
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L99)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Amplifier
+
+分类说明：针对 Amplifier 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：指定 s 量子状态与空状态的平衡权重比的对数恰为 sμ。
 
@@ -111,6 +139,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L106)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Amplifier
+
+分类说明：针对 Amplifier 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：N>1 时，logistic 占用率至少为 1/N 当且仅当 −h 不超过 log(N−1)。
 
 源码说明：Lower edge of the resolvable range: with `N` units, the occupancy is at least one unit's worth (`1/N`) exactly when `-h ≤ log (N - 1)`.
@@ -125,6 +157,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L114)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Amplifier
+
+分类说明：针对 Amplifier 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：N>1 时，logistic 占用率至多为 1−1/N 当且仅当 h 不超过 log(N−1)。
 
 源码说明：Upper edge: the occupancy leaves at least one unit empty exactly when `h ≤ log (N - 1)`.
@@ -138,6 +174,10 @@
 ## CGB.Generation.resolvable_band
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L140)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Amplifier
+
+分类说明：针对 Amplifier 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：N>1 且增益为正时，指定 logistic 输出处于可分辨区间当且仅当输入与阈值之差处于给定范围。
 
@@ -157,6 +197,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L151)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Amplifier
+
+分类说明：针对 Amplifier 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：非零增益 s 与给定可分辨带宽的乘积恒为 2log(N−1)。
 
 源码说明：The product of gain and resolvable width is `2 log (N - 1)`, independent of the gain: an amplified switch covers a proportionally narrower band of the sensed potential.
@@ -170,6 +214,10 @@
 ## CGB.Generation.fixed_threshold_fails
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L163)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Amplifier
+
+分类说明：针对 Amplifier 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在指定输入范围宽于固定阈值可分辨带宽时，该范围内必有输入使输出不可分辨。
 
@@ -189,6 +237,10 @@
 ## CGB.Generation.centred_threshold_resolves
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationAmplifier.lean#L178)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Amplifier
+
+分类说明：针对 Amplifier 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：当预测误差不超过 δ 且增益与 δ 满足给定界时，以预测为中心的指定阈值保持可分辨。
 

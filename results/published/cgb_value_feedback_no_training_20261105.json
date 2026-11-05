@@ -1,0 +1,105 @@
+{
+  "training_steps": 0,
+  "world_steps": 0,
+  "source_hashes": {
+    "results\\cgb_value_scale_joint_20261105\\metrics.jsonl": "868212c6ea0d3e403d682e0f85c3040649b784a79a996b6e2ef4759284f74ff8",
+    "results\\cgb_value_scale_joint_20261105\\last.pt.gz": "b4f444dcf8658895b145bff12071d8edced76c643e6c3fc8d436d087c36ab397",
+    "results\\cgb_symbol_navigation_20261105\\last.pt.gz": "9b6cd9a55ad16aee0cedaddbc5f1b2529efb5ac237aa4c0bf249327433157a1f"
+  },
+  "rebase_only": {
+    "torch.float32": {
+      "max_abs_output_drift": 0.2726726531982422,
+      "baseline_abs_max": 140.07806396484375,
+      "final_preserved_abs_max": 140.25,
+      "outer_only_change": 3297829888.0
+    },
+    "torch.float64": {
+      "max_abs_output_drift": 2.8774138627341017e-10,
+      "baseline_abs_max": 140.0780484167011,
+      "final_preserved_abs_max": 140.07804841641337,
+      "outer_only_change": 3297829526.505331
+    }
+  },
+  "parameter_to_value": {
+    "weight_perturbation_l2": 0.0002999999999999999,
+    "checkpoint_scale": 1965.533393937294,
+    "hidden_norms": [
+      43.84727853888762,
+      275.7343195494661,
+      70.1610605564868
+    ],
+    "raw_value_change": [
+      -0.033166495016075714,
+      162.58950387871573,
+      -0.008425279333550861
+    ],
+    "predicted_change": [
+      -0.03316649501624246,
+      162.5895038787157,
+      -0.008425279333490366
+    ],
+    "scope": "Hypothetical fixed-norm parameter perturbation, not an Adam step or learning update."
+  },
+  "memory_return_feedback": {
+    "query_scope": "checkpoint128 frozen parameters, stored query/features, current memory; not original decision-time prediction",
+    "recalled_values": [
+      -139.65363557642246,
+      350.4321003582446,
+      -107.42622006575505
+    ],
+    "values": [
+      -298.84874816650034,
+      -3156.7110257503323,
+      -232.04019174483722
+    ],
+    "policy": [
+      0.9636092333240138,
+      0.036390766675986196,
+      0.0
+    ],
+    "top_memory_slot": 494,
+    "max_single_slot_d_target_d_memory": 1.5082603367993594,
+    "finite_difference": 1.508260336824385,
+    "sup_norm_jacobian_bound": 1.6950750284315799,
+    "touched_memory_slots": 24,
+    "fixed_query_iteration": [
+      -3.2260302766465823,
+      -5.905771480668185,
+      -9.9509832183335,
+      -15.956701164979426,
+      -24.50459451856989,
+      -35.27581533987597,
+      -44.54567302977793,
+      -46.9892278592995,
+      -46.75992986619644,
+      -46.79529011732204,
+      -46.790017311530484,
+      -46.79080775719874,
+      -46.79068935493203,
+      -46.790707092715344,
+      -46.79070443547411,
+      -46.79070483354807,
+      -46.79070477391374,
+      -46.79070478284738,
+      -46.790704781509056,
+      -46.79070478170954,
+      -46.790704781679516,
+      -46.79070478168401,
+      -46.79070478168333,
+      -46.790704781683445
+    ],
+    "observed_only_feedback_recall_change": 0.0,
+    "observed_only_next_targets": [
+      -0.8582880759566145,
+      -0.8582880759566145,
+      -0.8582880759566145
+    ],
+    "repair_scope": "Removing the TD-to-observed-memory overwrite removes this return-feedback edge; critic TD stability remains a separate obligation."
+  },
+  "actual_logged_td_max_reconstruction_error": 0.0,
+  "adam_scalar_counterexample": {
+    "first_step_without_correction": 3.1622776601683773,
+    "late_isolated_gradient_bias_corrected_ratio": 3.1622062340303194
+  },
+  "scope": "Arithmetic rebase, read-only derivatives and isolated fixed-query recirculation. No original learning trajectory rerun; no capability claim."
+}

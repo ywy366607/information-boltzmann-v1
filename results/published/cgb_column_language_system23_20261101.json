@@ -1,0 +1,108 @@
+{
+  "status": "completed_budget_limited_mixed_S_learning_effect",
+  "claim_scope": "Real OpenWebText continuous system-2/3 learning in one common-birth main trajectory and a matched learning-enabled counterfactual. No actions, questions or mother interface; five phases are situational analysis labels, not added controllers.",
+  "not_claimed": ["convergence", "statistical significance across independent seeds", "modern language-model capability", "universal benefit of the local S proxy", "exact long-horizon parameter credit", "full-parameter learning", "system-4 or complete-life closure"],
+  "source": {
+    "dataset": "openwebtext",
+    "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+    "units": "UTF-8 bytes encoded as raw ids 4..259; 0..3 are source metadata",
+    "split_rule": "NFC_document_sha256_mod100_98_1_1",
+    "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+    "tokenizer_sha256": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+    "train_sha256": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+    "validation_sha256": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c",
+    "test_split_used": false
+  },
+  "model": {
+    "runtime": "CGBColumnLanguageBody",
+    "parameter_numbers": 34716,
+    "d_model": 32,
+    "grid_shape": [8, 8],
+    "active_columns": 8,
+    "contact_rank": 1,
+    "seed": 20261031,
+    "head_step": 0.01,
+    "value_route_H_S_steps": 0.001,
+    "graph_block": 128,
+    "S_off_intervention": "after the common all-learning warmup, stop only further S allocation/retain slow-parameter updates; keep forward S, all other learning, and complete receipts"
+  },
+  "protocol": {
+    "warmup_train_raw": [0, 100000],
+    "A_firstpass_train_raw": [100000, 200000],
+    "B_firstpass_validation_raw": [0, 64000],
+    "A_revisit_train_raw": [100000, 164000],
+    "A_fresh_train_raw": [200000, 264000],
+    "B_scope": "online first-pass on validation source, not frozen evaluation or an asserted domain shift",
+    "revisit_scope": "explicit already-seen replay; excluded from first-pass best checkpoint selection",
+    "common_delivered_raw": 392000,
+    "cumulative_exposure_raw": 684000,
+    "common_delivered_scored_bytes": 391864,
+    "cumulative_exposure_scored_bytes": 683778,
+    "common_delivered_special_tokens": 136,
+    "clock": "same actual packet-arrival interval for both arms; within-packet elapsed zero; source metadata does not invent a one-second pause",
+    "advanced_elapsed_seconds_both_arms": 845.0080278000007,
+    "body_reset_or_frozen_learning": false
+  },
+  "phase_results": {
+    "A_firstpass": {
+      "scored_bytes_per_arm": 99976,
+      "S_on_NLL": 2.707202144247957,
+      "S_off_NLL": 2.7093154797031658,
+      "on_minus_off_NLL": -0.0021133354552089756,
+      "S_on_BPB": 3.9056671081904955,
+      "S_off_BPB": 3.9087160067714604,
+      "paired_window_NLL_delta": {"Min": -0.007086998367309416, "Median": -0.002443291894559163, "Mean": -0.0021132183238520954, "Max": 0.0039738389725063605, "windows": 10, "on_better_windows": 7}
+    },
+    "B_firstpass": {
+      "scored_bytes_per_arm": 63976,
+      "S_on_NLL": 2.698732510497902,
+      "S_off_NLL": 2.6998397408686117,
+      "on_minus_off_NLL": -0.0011072303707098108,
+      "S_on_BPB": 3.8934480095811455,
+      "S_off_BPB": 3.89504540534609,
+      "paired_window_NLL_delta": {"Min": -0.005097997214799754, "Median": -0.00006874542236356973, "Mean": -0.0005845147746069859, "Max": 0.004986009898637178, "windows": 7, "on_better_windows": 4}
+    },
+    "A_revisit": {
+      "scored_bytes_per_arm": 63976,
+      "S_on_NLL": 2.688073667061393,
+      "S_off_NLL": 2.683653251549684,
+      "on_minus_off_NLL": 0.00442041551170913,
+      "S_on_BPB": 3.878070549013682,
+      "S_off_BPB": 3.8716932374762707,
+      "paired_window_NLL_delta": {"Min": -0.001385626398961115, "Median": 0.004138472463361076, "Mean": 0.005266568242985452, "Max": 0.014286609933995553, "windows": 7, "on_better_windows": 1}
+    },
+    "A_fresh": {
+      "scored_bytes_per_arm": 63986,
+      "S_on_NLL": 2.6477745856102457,
+      "S_off_NLL": 2.644840022158549,
+      "on_minus_off_NLL": 0.0029345634516966257,
+      "S_on_BPB": 3.8199312640517316,
+      "S_off_BPB": 3.815697583912795,
+      "paired_window_NLL_delta": {"Min": -0.004973199526405292, "Median": 0.003524729527814685, "Mean": 0.0027660173626978973, "Max": 0.008810927554005143, "windows": 7, "on_better_windows": 1}
+    }
+  },
+  "distribution_scope": "Min/Median/Mean/Max are the unweighted distribution of paired logged-window mean-NLL differences, not individual byte losses; phase NLL is scored-byte weighted. Negative on-minus-off favors continuing S learning.",
+  "actual_learning_and_circulation": {
+    "S_slow_parameter_final_difference_from_off": {"Min": 0.0, "Median": 0.0000760294497013092, "Mean": 0.0001419825745146572, "Max": 0.0008690208196640015, "nonzero_entries": 1064, "total_entries": 1096},
+    "final_H_saturated_fraction": {"S_on": 0.22119140625, "S_off": 0.1884765625},
+    "final_free_capacity_S_on": {"Min": 0.44301098585128784, "Median": 0.5507281720638275, "Mean": 0.5476071336306632, "Max": 0.6350331902503967},
+    "final_free_capacity_S_off": {"Min": 0.45728445053100586, "Median": 0.551766574382782, "Mean": 0.5511651076376438, "Max": 0.6476238965988159},
+    "interpretation": "S parameters actually changed and the pool kept positive admission/release, with reciprocal error zero. This does not support a simple full-pool lockup or unexecuted-learning explanation; it does not by itself identify a phase pathology or the cause of late harm."
+  },
+  "verification": {"interface_tests_passed": 80, "interface_seconds": 6.60, "new_Lean_theorems_for_this_protocol": 0, "applicable_existing_source_theorems": 1638, "checkpoint_source_identity_matches": true, "checkpoint_log_offsets_match": true},
+  "artifacts": {
+    "summary": "results/cgb_column_language_living_20261101/summary.json",
+    "windows": "results/cgb_column_language_living_20261101/windows.jsonl",
+    "arrival_events": "results/cgb_column_language_living_20261101/events.jsonl",
+    "latest": "results/cgb_column_language_living_20261101/latest.pt",
+    "best": "results/cgb_column_language_living_20261101/best.pt",
+    "latest_bytes": 399545,
+    "best_bytes": 399105,
+    "analysis": "docs/information_boltzmann/CGB_LANGUAGE_SYSTEM23_CONTINUOUS_20261101.md"
+  },
+  "model_source": {
+    "scripts/run_cgb_column_language_living.py": "82a7ac0146ef2e023777f062635fc228e456e5eb29997619926c4558783ff78a",
+    "scripts/run_cgb_column_language_admission.py": "8cf78131f0dd2daaa13977e021f00159f19a115259fe85e3d06c8d96744f0d6a",
+    "information_boltzmann/core/cgb_column_body.py": "6bb1be9a935df2df478c7e6d309fccd3dc30cff364ab27629d5b7f8425d92963"
+  }
+}

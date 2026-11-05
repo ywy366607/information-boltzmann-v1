@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationIgnition.lean#L19)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Ignition
+
+分类说明：针对 Ignition 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：相邻三个二项式系数满足中间项平方不小于两侧项乘积，即二项式系数序列对数凹。
 
 源码说明：Binomial coefficients are log-concave.
@@ -23,6 +27,10 @@
 ## CGB.Generation.activeWeight_log_concave
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationIgnition.lean#L47)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Ignition
+
+分类说明：针对 Ignition 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：活动比率非负时，由二项式系数乘比率幂构成的活跃数量权重仍满足对数凹不等式。
 
@@ -42,6 +50,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationIgnition.lean#L61)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Ignition
+
+分类说明：针对 Ignition 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：对该非负活动比率的可加平衡权重，相邻三个活跃数量的中间权重不可能严格低于两侧。
 
 源码说明：**G23 (no ignition in equilibrium with additive energies)**: the distribution of the number of active units has no strict valley, so it cannot have an "off" peak and an "ignited" peak separated by a gap.
@@ -60,6 +72,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationIgnition.lean#L83)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Ignition
+
+分类说明：针对 Ignition 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：非负速率系数下，刺激引起的二态总松弛速率不超过无刺激速率乘以 exp(|μ|/2)。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -73,6 +89,10 @@
 ## CGB.Generation.equilibrium_memory_bound
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationIgnition.lean#L100)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Ignition
+
+分类说明：针对 Ignition 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若写入速率受指定平衡比率约束，则持续 tp 的脉冲经过正延迟 T 后保留的偏离量受与 tp/T 成正比的上界限制。
 

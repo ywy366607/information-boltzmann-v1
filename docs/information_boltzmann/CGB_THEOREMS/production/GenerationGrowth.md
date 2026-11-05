@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L25)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：任意两个二值变量上的实函数可精确拆成常数、两个单变量项和一个乘积交互项。
 
 源码说明：**G18a**: the Möbius decomposition.
@@ -24,6 +28,10 @@
 ## CGB.Generation.interaction_unique
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L32)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若二值对函数已经写成常数、两个单变量项和乘积项，其乘积系数必等于四个函数值的混合差分。
 
@@ -40,6 +48,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L41)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：二值槽位与二值共同活动的能量混合差分与求差次序无关。
 
 源码说明：**G18b (reciprocity)**: for an energy `E w x` of a slot `w` and a co-activity `x`, the effect of `x` on the slot's flip equals the effect of the slot on `x`'s flip.
@@ -53,6 +65,10 @@
 ## CGB.Generation.occupancy_odds
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L50)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：给定 logistic 占用函数的占用几率恰为 exp(h)。
 
@@ -68,6 +84,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L60)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：给定 logistic 占用函数随场 h 严格单调增加。
 
 源码说明：**G18c**: occupancy is strictly increasing in the field.
@@ -81,6 +101,10 @@ StrictMono CGB.Generation.occupancy
 ## CGB.Generation.one_pool_nested
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L77)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在指定共享势模型和非负耦合下，一个单位与某方向达到强连接阈值时，活动率更高的单位也达到该阈值。
 
@@ -99,6 +123,10 @@ StrictMono CGB.Generation.occupancy
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L92)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若连接端状态只依赖当前符号，给定联合分布下的共同活动统计只依赖当前符号的边缘频率。
 
 源码说明：**G19b (memoryless ends see only symbol frequencies)**: if every end state depends on the current symbol only, the co-activity, hence the grown structure, depends on the stream only through the frequencies of the current symbol.
@@ -113,6 +141,10 @@ StrictMono CGB.Generation.occupancy
 ## CGB.Generation.memoryless_same_frequencies_same_structure
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L99)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若两个符号对分布的当前符号边缘频率相同，则无历史记忆的端点得到相同共同活动统计。
 
@@ -131,6 +163,10 @@ StrictMono CGB.Generation.occupancy
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L113)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：构造的交替与重复二值流具有相同当前符号频率，但能被包含上一符号的共同活动统计区分。
 
 源码说明：**G19c (sequence structure needs memory at the ends)**: the two streams have equal frequencies, so memoryless ends grow the same structure (G19b); an end that holds the previous symbol (`i` active on the previous 1, `j` on the current 1) separates them.
@@ -147,6 +183,10 @@ StrictMono CGB.Generation.occupancy
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L137)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：两态递推中上转与下转率之和非零时，偏离固定点的量每步乘以同一个因子，得到几何形式。
 
 源码说明：**G20a (two-state memory is geometric)**: the deviation from the fixed point `p* = kp / (kp + km)` shrinks by the same factor `1 - kp - km` every tick, so the trace of a past input is exponential; detailed balance fixes `p*`, not the form.
@@ -162,6 +202,10 @@ StrictMono CGB.Generation.occupancy
 ## CGB.Generation.symmetric_exchange
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L152)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：两个量按指定对称交换更新后，总量保持不变，差值乘以 1−2D。
 
@@ -180,6 +224,10 @@ StrictMono CGB.Generation.occupancy
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L162)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若确定性更新与重标记交换且初始状态对重标记不变，则任意有限次更新后仍保持该对称性。
 
 源码说明：**G21 (no differentiation without fluctuation)**: deterministic dynamics `f` that commute with a relabelling `σ` (P2c) keep a `σ`-symmetric birth state (P3) symmetric forever. Identical units born identically and driven identically stay identical; their differentiation needs fluctuations, i.e. the stochastic medium, not its mean field.
@@ -195,6 +243,10 @@ StrictMono CGB.Generation.occupancy
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L175)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：两个正转移率的比例固定点 kp/(kp+km) 等于对数比 log kp−log km 的 logistic 占用值。
 
 源码说明：The fixed point of G20a is the occupancy of the log odds `log kp - log km`.
@@ -208,6 +260,10 @@ StrictMono CGB.Generation.occupancy
 ## CGB.Generation.available_strictAnti
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L183)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：固定正供给下，正需求增加会使可用比例 kp/(kp+m) 严格下降。
 
@@ -223,6 +279,10 @@ StrictMono CGB.Generation.occupancy
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L189)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：耦合系数为负时，指定 logistic 占用率随共同活动强度严格下降。
 
 源码说明：**G22b (equilibrium inhibition retreats from co-activity)**: a slot species whose energy raises co-activity's cost (`κ < 0`) has occupancy strictly falling in co-activity.
@@ -236,6 +296,10 @@ StrictMono CGB.Generation.occupancy
 ## CGB.Generation.shared_potential_forces_nesting
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean#L196)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Growth
+
+分类说明：针对 Growth 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在该共享势、非负耦合模型中，若较低活动单位达到强连接阈值而较高活动单位未达到，则产生矛盾。
 

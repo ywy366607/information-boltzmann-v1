@@ -8,6 +8,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRecovery.lean#L14)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：感知维护系统在受到刺激时的正摄入判定与原可再生学习模型在相应信号下的正摄入严格等价。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -23,6 +27,10 @@
 ## _private.CGBAxioms.SensoryMaintenanceRecovery.0.CGB.SensoryMaintenanceRecovery.old_event
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRecovery.lean#L22)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在非真空且具有正储备的机体状态下，感知系统的单步演化核与原宽限恢复事件核转移概率精确为1。
 
@@ -42,6 +50,10 @@
 ## _private.CGBAxioms.SensoryMaintenanceRecovery.0.CGB.SensoryMaintenanceRecovery.supported
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRecovery.lean#L34)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在非静默刺激与非真空支持下，感知机体的后继状态、事件跃迁与物质摄入通量严格保真投影至宽限恢复系统。
 
@@ -76,6 +88,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRecovery.lean#L87)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：任意环境状态在感知函数映射下的传感器输出信号均不等于静默信号。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -89,6 +105,10 @@
 ## CGB.SensoryMaintenanceRecovery.decode_protocol
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRecovery.lean#L90)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：长度为1的感知中断协议经解码后精确还原为宽限恢复框架中的对应单步中断环境。
 
@@ -105,6 +125,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRecovery.lean#L96)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：凡是落入宽限恢复安全区域内的系统状态，其内部机体单元构型必非真空死态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -120,6 +144,10 @@
 ## _private.CGBAxioms.SensoryMaintenanceRecovery.0.CGB.SensoryMaintenanceRecovery.reserve_sensed
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRecovery.lean#L104)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：在有效感知信号输入下，具有正储备的非真空状态在转移后持续保持正储备且在满储备时不变。
 
@@ -138,6 +166,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRecovery.lean#L154)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：在经历单拍感知丢失后实施恢复协议，系统在任意未来时刻的生存概率恒等于1。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -155,6 +187,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRecovery.lean#L187)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：在自然平稳无损的感知输入流驱动下，机体的全时期生存概率恒等于1。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -171,6 +207,10 @@
 ## CGB.SensoryMaintenanceRecovery.one_tick_tolerance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRecovery.lean#L205)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：机体具备对单拍感知丢失的完全容忍耐受性（单拍耐受定理成立）。
 

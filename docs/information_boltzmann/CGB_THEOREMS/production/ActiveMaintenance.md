@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L42)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：主动维持机体完全满足物理公理系统且受速率为1的事件时钟准入。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -23,6 +27,10 @@ CGB.ActiveMaintenance.body.Axioms ∧ CGB.ActiveMaintenance.body.EventClocked 1
 ## CGB.ActiveMaintenance.reads_boundary
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L107)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：主动维持机体内部状态演化仅读取环境边界接触信息。
 
@@ -38,6 +46,10 @@ CGB.ActiveMaintenance.body.ReadsBoundary CGB.ActiveMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L130)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：三状态机体构型空间实值函数的求和展开等价性。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -51,6 +63,10 @@ CGB.ActiveMaintenance.body.ReadsBoundary CGB.ActiveMaintenance.world
 ## _private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.kernel_table
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L139)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：给出主动维持机体转移核在确定性后继状态处取1的查找表结构。
 
@@ -68,6 +84,10 @@ CGB.ActiveMaintenance.body.ReadsBoundary CGB.ActiveMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L156)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：给出在自然感知流下机体各步联合演化概率密度的显式解析表达式。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -84,6 +104,10 @@ CGB.ActiveMaintenance.body.ReadsBoundary CGB.ActiveMaintenance.world
 ## _private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.recovery_step
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L179)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：给出机体恢复度函数在k+1步向后动态规划递推展开式。
 
@@ -106,6 +130,10 @@ CGB.ActiveMaintenance.body.ReadsBoundary CGB.ActiveMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L205)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：正常环境交互下机体的多步恢复度量与预设前瞻成功概率完全一致。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -120,6 +148,10 @@ CGB.ActiveMaintenance.body.ReadsBoundary CGB.ActiveMaintenance.world
 ## _private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.natural_alive
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L211)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：给出自然演化下机体处于存活状态的充要判定条件。
 
@@ -138,6 +170,10 @@ CGB.ActiveMaintenance.body.ReadsBoundary CGB.ActiveMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L227)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：在自然平稳无损的环境感知驱动下，机体的全时期存活概率恒等于1。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -154,6 +190,10 @@ CGB.ActiveMaintenance.body.ReadsBoundary CGB.ActiveMaintenance.world
 ## _private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.starve_world_step
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L246)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在饥饿吸收状态下环境以概率1停留在死态。
 
@@ -172,6 +212,10 @@ CGB.ActiveMaintenance.body.ReadsBoundary CGB.ActiveMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L258)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：处于饥饿状态下的机体在任意有限视界内的恢复度量恒为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -185,6 +229,10 @@ CGB.ActiveMaintenance.body.ReadsBoundary CGB.ActiveMaintenance.world
 ## _private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.cut_move_early
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L278)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在前3个环境状态内，施加截断后的环境转移算子与无截断动力学完全一致。
 
@@ -205,6 +253,10 @@ CGB.ActiveMaintenance.body.ReadsBoundary CGB.ActiveMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L292)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：在演化前2步内，截断演化下的联合状态概率分布与无截断自然分布精确相同。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -223,6 +275,10 @@ CGB.ActiveMaintenance.body.ReadsBoundary CGB.ActiveMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L312)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：在演化第3步落入饥饿死态的概率质量精确等于1/2。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -237,6 +293,10 @@ CGB.ActiveMaintenance.starveMass✝ 3 = 1 / 2
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L322)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：系统处于饥饿死态的累积概率质量随时间步单调递增。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -250,6 +310,10 @@ CGB.ActiveMaintenance.starveMass✝ 3 = 1 / 2
 ## _private.CGBAxioms.ActiveMaintenance.0.CGB.ActiveMaintenance.cut_alive_bound
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L348)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：截断演化下的存活指示测度在进入饥饿环境死态时严格归零。
 
@@ -268,6 +332,10 @@ CGB.ActiveMaintenance.starveMass✝ 3 = 1 / 2
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L363)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：导出系统截断存活概率受限于1减去累积饥饿概率质量的解析上界。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -285,7 +353,11 @@ CGB.ActiveMaintenance.starveMass✝ 3 = 1 / 2
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L390)
 
-解释：施加环路截断后，机体在第4步的综合存活概率严格低于1/2（确立闭环维持必要性）。
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
+解释：在指定的主动维持模型中，施加环路截断后机体在第4步的综合存活概率严格低于1/2。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -303,6 +375,10 @@ CGB.ActiveMaintenance.starveMass✝ 3 = 1 / 2
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L403)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：构造出主动维持机体同时满足持续生存与自我维持公理的显式见证。
 
 源码说明：The existing gross-exchange targets, for ALL future times. This is a maintenance subtarget witness, not an encoded or cognitive life candidate.
@@ -319,6 +395,10 @@ CGB.Exchange.Persists CGB.ActiveMaintenance.body CGB.ActiveMaintenance.world CGB
 ## CGB.ActiveMaintenance.starvation_depletes
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L416)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在饥饿环境下机体体内有效物质储备不可逆地耗散清空。
 
@@ -340,6 +420,10 @@ CGB.Exchange.Persists CGB.ActiveMaintenance.body CGB.ActiveMaintenance.world CGB
 ## CGB.ActiveMaintenance.sustained_exchange
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenance.lean#L432)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在正常闭环交互中机体持续与环境维持非零且平衡的物质交换。
 

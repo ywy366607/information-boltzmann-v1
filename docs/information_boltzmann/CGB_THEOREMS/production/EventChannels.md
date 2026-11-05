@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EventChannels.lean#L17)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：EventChannels 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：若两个首次命中马尔可夫核的单步转移概率算子完全相同，则这两个核对象数学上完全等价。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -23,6 +27,10 @@
 ## CGB.EventChannels.Kernel.firstHit_bounds
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EventChannels.lean#L50)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：EventChannels 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：带标记事件通道核在任意时域与状态下的首次命中概率度量严格介于0和1之间。
 
@@ -39,6 +47,10 @@
 ## CGB.EventChannels.Kernel.state_mark_firstHit
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EventChannels.lean#L79)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：EventChannels 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：仅依赖状态的标记在事件通道下的首次命中概率严格等价于遗忘事件标签后的无标签马尔可夫核命中概率。
 
@@ -57,6 +69,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EventChannels.lean#L92)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：EventChannels 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在恒假判决条件下，系统的首次命中概率在任意时域内严格为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -71,6 +87,10 @@
 ## CGB.EventChannels.Kernel.labelledLaw_marginal
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EventChannels.lean#L110)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：EventChannels 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：对带标签联合状态分布在事件标签维度求和，精确还原为系统的边缘状态概率分布。
 
@@ -88,6 +108,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EventChannels.lean#L138)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：EventChannels 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：介质在某状态下的总逃逸率等于所有能引起有效状态改变的离散事件跃迁率之和。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -103,6 +127,10 @@
 ## CGB.Medium.eventClocked_implies_clocked
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EventChannels.lean#L153)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：EventChannels 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：介质若满足带事件标签的时钟准入条件，则必然满足标准状态时钟准入条件。
 
@@ -120,6 +148,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EventChannels.lean#L168)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：EventChannels 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在事件时钟准入条件下，单步事件转移概率在所有状态与事件标签下均严格非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -135,6 +167,10 @@
 ## CGB.Medium.eventStep_sum
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EventChannels.lean#L183)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：EventChannels 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：单步事件转移概率在所有可能事件标签与后继状态上的联合求和精确归一为1。
 
@@ -152,6 +188,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EventChannels.lean#L191)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：EventChannels 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在单步事件转移概率中对事件标签求边缘和，精确还原为原始无标签离散转移核概率。
 
 源码说明：Forgetting the event labels recovers the ORIGINAL kernel, even when some positive-rate events leave the body state unchanged.
@@ -167,6 +207,10 @@
 ## CGB.Medium.eventWorldStep_nonneg
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EventChannels.lean#L229)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：EventChannels 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：机体与世界在事件通道耦合下的环境单步转移矩阵元素恒非负。
 
@@ -186,6 +230,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EventChannels.lean#L239)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：EventChannels 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：环境在事件通道驱动下的后继状态转移概率之和精确归一为1。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -201,6 +249,10 @@
 ## CGB.Medium.jointEventKernel_forget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EventChannels.lean#L257)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：EventChannels 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：联合事件马尔可夫核在遗忘事件标签后，其单步转移算子精确还原为对应调度的标准或截断状态转移核。
 
@@ -220,6 +272,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EventChannels.lean#L267)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：EventChannels 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：仅依赖机体状态的事件通道标记在首次命中概率上与原宏观恢复度量计算完全等价。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -238,6 +294,10 @@
 ## CGB.Medium.jointEventKernel_stateLaw
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EventChannels.lean#L287)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：EventChannels 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：由联合事件核诱导的边际状态演化分布精确重合于宏观机体-世界系统的标准状态演化律。
 

@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L27)
 
+分类：witness；适用范围：world_contract；审核：reviewed
+
+分类说明：在特定恒定环境或指定学习成本斑块模型下的最优性对比见证。
+
 解释：在指定觅食收益模型中，固定环境均值已知时，以该均值为阈值的固定规则达到每个斑块的最优收益。
 
 源码说明：**L-1**: a constant average across generations makes the innate threshold optimal.
@@ -24,6 +28,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L31)
 
+分类：witness；适用范围：world_contract；审核：reviewed
+
+分类说明：在特定恒定环境或指定学习成本斑块模型下的最优性对比见证。
+
 解释：在指定恒定环境模型中，已知均值的固定规则严格优于额外支付正学习成本的同一最优收益。
 
 源码说明：**L-1**: in a constant world a learner that pays `κ > 0` loses to the instinct at every patch.
@@ -37,6 +45,10 @@
 ## CGB.Generation.innate_loss_quarter
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L37)
+
+分类：necessity；适用范围：world_contract；审核：reviewed
+
+分类说明：在非平稳漂移或历史独立环境中，固定无学习规则必然遭受损失下界的必要性定理。
 
 解释：对于两个不同环境均值，任意固定阈值都在其中某个世界的某个斑块损失至少两均值差的四分之一。
 
@@ -57,6 +69,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L53)
 
+分类：witness；适用范围：world_contract；审核：reviewed
+
+分类说明：在特定恒定环境或指定学习成本斑块模型下的最优性对比见证。
+
 解释：在两个不同均值的指定觅食模型中，若学习成本小于均值差的四分之一，则每个固定阈值都在某处严格劣于付费学习者。
 
 源码说明：**L-2**: a learner (who uses the world's own average after paying `κ`) beats every instinct somewhere when its cost is below a quarter of the gap.
@@ -73,6 +89,10 @@
 ## CGB.Generation.history_useless_of_independent
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L61)
+
+分类：necessity；适用范围：world_contract；审核：reviewed
+
+分类说明：在非平稳漂移或历史独立环境中，固定无学习规则必然遭受损失下界的必要性定理。
 
 解释：未来环境与历史独立且每种固定规则的期望收益均有同一上界时，按历史选择规则的期望收益也不超过该界。
 
@@ -93,6 +113,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L84)
 
+分类：witness；适用范围：world_contract；审核：reviewed
+
+分类说明：在特定恒定环境或指定学习成本斑块模型下的最优性对比见证。
+
 解释：若环境均值从某时刻起恒定，则使用该均值的固定觅食阈值在之后每个时刻都达到模型最优。
 
 源码说明：**O-1**: if the world settles (its average constant from `T` on), the fixed rule `τ = c T` is optimal at every later time and patch: nothing is left to compare or learn.
@@ -106,6 +130,10 @@
 ## CGB.Generation.beaten_forever_iff_never_settles
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLearning.lean#L92)
+
+分类：necessity；适用范围：world_contract；审核：reviewed
+
+分类说明：在非平稳漂移或历史独立环境中，固定无学习规则必然遭受损失下界的必要性定理。
 
 解释：在指定阈值觅食模型中，任意未来时期每个固定规则仍会在某处落后，等价于环境均值从未最终恒定。
 

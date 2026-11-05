@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RecoveryCriteria.lean#L28)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：依据局部排位序给出的首达恢复时间具有单调随机占优性质。
 
 源码说明：A local rank certificate proves recovery in the actual future kernel, without assuming a favourable stimulus sequence or the desired recovery score.
@@ -25,6 +29,10 @@
 ## CGB.RecoveryCriteria.firstHit_zero_of_closed
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RecoveryCriteria.lean#L54)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：在无代谢摄入的封闭系统中，从任意状态出发首次命中有效恢复区的概率恒为零。
 
@@ -44,6 +52,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RecoveryCriteria.lean#L74)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：从初始区域出发的正概率转移在步进封闭条件下始终保持在初始区域内。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -61,6 +73,10 @@
 ## CGB.RecoveryCriteria.survival_of_ranked
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RecoveryCriteria.lean#L104)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：具有良好排位的候选态在长期演化中存活概率有正下界。
 

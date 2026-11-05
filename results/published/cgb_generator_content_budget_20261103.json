@@ -1,0 +1,43 @@
+{
+  "status": "passed",
+  "kind": "implementation_admission_not_capability",
+  "device": "cuda",
+  "seed": 736,
+  "reference_dtype": "float64",
+  "reference": "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean",
+  "constraints": "row and column L1 upper bounds with derived slack; not equal marginals",
+  "max_row_mass": 1.0000000000000002,
+  "max_column_mass": 0.9054373663043849,
+  "float32_max_budget_violation": 1.1920928955078125e-07,
+  "read_correction_error": 1.7763568394002505e-15,
+  "nll_change_max": 151.14276479549093,
+  "nll_bound_max": 168.37945012418604,
+  "additional_persistent_elements": 0,
+  "additional_parameters": 0,
+  "timing": {
+    "shape": [
+      1,
+      8,
+      64,
+      64
+    ],
+    "graph_replays": 200,
+    "microseconds_per_call": {
+      "delta_proposal": 10.100959539413452,
+      "budgeted_delta": 40.95104217529297
+    },
+    "scope": "core operator only, not full language training throughput"
+  },
+  "training_runs": 0,
+  "body_admitted": false,
+  "nonlinear_evidence_exchange_connected": false,
+  "healthy_latch_proved": false,
+  "source_sha256": {
+    "scripts/audit_cgb_joint_reinvestment.py": "ff353bfb5174216427ef4f5428589482b6028f62c2313891c732872706b077bc",
+    "scripts/ib_local/gated_deltanet.py": "a9fa942ab26190bd96ef86791b83f817d7dbe0a76097c9404841d2d4f4efedf7",
+    "tests/test_gated_deltanet.py": "e4a4c086875cb87a6b668eccd329d6d92b837ea95ce453ede7dee4188461f8dc",
+    "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean": "7a8082f825438da363a02b4bb8d3c0279ab8c4283e9b93585d03c3ecffd5a3ff"
+  },
+  "torch_version": "2.9.1+cu126",
+  "hardware": "NVIDIA GeForce GTX 1650"
+}

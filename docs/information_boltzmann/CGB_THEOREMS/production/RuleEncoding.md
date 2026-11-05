@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RuleEncoding.lean#L52)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：RuleEncoding 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：通用描述规则书在自然数或比特编码序列与结构化对象之间满足无损双向编解码。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -23,6 +27,10 @@
 ## CGB.Description.different_books_different_codes
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RuleEncoding.lean#L55)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：RuleEncoding 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：任意两本不同的通用描述规则书其生成的编码严格互异（单射性）。
 
@@ -38,6 +46,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RuleEncoding.lean#L60)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：RuleEncoding 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：占用比特数不超过B的所有合法描述规则书构成的集合其基数至多为2^B。
 
 源码说明：At most 2^B distinct descriptions fit in B bits (an intentionally loose bound).
@@ -51,6 +63,10 @@
 ## CGB.Description.one_percent_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RuleEncoding.lean#L81)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：RuleEncoding 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：通用描述规则书所占比特数不超过总基因组容量1%的充要判定条件。
 
@@ -66,6 +82,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RuleEncoding.lean#L94)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：RuleEncoding 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：规模为n个位点的布线拓扑参考图其有效负载数据长度严格等于n*n。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -79,6 +99,10 @@
 ## CGB.Description.Book.findWithin_complete
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RuleEncoding.lean#L119)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：RuleEncoding 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：在燃料不低于列表长度时，有限步谓词查找函数能够完全找到第一个满足条件的元素。
 
@@ -95,6 +119,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RuleEncoding.lean#L153)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：RuleEncoding 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在燃料充分条件下，带资源预算的局部状态更新函数与未设限的标准更新函数完全一致。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -110,6 +138,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RuleEncoding.lean#L161)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：RuleEncoding 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：描述规则书中每个离散动作的跃迁权重均严格非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -123,6 +155,10 @@
 ## CGB.Description.Book.same_code_same_medium
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RuleEncoding.lean#L189)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：RuleEncoding 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：规则书编码的一致性直接决定解释出的离散介质模型在数学上完全等价。
 
@@ -138,6 +174,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RuleEncoding.lean#L195)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：RuleEncoding 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：不在动作参与范围内的空间点在介质跃迁后保持状态不变，确立局域性是解释器的固有定理。
 
 源码说明：Locality of effects is a theorem of the interpreter, not a user-supplied promise.
@@ -152,6 +192,10 @@
 ## CGB.Description.Book.admits_some_clock
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RuleEncoding.lean#L208)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：RuleEncoding 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：有限字母表与有限描述规则书必定存在某个统一的有界全局演化时钟准入速率。
 

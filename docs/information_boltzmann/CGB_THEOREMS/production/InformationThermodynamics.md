@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InformationThermodynamics.lean#L38)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：InformationThermodynamics 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：记录器合同直接要求耗散不低于温度、擦除成本和擦除位数的乘积。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -24,6 +28,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InformationThermodynamics.lean#L42)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：InformationThermodynamics 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在记录器合同的热力学下界下，正擦除位数和正单位擦除成本蕴含正耗散。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -37,6 +45,10 @@
 ## CGB.InformationThermodynamics.efficient_recorder_is_not_free
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InformationThermodynamics.lean#L51)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：InformationThermodynamics 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：满足合同的帕累托高效记录器若擦除正位数且擦除成本为正，耗散仍严格为正。
 

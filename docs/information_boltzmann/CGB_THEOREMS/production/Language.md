@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Language.lean#L32)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Language 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在有限状态马尔可夫跳跃过程中，测试函数对所有概率测度的无穷小生成元期望为零，当且仅当该生成元在所有状态上处处为零。
 
 源码说明：`⟨f⟩` is constant for every initial distribution iff `L f = 0` pointwise.

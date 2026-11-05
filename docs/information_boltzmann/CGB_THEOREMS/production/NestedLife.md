@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/NestedLife.lean#L52)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：NestedLife
+
+分类说明：特定生命层级或操作闭合的具体模型见证。
+
 解释：在不可逆吸收集内部，不可恢复状态在介质动力学步进下保持不可恢复，无法自发逃逸到可恢复集合。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -24,6 +28,10 @@
 ## CGB.Part.no_intake_of_closed
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/NestedLife.lean#L58)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：NestedLife
+
+分类说明：特定生命层级或操作闭合的具体模型见证。
 
 解释：若一个部件没有与外界进行代谢摄入的能力，则其在任意全局构型下都是不可恢复的。
 

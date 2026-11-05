@@ -1,0 +1,541 @@
+{
+  "status": "complete_not_promoted",
+  "claim_scope": "retrieved association current-use credit; not exact historical-write or all-parameter credit",
+  "organism_admitted": false,
+  "formal": {
+    "file": "lean\\CGBAxioms\\reviews\\retrieved_count_credit_20261103.lean",
+    "sha256": "d51d558271798009f8cd81a5242463d7f8faa2c4925398624f29393caf6bc164",
+    "command": "ELAN_HOME=E:/lean/elan lake env lean -j 1 reviews/retrieved_count_credit_20261103.lean",
+    "exit_code": 0,
+    "theorems": [
+      "normalized_read_deriv",
+      "count_trust_deriv",
+      "partial_exchange_total"
+    ],
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "production_audit_extended": false,
+    "warnings": "two redundant tactic-sequencing lints"
+  },
+  "numerical": {
+    "command": "D:/conda_envs/vox/python.exe -m pytest tests/test_retrieved_table_credit.py -q",
+    "passed": 8,
+    "seconds": 5.84,
+    "covers": [
+      "original-disabled parity",
+      "read derivative",
+      "causal receipt",
+      "actual subsequent read/write effect",
+      "bounded conservative exchange",
+      "stale owner rejection",
+      "shuffle/zero factor",
+      "CUDA vs eager VJP and complete restore"
+    ],
+    "serialization_protocol5_recheck": true
+  },
+  "calibration": {
+    "updates": 20,
+    "is_capability_evidence": false,
+    "off_vs_original_max_phase_difference": 0.0,
+    "steady_original_seconds": 0.48416740000538994,
+    "steady_seconds": {
+      "off": 0.6567088999872794,
+      "aligned": 0.7292449999804376
+    },
+    "steady_cost_ratios": {
+      "off": 1.356367446424457,
+      "aligned": 1.506183605034786
+    },
+    "aligned_old_reads": 25881,
+    "aligned_exchange": 1.8652718960177985,
+    "max_conservation_error": 3.637978807091713e-12,
+    "table_bytes": 241762304,
+    "receipt_bytes": 7512064,
+    "gpu_tensor_peak_bytes": 129766400,
+    "parameters": 831025
+  },
+  "protocol": {
+    "seed": 11,
+    "modes": [
+      "off",
+      "aligned",
+      "shuffled"
+    ],
+    "updates_each": 5000,
+    "bytes_each": 2560000,
+    "matched_revisit_bytes": 255488,
+    "validation_every_updates": 500,
+    "validation_bytes": 32768,
+    "source_freeze": "learning code frozen; one validated IO-only serialization migration",
+    "results": "results\\cgb_retrieved_credit_20261103"
+  },
+  "remaining": [
+    "No demonstrated net benefit of retrieved-count exchange; do not tune another variant by default.",
+    "Original historical writes and all neural parameters still lack complete beyond-window credit.",
+    "Use restored baseline for same-body action-to-subsequent-language closure; no external food account."
+  ],
+  "decision": "Keep original no-feedback GDN+table as default. Retrieved-count feedback is an opt-in tested candidate; slight revisit gain does not offset worse held-out NLL, and there is no demonstrated overall advantage.",
+  "summaries": {
+    "off": {
+      "config": {
+        "seed": 11,
+        "mode": "off",
+        "steps": 5000,
+        "tokens": 512,
+        "chunk_tokens": 512,
+        "slots_log2": 14,
+        "phases": [
+          {
+            "name": "A_first",
+            "start_update": 0,
+            "stop_update": 3500,
+            "source_byte_start": 0,
+            "source_byte_stop": 1792000,
+            "replay": false
+          },
+          {
+            "name": "B_fresh",
+            "start_update": 3500,
+            "stop_update": 4000,
+            "source_byte_start": 1792000,
+            "source_byte_stop": 2048000,
+            "replay": false
+          },
+          {
+            "name": "A_revisit",
+            "start_update": 4000,
+            "stop_update": 4500,
+            "source_byte_start": 1536000,
+            "source_byte_stop": 1792000,
+            "replay": true
+          },
+          {
+            "name": "C_fresh",
+            "start_update": 4500,
+            "stop_update": 5000,
+            "source_byte_start": 2048000,
+            "source_byte_stop": 2304000,
+            "replay": false
+          }
+        ],
+        "data_sha256": "5e67e246d6a09646b133e9ee9a37f6cac6ec563c390255b7879bef5f6d096c44",
+        "validation_sha256": "3bece19b684ee32c3c6cdea1e37ac80d2453fd4c5b020bf9714b7d1057cc7533",
+        "fused_sha256": "ac0b215e408e30b926aa319354ae235c19201802368de3a8d06bac7441861064",
+        "sources": {
+          "D:\\information-boltzmann-v1\\scripts\\ib_local\\train_retrieved_credit.py": "39f71d8024b3aed257c18c4daef9f4ac5cdd305b61c1abe1bbd724a9d45b0c4d",
+          "scripts\\ib_local\\retrieved_table_credit.py": "ece865bd0f20230a0baf5119f6e6df35840a8a58b53b0ce82b99a4a5c6cc5653",
+          "scripts\\ib_local\\train_gdn_fast_table.py": "ff9c96f5a01594dd7fa2bba6a9861c1ecc01180df6b310db9272fb650e8131ee",
+          "scripts\\ib_local\\gated_deltanet.py": "3a0ab450d8e91a9c12ef161769d6a2bf7fc335257d2835ea77206dd31c96c623"
+        },
+        "claim": "local delayed retrieved-content credit; not original-write gradient",
+        "validation": "cold neural/context sidecar with trained table clone, online assimilation, frozen weights and no count credit"
+      },
+      "phase_nll": {
+        "A_first": 1.5305411310366221,
+        "B_fresh": 1.436137574315071,
+        "A_revisit": 1.264313462138176,
+        "C_fresh": 1.4979653335809708
+      },
+      "final_validation": 1.5131855383515358,
+      "table_bytes": 241762304,
+      "aligned_revisit": {
+        "first": 1.4026268100690746,
+        "revisit": 1.2646459141570723,
+        "savings": 0.13798089591200235,
+        "matched_bytes": 255488,
+        "excluded_boundary_updates": 1
+      },
+      "snapshot_seconds_this_session": 11.727668500025175,
+      "receipt_bytes": 7512064,
+      "preloaded_input_bytes": 20480008,
+      "parameters": 831025,
+      "gpu_peak_bytes": 129766400,
+      "gpu_reserved_bytes": 287309824,
+      "measured_seconds": 187.69422099999792,
+      "timing_seconds": {
+        "table_seconds": 42.21034979993419,
+        "neural_seconds": 103.88768669948331,
+        "settlement_seconds": 14.9060737008258,
+        "validation_seconds": 14.42325890000211
+      },
+      "old_reads": 9733460,
+      "gross_exchange": 0.0,
+      "max_conservation_error": 0.0,
+      "numerical_or_capability": "budget_limited_real_language_run",
+      "organism_admitted": false
+    },
+    "aligned": {
+      "config": {
+        "seed": 11,
+        "mode": "aligned",
+        "steps": 5000,
+        "tokens": 512,
+        "chunk_tokens": 512,
+        "slots_log2": 14,
+        "phases": [
+          {
+            "name": "A_first",
+            "start_update": 0,
+            "stop_update": 3500,
+            "source_byte_start": 0,
+            "source_byte_stop": 1792000,
+            "replay": false
+          },
+          {
+            "name": "B_fresh",
+            "start_update": 3500,
+            "stop_update": 4000,
+            "source_byte_start": 1792000,
+            "source_byte_stop": 2048000,
+            "replay": false
+          },
+          {
+            "name": "A_revisit",
+            "start_update": 4000,
+            "stop_update": 4500,
+            "source_byte_start": 1536000,
+            "source_byte_stop": 1792000,
+            "replay": true
+          },
+          {
+            "name": "C_fresh",
+            "start_update": 4500,
+            "stop_update": 5000,
+            "source_byte_start": 2048000,
+            "source_byte_stop": 2304000,
+            "replay": false
+          }
+        ],
+        "data_sha256": "5e67e246d6a09646b133e9ee9a37f6cac6ec563c390255b7879bef5f6d096c44",
+        "validation_sha256": "3bece19b684ee32c3c6cdea1e37ac80d2453fd4c5b020bf9714b7d1057cc7533",
+        "fused_sha256": "ac0b215e408e30b926aa319354ae235c19201802368de3a8d06bac7441861064",
+        "sources": {
+          "D:\\information-boltzmann-v1\\scripts\\ib_local\\train_retrieved_credit.py": "b3d9831a3145a1d18bf9198d8fb237e5ffc750bf343b3464ffdf32eefb6fac1e",
+          "scripts\\ib_local\\retrieved_table_credit.py": "ece865bd0f20230a0baf5119f6e6df35840a8a58b53b0ce82b99a4a5c6cc5653",
+          "scripts\\ib_local\\train_gdn_fast_table.py": "ff9c96f5a01594dd7fa2bba6a9861c1ecc01180df6b310db9272fb650e8131ee",
+          "scripts\\ib_local\\gated_deltanet.py": "3a0ab450d8e91a9c12ef161769d6a2bf7fc335257d2835ea77206dd31c96c623"
+        },
+        "claim": "local delayed retrieved-content credit; not original-write gradient",
+        "validation": "cold neural/context sidecar with trained table clone, online assimilation, frozen weights and no count credit"
+      },
+      "phase_nll": {
+        "A_first": 1.5304660494582993,
+        "B_fresh": 1.4365787049531937,
+        "A_revisit": 1.2622638479471207,
+        "C_fresh": 1.4981380167007445
+      },
+      "final_validation": 1.5173091981559992,
+      "table_bytes": 241762304,
+      "aligned_revisit": {
+        "first": 1.4028961573669572,
+        "revisit": 1.2625816387977293,
+        "savings": 0.14031451856922783,
+        "matched_bytes": 255488,
+        "excluded_boundary_updates": 1
+      },
+      "snapshot_seconds_this_session": 1.8085638000047766,
+      "receipt_bytes": 7512064,
+      "preloaded_input_bytes": 20480008,
+      "parameters": 831025,
+      "gpu_peak_bytes": 129766400,
+      "gpu_reserved_bytes": 287309824,
+      "measured_seconds": 72.09913990000496,
+      "timing_seconds": {
+        "table_seconds": 43.210005400003865,
+        "neural_seconds": 152.64087749969622,
+        "settlement_seconds": 18.080184999547782,
+        "validation_seconds": 15.882039399992209
+      },
+      "old_reads": 9749161,
+      "gross_exchange": 77791.06642288451,
+      "max_conservation_error": 1.3969838619232178e-09,
+      "numerical_or_capability": "budget_limited_real_language_run",
+      "organism_admitted": false
+    },
+    "shuffled": {
+      "config": {
+        "seed": 11,
+        "mode": "shuffled",
+        "steps": 5000,
+        "tokens": 512,
+        "chunk_tokens": 512,
+        "slots_log2": 14,
+        "phases": [
+          {
+            "name": "A_first",
+            "start_update": 0,
+            "stop_update": 3500,
+            "source_byte_start": 0,
+            "source_byte_stop": 1792000,
+            "replay": false
+          },
+          {
+            "name": "B_fresh",
+            "start_update": 3500,
+            "stop_update": 4000,
+            "source_byte_start": 1792000,
+            "source_byte_stop": 2048000,
+            "replay": false
+          },
+          {
+            "name": "A_revisit",
+            "start_update": 4000,
+            "stop_update": 4500,
+            "source_byte_start": 1536000,
+            "source_byte_stop": 1792000,
+            "replay": true
+          },
+          {
+            "name": "C_fresh",
+            "start_update": 4500,
+            "stop_update": 5000,
+            "source_byte_start": 2048000,
+            "source_byte_stop": 2304000,
+            "replay": false
+          }
+        ],
+        "data_sha256": "5e67e246d6a09646b133e9ee9a37f6cac6ec563c390255b7879bef5f6d096c44",
+        "validation_sha256": "3bece19b684ee32c3c6cdea1e37ac80d2453fd4c5b020bf9714b7d1057cc7533",
+        "fused_sha256": "ac0b215e408e30b926aa319354ae235c19201802368de3a8d06bac7441861064",
+        "sources": {
+          "D:\\information-boltzmann-v1\\scripts\\ib_local\\train_retrieved_credit.py": "b3d9831a3145a1d18bf9198d8fb237e5ffc750bf343b3464ffdf32eefb6fac1e",
+          "scripts\\ib_local\\retrieved_table_credit.py": "ece865bd0f20230a0baf5119f6e6df35840a8a58b53b0ce82b99a4a5c6cc5653",
+          "scripts\\ib_local\\train_gdn_fast_table.py": "ff9c96f5a01594dd7fa2bba6a9861c1ecc01180df6b310db9272fb650e8131ee",
+          "scripts\\ib_local\\gated_deltanet.py": "3a0ab450d8e91a9c12ef161769d6a2bf7fc335257d2835ea77206dd31c96c623"
+        },
+        "claim": "local delayed retrieved-content credit; not original-write gradient",
+        "validation": "cold neural/context sidecar with trained table clone, online assimilation, frozen weights and no count credit"
+      },
+      "phase_nll": {
+        "A_first": 1.5311448355742863,
+        "B_fresh": 1.4371895102858543,
+        "A_revisit": 1.2643588576316833,
+        "C_fresh": 1.497470747590065
+      },
+      "final_validation": 1.5146729554980993,
+      "table_bytes": 241762304,
+      "aligned_revisit": {
+        "first": 1.403108138837413,
+        "revisit": 1.2647061610747434,
+        "savings": 0.1384019777626695,
+        "matched_bytes": 255488,
+        "excluded_boundary_updates": 1
+      },
+      "snapshot_seconds_this_session": 5.764582399991923,
+      "receipt_bytes": 7512064,
+      "preloaded_input_bytes": 20480008,
+      "parameters": 831025,
+      "gpu_peak_bytes": 129766400,
+      "gpu_reserved_bytes": 287309824,
+      "measured_seconds": 178.4495057000022,
+      "timing_seconds": {
+        "table_seconds": 41.51964659993246,
+        "neural_seconds": 99.01991649989213,
+        "settlement_seconds": 18.073251699926914,
+        "validation_seconds": 13.553332399984356
+      },
+      "old_reads": 9745923,
+      "gross_exchange": 93523.07215027943,
+      "max_conservation_error": 1.862645149230957e-09,
+      "numerical_or_capability": "budget_limited_real_language_run",
+      "organism_admitted": false
+    }
+  },
+  "validation_curves": {
+    "off": [
+      {
+        "step": 500,
+        "nll": 1.6537524722516537
+      },
+      {
+        "step": 1000,
+        "nll": 1.5835114810615778
+      },
+      {
+        "step": 1500,
+        "nll": 1.5700454786419868
+      },
+      {
+        "step": 2000,
+        "nll": 1.5385096184909344
+      },
+      {
+        "step": 2500,
+        "nll": 1.537664383649826
+      },
+      {
+        "step": 3000,
+        "nll": 1.568483592942357
+      },
+      {
+        "step": 3500,
+        "nll": 1.574638830497861
+      },
+      {
+        "step": 4000,
+        "nll": 1.527039960026741
+      },
+      {
+        "step": 4500,
+        "nll": 1.6098071280866861
+      },
+      {
+        "step": 5000,
+        "nll": 1.5131855383515358
+      }
+    ],
+    "aligned": [
+      {
+        "step": 500,
+        "nll": 1.653986606746912
+      },
+      {
+        "step": 1000,
+        "nll": 1.582706868648529
+      },
+      {
+        "step": 1500,
+        "nll": 1.5698971543461084
+      },
+      {
+        "step": 2000,
+        "nll": 1.5387339871376753
+      },
+      {
+        "step": 2500,
+        "nll": 1.5373172666877508
+      },
+      {
+        "step": 3000,
+        "nll": 1.5671692676842213
+      },
+      {
+        "step": 3500,
+        "nll": 1.5811129957437515
+      },
+      {
+        "step": 4000,
+        "nll": 1.527866942808032
+      },
+      {
+        "step": 4500,
+        "nll": 1.6185657288879156
+      },
+      {
+        "step": 5000,
+        "nll": 1.5173091981559992
+      }
+    ],
+    "shuffled": [
+      {
+        "step": 500,
+        "nll": 1.6516505535691977
+      },
+      {
+        "step": 1000,
+        "nll": 1.5841363165527582
+      },
+      {
+        "step": 1500,
+        "nll": 1.5720567628741264
+      },
+      {
+        "step": 2000,
+        "nll": 1.538732511922717
+      },
+      {
+        "step": 2500,
+        "nll": 1.538897367194295
+      },
+      {
+        "step": 3000,
+        "nll": 1.5650684144347906
+      },
+      {
+        "step": 3500,
+        "nll": 1.5764358136802912
+      },
+      {
+        "step": 4000,
+        "nll": 1.5301532484591007
+      },
+      {
+        "step": 4500,
+        "nll": 1.6096566636115313
+      },
+      {
+        "step": 5000,
+        "nll": 1.5146729554980993
+      }
+    ]
+  },
+  "comparability": {
+    "same_seed_bytes_model_capacity_cadence": true,
+    "all_5000_updates_verified": true,
+    "source_hash_exception": {
+      "old_sha256": "39f71d8024b3aed257c18c4daef9f4ac5cdd305b61c1abe1bbd724a9d45b0c4d",
+      "new_sha256": "b3d9831a3145a1d18bf9198d8fb237e5ffc750bf343b3464ffdf32eefb6fac1e",
+      "change": "torch.save pickle_protocol=5 only; all model/table/optimizer/RNG state unchanged",
+      "checkpoint_step": 3500,
+      "numerical_tests_passed": 8
+    },
+    "interrupted_aligned_at": 4000,
+    "resumed_from": 3500,
+    "recomputed_updates": 500,
+    "replay_max_absolute_differences": {
+      "nll": 0.0,
+      "gross_count_exchange": 0.0,
+      "derivative_abs_sum": 0.0,
+      "eligible_reads": 0
+    },
+    "timing_caveat": "Concurrent mode probes share the GPU/host; measured wall times are not isolated mechanism costs. Aligned measured_seconds and snapshot_seconds_this_session cover its resumed final 1500 updates only; per-update timing sums cover all retained 5000 updates."
+  },
+  "deltas_vs_off": {
+    "aligned": {
+      "validation_nll": 0.0041236598044633865,
+      "revisit_savings": 0.002333622657225476
+    },
+    "shuffled": {
+      "validation_nll": 0.00148741714656353,
+      "revisit_savings": 0.00042108185066713766
+    }
+  },
+  "resource_observations": {
+    "samples": [
+      {
+        "Id": 15900,
+        "WorkingSet64": 1708777472,
+        "PeakWorkingSet64": 3281887232,
+        "PrivateMemorySize64": 2504798208,
+        "PeakPagedMemorySize64": 4088459264
+      },
+      {
+        "Id": 12088,
+        "WorkingSet64": 1707126784,
+        "PeakWorkingSet64": 3266240512,
+        "PrivateMemorySize64": 2502238208,
+        "PeakPagedMemorySize64": 4072697856
+      },
+      {
+        "Id": 12088,
+        "WorkingSet64": 1710182400,
+        "PeakWorkingSet64": 3278794752,
+        "PrivateMemorySize64": 2508931072,
+        "PeakPagedMemorySize64": 4086456320
+      },
+      {
+        "Id": 3340,
+        "WorkingSet64": 1703387136,
+        "PeakWorkingSet64": 2427256832,
+        "PrivateMemorySize64": 2501210112,
+        "PeakPagedMemorySize64": 3242389504
+      }
+    ],
+    "max_observed_process_peak_rss_bytes": 3281887232,
+    "max_observed_process_peak_commit_bytes": 4088459264,
+    "scope": "OS process high-water marks observed during execution, including Python/framework/checkpoint workspace; not just tensor state"
+  }
+}

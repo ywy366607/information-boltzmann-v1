@@ -1,0 +1,64 @@
+{
+  "status": "passed",
+  "kind": "conditional_joint_dynamics_not_language_capability",
+  "device": "cuda",
+  "seed": 737,
+  "gain": 2.1972245773362196,
+  "rate": 0.3,
+  "joint_fixed_points": [
+    0.25,
+    0.75
+  ],
+  "full_joint_jacobian_radii": [
+    0.9471877649503246,
+    0.9471877649503246
+  ],
+  "actual_reads": [
+    [
+      -0.10000000000000002,
+      0.05000000000000001
+    ],
+    [
+      0.10000000000000002,
+      -0.05000000000000001
+    ]
+  ],
+  "perturbation_recovery_errors": [
+    2.0430380618808794e-08,
+    2.0210113180031082e-08
+  ],
+  "counterevidence_release_steps": [
+    2,
+    2
+  ],
+  "switched_branch_persists_after_forcing_removed": true,
+  "timing": {
+    "shape": [
+      1,
+      8,
+      64,
+      64
+    ],
+    "graph_replays": 200,
+    "microseconds_per_call": 63.56207847595215,
+    "scope": "joint core operator only, not complete training throughput"
+  },
+  "extra_scalars_per_key_value_matrix": "key_dimension",
+  "state_overhead_at_64_by_64": 0.015625,
+  "row_content_bound_violation": 0.0,
+  "same_content_different_share_changes_update": true,
+  "zero_share_recruitable": true,
+  "formal_scope": "normalization, weighted-content capacity, readout, conditional fixed lift; stability/release numerical",
+  "world_evidence": "Gaussian latent value residual plus learned address, not exact byte posterior",
+  "training_runs": 0,
+  "body_admitted": false,
+  "general_anti_monopoly_proved": false,
+  "source_sha256": {
+    "scripts/audit_cgb_joint_reinvestment.py": "8f847a9ce12e3436aa4625165e9348460a0e9b9771a0cc4a662d1c23f71059c2",
+    "scripts/ib_local/gated_deltanet.py": "e39cba4d888d87c56f9756fe12ddb7ac742d9a5435956682e008a64c2d9232f2",
+    "tests/test_gated_deltanet.py": "821f9ff843c64afd9ecc42ce9de3c56352744acd11327da34c5b402850c464e0",
+    "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean": "9a0fccea3455c37cc1b3c86bf002580a3dcbb5e6b12884b02ca5f6948d29e226"
+  },
+  "torch_version": "2.9.1+cu126",
+  "hardware": "NVIDIA GeForce GTX 1650"
+}

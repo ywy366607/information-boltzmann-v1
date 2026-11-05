@@ -8,6 +8,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceTwoTickGlobal.lean#L9)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：给出全局两拍感知维护模型中神经单元状态到离散输出动作的映射表。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -31,6 +35,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceTwoTickGlobal.lean#L14)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：马尔可夫核在任意时刻和状态下的诱导状态转移分布值恒非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -46,6 +54,10 @@
 ## CGB.SensoryMaintenanceTwoTickGlobal.stateLaw_pos_of_path
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceTwoTickGlobal.lean#L28)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：只要存在一条各步转移核均为正的演化路径，终点状态在对应时刻的概率质量严格大于零。
 
@@ -66,6 +78,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceTwoTickGlobal.lean#L79)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：验证特定测试路径在五拍演化过程中的每一步局部转移概率均严格为正。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -83,6 +99,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceTwoTickGlobal.lean#L92)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：经历两拍环境扰动后，机体在第5拍坍缩为空状态（死态）的概率质量严格为正。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -99,6 +119,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceTwoTickGlobal.lean#L108)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：在两拍感知缺失协议下，机体在第5拍的综合存活概率严格小于1。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -114,6 +138,10 @@ CGB.Exchange.survival CGB.SensoryMaintenance.body CGB.SensoryMaintenance.world C
 ## CGB.SensoryMaintenanceTwoTickGlobal.not_two_tick_tolerance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceTwoTickGlobal.lean#L169)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：形式否定机体具备对两拍感知缺失的容忍度，确立感知维护的严苛时限壁垒。
 

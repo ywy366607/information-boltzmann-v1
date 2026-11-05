@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L37)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：LinearMemory
+
+分类说明：针对 LinearMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当键向量平方范数为一时，delta 步骤后的状态平方范数精确等于原范数减去 β(2−β) 乘投影平方；该恒等式适用于任意实数 β。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -27,6 +31,10 @@
 ## CGB.Generation.delta_nonexpansive
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L51)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：LinearMemory
+
+分类说明：针对 LinearMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：键向量范数为一且强度 β 位于零到二之间时，delta 更新不会增大状态的平方范数。
 
@@ -46,6 +54,10 @@
 ## CGB.Generation.gated_delta_contracts
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L61)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：LinearMemory
+
+分类说明：针对 LinearMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：对指定形式 α·deltaStep(k,β,d)，若键为单位向量且 β 在零到二之间，更新后的平方范数不超过原平方范数乘 α²；此式不自动适用于 αd−β⟨k,d⟩k。
 
@@ -68,6 +80,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L70)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：LinearMemory
+
+分类说明：针对 LinearMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：对于固定键与强度，两个状态分别经过 delta 更新后的差，等于对它们的原始差应用同一 delta 更新。这体现该步骤相对状态的线性。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -82,6 +98,10 @@
 ## CGB.Generation.histories_merge
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L78)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：LinearMemory
+
+分类说明：针对 LinearMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若每步历史差距至多乘以非负因子 α，T 步后的差距不超过初始差距乘所有 α 的积。
 
@@ -98,6 +118,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L90)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：LinearMemory
+
+分类说明：针对 LinearMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若各步收缩因子均不超过统一上界，历史差距受该上界的 T 次幂乘初始差距约束。
 
 源码说明：With a uniform gate bound the gap decays at least geometrically.
@@ -113,6 +137,10 @@
 ## CGB.Generation.linear_hold_keeps_error
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean#L105)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：LinearMemory
+
+分类说明：针对 LinearMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若线性映射原样保持信号 s，那么沿 s 方向的任意比例扰动也会原样保留。因此该映射不能同时对这类扰动作精确纠错；结论只针对这里的线性映射及扰动方向。
 

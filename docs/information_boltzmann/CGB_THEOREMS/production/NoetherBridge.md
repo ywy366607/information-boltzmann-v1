@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/NoetherBridge.lean#L24)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：NoetherBridge 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：对于有限跳跃过程，可观测量 Q 的乘法算子与生成元交换，当且仅当每个正速率转移都保持 Q。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -23,6 +27,10 @@
 ## CGB.Medium.jump_gen_events
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/NoetherBridge.lean#L52)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：NoetherBridge 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：介质跳跃过程对任意观测函数的生成元等于逐事件的速率乘函数变化之和。
 
@@ -40,6 +48,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/NoetherBridge.lean#L80)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：NoetherBridge 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：固定刺激下，闭事件跳跃过程守恒 Q 当且仅当每个正速率闭事件都不改变 Q。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -56,6 +68,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/NoetherBridge.lean#L120)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：NoetherBridge 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：介质的 P2a 闭事件内容守恒条件等价于任意刺激下闭事件跳跃过程守恒总内容。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -71,6 +87,10 @@
 ## CGB.Medium.p2a_iff_closed_moments
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/NoetherBridge.lean#L133)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：NoetherBridge 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：P2a 等价于各刺激下闭事件生成元对总内容及其平方均为零。
 
@@ -90,6 +110,10 @@
 ## CGB.Medium.p2a_iff_closed_expected_drifts
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/NoetherBridge.lean#L143)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：NoetherBridge 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：P2a 等价于各刺激、任意归一非负初始分布下，闭事件的总内容一阶与二阶矩瞬时漂移均为零。
 
@@ -113,6 +137,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/NoetherBridge.lean#L155)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：NoetherBridge 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：P2a 等价于各刺激下闭事件生成元与总内容乘法算子交换。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -128,6 +156,10 @@
 ## CGB.Medium.content_drift_boundary
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/NoetherBridge.lean#L164)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：NoetherBridge 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：在 P2a 成立时，开放介质中任何总内容函数的生成元漂移都可写为触及边界事件的贡献之和。
 

@@ -1,0 +1,55 @@
+{
+  "status": "passed",
+  "kind": "numerical_identity_audit_not_capability",
+  "device": "cpu",
+  "dtype": "float64",
+  "seed": 731,
+  "labels": 256,
+  "checks": 15,
+  "joint_law_bridge": {
+    "checks": 4,
+    "latent_states": 5,
+    "labels": 256,
+    "joint_mixture_error": 1.7763568394002505e-15,
+    "variational_identity_error": 8.881784197001252e-16,
+    "common_interaction_gradient_error": 1.3322676295501878e-15,
+    "fixed_energy_stationarity_error": 4.742394402915194e-16,
+    "scope": "finite algebra oracle; no hidden-state enumeration proposed for a body",
+    "lean_bridge_proved": false,
+    "structural_conservation_proved": false
+  },
+  "generation_limits": {
+    "checks": 4,
+    "kind": "counterexample_identity_checks_not_capability",
+    "context_free_joint_law_admitted_by_static_identities": true,
+    "full_pool_with_zero_release_keeps_winner": true,
+    "identical_equilibrium": [
+      0.5,
+      0.5
+    ],
+    "distinct_finite_time_readouts": [
+      0.1,
+      0.4
+    ],
+    "conservation_without_bounds_free_fraction": -1.0
+  },
+  "max_gradient_error": 2.7755575615628914e-17,
+  "joint_pullback_error": 0.0,
+  "conserved_budget_error": 2.842170943040401e-14,
+  "identical_wrong_predictors_current_log_score_gain": 0.05019339199312611,
+  "additive_readout_credit_mismatch": 0.14862011415903997,
+  "body_admitted": false,
+  "training_runs": 0,
+  "new_production_theorems": 0,
+  "source_sha256": {
+    "scripts/audit_cgb_joint_reinvestment.py": "f29bdeaf44517d142c489ebdfeee52497d5eb43420a7254af639139a6a463b1b",
+    "lean/CGBAxioms/CGBAxioms/Generation.lean": "b3d2544b48c13492c84df1e9ff63f268810684626495eb3543c2be4f26d94b0c",
+    "lean/CGBAxioms/CGBAxioms/GenerationReinvestment.lean": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "lean/CGBAxioms/CGBAxioms/GenerationLattice.lean": "8134cb3170af78014b23438b8297e5d1837e9133d0a57358ed77912ac26c367d",
+    "lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean": "d90983d0d715d08b0549c7f0f4bd439c1041693883a212b421d96c0fd0cefde1",
+    "lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+    "information_boltzmann/cgb/voxel_body.py": "9c9fd55565c7cbb9908863686c86a1de1844cbffb6c0637752d4b31911e05ce4"
+  },
+  "torch_version": "2.9.1+cu126",
+  "hardware": "cpu"
+}

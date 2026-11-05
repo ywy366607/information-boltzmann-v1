@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L53)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationEnergy
+
+分类说明：针对 InformationEnergy 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：有限状态下，按给定平衡权重定义的自由能恰等于分布相对于该权重的 KL 表达式。
 
 源码说明：**N1**: the free energy in the landscape `-log π` is the relative entropy to `π`.
@@ -24,6 +28,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L59)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationEnergy
+
+分类说明：针对 InformationEnergy 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在该自由能定义下，将当前分布取为参考分布时自由能为零。
 
 源码说明：The law itself has free energy zero.
@@ -37,6 +45,10 @@
 ## CGB.InformationEnergy.kl_nonneg
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L65)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationEnergy
+
+分类说明：针对 InformationEnergy 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：当 q 非负归一且 π 严格正并归一时，其有限状态 KL 散度非负。
 
@@ -53,6 +65,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L94)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationEnergy
+
+分类说明：针对 InformationEnergy 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在所定义的联合分布和只读取可见变量的测量核中，测量对联合状态的信息等于其对可见变量的信息。
 
 源码说明：**N2**: a measurement that reads only the visible part carries no information about the hidden part beyond what it carries about the visible one.
@@ -68,6 +84,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L114)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationEnergy
+
+分类说明：针对 InformationEnergy 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：如果提取功上限为 kT·I 且超出容量的擦除成本至少为 kT·(I−cap)，净功不超过 kT·cap。
 
 源码说明：**N3**: work drawn from acquired information `I` at most `kT · I`, erasure of everything beyond the capacity at least `kT` per unit: the net never exceeds `kT · cap`.
@@ -81,6 +101,10 @@
 ## CGB.InformationEnergy.passivity_ends
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L120)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationEnergy
+
+分类说明：针对 InformationEnergy 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在正漂移的指定方差递推和正噪声条件下，对数表达式最终超过任意给定正数；这本身不决定是否行动。
 
@@ -96,6 +120,10 @@
 ## CGB.InformationEnergy.mixture_regret_le
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationInformationEnergy.lean#L144)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：InformationEnergy
+
+分类说明：针对 InformationEnergy 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：正先验权重的有限混合模型，对任一正概率假设的负对数损失至多比该假设多 log(1/w) 。
 

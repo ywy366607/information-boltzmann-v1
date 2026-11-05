@@ -10,7 +10,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationReciprocalCredit.lean#L41)
 
-解释：The exact local forward response of one reciprocal contact. It is the pre/post eligibility product, derived from the actual contact read rather than stipulated as a biological analogy.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：单向互惠接触的前向一阶导数严格等于突触前状态与突触后资格的乘积，直接从物理接触读出算子推导而得。
 
 源码说明：The exact local forward response of one reciprocal contact. It is the pre/post eligibility product, derived from the actual contact read rather than stipulated as a biological analogy.
 
@@ -30,7 +34,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationReciprocalCredit.lean#L98)
 
-解释：Scaling a local response by a fresh boundary teaching signal preserves its identity as the exact directional derivative. This is the abstract three-factor form: pre × post × outcome.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：以到达边界的新鲜教学信号缩放局部互惠响应，严格保持其作为方向导数的性质，给出抽象的三因子形式：前 × 后 × 结果。
 
 源码说明：Scaling a local response by a fresh boundary teaching signal preserves its identity as the exact directional derivative. This is the abstract three-factor form: pre × post × outcome.
 

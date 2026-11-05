@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L34)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在该随机游走估计模型中，采用增益 1 的无记忆估计器，其误差超出模型最优误差的量恰为 r²/(P+r)。这个结论依赖给定噪声模型，不能直接宣称所有 SGD 不如所有有记忆优化器。
 
 源码说明：A learner without memory (gain 1) exceeds the optimal error `P` by `r^2 / (P + r)`.
@@ -23,6 +27,10 @@
 ## CGB.GradientFilter.memoryless_strictly_worse
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L42)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：当 r 和 P 均为正时，前述增益 1 的估计器严格劣于此模型的最优误差；严格性来自非零观测噪声。
 
@@ -38,6 +46,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L52)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当信号与噪声功率之和为正时，缩放估计的均方误差可以拆成最优误差加上与缩放系数偏差的平方成正比的非负项。概率含义依赖信号与噪声不相关等定义所述假设。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -51,6 +63,10 @@
 ## CGB.GradientFilter.shrink_optimum
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L58)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：对所定义的二次误差，只要 S+N 为正，缩放系数 S/(S+N) 的误差不大于任何其他实数系数。这是该单步估计问题的最优解，不直接给出连续训练的最优优化器。
 
@@ -66,6 +82,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L64)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在给定估计误差模型中，直接使用未缩放观测相较最优缩放的超额误差恰为 N²/(S+N)，前提是分母为正。
 
 源码说明：Taking the noisy estimate at face value costs exactly `N^2 / (S + N)` more.
@@ -80,6 +100,10 @@
 ## CGB.GradientFilter.no_shared_shrink_for_two_snr
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L72)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：如果两个方向的 S/(S+N) 不同且各自分母为正，那么任何单一共享缩放系数至少在一个方向上严格劣于该方向的最优系数。这个结论针对所定义的单步二次误差。
 
@@ -99,6 +123,10 @@
 ## CGB.GradientFilter.vanishing_gain_loses_under_drift
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L108)
+
+分类：necessity；适用范围：world_contract；审核：reviewed
+
+分类说明：漂移环境下增益过小导致估计方差无界发散的必要性定理。
 
 解释：对于定理写出的跟踪方差递推，若环境漂移 q 持续为正，所有增益长期都不超过 q/(4M)，那么方差最终超过任意给定正阈值 M。结论说明此模型中的过小增益无法无限期维持给定误差界。
 
@@ -121,6 +149,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L153)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：对于所定义的 emaVar，只要平均系数 x 非负，它满足递推 v = x²v+(1−x)²r 的不动点等式；该恒等式不单独证明任意初始化下的收敛。
 
 源码说明：It is the fixed point of `v = x^2 v + (1 - x)^2 r`.
@@ -134,6 +166,10 @@
 ## CGB.GradientFilter.occurrence_clock_beats_time_clock
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L163)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在恒定噪声方差、0<β<1 和每 k≥2 步才出现一次的设定下，以每次出现为时钟的 EMA 稳态方差小于等效因子 β^k 的方案。比较依赖该两种特定更新方式，不说明所有稀疏参数都必须跳过未出现步骤。
 
@@ -149,6 +185,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L177)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若二维曲率矩阵的非对角元不为零，逐坐标对角缩放不能把它变成非零倍的单位矩阵。这里讨论的是一次精确白化，不排除对角方法通过多步迭代收敛。
 
 源码说明：**W4 (a relation basis)**: if the curvature `[[a, b], [b, d]]` has a nonzero off-diagonal term, no diagonal preconditioner `diag(d₁, d₂)` turns it into a nonzero multiple of the identity (one-step whitening); a basis-aware preconditioner does.
@@ -163,6 +203,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L187)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当 s>0、c≥0 且两次使用量为正并严格增加时，s/√(c+m) 严格下降。这证明这个函数具有局部使用越多、系数越小的性质，不等于全系统不会赢家通吃。
 
 源码说明：**W5 is implied by W3**: a gain normalized by that direction's accumulated use (`s / sqrt (c + m)`, the AdaGrad / Adam form) strictly falls when the direction's own demand grows: it is locally anti-dominant without a separate anti-winner-take-all component.
@@ -176,6 +220,10 @@
 ## CGB.GradientFilter.step_error_square
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L215)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在指定的一维含噪二次模型中，当 h²e²+σ² 为正，一步后的均方误差等于最小项加上步长偏离特定值的平方惩罚项。实际使用仍须估计未知曲率、误差与噪声。
 
@@ -194,6 +242,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L222)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：对给定的一维一步均方误差，并在 h²e²+σ² 为正时，步长 h·e²/(h²e²+σ²) 的误差不大于任意其他实数步长。它是一维单步最优，不是跨时间或神经网络整体最优。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -210,6 +262,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L227)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当曲率 h 不为零时，上述步长代数上等于逆曲率乘以梯度信号功率占信号加噪声功率的比例。此式只是恒等式，不能保证现实中的估计量准确。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -223,6 +279,10 @@
 ## CGB.GradientFilter.no_fixed_step_two_distances
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L233)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在正曲率和正噪声、两个不同非负误差平方下，单步最优系数不同，因此同一个固定系数不能同时等于这两个位置的单步最优。
 
@@ -238,6 +298,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L247)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：对给定负曲率的一维二次式和非零梯度方向，沿该方向可以取足够大的实数步长使值低于任意给定 M，即无有限全局最小值；有限步长的选择还需其他条件。
 
 源码说明：**W6 (nonconvex data)**: with negative curvature the loss along the step is unbounded below, so no optimal quadratic step exists and the step must be bounded.
@@ -252,6 +316,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L292)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：对于定义的理想进展函数，两个不同正有效半径无法由同一个固定步长上限同时获得各自的全部进展。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -265,6 +333,10 @@
 ## CGB.GradientFilter.bound_stays_in_band
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L306)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若实际有效半径 R 已知且乘除因子 γ>1，理想信任步长规则会把原处于 [R/γ,Rγ] 的上限保持在该区间。
 
@@ -283,6 +355,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L324)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在一维二次方向上，用非零精确曲率的倒数乘精确梯度更新一次，误差恰为零。
 
 源码说明：The exact curvature step reaches the optimum of a quadratic direction.
@@ -296,6 +372,10 @@
 ## CGB.GradientFilter.momentum_after_exact_step
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L330)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：一维精确牛顿步已到达最优点时，非零重球动量会把原本非零的误差重新带离零点。
 
@@ -314,6 +394,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L354)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当 P+r>0 时，单次增益估计误差可分解为最小误差和偏离最优增益 P/(P+r) 的非负平方项。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -327,6 +411,10 @@
 ## CGB.GradientFilter.steady_gain_worse_for_fresh
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L362)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在正噪声和两个不同正先验方差下，用另一个先验的稳态增益会比该方向自己的最优增益产生严格更大的单步估计误差。
 
@@ -345,6 +433,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L400)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在指定的一维带噪二次模型里，同一批次评估出的下降量减去无噪真实下降量等于 ηξ(he+ξ)。
 
 源码说明：Decrease measured on the batch that made the step minus the decrease on fresh data.
@@ -362,6 +454,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L405)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当步长为正且噪声非零时，对正负噪声配对平均，同批次下降量的偏差严格为正。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -375,6 +471,10 @@
 ## CGB.GradientFilter.own_step_biases_noise_estimate
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L412)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在指定的对称噪声配对下，直接用两次梯度差估计滞后噪声时会混入自身更新造成的 −h²ab 项。
 
@@ -390,6 +490,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L416)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在给定线性模型中，从两个梯度差中减去各自精确的自身步长效应后，剩余乘积恰为噪声项 −xy。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -403,6 +507,10 @@
 ## CGB.GradientFilter.secant_needs_diagonal
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L420)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在有跨方向曲率 c 的二维模型中，单坐标割线值包含另一个坐标步长比造成的 c·a₂/a₁ 偏差。
 
@@ -418,6 +526,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L424)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：二维模型的单坐标割线对所有非零第一坐标步长都等于该坐标曲率，当且仅当跨方向曲率为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -431,6 +543,10 @@
 ## CGB.GradientFilter.fresh_decrease_unbiased
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L452)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在所给一维模型中，对独立评估噪声的正负配对求平均，评估批次测得的下降量等于无噪下降量。
 
@@ -450,6 +566,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L458)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：用估计曲率扣除自身步长后，对称噪声配对的残余偏差为 −(h−ĥ)²ab，反映曲率估计误差的影响。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -466,6 +586,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L463)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若 w 是矩阵 S 的特征向量且 v 与 w 正交，则 v 与 S·w 的内积为零，给出两个方向交叉项消失的条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -480,6 +604,10 @@
 ## CGB.GradientFilter.trust_with_deadband_stays_in_band
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L471)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：理想信任上限规则加入无证据时保持不变的死区后，原先的 [R/γ,Rγ] 区间仍保持不变。
 
@@ -499,6 +627,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L495)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：固定增益反复接收相同值 d 时，估计值等于 d 加上初始偏差乘以 (1−K)^n。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -513,6 +645,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L500)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：固定增益对相同长度恒定输入的归一化响应恰为 1−(1−K)^n，未来是否回转不会改变该前缀响应。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -526,6 +662,10 @@
 ## CGB.GradientFilter.no_linear_gain_separates
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean#L507)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GradientFilter
+
+分类说明：针对 GradientFilter 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：对于同一响应量和 ε<1/2，不可能同时要求响应不大于 ε 又不小于 1−ε，说明该前缀上保护和采纳目标冲突。
 

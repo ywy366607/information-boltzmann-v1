@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L46)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：若正函数在每个正速率转移两端相等，将细致平衡权重乘以该函数后仍为正并保持细致平衡。
 
 源码说明：**G3**: a positive factor that is constant along every move preserves detailed balance.
@@ -28,6 +32,10 @@
 ## CGB.JumpProcess.freezeSlow_conditional_balance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L74)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
 
 解释：联合过程有正细致平衡权重时，固定慢变量后，快变量上归一化的条件权重对冻结过程满足细致平衡。
 
@@ -49,6 +57,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L94)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：在 P1b 局部性条件下，若事件改变区域 D 的全部位置，则事件参与位置都在 D 的接触范围内。
 
 源码说明：Under P1b an event that changes all of `D` reads only inside `scope D`.
@@ -63,6 +75,10 @@
 ## CGB.Medium.content_fixed_by_closed_single_unit
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L100)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
 
 解释：在 P2a 下，若正速率闭事件仅改变一个位置，则该位置的内容量保持不变。
 
@@ -81,6 +97,10 @@
 ## CGB.Medium.jump_rate_local
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L118)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
 
 解释：在 P1b 条件下，具有相同改变区域及对应局部状态和刺激的两次转移，其总跳跃速率相同。
 
@@ -103,6 +123,10 @@
 ## CGB.Medium.equilibrium_ratio_local
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L171)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
 
 解释：在局部性、正细致平衡权重与正反向速率等条件下，平静转移的平衡权重比由对应局部数据决定。
 
@@ -129,6 +153,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L197)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：在指定局部性、正细致平衡和每个局部值可单点离开的条件下，单位置替换的平衡权重比只由该位置及其接触范围决定。
 
 源码说明：**G4**: if every value of unit `u` can be left by a calm move that changes only `u`, the equilibrium law is locally Markov at `u`: the ratio `π (x with u := l) / π x` depends only on `x` on `{u} ∪ scope {u}`.
@@ -153,6 +181,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L224)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：若正权重下每个有效平静事件都能由对合配对的逆事件恢复且满足逐事件加权平衡，则介质满足 P2b。
 
 源码说明：**P2b from weighted micro-reversibility** (generalizes `p2b_of_micro`, which has uniform weights): if events pair up by an involution `rev` so that every effective calm event is undone by its partner and the pair satisfies detailed balance with a positive weight `π`, then P2b holds with that weight. This is the constructor an energy-based medium needs.
@@ -176,6 +208,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L255)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：在局部性和只有边界感知刺激的条件下，改变区域及其接触范围不触及边界的转移，其速率与外部刺激无关。
 
 源码说明：**G6**: under P1b and P3 a transition whose changed set and its scope avoid the boundary has the same rate under every stimulus as in the calm environment.
@@ -195,6 +231,10 @@
 ## CGB.Medium.interior_detailed_balance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L269)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
 
 解释：在局部性、边界感知和指定平静细致平衡条件下，远离边界的转移对任意刺激仍满足该平衡关系。
 
@@ -218,6 +258,10 @@
 ## CGB.Medium.coupling_vanishes_beyond_scope
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L282)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
 
 解释：在定理给定的局部平衡前提下，区域 D 范围之外的第二个变化不改变 D 上转移的平衡偏好。
 
@@ -244,6 +288,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L298)
 
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：以 P1b 和 OnlyBoundarySenses 为前提的局部跃迁率结论。
+
 解释：在局部性与边界感知假设下，若同一转移的速率随刺激变化，则其改变区域或接触范围必触及边界。
 
 源码说明：**G9 (modulation needs the boundary)**: if the rate of a transition (for example a plastic move: its learning rate or, through the forward/backward pair, its learning direction) differs between two stimuli, then some unit of the changed set or its contact scope is a boundary unit. Interior plasticity can therefore depend on the world only through local states it reads; world-driven gating, sign or rate control needs a boundary (modulator) unit at the plastic site. Contrapositive of G6.
@@ -264,6 +312,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L317)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：在观测噪声和先验方差均为正、增益处于 0 到 2 的随机游走估计模型中，固定增益的超额误差等于一个非负平方项；增益取 P/(P+r) 时该项为零。这里的增益是估计器参数，不能直接等同任意优化器的全局学习率。
 
 源码说明：**G10a**: the fixed-gain error exceeds the optimum `P` by an exact square; the unique optimal fixed gain is the Kalman gain `P / (P + r)`.
@@ -281,6 +333,10 @@
 ## CGB.Medium.no_fixed_gain_for_two_volatilities
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L330)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
 
 解释：在相同观测噪声、两个正且不同的波动参数以及同一个固定增益下，至少一个环境的估计误差严格高于该环境的最优值。这说明该类估计问题跨环境保持逐点最优需要调节增益，并不证明某个自动学习率规则可在任意任务免调参。
 
@@ -304,6 +360,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L361)
 
+分类：necessity；适用范围：world_contract；审核：reviewed
+
+分类说明：仅约束定理中的异质随机游走估计问题及指定增益范围，不是任意学习规则的普遍最优性结论。
+
 解释：对多个隔室共享一个固定增益，如果至少两个隔室的正波动参数不同，那么至少有一个隔室的误差严格高于其局部最优。结论依赖随机游走估计模型及共享噪声设定，不排除其他类别的学习规则。
 
 源码说明：**G10c (heterogeneous compartments need local gains)**: model two compartments by their local volatility parameters `P c`. If two compartments have different volatility, one globally shared gain is strictly above the local optimum in at least one compartment. This is the compartment form of G10b; it proves the necessity of local modulation only for this heterogeneous random-walk class, not for every possible learning rule.
@@ -320,6 +380,10 @@
 ## CGB.Medium.miss_posterior_bayes
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L385)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
 
 解释：给定正的先验与两类未命中概率，连续 n 次未命中后的贝叶斯后验可写为指定赔率形式。
 
@@ -338,6 +402,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L395)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：在正先验赔率、似然比大于一且富源收益高于贫源的条件下，连续未命中次数越多，指定预测严格下降。
 
 源码说明：**G11a**: each further miss strictly lowers the best prediction.
@@ -351,6 +419,10 @@
 ## CGB.Medium.intake_memory_capacity
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L414)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
 
 解释：若编码须以指定精度区分最多 N 次连续未命中的预测，且预测间隔大于两倍误差，则状态数至少为 N+1。
 
@@ -369,6 +441,10 @@
 ## CGB.Medium.intake_gap_exists
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L431)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
 
 解释：在指定严格单调预测模型中，任意有限个不同未命中次数之间存在共同的正分离精度。
 
@@ -391,6 +467,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L452)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：当替代选择价值高于贫源收益且满足模型正性条件时，足够多次未命中会使预测降到该价值以下。
 
 源码说明：The leave threshold exists: whenever going elsewhere is worth more than a known-poor source (`pp < c`), enough misses push the best prediction below `c`.
@@ -404,6 +484,10 @@
 ## CGB.Medium.miss_counter_necessary
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L480)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
 
 解释：在指定首次越过离开阈值的模型里，若读出须对所列历史和未来续接均给出最优动作，则编码需要足够多的不同状态。
 
@@ -427,6 +511,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L508)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：两个正权重历史的预测分居决策阈值两侧时，给它们统一选择同一动作严格劣于分别选择。
 
 源码说明：Merging two histories that lie on opposite sides of the threshold costs expected intake: with positive weights, a single shared action earns strictly less than acting optimally on each.
@@ -447,6 +535,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L527)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：指定驱动相与自由相的预期净更新等于输入强度乘夹持标签项减 softmax 概率项。
 
 源码说明：**G14a (two-phase drift)**: in the drive phase the boundary is clamped to the arrived value `b'` and the site moves by `+λ x` when the boundary shows `b`; in the free phase the boundary samples the readout law and the site moves by `-μ x` when it shows `b`. The expected drift per cycle is `x (λ [b = b'] - μ softmax z b)`.
@@ -463,6 +555,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L535)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：非空有限标签集合上的 softmax 概率之和为一。
 
 源码说明：The readout law sums to one.
@@ -476,6 +572,10 @@
 ## CGB.Medium.log_softmax_deriv
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L542)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
 
 解释：对指定标签的 log-softmax 求单个耦合变量的导数，得到输入强度乘标签指示量减 softmax 概率。
 
@@ -492,6 +592,10 @@
 ## CGB.Medium.phases_must_balance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L579)
+
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：双相/三相平衡方程在梯度对应条件下的必要平衡权重约束。
 
 解释：若对所有读出状态和夹持标签，两相漂移向量都是似然梯度的正倍数，则驱动相与自由相权重相等。
 
@@ -513,6 +617,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L600)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：当泄漏比例严格介于零和一且目标概率为正时，泄漏后的目标对数概率严格下降。
 
 源码说明：**R2 (leakage loses on every outcome)**: if the free boundary puts mass `ℓ > 0` on configurations that are no symbol, every symbol's predicted probability is `(1 - ℓ) q b` instead of `q b`, and the log likelihood of whatever arrives is strictly lower. An optimal predictive boundary keeps its free dynamics inside the one-symbol sector.
@@ -526,6 +634,10 @@
 ## CGB.Medium.one_unit_one_label
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L608)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
 
 解释：有限标签各占据量不超过一且总占据量为一时，恰好存在一个占据量为一的标签。
 
@@ -541,6 +653,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L626)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：单粒子标签扇区中，将指数权重归一化得到所定义的 softmax 概率。
 
 源码说明：In the one-particle sector a local label energy gives the softmax readout: with weights `exp (z b)` on the configurations `label b on`, the normalized law is `softmax z` (G13 restricted to the sector).
@@ -554,6 +670,10 @@
 ## CGB.Medium.reward_two_phase_drift
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L642)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
 
 解释：按 softmax 采样动作并用奖励减基线调制指定两相更新时，其期望等于动作概率乘该动作奖励相对平均奖励的差。
 
@@ -571,6 +691,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L658)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：有限 softmax 策略的期望奖励对某个动作 logit 的导数，等于该动作概率乘其奖励与平均奖励的差。
 
 源码说明：**G15b**: that drift is exactly the derivative of the expected reward `J` with respect to the logit of `b`.
@@ -587,6 +711,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L698)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：若调制因子与动作结果无关，则指定 softmax 两相更新的期望漂移为零。
 
 源码说明：**G15c (outcome-blind modulation learns nothing)**: if the modulator's weight `m` does not depend on the action's outcome, the expected two-phase drift is zero for every site. So a policy can only climb through a modulator that reads intake, which by G9 is a boundary unit.
@@ -601,6 +729,10 @@
 ## CGB.Medium.reward_phases_must_balance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L710)
+
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：双相/三相平衡方程在梯度对应条件下的必要平衡权重约束。
 
 解释：在定理规定的全奖励表梯度对应条件下，驱动相与自由相权重必须相等。
 
@@ -621,6 +753,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L751)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用生成动力学、二值熵界与参数流性质。
+
 解释：对正的两个局部因子，指定两部分速率表达式满足给出的乘积权重代数平衡恒等式。
 
 源码说明：**G8a** (two parts suffice): with positive part factors `φ₁, φ₂` and constants `a, b ≥ 0`, up rates `a φ₁ + b φ₂` and down rates `b / φ₁ + a / φ₂` (each term reads one part) have ratio exactly `φ₁ φ₂`.
@@ -636,6 +772,10 @@
 ## CGB.Medium.three_part_balance_impossible
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Generation.lean#L761)
+
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：双相/三相平衡方程在梯度对应条件下的必要平衡权重约束。
 
 解释：在指定三部分加性速率、乘积权重与各因子非恒定的条件下，平衡恒等式迫使选定状态的总反向速率为零。
 

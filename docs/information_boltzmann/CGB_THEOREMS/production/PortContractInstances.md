@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortContractInstances.lean#L41)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：PortContract
+
+分类说明：具体端口契约交互实例见证。
+
 解释：复合端口的信号与物质流在劈裂操作下分解为两个相互正交的独立信道。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -29,6 +33,10 @@
 ## CGB.PortContractInstances.reserve_contract
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortContractInstances.lean#L46)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：PortContract
+
+分类说明：具体端口契约交互实例见证。
 
 解释：端口合约实例的储量协议在非空态下驱动单步秩递减，满足李雅普诺夫衰减合同。
 
@@ -51,6 +59,10 @@
 ## CGB.PortContractInstances.admission_contract
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortContractInstances.lean#L52)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：PortContract
+
+分类说明：具体端口契约交互实例见证。
 
 解释：端口合约实例的准入协议满足保真度规范与资源有界性要求。
 

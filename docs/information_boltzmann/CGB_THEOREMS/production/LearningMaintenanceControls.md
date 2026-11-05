@@ -10,7 +10,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenanceControls.lean#L27)
 
-解释：对单位置、四种主体状态的任意实函数求和，等于其在四个常值构型上的值之和。
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
+解释：在学习维护控制对照模型中，对单位置四状态单元的任意实函数求和等于其在四个控制常值构型上的求和。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -24,6 +28,10 @@
 ## _private.CGBAxioms.LearningMaintenanceControls.0.CGB.LearningMaintenanceControls.kernel_table
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenanceControls.lean#L36)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：给出机体转移核在写禁用模式下的完整状态转移查找表。
 
@@ -41,6 +49,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenanceControls.lean#L53)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：给出冻结策略在各个机体构型下输出动作的确定性取值。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -54,6 +66,10 @@
 ## _private.CGBAxioms.LearningMaintenanceControls.0.CGB.LearningMaintenanceControls.frozen_law
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenanceControls.lean#L59)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：给出在环境平稳输入驱动下冻结机体各步联合状态分布的显式解析解。
 
@@ -72,6 +88,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenanceControls.lean#L85)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：指定冻结对照在世界状态 5 下对任意主体状态和有限期限的交换恢复概率为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -89,6 +109,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenanceControls.lean#L98)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：指定冻结对照在世界状态 5 下的交换生命指标对任意时刻和主体状态均为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -105,6 +129,10 @@
 ## CGB.LearningMaintenanceControls.frozen_survival
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenanceControls.lean#L108)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：指定冻结学习对照在自然世界中从第 3 拍起交换生存评分为零。
 
@@ -124,6 +152,10 @@
 ## CGB.LearningMaintenanceControls.frozen_not_persists
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenanceControls.lean#L126)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：指定冻结学习对照在其给定世界和账本下，对任意实数 δ 都不满足交换持续性。
 

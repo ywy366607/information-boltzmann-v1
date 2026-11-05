@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLeaveRule.lean#L26)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：LeaveRule
+
+分类说明：针对 LeaveRule 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：对任意离场决策阈值 τ，受约束觅食过程的期望收益均不超过即时收益与机会成本的上界 max(q, c)。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -24,6 +28,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLeaveRule.lean#L30)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：LeaveRule
+
+分类说明：针对 LeaveRule 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当离开收益阈值恰好取当前收益常数 c 时，折现收益函数取得其理论极大值 max(q, c)。
 
 源码说明：In a stationary world the fixed threshold `τ = c` is optimal everywhere.
@@ -37,6 +45,10 @@
 ## CGB.Generation.no_fixed_leave_threshold
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLeaveRule.lean#L38)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：LeaveRule
+
+分类说明：针对 LeaveRule 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在两个成本不同的环境中，不存在一个固定的离开阈值能够在两个环境中都实现最优折现收益，环境切换必然要求动态改变离场决策阈值。
 

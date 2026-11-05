@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L22)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：非平稳马尔可夫链与鞅论下的一般生存概率界与几何衰减估计定理。
+
 解释：输入几何衰减率与正阈值，经阿基米德性与几何级数分析，输出经过有限时间步后存活度量最终严格低于指定正阈值。
 
 源码说明：Reuse the existing geometric bound; no nonnegativity of `q` is needed for this upper-tail conclusion. For survival, each index can denote a completed block.
@@ -24,6 +28,10 @@
 ## CGB.SurvivalBounds.no_uniform_positive_lower
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L31)
+
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：单步持续正耗散下全局存活概率不存在一致正下确界的必然性。
 
 解释：输入单步具有一致不可逆耗散损失的衰减序列，经反证法推导，输出该序列不可能存在全局一致为正的下确界下界。
 
@@ -40,6 +48,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L38)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：非平稳马尔可夫链与鞅论下的一般生存概率界与几何衰减估计定理。
+
 解释：输入每步乘性保持率下界，经指数连乘归纳，输出总体存活概率保持不低于单步因子的几何幂次下界。
 
 源码说明：Lower counterpart to the reused geometric upper bound.
@@ -54,6 +66,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L51)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：非平稳马尔可夫链与鞅论下的一般生存概率界与几何衰减估计定理。
+
 解释：输入存活概率序列与非负风险序列，经裂项求和不等式推导，输出第n步存活概率下界由初始概率减去累积风险严格控制（无需独立性假设）。
 
 源码说明：Telescoping lower bound; no independence, absorption, or sign premise is needed for this algebraic statement. Nonnegative `risk` gives its risk reading.
@@ -67,6 +83,10 @@
 ## CGB.SurvivalBounds.risk_budget_uniform_lower
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L62)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：非平稳马尔可夫链与鞅论下的一般生存概率界与几何衰减估计定理。
 
 解释：输入具有累积有界风险预算δ的单步风险序列，经求和放缩，输出系统在所有时间步上的存活概率全局一致不低于1 - δ。
 
@@ -83,6 +103,10 @@
 ## CGB.SurvivalBounds.geometric_tail_bound
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L82)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：非平稳马尔可夫链与鞅论下的一般生存概率界与几何衰减估计定理。
 
 解释：输入几何收缩转移过程，经尾部几何级数放缩，输出吸收态之外的残余概率尾部具有指数几何衰减上界。
 
@@ -101,6 +125,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L103)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：非平稳马尔可夫链与鞅论下的一般生存概率界与几何衰减估计定理。
+
 解释：输入前缀阶段累积优势超出尾部允许总量的两过程，经后继积分放缩，输出该前缀优势在之后任意时间视界内持续保持。
 
 源码说明：A prefix advantage exceeding the entire cut-tail allowance persists at all later horizons; normal needs only nonnegative scores, not contraction.
@@ -118,6 +146,10 @@
 ## CGB.SurvivalBounds.finite_window_lifetime_transfer
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L117)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：非平稳马尔可夫链与鞅论下的一般生存概率界与几何衰减估计定理。
 
 解释：输入有限存活观测窗口与正耗散率，经过时间截断估计，输出窗口内的有限存活界可有效传递至全时域寿命上界。
 
@@ -139,6 +171,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L137)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：非平稳马尔可夫链与鞅论下的一般生存概率界与几何衰减估计定理。
+
 解释：输入非负单步存活期望，经过单步期望算子递推，输出下一时刻预期存活度量由当前转移算子下界严格约束。
 
 源码说明：General expected-step identity extracted from the rearrangement in `Energetics.expected_first_law`. The observable is not an energy `Account`.
@@ -156,6 +192,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L149)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：非平稳马尔可夫链与鞅论下的一般生存概率界与几何衰减估计定理。
+
 解释：输入系统初始概率测度与评估函数，经期望定义展开，输出零时刻可观测量的期望值精确等于初始状态处的函数值。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -171,6 +211,10 @@
 ## CGB.SurvivalBounds.mean_unit_interval
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L155)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：非平稳马尔可夫链与鞅论下的一般生存概率界与几何衰减估计定理。
 
 解释：输入取值在单位区间[0, 1]内的可观测量与任意时间步，经过转移律非负归一化性质，输出该可观测量在任意时刻的期望值仍严格落在[0, 1]内。
 
@@ -191,6 +235,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L168)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：非平稳马尔可夫链与鞅论下的一般生存概率界与几何衰减估计定理。
+
 解释：输入收缩转移算子与有界可观测量，经积分压缩映射求值，输出可观测量的期望值按严格小于1的比例单步收缩。
 
 源码说明：A local row contraction transfers to the original ensemble score.
@@ -208,6 +256,10 @@
 ## CGB.SurvivalBounds.mean_risk_step
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L181)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：非平稳马尔可夫链与鞅论下的一般生存概率界与几何衰减估计定理。
 
 解释：输入单步可加风险余量与转移机模型，经局部加性风险传递，输出均值演化在无独立性假设下满足单步风险扣除下界。
 
@@ -227,6 +279,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L195)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：非平稳马尔可夫链与鞅论下的一般生存概率界与几何衰减估计定理。
+
 解释：输入单步乘性保持率与物理转移律，经过马尔可夫期望传递，输出后继步的均值保持率不低于前一步均值乘以下界因子。
 
 源码说明：Lower multiplicative row bounds transfer along the same actual law.
@@ -244,6 +300,10 @@
 ## CGB.SurvivalBounds.expectedLifetime_strict_of_row_gap
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L216)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：非平稳马尔可夫链与鞅论下的一般生存概率界与几何衰减估计定理。
 
 解释：输入有限状态吸收马尔可夫链的行转移间隙，经预期寿命级数求和，输出在无不死吸收态的前提下个体的预期存活寿命严格有限。
 
@@ -271,6 +331,10 @@
 ## CGB.SurvivalBounds.normal_cut_eventual_gap
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSurvivalBounds.lean#L246)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：非平稳马尔可夫链与鞅论下的一般生存概率界与几何衰减估计定理。
 
 解释：输入正常与截断两组转移机、初始状态及可观测量，经前缀风险预算对截断收缩的差分放大，输出在有限步后两过程的期望值差异必严格大于正间隙(1-δ)/2。
 

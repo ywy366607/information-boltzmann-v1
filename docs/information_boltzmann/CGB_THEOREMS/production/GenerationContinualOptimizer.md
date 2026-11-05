@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L54)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若矩阵列正交且各列范数为一，则每个输入方向对应列的元素平方和恰好为一。这给出正交矩阵上的按方向质量约束；它本身并不证明整个 Muon 更新满足健康锁存或避免赢家通吃。
 
 源码说明：Orthonormal columns carry unit mass along every input direction.
@@ -23,6 +27,10 @@
 ## CGB.Continual.payoff_le_two_of_col
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L71)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在 2×2 非负分配矩阵中，每列预算恰好为一时，分配平方和作为集中收益最多为二。这是所指定收益和可行集的界，不是任意规模或任意优化器的性能定理。
 
@@ -38,6 +46,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L80)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在 2×2 非负分配矩阵中，每行预算恰好为一时，分配平方和最多为二。单独的行约束并未要求不同的行选择不同方向。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -51,6 +63,10 @@
 ## CGB.Continual.column_budget_allows_wta
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L89)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：构造 2x2 具体分配算子证明列预算允许 WTA 而行预算受阻。
 
 解释：构造的 2×2 分配把两个方向都交给同一行，同时满足非负和每列单位预算，集中收益达到二，却不满足行预算。这说明单列预算的可行集合允许赢家占有全部方向；该见证不自动满足 Muon 的正交约束。
 
@@ -68,6 +84,10 @@ CGB.Continual.Nonneg CGB.Continual.wta ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L97)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：构造的 2×2 分配让两行都选择同一个方向，同时满足非负和每行单位预算、达到收益二，却违反列预算。因而单靠行预算不能排除重复分配。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -84,6 +104,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L105)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：对 2×2 矩阵，如果每行和每列之和都为一，那么四个元素由一个数 p 决定，形式为 [[p,1-p],[1-p,p]]。这个代数形式本身不需要非负条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -98,6 +122,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 ## CGB.Continual.doubly_budgeted_max_iff_permutation
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L110)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在该 2×2 行列双预算问题中，平方和收益达到二当且仅当左上角为零或一，即分配处在两个置换形式之一。这是静态极值条件，不是动态收敛或通用防垄断保证。
 
@@ -115,6 +143,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L125)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在 2×2 非负、行列均有单位预算且平方和收益达到二的前提下，两行在同一方向上的分配不同。它证明该特定极值模型里的分化，不保证训练中一定到达极值。
 
 源码说明：At a doubly budgeted maximum the two rows own different directions.
@@ -131,6 +163,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L133)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在定理给出的固定增益与冲击保护条件下，长度 c 的变化若最多造成 ε 的响应，则持续 m 个同样长度后的累计采纳量有相应上界。这刻画该线性递推中的保护与采纳权衡，并非所有 Adam 或 Muon 轨迹的完整分类。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -144,6 +180,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 ## CGB.Continual.deferLatch_holds
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L145)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：对所定义的连续反证计数规则，只要反证连续长度小于阈值 c，输出就保持旧值 v。该结论针对给定规则，并未证明旧值有用或存在物理恢复盆地。
 
@@ -159,6 +199,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L148)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：对同一计数规则，当连续反证长度达到或超过阈值 c 时，输出切换到新值 d；这是在给定证据序列下的释放条件，不说明环境必然会提供该序列。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -172,6 +216,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 ## CGB.Continual.deferLatch_senses
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L153)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：当旧值和新值不同且阈值 c 非零时，反证长度为零和达到 c 的两种输入产生不同输出；若 c 为零则落入定理给出的退化分支。这说明规则可对这类证据作区分，不等于通用感知能力。
 
@@ -187,6 +235,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L161)
 
+分类：side；适用范围：universal；审核：reviewed
+
+分类说明：纯代数、数值计算或概率混合等式辅助引理，与语言身体机制无直接因果约束关系。
+
 解释：在预算 B 中每次永久占用份额 s 的这个模型里，若累计占用 n·s 至少达到 B，那么剩余量 B−n·s 不大于零。它说明在这些假设下无限期占用会耗尽自由预算，而非证明现有代码采用了同样的守恒账本。
 
 源码说明：Consolidated entries that keep a share `s` of a conserved budget `B` and are never released leave `B - n s` free after `n` consolidations; it is gone once `n s ≥ B`.
@@ -200,6 +252,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 ## CGB.Continual.secant_own_noise_bias
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L174)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在所列四个对称噪声组合中，依赖旧噪声生成的步长使割线乘积平均值比理想曲率项多出 −c·y² 的偏差。它是明确有限求和的代数恒等式，统计解释要额外满足这些噪声和步长关系。
 
@@ -220,6 +276,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L180)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在给定线性梯度模型中，同一个噪声 ξ 在新旧参数梯度差里抵消，得到 h·a²。这为同批次测量自身步长造成的梯度变化提供代数依据，但并不保证任意非线性模型都精确。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -233,6 +293,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 ## CGB.Continual.fresh_decrease_mixture
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L204)
+
+分类：side；适用范围：universal；审核：reviewed
+
+分类说明：纯代数、数值计算或概率混合等式辅助引理，与语言身体机制无直接因果约束关系。
 
 解释：出现与未出现两种条件下的单步下降量按出现率混合后，等于背景下降量加出现率乘以两者之差。
 
@@ -248,6 +312,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L207)
 
+分类：side；适用范围：universal；审核：reviewed
+
+分类说明：纯代数、数值计算或概率混合等式辅助引理，与语言身体机制无直接因果约束关系。
+
 解释：仅用出现时的下降量预测混合平均下降量，其差额恰为未出现概率乘以两种条件下降量的差。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -261,6 +329,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 ## CGB.Continual.shared_reference_flips
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L211)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在满足给定正性条件时，仅增大另一行的幅度就能使当前行从通过共享相对阈值变为不通过。
 
@@ -276,6 +348,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L241)
 
+分类：side；适用范围：universal；审核：reviewed
+
+分类说明：纯代数、数值计算或概率混合等式辅助引理，与语言身体机制无直接因果约束关系。
+
 解释：事件和背景两种梯度按出现率混合，可写为背景梯度加出现率乘以事件与背景的差。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -289,6 +365,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 ## CGB.Continual.positive_part_bias
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L246)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在指定的四点零信号构造中，先取正部再平均得到 P/2，虽然未截断的估计平均为零，展示逐次截断带来的偏差。
 
@@ -307,6 +387,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L253)
 
+分类：side；适用范围：universal；审核：reviewed
+
+分类说明：纯代数、数值计算或概率混合等式辅助引理，与语言身体机制无直接因果约束关系。
+
 解释：当收缩系数不大于一且 m·u 非负时，用未收缩均值预测下降会比用收缩均值多出非负项 (1−f)mu。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -322,6 +406,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L259)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：二分类 softmax 的两个类别梯度按定义相加恰为零。
 
 源码说明：Two-class softmax: the class-row gradients `(p - y)` and `((1 - p) - (1 - y))` sum to zero.
@@ -335,6 +423,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 ## CGB.Continual.softmax_rows_coupled
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L263)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：二分类概率严格位于零和一之间时，softmax 曲率的跨类别项 −p(1−p) 非零。
 
@@ -350,6 +442,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L290)
 
+分类：side；适用范围：universal；审核：reviewed
+
+分类说明：纯代数、数值计算或概率混合等式辅助引理，与语言身体机制无直接因果约束关系。
+
 解释：衰减因子 0.95 经过 200 个时间步后的残留比例小于 1/200，说明这个具体 EMA 窗口难以保留稀疏尖峰。
 
 源码说明：The registered window (factor 0.95) with spikes 200 steps apart: the held share 0.95^200 is below the spike's share 1/200 of the long-run power.
@@ -363,6 +459,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 ## CGB.Continual.partition_is_unbiased
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L292)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：有限加权和按任意布尔事件拆成事件项与非事件项后，两部分之和严格等于原和。
 
@@ -379,6 +479,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L299)
 
+分类：side；适用范围：universal；审核：reviewed
+
+分类说明：纯代数、数值计算或概率混合等式辅助引理，与语言身体机制无直接因果约束关系。
+
 解释：当批量 B 非零时，事件数量 n 乘事件平均幅度 μ 再除以 B，等于事件率 n/B 乘幅度。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -392,6 +496,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 ## CGB.Continual.frozen_hold_loses_on_drift
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L327)
+
+分类：necessity；适用范围：world_contract；审核：reviewed
+
+分类说明：在线非平稳线性漂移环境下，冻结估计或固定步长必然发散的不可行性证明。
 
 解释：若每步误差增长量 q 为正，则冻结估计的线性增长误差最终会超过任何有限阈值 M。
 
@@ -407,6 +515,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L333)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当 c、a 和输入 y 均为正时，所定义的混合更新 y/(1+c·exp(ay²)) 小于 1/(cay)，从而限制大正输入的影响。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -420,6 +532,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 ## CGB.Continual.mixture_weight_at_zero
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L343)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：所定义的混合权重在输入为零时化简为 1/(1+c)。
 
@@ -435,6 +551,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L346)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若先验赔率随年龄不增且证据因子非负，较老状态在 k 步达到释放条件时，较年轻状态也已达到该条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -449,6 +569,10 @@ CGB.Continual.Nonneg CGB.Continual.copies ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L352)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：自然数年龄 T 增加时，赔率 1/(T+1) 不增，提供一个随年龄递减的具体先验例子。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -462,6 +586,10 @@ Antitone fun T => 1 / (↑T + 1)
 ## CGB.Continual.linear_burst_damage_integral
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L374)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若线性系统的阶跃响应从 N 时刻起恒为一，则长度 L 的突发响应在指定有限时段内的有符号总和恰为 L。
 
@@ -478,6 +606,10 @@ Antitone fun T => 1 / (↑T + 1)
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L410)
 
+分类：side；适用范围：universal；审核：reviewed
+
+分类说明：纯代数、数值计算或概率混合等式辅助引理，与语言身体机制无直接因果约束关系。
+
 解释：对于正 α、非负 β，函数 α/(α+β+T) 随自然数年龄 T 不增。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -491,6 +623,10 @@ Antitone fun T => 1 / (↑T + 1)
 ## CGB.Continual.beta_hazard_succession
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L417)
+
+分类：side；适用范围：universal；审核：reviewed
+
+分类说明：纯代数、数值计算或概率混合等式辅助引理，与语言身体机制无直接因果约束关系。
 
 解释：当两个 Beta 参数均取一时，给定风险函数化简为 1/(T+2)。
 
@@ -506,6 +642,10 @@ Antitone fun T => 1 / (↑T + 1)
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L420)
 
+分类：side；适用范围：universal；审核：reviewed
+
+分类说明：纯代数、数值计算或概率混合等式辅助引理，与语言身体机制无直接因果约束关系。
+
 解释：在 k>0 时，k 个相同方差项之和除以 k² 等于 s/k，可用于独立同方差均值的方差计算。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -519,6 +659,10 @@ Antitone fun T => 1 / (↑T + 1)
 ## CGB.Continual.posterior_shrink_error
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L440)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：对于均值 m、由两个对称点构成的方差 P 的后验，动作 fm 的平均平方误差恰为 P+(1−f)²m²。
 
@@ -534,6 +678,10 @@ Antitone fun T => 1 / (↑T + 1)
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L445)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若 m 非零且 f 不等于一，指定二次损失下直接采用后验均值的误差严格小于再次乘 f 的误差。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -547,6 +695,10 @@ Antitone fun T => 1 / (↑T + 1)
 ## CGB.Continual.newton_contracts_iff
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L469)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：正曲率一维二次问题中，用正估计曲率进行精确梯度牛顿步时，误差严格收缩当且仅当估计曲率大于真实曲率的一半。
 
@@ -562,6 +714,10 @@ Antitone fun T => 1 / (↑T + 1)
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L484)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：真实曲率为正且估计曲率位于 [h,κh] 时，单步误差系数位于零与 1−1/κ 之间。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -575,6 +731,10 @@ Antitone fun T => 1 / (↑T + 1)
 ## CGB.Continual.saturating_step_bounded
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L499)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：只要 ρ>0，饱和步长 ρ·tanh(u/ρ) 的绝对值不超过 ρ。
 
@@ -590,6 +750,10 @@ Antitone fun T => 1 / (↑T + 1)
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L518)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若每个元素都已满足 y²−P=S 的恒等式，则对这些元素求平均后该等式仍成立；它不证明实际统计量满足前提。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -604,6 +768,10 @@ Antitone fun T => 1 / (↑T + 1)
 ## CGB.Continual.next_value_variance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean#L523)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：ContinualOptimizer
+
+分类说明：针对 ContinualOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：两种分支方差 q 和 q+J 按权重 1−h、h 线性混合时，结果代数上等于 q+hJ。
 

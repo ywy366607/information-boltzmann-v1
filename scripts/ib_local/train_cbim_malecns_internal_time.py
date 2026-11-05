@@ -53,7 +53,12 @@ class TruncatedInternalTimeGraphTrainer:
             for _ in range(3):
                 self.optimizer.zero_grad(set_to_none=True); backward_chunk()
         torch.cuda.current_stream().wait_stream(stream); torch.cuda.empty_cache()
-        self.optimizer.zero_grad(set_to_none=True)
+        # Capture addition into stable gradient buffers. With .grad=None, the
+        # captured first backward assigns/overwrites gradients on each replay,
+        # silently losing all but the last chunk in an accumulated update.
+        for parameter in model.parameters():
+            if parameter.requires_grad:
+                parameter.grad = torch.zeros_like(parameter)
         self.graph = torch.cuda.CUDAGraph()
         with torch.cuda.graph(self.graph):
             self.loss, self.next_state, self.diagnostics = backward_chunk()

@@ -3997,7 +3997,7 @@
   },
   "_private.CGBAxioms.LearningMaintenanceControls.0.CGB.LearningMaintenanceControls.sum_configs": {
     "source_sha256": "196b1babf3f274d301169f21edbc6b3793c3c2016aaefe096accd1f3ce20d997",
-    "text": "对单位置、四种主体状态的任意实函数求和，等于其在四个常值构型上的值之和。"
+    "text": "在学习维护控制对照模型中，对单位置四状态单元的任意实函数求和等于其在四个控制常值构型上的求和。"
   },
   "_private.CGBAxioms.LearningMaintenanceControls.0.CGB.LearningMaintenanceControls.kernel_table": {
     "source_sha256": "196b1babf3f274d301169f21edbc6b3793c3c2016aaefe096accd1f3ce20d997",
@@ -4645,7 +4645,7 @@
   },
   "CGB.SensoryMaintenanceClosure.cut_survival": {
     "source_sha256": "4871b8339c482199a6112eb18659ca49b32be3fa54c232fc3a003640b988ba54",
-    "text": "在施加环路截断后，机体存活概率在第7步衰减至不超过3/4，确立闭环反馈维持的不可替代性。"
+    "text": "在指定的感知维护闭包模型中，施加环路截断后机体存活概率在第7步衰减至不超过3/4。"
   },
   "_private.CGBAxioms.SensoryMaintenanceRecovery.0.CGB.SensoryMaintenanceRecovery.intake_same": {
     "source_sha256": "c43846488cdda8000a7cf48d73dc19b526ac3c4e8c85d9ae467f51a144894b5a",
@@ -4949,7 +4949,7 @@
   },
   "CGB.GraceRecoveryClosure.cut_survival": {
     "source_sha256": "10c2b1d21e7fcb0fccbacf133a1750e52ef82e0ad45343a6ab00fe96a8fb4a65",
-    "text": "在施加环路截断后，机体生存概率在第7步衰减至不超过3/4，确立闭环维持的不可替代性。"
+    "text": "在指定的宽限恢复闭包模型中，施加环路截断后机体生存概率在第7步衰减至不超过3/4。"
   },
   "CGB.GraceRecoveryClosure.maintenance": {
     "source_sha256": "10c2b1d21e7fcb0fccbacf133a1750e52ef82e0ad45343a6ab00fe96a8fb4a65",
@@ -5021,7 +5021,7 @@
   },
   "CGB.RenewableLearningClosure.cut_survival": {
     "source_sha256": "452637186863049448b94a917a0307e23d05b83d636f60e55336d2df3cfece2b",
-    "text": "在截断演化第6步起，系统存活概率至少损失1/4并持续保持在3/4以下（闭环维持必要性）。"
+    "text": "在指定的可再生学习闭包模型中，截断演化第6步起系统存活概率至少损失1/4并持续保持在3/4以下。"
   },
   "CGB.RenewableLearningClosure.maintenance": {
     "source_sha256": "452637186863049448b94a917a0307e23d05b83d636f60e55336d2df3cfece2b",
@@ -5285,7 +5285,7 @@
   },
   "CGB.ActiveMaintenance.cut_survival": {
     "source_sha256": "15de53d2c0c419ec2b282d6bb2debb6116164daf39e8c645ce71a504d7f10b5d",
-    "text": "施加环路截断后，机体在第4步的综合存活概率严格低于1/2（确立闭环维持必要性）。"
+    "text": "在指定的主动维持模型中，施加环路截断后机体在第4步的综合存活概率严格低于1/2。"
   },
   "CGB.ActiveMaintenance.maintenance_witness": {
     "source_sha256": "15de53d2c0c419ec2b282d6bb2debb6116164daf39e8c645ce71a504d7f10b5d",
@@ -5449,7 +5449,7 @@
   },
   "_private.CGBAxioms.LearningMaintenance.0.CGB.LearningMaintenance.sum_configs": {
     "source_sha256": "4ba56cba2b5ac5b116b40c1f8ccada26f2f5c5211c6ea53fef20c7a2a20d4dab",
-    "text": "对单位置、四种主体状态的任意实函数求和，等于其在四个常值构型上的值之和。"
+    "text": "在自然学习维护见证模型中，对单位置四状态单元的任意实函数求和等于其在四个常值构型上的求和。"
   },
   "_private.CGBAxioms.LearningMaintenance.0.CGB.LearningMaintenance.kernel_table": {
     "source_sha256": "4ba56cba2b5ac5b116b40c1f8ccada26f2f5c5211c6ea53fef20c7a2a20d4dab",
@@ -5649,7 +5649,7 @@
   },
   "CGB.SensoryMaintenanceRepairCandidates.protocol_repair_preserves_one_tick": {
     "source_sha256": "9455c1062d0e481827392055ffc79298e52fdcbdacaf088be17008b5f405fc80",
-    "text": "复用已有定理，证明原感知维护见证满足误差参数零的一拍感官丢失耐受条件。"
+    "text": "在基于协议调度的修复候选结构下，证明原系统对单拍感官丢失的耐受性依然得到保留。"
   },
   "CGB.SensoryMaintenanceRepairCandidates.probe_recharges_after_one_loss": {
     "source_sha256": "9455c1062d0e481827392055ffc79298e52fdcbdacaf088be17008b5f405fc80",
@@ -5677,7 +5677,7 @@
   },
   "CGB.SensoryMaintenanceRepairCandidates.guarded_repair_preserves_one_tick": {
     "source_sha256": "9455c1062d0e481827392055ffc79298e52fdcbdacaf088be17008b5f405fc80",
-    "text": "复用已有定理，证明原感知维护见证满足误差参数零的一拍感官丢失耐受条件。"
+    "text": "在引入保护性前置条件的修复候选模型中，证明原系统对单拍感官丢失的耐受性不受破坏。"
   },
   "CGB.SensoryMaintenanceRepairCandidates.firstHit_three_tick_layered": {
     "source_sha256": "9455c1062d0e481827392055ffc79298e52fdcbdacaf088be17008b5f405fc80",
@@ -5733,7 +5733,7 @@
   },
   "CGB.SensoryMaintenanceRepairCandidates.region_repair_preserves_one_tick": {
     "source_sha256": "9455c1062d0e481827392055ffc79298e52fdcbdacaf088be17008b5f405fc80",
-    "text": "复用已有定理，证明原感知维护见证满足误差参数零的一拍感官丢失耐受条件。"
+    "text": "在划分合格初始区域的修复候选方案中，证明原系统对单拍感官丢失的耐受性完全保持。"
   },
   "CGB.ActiveInference.action_condition_required": {
     "source_sha256": "aa7b173e798f344a828bbc06f55a61edf974f4b261e3f34df2dd5beb225cd14e",
@@ -5880,239 +5880,239 @@
     "text": "输入记忆定义中带标签的历史概率核，经测度非负性验证，输出带标签的记忆测度在所有支持点上均大于等于零。"
   },
   "CGB.GDNLife.action_head_score_deriv": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入模型与状态，经G14对数Softmax法则展开，输出动作头对数得分对输出对数几率的导数精确等价于Softmax指示差分。"
   },
   "CGB.GDNLife.addressLogitPerturb_deriv": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入模型与基底扰动，经Softmax求导法则，输出地址对数几率基底坐标扰动的精确Softmax导数。"
   },
   "CGB.GDNLife.address_nonneg": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入模型参数与输入字节，经软寻址Softmax计算，输出地址权重向量各槽位分量恒非负。"
   },
   "CGB.GDNLife.address_pos": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入模型参数与字节输入，经指数函数严格正性传递，输出寻址权重在每个槽位上均严格为正。"
   },
   "CGB.GDNLife.assimilate_addressLogitPerturb_natural_deriv": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入模型、状态与地址扰动，经自然参数积分展开，输出地址侧对GDN自然参数变动的精确导数。"
   },
   "CGB.GDNLife.assimilate_addressLogitPerturb_precision_deriv": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入状态与地址扰动，经精度累加分析，输出地址扰动导致的精度变动严格受地址敏感度调控。"
   },
   "CGB.GDNLife.assimilate_bias": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入模型、状态与到达包，经吸收更新算子，输出吸收变换保持读出头的偏置参数严格不变。"
   },
   "CGB.GDNLife.assimilate_head": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入模型、状态与到达包，经吸收步进计算，输出吸收操作仅写入物理内存场与因果缓存，输出头权重矩阵保持不变。"
   },
   "CGB.GDNLife.assimilate_lastByte_of_positive": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入正置信度到达包，经因果缓存写入，输出该到达字节精确成为下一次预测的因果查询。"
   },
   "CGB.GDNLife.assimilate_likelihoodLogitPerturb_natural_deriv": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入模型与似然对数几率扰动，经自然参数增量求导，输出似然对数几率对自然参数更新的精确导数。"
   },
   "CGB.GDNLife.assimilate_likelihoodLogitPerturb_precision_deriv": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入学习置信度参数与扰动，经精度更新方程求导，输出置信度对存储自然精度的精确导数。"
   },
   "CGB.GDNLife.assimilate_likelihoodLogitPerturb_zero": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入表示当前置信度的原始对数几率，经零扰动求值，输出零摄动下自然参数与精度导数恒为零。"
   },
   "CGB.GDNLife.assimilate_positive": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入正精度初始状态与到达包，经吸收更新，输出更新后状态的所有槽位精度继续保持严格正性。"
   },
   "CGB.GDNLife.assimilate_valuePerturb_difference": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入两组编码器坐标摄动，经有限差分比较，输出输入编码器不同坐标引起的精确有限差分。"
   },
   "CGB.GDNLife.assimilate_valuePerturb_natural": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入字节编码器单点扰动，经自然参数累加展开，输出编码坐标扰动对存储自然参数的精确一阶变动。"
   },
   "CGB.GDNLife.assimilate_valuePerturb_precision": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入字节编码器扰动，经精度更新分析，输出该扰动使存储精度严格保持不变。"
   },
   "CGB.GDNLife.byte_log_softmax_direction_deriv": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入对数几率方向向量，经有限维Softmax求导展开，输出字节对数Softmax沿整个对数几率方向的一阶导数。"
   },
   "CGB.GDNLife.byte_softmax_pos": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入任意实对数几率向量与字节目标，经Softmax指数归一化，输出归一化字节预测概率严格大于零。"
   },
   "CGB.GDNLife.carrier_fold": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入实际输入历史序列，经实状态载体连续折叠，输出历史序列折叠轨迹不依赖离散状态替换，直接在连续GDN状态上执行。"
   },
   "CGB.GDNLife.carrier_next": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入GDN生命载体模型、初始正状态与策略响应映射，经单步推进算子，输出可再生语言后继步进精确等同于标准GDN单步更新算子。"
   },
   "CGB.GDNLife.distinct_live_bytes_separate_steps": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入两个不同的有效输入字节，经状态写入推进，输出更新后的后继状态必然可分离且两两不等。"
   },
   "CGB.GDNLife.exists_open_real_gdn_trajectory": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入连续GDN动力学模型，经开流轨迹存在性定理，输出存在一条连续可存活且产生正信息的真实无限流轨迹。"
   },
   "CGB.GDNLife.feature_difference_of_shared_query": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入共享查询与相同精度下的两组自然状态，经特征解码映射，输出两状态特征读出之差精确正比于自然参数之差。"
   },
   "CGB.GDNLife.feature_valuePerturb": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入字节值编码器摄动，经预测读出分析，输出未到达字节的值编码扰动对当前已准备的特征读出无直接影响。"
   },
   "CGB.GDNLife.finish_future_ce_improves": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入局部头更新与未来转移律，经交叉熵求导分析，输出具体头更新能够严格降低系统在未来语言律下的预测交叉熵。"
   },
   "CGB.GDNLife.finish_saved_logits": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入保存的特征向量与局部头更新，经仿射映射分解，输出吸收后的局部更新不改变基于保存特征的中间对数几率。"
   },
   "CGB.GDNLife.finish_saved_nll_improves": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入保存特征与到达字节目标，经梯度下降步进分析，输出基于保存特征的当前字节负对数似然损失在正学习率下严格单调下降。"
   },
   "CGB.GDNLife.first_observation_sets_last_byte": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入零初始精度状态与首个输入字节，经缓存写入规则，输出即使在零精度下首个观测字节仍精确写入因果查询缓存。"
   },
   "CGB.GDNLife.future_ce_improves_of_target_mass": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入目标字符分布具有正概率质量的条件，经期望梯度分解，输出分布级条件能够保证未来交叉熵严格改进。"
   },
   "CGB.GDNLife.head_update_improves_saved_feature": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入保存特征向量，经局部仿射头参数单步更新，输出保存特征上的分类负对数似然损失严格单调下降。"
   },
   "CGB.GDNLife.head_update_logits": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入参数更新步长与特征向量，经仿射变换展开，输出参数步进在输出层诱导出大小精确为学习率乘以特征模方的一阶对数几率增量。"
   },
   "CGB.GDNLife.head_update_preserves_memory": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入局部头参数更新算子，经状态分量独立性分析，输出局部读出头参数学习绝不改变内部记忆状态或其不确定度（精度）。"
   },
   "CGB.GDNLife.incoming_nonneg": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入模型参数与到达包，经流入权重映射，输出到达各槽位的流入强度非负。"
   },
   "CGB.GDNLife.incoming_valuePerturb": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入字节编码器扰动，经流入强度核算，输出修改字节值编码严格保持到达包的流入权重不变。"
   },
   "CGB.GDNLife.initial_positive": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入正的初始精度参数，经初始状态构造，输出初始GDN物理状态满足正精度公理。"
   },
   "CGB.GDNLife.likelihoodSoftplus_deriv": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入Softplus置信度参数，经微积分导数计算，输出Softplus置信度参数的精确一阶导数等于标准Logistic Sigmoid函数。"
   },
   "CGB.GDNLife.positive_observation_sets_last_byte": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入任意正置信度到达观测，经因果读出更新，输出该字节直接写入下一次因果查询。"
   },
   "CGB.GDNLife.preparation_uses_only_elapsed": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入当前已到达历史与未来未到达字节，经因果隔离分析，输出预测准备过程仅依赖流逝时间与历史，无法窥探未来字节。"
   },
   "CGB.GDNLife.prepare_valuePerturb": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入未到达字节编码扰动，经准备算子求解，输出改变未来字节编码无法影响在当前流逝时间下预先准备好的预测状态。"
   },
   "CGB.GDNLife.prior_bias": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入GDN状态与经过时间，经先验衰减演化，输出时间先验演化严格保持输出头偏置不变。"
   },
   "CGB.GDNLife.prior_head": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入物理时间先验转移算子，经参数传递性验证，输出时间先验仅迁移记忆均值与精度，严格保留相同的输出头矩阵与偏置。"
   },
   "CGB.GDNLife.prior_logits": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入GDN状态、经过时间与特征向量，经仿射头计算，输出时间先验演化不改变由当前特征生成的输出对数几率。"
   },
   "CGB.GDNLife.prior_natural_difference": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入保持槽位精度不变的扰动，经先验时间衰减传递，输出先验演化精确保留自然参数在各槽位上的差分。"
   },
   "CGB.GDNLife.prior_positive": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入满足正精度的GDN状态与非负流逝时间，经时间先验指数衰减，输出衰减后状态的精度依然严格保持正性。"
   },
   "CGB.GDNLife.prior_zero": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入GDN状态与零流逝时间，经先验算子求值，输出零时间流逝下的先验状态严格等于当前状态。"
   },
   "CGB.GDNLife.real_bias_injective": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入实数头偏置族，经实坐标嵌入检验，输出实偏置参数族在输出层具备单射可辨识性。"
   },
   "CGB.GDNLife.step_ne_of_positive_head_step": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入正的真实读出头学习步长，经状态差异比较，输出正头学习步使本体状态在每个到达输入下均发生真实物理改变。"
   },
   "CGB.GDNLife.step_positive": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入正精度的GDN状态与到达包，经单步复合推进更新，输出完整步进后的后继状态依然满足正精度条件。"
   },
   "CGB.GDNLife.step_positive_observation_sets_last_byte": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入完整GDN单步推进算子与正置信度输入，经端到端追踪，输出完整步进精确保持因果查询缓存写入。"
   },
   "CGB.GDNLife.step_source_irrelevant": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入外部源标签，经状态学习转移比对，输出输入源标签不改变语言费用或GDN学习规则本身。"
   },
   "CGB.GDNLife.valueEligibility_zero_of_no_incoming": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入无流入到达包（流入强度为零），经资格迹传递链展开，输出该槽位处编码器值的后向资格迹恒等于零。"
   },
   "CGB.GDNLife.value_future_log_likelihood_deriv": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入未来后继字节到达与GDN单步位移，经G14导数法则，输出未来对数似然对编码器值的全导数精确由前向资格迹给出。"
   },
   "CGB.GDNLife.value_future_logit_eligibility_exact": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入后继字节对数几率位移，经链式法则推导，输出后继对数几率位移精确等于输出头权重与编码器前向资格迹的内积。"
   },
   "CGB.GDNLife.value_future_read_eligibility_exact": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入后继准备好的读出状态，经前向敏感度递推，输出后继特征读出的前向资格迹精确满足一步前向闭式递推。"
   },
   "CGB.GDNLife.value_future_score_factor": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入编码器值得分函数，经梯度因式分解，输出未来得分精确分解为前向资格迹因子与即时创新误差的乘积。"
   },
   "CGB.GDNLife.value_read_eligibility_exact": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入单步字节编码器方向，经因果读出展开，输出该方向对下一因果读出的资格迹精确等于槽位权重归一化因子。"
   },
   "CGB.GDNLife.value_sensitivity_through_prior": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入编码器写入敏感度，经物理先验时间演化，输出敏感度在经历时间先验后依然保存在相同的自然状态流形中。"
   },
   "CGB.GDNLife.value_sensitivity_two_arrivals": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入连续两次到达事件，经自然参数吸收链推演，输出编码器值敏感度由同一自然状态载体连续运载与复合传递。"
   },
   "CGB.GDNLife.zero_precision_keeps_last_byte": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入零精度输入包，经状态更新判定，输出零精度输入保持既有最后观测缓存不变，避免虚假覆写。"
   },
   "CGB.Generation.associationState_row": {
@@ -7256,67 +7256,67 @@
     "text": "输入在某封闭区域内起始的有限状态机与外部不可达状态，经单步转移闭包归纳，输出外部状态在任意时间步的前向生成概率恒为零。"
   },
   "CGB.GDNLife.Process.externalInformation_nonneg": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入外部语言转移律，经互信息非负性检验，输出系统外部语言条件互信息恒非负。"
   },
   "CGB.GDNLife.Process.externallyUseful_improves": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入有用外部事件凭据，经因果响应分析，输出有用事件的发生能严格改善系统的外周适应度与预测增益。"
   },
   "CGB.GDNLife.Process.future_reserve_preserved_keeps_signature_distinction": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入保留的未来语言储备，经特征签名映射，输出保持的未来储备保证不同语言签名在演化中不可默默合并。"
   },
   "CGB.GDNLife.Process.future_reserve_recoverable_iff": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入未来状态区分，经耗散测度分析，输出未来区分度可无损恢复当且仅当该过程的所有离散签名均未发生耗散。"
   },
   "CGB.GDNLife.Process.loses_future_language_distinction_iff_not_preserved": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入两先前可区分的未来语言签名，经等价性证明，输出二者合并丧失区分度当且仅当未来储备未被有效保留。"
   },
   "CGB.GDNLife.Process.next_byte_improves": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入外部世界真实生成的下一字节，经自回归吸收步进，输出更新对世界真实下一字节的预测对数似然严格单调提升。"
   },
   "CGB.GDNLife.Process.recurrent_external_evidence_forces_activity": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入循环出现的外部证据序列与生存约束，经反证法推导，输出若策略最终退化为被动停滞，则无法循环摄取生存所需外部证据。"
   },
   "CGB.GDNLife.Process.recurrent_external_information_forces_activity": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入循环外部信息流与GDN物理模型，经信息论主动必要性定理，输出维持循环正信息摄入严格迫使系统必须维持主动干预策略。"
   },
   "CGB.GDNLife.Process.run_body_step": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入离散物理过程模型与时间步，经多步迭代推进，输出第n+1步的本体状态精确由前一步快照与到达包经finish算子生成。"
   },
   "CGB.GDNLife.Process.run_initial": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入离散运行过程，经初值提取，输出第0步联合状态精确等于本体与环境的初始状态元组。"
   },
   "CGB.GDNLife.Process.run_positive": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入正定初值的GDN离散过程与任意时间步，经数学归纳法推演，输出全轨迹上各时刻本体状态的精度恒严格为正。"
   },
   "CGB.GDNLife.Process.run_step": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入GDN过程与当前时间步，经联合转移核步进，输出第n+1步联合状态精确等于本体更新与环境演化的直和推进。"
   },
   "CGB.GDNLife.Process.scored_external_language_trajectory": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入实数GDN模型与外部语言流，经打分联合轨迹判定，输出存在满足条件语言级打分联合轨迹，且每步维持有效正预测增益。"
   },
   "CGB.GDNLife.Process.scored_joint_trajectory": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入连续实数GDN生命过程，经开流联合状态演化，输出全时域联合轨迹在无截断下严格满足条件打分与存活标准。"
   },
   "CGB.GDNLife.Process.self_not_externallyUseful": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入自身复制发出的语言字节，经信息论有用性判据，输出复制自身的自生字节绝不可能凭空转化为有价值的外部独立环境证据。"
   },
   "CGB.GDNLife.Process.self_speech_action_contrast_writes_body": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入发出不同自生语言字节的两个候选动作，经因果回馈写入，输出不同自生言语动作在本体中写入可区分的物理内部状态。"
   },
   "CGB.Generation.BodyCausalCarrier.merged_history_preserves_read_and_successor": {
@@ -7340,275 +7340,1047 @@
     "text": "输入局部柱投影算子、介质动作与公理P1b，经外周接触面隔离判定，输出不在动作作用区域内的柱节点接触面状态在系统动作后保持不变。"
   },
   "CGB.GDNLife.Process.ExternalLanguageLaw.information_nonneg": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
     "text": "输入状态与动作索引的机会测度，经条件互信息非负性继承，输出各状态动作条件下的信息增益测度恒非负。"
   },
   "CGB.GDNLife.positive_teaching_alignment_is_local_ascent": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
-    "text": "Positive alignment with the exact future score is the minimal local ascent admission for a learned teaching signal. It does not mandate how the signal is represented; a concrete shared-body rule must establish the premise without preset transposed weights."
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
+    "text": "在 GDN 动力学中，学得教学信号与未来精确分值方向的正对齐是局部梯度上升的充要准入条件；该条件仅要求可测量的对齐，不强制要求预设对称转置权重矩阵。"
   },
   "CGB.GDNLife.value_future_teaching_direction_deriv": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
-    "text": "An endogenous teaching amplitude need not be a transpose of the forward path. The only admission condition for this immediate language path is its measurable alignment with the already-derived future score: scaling a local direction by `teaching` gives the corresponding directional derivative. This is deliberately an identity, not a claim that a particular circuit has learnt the amplitude or that delayed action credit is solved."
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
+    "text": "内生教学幅度无需是前向通路的转置；局部方向经教学标量缩放后精确导出对应的未来方向导数，这确立了即时语言路径的导数恒等式，而非假设电路已预先学习了该幅度。"
   },
   "CGB.Generation.reciprocal_iter_mismatch": {
     "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
-    "text": "The mismatch is geometric even when the common local statistic changes at each event. Thus alignment does not require either contact to stop learning."
+    "text": "即使局部公共统计量在每个事件中动态变动，互惠接触对的更新不匹配量仍保持几何速率收缩，证明对齐无需任何接触冻结学习。"
   },
   "CGB.Generation.reciprocal_shared_update_mismatch": {
     "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
-    "text": "A matched reciprocal update contracts its splice mismatch by its release factor. No initial transpose relation is assumed."
+    "text": "匹配的互惠接触更新按照其释放因子严格收缩剪接不匹配量，无需预先假设初始转置关系。"
   },
   "CGB.Generation.contact_response_saturated_increment_zero": {
     "source_sha256": "75f2608faf933365a4bc946a0cf0feccfcab606af69901f874f043296e2a7145",
-    "text": "A bounded activity face carries no additional local contact evidence: as long as both responses remain saturated at `+1`, their difference is zero."
+    "text": "有界响应饱和面不携带额外局部接触证据：只要两次扰动后的响应均达到 +1 饱和态，二者的差分增量精确为零。"
   },
   "CGB.Generation.contact_response_unsaturated_increment": {
     "source_sha256": "75f2608faf933365a4bc946a0cf0feccfcab606af69901f874f043296e2a7145",
-    "text": "On one unsaturated response segment, participation is the exact local forward finite-difference factor of a contact-weight perturbation."
+    "text": "在未饱和响应线性段内，参与度标量精确对应接触权重微扰下的前向有限差分比率。"
   },
   "CGB.Generation.contact_retention_bounds": {
     "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
-    "text": "输入contact_retention_bounds形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "在门控值和释放率均处于单位区间 [0, 1] 时，接触保持率 contactRetention 严格落在 [0, 1] 区间内。"
   },
   "CGB.Generation.contact_score_unsaturated_increment": {
     "source_sha256": "75f2608faf933365a4bc946a0cf0feccfcab606af69901f874f043296e2a7145",
-    "text": "A score whose local read coefficient is `q` inherits both cases. This is the one-contact part of the next-byte forward eligibility before its language innovation is used as the third factor."
+    "text": "当局部读出系数为 q 时，未饱和分值的增量等于 q 乘以接触扰动项，构成下一字节前向资格因子的显式构成。"
   },
   "CGB.Generation.full_shared_pool_blocks_admission": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "Once a local bundle is full, no positive admission can add to any of its contacts. Only its release channel can change it."
+    "text": "当局部接触束的占用总和达到容量上限 1 时，任何正流入均无法再准入到任何接触槽位中，状态仅能通过释放通道发生改变。"
   },
   "CGB.Generation.full_shared_pool_vector_blocks_admission": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "输入full_shared_pool_vector_blocks_admission形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "当共享池各槽位占用量之和达到单位容量 1 时，准入增量为零，各槽位后继状态仅由自身释放衰减 (1 - gate * release i) 决定。"
   },
   "CGB.Generation.hardSat_eq_one": {
     "source_sha256": "75f2608faf933365a4bc946a0cf0feccfcab606af69901f874f043296e2a7145",
-    "text": "输入hardSat_eq_one形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "对任意实数 x ≥ 1，硬饱和函数 hardSat x 的值严格恒等于 1。"
   },
   "CGB.Generation.hardSat_eq_self": {
     "source_sha256": "75f2608faf933365a4bc946a0cf0feccfcab606af69901f874f043296e2a7145",
-    "text": "输入hardSat_eq_self形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "对处于 [-1, 1] 区间内的任意实数 x，硬饱和函数 hardSat x 的值严格等于其自身 x。"
   },
   "CGB.Generation.log_softmax_direction_deriv": {
     "source_sha256": "5699c927679f0b1e3f14da1c7823bef46e8a59f768d4487e4b8feb00cc892290",
-    "text": "The log-softmax derivative for an arbitrary finite direction. G14b is the one-coordinate instance; a selected route may change all of its fixed support logits together."
+    "text": "任意有限方向向量下的对数 Softmax 一阶方向导数具有精确的中心化内积形式，支持选定路径对其固定支撑集上全部 logits 的协同更新。"
   },
   "CGB.Generation.positive_demand_preserves_contact_distinction": {
     "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
-    "text": "输入positive_demand_preserves_contact_distinction形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "在正需求因子乘积作用下，任意两个不相等的接触标量乘以正标量后仍然保持严格不相等。"
   },
   "CGB.Generation.ranked_release_eq_inv_time": {
     "source_sha256": "dcd6d7f8b8611236e82ee6f25dafaa6cc4e8867db3aa93ca5304cac039031b54",
-    "text": "A ranked release is exactly the reciprocal of its ranked relaxation time."
+    "text": "各等级上的分级释放速率精确等于其对应分级弛豫时间的倒数。"
   },
   "CGB.Generation.ranked_time_succ": {
     "source_sha256": "dcd6d7f8b8611236e82ee6f25dafaa6cc4e8867db3aa93ca5304cac039031b54",
-    "text": "Adjacent ranks have the geometric time-scale ratio used by `geometric_bank_covers`."
+    "text": "相邻等级的分级弛豫时间保持严格的几何级数时间尺度比率 γ，支撑多尺度时间记忆池的完备覆盖。"
   },
   "CGB.Generation.reciprocal_contact_response_deriv": {
     "source_sha256": "826ca3c0cd365026cbaa7e3c7383d052fe5f42f315445a2879a346a6bd383852",
-    "text": "The exact local forward response of one reciprocal contact. It is the pre/post eligibility product, derived from the actual contact read rather than stipulated as a biological analogy."
+    "text": "单向互惠接触的前向一阶导数严格等于突触前状态与突触后资格的乘积，直接从物理接触读出算子推导而得。"
   },
   "CGB.Generation.reciprocal_contact_teaching_deriv": {
     "source_sha256": "826ca3c0cd365026cbaa7e3c7383d052fe5f42f315445a2879a346a6bd383852",
-    "text": "Scaling a local response by a fresh boundary teaching signal preserves its identity as the exact directional derivative. This is the abstract three-factor form: pre × post × outcome."
+    "text": "以到达边界的新鲜教学信号缩放局部互惠响应，严格保持其作为方向导数的性质，给出抽象的三因子形式：前 × 后 × 结果。"
   },
   "CGB.Generation.response_gated_contact_closed_holds": {
     "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
-    "text": "A response gate closed at the source event leaves every coordinate of the existing shared contact reservoir unchanged."
+    "text": "当源事件处的响应门完全关闭时，现有共享接触池各槽位的状态值保持严格不变。"
   },
   "CGB.Generation.response_gated_contact_write_distinguishes": {
     "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
-    "text": "If opening the existing shared exchange produces a nonzero local transfer, the S coordinate distinguishes it from a saturated (closed-gate) event. This is exactly the missing condition for a delayed reader to retain the local response distinction; no separate eligibility page is added."
+    "text": "在开启现有共享交换产生非零局部转移的前提下，S 接触池对两不同到达事件的写入产生可区分的后继状态。"
   },
   "CGB.Generation.response_gated_vector_history_difference": {
     "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
-    "text": "Equal external inputs alone do not guarantee equal injections: the free pool depends on each trajectory. This result explicitly requires equal actual injections as well as the shared retention schedule."
+    "text": "两段输入在保持因子作用下的差异演化严格由各步注入差异的累积衰减线性构成，无需保存历史注入样本。"
   },
   "CGB.Generation.response_gated_vector_history_expansion": {
     "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
-    "text": "Every actual coordinate is its retained initial value plus its finitely many injections, each weighted by subsequent retention. The formula does not require the runtime to save or replay those injections."
+    "text": "向量状态在保持与注入更新下的有限时域展开严格等于初始状态的保持连乘衰减加上各步注入的历史折扣和。"
   },
   "CGB.Generation.response_gated_vector_no_injection_retention": {
     "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
-    "text": "With no new injection into this type during the interval, only the product of its actual coordinatewise retention acts on its initial content."
+    "text": "在某类型特征在时间区间内无新注入时，该槽位在区间末的状态精确等于初态乘以其实际坐标保持因子的连乘积。"
   },
   "CGB.Generation.response_gated_vector_nonzero_retention_distinguishes": {
     "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
-    "text": "Nonzero retained product preserves an initial scalar distinction, not a claim that the complete old pre×gate vector can be decoded."
+    "text": "非零保持因子连乘积使得初态的标量区分度在演化后得以保留，保证历史可区分性不发生非平凡塌缩。"
   },
   "CGB.Generation.response_gated_vector_source_difference": {
     "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
-    "text": "Equal rank-release rates give a direct source-contrast recurrence inside one and the same reservoir; the common free pool is retained in the formula."
+    "text": "当等级释放率相等时，同一共享池内部两源槽位的差值演化满足直接的对比递推，公共自由池在差分中自动抵消。"
   },
   "CGB.Generation.response_gated_vector_zero_without_injection": {
     "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
-    "text": "A type absent at birth cannot appear without an injection of that type."
+    "text": "初态为零且后续无任何新注入的槽位，在任意有限时间步后的状态值严格恒等于零。"
   },
   "CGB.Generation.shared_contact_pool_free_nonneg": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "输入shared_contact_pool_free_nonneg形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "在占用非负且总和不超 1、释放率非负、流入与门控处于 [0, 1] 的条件下，共享接触池更新后的剩余空闲容量严格非负。"
   },
   "CGB.Generation.shared_contact_pool_total": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "The whole contact bundle follows one two-state exchange. Coordinate shares may differ, but their sum can draw only from the same implicit pool."
+    "text": "整个接触束遵循二态质量交换律；各槽位份额虽有差异，但其总和严格受限于同一隐式自由池的守恒约束。"
   },
   "CGB.Generation.shared_contact_pool_vector_affine": {
     "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
-    "text": "Exact connection of the retention/injection decomposition to the executable coordinatewise-release shared reservoir."
+    "text": "将保持/注入仿射分解与可执行的逐坐标释放共享池精确连接，证明二者在代数更新上严格等价。"
   },
   "CGB.Generation.shared_contact_pool_vector_conserves_total": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "输入shared_contact_pool_vector_conserves_total形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "在目标向量归一化条件下，共享池各槽位占用步进量与剩余空闲容量之和恒等于单位总量 1（总容量守恒）。"
   },
   "CGB.Generation.shared_contact_pool_vector_constant_release": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "Constant vector release recovers the original interface exactly."
+    "text": "当逐坐标释放率取常数值时，向量化共享接触池退化并精确复现标量释放接口的动力学行为。"
   },
   "CGB.Generation.shared_contact_pool_vector_endpoint_agreement": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "Endpoints applying the same inputs to the same shared state cannot write inconsistent copies of that edge's reservoir."
+    "text": "当两端点对同一共享状态应用相同输入时，绝不会在同一条边的接触池上写入不一致的状态副本。"
   },
   "CGB.Generation.shared_contact_pool_vector_nonneg": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "输入shared_contact_pool_vector_nonneg形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "在初态非负且总和不超 1、目标非负、释放率处于 [0, 1]、流入非负及门控处于 [0, 1] 时，更新后的各槽位占用量严格非负。"
   },
   "CGB.Generation.shared_contact_pool_vector_total": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "输入shared_contact_pool_vector_total形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "在目标向量归一化时，共享池各槽位后继占用总量精确等于旧占用总量加上门控有效流入并减去门控释放损耗。"
   },
   "CGB.Generation.shared_contact_pool_vector_total_le_one": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "输入shared_contact_pool_vector_total_le_one形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "在占用非负且总和不超 1、目标归一、释放非负及参数规范在单位区间时，更新后的各槽位占用总量严格不超过 1。"
   },
   "CGB.Generation.shared_edge_response_gate_bounds": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "输入shared_edge_response_gate_bounds形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "当左右端点响应均处于单位区间 [0, 1] 时，共享边缘响应门控值严格保持在 [0, 1] 区间内。"
   },
   "CGB.Generation.shared_edge_response_gate_closed": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "输入shared_edge_response_gate_closed形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "当两端点响应均为零时，共享边缘响应门控值精确等于零（双零完全关闭）。"
   },
   "CGB.Generation.shared_edge_response_gate_one": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "输入shared_edge_response_gate_one形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "当一端响应达到饱和值 1 且另一端不超过 1 时，共享边缘响应门控值严格等于 1。"
   },
   "CGB.Generation.shared_edge_response_gate_symmetric": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "输入shared_edge_response_gate_symmetric形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "共享边缘响应门控函数对左右两端响应具有严格对称性：输入互换后门控值不变。"
   },
   "CGB.Generation.shared_pool_closed_gate_holds": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "When a local evidence gate is closed, the complete bundle holds exactly. This lets delayed evidence regulate the existing S carrier without advancing a separate trace or a global learning-rate state."
+    "text": "当局部证据门关闭时，接触束各槽位状态完全保持，使得延迟证据可在不推进独立资格页或全局学习率的前提下调控现有 S 载体。"
   },
   "CGB.Generation.shared_pool_marginal_admission_is_anti_dominant": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "For a positive local admission gate, an already more occupied bundle has strictly less remaining marginal capacity. This is the local anti-dominance law required to prevent unlimited winner growth; it does not prescribe a global balancing scalar."
+    "text": "在正局部准入门控下，占用量更大的接触束具有严格更小的边际准入容量，构成防止赢家无限通吃的局部反垄断律。"
   },
   "CGB.Generation.shared_pool_vector_closed_gate_holds": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "输入shared_pool_vector_closed_gate_holds形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "当门控系数为零时，共享接触池各槽位的向量更新步进严格保持原有占用分布不变。"
   },
   "CGB.Generation.softmax_direction_deriv": {
     "source_sha256": "5699c927679f0b1e3f14da1c7823bef46e8a59f768d4487e4b8feb00cc892290",
-    "text": "Each selected route probability has the expected softmax response."
+    "text": "任意选定路由的发生概率在方向微扰下具有解析的标准 Softmax 响应导数形式。"
   },
   "CGB.Generation.softmax_read_direction_deriv": {
     "source_sha256": "5699c927679f0b1e3f14da1c7823bef46e8a59f768d4487e4b8feb00cc892290",
-    "text": "A route read changes by the sum of its local, centered softmax responses. This is the exact receipt used by an immediately scored fixed-support route."
+    "text": "路由读出向量的方向导数等于其各局部中心化 Softmax 响应的总和，精确对应即时评分固定路由的回执导数。"
   },
   "_private.CGBAxioms.GenerationResponseGatedCarrier.0.CGB.Generation.affine_forward_history": {
     "source_sha256": "9760acc0e033acdadd6d21e9081f95acea5b91d870e5123ccb9076c06cb851b3",
-    "text": "输入affine_forward_history形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。"
+    "text": "沿一维仿射保持与注入递推序列，时刻 T 的状态精确等于初始状态经保持连乘衰减加上各步注入的历史折扣累加和。"
   },
   "CGB.GDNLife.Process.empirical_future_cross_entropy_congr": {
     "source_sha256": "2babc8ee485ecc97ae48eac0866fa5cd6ea8bc50851f9ea07d287c00216eeb05",
-    "text": "If no actual re-entered continuation can tell two body states apart in language code length, the empirical future-value audit is equal. Unobserved possible continuations never enter this quantity."
+    "text": "若两个本体状态在所有实际重新进入的外部后继探测上具有完全相同的语言编码长度，则二者的经验未来价值审计评分严格相等；未被观测到的可能后继不影响该量。"
   },
   "CGB.GDNLife.Process.future_cross_entropy_congr_on_positive_support": {
     "source_sha256": "2babc8ee485ecc97ae48eac0866fa5cd6ea8bc50851f9ea07d287c00216eeb05",
-    "text": "A continuation of zero world-side recurrence has no effect on the future code-length audit. Therefore a distinction useful only under such a continuation creates no retention obligation."
+    "text": "若某个环境后继发生概率为零，则其不影响未来编码长度的加权期望审计；因此仅在此类零概率后继上有用的结构区别不产生保留义务。"
   },
   "CGB.GDNLife.Process.observed_continuation_improvement_is_empirically_paid": {
     "source_sha256": "2babc8ee485ecc97ae48eac0866fa5cd6ea8bc50851f9ea07d287c00216eeb05",
-    "text": "One strictly better re-entered continuation, with no worse observed continuation, strictly improves the empirical future language code length. Thus a stream can supply the retention signal by its own recurrence and prediction errors, without an external reward table."
+    "text": "若某本体状态在至少一个实际出现的后继上严格缩短语言编码长度，且在其余已观测后继上不恶化，则其经验未来编码长度严格改善；这表明信息流可仅凭自身重访与预测误差提供保留信号，无需外部人为奖励表。"
   },
   "CGB.GDNLife.Process.positive_continuation_improvement_is_future_paid": {
     "source_sha256": "2babc8ee485ecc97ae48eac0866fa5cd6ea8bc50851f9ea07d287c00216eeb05",
-    "text": "If a body change never worsens any declared future continuation and strictly improves one continuation that recurs with positive mass, it strictly improves expected future language code length. This makes the preservation value an information-theoretic quantity, rather than a hand-assigned reward."
+    "text": "若本体状态改变在所有声明的未来后继上均不恶化，且在至少一个具有正发生概率的后继上严格改善，则其期望未来语言编码长度严格下降；这使得保留价值成为纯粹的信息论度量而非外部设定的奖励。"
   },
   "CGB.Generation.ContactPlasticity.allocation_normalization_cancels": {
-    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
-    "text": "Positive total drive cancels between admission and normalized target. No assumption on the capacity divisor is needed for this algebraic identity."
+    "source_sha256": "3fb737cb3173fc08ae4e8c970a252c73c46b63de7295b8d65ed01a4f2096ea57",
+    "text": "当总驱动量非零时，准入有效驱动项与归一化目标项中的总驱动因子精确相消，证明两步归一化代数形式在任何正容量除数下均保持不变。"
   },
   "CGB.Generation.ContactPlasticity.allocation_pool_pre_post_coefficient": {
-    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
-    "text": "Actual normalized allocation, allowing target and total admission to vary together. `capacity` is rank K, not the number of source-expanded coordinates. Only the selected source's drive is nonzero in the runtime instantiation."
+    "source_sha256": "3fb737cb3173fc08ae4e8c970a252c73c46b63de7295b8d65ed01a4f2096ea57",
+    "text": "在目标分布与总准入量同时变动的归一化分配更新下，任意槽位的一阶导数精确分解为选通驱动增量、总体准入驱动及池保持因子的代数线性组合。"
   },
   "CGB.Generation.ContactPlasticity.endpoint_allocation_deriv": {
-    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
-    "text": "Exact allocation response to one endpoint's local pre-weight perturbation; `pre` is fixed and the sigmoid supplies the current post-response factor."
+    "source_sha256": "3fb737cb3173fc08ae4e8c970a252c73c46b63de7295b8d65ed01a4f2096ea57",
+    "text": "在端点分配中，关于单侧参数扰动在原点处的一阶导数精确等于均值 Sigmoid 导数形式乘以 pre/2。"
   },
   "CGB.Generation.ContactPlasticity.endpoint_retention_deriv": {
-    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
-    "text": "Exact mean-retention response at one perturbed endpoint. Unlike allocation, the sigmoid is applied before the two endpoints are averaged."
+    "source_sha256": "3fb737cb3173fc08ae4e8c970a252c73c46b63de7295b8d65ed01a4f2096ea57",
+    "text": "在端点保持中，关于单侧参数扰动在原点处的一阶导数精确等于单侧 Sigmoid 导数形式乘以 pre/2。"
   },
   "CGB.Generation.ContactPlasticity.linear_contact_return": {
-    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
-    "text": "Transposing a finite linear contact read returns exactly the same scalar contraction; the return is not an independently learned feedback matrix."
+    "source_sha256": "3fb737cb3173fc08ae4e8c970a252c73c46b63de7295b8d65ed01a4f2096ea57",
+    "text": "转置有限线性接触读出所得到的标量收缩算子与原前向读出伴随完全一致；反向返回系数直接对应同一物理接触权重，而非独立的外部反馈矩阵。"
   },
   "CGB.Generation.ContactPlasticity.local_direction_self_nonneg": {
-    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
-    "text": "A parameter direction contracted with itself is nonnegative. This concerns only the local proxy's own direction, not descent of a different CE objective."
+    "source_sha256": "3fb737cb3173fc08ae4e8c970a252c73c46b63de7295b8d65ed01a4f2096ea57",
+    "text": "任意有限维参数方向向量与自身的内积（平方和）严格非负；该性质保证局部代理梯度的自乘积始终构成非负上升度量。"
   },
   "CGB.Generation.ContactPlasticity.local_potential_deriv": {
-    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
-    "text": "Exact current-event derivative through the actual inflow and coordinatewise release. Old S, target, gate, lambda and eligibility are constant here; this is not the derivative of a state trajectory or of the current language CE."
+    "source_sha256": "3fb737cb3173fc08ae4e8c970a252c73c46b63de7295b8d65ed01a4f2096ea57",
+    "text": "当前事件通过实际流入与逐坐标释放所产生的精确局部势能导数，在历史状态、门控与资格迹固定时构成严格的单拍因果 VJP，不跨越时间反传。"
   },
   "CGB.Generation.ContactPlasticity.local_potential_zero_eligibility": {
-    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
-    "text": "Vanishing participation tags make the entire parameter-dependent proxy identically zero, not merely its value at a chosen parameter."
+    "source_sha256": "3fb737cb3173fc08ae4e8c970a252c73c46b63de7295b8d65ed01a4f2096ea57",
+    "text": "当所有槽位的参与资格标记均为零时，整个依赖参数的局部更新代理量在全空间恒等于零，而非仅在选定参数点处为零。"
   },
   "CGB.Generation.ContactPlasticity.local_potential_zero_return": {
-    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
-    "text": "A zero current local return also makes the stopped-coefficient proxy zero."
+    "source_sha256": "3fb737cb3173fc08ae4e8c970a252c73c46b63de7295b8d65ed01a4f2096ea57",
+    "text": "当当拍局部语言返回标量为零时，具有停止梯度的局部更新代理项全部分量恒等于零。"
   },
   "CGB.Generation.ContactPlasticity.normalized_actual_pool": {
-    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
-    "text": "The cancellation holds inside the actual shared reservoir, with its old occupation and coordinatewise release unchanged."
+    "source_sha256": "3fb737cb3173fc08ae4e8c970a252c73c46b63de7295b8d65ed01a4f2096ea57",
+    "text": "在实际共享池中，总驱动量非零时归一化因子的代数对消依然严格成立，旧占用分布与逐坐标释放率保持不变。"
   },
   "CGB.Generation.ContactPlasticity.periodic_flux_return": {
-    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
-    "text": "Incoming-minus-outgoing periodic flux has the next-minus-local adjoint. `next.symm` is the predecessor, so this covers any finite periodic geometry."
+    "source_sha256": "3fb737cb3173fc08ae4e8c970a252c73c46b63de7295b8d65ed01a4f2096ea57",
+    "text": "对于任意有限周期几何上的流入减流出通量，其伴随算子精确等于后继减去局部的前向差分；周期置换的前驱即其逆映射。"
   },
   "CGB.Generation.ContactPlasticity.retention_pool_pre_post_coefficient": {
-    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
-    "text": "The actual release is A*(1-retention), so a retention logit's response has a positive sign and is contracted with old S across all source coordinates. Equal per-rank endpoint logits across sources specialize this sum directly."
+    "source_sha256": "3fb737cb3173fc08ae4e8c970a252c73c46b63de7295b8d65ed01a4f2096ea57",
+    "text": "实际释放形式为 A*(1-retention)，因此保持度 logits 的导数具有正号并与各源坐标上的旧 S 状态收缩，直接给出逐 rank 端点 logits 的梯度解析形式。"
   },
   "CGB.Generation.ContactPlasticity.sigmoid_runtime_formula": {
-    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
-    "text": "Mathlib's sigmoid is exactly the runtime logistic expression."
+    "source_sha256": "3fb737cb3173fc08ae4e8c970a252c73c46b63de7295b8d65ed01a4f2096ea57",
+    "text": "标准 Sigmoid 函数的值域和代数形式严格等于数值运行时的 logistic 表达式 1 / (1 + exp(-x))。"
   },
   "CGB.Generation.ContactPlasticity.two_direction_flux_return": {
-    "source_sha256": "99b7791844598bc1f73c3ee07da289f5a403a83f2b0fade18c56aed172bdab1a",
-    "text": "Two transport directions add their local adjoints without retaining a transport trajectory or its past pullbacks."
+    "source_sha256": "3fb737cb3173fc08ae4e8c970a252c73c46b63de7295b8d65ed01a4f2096ea57",
+    "text": "两个传输方向上的局部通量伴随可直接线性相加，无需保存历史传输轨迹或执行过去的伴随反传。"
   },
   "CGB.Generation.DynamicTeaching.stopped_teaching_complete_iff": {
     "source_sha256": "0da60c6412e3a0feac14578277fccd8b84bc901e61c62acde85222552185ec5d",
-    "text": "A frozen-teaching local derivative equals the coupled derivative exactly when the omitted teaching-motion times current response is zero."
+    "text": "冻结教学信号的局部导数与全耦合复合导数严格相等，当且仅当被省略的教学信号变动量与当前接触响应的乘积精确为零。"
   },
   "CGB.Generation.DynamicTeaching.teaching_response_deriv": {
     "source_sha256": "0da60c6412e3a0feac14578277fccd8b84bc901e61c62acde85222552185ec5d",
-    "text": "When boundary teaching and local contact response both vary, the derivative is teaching-motion times response plus teaching times local response; the latter alone is only a stopped-coefficient proxy."
+    "text": "当边界教学信号与局部接触响应同时变动时，总导数等于教学变动乘响应加上教学值乘局部响应导数；仅保留后者仅构成固定系数的局部代理。"
   },
   "CGB.GDNLife.head_update_other_feature": {
-    "source_sha256": "c1fbe5bf7210821b9e836c3f1420be2d30e94b6e201fc86113c8198ee927d677",
-    "text": "A G14 head update remains a rank-one change when read on a later feature. The complete effect of this *one known update* is recoverable from its boundary receipt (`innovation`, saved feature) and the later feature through one inner product. This does not supply the derivative of the later feature with respect to an earlier contact parameter; that separate causal factor is the open long-credit obligation."
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
+    "text": "在 G14 先验更新下，对后续特征的读出变化保持一阶秩一修正形式；该单步更新对后继特征的完整效应可由边界回执与后继特征的单一内积直接恢复，无需提前存储全局历史雅可比矩阵。"
   },
   "CGB.Generation.receipt_rate_in_unit_interval": {
     "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
-    "text": "A nonnegative receipt produces a legal exchange rate, even when its raw magnitude is unbounded. This is the precise range premise needed to apply the shared-pool conservation and nonnegativity laws to the executable ``-expm1(-x)`` conversion."
+    "text": "非负回执标量通过 -expm1(-x) 映射后，输出严格落在 [0, 1] 合法转移速率区间内，满足共享池守恒与非负性公理的前置要求。"
+  },
+  "CGB.Generation.ContactPlasticity.tanh_offset_deriv": {
+    "text": "双曲正切函数在任意实数基值偏移下的局部一阶导数精确等于一减去该点双曲正切值的平方。",
+    "source_sha256": "3fb737cb3173fc08ae4e8c970a252c73c46b63de7295b8d65ed01a4f2096ea57"
+  },
+  "CGB.GDNLife.assimilate_last_fields": {
+    "text": "在 GDN 物理模型中，正观测精度的到达事件被吸收后，后继状态的最后到达字节与对应精度精确记录当前到达值。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.GDNLife.assimilate_order_blind": {
+    "text": "在无上下文的 GDN 吸收模型中，任意置换的到达序列在追加相同正精度到达后产生完全相同的吸收状态（词序盲目性）。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.GDNLife.foldl_assimilate_natural": {
+    "text": "在 GDN 吸收动力学中，多步到达序列累积后的自然参数矩阵精确等于初态加上各步输入强度与特征值乘积的总和。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.GDNLife.foldl_assimilate_precision": {
+    "text": "在 GDN 吸收动力学中，多步到达后各槽位的精度标量精确等于初始精度加上各步到达输入权重的总和。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.GDNLife.foldl_assimilate_velocity": {
+    "text": "在单纯到达吸收过程中，GDN 状态的速度、速度精度、先验头权重及偏置项保持不变。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.GDNLife.no_read_separates_order": {
+    "text": "在 GDN 词序盲目模型中，若两置换序列要求不同输出，则不存在任何仅依赖当前吸收状态的读出函数能将二者区分。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.GDNLife.order_blind_same_allocation": {
+    "text": "在无上下文 GDN 动力学中，置换序列吸收后导出的后继资源分配与预测概率完全相等。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.GDNLife.state_ext": {
+    "text": "GDN 状态的外延相等性：当自然参数、精度、速度、最后字节及参数头全部分量相同时，两状态严格相等。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.Generation.ContextAssociation.cell_mean_is_conditional_statistic": {
+    "text": "在上下文关联模型中，多步写入后各单元均值严格等于累积自然参数与累积精度的比值，构成条件充分统计量。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.Generation.ContextAssociation.common_prediction_excess": {
+    "text": "两不同目标值与其共同预测之间二次误差的超额下界，满足平方差的一半受二者分别偏差平方和控制的实数代数不等式。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.Generation.ContextAssociation.common_suffix_address_bound": {
+    "text": "在满足利普希茨常数 L 的上下文递推动力学中，共同后缀序列推进后的距离受初始状态距离乘以 L 的长度幂次上界约束。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.Generation.ContextAssociation.common_suffix_distance": {
+    "text": "在单步常数 L 的度量空间递推中，任意有限输入序列诱导的多步复合转移保持几何距离放缩上界。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.Generation.ContextAssociation.context_write_separates_order": {
+    "text": "在上下文关联模型中，当上下文寻址能够区分前序字符时，两字符按不同顺序写入后的自然参数矩阵产生严格差异，打破词序盲目性。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.Generation.ContextAssociation.contraction_has_no_two_latches": {
+    "text": "在严格压缩比小于一的度量空间更新中，任意输入下不可能同时存在两个不同的自锁存不动点。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.Generation.ContextAssociation.disjoint_context_read_unchanged": {
+    "text": "当写入时的上下文地址与读取上下文地址在所有槽位上正交无重叠时，关联读出值在写入后严格保持不变。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.Generation.ContextAssociation.foldl_write_natural": {
+    "text": "在上下文关联写入下，多步序列后的自然参数矩阵等于初始矩阵加上各步在对应上下文寻址调制下的自然参数增量之和。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.Generation.ContextAssociation.foldl_write_precision": {
+    "text": "在上下文关联写入下，多步序列后的精度向量等于初始精度加上各步在对应上下文寻址调制下的精度增量之和。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.Generation.ContextAssociation.hard_cell_innovation": {
+    "text": "当上下文地址对某槽位硬选通时，该槽位均值更新严格等于原均值加上由证据权重和原精度决定的卡尔曼型新息项。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.Generation.ContextAssociation.held_coordinate_survives_suffix": {
+    "text": "若投影坐标在给定后缀序列的转移下保持守恒不变，则该坐标上可区分的两个初态经过整段序列演化后依然保持可区分。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.Generation.ContextAssociation.same_address_same_read": {
+    "text": "在上下文关联模型中，具有完全相同寻址权重的两个上下文在相同状态下导出严格相等的读出向量。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.Generation.ContextAssociation.write_outside_support": {
+    "text": "当写入时的上下文地址在某槽位权重为零时，该槽位的均值在写入后严格保持原值不变。",
+    "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e"
+  },
+  "CGB.GDNLife.likelihood_posterior_mean_deriv": {
+    "text": "在分母非零条件下，GDN 似然 softplus 门控后验均值关于局部未归一化 logits 偏移的一阶导数精确等于解析后验斜率。",
+    "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2"
+  },
+  "CGB.CountedPopulation.bracket_after": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "**The credit horizon**: after `L` bytes the tag is the same fraction of the mass at every address, up to `(1 - ε / n) ^ L` of the original gap. Later bytes can only read a difference that is still there, so the transport that gives recovery also bounds how far back credit reaches."
+  },
+  "CGB.CountedPopulation.bracket_step": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "**One step of forgetting**: uniform transport pulls the bracket of a tag toward its mean, by `ε / n` of the gap at every byte."
+  },
+  "CGB.CountedPopulation.coarse_predicted": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Groups predict as addresses do."
+  },
+  "CGB.CountedPopulation.coarse_reinvest": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "**The same law at the next scale**: reinvestment of the group total is reinvestment of the group as one address."
+  },
+  "CGB.CountedPopulation.concentrated_absorbing": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "A population on one address never leaves it."
+  },
+  "CGB.CountedPopulation.exchange_moves_a_unit": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Counts of a fixed total change only by moving at least one whole unit."
+  },
+  "CGB.CountedPopulation.extinct_stays_extinct": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "An address at zero stays at zero. New addresses cannot come from reinvestment."
+  },
+  "CGB.CountedPopulation.fwd_nonneg": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Formal contract for fwd_nonneg; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CountedPopulation.fwd_total": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Formal contract for fwd_total; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CountedPopulation.groupGain_sum": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Formal contract for groupGain_sum; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CountedPopulation.lik_add": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Formal contract for lik_add; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CountedPopulation.lik_pos": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Formal contract for lik_pos; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CountedPopulation.lik_smul": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Formal contract for lik_smul; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CountedPopulation.local_ignores_outside": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "**A compartment reads only its own bets**: changing bets outside the group changes nothing inside it."
+  },
+  "CGB.CountedPopulation.local_keeps_group_total": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "**A compartment keeps its total**: the sum of a group after a local exchange is its sum before, whatever the bets are."
+  },
+  "CGB.CountedPopulation.mixWealth_ge_address": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Wealth with transport tracks any one address, paying `1 - ε` per byte."
+  },
+  "CGB.CountedPopulation.mix_floor": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Every address keeps a floor after one transport."
+  },
+  "CGB.CountedPopulation.mix_pos": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Formal contract for mix_pos; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CountedPopulation.mix_total": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Formal contract for mix_total; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CountedPopulation.moran_expected_change": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "One birth in proportion to reinvestment and one recycling in proportion to share: the mean change of the share of `i` is the reinvestment step."
+  },
+  "CGB.CountedPopulation.predicted_pos_of_total": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Formal contract for predicted_pos_of_total; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CountedPopulation.price_equation": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "**Price equation**: the mean of any carried trait changes by the covariance of the trait with the multiplier minus one."
+  },
+  "CGB.CountedPopulation.ratio_after_le": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "**Lock-in**: when each byte pays `i` at most `ρ` times what it pays `j`, the ratio of `i` to `j` falls by at least `ρ` per byte, however good `i` was before."
+  },
+  "CGB.CountedPopulation.recovers_from_floor": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "**Recovery after any history**: from any state with the floor, the wealth over a later stretch is at least the floor times what the address earns there, minus the transport toll. The cost does not depend on how long or how badly the address lost before."
+  },
+  "CGB.CountedPopulation.reinvest_ratio": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "The ratio of two shares moves by the ratio of the bets."
+  },
+  "CGB.CountedPopulation.step_add": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Formal contract for step_add; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CountedPopulation.step_smul": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Formal contract for step_smul; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CountedPopulation.tagReinvest_total_bracket": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "Formal contract for tagReinvest_total_bracket; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CountedPopulation.tag_fraction_eq_posterior": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "**Delayed credit without a backward pass**: the tagged fraction of the mass that survives a stream equals the likelihood of that stream through the tag over its likelihood overall, which is the posterior of the tag given every later byte. The mass itself is the history carrier."
+  },
+  "CGB.CountedPopulation.tag_is_exact_credit": {
+    "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+    "text": "**The tag is the exact credit**: the derivative of the log likelihood of every later byte with respect to mass added at an earlier event equals the tag's fraction of the surviving mass. This is the derivative of the future with respect to a past contact, for fixed bets. The price is one more field per tag: this is forward sensitivity, and it costs what forward sensitivity costs."
+  },
+  "CGB.DivisionTree.sharedPrefix_comm": {
+    "source_sha256": "cadca0419197905b95af35b85267e184da255f8f0bc87ed02c33641c7735477c",
+    "text": "Formal contract for sharedPrefix_comm; see its Lean signature for premises and conclusion."
+  },
+  "CGB.DivisionTree.sharedPrefix_ultrametric": {
+    "source_sha256": "cadca0419197905b95af35b85267e184da255f8f0bc87ed02c33641c7735477c",
+    "text": "**Nested groups**: sharing `m` divisions is transitive, so each level of the tree partitions the units. No group straddles another."
+  },
+  "CGB.Reinvestment.credit_eq_new_share": {
+    "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "text": "The same credit written with the new share: the update needs only the share after the arrival and the bet itself."
+  },
+  "CGB.Reinvestment.gains_eq_losses": {
+    "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "text": "Two distributions of the same total: the summed gains equal the summed losses."
+  },
+  "CGB.Reinvestment.gross_balanced": {
+    "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "text": "**Gross balanced exchange**: reinvestment imports into the winners exactly what it exports from the losers."
+  },
+  "CGB.Reinvestment.grows_iff": {
+    "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "text": "An address with a positive share grows exactly when its bet beats the prediction."
+  },
+  "CGB.Reinvestment.log_predicted_deriv": {
+    "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "text": "**Credit from the same event**: the derivative of the arrived byte's log prediction with respect to one bet is the share over the prediction."
+  },
+  "CGB.Reinvestment.mean_multiplier_one": {
+    "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "text": "**Adaptation of the total**: the share-weighted multiplier is one for every byte."
+  },
+  "CGB.Reinvestment.no_exchange_iff": {
+    "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "text": "**Exact prediction exchanges nothing**, and only then: the shares stay put exactly when every live address bet the prediction."
+  },
+  "CGB.Reinvestment.predicted_pos": {
+    "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "text": "Formal contract for predicted_pos; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Reinvestment.predicted_update": {
+    "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "text": "Changing one bet changes the prediction by the share times the change."
+  },
+  "CGB.Reinvestment.reinvest_pos": {
+    "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "text": "Formal contract for reinvest_pos; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Reinvestment.reinvest_scale": {
+    "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "text": "**Adaptation of the level**: multiplying every bet by the same positive number changes nothing. Only the bet relative to the prediction acts."
+  },
+  "CGB.Reinvestment.reinvest_total": {
+    "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "text": "Formal contract for reinvest_total; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Reinvestment.wealth_eq_mixture": {
+    "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "text": "**Kelly equals Bayes**: the product of the predictions equals the mixture of the addresses' own products of bets."
+  },
+  "CGB.Reinvestment.wealth_ge_address": {
+    "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "text": "The wealth is at least what one address would have made from its first share."
+  },
+  "CGB.VoxelChem.axioms": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "**M5**: every voxel chemistry that conserves weight in the interior and has reverses is admitted."
+  },
+  "CGB.VoxelChem.fires_of_fire_ne₁": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "Formal contract for fires_of_fire_ne₁; see its Lean signature for premises and conclusion."
+  },
+  "CGB.VoxelChem.fires_of_fire_ne₂": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "Formal contract for fires_of_fire_ne₂; see its Lean signature for premises and conclusion."
+  },
+  "CGB.VoxelChem.p1a_data": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "Formal contract for p1a_data; see its Lean signature for premises and conclusion."
+  },
+  "CGB.VoxelChem.weight_eq_zero": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "Formal contract for weight_eq_zero; see its Lean signature for premises and conclusion."
+  },
+  "CGB.VoxelRxn.swap_pair": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "Formal contract for swap_pair; see its Lean signature for premises and conclusion."
+  },
+  "CGB.VoxelRxn.swap_swap": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "Formal contract for swap_swap; see its Lean signature for premises and conclusion."
+  },
+  "CGB.VoxelRxn₂.fire_of_fires": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "Formal contract for fire_of_fires; see its Lean signature for premises and conclusion."
+  },
+  "CGB.VoxelRxn₂.fire_swap_fire": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "Formal contract for fire_swap_fire; see its Lean signature for premises and conclusion."
+  },
+  "CGB.VoxelState.fire_of_fires": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "Formal contract for fire_of_fires; see its Lean signature for premises and conclusion."
+  },
+  "CGB.VoxelState.fire_of_not": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "Formal contract for fire_of_not; see its Lean signature for premises and conclusion."
+  },
+  "CGB.VoxelState.fire_swap_fire": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "Running backwards restores the voxel."
+  },
+  "CGB.VoxelState.fires_swap": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "A reaction that ran can run backwards."
+  },
+  "CGB.VoxelState.row_conserves": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "A row conserves weight exactly when its two sides weigh the same."
+  },
+  "CGB.VoxelState.rxnWeight_pair": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "Formal contract for rxnWeight_pair; see its Lean signature for premises and conclusion."
+  },
+  "CGB.VoxelState.weight_fire": {
+    "source_sha256": "18ee08bd7bf65c16c00f42860fbb8de242c44e9fae1cd4875f980671e4cdacb0",
+    "text": "Formal contract for weight_fire; see its Lean signature for premises and conclusion."
+  },
+  "CGB.DivisionTree.Lineage.clog_leaves_le_depth": {
+    "source_sha256": "cadca0419197905b95af35b85267e184da255f8f0bc87ed02c33641c7735477c",
+    "text": "Reading `k` parts through two-part units takes at least `⌈log₂ k⌉` levels."
+  },
+  "CGB.DivisionTree.Lineage.exists_tree_of_clog_depth": {
+    "source_sha256": "cadca0419197905b95af35b85267e184da255f8f0bc87ed02c33641c7735477c",
+    "text": "The depth bound is reached for every number of parts."
+  },
+  "CGB.DivisionTree.Lineage.leaves_eq_splits_succ": {
+    "source_sha256": "cadca0419197905b95af35b85267e184da255f8f0bc87ed02c33641c7735477c",
+    "text": "Formal contract for leaves_eq_splits_succ; see its Lean signature for premises and conclusion."
+  },
+  "CGB.DivisionTree.Lineage.leaves_le_two_pow_depth": {
+    "source_sha256": "cadca0419197905b95af35b85267e184da255f8f0bc87ed02c33641c7735477c",
+    "text": "Formal contract for leaves_le_two_pow_depth; see its Lean signature for premises and conclusion."
+  },
+  "CGB.DivisionTree.Lineage.leaves_pos": {
+    "source_sha256": "cadca0419197905b95af35b85267e184da255f8f0bc87ed02c33641c7735477c",
+    "text": "Formal contract for leaves_pos; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.body_axioms": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "**O01.** The body with finite unit states satisfies every clause."
+  },
+  "CGB.Generation.ContextBody.body_p1a": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for body_p1a; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.body_p1b": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for body_p1b; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.body_p2a": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for body_p2a; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.body_p2b": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for body_p2b; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.body_p3": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for body_p3; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.body_rigid": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for body_rigid; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.calm_inactive": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for calm_inactive; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.card_site": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for card_site; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.cell_mem": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for cell_mem; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.context_mem": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for context_mem; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.context_part": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for context_part; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.events_touch_bounded": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "**O22.** An event touches at most `B + 3` units, whatever the cell count, and with more cells than the address reaches, some unit is left untouched."
+  },
+  "CGB.Generation.ContextBody.modulation_at_boundary": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "**O25.** Plasticity that depends on the stimulus sits at the boundary (G9, `modulation_needs_boundary`). The premises are `body_p1b` and the sensing half of `body_p3`, so this follows from the Medium instance; it is stated so that the gate can name it. For this body it is close to vacuous: every event already has the sense unit as a part."
+  },
+  "CGB.Generation.ContextBody.order_separated": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "**O07.** The actual write holds order. If `a` then `b` reaches a cell that `b` then `a` never reaches, and that tally moves the count, the two states differ. This is `context_write_separates_order` for this body."
+  },
+  "CGB.Generation.ContextBody.parts_subset": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for parts_subset; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.pool_mem": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for pool_mem; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.sense_mem": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for sense_mem; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.sense_part": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for sense_part; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.step_active": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for step_active; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.suffixOne_holds_order": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "The premises of `order_separated` are met from birth by a real instance."
+  },
+  "CGB.Generation.ContextBody.suffixOne_is_local": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "The premises of `events_touch_bounded` are met by a real instance."
+  },
+  "CGB.Generation.ContextBody.write_congr": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for write_congr; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ContextBody.write_outside": {
+    "source_sha256": "c6ac71731f229ed4bc1d26fedf85bcfbc3bafef49e6b1032dbdb64bb71dadea0",
+    "text": "Formal contract for write_outside; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.HoldCorrect.contraction_merges": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "**Correction merges contents**: a map contracting all pairs by `L` brings any two contents within `L^n` of their initial gap."
+  },
+  "CGB.Generation.HoldCorrect.contraction_noise_bound": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "**Contraction corrects**: if `f` pulls every state toward `r` by the factor `L < 1`, disturbances bounded by `e` leave an error of at most `L^n |x₀ - r| + e / (1 - L)` at every time, a bound that does not grow with `n`."
+  },
+  "CGB.Generation.HoldCorrect.factor_le_of_le": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "Formal contract for factor_le_of_le; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.HoldCorrect.factor_lt_one": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "Formal contract for factor_lt_one; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.HoldCorrect.factor_nonneg": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "Formal contract for factor_nonneg; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.HoldCorrect.fb_nonneg_eq": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "Formal contract for fb_nonneg_eq; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.HoldCorrect.fb_odd": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "Two copies of the latch: the renewal is odd, so `-r*` mirrors `r*`."
+  },
+  "CGB.Generation.HoldCorrect.fb_sub_fixed": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "**The identity**: for `x ≥ 0`, `fb x - r* = (x - r*) · (a + (1-a)/(1+g x))`."
+  },
+  "CGB.Generation.HoldCorrect.hold_accumulates": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "**Holding keeps every disturbance**: under the pure hold the state is the start plus the sum of all disturbances."
+  },
+  "CGB.Generation.HoldCorrect.hold_error_unbounded": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "**A held content drifts without bound** under any constant disturbance `e > 0`: for every bound `B` some time exceeds it."
+  },
+  "CGB.Generation.HoldCorrect.latch_converges": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "**κ > 1, convergence inside the basin**: from any `x₀ ≥ ρ`, `0 < ρ ≤ r*`, the undisturbed latch stays above `min x₀ r* ≥ ρ` and approaches `r*` at rate `factor ρ < 1`."
+  },
+  "CGB.Generation.HoldCorrect.latch_corrects": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "**κ > 1, attractor correction under disturbance**: if the state starts within `B` of `r*`, the basin margin covers it (`B ≤ r* - ρ`, `ρ > 0`), and every disturbance is at most `(1 - factor ρ) · B`, the state stays within `B` of `r*` forever. Disturbances larger than this can carry it out of the basin."
+  },
+  "CGB.Generation.HoldCorrect.latch_tolerance": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "**The latch's noise tolerance** (κ > 1). Write `u = √((1-a)/g)` and `v = √c` (given as positive numbers with these squares, so no square root is needed): `√κ = v/u > 1`. With the margin `ρ = (v/u - 1)/g` the condition of `latch_corrects` holds (`0 < ρ ≤ r*`) and the tolerated disturbance per event, `(1 - factor ρ) · (r* - ρ)`, equals `(v - u)²`."
+  },
+  "CGB.Generation.HoldCorrect.long_timescale_band": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "**Scale-free timescales near criticality**: a head's relaxation time exceeds `T` exactly when its `κ` lies within `1 / ((1-a) T)` of 1. The band shrinks as `1/T`, so a population whose `κ` is spread over a neighbourhood of 1 contains every timescale, the share above `T` falling as `1/T`: one mechanism family, many timescales, without assigning them."
+  },
+  "CGB.Generation.HoldCorrect.rates_vanish_at_transition": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "**Critical slowing at κ = 1**: the forgetting rate below the transition and the correction rate at `r*` above it are `(1-a)(1-κ)` and `(1-a)(1-1/κ)` with `κ = c g / (1 - a)`; both vanish as κ → 1."
+  },
+  "CGB.Generation.HoldCorrect.subcritical_forgets": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "**κ ≤ 1, forgetting**: every positive content shrinks by at least the factor `a + c g` per event (and stays positive): only 0 is left in the long run."
+  },
+  "CGB.Generation.HoldCorrect.supercritical_fixed": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "**κ > 1, the latch exists**: `r* > 0` and it is fixed."
+  },
+  "CGB.Generation.HoldCorrect.supercritical_origin_repels": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "**κ > 1, the origin repels**: small positive content grows toward `r*`."
+  },
+  "CGB.Generation.HoldCorrect.tolerance_falls_with_decay": {
+    "source_sha256": "1daaddc3d69b23808da8b36a7ab3565691fa54f2549eb156877403591cd75e2f",
+    "text": "**Decay weakens the latch**: the tolerance `(v - u)²` with `u = √((1-a)/g)` falls as decay grows: a larger `u` (stronger decay, smaller retention `a`) with the latch still present (`u ≤ v`) tolerates no more disturbance."
+  },
+  "CGB.Generation.Nonlinearity.additive_error_floor": {
+    "source_sha256": "04bf04eb8f53a7d56cc83cfe163e285a8fe2899de0ad1ce9c4aedf4cbfbb8a8a",
+    "text": "The squared error of any additive predictor over the four cases is at least a quarter of the squared contrast. The bound does not mention the predictor's size."
+  },
+  "CGB.Generation.Nonlinearity.additive_logit_cannot_separate": {
+    "source_sha256": "04bf04eb8f53a7d56cc83cfe163e285a8fe2899de0ad1ce9c4aedf4cbfbb8a8a",
+    "text": "A final squashing does not help: additive log-odds cannot take the XOR sign pattern."
+  },
+  "CGB.Generation.Nonlinearity.additive_no_interaction": {
+    "source_sha256": "04bf04eb8f53a7d56cc83cfe163e285a8fe2899de0ad1ce9c4aedf4cbfbb8a8a",
+    "text": "A map that treats its sources separately has no interaction."
+  },
+  "CGB.Generation.Nonlinearity.association_read_additive_in_contents": {
+    "source_sha256": "04bf04eb8f53a7d56cc83cfe163e285a8fe2899de0ad1ce9c4aedf4cbfbb8a8a",
+    "text": "At a fixed query, a GDN-style read is additive in what is stored: retrieval weighs the contents and cannot combine them."
+  },
+  "CGB.Generation.Nonlinearity.interaction_needs_nonadditive": {
+    "source_sha256": "04bf04eb8f53a7d56cc83cfe163e285a8fe2899de0ad1ce9c4aedf4cbfbb8a8a",
+    "text": "A target with an interaction is not additive."
+  },
+  "CGB.Generation.Nonlinearity.key_query_read_interacts": {
+    "source_sha256": "04bf04eb8f53a7d56cc83cfe163e285a8fe2899de0ad1ce9c4aedf4cbfbb8a8a",
+    "text": "A key from one arrival read with a query from the other interacts, so a learned address already supplies the nonlinearity."
+  },
+  "CGB.Generation.Nonlinearity.linear_read_of_superposed_state": {
+    "source_sha256": "04bf04eb8f53a7d56cc83cfe163e285a8fe2899de0ad1ce9c4aedf4cbfbb8a8a",
+    "text": "A linear read of a superposed state is additive at any width."
+  },
+  "CGB.Generation.Nonlinearity.linear_recurrence_no_interaction": {
+    "source_sha256": "04bf04eb8f53a7d56cc83cfe163e285a8fe2899de0ad1ce9c4aedf4cbfbb8a8a",
+    "text": "A linear recurrent memory with a linear read is additive in two past arrivals. The embeddings `W₁, W₂` are arbitrary tables, so a learned embedding does not help."
+  },
+  "CGB.Generation.Nonlinearity.linear_stack_no_interaction": {
+    "source_sha256": "04bf04eb8f53a7d56cc83cfe163e285a8fe2899de0ad1ce9c4aedf4cbfbb8a8a",
+    "text": "Depth does not help: a linear read of a linear stack has no interaction."
+  },
+  "CGB.Generation.Nonlinearity.linear_stack_superposes": {
+    "source_sha256": "04bf04eb8f53a7d56cc83cfe163e285a8fe2899de0ad1ce9c4aedf4cbfbb8a8a",
+    "text": "Any stack of linear layers with biases keeps the two sources superposed."
+  },
+  "CGB.Generation.Nonlinearity.one_rectifier_reads_interaction": {
+    "source_sha256": "04bf04eb8f53a7d56cc83cfe163e285a8fe2899de0ad1ce9c4aedf4cbfbb8a8a",
+    "text": "XOR has an interaction, and one rectifier is enough to read it."
+  },
+  "CGB.Generation.Nonlinearity.Additive.sub": {
+    "source_sha256": "04bf04eb8f53a7d56cc83cfe163e285a8fe2899de0ad1ce9c4aedf4cbfbb8a8a",
+    "text": "The difference of two additive maps is additive, so log-odds of additive logits are."
+  },
+  "BudgetedAssociationWriteReview.slice_bound": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Formal contract for slice_bound; see its Lean signature for premises and conclusion."
+  },
+  "BudgetedAssociationWriteReview.budgets": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Formal contract for budgets; see its Lean signature for premises and conclusion."
+  },
+  "BudgetedAssociationWriteReview.feasible_fixed": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Formal contract for feasible_fixed; see its Lean signature for premises and conclusion."
+  },
+  "BudgetedAssociationWriteReview.implicit_slack": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Slack is determined by actual content; it is not a second food account. Both endpoint budgets count the same contacts, so they must not be added as two independent stores of physical mass."
+  },
+  "BudgetedAssociationWriteReview.read_correction": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Actual post-admission read equals the proposed read plus its correction. Consequently the old delta-only cross-query formula must include this term."
+  },
+  "BudgetedAssociationWriteReview.joint_exchange_budget": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Formal contract for joint_exchange_budget; see its Lean signature for premises and conclusion."
+  },
+  "BudgetedAssociationWriteReview.actual_weighted_read": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Formal contract for actual_weighted_read; see its Lean signature for premises and conclusion."
+  },
+  "BudgetedAssociationWriteReview.joint_fixed_lift": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "A fixed allocation with matching content is a fixed *joint* memory. Existence/stability of a particular nonlinear posterior must be checked too."
+  },
+  "BudgetedAssociationWriteReview.exchanged_gains_equal_losses": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Formal contract for exchanged_gains_equal_losses; see its Lean signature for premises and conclusion."
+  },
+  "BudgetedAssociationWriteReview.fixed_allocation_content_contrast": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Even with exactly fixed allocation, differences between conditional row contents decay at the same global rate. Positive shares allow decoding M/a."
+  },
+  "BudgetedAssociationWriteReview.selective_contact_budget": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "The same posterior distributes a finite total write rate. Each conditional content stays in its old L1 ball. This constrains write capacity, not information bits, and is a construction choice rather than a universally forced equation."
+  },
+  "BudgetedAssociationWriteReview.contact_write_retention": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Inactive contacts hold, matching content does not move, and histories under equal rates and equal incoming values retain their difference locally."
+  },
+  "BudgetedAssociationWriteReview.selective_actual_read": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Keeping conditional content does not itself keep the actual weighted read: changing shares contributes an additional term, even when content holds."
+  },
+  "BudgetedAssociationWriteReview.decoded_content_budget": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Store conditional content directly, decode the actual weighted content at read time. This avoids division by tiny shares without changing the weighted content budget. Conditional content at zero share is retained, so converting an old weighted checkpoint there is not losslessly invertible."
+  },
+  "BudgetedAssociationWriteReview.simplex_has_available_contact": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Formal contract for simplex_has_available_contact; see its Lean signature for premises and conclusion."
+  },
+  "BudgetedAssociationWriteReview.available_weight_anti": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "At fixed incoming evidence, an occupied contact has less admission room. The existing shared-pool result supplies this inequality. State-dependent evidence can oppose it; local anti-dominance is not global convergence."
+  },
+  "BudgetedAssociationWriteReview.available_posterior_contract": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Formal contract for available_posterior_contract; see its Lean signature for premises and conclusion."
+  },
+  "BudgetedAssociationWriteReview.available_joint_contract": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Joint admission for the implemented availability-controlled update: allocation conservation, local write budget, bounded conditional/actual content, and release of a fully occupied contact all refer to one posterior. This is not a healthy-language-latch or microscopic-Medium certificate."
+  },
+  "BudgetedAssociationWriteReview.memory_read_query_direction": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Same stored content used for prediction is the coefficient of current query learning. A changing query parameter must still apply its own chain rule."
+  },
+  "BudgetedAssociationWriteReview.equal_read_different_current_teaching": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "A current readout alone can lose a distinction which the same full memory still supplies to current query learning. This is an algebraic countermodel, not a language-capability study or a claim about all past credit."
+  },
+  "BudgetedAssociationWriteReview.decayed_write_joint_retention_retrieval": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "One actual decay-then-delta update simultaneously rewrites its selected key and accounts for retention at a possibly MOVING query. Apply columnwise to the runtime key-by-value matrix. The last bound separates global decay, overlapping write, and retrieval drift; it assumes no semantic memory labels. This is passive selective storage, not regenerative ignition or a learned guarantee that future queries remain suitable."
+  },
+  "BudgetedAssociationWriteReview.feedback_write_read": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "Read-back is a value choice INSIDE the same delta write. With a unit key, the selected coordinate follows the nonlinear renewal map exactly. This says nothing about unselected content capacity, learned key alignment, or P2a."
+  },
+  "BudgetedAssociationWriteReview.feedback_renewal_joint_contract": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "One common nonlinear update has bounded state, two restoring basins, finite-cue release in both directions, and an observable response while held. The nonzero rests survive alpha=1/2 passive decay. Input of either sign, magnitude 8 is an explicit cue reachability condition, not proof that language supplies such evidence. No claim of language usefulness or full-medium admission follows."
+  },
+  "BudgetedAssociationWriteReview.endogenous_target_error_derivative": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "An endogenous squared-error target has a chain-rule term. Freezing that target is a different update; neither choice is silently identified with TTT."
+  },
+  "BudgetedAssociationWriteReview.feedback_potential_step": {
+    "source_sha256": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+    "text": "The response integral generates exactly the selected-coordinate regenerative update. Its derivative follows from continuity and FTC, without a new premise. Fixed coefficients/cue; no temporal gradient or language-benefit claim."
+  },
+  "RetrievedCountCreditReview.normalized_read_deriv": {
+    "source_sha256": "d51d558271798009f8cd81a5242463d7f8faa2c4925398624f29393caf6bc164",
+    "text": "Changing one participant's mixture weight changes the normalized read by its value relative to the other participants; the denominator must be nonzero."
+  },
+  "RetrievedCountCreditReview.count_trust_deriv": {
+    "source_sha256": "d51d558271798009f8cd81a5242463d7f8faa2c4925398624f29393caf6bc164",
+    "text": "The existing count-to-trust map has this local derivative. It is not a derivative of the old sequence of writes that produced the count."
+  },
+  "RetrievedCountCreditReview.partial_exchange_total": {
+    "source_sha256": "d51d558271798009f8cd81a5242463d7f8faa2c4925398624f29393caf6bc164",
+    "text": "Any common fractional move toward normalized reinvestment preserves the eligible pool's total. Shortening the common move at a numerical ceiling also preserves this identity; ordinary boundary writes are outside this statement. `GenerationReinvestment.reinvest` and `predicted` are unfolded in the statement to avoid importing unrelated logarithmic-wealth proofs into this runtime check."
+  },
+  "CGB.Generation.ActiveNavigation.branch_residual_common_invariant": {
+    "source_sha256": "562bf1892c02ede9662755167115a65e66ca738752a6de176fa579f30aa79f3e",
+    "text": "**A common component cancels in every residual** (for at least one branch)."
+  },
+  "CGB.Generation.ActiveNavigation.fb_pos": {
+    "source_sha256": "562bf1892c02ede9662755167115a65e66ca738752a6de176fa579f30aa79f3e",
+    "text": "Formal contract for fb_pos; see its Lean signature for premises and conclusion."
+  },
+  "CGB.Generation.ActiveNavigation.latch_keeps_sign_neg": {
+    "source_sha256": "562bf1892c02ede9662755167115a65e66ca738752a6de176fa579f30aa79f3e",
+    "text": "Negative content stays negative (oddness of the renewal)."
+  },
+  "CGB.Generation.ActiveNavigation.latch_keeps_sign_pos": {
+    "source_sha256": "562bf1892c02ede9662755167115a65e66ca738752a6de176fa579f30aa79f3e",
+    "text": "**Positive content stays positive** under the renewal, at every step."
+  },
+  "CGB.Generation.ActiveNavigation.latch_reads_forget_magnitude": {
+    "source_sha256": "562bf1892c02ede9662755167115a65e66ca738752a6de176fa579f30aa79f3e",
+    "text": "**The read forgets the magnitude of the write**: two writes of the same sign inside the basin (`ρ ≤ x₀, x₀'`) are read within `L ^ n (|x₀ - r*| + |x₀' - r*|)` of each other, with `L = factor a g ρ < 1` (`latch_converges`)."
+  },
+  "CGB.Generation.ActiveNavigation.mixture_without_entry": {
+    "source_sha256": "562bf1892c02ede9662755167115a65e66ca738752a6de176fa579f30aa79f3e",
+    "text": "**Removing one entry from a linear mixture** `p = w q + (1 - w) p₋`: the mixture without it is `(p - w q) / (1 - w)`, so the counterfactual of one entry needs no second forward pass."
+  },
+  "CGB.Generation.ActiveNavigation.progress_steps_bounded": {
+    "source_sha256": "562bf1892c02ede9662755167115a65e66ca738752a6de176fa579f30aa79f3e",
+    "text": "**Progress from one source is used up.** If the excess losses `e t ≥ 0` of a learner on a source have bounded running sums (what `mixture_regret_le` gives a Bayes mixture on a fixed source: at most `log (1 / w θ₀)`), then at most `B / ε` steps can carry progress `≥ ε`, however long the learner stays. Staying passive on one source leaves eventually nothing to learn."
+  },
+  "CGB.Generation.ActiveNavigation.radial_renewal_direction": {
+    "source_sha256": "562bf1892c02ede9662755167115a65e66ca738752a6de176fa579f30aa79f3e",
+    "text": "The direction is unchanged: the renewed read is a positive multiple of the old one."
+  },
+  "CGB.Generation.ActiveNavigation.radial_renewal_norm": {
+    "source_sha256": "562bf1892c02ede9662755167115a65e66ca738752a6de176fa579f30aa79f3e",
+    "text": "The length of the renewed read is the scalar latch map of the old length."
+  },
+  "CGB.Generation.ActiveNavigation.reactivation_exact_held": {
+    "source_sha256": "562bf1892c02ede9662755167115a65e66ca738752a6de176fa579f30aa79f3e",
+    "text": "**Reactivation is exact for a held write**: re-encoding the stored input at read time gives the derivative of the later loss through the hold `a ^ n`."
+  },
+  "CGB.Generation.ActiveNavigation.reactivation_partial_bias": {
+    "source_sha256": "562bf1892c02ede9662755167115a65e66ca738752a6de176fa579f30aa79f3e",
+    "text": "**The only bias is the writes not retained**: the true derivative minus the retained part is the sum over the dropped writes."
+  },
+  "CGB.Generation.ActiveNavigation.reactivation_superposition": {
+    "source_sha256": "562bf1892c02ede9662755167115a65e66ca738752a6de176fa579f30aa79f3e",
+    "text": "**Superposition**: a linear read `∑ j, k j * E j θ` of several writes has the sum of the per-write re-encoded terms as its derivative."
+  },
+  "CGB.Generation.LatchSlot.coupled_closed_gate_decays": {
+    "source_sha256": "4d7c146b46c2965cfcd877fabe54f6859be8ae3a659bd60e1a19e58167fc9702",
+    "text": "Closed gate in the coupled rule: no renewal is left, only the decay `α`."
+  },
+  "CGB.Generation.LatchSlot.coupled_disturbance_floor": {
+    "source_sha256": "4d7c146b46c2965cfcd877fabe54f6859be8ae3a659bd60e1a19e58167fc9702",
+    "text": "**The disturbance floor**: a latching coupled head admits from a value of size `V` at least `(1-α)(1-η)V/(η g - α)` per event (`D = β (1 - η) V`)."
+  },
+  "CGB.Generation.LatchSlot.coupled_latch_gate_floor": {
+    "source_sha256": "4d7c146b46c2965cfcd877fabe54f6859be8ae3a659bd60e1a19e58167fc9702",
+    "text": "**The gate floor of a coupled latch**: while it latches (κ > 1), `1 - α < β (η g - α)`."
+  },
+  "CGB.Generation.LatchSlot.coupled_small_gate_forgets": {
+    "source_sha256": "4d7c146b46c2965cfcd877fabe54f6859be8ae3a659bd60e1a19e58167fc9702",
+    "text": "With a small gate the content is forgotten every event (`subcritical_forgets`)."
+  },
+  "CGB.Generation.LatchSlot.coupled_small_gate_subcritical": {
+    "source_sha256": "4d7c146b46c2965cfcd877fabe54f6859be8ae3a659bd60e1a19e58167fc9702",
+    "text": "**A small gate is subcritical** in the coupled rule: with `0 ≤ α`, `0 ≤ β` and `β η g ≤ 1 - α`, the renewal satisfies `c g ≤ 1 - a` (κ ≤ 1)."
+  },
+  "CGB.Generation.LatchSlot.slot_composite": {
+    "source_sha256": "4d7c146b46c2965cfcd877fabe54f6859be8ae3a659bd60e1a19e58167fc9702",
+    "text": "Decay by `α` followed by the slot renewal is the same family with rescaled parameters."
+  },
+  "CGB.Generation.LatchSlot.slot_supercritical_iff": {
+    "source_sha256": "4d7c146b46c2965cfcd877fabe54f6859be8ae3a659bd60e1a19e58167fc9702",
+    "text": "**When the slot latches**: with `a = 1 - ρ`, `c = ρ η` after decay `α`, the composite map is supercritical (`1 - a α < c g α`) iff `α (1 + ρ (η g - 1)) > 1`. The write gate does not enter."
+  },
+  "CGB.Generation.LatchSlot.slot_supercritical_no_decay": {
+    "source_sha256": "4d7c146b46c2965cfcd877fabe54f6859be8ae3a659bd60e1a19e58167fc9702",
+    "text": "Without decay the slot latches iff `η g > 1`, for any renewal rate `ρ > 0`."
   }
 }

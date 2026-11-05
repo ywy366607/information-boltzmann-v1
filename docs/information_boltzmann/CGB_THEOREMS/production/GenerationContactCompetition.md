@@ -10,7 +10,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L31)
 
-解释：A nonnegative receipt produces a legal exchange rate, even when its raw magnitude is unbounded. This is the precise range premise needed to apply the shared-pool conservation and nonnegativity laws to the executable ``-expm1(-x)`` conversion.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：非负回执标量通过 -expm1(-x) 映射后，输出严格落在 [0, 1] 合法转移速率区间内，满足共享池守恒与非负性公理的前置要求。
 
 源码说明：A nonnegative receipt produces a legal exchange rate, even when its raw magnitude is unbounded. This is the precise range premise needed to apply the shared-pool conservation and nonnegativity laws to the executable ``-expm1(-x)`` conversion.
 
@@ -24,7 +28,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L49)
 
-解释：The whole contact bundle follows one two-state exchange. Coordinate shares may differ, but their sum can draw only from the same implicit pool.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：整个接触束遵循二态质量交换律；各槽位份额虽有差异，但其总和严格受限于同一隐式自由池的守恒约束。
 
 源码说明：The whole contact bundle follows one two-state exchange. Coordinate shares may differ, but their sum can draw only from the same implicit pool.
 
@@ -41,7 +49,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L77)
 
-解释：Once a local bundle is full, no positive admission can add to any of its contacts. Only its release channel can change it.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：当局部接触束的占用总和达到容量上限 1 时，任何正流入均无法再准入到任何接触槽位中，状态仅能通过释放通道发生改变。
 
 源码说明：Once a local bundle is full, no positive admission can add to any of its contacts. Only its release channel can change it.
 
@@ -59,7 +71,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L89)
 
-解释：For a positive local admission gate, an already more occupied bundle has strictly less remaining marginal capacity. This is the local anti-dominance law required to prevent unlimited winner growth; it does not prescribe a global balancing scalar.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：在正局部准入门控下，占用量更大的接触束具有严格更小的边际准入容量，构成防止赢家无限通吃的局部反垄断律。
 
 源码说明：For a positive local admission gate, an already more occupied bundle has strictly less remaining marginal capacity. This is the local anti-dominance law required to prevent unlimited winner growth; it does not prescribe a global balancing scalar.
 
@@ -74,7 +90,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L100)
 
-解释：When a local evidence gate is closed, the complete bundle holds exactly. This lets delayed evidence regulate the existing S carrier without advancing a separate trace or a global learning-rate state.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：当局部证据门关闭时，接触束各槽位状态完全保持，使得延迟证据可在不推进独立资格页或全局学习率的前提下调控现有 S 载体。
 
 源码说明：When a local evidence gate is closed, the complete bundle holds exactly. This lets delayed evidence regulate the existing S carrier without advancing a separate trace or a global learning-rate state.
 
@@ -89,7 +109,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L114)
 
-解释：Constant vector release recovers the original interface exactly.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：当逐坐标释放率取常数值时，向量化共享接触池退化并精确复现标量释放接口的动力学行为。
 
 源码说明：Constant vector release recovers the original interface exactly.
 
@@ -105,7 +129,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L122)
 
-解释：输入shared_contact_pool_vector_total形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：在目标向量归一化时，共享池各槽位后继占用总量精确等于旧占用总量加上门控有效流入并减去门控释放损耗。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -122,7 +150,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L152)
 
-解释：输入shared_contact_pool_vector_conserves_total形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：在目标向量归一化条件下，共享池各槽位占用步进量与剩余空闲容量之和恒等于单位总量 1（总容量守恒）。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -140,7 +172,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L161)
 
-解释：输入shared_contact_pool_vector_nonneg形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：在初态非负且总和不超 1、目标非负、释放率处于 [0, 1]、流入非负及门控处于 [0, 1] 时，更新后的各槽位占用量严格非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -161,7 +197,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L179)
 
-解释：输入shared_contact_pool_free_nonneg形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：在占用非负且总和不超 1、释放率非负、流入与门控处于 [0, 1] 的条件下，共享接触池更新后的剩余空闲容量严格非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -180,7 +220,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L191)
 
-解释：输入shared_contact_pool_vector_total_le_one形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：在占用非负且总和不超 1、目标归一、释放非负及参数规范在单位区间时，更新后的各槽位占用总量严格不超过 1。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -201,7 +245,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L203)
 
-解释：输入full_shared_pool_vector_blocks_admission形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：当共享池各槽位占用量之和达到单位容量 1 时，准入增量为零，各槽位后继状态仅由自身释放衰减 (1 - gate * release i) 决定。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -219,7 +267,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L212)
 
-解释：输入shared_pool_vector_closed_gate_holds形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：当门控系数为零时，共享接触池各槽位的向量更新步进严格保持原有占用分布不变。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -234,7 +286,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L220)
 
-解释：Endpoints applying the same inputs to the same shared state cannot write inconsistent copies of that edge's reservoir.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：当两端点对同一共享状态应用相同输入时，绝不会在同一条边的接触池上写入不一致的状态副本。
 
 源码说明：Endpoints applying the same inputs to the same shared state cannot write inconsistent copies of that edge's reservoir.
 
@@ -251,7 +307,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L229)
 
-解释：输入shared_edge_response_gate_symmetric形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：共享边缘响应门控函数对左右两端响应具有严格对称性：输入互换后门控值不变。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -265,7 +325,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L233)
 
-解释：输入shared_edge_response_gate_bounds形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：当左右端点响应均处于单位区间 [0, 1] 时，共享边缘响应门控值严格保持在 [0, 1] 区间内。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -282,7 +346,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L238)
 
-解释：输入shared_edge_response_gate_closed形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：当两端点响应均为零时，共享边缘响应门控值精确等于零（双零完全关闭）。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -296,7 +364,11 @@ CGB.Generation.sharedEdgeResponseGate 0 0 = 0
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean#L241)
 
-解释：输入shared_edge_response_gate_one形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：当一端响应达到饱和值 1 且另一端不超过 1 时，共享边缘响应门控值严格等于 1。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 

@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L33)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
+
 解释：当某次观测的总概率为正时，给定联合输出—后继状态核唯一确定归一化的条件后继分布。
 
 源码说明：A positive-mass observation uniquely fixes the normalized next-state law. This conditions a given joint kernel; it does not identify its physical law.
@@ -30,6 +34,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L54)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
+
 解释：对任意因果输入策略和有限输出序列，交互机器定义的轨迹权重非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -45,6 +53,10 @@
 ## CGB.Interaction.trace_prefix_consistent
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L64)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
 
 解释：对有限输出前缀的所有单符号扩展求和，恰好恢复该前缀的轨迹概率。
 
@@ -62,6 +74,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L98)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
+
 解释：若耦合只支持关系 R，且两个后继状态函数在 R 上相等，则同一输出的一步加权期望相等。
 
 源码说明：One-step transfer of any observable continuation value. Nonnegativity is used to eliminate zero-mass pairs, not to assume the observable is positive.
@@ -78,6 +94,10 @@
 ## CGB.Interaction.Bisimulation.trace_eq
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L115)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
 
 解释：互模拟关系关联的两个状态，在任意共同因果策略和有限输出轨迹下具有相同轨迹概率。
 
@@ -97,6 +117,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L126)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
+
 解释：互模拟关系关联的状态满足所定义的所有有限输出柱事件行为相等。
 
 源码说明：Coinductive soundness for observed infinite behaviour, represented by ALL finite cylinders. A finite sample of cylinders does not establish this premise.
@@ -112,6 +136,10 @@
 ## CGB.Interaction.coinduction
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L130)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
 
 解释：若存在包含两状态的互模拟关系，则这两个状态按定义互模拟。
 
@@ -129,6 +157,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L133)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
+
 解释：所有互模拟状态对组成的关系本身也是互模拟关系。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -145,6 +177,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L138)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
+
 解释：两个状态互模拟时，在任意因果策略下的所有有限输出行为相同。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -160,6 +196,10 @@
 ## CGB.Interaction.distinguishing_trace
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L141)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
 
 解释：若某策略和有限轨迹给两个状态不同概率，则任何已给定互模拟关系都不能关联这两个状态。
 
@@ -179,6 +219,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L152)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
+
 解释：若表示映射精确保留输出与后继状态的联合转移分布，则映射关系构成互模拟。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -194,6 +238,10 @@
 ## CGB.Interaction.Refines.sameBehavior
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L167)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
 
 解释：若一个机器通过给定映射精确细化另一个机器，则源状态与其映射像有相同输出行为。
 
@@ -211,6 +259,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L170)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
+
 解释：交互机器通过恒等状态映射精确细化自身。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -225,6 +277,10 @@
 ## CGB.Interaction.Refines.comp
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L175)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
 
 解释：两个精确细化证书可以沿状态映射复合，得到从原机器到最终机器的细化证书。
 
@@ -243,6 +299,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L196)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
+
 解释：带时间的细化证书要求两时钟相等，因此相同步数所对应的物理时间相等。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -258,6 +318,10 @@
 ## CGB.Interaction.Bisimulation.firstHit_eq
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L214)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
 
 解释：互模拟状态在相同策略、标记条件和有限期限下具有相同首次命中概率。
 
@@ -277,6 +341,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L230)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
+
 解释：精确细化映射保留任意共同策略、标记及期限的首次命中概率。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -295,6 +363,10 @@
 ## CGB.Interaction.Refines.recovery_test_iff
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L237)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
 
 解释：精确细化同时保持状态内容时，源状态与目标状态的正内容及首次命中阈值测试等价。
 
@@ -317,6 +389,10 @@
 ## CGB.Interaction.firstHit_bounds
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Interaction.lean#L246)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
 
 解释：交互机器按任意策略在有限期限内首次命中标记输出的概率处于零与一之间。
 

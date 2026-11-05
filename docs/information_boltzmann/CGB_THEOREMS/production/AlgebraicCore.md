@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AlgebraicCore.lean#L23)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：AlgebraicCore 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：保质量马尔可夫核前推测度的全空间总测度与原测度总测度严格相等。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -26,6 +30,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AlgebraicCore.lean#L37)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：AlgebraicCore 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：长度为零的马尔可夫路径在任意核作用下的路径转移权重恒等于幺元一。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -41,6 +49,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AlgebraicCore.lean#L47)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：AlgebraicCore 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：一阶射丛乘法算子严格满足微积分导数乘积法则。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -54,6 +66,10 @@
 ## CGB.AlgebraicCore.jetHorner_value
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AlgebraicCore.lean#L59)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：AlgebraicCore 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：一阶射丛上的霍纳多项式求值在第一分量上与经典标量霍纳多项式完全一致。
 
@@ -70,6 +86,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AlgebraicCore.lean#L67)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：AlgebraicCore 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：感官维护局部状态转移成本加上流出量，在任意半环同态下严格等于初始成本加流入量。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -85,6 +105,10 @@
 ## CGB.AlgebraicCore.cast_path_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AlgebraicCore.lean#L75)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：AlgebraicCore 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：感官维护全路径累计预算在任意半环上守恒，终端成本与累计流出之和等于初态成本加累计流入。
 

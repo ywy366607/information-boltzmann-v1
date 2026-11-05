@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L45)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：原子条件分解等价性及刚性标签语义定理。
+
 解释：介质满足原子化条件，当且仅当满足定义中列出的全部十三个原子子条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -25,6 +29,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L62)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
+
 解释：构造见证满足其他原子子条件但违反内容子水平集有限性，证明该条件在当前介质语言中独立。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -38,6 +46,10 @@ CGB.Models.twinTape.Isolates CGB.Medium.AtomicCondition.a01
 ## CGB.Medium.a02_independent
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L71)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
 
 解释：构造见证满足其他原子子条件但违反内容统一有界性，证明该条件在当前介质语言中独立。
 
@@ -53,6 +65,10 @@ CGB.Models.twinBag.Isolates CGB.Medium.AtomicCondition.a02
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L80)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
+
 解释：构造见证满足其他原子子条件但违反零内容状态唯一性，证明该条件在当前介质语言中独立。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -66,6 +82,10 @@ CGB.Models.twinBlank.Isolates CGB.Medium.AtomicCondition.a03
 ## CGB.Medium.a09_independent
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L89)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
 
 解释：构造见证满足其他原子子条件但违反闭事件内容守恒 P2a，证明该条件在当前介质语言中独立。
 
@@ -81,6 +101,10 @@ CGB.Models.twinToggle.Isolates CGB.Medium.AtomicCondition.a09
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L98)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
+
 解释：构造见证满足其他原子子条件但违反平静环境细致平衡 P2b，证明该条件在当前介质语言中独立。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -94,6 +118,10 @@ CGB.Models.twinCycle.Isolates CGB.Medium.AtomicCondition.a10
 ## CGB.Medium.a11_independent
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L107)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
 
 解释：构造见证满足其他原子子条件但违反一致重标记等变性 P2c，证明该条件在当前介质语言中独立。
 
@@ -109,6 +137,10 @@ CGB.Models.triLookup.Isolates CGB.Medium.AtomicCondition.a11
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L116)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
+
 解释：构造见证满足其他原子子条件但违反事件速率只读取参与位置，证明该条件在当前介质语言中独立。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -122,6 +154,10 @@ CGB.Models.farFlip.Isolates CGB.Medium.AtomicCondition.a07
 ## CGB.Medium.a12_independent
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L125)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
 
 解释：构造见证满足其他原子子条件但违反刺激对速率的影响只来自边界，证明该条件在当前介质语言中独立。
 
@@ -137,6 +173,10 @@ CGB.Models.innerClock.Isolates CGB.Medium.AtomicCondition.a12
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L134)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
+
 解释：构造见证满足其他原子子条件但违反初始状态重标记不变性，证明该条件在当前介质语言中独立。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -150,6 +190,10 @@ CGB.Models.pairPreset.Isolates CGB.Medium.AtomicCondition.a14
 ## CGB.Medium.globalFlip_other_clauses
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L158)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
 
 解释：无论参与者集合如何选取，globalFlip 见证都满足列出的 P1a、P2 和 P3 条件。
 
@@ -169,6 +213,10 @@ CGB.Models.pairPreset.Isolates CGB.Medium.AtomicCondition.a14
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L172)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
+
 解释：构造见证满足其他原子子条件但违反事件参与位置两两接触，证明该条件在当前介质语言中独立。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -182,6 +230,10 @@ CGB.Models.pairPreset.Isolates CGB.Medium.AtomicCondition.a14
 ## CGB.Medium.a06_independent
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L185)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
 
 解释：构造见证满足其他原子子条件但违反事件只写参与位置，证明该条件在当前介质语言中独立。
 
@@ -197,6 +249,10 @@ CGB.Models.pairPreset.Isolates CGB.Medium.AtomicCondition.a14
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L203)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
+
 解释：farAct 见证满足列出的 P1a、P2 和 P3 条件，可用于隔离其他局部性子条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -211,6 +267,10 @@ CGB.Medium.farAct.P1a ∧ CGB.Medium.farAct.P2a ∧ CGB.Medium.farAct.P2b ∧ CG
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L232)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
+
 解释：构造见证满足其他原子子条件但违反事件作用只读取参与位置，证明该条件在当前介质语言中独立。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -224,6 +284,10 @@ CGB.Medium.farAct.Isolates CGB.Medium.AtomicCondition.a08
 ## CGB.Medium.innerActClock_other_clauses
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L240)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
 
 解释：innerActClock 见证满足列出的 P1a、P1b 和 P2 子条件。
 
@@ -241,6 +305,10 @@ CGB.Medium.innerActClock.P1a ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L276)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
+
 解释：构造见证满足其他原子子条件但违反刺激对作用的影响只来自边界，证明该条件在当前介质语言中独立。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -254,6 +322,10 @@ CGB.Medium.innerActClock.Isolates CGB.Medium.AtomicCondition.a13
 ## CGB.Medium.twinFlip_all_conditions
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L285)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
 
 解释：twinFlip 见证满足当前列出的所有原子子条件。
 
@@ -269,6 +341,10 @@ CGB.Medium.innerActClock.Isolates CGB.Medium.AtomicCondition.a13
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L305)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
+
 解释：对列出的每一个原子子条件，都存在一个只违反该条件而满足其他条件的模型见证。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -282,6 +358,10 @@ CGB.Medium.innerActClock.Isolates CGB.Medium.AtomicCondition.a13
 ## CGB.Medium.reducedCore_iff_selected_conditions
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L430)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：原子条件分解等价性及刚性标签语义定理。
 
 解释：介质满足精简核心，当且仅当它满足指定的精简原子子条件集合。
 
@@ -299,6 +379,10 @@ CGB.Medium.innerActClock.Isolates CGB.Medium.AtomicCondition.a13
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L443)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：原子条件分解等价性及刚性标签语义定理。
+
 解释：对任意介质应用 rigidLabel 变换后，所得标签满足定义中的刚性条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -313,6 +397,10 @@ CGB.Medium.innerActClock.Isolates CGB.Medium.AtomicCondition.a13
 ## CGB.Medium.holds_rigidLabel_iff
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L446)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：原子条件分解等价性及刚性标签语义定理。
 
 解释：介质局部构型满足刚性标签条件当且仅当其在接触图上的特征指纹与标准模板匹配。
 
@@ -330,6 +418,10 @@ CGB.Medium.innerActClock.Isolates CGB.Medium.AtomicCondition.a13
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L451)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：原子条件分解等价性及刚性标签语义定理。
+
 解释：刚性标签的局部性定理：单元外部的扰动不会改变该单元上的刚性标签有效性。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -345,6 +437,10 @@ CGB.Medium.innerActClock.Isolates CGB.Medium.AtomicCondition.a13
 ## CGB.Medium.every_reduced_condition_independent_in_regime
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AtomicIndependence.lean#L466)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体反例介质见证公理子条件的逻辑独立性。
 
 解释：在原子独立性机制下，每个约化接触条件在给定相互作用子流形上保持统计独立。
 

@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearning.lean#L69)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：给出可再生学习见证中不同 Cell 状态对应的确定性策略动作表。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -33,6 +37,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearning.lean#L145)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：对任意开关、刺激和单元状态，指定更新同时满足内容输入输出账本与信用写入、丢弃及补充账本。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -53,6 +61,10 @@
 ## CGB.RenewableLearning.learning_contract
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearning.lean#L153)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：在开启重开与补充的指定模型中，miss 对就绪状态实现 reconsider，搜索状态收到 answer 时实现对应候选筛选更新。
 
@@ -78,6 +90,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearning.lean#L177)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：对任意重新打开和补充开关组合，指定可再生学习 plant 满足 Axioms 和速率一的逐事件时钟条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -92,6 +108,10 @@
 ## _private.CGBAxioms.RenewableLearning.0.CGB.RenewableLearning.sum_env
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearning.lean#L235)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：有限环境状态空间上的函数求和等于对其九种基本环境原语取值的显式展开和。
 
@@ -114,6 +134,10 @@
 ## CGB.RenewableLearning.actual_law
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearning.lean#L280)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：对指定 plant、闭环或断环配置与自然感知协议，实际联合过程的状态分布等于对应的身体—世界分布。
 

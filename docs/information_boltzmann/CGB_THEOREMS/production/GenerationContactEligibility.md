@@ -10,7 +10,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactEligibility.lean#L26)
 
-解释：输入hardSat_eq_self形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：对处于 [-1, 1] 区间内的任意实数 x，硬饱和函数 hardSat x 的值严格等于其自身 x。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -24,7 +28,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactEligibility.lean#L31)
 
-解释：输入hardSat_eq_one形式化前提参量，经底层算子变换与代数化简，输出形式陈述所保证的严格等式或不变性结论。
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：对任意实数 x ≥ 1，硬饱和函数 hardSat x 的值严格恒等于 1。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -38,7 +46,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactEligibility.lean#L38)
 
-解释：On one unsaturated response segment, participation is the exact local forward finite-difference factor of a contact-weight perturbation.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：在未饱和响应线性段内，参与度标量精确对应接触权重微扰下的前向有限差分比率。
 
 源码说明：On one unsaturated response segment, participation is the exact local forward finite-difference factor of a contact-weight perturbation.
 
@@ -59,7 +71,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactEligibility.lean#L53)
 
-解释：A bounded activity face carries no additional local contact evidence: as long as both responses remain saturated at `+1`, their difference is zero.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：有界响应饱和面不携带额外局部接触证据：只要两次扰动后的响应均达到 +1 饱和态，二者的差分增量精确为零。
 
 源码说明：A bounded activity face carries no additional local contact evidence: as long as both responses remain saturated at `+1`, their difference is zero.
 
@@ -78,7 +94,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactEligibility.lean#L66)
 
-解释：A score whose local read coefficient is `q` inherits both cases. This is the one-contact part of the next-byte forward eligibility before its language innovation is used as the third factor.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：当局部读出系数为 q 时，未饱和分值的增量等于 q 乘以接触扰动项，构成下一字节前向资格因子的显式构成。
 
 源码说明：A score whose local read coefficient is `q` inherits both cases. This is the one-contact part of the next-byte forward eligibility before its language innovation is used as the third factor.
 

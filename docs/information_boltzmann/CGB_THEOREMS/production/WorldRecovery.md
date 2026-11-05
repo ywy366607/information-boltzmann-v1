@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/WorldRecovery.lean#L31)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：有限随机核上，在任意有限期限内首次发生指定事件的概率介于零和一之间。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -24,6 +28,10 @@
 ## CGB.FirstHit.monotone_horizon
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/WorldRecovery.lean#L44)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：在同一随机核下，把首次命中的观察期限增加一步不会降低命中概率。
 
@@ -40,6 +48,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/WorldRecovery.lean#L62)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：已经发生标记事件的观察标志为真时，任意后续期限上的标志评分恒为一。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -55,6 +67,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/WorldRecovery.lean#L68)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：初始标志为假时，带吸收标志的观察器与首次命中概率递推给出相同结果。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -69,6 +85,10 @@
 ## CGB.FirstHit.zero_on_closed
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/WorldRecovery.lean#L82)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：若一个区域对正概率转移封闭且内部不存在被标记的正概率转移，则从该区域出发任意有限期限的命中概率为零。
 
@@ -87,6 +107,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/WorldRecovery.lean#L101)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：若从当前状态沿实际核不可能发生标记事件，则任何一步正概率可达的后继状态也不可能发生该事件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -101,6 +125,10 @@
 ## CGB.FirstHit.zero_of_impossible
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/WorldRecovery.lean#L106)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：如果实际随机核中不存在通向标记事件的正概率路径，则每个有限期限的首次命中概率都为零。
 
@@ -117,6 +145,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/WorldRecovery.lean#L129)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：对于随时间变化的随机核，任意起始时刻和有限期限的首次命中概率都在零和一之间。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -132,6 +164,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/WorldRecovery.lean#L143)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：当时变随机核每个时刻都等于同一个核时，时变首次命中概率等于普通首次命中概率。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -146,6 +182,10 @@
 ## CGB.Medium.jointStep_sum
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/WorldRecovery.lean#L162)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：身体与世界按定义联合更新时，对所有后继联合状态求转移权重之和等于一。
 
@@ -163,6 +203,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/WorldRecovery.lean#L168)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：联合身体—世界分布的下一拍递推可直接写成当前分布与联合转移核的有限求和。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -179,6 +223,10 @@
 ## CGB.Medium.lawCut_uses_scheduledCutKernel
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/WorldRecovery.lean#L202)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：断环对照的下一拍分布由断环后的时变转移核递推，因此评估不会暗中把未来闭环接回去。
 
@@ -198,6 +246,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/WorldRecovery.lean#L216)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：在满足时钟条件时，真实身体—世界链中有限期限内摄入材料的概率介于零和一之间。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -215,6 +267,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/WorldRecovery.lean#L220)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：在真实身体—世界链中，增加一次允许的恢复时间不会降低材料摄入概率。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -231,6 +287,10 @@
 ## CGB.Medium.actualRecover_zero_without_intake
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/WorldRecovery.lean#L226)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：若所有身体状态都不可能摄入内容，则真实世界协议下任意有限期限的材料恢复概率为零。
 

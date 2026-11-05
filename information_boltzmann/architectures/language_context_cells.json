@@ -1,0 +1,77 @@
+{
+ "name": "context_cells",
+ "implementation": "scripts/cgb_language_candidates.py:ContextCells",
+ "lean_medium": "CGB.Generation.ContextBody.body",
+ "note": "Cells addressed by exact recent suffixes, read through a log-opinion pool. Lean states the shape of the body with free functions; capability is the language gate's question.",
+ "lean": {
+  "medium_instance": "CGB.Generation.ContextBody.body_axioms",
+  "medium_locality": "CGB.Generation.ContextBody.events_touch_bounded",
+  "column_refinement_instance": "CGB.Generation.ContextBody.refinement",
+  "order_separation": "CGB.Generation.ContextBody.order_separated",
+  "boundary_modulation": "CGB.Generation.ContextBody.modulation_at_boundary"
+ },
+ "mechanisms": [
+  {
+   "id": "write_at_the_context_that_predicted",
+   "kind": "mechanism",
+   "what": "an arrival is counted in the cell of the suffix that preceded it",
+   "theorems": [
+    "CGB.Generation.ContextAssociation.context_write_separates_order",
+    "CGB.Generation.ContextBody.order_separated"
+   ]
+  },
+  {
+   "id": "bounded_address",
+   "kind": "mechanism",
+   "what": "an event touches the sense, context and pool units and a bounded set of cells",
+   "theorems": [
+    "CGB.Generation.ContextBody.events_touch_bounded"
+   ]
+  },
+  {
+   "id": "suffix_orders",
+   "kind": "structure",
+   "what": "orders 1 to 6 are a design choice found by comparison, with no necessity theorem",
+   "theorems": []
+  },
+  {
+   "id": "log_opinion_pool",
+   "kind": "structure",
+   "what": "trust by suffix length, evidence and longest suffix found, following the current byte's log loss; a design choice found by comparison",
+   "theorems": []
+  },
+  {
+   "id": "held_symbol_ledger",
+   "kind": "structure",
+   "what": "a new symbol displaces the weakest of its cell once the held total reaches its limit, so the budget is a hard bound",
+   "theorems": []
+  },
+  {
+   "id": "lazy_time_release",
+   "kind": "structure",
+   "what": "a cell settles elapsed time when next addressed",
+   "theorems": []
+  }
+ ],
+ "declared": {
+  "external_retrieval": {
+   "external_causal_readout_exists_iff": {
+    "not_applicable": "no external store: context, pool and cells all sit inside the counted state that O03 bounds, and nothing is read back from outside it"
+   },
+   "external_trace_requires_retrieved_distinction": {
+    "not_applicable": "no external store: context, pool and cells all sit inside the counted state that O03 bounds, and nothing is read back from outside it"
+   }
+  },
+  "balanced_learning": {
+   "phases_must_balance": {
+    "not_applicable": "no free phase: a cell counts only the arrived byte, and its drift is a count update that is not claimed to be proportional to the likelihood gradient"
+   },
+   "reward_phases_must_balance": {
+    "not_applicable": "no reward signal reaches any cell"
+   },
+   "three_part_balance_impossible": {
+    "not_applicable": "no balanced unit: nothing moves at calm (calm_inactive), so detailed balance holds vacuously and every event is driven; the log-opinion pool reads up to six suffix orders, which a balanced unit could not"
+   }
+  }
+ }
+}

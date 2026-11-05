@@ -1,0 +1,794 @@
+{
+  "checkpoint": {
+    "arm": "s_on",
+    "path": "results\\cgb_column_language_living_20261101\\latest.pt",
+    "raw_start": 264000,
+    "sha256": "91ced1d8c8c7bb81b3df340757631fb99fa201becbee499e0be41b230d9af251"
+  },
+  "effects_nats_per_byte": {
+    "all_other_parameter_learning": -0.0009959490378901315,
+    "interaction_contrast_all_minus_held": 0.001594733553865968,
+    "other_parameter_learning_held": -0.0025906825917560994
+  },
+  "kind": "s_conserved_transfer_non_s_parameter_interaction_audit",
+  "model_source": {
+    "audit_cgb_column_s_interaction_owt.py": "bfa35894eacaaf1662ca83cd36fb88e82273ba68e204fe4fafab652a4acf1f44",
+    "cgb_column_body.py": "c21e98eaa53db8191a9250fe24fdd0916cb85292874fd0475ede4f80914d7d48",
+    "run_cgb_column_language_admission.py": "d1584c43566be99d387226cbc85c5a972a950409a6c9e8c657b097546cd85c82"
+  },
+  "protocol": {
+    "held_group": "readout",
+    "held_parameter_learners": [
+      "readout"
+    ],
+    "raw_range": [
+      264000,
+      328000
+    ],
+    "report_every_raw": 8000,
+    "s_step": 0.001
+  },
+  "results": {
+    "all_s_off": {
+      "final_lifetime": {
+        "advanced_elapsed": 871.0080278000007,
+        "scored_lifetime": 455838,
+        "special_lifetime": 26,
+        "update_calls": {
+          "contact": 455838,
+          "head": 455838,
+          "route": 455838,
+          "s_contact": 391864,
+          "value": 455838
+        }
+      },
+      "mean_nll_nats": 2.6454587508206457,
+      "total_nll_nats": 169240.578125,
+      "total_scored_bytes": 63974,
+      "windows": [
+        {
+          "bits_per_byte": 3.8814019247758416,
+          "bytes_per_second": 1055.4235946158071,
+          "diagnostic_totals": [
+            5930.310546875,
+            5928.0634765625,
+            6177840.0,
+            7875584.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.6903828007783197,
+          "progress": [],
+          "raw": [
+            0,
+            8000
+          ],
+          "scored_bytes": 7998,
+          "seconds": 7.578000000001339,
+          "special_tokens_elapsed_without_lexical_write": 2
+        },
+        {
+          "bits_per_byte": 3.970390795391642,
+          "bytes_per_second": 1060.0238505368252,
+          "diagnostic_totals": [
+            5979.6630859375,
+            5980.5908203125,
+            6173023.0,
+            7829920.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.752065185546875,
+          "progress": [],
+          "raw": [
+            8000,
+            16000
+          ],
+          "scored_bytes": 8000,
+          "seconds": 7.546999999998661,
+          "special_tokens_elapsed_without_lexical_write": 0
+        },
+        {
+          "bits_per_byte": 3.82116498353153,
+          "bytes_per_second": 1055.1596727366834,
+          "diagnostic_totals": [
+            5974.150390625,
+            5975.41259765625,
+            6175877.0,
+            7850976.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.6486297347892696,
+          "progress": [],
+          "raw": [
+            16000,
+            24000
+          ],
+          "scored_bytes": 7996,
+          "seconds": 7.578000000001339,
+          "special_tokens_elapsed_without_lexical_write": 4
+        },
+        {
+          "bits_per_byte": 3.7415505812402117,
+          "bytes_per_second": 1053.1998946540452,
+          "diagnostic_totals": [
+            5872.60546875,
+            5872.3349609375,
+            6097185.0,
+            7864512.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.593445236309077,
+          "progress": [],
+          "raw": [
+            24000,
+            32000
+          ],
+          "scored_bytes": 7998,
+          "seconds": 7.5939999999973224,
+          "special_tokens_elapsed_without_lexical_write": 2
+        },
+        {
+          "bits_per_byte": 3.7605304995444486,
+          "bytes_per_second": 1053.1998946535407,
+          "diagnostic_totals": [
+            5994.43798828125,
+            5993.99267578125,
+            6256171.0,
+            7903872.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.6066011131689173,
+          "progress": [],
+          "raw": [
+            32000,
+            40000
+          ],
+          "scored_bytes": 7998,
+          "seconds": 7.59400000000096,
+          "special_tokens_elapsed_without_lexical_write": 2
+        },
+        {
+          "bits_per_byte": 3.827227968368813,
+          "bytes_per_second": 1054.631828978436,
+          "diagnostic_totals": [
+            5996.09521484375,
+            5996.435546875,
+            6240292.0,
+            7890784.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.65283227563501,
+          "progress": [],
+          "raw": [
+            40000,
+            48000
+          ],
+          "scored_bytes": 7992,
+          "seconds": 7.578000000001339,
+          "special_tokens_elapsed_without_lexical_write": 8
+        },
+        {
+          "bits_per_byte": 3.774962961275072,
+          "bytes_per_second": 1055.15967273719,
+          "diagnostic_totals": [
+            5896.1591796875,
+            5895.787109375,
+            6126977.0,
+            7855040.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.616604933326038,
+          "progress": [],
+          "raw": [
+            48000,
+            56000
+          ],
+          "scored_bytes": 7996,
+          "seconds": 7.577999999997701,
+          "special_tokens_elapsed_without_lexical_write": 4
+        },
+        {
+          "bits_per_byte": 3.7554370143366085,
+          "bytes_per_second": 1055.1596727366834,
+          "diagnostic_totals": [
+            5947.2412109375,
+            5947.86474609375,
+            6151111.0,
+            7850464.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.603070578257879,
+          "progress": [],
+          "raw": [
+            56000,
+            64000
+          ],
+          "scored_bytes": 7996,
+          "seconds": 7.578000000001339,
+          "special_tokens_elapsed_without_lexical_write": 4
+        }
+      ]
+    },
+    "all_s_on": {
+      "final_lifetime": {
+        "advanced_elapsed": 871.0080278000007,
+        "scored_lifetime": 455838,
+        "special_lifetime": 26,
+        "update_calls": {
+          "contact": 455838,
+          "head": 455838,
+          "route": 455838,
+          "s_contact": 455838,
+          "value": 455838
+        }
+      },
+      "mean_nll_nats": 2.6444628017827556,
+      "total_nll_nats": 169176.86328125,
+      "total_scored_bytes": 63974,
+      "windows": [
+        {
+          "bits_per_byte": 3.88359293162406,
+          "bytes_per_second": 923.9833641405831,
+          "diagnostic_totals": [
+            5920.6171875,
+            5919.79052734375,
+            6165438.0,
+            7868704.0,
+            697.5482177734375,
+            0.00015148433158174157
+          ],
+          "mean_nll_nats": 2.6919014909977492,
+          "progress": [],
+          "raw": [
+            0,
+            8000
+          ],
+          "scored_bytes": 7998,
+          "seconds": 8.65599999999904,
+          "special_tokens_elapsed_without_lexical_write": 2
+        },
+        {
+          "bits_per_byte": 3.9705489423822082,
+          "bytes_per_second": 927.536231884058,
+          "diagnostic_totals": [
+            5975.9921875,
+            5978.2216796875,
+            6163674.0,
+            7818432.0,
+            763.6700439453125,
+            0.00016571301966905594
+          ],
+          "mean_nll_nats": 2.7521748046875,
+          "progress": [],
+          "raw": [
+            8000,
+            16000
+          ],
+          "scored_bytes": 8000,
+          "seconds": 8.625,
+          "special_tokens_elapsed_without_lexical_write": 0
+        },
+        {
+          "bits_per_byte": 3.8215490958988876,
+          "bytes_per_second": 927.072463768116,
+          "diagnostic_totals": [
+            5975.443359375,
+            5978.2705078125,
+            6175442.0,
+            7849984.0,
+            735.5452270507812,
+            0.00015992911357898265
+          ],
+          "mean_nll_nats": 2.648895981193722,
+          "progress": [],
+          "raw": [
+            16000,
+            24000
+          ],
+          "scored_bytes": 7996,
+          "seconds": 8.625,
+          "special_tokens_elapsed_without_lexical_write": 4
+        },
+        {
+          "bits_per_byte": 3.7418602604522366,
+          "bytes_per_second": 927.304347826087,
+          "diagnostic_totals": [
+            5882.89404296875,
+            5883.97314453125,
+            6131509.0,
+            7886080.0,
+            710.4102783203125,
+            0.0001538654905743897
+          ],
+          "mean_nll_nats": 2.5936598895817706,
+          "progress": [],
+          "raw": [
+            24000,
+            32000
+          ],
+          "scored_bytes": 7998,
+          "seconds": 8.625,
+          "special_tokens_elapsed_without_lexical_write": 2
+        },
+        {
+          "bits_per_byte": 3.754720579310655,
+          "bytes_per_second": 925.5873162824885,
+          "diagnostic_totals": [
+            5922.79345703125,
+            5924.0224609375,
+            6198855.0,
+            7893536.0,
+            661.8711547851562,
+            0.00014353367441799492
+          ],
+          "mean_nll_nats": 2.602573983339585,
+          "progress": [],
+          "raw": [
+            32000,
+            40000
+          ],
+          "scored_bytes": 7998,
+          "seconds": 8.64100000000326,
+          "special_tokens_elapsed_without_lexical_write": 2
+        },
+        {
+          "bits_per_byte": 3.824121447295671,
+          "bytes_per_second": 924.8929522046465,
+          "diagnostic_totals": [
+            5979.00048828125,
+            5980.50439453125,
+            6240746.0,
+            7896096.0,
+            659.9528198242188,
+            0.00014267775986809283
+          ],
+          "mean_nll_nats": 2.6506789993118116,
+          "progress": [],
+          "raw": [
+            40000,
+            48000
+          ],
+          "scored_bytes": 7992,
+          "seconds": 8.640999999999622,
+          "special_tokens_elapsed_without_lexical_write": 8
+        },
+        {
+          "bits_per_byte": 3.769902192735967,
+          "bytes_per_second": 925.4629629630253,
+          "diagnostic_totals": [
+            5845.2939453125,
+            5846.43701171875,
+            6084128.0,
+            7862816.0,
+            665.7294311523438,
+            0.00014356098836287856
+          ],
+          "mean_nll_nats": 2.613097075881691,
+          "progress": [],
+          "raw": [
+            48000,
+            56000
+          ],
+          "scored_bytes": 7996,
+          "seconds": 8.639999999999418,
+          "special_tokens_elapsed_without_lexical_write": 4
+        },
+        {
+          "bits_per_byte": 3.754874589255597,
+          "bytes_per_second": 925.3558615901343,
+          "diagnostic_totals": [
+            5840.4638671875,
+            5842.65283203125,
+            6063496.0,
+            7873632.0,
+            714.7125854492188,
+            0.0001546322018839419
+          ],
+          "mean_nll_nats": 2.6026807348986996,
+          "progress": [],
+          "raw": [
+            56000,
+            64000
+          ],
+          "scored_bytes": 7996,
+          "seconds": 8.640999999999622,
+          "special_tokens_elapsed_without_lexical_write": 4
+        }
+      ]
+    },
+    "held_s_off": {
+      "final_lifetime": {
+        "advanced_elapsed": 871.0080278000007,
+        "scored_lifetime": 455838,
+        "special_lifetime": 26,
+        "update_calls": {
+          "contact": 455838,
+          "head": 391864,
+          "route": 455838,
+          "s_contact": 391864,
+          "value": 455838
+        }
+      },
+      "mean_nll_nats": 2.6721948015502393,
+      "total_nll_nats": 170950.990234375,
+      "total_scored_bytes": 63974,
+      "windows": [
+        {
+          "bits_per_byte": 3.923458405158408,
+          "bytes_per_second": 1053.1998946540452,
+          "diagnostic_totals": [
+            5926.40478515625,
+            5923.53076171875,
+            6139735.0,
+            7862336.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.71953413157977,
+          "progress": [],
+          "raw": [
+            0,
+            8000
+          ],
+          "scored_bytes": 7998,
+          "seconds": 7.5939999999973224,
+          "special_tokens_elapsed_without_lexical_write": 2
+        },
+        {
+          "bits_per_byte": 4.0512750561057,
+          "bytes_per_second": 1055.6875164949308,
+          "diagnostic_totals": [
+            6088.17919921875,
+            6089.10693359375,
+            6175306.0,
+            7810624.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.8081298828125,
+          "progress": [],
+          "raw": [
+            8000,
+            16000
+          ],
+          "scored_bytes": 8000,
+          "seconds": 7.578000000001339,
+          "special_tokens_elapsed_without_lexical_write": 0
+        },
+        {
+          "bits_per_byte": 3.866217487859253,
+          "bytes_per_second": 1055.1596727366834,
+          "diagnostic_totals": [
+            6024.25830078125,
+            6026.69677734375,
+            6045989.0,
+            7836704.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.6798577511411956,
+          "progress": [],
+          "raw": [
+            16000,
+            24000
+          ],
+          "scored_bytes": 7996,
+          "seconds": 7.578000000001339,
+          "special_tokens_elapsed_without_lexical_write": 4
+        },
+        {
+          "bits_per_byte": 3.7596486712535513,
+          "bytes_per_second": 1053.1998946540452,
+          "diagnostic_totals": [
+            5806.95263671875,
+            5808.0712890625,
+            5961035.0,
+            7811616.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.605989876375344,
+          "progress": [],
+          "raw": [
+            24000,
+            32000
+          ],
+          "scored_bytes": 7998,
+          "seconds": 7.5939999999973224,
+          "special_tokens_elapsed_without_lexical_write": 2
+        },
+        {
+          "bits_per_byte": 3.778348856572182,
+          "bytes_per_second": 1055.4235946158071,
+          "diagnostic_totals": [
+            5770.79443359375,
+            5769.708984375,
+            5989282.0,
+            7818432.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.6189518571049013,
+          "progress": [],
+          "raw": [
+            32000,
+            40000
+          ],
+          "scored_bytes": 7998,
+          "seconds": 7.578000000001339,
+          "special_tokens_elapsed_without_lexical_write": 2
+        },
+        {
+          "bits_per_byte": 3.8488650233838655,
+          "bytes_per_second": 1056.863263687124,
+          "diagnostic_totals": [
+            5770.9619140625,
+            5771.44921875,
+            5990154.0,
+            7842080.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.667829939314314,
+          "progress": [],
+          "raw": [
+            40000,
+            48000
+          ],
+          "scored_bytes": 7992,
+          "seconds": 7.561999999998079,
+          "special_tokens_elapsed_without_lexical_write": 8
+        },
+        {
+          "bits_per_byte": 3.8136578773280236,
+          "bytes_per_second": 1055.0204512466516,
+          "diagnostic_totals": [
+            5649.4873046875,
+            5649.58203125,
+            5874340.0,
+            7792832.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.643426205290145,
+          "progress": [],
+          "raw": [
+            48000,
+            56000
+          ],
+          "scored_bytes": 7996,
+          "seconds": 7.5790000000015425,
+          "special_tokens_elapsed_without_lexical_write": 4
+        },
+        {
+          "bits_per_byte": 3.7997508952496695,
+          "bytes_per_second": 1057.392224279051,
+          "diagnostic_totals": [
+            5665.8359375,
+            5665.640625,
+            5809196.0,
+            7779680.0,
+            0.0,
+            0.0
+          ],
+          "mean_nll_nats": 2.6337866198724362,
+          "progress": [],
+          "raw": [
+            56000,
+            64000
+          ],
+          "scored_bytes": 7996,
+          "seconds": 7.562000000001717,
+          "special_tokens_elapsed_without_lexical_write": 4
+        }
+      ]
+    },
+    "held_s_on": {
+      "final_lifetime": {
+        "advanced_elapsed": 871.0080278000007,
+        "scored_lifetime": 455838,
+        "special_lifetime": 26,
+        "update_calls": {
+          "contact": 455838,
+          "head": 391864,
+          "route": 455838,
+          "s_contact": 455838,
+          "value": 455838
+        }
+      },
+      "mean_nll_nats": 2.669604118958483,
+      "total_nll_nats": 170785.25390625,
+      "total_scored_bytes": 63974,
+      "windows": [
+        {
+          "bits_per_byte": 3.9216038529717188,
+          "bytes_per_second": 928.9198606271149,
+          "diagnostic_totals": [
+            5933.27099609375,
+            5931.74267578125,
+            6154596.0,
+            7862560.0,
+            682.7048950195312,
+            0.00014797704352531582
+          ],
+          "mean_nll_nats": 2.718248653960365,
+          "progress": [],
+          "raw": [
+            0,
+            8000
+          ],
+          "scored_bytes": 7998,
+          "seconds": 8.610000000000582,
+          "special_tokens_elapsed_without_lexical_write": 2
+        },
+        {
+          "bits_per_byte": 4.0488348726966965,
+          "bytes_per_second": 930.9903409755245,
+          "diagnostic_totals": [
+            6110.75341796875,
+            6113.03271484375,
+            6206806.0,
+            7812448.0,
+            714.5406494140625,
+            0.00015370237815659493
+          ],
+          "mean_nll_nats": 2.8064384765625,
+          "progress": [],
+          "raw": [
+            8000,
+            16000
+          ],
+          "scored_bytes": 8000,
+          "seconds": 8.592999999997119,
+          "special_tokens_elapsed_without_lexical_write": 0
+        },
+        {
+          "bits_per_byte": 3.8652395871074936,
+          "bytes_per_second": 928.6875725899488,
+          "diagnostic_totals": [
+            6079.98193359375,
+            6083.7490234375,
+            6128216.0,
+            7842816.0,
+            648.0775756835938,
+            0.00013960599608253688
+          ],
+          "mean_nll_nats": 2.679179921992246,
+          "progress": [],
+          "raw": [
+            16000,
+            24000
+          ],
+          "scored_bytes": 7996,
+          "seconds": 8.610000000000582,
+          "special_tokens_elapsed_without_lexical_write": 4
+        },
+        {
+          "bits_per_byte": 3.7585343193222256,
+          "bytes_per_second": 927.304347826087,
+          "diagnostic_totals": [
+            5845.49951171875,
+            5847.912109375,
+            6019821.0,
+            7832992.0,
+            672.4160766601562,
+            0.00014706936781294644
+          ],
+          "mean_nll_nats": 2.605217466475994,
+          "progress": [],
+          "raw": [
+            24000,
+            32000
+          ],
+          "scored_bytes": 7998,
+          "seconds": 8.625,
+          "special_tokens_elapsed_without_lexical_write": 2
+        },
+        {
+          "bits_per_byte": 3.7790316305345306,
+          "bytes_per_second": 923.9833641401948,
+          "diagnostic_totals": [
+            5861.1669921875,
+            5861.6484375,
+            6087968.0,
+            7827648.0,
+            682.094482421875,
+            0.00014834394096396863
+          ],
+          "mean_nll_nats": 2.619425119951863,
+          "progress": [],
+          "raw": [
+            32000,
+            40000
+          ],
+          "scored_bytes": 7998,
+          "seconds": 8.656000000002678,
+          "special_tokens_elapsed_without_lexical_write": 2
+        },
+        {
+          "bits_per_byte": 3.8413002161945196,
+          "bytes_per_second": 926.6086956521739,
+          "diagnostic_totals": [
+            5852.49072265625,
+            5854.537109375,
+            6078584.0,
+            7844704.0,
+            699.4439086914062,
+            0.0001524630788480863
+          ],
+          "mean_nll_nats": 2.6625864145395397,
+          "progress": [],
+          "raw": [
+            40000,
+            48000
+          ],
+          "scored_bytes": 7992,
+          "seconds": 8.625,
+          "special_tokens_elapsed_without_lexical_write": 8
+        },
+        {
+          "bits_per_byte": 3.8046650667751774,
+          "bytes_per_second": 927.072463768116,
+          "diagnostic_totals": [
+            5718.56982421875,
+            5719.64892578125,
+            5962574.0,
+            7826816.0,
+            705.9525756835938,
+            0.00015464781608898193
+          ],
+          "mean_nll_nats": 2.63719286401013,
+          "progress": [],
+          "raw": [
+            48000,
+            56000
+          ],
+          "scored_bytes": 7996,
+          "seconds": 8.625,
+          "special_tokens_elapsed_without_lexical_write": 4
+        },
+        {
+          "bits_per_byte": 3.7921074115359175,
+          "bytes_per_second": 925.3558615901343,
+          "diagnostic_totals": [
+            5718.65576171875,
+            5720.7060546875,
+            5908630.0,
+            7846784.0,
+            752.3917236328125,
+            0.00016537000192329288
+          ],
+          "mean_nll_nats": 2.628488560686593,
+          "progress": [],
+          "raw": [
+            56000,
+            64000
+          ],
+          "scored_bytes": 7996,
+          "seconds": 8.640999999999622,
+          "special_tokens_elapsed_without_lexical_write": 4
+        }
+      ]
+    }
+  },
+  "scope": "A common-state real-continuation difference-in-differences audit of the current one-receipt conserved S transfer. Positive language return admits from implicit local free capacity and negative return releases the indicated S factor. H/C/S state dynamics remain active in all arms; the held condition disables only declared non-S parameter learners. This checkpoint predates the transfer replacement, so the result is a post-replacement intervention audit, not a new-from-birth run.",
+  "source": {
+    "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+    "path": "data\\ib_owt_10000\\train.npy",
+    "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+    "source": "openwebtext",
+    "split": "train",
+    "split_rule": "NFC_document_sha256_mod100_98_1_1",
+    "token_file_sha256": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+    "tokenizer_sha256": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+    "tokens_available": 48145263,
+    "tokens_presented": 328000
+  }
+}

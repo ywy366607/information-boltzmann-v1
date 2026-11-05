@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L50)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：CausalLearning
+
+分类说明：因果模型在线学习、消除与更新一致性算法契约。
+
 解释：有限候选集合掩码与 0 到 B 的写入储备组成的记忆状态数恰为 2^|H|·(B+1)。
 
 源码说明：Candidate masks have |H| bits of state capacity, plus the explicit reserve. This cardinality does not certify a rulebook's 1-percent description budget.
@@ -23,6 +27,10 @@
 ## CGB.CausalLearning.write_contract
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L61)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：CausalLearning
+
+分类说明：因果模型在线学习、消除与更新一致性算法契约。
 
 解释：一次候选筛选只会缩小候选集，且有效写入恰消耗一单位储备并至少移除一个候选。
 
@@ -43,6 +51,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L84)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：CausalLearning
+
+分类说明：因果模型在线学习、消除与更新一致性算法契约。
+
 解释：当前候选若允许实际观测，则无论是否发生写入，更新后仍保留该候选。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -58,6 +70,10 @@
 ## CGB.CausalLearning.agreement_no_write
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L93)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：CausalLearning
+
+分类说明：因果模型在线学习、消除与更新一致性算法契约。
 
 解释：若所有当前候选都允许所见观测，则候选记忆保持不变且不收写入费用。
 
@@ -76,6 +92,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L101)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：CausalLearning
+
+分类说明：因果模型在线学习、消除与更新一致性算法契约。
+
 解释：写入储备为零时，候选记忆保持不变且费用为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -93,6 +113,10 @@
 ## CGB.CausalLearning.paid_elimination
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L108)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：CausalLearning
+
+分类说明：因果模型在线学习、消除与更新一致性算法契约。
 
 解释：若储备为正且当前候选不允许所见观测，则更新移除该候选并消耗一单位储备。
 
@@ -113,6 +137,10 @@
 ## CGB.CausalLearning.path_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L125)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：CausalLearning
+
+分类说明：因果模型在线学习、消除与更新一致性算法契约。
 
 解释：沿任意观测序列的候选更新，当前储备加累计写费等于初始储备，且当前候选数加累计写费不超过初始候选数。
 
@@ -137,6 +165,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L164)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：CausalLearning
+
+分类说明：因果模型在线学习、消除与更新一致性算法契约。
+
 解释：闭环一步转移具有正概率时，输出动作来自当前策略、后继记忆按观测更新且相应物理转移为正概率。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -156,6 +188,10 @@
 ## CGB.CausalLearning.true_model_step
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L182)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：CausalLearning
+
+分类说明：因果模型在线学习、消除与更新一致性算法契约。
 
 解释：若某候选忠实覆盖实际物理转移且当前未被排除，则任何正概率闭环一步后它仍被保留。
 
@@ -178,6 +214,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L192)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：CausalLearning
+
+分类说明：因果模型在线学习、消除与更新一致性算法契约。
+
 解释：若性质在初态成立并对所有正概率一步保持，则任意时刻不满足该性质的状态概率为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -195,6 +235,10 @@
 ## CGB.CausalLearning.true_model_law
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L215)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：CausalLearning
+
+分类说明：因果模型在线学习、消除与更新一致性算法契约。
 
 解释：从包含全部候选的初始记忆出发，忠实候选在任意时刻的每个正概率可达状态中仍被保留。
 
@@ -219,6 +263,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L231)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：CausalLearning
+
+分类说明：因果模型在线学习、消除与更新一致性算法契约。
+
 解释：对后继记忆求和后，闭环物理动作与观测的转移概率仍等于被选动作对应的原物理核。
 
 源码说明：Even with zero write reserve, each physical action/outcome law continues. Only the deterministic memory successor is attached to the physical event.
@@ -238,6 +286,10 @@
 ## CGB.CausalLearning.safe_outcome
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L242)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：CausalLearning
+
+分类说明：因果模型在线学习、消除与更新一致性算法契约。
 
 解释：若所选动作对所有剩余候选均稳健安全且忠实候选仍在集合中，则任意正概率实际结果满足安全条件。
 
@@ -262,6 +314,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L268)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：CausalLearning
+
+分类说明：因果模型在线学习、消除与更新一致性算法契约。
+
 解释：当经过所有剩余候选验证的安全动作集合非空时，选择其中最小动作满足稳健安全定义。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -281,6 +337,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L288)
 
+分类：necessity；适用范围：world_contract；审核：reviewed
+
+分类说明：当所有动作均被非安全结果证伪时安全探索不可行的必然结论。
+
 解释：若每个动作都被某剩余候选允许的某个不安全结果反驳，则不存在满足该稳健安全条件的动作。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -296,6 +356,10 @@
 ## CGB.CausalLearning.paid_mean_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/CausalLearning.lean#L317)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：CausalLearning
+
+分类说明：因果模型在线学习、消除与更新一致性算法契约。
 
 解释：在实际闭环过程中，任意有限时刻的平均剩余写入储备加累计平均写费等于初始储备。
 

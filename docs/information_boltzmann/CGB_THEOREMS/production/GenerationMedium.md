@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationMedium.lean#L24)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：GenerationMedium 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：若局部介质的转移对合可逆、基础速率对称，且静默态动作速率由能量差指数形式给出，则该介质满足 P2b 细致平衡条件。
 
 源码说明：**M1a**: symmetric (Metropolis-type) rates of a reversible event set under an energy give P2b.
@@ -30,6 +34,10 @@
 ## CGB.Medium.rate_local_of_energy
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationMedium.lean#L45)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：GenerationMedium 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：若能量差仅取决于参与动作的作用局部区域，则该动作在不同全局背景下的速率仅依赖于局部状态，保持严格空间局域性。
 

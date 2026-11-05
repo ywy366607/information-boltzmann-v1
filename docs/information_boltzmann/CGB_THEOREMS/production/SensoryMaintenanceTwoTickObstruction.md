@@ -8,6 +8,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceTwoTickObstruction.lean#L7)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：两步感知阻塞测试模型中各细胞类型到控制输出的查表映射。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -31,6 +35,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceTwoTickObstruction.lean#L14)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：在两步分支世界树中，存在环境使得局部感知代理无法区分真假恢复分支。
 
 源码说明：A concrete world branch that remains physically possible through two lost ticks while the projected cell is `aSpent`.
@@ -49,6 +57,10 @@ CGB.GraceRecovery.moves CGB.RenewableLearning.Env.feedA (fun x => CGB.RenewableL
 ## CGB.SensoryMaintenanceTwoTickObstruction.two_tick_local_failure
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceTwoTickObstruction.lean#L22)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：两步局部阻塞定理：任何局限于局部视野的两步前瞻策略均存在对抗环境导致维持失败。
 

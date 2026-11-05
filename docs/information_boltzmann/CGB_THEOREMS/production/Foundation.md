@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Foundation.lean#L18)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Foundation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：公理P1a自身即内蕴局域状态类型的有限性，无需额外假设枚举。
 
 源码说明：P1a itself supplies local-state finiteness, before a finite enumeration is chosen.
@@ -23,6 +27,10 @@
 ## CGB.Medium.p1a_iff_unique_vacuum
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Foundation.lean#L27)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Foundation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：在局域状态有限前提下，公理P1a等价于系统中存在唯一的零能量真空基态。
 
@@ -39,6 +47,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Foundation.lean#L42)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Foundation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：若刺激字母表与机体均为有限集，则介质必存在统一的有界全局演化时钟速率。
 
 源码说明：A globally bounded clock follows if the stimulus alphabet is also finite. Finiteness of the body alone does not provide this missing uniformity premise.
@@ -54,6 +66,10 @@
 ## CGB.Medium.recover_ignores_world_moves
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Foundation.lean#L65)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Foundation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：现有恢复菜单仅依赖机体能力与环境状态空间，而独立于具体的环境转移矩阵设定。
 
@@ -78,6 +94,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Foundation.lean#L77)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Foundation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在满足时钟准入假设下，机体在有限步内的恢复度量严格介于0和1之间。
 
 源码说明：Recovery is a genuine probability only with the clock-admission hypothesis. Its favourable-stimulus supremum is not an actual-world reachability probability.
@@ -93,6 +113,10 @@
 ## CGB.Medium.law_nonneg_of_clocked
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Foundation.lean#L112)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Foundation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：当时钟准入条件满足时，联合系统的正常演化概率测度值恒非负。
 
@@ -110,6 +134,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Foundation.lean#L122)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Foundation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在时钟准入条件下，施加环路截断后的联合演化概率测度值恒非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -125,6 +153,10 @@
 ## CGB.Medium.aliveProb_bounds
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Foundation.lean#L135)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Foundation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：在时钟准入条件下，机体在任意调度与时间步下的存活概率度量严格介于0与1之间。
 
@@ -142,6 +174,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Foundation.lean#L152)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Foundation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：系统在零时刻（第0步）的存活概率严格等于初始状态的存活指示函数值。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -157,6 +193,10 @@
 ## CGB.Medium.persists_parameter_bounds
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Foundation.lean#L159)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Foundation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：当机体满足持续生存条件时，其持久性阈值参数δ必然非负。
 
@@ -174,6 +214,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Foundation.lean#L198)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Foundation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：存在无界刺激反例系统完全满足微观介质的局部公理系统。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -187,6 +231,10 @@ CGB.FoundationCounterexamples.unboundedStimulus.Axioms
 ## CGB.FoundationCounterexamples.unboundedStimulus_no_clock
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Foundation.lean#L226)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Foundation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：有限机体与状态空间并不自动蕴含全局有时钟速率上界（无界刺激反例构造）。
 
@@ -202,6 +250,10 @@ CGB.FoundationCounterexamples.unboundedStimulus.Axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Foundation.lean#L251)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Foundation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：准入条件的放宽不会破坏已构造系统的存在性见证，确立弱化定理的单调传递性。
 
 源码说明：Weakening admissibility cannot destroy an already constructed existence witness. Consequently a bad model is not a necessity proof for an existential life conjecture.
@@ -216,6 +268,10 @@ CGB.FoundationCounterexamples.unboundedStimulus.Axioms
 ## CGB.TheoryAudit.counterexample_blocks_guarantee
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Foundation.lean#L258)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Foundation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：只要剩余前提下存在具体反例，即可彻底否定泛化存在性全称命题。
 

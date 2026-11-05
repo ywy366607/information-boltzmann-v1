@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SpongeContractInstance.lean#L54)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：Sponge
+
+分类说明：具体 Sponge 契约物理模型实例见证。
+
 解释：海绵合约实例的端口协议在时刻零精确解耦，传感器信号端口与资源端口互不串扰。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -29,6 +33,10 @@
 ## CGB.SpongeContractInstance.reserve_contract
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SpongeContractInstance.lean#L61)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：Sponge
+
+分类说明：具体 Sponge 契约物理模型实例见证。
 
 解释：海绵储库合约满足秩降与空态保持性质：空态秩为零且单步保持为空，非空态单步步进后储量秩严格递减直至排空。
 

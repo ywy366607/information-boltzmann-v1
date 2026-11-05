@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L39)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Lattice
+
+分类说明：针对 Lattice 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：具有电导对称性与对数微观平衡的反应介质满足微观可逆性公理P2b。
 
 源码说明：**M1a with conductances**: rates `κ a x · exp (-(E y - E x) / 2)` with `κ` equal on an event and its reverse (read at the respective source states) give P2b.
@@ -31,6 +35,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L151)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Lattice
+
+分类说明：针对 Lattice 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：更新一个位置后，有限位置函数总和的变化等于该位置新值减旧值。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -45,6 +53,10 @@
 ## CGB.LatticeCRN.sum_update2
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L159)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Lattice
+
+分类说明：针对 Lattice 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：更新两个不同位置后，有限位置函数总和的变化等于两位置新值之和减旧值之和。
 
@@ -63,6 +75,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L167)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Lattice
+
+分类说明：针对 Lattice 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定晶格中相邻的两个位置互不相同。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -77,6 +93,10 @@
 ## CGB.LatticeCRN.p1a
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L171)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Lattice
+
+分类说明：针对 Lattice 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若晶格介质内容函数满足有限子水平集、统一上界和唯一零态，则该介质满足 P1a。
 
@@ -94,6 +114,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L174)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Lattice
+
+分类说明：针对 Lattice 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定晶格反应介质满足 P1b，单体事件局限于参与位置且双体事件局限于相邻参与位置。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -108,6 +132,10 @@
 ## CGB.LatticeCRN.p2a
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L219)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Lattice
+
+分类说明：针对 Lattice 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若不触及边界的单体事件保持内容、双体事件保持两端内容之和，则晶格介质满足 P2a。
 
@@ -129,6 +157,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L263)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Lattice
+
+分类说明：针对 Lattice 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若晶格介质的单体作用改变了整体状态，则参与位置上的局部作用也改变该位置状态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -143,6 +175,10 @@
 ## CGB.LatticeCRN.act2_ne
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L266)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Lattice
+
+分类说明：针对 Lattice 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若两位置相邻且晶格双体作用改变了整体状态，则对应的局部状态对也被改变。
 
@@ -159,6 +195,10 @@
 ## CGB.LatticeCRN.p2b
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L278)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Lattice
+
+分类说明：针对 Lattice 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若平静储库势为零且单体、双体有效事件均有对合逆事件和匹配电导，则晶格介质满足 P2b。
 
@@ -185,6 +225,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L353)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Lattice
+
+分类说明：针对 Lattice 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：晶格介质的任一自同构保持并反映相邻关系。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -201,6 +245,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L362)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Lattice
+
+分类说明：针对 Lattice 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定晶格反应介质满足 P2c 重标记等变性：介质自同构可对应到保持速率与作用的事件重标记。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -216,6 +264,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L396)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Lattice
+
+分类说明：针对 Lattice 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定晶格反应介质满足 P3：外部刺激的速率与作用依赖受边界约束，初态对自同构不变。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -230,6 +282,10 @@
 ## CGB.LatticeCRN.axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLattice.lean#L423)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Lattice
+
+分类说明：针对 Lattice 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在定理列出的内容条件、局部守恒、逆事件及正反电导匹配前提下，指定晶格反应介质满足 Axioms。
 

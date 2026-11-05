@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EnergyBudget.lean#L28)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：EnergyBudget 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：交互机器从指定初态演化得到的每时刻状态分布非负且总和为一。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -25,6 +29,10 @@
 ## CGB.Energetics.expected_first_law
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EnergyBudget.lean#L66)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：EnergyBudget 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：若每个受支持事件满足声明的能量收支，则可沿原过程对其取期望得到平均能量收支。
 
@@ -45,6 +53,10 @@
 ## CGB.Energetics.availability_balance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EnergyBudget.lean#L118)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：EnergyBudget 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：每拍平均自由能增量加输出功和 T 倍熵产，等于输入的可用量。
 
@@ -67,6 +79,10 @@
 ## CGB.Energetics.work_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EnergyBudget.lean#L133)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：EnergyBudget 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：在给定可用量收支和储备下界等条件下，有限时段的输出功受供应与储备变化约束。
 
@@ -96,6 +112,10 @@
 ## CGB.Energetics.no_sustained_use_on_finite_supply
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EnergyBudget.lean#L169)
+
+分类：necessity；适用范围：world_contract；审核：reviewed
+
+分类说明：有限能量供给无法支持无限持续消耗的物理必要性。
 
 解释：在定理给定的正平均消耗、有限总供给与有界储备条件下，指定持续消耗不可能无限维持。
 

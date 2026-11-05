@@ -1,0 +1,35 @@
+{
+  "source_checkpoint": "results\\cgb_observed_gain_joint_20261105\\last.pt.gz",
+  "checkpoint_sha256": "87dbd48961e8f949637f4d9be96adcb3f87283daf273caca48db84cf2a278163",
+  "cycle": 512,
+  "occupied": 730,
+  "old_observed_action_readable": 308,
+  "new_observed_action_readable": 272,
+  "ambiguous_or_incomplete_action_labels_filtered": 36,
+  "new_mask_subset_of_old": true,
+  "complete_metadata_rule_matches": true,
+  "slot456": {
+    "count": 2,
+    "last_action": 2,
+    "wood_action": -1,
+    "wood_label_count": 0,
+    "measured_gain": 0.0005454213242046535,
+    "old_readable": true,
+    "new_readable": false
+  },
+  "persistent_array_bytes_added": 0,
+  "optimizer_steps": 0,
+  "world_steps": 0,
+  "source_checkpoint_and_memory_unchanged": true,
+  "verification": {
+    "pytest_passed": 46,
+    "scope": "CPU numerical/interface tests plus read-only saved checkpoint; no post-fix training",
+    "new_regressions": "actual helper order for mixed/same action merge, gain recall, reusable admission, content reads and memory-state restore",
+    "known_warning": "pre-existing non-writeable NumPy input warning in utterance copy"
+  },
+  "changed_runtime_sources": {
+    "scripts/ib_local/navigation_settlement.py": "1640771aaf4476b094edda9b95a37113799ba91b7ca48a0b244d6a3811c5b6cd",
+    "scripts/ib_local/language_navigation_kanli_v4b.py": "8e37c44c5896cc47eb5e527b3d4c33587d84f058ebaf334312ff0ff53132ed76"
+  },
+  "lean_requirement": "CGB.LanguageLifeKernel.delayed_action_credit_requires_state_separation; existing action identity/counts reused, no new theorem coverage"
+}

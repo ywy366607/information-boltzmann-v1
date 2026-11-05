@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RecoveryControls.lean#L41)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：对单位置布尔状态的任意实函数求和等于函数在假和真两种状态的值之和。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -23,6 +27,10 @@
 ## CGB.RecoveryControls.body_kernel
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RecoveryControls.lean#L50)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：该布尔身体在速率一时的一步转移核由后继状态是否等于当前状态或刺激给出。
 
@@ -38,6 +46,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RecoveryControls.lean#L60)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：指定恢复对照身体满足速率一的离散时钟条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -51,6 +63,10 @@ CGB.RecoveryControls.body.Clocked 1
 ## CGB.RecoveryControls.oracle_ignores_access
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RecoveryControls.lean#L72)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：在该对照中，旧版有利刺激菜单的恢复评分对两个可达性不同的世界仍相同。
 
@@ -67,6 +83,10 @@ CGB.RecoveryControls.body.Clocked 1
 ## CGB.RecoveryControls.actual_recovery_distinguishes_world_moves
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RecoveryControls.lean#L78)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：指定身体与同一状态下，两个不同世界转移核在两拍内的真实恢复概率不同。
 

@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L61)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：介质原子子条件与精简核心之间的逻辑蕴含和等价性关系。
+
 解释：P1b 等价于参与位置接触、写入局部、速率读取局部和作用读取局部四个条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -24,6 +28,10 @@
 ## CGB.Medium.onlyBoundarySenses_iff_atoms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L72)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：介质原子子条件与精简核心之间的逻辑蕴含和等价性关系。
 
 解释：只有边界感知刺激的条件等价于边界速率与边界作用两个子条件同时成立。
 
@@ -40,6 +48,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L80)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：介质原子子条件与精简核心之间的逻辑蕴含和等价性关系。
+
 解释：P3 等价于边界速率、边界作用和初始状态不变三个条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -55,6 +67,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L88)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：介质原子子条件与精简核心之间的逻辑蕴含和等价性关系。
+
 解释：局部状态类型有限时，任意内容子水平集均有限。
 
 源码说明：In any finite local state space, sublevel sets are automatically finite (A01 is redundant).
@@ -68,6 +84,10 @@
 ## CGB.Medium.a02_of_finite
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L94)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：介质原子子条件与精简核心之间的逻辑蕴含和等价性关系。
 
 解释：局部状态类型有限时，任何自然数内容函数都有统一上界。
 
@@ -83,6 +103,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L104)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：介质原子子条件与精简核心之间的逻辑蕴含和等价性关系。
+
 解释：局部状态类型有限时，每个内容子水平集有限且内容存在统一上界。
 
 源码说明：Under `[Finite Λ]`, A01 and A02 hold unconditionally for ANY content function.
@@ -96,6 +120,10 @@
 ## CGB.Medium.uniqueVacuum_independent_of_finite
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L110)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
 
 解释：三个有限状态内容函数分别见证没有零态、零态不唯一和唯一零态，说明有限性本身不决定唯一零态。
 
@@ -111,6 +139,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L136)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
+
 解释：farFlip 不满足事件速率只读取参与位置的条件。
 
 源码说明：`farFlip` violates rateReadsParticipants (A07).
@@ -124,6 +156,10 @@
 ## CGB.Medium.farFlip_satisfies_effectReads
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L150)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
 
 解释：farFlip 的事件作用满足只读取参与位置的条件。
 
@@ -139,6 +175,10 @@ CGB.Models.farFlip.EffectReadsParticipants
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L158)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
+
 解释：farFlip 的事件只写入参与位置。
 
 源码说明：`farFlip` satisfies writesParticipants (A06).
@@ -152,6 +192,10 @@ CGB.Models.farFlip.WritesParticipants
 ## CGB.Medium.farFlip_satisfies_partsContact
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L164)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
 
 解释：farFlip 的事件参与位置满足接触条件。
 
@@ -167,6 +211,10 @@ CGB.Models.farFlip.ParticipantsContact
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L171)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
+
 解释：farFlip 的接触关系满足所定义的均匀性。
 
 源码说明：`farFlip` satisfies homogeneousContact (A04).
@@ -180,6 +228,10 @@ CGB.Models.farFlip.HomogeneousContact
 ## CGB.Medium.farFlip_isolates_a07
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L176)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
 
 解释：farFlip 违反速率只读取参与位置，同时满足列出的其他局部性子条件。
 
@@ -198,6 +250,10 @@ CGB.Models.farFlip.HomogeneousContact
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L199)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
+
 解释：farAct 不满足事件作用只读取参与位置的条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -211,6 +267,10 @@ CGB.Models.farFlip.HomogeneousContact
 ## CGB.Medium.farAct_satisfies_rateReads
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L214)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
 
 解释：farAct 的事件速率满足只读取参与位置的条件。
 
@@ -226,6 +286,10 @@ CGB.Medium.farAct.RateReadsParticipants
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L218)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
+
 解释：farAct 的事件只写入参与位置。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -239,6 +303,10 @@ CGB.Medium.farAct.WritesParticipants
 ## CGB.Medium.farAct_satisfies_partsContact
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L223)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
 
 解释：farAct 的事件参与位置满足接触条件。
 
@@ -254,6 +322,10 @@ CGB.Medium.farAct.ParticipantsContact
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L229)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
+
 解释：farAct 的接触关系满足所定义的均匀性。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -267,6 +339,10 @@ CGB.Medium.farAct.HomogeneousContact
 ## CGB.Medium.farAct_isolates_a08
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L234)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
 
 解释：farAct 违反作用只读取参与位置，同时满足列出的其他局部性子条件。
 
@@ -284,6 +360,10 @@ CGB.Medium.farAct.HomogeneousContact
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L247)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
+
 解释：innerClock 不满足外部刺激只经边界影响速率的条件。
 
 源码说明：`innerClock` violates boundaryRate (A12).
@@ -297,6 +377,10 @@ CGB.Medium.farAct.HomogeneousContact
 ## CGB.Medium.innerClock_satisfies_boundaryEffect
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L256)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
 
 解释：innerClock 满足外部刺激只经边界影响作用的条件。
 
@@ -312,6 +396,10 @@ CGB.Models.innerClock.BoundaryEffect
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L261)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
+
 解释：innerClock 的初始状态满足重标记不变性。
 
 源码说明：`innerClock` SATISFIES initialInvariant (A14).
@@ -325,6 +413,10 @@ CGB.Models.innerClock.InitialInvariant
 ## CGB.Medium.innerClock_isolates_a12
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L268)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
 
 解释：innerClock 违反边界速率条件，但满足边界作用和初始不变性条件。
 
@@ -340,6 +432,10 @@ CGB.Models.innerClock.InitialInvariant
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L289)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
+
 解释：innerActClock 不满足外部刺激只经边界影响作用的条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -353,6 +449,10 @@ CGB.Models.innerClock.InitialInvariant
 ## CGB.Medium.innerActClock_satisfies_boundaryRate
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L299)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
 
 解释：innerActClock 满足外部刺激只经边界影响速率的条件。
 
@@ -368,6 +468,10 @@ CGB.Medium.innerActClock.BoundaryRate
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L303)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
+
 解释：innerActClock 的初始状态满足重标记不变性。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -381,6 +485,10 @@ CGB.Medium.innerActClock.InitialInvariant
 ## CGB.Medium.innerActClock_isolates_a13
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L310)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
 
 解释：innerActClock 违反边界作用条件，但满足边界速率与初始不变性条件。
 
@@ -397,6 +505,10 @@ CGB.Medium.innerActClock.InitialInvariant
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L319)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
+
 解释：pairPreset 违反初始重标记不变性，但满足边界速率和边界作用条件。
 
 源码说明：`pairPreset` isolates A14: satisfies boundaryRate (A12) and boundaryEffect (A13), but violates A14.
@@ -410,6 +522,10 @@ CGB.Medium.innerActClock.InitialInvariant
 ## CGB.Medium.complete_graph_satisfies_a04_a05
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L339)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：介质原子子条件与精简核心之间的逻辑蕴含和等价性关系。
 
 解释：若所有位置彼此接触，则接触均匀性和事件参与位置接触条件均成立。
 
@@ -426,6 +542,10 @@ CGB.Medium.innerActClock.InitialInvariant
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L348)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：介质原子子条件与精简核心之间的逻辑蕴含和等价性关系。
+
 解释：若每个事件参与全部位置，则写入局部及速率、作用读取局部条件自动成立。
 
 源码说明：Under universal participants (`∀ a, parts a = univ`), writesParticipants (A06), rateReadsParticipants (A07), and effectReadsParticipants (A08) are vacuously satisfied.
@@ -440,6 +560,10 @@ CGB.Medium.innerActClock.InitialInvariant
 ## CGB.Medium.all_boundary_satisfies_a12_a13
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L361)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：介质原子子条件与精简核心之间的逻辑蕴含和等价性关系。
 
 解释：所有位置都是边界时，刺激依赖只来自边界的速率与作用条件自动成立。
 
@@ -456,6 +580,10 @@ CGB.Medium.innerActClock.InitialInvariant
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L381)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
+
 解释：指定三位置路径的接触自同构不能把任意位置映到任意另一位置。
 
 源码说明：This specific three-site contact relation is not vertex-transitive. No identification of contact with a realized biological wiring graph is assumed.
@@ -469,6 +597,10 @@ CGB.Medium.innerActClock.InitialInvariant
 ## CGB.Medium.atomized_implies_reducedCore
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L426)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：介质原子子条件与精简核心之间的逻辑蕴含和等价性关系。
 
 解释：满足全部原子化条件的介质必满足指定精简核心条件。
 
@@ -485,6 +617,10 @@ CGB.Medium.innerActClock.InitialInvariant
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L433)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：介质原子子条件与精简核心之间的逻辑蕴含和等价性关系。
+
 解释：在局部状态有限且介质刚性的条件下，精简核心推出完整原子化条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -499,6 +635,10 @@ CGB.Medium.innerActClock.InitialInvariant
 ## CGB.Medium.reducedCore_iff_atomized_of_regimes
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L447)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：介质原子子条件与精简核心之间的逻辑蕴含和等价性关系。
 
 解释：在局部状态有限且介质刚性的条件下，精简核心与完整原子化条件等价。
 
@@ -515,6 +655,10 @@ CGB.Medium.innerActClock.InitialInvariant
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L467)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
+
 解释：指定三位置刚性路径模型满足精简核心条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -528,6 +672,10 @@ CGB.Medium.path3Rigid.ReducedCore
 ## CGB.Medium.path3Rigid_atomized_not_homogeneous
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SubconditionGraph.lean#L485)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体介质模型隔离单一子条件的反例见证。
 
 解释：指定三位置刚性路径模型满足原子化条件但接触关系不均匀。
 

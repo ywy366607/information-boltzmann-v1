@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Symmetry.lean#L31)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Symmetry 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：马尔可夫跳跃过程生成元在平方观测量上的作用减去两倍交叉项，等于各跳跃方向平方差的非负加权和（卡拉索导数恒等式）。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -24,6 +28,10 @@
 ## CGB.JumpProcess.noether
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Symmetry.lean#L40)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Symmetry 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：诺特定理马尔可夫形式：观测量及其平方在跳跃过程生成元下均为零，当且仅当该观测量是严格守恒荷。
 
@@ -40,6 +48,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Symmetry.lean#L64)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Symmetry 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在可逆马尔可夫跳跃过程中，转移速率比恒等于微观状态能量差的指数形式，存在自洽的有效能量函数。
 
 源码说明：**T-E** (energy from time-reversal symmetry): a reversible process has an energy `E = -log π` that fixes the ratio of every event to its reverse.
@@ -54,6 +66,10 @@
 ## CGB.JumpProcess.ring3_not_reversible
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Symmetry.lean#L83)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Symmetry 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：三态有向环状跳跃过程因存在非零环流而破坏细致平衡，属于严格不可逆非平衡稳态。
 

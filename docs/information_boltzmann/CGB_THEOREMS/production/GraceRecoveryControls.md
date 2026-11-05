@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryControls.lean#L23)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：在单点损失条件下，优雅恢复的步进转移具有确定性的点损失界。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -25,6 +29,10 @@
 ## _private.CGBAxioms.GraceRecoveryControls.0.CGB.GraceRecoveryControls.off_trap_recovery
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryControls.lean#L45)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：在脱离陷阱控制下，系统脱离不可恢复陷阱态的转移概率有明确上界。
 
@@ -44,6 +52,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryControls.lean#L67)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：在优雅恢复控制中，仅改变决策视界长度无法挽救受损存活率，其在离线环境下的存活概率不超过二分之一。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -60,6 +72,10 @@ CGB.Exchange.survival CGB.GraceRecoveryControls.body CGB.GraceRecoveryControls.o
 ## CGB.GraceRecoveryControls.two_tick_lookahead_insufficient
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryControls.lean#L89)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：两步前瞻机制不足以实现优雅恢复，中断状态下恢复至就绪态的概率精确为零。
 

@@ -1,0 +1,19 @@
+{
+  "status": "complete",
+  "model": "online bigram count floor",
+  "source": "same registered OWT byte source and phases as cgb_joint_language_prereg_20261103.json",
+  "stream_sha256": "67fdd7e4f39ed909e2de989bcd00627234b38b7f7e209000b0c3b82d67ef6f47",
+  "updates": 640000,
+  "train_scored_bytes": 640000,
+  "state_bytes": 263168,
+  "smoothing_per_symbol": 0.5,
+  "protocol": "predict target before incrementing observed pair; frozen validation, 32-byte warmup discarded; no test access",
+  "validation_nll": 2.5084995641715473,
+  "phase_nll": {
+    "A_first": 2.592959723890936,
+    "B_fresh": 2.524705957620943,
+    "A_revisit": 2.5269497414671354,
+    "C_fresh": 2.556575361857571
+  },
+  "comparison_limit": "diagnostic floor, smaller memory and different per-byte count update; not a parameter-matched neural ablation"
+}

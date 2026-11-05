@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/TurnoverControls.lean#L22)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：物料周转对照中的身体满足当前介质公理结构。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -23,6 +27,10 @@ CGB.TurnoverControls.body.Axioms
 ## CGB.TurnoverControls.body_unchanged
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/TurnoverControls.lean#L27)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：该周转身体的内部事件作用对任意刺激和状态都保持身体状态不变。
 
@@ -38,6 +46,10 @@ CGB.TurnoverControls.body.Axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/TurnoverControls.lean#L33)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：指定周转身体在速率一条件下满足逐事件时钟约束。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -51,6 +63,10 @@ CGB.TurnoverControls.body.EventClocked 1
 ## CGB.TurnoverControls.event_at_full
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/TurnoverControls.lean#L52)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：在指定满状态与刺激下，逐事件一步核仅对所列事件和满后继状态取一。
 
@@ -66,6 +82,10 @@ CGB.TurnoverControls.body.EventClocked 1
 ## CGB.TurnoverControls.old_net_recovery_zero
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/TurnoverControls.lean#L63)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：在任意所列协议和期限下，该周转身体按旧版净内容增长标记计算的恢复概率为零。
 
@@ -83,6 +103,10 @@ CGB.TurnoverControls.body.EventClocked 1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/TurnoverControls.lean#L75)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：指定平衡交换账本下，该满状态见证在任意时刻一拍恢复概率为一。
 
 源码说明：A one-world-tick exchange occurs with certainty although net content never increases. Marking channels detects the positive incoming AND outgoing count.
@@ -99,6 +123,10 @@ CGB.TurnoverControls.body.EventClocked 1
 ## CGB.TurnoverControls.zero_ledger_recovery_zero
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/TurnoverControls.lean#L84)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：在零交换账本下，该对照身体对任意所列协议、状态和有限期限的交换恢复概率为零。
 
@@ -118,6 +146,10 @@ CGB.TurnoverControls.body.EventClocked 1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/TurnoverControls.lean#L90)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：在指定平衡交换账本下，该满状态见证在每个时刻的交换生命指标为一。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -135,6 +167,10 @@ CGB.TurnoverControls.body.EventClocked 1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/TurnoverControls.lean#L109)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：指定自然世界下，该见证任意时刻的联合状态分布都集中于所列满身体与真世界状态。
 
 源码说明：The state process stays at the same full-body/world state forever, even though the registered replacement channel fires each tick.
@@ -150,6 +186,10 @@ CGB.TurnoverControls.body.EventClocked 1
 ## CGB.TurnoverControls.natural_survival_one
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/TurnoverControls.lean#L122)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：指定平衡交换账本下，该自然过程在所有时刻的交换生存评分为一。
 
@@ -168,6 +208,10 @@ CGB.TurnoverControls.body.EventClocked 1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/TurnoverControls.lean#L130)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：指定平衡交换账本与身体—世界见证满足容忍参数为零的交换持续条件。
 
 源码说明：A material-throughput subtarget witness, not the complete life or cognitive candidate: the separate SelfMaintains and cognitive obligations are not assumed.
@@ -182,6 +226,10 @@ CGB.Exchange.Persists CGB.TurnoverControls.body CGB.TurnoverControls.world CGB.T
 ## CGB.TurnoverControls.old_net_and_balanced_exchange_disagree
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/TurnoverControls.lean#L138)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：该见证中旧版净内容增加恢复值为零，而显式平衡交换账本的恢复值不同。
 
@@ -202,6 +250,10 @@ CGB.Operational.recovery CGB.TurnoverControls.body CGB.TurnoverControls.world �
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/TurnoverControls.lean#L148)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：相同身体与世界状态动力学配上两个不同交换账本时，可得到不同恢复概率。
 
 源码说明：Two algebraically accountable ledgers give different gross observations on IDENTICAL body/world dynamics. Physical transport must therefore be registered and validated beyond the net-balance equation.
@@ -221,6 +273,10 @@ CGB.Exchange.recovery CGB.TurnoverControls.body CGB.TurnoverControls.world CGB.T
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/TurnoverControls.lean#L160)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：同一指定快速身体满足旧版速率一时钟条件，展示两个时钟定义的区别。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -234,6 +290,10 @@ CGB.TurnoverControls.fastBody.Clocked 1
 ## CGB.TurnoverControls.fastBody_no_event_clock
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/TurnoverControls.lean#L165)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：指定快速身体不满足速率一的逐事件时钟条件。
 

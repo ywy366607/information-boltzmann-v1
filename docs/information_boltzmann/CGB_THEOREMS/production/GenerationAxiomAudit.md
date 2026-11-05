@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationAxiomAudit.lean#L26)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：GenerationAxiomAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在接触齐次的局部介质中，任意两个空间单元具有完全相等的接触度数（正则图性质）。
 
 源码说明：**Homogeneity forces a regular contact graph**: every unit has the same number of contacts. So with homogeneity in P1b (before 2026-10-26) a body whose contact has units of different degree (a tree with leaves, a hub, a finite grid with a surface, a line graph of compartments of different sizes) was not a model.
@@ -24,6 +28,10 @@
 ## CGB.Medium.not_homogeneous_of_degrees
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationAxiomAudit.lean#L45)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：GenerationAxiomAudit 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：若介质中存在两个度数不同的空间单元，则该系统必然不是接触齐次的。
 

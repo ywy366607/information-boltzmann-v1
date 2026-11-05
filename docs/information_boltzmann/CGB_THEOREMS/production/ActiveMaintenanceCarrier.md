@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenanceCarrier.lean#L53)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：主动维护载体中的每个离散事件交付均对应于确定性的微观状态跳转。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -25,6 +29,10 @@
 ## _private.CGBAxioms.ActiveMaintenanceCarrier.0.CGB.ActiveMaintenanceCarrier.physical_delivery
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenanceCarrier.lean#L74)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：物理层物质包的交付与宏观感官维护时钟在离散步长下严格步调一致。
 
@@ -44,6 +52,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenanceCarrier.lean#L91)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：维护载体中流通的令牌总数在内部传输过程中保持代数守恒。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -59,6 +71,10 @@
 ## _private.CGBAxioms.ActiveMaintenanceCarrier.0.CGB.ActiveMaintenanceCarrier.token_transport
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenanceCarrier.lean#L94)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：令牌在不同位点间的空间传输受到通道开闭状态和局域排他律的完全约束。
 
@@ -89,6 +105,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenanceCarrier.lean#L106)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：主动维护载体在环境驱动下实现了物理底层介质到粗粒化事件过程的状态映射与进出物料通量守恒。
 
 源码说明：Full process and clock certificate, for both normal and marginal-ghost cut. Carrier identities cannot alter any future observed event/state cylinder.
@@ -107,6 +127,10 @@
 ## _private.CGBAxioms.ActiveMaintenanceCarrier.0.CGB.ActiveMaintenanceCarrier.token_energy
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenanceCarrier.lean#L121)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：每个流动物质令牌所携带的有效势能与当前微观位点静电势严格匹配。
 

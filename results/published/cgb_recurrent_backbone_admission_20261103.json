@@ -1,0 +1,130 @@
+{
+  "kind": "implementation_and_static_resource_audit_not_capability",
+  "legacy_default_bitwise_equal": true,
+  "legacy_gradient_bitwise_equal": true,
+  "profiles": [
+    {
+      "name": "resource_profile_36m",
+      "config": {
+        "vocab_size": 256,
+        "d": 512,
+        "layers": 8,
+        "heads": 8,
+        "recurrence": "decay_then_delta",
+        "mlp_hidden": 2048
+      },
+      "parameters": 35857024,
+      "state_elements_per_individual": 262144,
+      "state_fp32_bytes": 1048576,
+      "parameter_gradient_adam_fp32_bytes": 573712384,
+      "excludes": "activations, temporary workspace, allocator, data, and extra credit states"
+    },
+    {
+      "name": "resource_profile_1b",
+      "config": {
+        "vocab_size": 256,
+        "d": 2048,
+        "layers": 14,
+        "heads": 32,
+        "recurrence": "decay_then_delta",
+        "mlp_hidden": 8192
+      },
+      "parameters": 1000663936,
+      "state_elements_per_individual": 1835008,
+      "state_fp32_bytes": 7340032,
+      "parameter_gradient_adam_fp32_bytes": 16010622976,
+      "excludes": "activations, temporary workspace, allocator, data, and extra credit states"
+    }
+  ],
+  "cuda_calibration": {
+    "kind": "interface_only_random_tensors_no_parameter_learning",
+    "seed": 87,
+    "learning_rate": 0.0,
+    "window": 32,
+    "batch": 1,
+    "warmup_replays": 2,
+    "measured_replays": 3,
+    "seconds_per_replay": 0.06413290000151999,
+    "peak_allocated_bytes": 755493888,
+    "peak_reserved_bytes": 864026624,
+    "hardware": "NVIDIA GeForce GTX 1650",
+    "torch_version": "2.9.1+cu126",
+    "cuda_graph": true,
+    "not_language_throughput": true
+  },
+  "validation": {
+    "pytest_command": "D:/conda_envs/vox/python.exe -m pytest tests/test_gated_deltanet.py -q",
+    "passed": 10,
+    "real_language_training_runs": 0,
+    "new_lean_theorems": 0,
+    "body_admitted": false
+  },
+  "source_sha256": {
+    "scripts/ib_local/gated_deltanet.py": "4cb24561d5e0ce2977f9a34d0cdd58e873f16af2fcf2464eec24e1ff55e65471",
+    "tests/test_gated_deltanet.py": "8a172bdcdb9930d819fc88e15d64150006ada9f969ffee036b49d4624c1616b6",
+    "scripts/ib_local/train_cbim_malecns_internal_time.py": "a8dbb8385748b91c9b5bb3a109aaf48e7edaf39b57f3dac3b2f098bcd5967b4c"
+  },
+  "latest_stage": "short_conv",
+  "short_conv": {
+    "profiles": [
+      {
+        "config": {
+          "vocab_size": 256,
+          "d": 512,
+          "layers": 8,
+          "heads": 8,
+          "recurrence": "decay_then_delta",
+          "mlp_hidden": 2048,
+          "conv_kernel": 4
+        },
+        "parameters": 35906176,
+        "packed_state_elements": 299008,
+        "conv_cache_fp32_bytes": 147456,
+        "packed_state_fp32_bytes": 1196032,
+        "parameter_gradient_adam_fp32_bytes": 574498816
+      },
+      {
+        "config": {
+          "vocab_size": 256,
+          "d": 2048,
+          "layers": 14,
+          "heads": 32,
+          "recurrence": "decay_then_delta",
+          "mlp_hidden": 8192,
+          "conv_kernel": 4
+        },
+        "parameters": 1001008000,
+        "packed_state_elements": 2093056,
+        "conv_cache_fp32_bytes": 1032192,
+        "packed_state_fp32_bytes": 8372224,
+        "parameter_gradient_adam_fp32_bytes": 16016128000
+      }
+    ],
+    "pytest_passed": 17,
+    "legacy_default_bitwise_equal": true,
+    "legacy_gradient_bitwise_equal": true,
+    "body_admitted": false,
+    "real_language_training_runs": 0,
+    "new_lean_theorems": 0,
+    "cuda_calibration": {
+      "kind": "random_tensor_interface_only_no_parameter_learning",
+      "seed": 87,
+      "learning_rate": 0.0,
+      "window": 32,
+      "batch": 1,
+      "warmup_replays": 2,
+      "measured_replays": 3,
+      "seconds_per_replay": 0.07264246666939773,
+      "peak_allocated_bytes": 756771840,
+      "peak_reserved_bytes": 868220928,
+      "hardware": "NVIDIA GeForce GTX 1650",
+      "torch_version": "2.9.1+cu126",
+      "cuda_graph": true
+    },
+    "source_sha256": {
+      "scripts/ib_local/gated_deltanet.py": "06322ecc6a5af7396227d68e6d5f50503aabf8ea0cb23fdfbbbd622af45ff669",
+      "tests/test_gated_deltanet.py": "62964c56bf3e4e5aa273050f46d810c0e5b542432f2c550dad0e9c9e20668938",
+      "scripts/ib_local/train_cbim_malecns_internal_time.py": "a8dbb8385748b91c9b5bb3a109aaf48e7edaf39b57f3dac3b2f098bcd5967b4c"
+    }
+  }
+}

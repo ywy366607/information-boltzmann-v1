@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L42)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：二值对函数若能拆为常数和两个单变量项，则其混合差分为零，不能表示这里定义的非零双变量关系。
 
 源码说明：Coordinate-separable state cannot carry a nonzero pairwise interaction.
@@ -23,6 +27,10 @@
 ## CGB.Generation.pairwise_relation_requires_cross_term
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L55)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：二值对函数的混合差分非零时，它不能写成仅有常数与两个单变量项的形式。
 
@@ -39,6 +47,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L69)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：常数增益与局部需求无关，因而不满足需求增加时增益严格下降的定义。
 
 源码说明：A demand-independent gain cannot satisfy local anti-dominance.
@@ -52,6 +64,10 @@
 ## CGB.Generation.reservoir_availability_is_local_anti_dominant
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L78)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：正供给下，资源可用率 s/(s+m) 随正需求 m 增加而严格下降。
 
@@ -67,6 +83,10 @@ CGB.Generation.LocalAntiDominance CGB.Generation.reservoirAvailability
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L87)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：资源可用率乘正的基础增益后，仍随局部需求严格下降。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -80,6 +100,10 @@ CGB.Generation.LocalAntiDominance CGB.Generation.reservoirAvailability
 ## CGB.Generation.local_anti_dominance_requires_demand_readout
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L95)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若增益满足这里的局部反垄断定义，它不可能对所有需求值保持不变。
 
@@ -95,6 +119,10 @@ CGB.Generation.LocalAntiDominance CGB.Generation.reservoirAvailability
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L108)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：按局部反垄断定义，在正供给与正需求条件下，需求较小的隔室获得严格较大的增益。
 
 源码说明：Under local anti-dominance, an under-demanded compartment receives strictly higher marginal availability than a dominant compartment with greater past demand. This is the formal rebalancing mechanism that prevents G19a rich-club collapse.
@@ -109,6 +137,10 @@ CGB.Generation.LocalAntiDominance CGB.Generation.reservoirAvailability
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L119)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：对所有隔室和需求均返回同一个常数的共享增益不满足局部反垄断定义。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -122,6 +154,10 @@ CGB.Generation.LocalAntiDominance CGB.Generation.reservoirAvailability
 ## CGB.Generation.separable_and_global_fails_cgb
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L131)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：可分离的二值关系函数与共享常数增益组合不满足这里定义的两个候选接口。
 
@@ -139,6 +175,10 @@ CGB.Generation.LocalAntiDominance CGB.Generation.reservoirAvailability
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L147)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：构造的二值乘积关系载体 κab 的混合差分恰为 κ。
 
 源码说明：The CGB carrier has exact interaction `κ`.
@@ -153,6 +193,10 @@ CGB.Generation.LocalAntiDominance CGB.Generation.reservoirAvailability
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L153)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当 κ 非零时，构造的乘积载体具有这里定义的非零双变量关系。
 
 源码说明：When coupling `κ ≠ 0`, the CGB carrier is a genuine pairwise relation carrier.
@@ -166,6 +210,10 @@ CGB.Generation.LocalAntiDominance CGB.Generation.reservoirAvailability
 ## CGB.Generation.cgb_optimizer_admitted
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L165)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：当关系系数非零、基础增益为正时，构造的关系载体与资源增益同时满足这两个抽象候选接口。
 
@@ -184,6 +232,10 @@ CGB.Generation.LocalAntiDominance CGB.Generation.reservoirAvailability
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L178)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当目标混合差分非零时，任何按定义坐标可分离的二值函数都有正关系误差；该类不是完整 Adam 轨迹。
 
 源码说明：Any coordinate-separable (Adam-class) optimizer incurs strictly positive relational error whenever the target coupling is nonzero.
@@ -199,6 +251,10 @@ CGB.Generation.LocalAntiDominance CGB.Generation.reservoirAvailability
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L190)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：把目标耦合系数直接用于构造关系载体时，该代理指标上的关系误差为零。
 
 源码说明：The CGB optimizer achieves zero relational error on the target coupling.
@@ -212,6 +268,10 @@ CGB.Generation.LocalAntiDominance CGB.Generation.reservoirAvailability
 ## CGB.Generation.cgb_strictly_beats_adam_on_relations
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L197)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在目标耦合非零时，将目标系数直接写入的载体在关系误差代理指标上严格优于可分离函数，并未比较完整 Adam 训练。
 
@@ -233,6 +293,10 @@ CGB.Generation.LocalAntiDominance CGB.Generation.reservoirAvailability
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L217)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：该抽象共享常数增益对低、高需求隔室的增益差为零；这不是对完整 Muon 动力学的定理。
 
 源码说明：Any shared global/spectral (Muon-class) optimizer provides exactly zero protective margin between compartments: the dominant and tail compartments compete under identical un-depleted gain.
@@ -246,6 +310,10 @@ CGB.Generation.LocalAntiDominance CGB.Generation.reservoirAvailability
 ## CGB.Generation.cgb_optimizer_positive_tail_protection
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L225)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在基础增益和供给为正、低需求严格小于高需求时，指定资源增益给低需求隔室的增益差为正。
 
@@ -264,6 +332,10 @@ CGB.Generation.LocalAntiDominance CGB.Generation.reservoirAvailability
 ## CGB.Generation.cgb_strictly_beats_muon_on_tail_protection
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L236)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在指定正性与需求排序条件下，资源增益的尾部保护差严格大于共享常数增益的零差；该对照不等于完整 Muon。
 
@@ -284,6 +356,10 @@ CGB.Generation.LocalAntiDominance CGB.Generation.reservoirAvailability
 ## CGB.Generation.cgb_optimizer_pareto_superiority
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOptimizer.lean#L260)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Optimizer
+
+分类说明：针对 Optimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：对非零目标耦合和不同正需求，给定构造在关系误差及增益差两项代理指标上严格优于可分离函数加共享常数增益的组合。
 

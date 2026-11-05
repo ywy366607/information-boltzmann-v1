@@ -1,0 +1,195 @@
+{
+  "training_steps": 0,
+  "world_steps": 0,
+  "snapshots": [
+    {
+      "source": "results\\cgb_symbol_navigation_20261105\\last.pt.gz",
+      "sha256": "9b6cd9a55ad16aee0cedaddbc5f1b2529efb5ac237aa4c0bf249327433157a1f",
+      "saved_cycle": 512,
+      "migration": {
+        "old_kind": "td",
+        "new_kind": "observed",
+        "recovered_slots": 409,
+        "unknown_occupied_slots": 13,
+        "extra_persistent_array_bytes": 0,
+        "policy": "Recover only complete consistent measured labels; preserve unknown content and mark unavailable for measured-gain reads. TD remains pending/critic credit."
+      },
+      "current_objective_usable_slots": 409,
+      "legacy_single_slot_recall_change": 48964348.0,
+      "max_recall_change_across_td_targets": 0.0,
+      "reads": [
+        [
+          0.10291735827922821,
+          1.0
+        ],
+        [
+          0.04066840559244156,
+          1.0
+        ],
+        [
+          -0.3680006265640259,
+          1.0
+        ]
+      ],
+      "unknown_numbers_preserved": true,
+      "source_unchanged": true,
+      "no_new_parameter_or_persistent_array": true
+    },
+    {
+      "source": "results\\cgb_learning_rooms_joint_20261105\\last.pt.gz",
+      "sha256": "35ab53640dbc95f513b960d594d0d4a524342a67e830280daaabee6812ed2c8e",
+      "saved_cycle": 512,
+      "migration": {
+        "old_kind": "td",
+        "new_kind": "observed",
+        "recovered_slots": 590,
+        "unknown_occupied_slots": 68,
+        "extra_persistent_array_bytes": 0,
+        "policy": "Recover only complete consistent measured labels; preserve unknown content and mark unavailable for measured-gain reads. TD remains pending/critic credit."
+      },
+      "current_objective_usable_slots": 182,
+      "legacy_single_slot_recall_change": 88162384.0,
+      "max_recall_change_across_td_targets": 0.0,
+      "reads": [
+        [
+          0.28734028339385986,
+          1.0
+        ],
+        [
+          5.003953456878662,
+          1.0
+        ],
+        [
+          0.7154273986816406,
+          1.0
+        ]
+      ],
+      "unknown_numbers_preserved": true,
+      "source_unchanged": true,
+      "no_new_parameter_or_persistent_array": true
+    }
+  ],
+  "scope": "Actual migration, write and recall functions on two copied complete checkpoints. No claim of the remaining TD-learning dynamics being stable or useful.",
+  "remaining_update_gate": {
+    "optimizer_steps": 0,
+    "world_steps": 0,
+    "parameter_assignments_to_learner": 0,
+    "cases": [
+      {
+        "source": "results\\cgb_learning_rooms_joint_20261105\\last.pt.gz",
+        "sha256": "35ab53640dbc95f513b960d594d0d4a524342a67e830280daaabee6812ed2c8e",
+        "cycle": 512,
+        "observed_memory": false,
+        "sigma": 1.0,
+        "raw_target": 13.068140268325806,
+        "fixed_context_gain": 0.08343082666397095,
+        "raw_prediction_before": 4.764247417449951,
+        "raw_prediction_after": 4.761234283447266,
+        "gradient_norm": 177.02853393554688,
+        "max_proposed_parameter_change": 0.00034061260521411896,
+        "value_before": [
+          9.27711009979248,
+          4.764247417449951,
+          8.364568710327148
+        ],
+        "value_after": [
+          9.26460075378418,
+          4.761233806610107,
+          8.35441780090332
+        ],
+        "max_raw_value_change": 0.012509346008300781,
+        "policy_total_variation": 4.937499761581421e-05,
+        "local_td_before": 0.13068140268325806,
+        "local_td_after": 0.13063675928115845,
+        "raw_td_value_jacobian": [
+          0.1494445502758026,
+          0.561622679233551,
+          0.08893278986215591
+        ],
+        "raw_td_value_linf_gain": 0.800000011920929,
+        "prediction_error_before": 8.303892135620117,
+        "prediction_error_after": 8.306905746459961,
+        "model_parameters_unchanged": true,
+        "source_unchanged": true,
+        "note": "Analytic scalar AdamW proposal with saved moments and gradient clipping; CPU FP32, not bitwise CUDA foreach replay. Frozen saved action context, not next real transition."
+      },
+      {
+        "source": "results\\cgb_learning_rooms_joint_20261105\\last.pt.gz",
+        "sha256": "35ab53640dbc95f513b960d594d0d4a524342a67e830280daaabee6812ed2c8e",
+        "cycle": 512,
+        "observed_memory": true,
+        "sigma": 1.0,
+        "raw_target": 9.963601350784302,
+        "fixed_context_gain": 0.08343082666397095,
+        "raw_prediction_before": 4.764247417449951,
+        "raw_prediction_after": 4.761234283447266,
+        "gradient_norm": 110.84366607666016,
+        "max_proposed_parameter_change": 0.00034061260521411896,
+        "value_before": [
+          -0.06822597980499268,
+          2.629899740219116,
+          0.32261908054351807
+        ],
+        "value_after": [
+          -0.06698101758956909,
+          2.6299386024475098,
+          0.32384398579597473
+        ],
+        "max_raw_value_change": 0.001244962215423584,
+        "policy_total_variation": 6.2622129917144775e-06,
+        "local_td_before": 0.09963601350784301,
+        "local_td_after": 0.09963846826553345,
+        "raw_td_value_jacobian": [
+          0.10921700298786163,
+          0.6208118200302124,
+          0.06997119635343552
+        ],
+        "raw_td_value_linf_gain": 0.800000011920929,
+        "prediction_error_before": 5.1993536949157715,
+        "prediction_error_after": 5.202366828918457,
+        "model_parameters_unchanged": true,
+        "source_unchanged": true,
+        "note": "Analytic scalar AdamW proposal with saved moments and gradient clipping; CPU FP32, not bitwise CUDA foreach replay. Frozen saved action context, not next real transition."
+      },
+      {
+        "source": "results\\cgb_value_scale_joint_20261105\\last.pt.gz",
+        "sha256": "b4f444dcf8658895b145bff12071d8edced76c643e6c3fc8d436d087c36ab397",
+        "cycle": 128,
+        "observed_memory": false,
+        "sigma": 1965.533393937294,
+        "raw_target": -202.7146315574646,
+        "fixed_context_gain": -0.003241896629333496,
+        "raw_prediction_before": -148.6585235595703,
+        "raw_prediction_after": -215.5709991455078,
+        "gradient_norm": 2.4124369621276855,
+        "max_proposed_parameter_change": 0.00019107003754470497,
+        "value_before": [
+          -148.6585235595703,
+          -2857.7314453125,
+          -232.12265014648438
+        ],
+        "value_after": [
+          -215.5709991455078,
+          -2678.508544921875,
+          -339.3274841308594
+        ],
+        "max_raw_value_change": 179.222900390625,
+        "policy_total_variation": 0.0037703197449445724,
+        "local_td_before": -2.027146315574646,
+        "local_td_after": -2.560902297019959,
+        "raw_td_value_jacobian": [
+          0.8009241819381714,
+          -0.0009240936487913132,
+          0.0
+        ],
+        "raw_td_value_linf_gain": 0.801848292350769,
+        "prediction_error_before": 54.05610656738281,
+        "prediction_error_after": 12.856369018554688,
+        "model_parameters_unchanged": true,
+        "source_unchanged": true,
+        "note": "Analytic scalar AdamW proposal with saved moments and gradient clipping; CPU FP32, not bitwise CUDA foreach replay. Frozen saved action context, not next real transition."
+      }
+    ],
+    "scope": "Remaining critic update/target sensitivity at frozen contexts. Removing estimated-return memory feedback does not imply all TD learning is stable."
+  }
+}

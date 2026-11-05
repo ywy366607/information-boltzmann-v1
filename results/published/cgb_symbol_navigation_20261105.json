@@ -1,0 +1,132 @@
+{
+  "summary": {
+    "cycles": 512,
+    "initial_validation": {
+      "periodic": 0.01343502420331788,
+      "random": 0.9327519237995148
+    },
+    "final_validation": {
+      "periodic": 0.0034219899025629275,
+      "random": 0.6952130496501923
+    },
+    "elapsed_seconds": 903.4140230000003,
+    "external_bytes": 262144,
+    "self_bytes": 11744,
+    "optimizer_steps": 2047,
+    "replay_samples": 16352,
+    "late": {
+      "n": 256,
+      "response_nll": 0.5423075190116151,
+      "nll32_errors": {
+        "blind": 0.00727403393131755,
+        "base": 0.007672784476147776,
+        "raw": 0.013463910539736515,
+        "used": 0.007674175555570095,
+        "no_action": 0.014780512498544743
+      },
+      "match_brier": 0.004021207471061383,
+      "g_mean": -1.1793854355346411e-05,
+      "g_std": 0.00883955786311294,
+      "trust": [
+        0.0,
+        0.00019832863472402096,
+        0.1107063910458237,
+        0.011997018242254853
+      ],
+      "wood_policy_tv": 0.001650344318477437,
+      "residual_policy_tv": 8.892668120097369e-06
+    },
+    "by_room": {
+      "periodic": {
+        "n": 63,
+        "response_nll": 0.047569738995257974,
+        "nll32_errors": {
+          "blind": 0.019768718189448788,
+          "base": 0.019809009368246835,
+          "raw": 0.016591769435358908,
+          "used": 0.019809009368246835,
+          "no_action": 0.02249120964064325
+        },
+        "match_brier": 9.161055763590253e-05,
+        "g_mean": 0.0032751249179007514,
+        "g_std": 0.013919337652240083,
+        "trust": [
+          0.0,
+          0.0,
+          0.14106899026840453,
+          0.005096866970970517
+        ],
+        "wood_policy_tv": 0.001592344944439237,
+        "residual_policy_tv": 1.1224270103469728e-05
+      },
+      "random": {
+        "n": 193,
+        "response_nll": 0.7038022347682499,
+        "nll32_errors": {
+          "blind": 0.0031954582408394777,
+          "base": 0.003711218837794197,
+          "raw": 0.012442899604896045,
+          "used": 0.003713064000136755,
+          "no_action": 0.012263549182730205
+        },
+        "match_brier": 0.005303925634511151,
+        "g_mean": -0.0010847258888223629,
+        "g_std": 0.005976781944889128,
+        "trust": [
+          0.0,
+          0.00026306803362357185,
+          0.10079528352757192,
+          0.014249399227181865
+        ],
+        "wood_policy_tv": 0.001669276756634984,
+        "residual_policy_tv": 8.13157524469603e-06
+      }
+    },
+    "choices": {
+      "silence": 145,
+      "generate": 277,
+      "reuse": 90
+    },
+    "room_visits": {
+      "periodic": 153,
+      "random": 359
+    },
+    "accepted": 363,
+    "moves": 220,
+    "max_policy_replay_error": 1.9073486328125e-06,
+    "exact_next_step_parameter_error": 0.0,
+    "peak_cuda_bytes": 198955520,
+    "scope": "authorized semantic-free diagnostic of existing architecture; no real-language or persistent-life capability claim"
+  },
+  "loop_audit": {
+    "world_transition_replay": true,
+    "reconstructed_external_sha256": "2414fa68b414a739a9e6b769d8ab4bc2b489823475378a0d16005612cda6931d",
+    "synthetic_validation_sha256": "62c10c733254e69143ddbb4e7c7229b06115e8676ef92036a511a225e6cfc1bc",
+    "theoretical_random_entropy_nats": 0.6931471805599453,
+    "final_periodic_nll": 0.0034219899025629275,
+    "final_random_nll": 0.6952130496501923,
+    "interpretation": {
+      "both_rooms_visited": true,
+      "periodic_is_more_predictable": true,
+      "raw_F_beats_unconditional_nll32": false,
+      "used_F_beats_unconditional_nll32": false,
+      "used_F_beats_action_base_nll32": false,
+      "removing_action_features_hurts_F": true
+    },
+    "late_nonzero_wood_to_fire": 256,
+    "late_nonzero_residual_to_fire": 252,
+    "late_spoken_endings": {
+      "a": 51,
+      "b": 126
+    },
+    "note": "No semantic labels or room reward enter learning. Feature removal is a prediction diagnostic, not a counterfactual environment intervention."
+  },
+  "parameter_count": 894916,
+  "protocol": "docs/information_boltzmann/CGB_SYMBOL_WORLD_20261105.md",
+  "source_snapshot_sha256": "a4a682b11517e0d08233e8a5522a495cb9e107a71555e1a6b6238fde8f7cca54",
+  "source_hashes": {
+    "D:\\information-boltzmann-v1\\scratch\\run_symbol_navigation_20261105.py": "4fefb3c4172b188a1182cb05ffef7751ab701c0dba3e21b7e518139c40b41e84",
+    "scripts\\ib_local\\symbol_navigation_world.py": "59a7703e8acd2874182e6b7a1dfc8a23b070aa86ff957a8bbd3d480e65d15be3",
+    "scripts\\ib_local\\language_navigation_kanli_v4t.py": "ca05404c454cdbe815c7f3132b68a38e88f08ba43ed808b6999d138c27e017c3"
+  }
+}

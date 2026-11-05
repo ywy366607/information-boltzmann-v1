@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L16)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：给出指定可再生学习单元各 Cell 状态对应的确定性策略动作表。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -33,6 +37,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L26)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：指定 protectedTwoTickProtocol 在中断起始后的第二拍输出 some probe。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -49,6 +57,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L30)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：指定 protectedTwoTickProtocol 在中断起始拍输出 none。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -64,7 +76,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L34)
 
-解释：复用已有定理，证明原感知维护见证满足误差参数零的一拍感官丢失耐受条件。
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
+解释：在基于协议调度的修复候选结构下，证明原系统对单拍感官丢失的耐受性依然得到保留。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -77,6 +93,10 @@ CGB.SensoryMaintenanceRecovery.ToleratesSensoryLoss 0 1
 ## CGB.SensoryMaintenanceRepairCandidates.probe_recharges_after_one_loss
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L38)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
 
 解释：若初态单元非 vacuum 且储备至少一，一拍 none 后接收 probe 具有正输入、保持单元非 vacuum 且储备变为二。
 
@@ -102,6 +122,10 @@ CGB.SensoryMaintenanceRecovery.ToleratesSensoryLoss 0 1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L53)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：若初态单元非 vacuum 且储备至少一，一拍 none 与随后 probe 两步的登记输出量之和为二。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -122,6 +146,10 @@ CGB.SensoryMaintenanceRecovery.ToleratesSensoryLoss 0 1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L66)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：若初态单元非 vacuum 且储备至少二，一拍 none 后接收 probe 的登记输入量为二。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -138,6 +166,10 @@ CGB.SensoryMaintenanceRecovery.ToleratesSensoryLoss 0 1
 ## CGB.SensoryMaintenanceRepairCandidates.protected_branch_excludes_local_blackout
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L78)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
 
 解释：若初态单元非 vacuum 且储备至少一，一拍 none 再接收 probe 后，状态不等于 empty。
 
@@ -157,6 +189,10 @@ CGB.SensoryMaintenanceRecovery.ToleratesSensoryLoss 0 1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L102)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：指定初始 Cell.search 和 Env.probeA 的组合满足 guardedTwoTickStart。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -171,6 +207,10 @@ CGB.SensoryMaintenanceRepairCandidates.guardedTwoTickStart CGB.RenewableLearning
 ## CGB.SensoryMaintenanceRepairCandidates.guarded_third_tick_recharges
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L116)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
 
 解释：若起始状态满足守卫条件且两次世界转移均有正概率，满储备身体 burn 两拍后接收第二次世界感知会有正输入并恢复储备二。
 
@@ -196,7 +236,11 @@ CGB.SensoryMaintenanceRepairCandidates.guardedTwoTickStart CGB.RenewableLearning
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L149)
 
-解释：复用已有定理，证明原感知维护见证满足误差参数零的一拍感官丢失耐受条件。
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
+解释：在引入保护性前置条件的修复候选模型中，证明原系统对单拍感官丢失的耐受性不受破坏。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -209,6 +253,10 @@ CGB.SensoryMaintenanceRecovery.ToleratesSensoryLoss 0 1
 ## CGB.SensoryMaintenanceRepairCandidates.firstHit_three_tick_layered
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L153)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
 
 解释：若所有正概率一步、二步后继依次进入给定层且未命中，而第三步均命中，则从初态三拍内首次命中概率为一。
 
@@ -232,6 +280,10 @@ CGB.SensoryMaintenanceRecovery.ToleratesSensoryLoss 0 1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L216)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：若 q 与 w 满足 guardedTwoTickStart，则从身体状态 (q,2) 出发，指定守卫协议下三拍内首次摄入概率为一。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -254,6 +306,10 @@ CGB.SensoryMaintenanceRecovery.ToleratesSensoryLoss 0 1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L313)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：若 q 与 w 满足 guardedTwoTickStart，则从身体状态 (q,2) 出发，在指定守卫协议的中断时刻交换生命指标为一。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -273,6 +329,10 @@ CGB.SensoryMaintenanceRecovery.ToleratesSensoryLoss 0 1
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L333)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：指定守卫协议满足从时刻零出发的 GuardedTwoTickLocalTolerance；该结论本身不是全局两拍耐受。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -286,6 +346,10 @@ CGB.SensoryMaintenanceRepairCandidates.GuardedTwoTickLocalTolerance 0
 ## CGB.SensoryMaintenanceRepairCandidates.guarded_survival_at
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L344)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
 
 解释：若中断时刻满足 GuardedTwoTickSupport，则指定守卫协议在该时刻的交换生存评分为一。
 
@@ -305,6 +369,10 @@ CGB.SensoryMaintenanceRepairCandidates.GuardedTwoTickLocalTolerance 0
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L396)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：指定守卫协议在起始时刻零满足 GuardedTwoTickSupport 条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -318,6 +386,10 @@ CGB.SensoryMaintenanceRepairCandidates.GuardedTwoTickSupport 0
 ## _private.CGBAxioms.SensoryMaintenanceRepairCandidates.0.CGB.SensoryMaintenanceRepairCandidates.guarded_support_path_step
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L421)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
 
 解释：验证特定测试路径在前两步演化中的局部转移概率均严格大于零。
 
@@ -338,6 +410,10 @@ CGB.SensoryMaintenanceRepairCandidates.GuardedTwoTickSupport 0
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L436)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：指定守卫协议在时刻二不满足 GuardedTwoTickSupport。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -351,6 +427,10 @@ CGB.SensoryMaintenanceRepairCandidates.GuardedTwoTickSupport 0
 ## CGB.SensoryMaintenanceRepairCandidates.guarded_initial_survival
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L460)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
 
 解释：从指定初始状态运行在零拍开始的守卫协议时，零时刻交换生存评分为一。
 
@@ -368,6 +448,10 @@ CGB.Exchange.survival CGB.SensoryMaintenance.body CGB.SensoryMaintenance.world C
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L466)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：满足指定两拍合格初态条件的状态，其主体单元既不是 aSpent 也不是 bSpent。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -384,6 +468,10 @@ CGB.Exchange.survival CGB.SensoryMaintenance.body CGB.SensoryMaintenance.world C
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L472)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：满足指定两拍合格初态条件时，主体为 aSpent 且世界为 feedA 的组合不可能成立。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -399,6 +487,10 @@ CGB.Exchange.survival CGB.SensoryMaintenance.body CGB.SensoryMaintenance.world C
 ## CGB.SensoryMaintenanceRepairCandidates.eligible_two_loss_preserves_cell
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L479)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
 
 解释：对指定合格初态且初始储备至少为二，连续两拍无感知后主体单元不变且储备为零。
 
@@ -418,6 +510,10 @@ CGB.Exchange.survival CGB.SensoryMaintenance.body CGB.SensoryMaintenance.world C
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L491)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：对任意刺激和状态，原感知维护更新满足更新后内容成本加流出等于更新前成本加流入。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -434,7 +530,11 @@ CGB.Exchange.survival CGB.SensoryMaintenance.body CGB.SensoryMaintenance.world C
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceRepairCandidates.lean#L498)
 
-解释：复用已有定理，证明原感知维护见证满足误差参数零的一拍感官丢失耐受条件。
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
+解释：在划分合格初始区域的修复候选方案中，证明原系统对单拍感官丢失的耐受性完全保持。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 

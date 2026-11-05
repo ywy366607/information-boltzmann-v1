@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L28)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：LifeGate
+
+分类说明：针对 LifeGate 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：正时钟速率下，一个改变状态的事件使该状态的一步自保持概率不超过 1−事件速率/时钟速率。
 
 源码说明：One state-changing event of rate `r` makes the chain leave `x` within a tick with probability at least `r / R`.
@@ -25,6 +29,10 @@
 ## CGB.Medium.hold_vanishes
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L48)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：LifeGate
+
+分类说明：针对 LifeGate 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若每种刺激下该状态都存在至少 η>0 的离开事件，则连续保持该状态的概率具有指定几何上界。
 
@@ -46,6 +54,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L69)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：LifeGate
+
+分类说明：针对 LifeGate 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在双体反应模型中，只要反应系数为正且两个位置不同，该反应速率严格为正。
 
 源码说明：Every rule with a positive prefactor fires on every ordered pair of distinct units at a positive rate, under every stimulus.
@@ -61,6 +73,10 @@
 ## CGB.PairCRN.exposed_of_witness
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L78)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：LifeGate
+
+分类说明：针对 LifeGate 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在指定双体介质中，正反应系数、非零内容变化和不同刺激对应的不同储库势可见证刺激敏感性。
 
@@ -80,6 +96,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L89)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：LifeGate
+
+分类说明：针对 LifeGate 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：双体反应作用前后的总内容差，恰等于该反应定义的内容变化 dC。
 
 源码说明：The content an event takes in is the change of total content.
@@ -95,6 +115,10 @@
 ## CGB.PairCRN.metabolizes_of_witness
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L97)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：LifeGate
+
+分类说明：针对 LifeGate 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在指定双体介质中，一个正系数、两位置不同且内容变化非零的反应可见证内容交换。
 
@@ -116,6 +140,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L116)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：LifeGate
+
+分类说明：针对 LifeGate 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：对于匹配指定规则两侧身份的不同位置，规则见证状态下的内容变化等于规则产物内容和减输入内容和。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -136,6 +164,10 @@
 ## CGB.tableCRN.metabolizes_of_rule
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L128)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：LifeGate
+
+分类说明：针对 LifeGate 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若规则系数为正、两位置身份匹配且规则前后内容和不同，则规则表介质存在正速率内容交换事件。
 
@@ -164,6 +196,10 @@
 ## CGB.tableCRN.exposed_of_rule
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationLifeGate.lean#L146)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：LifeGate
+
+分类说明：针对 LifeGate 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若正系数内容变化规则触及边界，且两种刺激的储库势不同，则该规则表介质对刺激敏感。
 

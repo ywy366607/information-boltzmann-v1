@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenanceEnergy.lean#L29)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：学习维护能量过程在时间步进中的实际状态分布，与机体在感官驱动下的实际学习转移律完全相等。
 
 源码说明：The energy law is exactly the state law used in the viability comparison, including the cut's own distribution-dependent future, not a second process.
@@ -31,6 +35,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenanceEnergy.lean#L46)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：学习维护能量过程的正转移概率必然受底层机体时钟和感官事件支撑。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -49,6 +57,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenanceEnergy.lean#L87)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：学习维护能量过程在无外加净功条件下满足等温热力学第一定律。
 
 源码说明：Conditional mean second-law admission for the explicitly declared internal entropy and bath units. Consumption, including the paid write, is fixed by outgoing material use.
@@ -64,6 +76,10 @@
 ## CGB.LearningMaintenanceEnergy.availability_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenanceEnergy.lean#L110)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：学习维护账户的平均存储量与输出通量之和，严格等于初始值加累计输入能量通量。
 

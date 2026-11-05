@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L58)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入复合关系矩阵与增益调节算子，经准入谓词核算，输出构建的优化器候选满足CGB准入公理。
 
 源码说明：The composed relation and gain satisfy the existing CGB admission contract.
@@ -28,6 +32,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L70)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入落在单位区间[0, 1]内的交换参数p，经元素符号检验，输出平衡分配矩阵各元素非负。
 
 源码说明：A bounded exchange fraction gives a nonnegative allocation.
@@ -41,6 +49,10 @@
 ## CGB.Unified.balanced_col_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L76)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入平衡分配矩阵，经列向求和计算，输出每列分配总和精确守恒为1。
 
@@ -56,6 +68,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L81)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入平衡分配矩阵，经行向求和计算，输出每行分配总和精确守恒为1。
 
 源码说明：A balanced allocation preserves every row budget.
@@ -69,6 +85,10 @@
 ## CGB.Unified.balanced_allocation_contract
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L86)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入交换比例参数p∈[0, 1]，经双预算可行集检验，输出平衡分配矩阵满足非负性、列预算与行预算，且集中收益不超过2。
 
@@ -90,6 +110,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L97)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入达到双预算极值收益2的分配矩阵，经两行极值比较，输出两行分别完全独占不同方向实现完全分化。
 
 源码说明：At the doubly-budgeted maximum, the two rows own different directions.
@@ -108,6 +132,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L106)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入均匀分配矩阵，经行列求和检验与反对称分析，输出均匀矩阵满足行列双预算但无法提供非平凡的两两特化关系。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -125,6 +153,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L119)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入参数p，经矩阵相互作用泛函求值，输出相互作用量精确等于4*p - 2。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -138,6 +170,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 ## CGB.Unified.balanced_allocation_has_relation
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L125)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入非对称分配参数p≠1/2，经双向差分检验，输出平衡分配矩阵满足非平凡两两关系载体条件。
 
@@ -153,6 +189,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L139)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入增益κ与相位h，经相互作用泛函求值，输出相位相互作用量精确等于κ * (2 * h - 1)。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -167,6 +207,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L144)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入非零增益κ与非中心相位h≠1/2，经差分检验，输出相位关系矩阵满足两两反对称非平凡关系载体条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -180,6 +224,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 ## CGB.Unified.phase_history_is_generated
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L150)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入非零速率和与时间步t，经一阶常系数差分方程解析求解，输出相位偏差随时间按(1 - kp - km)^t几何幂次指数收敛。
 
@@ -196,6 +244,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 ## CGB.Unified.phase_step_stays_in_unit_interval
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L156)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入各合法参数，经单步凸组合检验，输出单步两状态步进后的相位严格落在单位区间[0, 1]内。
 
@@ -214,6 +266,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 ## CGB.Unified.phase_history_stays_in_unit_interval
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L167)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入各合法速率参数与初态，经数学归纳法推演，输出相位在任意离散时间步均严格保持在单位区间[0, 1]内。
 
@@ -235,6 +291,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L189)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入实数守恒转移算子，经全量代数求和，输出转移后两端总量与转移前两端总量严格守恒相等。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -249,6 +309,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L193)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入实数守恒转移记录，经目标增量提取，输出转移后目标值减去转移前目标值严格等于转移量amount。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -262,6 +326,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 ## CGB.Unified.phase_exchange_transfer_is_conserved
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L207)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入相位交换转移算子，经前后状态求和，输出转移前后的总相位质量严格守恒为1。
 
@@ -278,6 +346,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L213)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入相位交换转移结构，经后继与前序做差，输出目标节点相位净增量精确等于单步交换转移量。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -293,6 +365,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 ## CGB.Unified.fresh_outcome_measurement_unbiased
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L228)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入扰动项与对称零均值噪声，经两极扰动期望抵消，输出新鲜测量差分对真实目标导数无偏。
 
@@ -311,6 +387,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 ## CGB.Unified.fresh_outcome_trust_stays_in_band
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L234)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入置信带宽因子γ、基准R及当前置信度，经门控限幅截断，输出后继置信度参数严格被夹在闭区间[R/γ, R*γ]内。
 
@@ -332,6 +412,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L254)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入预测概率p与目标概率q，经平方误差分解，输出期望得分与校准得分之差严格等于平方差距-(p - q)²。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -345,6 +429,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 ## CGB.Unified.bernoulli_expected_brier_calibrated
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L260)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入预测概率p与目标概率q，经Brier得分期望展开，输出在自校准预测点p=q处期望Brier得分取得全局最大值。
 
@@ -360,6 +448,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L271)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入预测概率p与目标分布q，经伯努利线性期望展开，输出单步预测误差的无偏期望精确等于真实概率与预测概率之差q - p。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -374,6 +466,10 @@ CGB.Continual.Nonneg CGB.Unified.uniformAllocation ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L276)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入中性预测p=1/2与结果0，经代数比较，输出Brier得分计算与线性预测误差严格不等（证明二者非等价）。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -387,6 +483,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 ## CGB.Unified.centered_bernoulli_evidence_zero_mean
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L280)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入均值中心化的伯努利证据变量，经期望积分计算，输出中心化证据在真实分布下的数学期望恒等于0。
 
@@ -405,6 +505,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L286)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入预测概率与真实概率，经期望差分展开，输出校准惩罚量精确等于二者概率偏差的二次方(p - q)²。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -418,6 +522,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 ## CGB.Unified.eligibility_gated_phase_stays_in_unit_interval
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L299)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入在[0, 1]内的两状态速率、初始相位与门控值，经凸组合放缩，输出门控后继相位依然严格保持在单位区间[0, 1]内。
 
@@ -443,6 +551,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L312)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入两状态速率与门控值0，经步进计算，输出当资格门控关闭时状态严格保持不变（零门控锁存）。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -457,6 +569,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L316)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入两状态速率与门控值1，经门控步进计算，输出当资格门控全开时状态更新精确复现标准两状态步进。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -470,6 +586,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 ## CGB.Unified.eligibility_gated_signed_phase_stays_bounded
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L323)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入在[-1, 1]内的前序有符号相位、原始值与有效门控，经插值缩放，输出门控后的有符号相位严格有界于[-1, 1]。
 
@@ -493,6 +613,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L336)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入前序相位与零门控，经插值求值，输出在门控为0时有符号相位严格等于前序状态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -506,6 +630,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 ## CGB.Unified.latch_phase_holds_before_release
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L343)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入释放阈值c与当前运行计数run < c，经资格门控求值，输出未达阈值前锁存相位严格保持前序值不变。
 
@@ -521,6 +649,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 ## CGB.Unified.latch_phase_releases_at_threshold
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L349)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入运行步数达到阈值run ≥ c，经门控激活判定，输出锁存相位在达到阈值后正常释放并按输入信号更新。
 
@@ -539,6 +671,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L365)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入源与目标相位转移量，经代数求和，输出门控转移后的源与目标总量精确守恒为1。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -555,6 +691,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 ## CGB.Unified.eligibility_gated_transfer_reads_phase
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L371)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入门控相位转移结构，经目标差分提取，输出目标增量严格精确等于声明的转移量amount。
 
@@ -573,6 +713,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L388)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入EMA平滑系数与两组不同历史输入，经二阶多项式求值，输出两组非零不同历史序列生成完全相同的EMA一阶与二阶矩（证明有限阶EMA无法唯一区分高阶历史）。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -588,6 +732,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 ## CGB.Unified.build_has_competition_and_differentiation
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L395)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入构建的多柱优化器架构，经资源与方向分配分析，输出系统同时满足行向与列向竞争与特化分化条件。
 
@@ -608,6 +756,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L407)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入两状态转移率与初态，经差分方程求解，输出保留的历史状态精确等于由两状态参数生成的几何衰减轨迹。
 
 源码说明：The retained history is the geometric trace generated by two-state exchange.
@@ -625,6 +777,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 ## CGB.Unified.build_history_balance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L415)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入带类型的载体状态，经裂项级数平衡分析，输出历史痕迹满足守恒平衡方程。
 
@@ -644,6 +800,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 ## CGB.Unified.build_modulation_stays_in_band
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L427)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入结果门控与死区范围，经非线性饱和截断分析，输出调制信号在死区外保持且全局稳定在置信带宽之内。
 
@@ -666,6 +826,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L436)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入阈值判定逻辑与反向证据序列，经双稳态动力学求解，输出锁存在短程反向证据下保持，并在累积证据突破阈值后快速释放。
 
 源码说明：The latch both holds under short contrary evidence and releases at its threshold.
@@ -681,6 +845,10 @@ CGB.Unified.bernoulliBrierScore (1 / 2) 0 ≠ CGB.Unified.bernoulliPredictionErr
 ## CGB.Unified.build_mechanical_admission
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationUnifiedOptimizer.lean#L447)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：UnifiedOptimizer
+
+分类说明：针对 UnifiedOptimizer 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入关系载体、竞争结构与历史追踪，经复合机械准入规约，输出系统整体通过机械物理准入审计。
 

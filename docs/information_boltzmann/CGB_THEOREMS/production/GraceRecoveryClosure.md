@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L17)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：给出宽限恢复闭包中各机体构型对应策略动作的显式分段查找表。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -33,6 +37,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L23)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：生命机体单个细胞全状态空间实值函数的八状态求和展开式。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -53,6 +61,10 @@
 ## _private.CGBAxioms.GraceRecoveryClosure.0.CGB.GraceRecoveryClosure.sum_configs
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L30)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：机体单元构型空间全状态函数的展开求和恒等式。
 
@@ -76,6 +88,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L38)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：九状态环境空间全状态函数的逐状态求和展开恒等式。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -98,6 +114,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L45)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：给出宽限恢复机体转移核在确定性后继状态处取1、其余处取0的查找表结构。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -113,6 +133,10 @@
 ## _private.CGBAxioms.GraceRecoveryClosure.0.CGB.GraceRecoveryClosure.early_move
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L75)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在演化前4步内，截断演化下的环境状态转移与标准马尔可夫转移算子完全重合。
 
@@ -138,6 +162,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L88)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：在演化前5步内，施加环路截断后的联合演化律精确等于未截断的自然演化律。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -155,6 +183,10 @@
 ## _private.CGBAxioms.GraceRecoveryClosure.0.CGB.GraceRecoveryClosure.move_five
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L106)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在截断演化第5步，环境状态转移算子与无截断动力学完全一致。
 
@@ -176,6 +208,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L116)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：在截断演化第6步，系统落入不可恢复故障状态的概率质量非零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -191,6 +227,10 @@ CGB.GraceRecoveryClosure.body.lawCut CGB.GraceRecoveryClosure.world (fun x => CG
 ## _private.CGBAxioms.GraceRecoveryClosure.0.CGB.GraceRecoveryClosure.no_dead_six
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L127)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在截断演化前6步内系统绝不提前进入真空死态。
 
@@ -208,6 +248,10 @@ CGB.GraceRecoveryClosure.body.lawCut CGB.GraceRecoveryClosure.world (fun x => CG
 ## _private.CGBAxioms.GraceRecoveryClosure.0.CGB.GraceRecoveryClosure.miss_to_probe_six
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L137)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：未命中食物后系统在第6步确定性转移至探测状态以寻求恢复。
 
@@ -227,6 +271,10 @@ CGB.GraceRecoveryClosure.body.lawCut CGB.GraceRecoveryClosure.world (fun x => CG
 ## _private.CGBAxioms.GraceRecoveryClosure.0.CGB.GraceRecoveryClosure.step_lower
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L149)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：建立宽限恢复闭包系统单步转移核在测试分支上的严格正下界。
 
@@ -251,6 +299,10 @@ CGB.GraceRecoveryClosure.body.lawCut CGB.GraceRecoveryClosure.world (fun x => CG
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L180)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：导出宽限恢复闭包在截断演化第6步落入死态的初始非零种子概率质量。
 
 源码说明：A quarter of mass has physically lost its body by tick seven.
@@ -264,6 +316,10 @@ CGB.GraceRecoveryClosure.body.lawCut CGB.GraceRecoveryClosure.world (fun x => CG
 ## _private.CGBAxioms.GraceRecoveryClosure.0.CGB.GraceRecoveryClosure.empty_kernel
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L188)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：真空死态在宽限恢复转移核作用下保持为唯一的确定性吸收态。
 
@@ -282,6 +338,10 @@ CGB.GraceRecoveryClosure.body.lawCut CGB.GraceRecoveryClosure.world (fun x => CG
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L193)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：截断演化下系统处于死亡状态的累积概率测度随时间步单调递增。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -295,6 +355,10 @@ CGB.GraceRecoveryClosure.body.lawCut CGB.GraceRecoveryClosure.world (fun x => CG
 ## _private.CGBAxioms.GraceRecoveryClosure.0.CGB.GraceRecoveryClosure.cut_mass_bound
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L227)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：截断存活概率严格受限于1减去累积死态概率质量。
 
@@ -313,7 +377,11 @@ CGB.GraceRecoveryClosure.body.lawCut CGB.GraceRecoveryClosure.world (fun x => CG
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L256)
 
-解释：在施加环路截断后，机体生存概率在第7步衰减至不超过3/4，确立闭环维持的不可替代性。
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
+
+解释：在指定的宽限恢复闭包模型中，施加环路截断后机体生存概率在第7步衰减至不超过3/4。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -330,6 +398,10 @@ CGB.GraceRecoveryClosure.body.lawCut CGB.GraceRecoveryClosure.world (fun x => CG
 ## CGB.GraceRecoveryClosure.maintenance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryClosure.lean#L265)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：宽限恢复闭包机体完全满足持续生存与主动自我维持公理。
 

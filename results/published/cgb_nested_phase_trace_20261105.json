@@ -1,0 +1,102 @@
+{
+  "date": "2026-11-05",
+  "scope": "Read-only completed mechanism-run trace and isolated actual-helper arithmetic; no training or new world interaction",
+  "runtime_source": "results/cgb_observed_gain_joint_20261105",
+  "source_hashes": {
+    "config.json": "0bf344ffb7dbbfa1c096214b7656963bf96c94eea1dfa7ef47de7ce8509310eb",
+    "metrics.jsonl": "e9b9a07c65b492d4f66be4d2989595fe261565cbe57f1eb3ae8c2c2adf35e8d8",
+    "summary.json": "4bd784c0dbe0e161e89c9f8e00c350420dd8fb35f2b2aeeb60e40e1e91564b7e"
+  },
+  "executed_source_agreement": {
+    "D:\\information-boltzmann-v1\\scratch\\run_learning_rooms_20261105.py": true,
+    "scripts\\ib_local\\learning_rooms_world.py": true,
+    "scripts\\ib_local\\navigation_live_witness.py": true,
+    "scripts\\ib_local\\language_navigation_kanli_v4t.py": true,
+    "scripts\\ib_local\\navigation_settlement.py": true,
+    "scripts\\ib_local\\navigation_value_scale.py": true,
+    "scripts\\ib_local\\navigation_checkpoint.py": true,
+    "scripts\\ib_local\\language_navigation_kanli_v4b.py": true,
+    "scripts\\ib_local\\language_navigation_kanli_v4c.py": true,
+    "scripts\\ib_local\\language_navigation_kanli_v4p.py": true,
+    "scripts\\ib_local\\language_navigation_kanli_v4q.py": true
+  },
+  "logged_checks": {
+    "joint_score_to_settlement_max_abs": 0.0,
+    "previous_observation_carried_max_abs": 0.0,
+    "observed_label_complete_rows": 409,
+    "observed_label_max_difference": 1.1444091789769573e-06,
+    "policy_replay_max_error": 1.9073486328125e-06,
+    "draft_actual_action_l2_max": 1.5704139514127746e-05,
+    "wood_policy_tv_median": 0.0005775615572929382,
+    "residual_policy_tv_median": 2.2901222109794617e-06
+  },
+  "historical_reuse": {
+    "source": {
+      "cycle": 74,
+      "choice": "generate",
+      "utterance_hex": "6566666665666665666665666665666665666665666665666666656565656565",
+      "reused_slot": null,
+      "episode_slot": 456,
+      "episode_merged": false,
+      "metal_g": 0.0002641187747940421,
+      "observed_memory_audit": {
+        "valid": true,
+        "measured_gain": 0.0002641187747940421,
+        "count": 1,
+        "complete_wood_mean": true,
+        "mean_difference": 0.0
+      },
+      "wood_policy_tv": 5.5934302508831024e-05,
+      "residual_policy_tv": 2.0097941160202026e-06
+    },
+    "use": {
+      "cycle": 496,
+      "choice": "reuse",
+      "utterance_hex": "6566666665666665666665666665666665666665666665666666656565656565",
+      "reused_slot": 456,
+      "episode_slot": 456,
+      "episode_merged": true,
+      "metal_g": 0.0008267238736152649,
+      "observed_memory_audit": {
+        "valid": true,
+        "measured_gain": 0.0005454213242046535,
+        "count": 2,
+        "complete_wood_mean": false,
+        "mean_difference": null
+      },
+      "wood_policy_tv": 0.0037304162979125977,
+      "residual_policy_tv": 9.248405694961548e-05
+    },
+    "elapsed_cycles": 422,
+    "intervening_external_bytes": 216394,
+    "intervening_slot_writes": 0
+  },
+  "mixed_action_reproduction": {
+    "scope": "CPU isolated helper reproduction with observed gains from turns74/496, identical unit features force merge; not checkpoint or world replay",
+    "mean_gain": 0.0005454213242046535,
+    "count": 2,
+    "last_action": 2,
+    "wood_action": -1,
+    "wood_label_count": 0,
+    "reward_reader_valid": true,
+    "recalled_value_support": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.05454213172197342,
+        0.125
+      ]
+    ]
+  },
+  "body_files_changed": false,
+  "optimizer_steps": 0,
+  "world_steps": 0,
+  "coverage_count_increase": 0,
+  "source_run_artifacts_unchanged": true
+}

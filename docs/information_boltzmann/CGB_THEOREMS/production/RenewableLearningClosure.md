@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L16)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：给出可再生学习闭包中细胞状态到策略决策动作的显式映射表。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -33,6 +37,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L22)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：可再生学习机体细胞构型全空间的实值函数求和展开等价性。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -53,6 +61,10 @@
 ## _private.CGBAxioms.RenewableLearningClosure.0.CGB.RenewableLearningClosure.sum_configs
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L29)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：单单元构型空间全状态求和的完整展开式。
 
@@ -76,6 +88,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L37)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：九状态环境空间中全状态实值函数的逐项求和展开式。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -98,6 +114,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L46)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：给出可再生学习机体转移核在后继神经状态处的离散Dirac分布结构。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -113,6 +133,10 @@
 ## _private.CGBAxioms.RenewableLearningClosure.0.CGB.RenewableLearningClosure.early_move
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L70)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在系统演化前4步内，截断演化下的环境状态跃迁与标准动力学完全重合。
 
@@ -138,6 +162,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L83)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：可再生学习闭包系统在演化前5步内截断演化律与自然演化律严格相同。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -155,6 +183,10 @@
 ## _private.CGBAxioms.RenewableLearningClosure.0.CGB.RenewableLearningClosure.move_five
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L100)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：可再生学习系统在第5步的环境转移算子在截断下保持不变。
 
@@ -175,6 +207,10 @@
 ## _private.CGBAxioms.RenewableLearningClosure.0.CGB.RenewableLearningClosure.trapped_next
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L113)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：处于陷阱环境状态的系统在一步演化后必然保持在陷阱集合内。
 
@@ -199,6 +235,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L124)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：系统在截断演化第6步落入陷阱吸收态的概率严格等于1/4。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -212,6 +252,10 @@ CGB.RenewableLearningClosure.trapped✝ 6 = 1 / 4
 ## _private.CGBAxioms.RenewableLearningClosure.0.CGB.RenewableLearningClosure.trap_moves
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L130)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：一旦环境落入陷阱状态，在任意机体动作下环境均以概率1保持在陷阱态（吸收态）。
 
@@ -227,6 +271,10 @@ CGB.RenewableLearningClosure.trapped✝ 6 = 1 / 4
 ## _private.CGBAxioms.RenewableLearningClosure.0.CGB.RenewableLearningClosure.trap_world_step
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L134)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：陷阱环境在任意机体动作驱动下以概率1转移回陷阱自身。
 
@@ -245,6 +293,10 @@ CGB.RenewableLearningClosure.trapped✝ 6 = 1 / 4
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L148)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：截断动力学下陷入陷阱状态的累积概率质量随时间推进单调不减。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -258,6 +310,10 @@ CGB.RenewableLearningClosure.trapped✝ 6 = 1 / 4
 ## _private.CGBAxioms.RenewableLearningClosure.0.CGB.RenewableLearningClosure.trap_recovery
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L163)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：一旦系统陷入陷阱状态，其未来任意有限时域内的恢复度量恒为零。
 
@@ -277,6 +333,10 @@ CGB.RenewableLearningClosure.trapped✝ 6 = 1 / 4
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L180)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：在截断演化中，系统存活指示函数在陷入陷阱态时直接归零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -293,6 +353,10 @@ CGB.RenewableLearningClosure.trapped✝ 6 = 1 / 4
 ## _private.CGBAxioms.RenewableLearningClosure.0.CGB.RenewableLearningClosure.cut_mass_bound
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L193)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：导出系统截断存活概率由1减去陷入陷阱死态的概率质量所构成的严格上界。
 
@@ -311,7 +375,11 @@ CGB.RenewableLearningClosure.trapped✝ 6 = 1 / 4
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L216)
 
-解释：在截断演化第6步起，系统存活概率至少损失1/4并持续保持在3/4以下（闭环维持必要性）。
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
+解释：在指定的可再生学习闭包模型中，截断演化第6步起系统存活概率至少损失1/4并持续保持在3/4以下。
 
 源码说明：The original cut loses at least a quarter of viable mass by tick six; absorption extends the bound to ALL later times, including future cut marginals.
 
@@ -329,6 +397,10 @@ CGB.RenewableLearningClosure.trapped✝ 6 = 1 / 4
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L225)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：可再生学习机体完全满足持续生存与主动自我维持公理。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -345,6 +417,10 @@ CGB.Exchange.Persists CGB.RenewableLearningClosure.body CGB.RenewableLearning.wo
 ## CGB.RenewableLearningClosure.cut_seed_mass
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningClosure.lean#L233)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：精确计算出在截断演化第6步系统落入吸收陷阱死态的初始种子概率质量严格等于1/4。
 

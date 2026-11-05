@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOrganismGeneratedS0.lean#L50)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：OrganismGeneratedS0
+
+分类说明：生成物种 S0 实例的具体存活与代谢见证。
+
 解释：从第一性原理生成的生命形态 S0 实例严格满足 CGB 物理介质六公理。
 
 源码说明：**The organism is a model of the CGB axioms** (M3: unique free state, and every rule between two interior pages conserves content).
@@ -23,6 +27,10 @@ CGB.Organisms.GeneratedS0.medium.Axioms
 ## CGB.Organisms.GeneratedS0.metabolizes
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOrganismGeneratedS0.lean#L56)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：OrganismGeneratedS0
+
+分类说明：生成物种 S0 实例的具体存活与代谢见证。
 
 解释：生成的 S0 生命形态存在正速率动作驱动质量流入流出，证实具有自维持代谢能力。
 
@@ -40,6 +48,10 @@ CGB.Organisms.GeneratedS0.medium.Axioms
 ## CGB.Organisms.GeneratedS0.exposed
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOrganismGeneratedS0.lean#L63)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：OrganismGeneratedS0
+
+分类说明：生成物种 S0 实例的具体存活与代谢见证。
 
 解释：生成的 S0 生命形态具有非空的外部感官与环境相互作用边界。
 

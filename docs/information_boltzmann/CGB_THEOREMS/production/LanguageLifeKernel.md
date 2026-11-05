@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L22)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：该有向图定义中的每个节点—边关联系数只可能是 −1、0 或 1。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -26,6 +30,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L28)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：每条边的节点关联系数之和为零，这是图上内部流动保持总量的基础。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -41,6 +49,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L38)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：对该有向图的任意整数边流，所有节点经关联矩阵更新后的电荷总和与更新前相等。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -55,6 +67,10 @@
 ## CGB.LanguageLifeKernel.reserve_balance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L50)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：若支出不超过原有储备与收入之和，储备更新后的余额加支出恰等于原储备加收入。
 
@@ -72,6 +88,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L66)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：语言核的离散时间标记在每次 step 后严格增加。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -86,6 +106,10 @@
 ## CGB.LanguageLifeKernel.step_charge_conserved
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L71)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：语言核一步图流更新前后，所有节点电荷总和相等。
 
@@ -102,6 +126,10 @@
 ## CGB.LanguageLifeKernel.step_reserve_paid
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L77)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：支出有足够储备和收入覆盖时，语言核一步更新后的储备加支出等于旧储备加收入。
 
@@ -120,6 +148,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L99)
 
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：基于因果确定性与有限容量公理，导出记忆载体、状态可区分性与边界更新的必然约束。
+
 解释：同一可见值对应两种不同的延迟信用目标时，只看当前可见值的确定规则无法同时满足两种目标。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -137,6 +169,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L107)
 
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：同一个可见输入不能让确定性规则同时输出两个不同的信用值；适用性取决于确有不同目标且输入相同。
+
 解释：当同一个当前可见输入需要两个不同信用值时，任何只依赖该输入的确定规则都不可能同时输出两者。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -151,6 +187,10 @@
 ## CGB.LanguageLifeKernel.delayed_action_credit_requires_state_separation
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L119)
+
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：基于因果确定性与有限容量公理，导出记忆载体、状态可区分性与边界更新的必然约束。
 
 解释：输入单步状态推进函数、信用分配规则及初始状态下的两个不同动作，若两动作产生相同后继状态但目标信用不同，经确定性映射矛盾推导，输出确定性后继状态无法同时赋予不同延迟信用（证明延迟动作归因必然要求状态可分离）。
 
@@ -168,6 +208,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L155)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：一次局部守恒转移的目标增加量恰等于转移量。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -181,6 +225,10 @@
 ## CGB.LanguageLifeKernel.conserved_transfer_source_trace
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L160)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：一次局部守恒转移的来源减少量恰等于转移量。
 
@@ -196,6 +244,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L165)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：一次局部守恒转移前后，来源与目标的总量相等。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -209,6 +261,10 @@
 ## CGB.LanguageLifeKernel.observable_transfer_recovers_amount
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L185)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：在该可观测守恒转移结构的读出前提下，目标端读数恰好等于转移量。
 
@@ -224,6 +280,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L189)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：同一目标叠加两条整数流后，其前后差值等于两流之和，单独分量不会由这个差值直接区分。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -237,6 +297,10 @@
 ## CGB.LanguageLifeKernel.conservation_does_not_identify_components
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L193)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体的数值/布尔反例见证不确定性或不可辨识性。
 
 解释：存在两组各自分量不同但总流量相等的分解，说明仅知道守恒总量不能唯一识别各分量。
 
@@ -252,6 +316,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L205)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：带泄漏的守恒转移中，载体前后差值等于输入减泄漏，不能仅凭净变化单独读出输入。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -265,6 +333,10 @@
 ## CGB.LanguageLifeKernel.conserved_carrier_path_balance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L224)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：沿守恒载体轨迹，任意有限步的状态净变化等于这段时间输入减输出之和。
 
@@ -281,6 +353,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L233)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：守恒载体无输出时的状态净增量等于输入累计的守恒语义。
+
 解释：沿守恒载体轨迹，如果各步输出均为零，则状态净变化等于累计输入。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -295,6 +371,10 @@
 ## CGB.LanguageLifeKernel.history_readout_exists_iff
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L250)
+
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：基于因果确定性与有限容量公理，导出记忆载体、状态可区分性与边界更新的必然约束。
 
 解释：对所有历史存在准确读出规则，当且仅当编码相同的历史具有相同所需输出；默认输出用于构造读出。
 
@@ -311,6 +391,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L258)
 
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：基于因果确定性与有限容量公理，导出记忆载体、状态可区分性与边界更新的必然约束。
+
 解释：存在只依赖当前编码与输入的确定状态更新，当且仅当编码相同的历史在同一后续输入下仍产生相同后继编码。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -326,6 +410,10 @@
 ## CGB.LanguageLifeKernel.external_causal_readout_exists_iff
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L280)
+
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：基于因果确定性与有限容量公理，导出记忆载体、状态可区分性与边界更新的必然约束。
 
 解释：在给定检索接口和默认值下，存在能对所有历史和查询给出所需结果的读取规则，当且仅当不可区分的内部状态与检索结果不会要求不同输出。
 
@@ -346,6 +434,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L304)
 
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：基于因果确定性与有限容量公理，导出记忆载体、状态可区分性与边界更新的必然约束。
+
 解释：若确定读出规则能给出所有所需信用，当两段历史的内部状态相同但所需信用不同，检索出的外部记录必须不同。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -363,6 +455,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L317)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：构造具体的数值/布尔反例见证不确定性或不可辨识性。
+
 解释：给出两个在观测输入一致时输出相同、但在一次干预下输出不同的规则，说明被动观测一致不足以确定干预结果。
 
 源码说明：Two world equations agree on every recorded A=U trajectory but disagree under the intervention U=false, A=true. This is an exact logical countermodel, not a learning/capability experiment or an empirical causal-identification claim.
@@ -377,6 +473,10 @@ have response := fun direct u a => if direct = true then a else u;
 ## CGB.LanguageLifeKernel.SensoryRecord.exact_record_contract
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L366)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：该 16 状态感官记录编码与读出在合法状态上互逆，并保持合法性。
 
@@ -400,6 +500,10 @@ have response := fun direct u a => if direct = true then a else u;
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L380)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：在该 16 状态见证中，若两条记录读出的策略动作和内容成本均相同，则两条记录相同。
 
 源码说明：All sixteen records already have distinct action/content observations. Any exact representation preserving both must distinguish all sixteen.
@@ -418,6 +522,10 @@ have response := fun direct u a => if direct = true then a else u;
 ## CGB.LanguageLifeKernel.SensoryRecord.record_state_lower_bound
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L386)
+
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：基于因果确定性与有限容量公理，导出记忆载体、状态可区分性与边界更新的必然约束。
 
 解释：能够同时无损读取决策动作与维持成本的感知记录载体，其状态空间基数至少为16。
 
@@ -439,6 +547,10 @@ have response := fun direct u a => if direct = true then a else u;
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L400)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：对编码记录连续写入感官输入，再读出，等于在原感官状态上连续执行对应更新。
 
 源码说明：The finite record supports arbitrary-length replay by a forward fold, without consulting the world regime or keeping an autograd history.
@@ -456,6 +568,10 @@ have response := fun direct u a => if direct = true then a else u;
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L412)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：原联合机体-世界演化过程中的每个正概率后继状态均可由内部感知记录精确编码与无损重构。
 
 源码说明：Every positive-probability successor in the original joint body/world process is exactly representable, for either registered cut and any schedule. The environment and event label remain outside the body record.
@@ -472,6 +588,10 @@ have response := fun direct u a => if direct = true then a else u;
 ## _private.CGBAxioms.LanguageLifeKernel.0.CGB.LanguageLifeKernel.CausalRecord.policy_cases
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L451)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：给出因果记录模块中细胞各离散构型对应决策策略动作的显式分情况查找表。
 
@@ -496,6 +616,10 @@ have response := fun direct u a => if direct = true then a else u;
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L458)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：对于非空主体状态，给定世界转移权重恰为因果记录整数权重除以二。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -512,6 +636,10 @@ have response := fun direct u a => if direct = true then a else u;
 ## CGB.LanguageLifeKernel.CausalRecord.sensor_alias_witness
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L467)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：存在相同当前传感器读数但在相同动作下产生不同环境反馈后果的见证实例（传感器别名混淆）。
 
@@ -534,6 +662,10 @@ CGB.RenewableLearning.sense CGB.RenewableLearning.Env.feedA () =
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L478)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：对于非空主体状态，真实世界一步转移有正权重时，相应观测下的后继世界被因果记录更新保留。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -554,6 +686,10 @@ CGB.RenewableLearning.sense CGB.RenewableLearning.Env.feedA () =
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L493)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：任何包含所有与先验、动作和观测相容后继世界的集合，都包含该因果记录更新结果。
 
 源码说明：Any candidate set retaining every compatible successor contains this one. Thus the filter discards exactly the support exclusions licensed by the declared model and supplied evidence; it does not assert identifiability.
@@ -573,6 +709,10 @@ CGB.RenewableLearning.sense CGB.RenewableLearning.Env.feedA () =
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L504)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：后续相同的传感器观测在前期采取不同动作时对应不同的因果环境后继状态解释。
 
 源码说明：An identical later sensor has different interpretations when the earlier action differs. Keeping an existing action-bearing record can supply it; this does not mandate a separate action log or biological eligibility rule.
@@ -591,6 +731,10 @@ CGB.LanguageLifeKernel.CausalRecord.update {CGB.RenewableLearning.Env.feedA, CGB
 ## CGB.LanguageLifeKernel.PaidRecord.settlement_contract
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L539)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：有偿记忆记录在结算时的剩余能量储备与扣除费用之和严格守恒，且合法候选假设集保持无损收缩。
 
@@ -613,6 +757,10 @@ CGB.LanguageLifeKernel.CausalRecord.update {CGB.RenewableLearning.Env.feedA, CGB
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L558)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：非空主体在真实世界转移有正权重时，付费记录的可能性判据接受相应动作和后继观测。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -631,6 +779,10 @@ CGB.LanguageLifeKernel.CausalRecord.update {CGB.RenewableLearning.Env.feedA, CGB
 ## CGB.LanguageLifeKernel.PaidRecord.combined_write_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L574)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：综合有偿记录在单步演化中信用余额、写入能耗与手续费的综合支出受基础热力学第一定律预算严格约束。
 
@@ -654,6 +806,10 @@ CGB.LanguageLifeKernel.CausalRecord.update {CGB.RenewableLearning.Env.feedA, CGB
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L587)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：存在仅读取当前瞬间观测无法确定真实世界状态的历史因果歧义见证。
 
 源码说明：Holding a source hypothesis is sound about its origin, not about a moving world. Also, substituting another action changes which source is compatible.
@@ -673,6 +829,10 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 ## CGB.LanguageLifeKernel.PaidRecord.joint_source_possible
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L596)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：在联合状态演化下真实环境历史始终属于有偿记忆记录的可能候选集合。
 
@@ -694,6 +854,10 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L622)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：给已有交互机器附加更新记录后，投影到原状态仍细化原机器的行为。
 
 源码说明：Projection recovers the whole original kernel, hence its registered finite-future observations by Interaction.Refines.sameBehavior. This theorem does not certify a particular recorder's sensor provenance or tariff physics.
@@ -711,6 +875,10 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L635)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：二元因子修改前后的交叉乘积差可精确分解为修改幅度 v−u 与联合表行列式 ad−bc 的乘积。
 
 源码说明：A binary factor edit depends on joint contrast, not just either marginal. This algebraic identity specifies no history recurrence or world causal law.
@@ -725,6 +893,10 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 ## CGB.LanguageLifeKernel.LocalEdit.accepts_iff
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L648)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：递推算子近似误差几何累积上界或离散接受算法等价性设计。
 
 解释：当旧分布和候选分布总权重均为正时，整数交叉乘法接受判据等价于候选事件概率严格提高。
 
@@ -744,6 +916,10 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L680)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：首次命中表达式 1−(1−r)^t 可写成 r 乘有限几何级数。
 
 源码说明：Conditional on a fixed lifetime, first-success probabilities telescope. The equality is algebraic and remains valid at rates zero and one.
@@ -757,6 +933,10 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 ## CGB.LanguageLifeKernel.FirstHit.truncation
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L691)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：在权重非负且单步命中率介于零和一之间时，将寿命截断到有限时限不会增加首次命中成功率。
 
@@ -780,6 +960,10 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L720)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：当权重非负且归一、单步命中率位于零和一之间时，加权首次命中成功率也位于零和一之间。
 
 源码说明：A normalized nonnegative finite lifetime distribution gives a genuine probability, independently of the chosen support representation.
@@ -800,6 +984,10 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L768)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：因果状态编码能够读出历史所需输出，并且处理一个输入后与更新历史再编码一致。
 
 源码说明：Canonical readout and single-input recursion realize the same contract.
@@ -817,6 +1005,10 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L778)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：对因果状态逐个处理一个后缀，得到的状态等于先把后缀接到历史上再编码的状态。
 
 源码说明：Arbitrarily long forward recursion; not a bounded-memory implementation.
@@ -833,6 +1025,10 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 ## CGB.LanguageLifeKernel.CausalState.minimal
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L787)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：任何准确实现指定历史输出的状态机都能满射到相应因果状态，表达该因果状态表示的最小性。
 
@@ -852,6 +1048,10 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L807)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：若有限状态机能对所有历史准确实现指定输出，则所需因果状态有限且数量不超过实现机器的状态数。
 
 源码说明：Finiteness follows from a finite exact realization; it is not assumed.
@@ -870,6 +1070,10 @@ CGB.LanguageLifeKernel.CausalRecord.weight CGB.RenewableLearning.Env.missA 0 CGB
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L817)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：即使输入为有限布尔字母表，要求判断真值与假值出现次数是否相等的历史也具有无限多个可区分因果状态。
 
 源码说明：Finite input and output alphabets alone do not imply finite exact memory.
@@ -883,6 +1087,10 @@ Infinite ↑(CGB.LanguageLifeKernel.CausalState.State fun h => decide (List.coun
 ## CGB.LanguageLifeKernel.CausalState.separated_histories_capacity
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L830)
+
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：基于因果确定性与有限容量公理，导出记忆载体、状态可区分性与边界更新的必然约束。
 
 解释：导出为区分非等价历史轨迹，因果状态记录载体所需容量的严格下界。
 
@@ -907,6 +1115,10 @@ Infinite ↑(CGB.LanguageLifeKernel.CausalState.State fun h => decide (List.coun
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L865)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：递推算子近似误差几何累积上界或离散接受算法等价性设计。
+
 解释：若每步近似误差至多按因子 L 放大并增加 δ，有限输入序列后的总误差满足几何累积上界。
 
 源码说明：Full one-step error certificates compose over any finite continuation.
@@ -926,6 +1138,10 @@ Infinite ↑(CGB.LanguageLifeKernel.CausalState.State fun h => decide (List.coun
 ## CGB.LanguageLifeKernel.Approximation.invariant_error
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean#L884)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：若单步误差递推满足 Lε+δ≤ε，则从误差不超过 ε 出发，任意有限输入序列后误差仍不超过 ε。
 

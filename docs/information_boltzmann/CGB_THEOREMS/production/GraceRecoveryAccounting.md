@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryAccounting.lean#L26)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：在宽限恢复中受支持的机体状态其微观载体总数恒等于机体声明的质量存量。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -26,6 +30,10 @@
 ## _private.CGBAxioms.GraceRecoveryAccounting.0.CGB.GraceRecoveryAccounting.credit_step
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryAccounting.lean#L66)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：宽限恢复一步演化中的信用储备增量与实际输入输出通量严格匹配。
 
@@ -47,6 +55,10 @@
 ## CGB.GraceRecoveryAccounting.path_budgets
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryAccounting.lean#L84)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：沿任意宽限恢复轨迹，累积消耗的能量预算精确等于释放量与维持开销之和。
 
@@ -82,6 +94,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryAccounting.lean#L117)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：在具体动力学轨迹上宽限恢复载体系统完全实现了全部形式化微观记账规则。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -102,6 +118,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryAccounting.lean#L155)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：宽限恢复系统在初始时刻储存在物理源中的能量储备严格等于6单位。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -118,6 +138,10 @@
 ## CGB.GraceRecoveryAccounting.source_energy_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryAccounting.lean#L166)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：沿宽限恢复全过程，物理源的储能增量与释放废料流之和严格由外源驱动注入能量恒等维系。
 
@@ -145,6 +169,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryAccounting.lean#L191)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：沿基础学习演化轨迹，机体状态在所有时间步均保持在良性恢复状态集内。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -158,6 +186,10 @@
 ## CGB.GraceRecoveryAccounting.normal_step_unchanged
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryAccounting.lean#L206)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：在未受干扰的良性状态下，宽限恢复机体的单步转移概率与原可再生学习机体完全一致。
 
@@ -175,6 +207,10 @@
 ## CGB.GraceRecoveryAccounting.arbitrary_relearning
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryAccounting.lean#L217)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：系统在任意有限次再学习周期后，转移权重始终为正且写操作消耗与燃料补充达到精确算术平衡。
 
@@ -201,6 +237,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryAccounting.lean#L239)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：微观宽限物理过程中的首次事件命中概率与宏观可再生学习介质的恢复度量精确相等。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -221,6 +261,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryAccounting.lean#L251)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：微观扩展物理过程的状态演化概率律在投影后严格还原为宏观开环或闭环系统状态分布。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -239,6 +283,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryAccounting.lean#L269)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：宽限恢复机制的综合存活评分指标与宏观物质交换系统的全时生存概率完全等价。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -256,6 +304,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryAccounting.lean#L292)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：在经历单拍环境中断并施加宽限恢复时，物理机体在后续任意时刻的存活概率严格为1。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -269,6 +321,10 @@
 ## CGB.GraceRecoveryAccounting.calm_has_no_intake
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecoveryAccounting.lean#L297)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：在平稳静默中断期间，系统对外声称的摄入物质通量严格为零。
 

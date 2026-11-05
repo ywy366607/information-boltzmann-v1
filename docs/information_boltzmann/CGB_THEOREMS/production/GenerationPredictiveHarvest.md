@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L41)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：PredictiveHarvest
+
+分类说明：针对 PredictiveHarvest 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当 p 总和为一且各分配 c 为正时，定义的增长量等于 log|B| 减交叉熵。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -27,6 +31,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L53)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：PredictiveHarvest
+
+分类说明：针对 PredictiveHarvest 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若 x 非负且 y 为正，则 x(log y−log x) 不超过 y−x。
 
 源码说明：One term of Gibbs' inequality: `x (log y - log x) ≤ y - x` (from `log t ≤ t - 1`).
@@ -40,6 +48,10 @@
 ## CGB.PredictiveHarvest.gibbs_inequality
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L63)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：PredictiveHarvest
+
+分类说明：针对 PredictiveHarvest 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：对非负归一 p 和严格正、归一的 c，p 加权的 log c 不超过 p 加权的 log p。
 
@@ -56,6 +68,10 @@
 ## CGB.PredictiveHarvest.growth_le
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L75)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：PredictiveHarvest
+
+分类说明：针对 PredictiveHarvest 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若 p 非负归一、c 严格正且归一，则指定增长量不超过 log|B| 减去 p 的熵。
 
@@ -75,6 +91,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L83)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：PredictiveHarvest
+
+分类说明：针对 PredictiveHarvest 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当 p 的总和为一时，定义的 growth p p 等于 log|B| 减去定义的熵。
 
 源码说明：Placing capacity as the stream's law attains the bound.
@@ -90,6 +110,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L96)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：PredictiveHarvest
+
+分类说明：针对 PredictiveHarvest 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在非空有限符号集上，均匀分配代入所定义的 growth 时结果为零。
 
 源码说明：A body that knows nothing about the stream (uniform allocation) does not grow.
@@ -104,6 +128,10 @@
 ## CGB.PredictiveHarvest.no_allocation_persists
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L106)
+
+分类：necessity；适用范围：world_contract；审核：reviewed
+
+分类说明：环境信息熵超过预测信道容量时，任意资源分配策略均无法维持正增长。
 
 解释：对非负归一分布，若其熵超过 log|B|−m，则任意正且归一的分配都使指定对数增长量减 m 为负。
 
@@ -123,6 +151,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L113)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：PredictiveHarvest
+
+分类说明：针对 PredictiveHarvest 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在所列归一化与正分配条件下，若交叉熵低于 log|B|−m，则定义的对数增长量减 m 严格为正。
 
 源码说明：Below the cross-entropy threshold, expected net log growth is positive.
@@ -139,6 +171,10 @@
 ## CGB.PredictiveHarvest.additive_payoff_mode
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationPredictiveHarvest.lean#L122)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：PredictiveHarvest
+
+分类说明：针对 PredictiveHarvest 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若 bs 的权重不小于其他符号且分配非负归一，则加性加权收益不超过把全部分配放在 bs 的收益。
 

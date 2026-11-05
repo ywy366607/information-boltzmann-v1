@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningCarrier.lean#L23)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：在可再生学习载体系统中，机体支持状态的微观所有权计数严格等于机体宏观质量。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -27,6 +31,10 @@
 ## CGB.RenewableLearningCarrier.realized
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningCarrier.lean#L72)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：可再生学习机体微观物理转移完全实现了宏观可再生记账规则的全部公理。
 
@@ -47,6 +55,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningCarrier.lean#L87)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：微观物质载体向机体的迁移量与宏观接口声称的输入通量完全相等。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -65,6 +77,10 @@
 ## CGB.RenewableLearningCarrier.recovery_preserved
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningCarrier.lean#L97)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：微观载体物理过程的首次恢复事件概率与宏观可再生系统的恢复度量精确相等。
 
@@ -85,6 +101,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningCarrier.lean#L104)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：由局域恢复证书保证：只要机体位于安全域内，在有限时间视界内的微观物质恢复度严格为1。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -103,6 +123,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningCarrier.lean#L119)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：微观载体物理系统的全时存活得分与宏观可再生学习植物的生存概率精确一致。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -120,6 +144,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningCarrier.lean#L144)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：具体 LearningMaintenance 候选机体的物理公理准入与维持见证。
+
 解释：正常闭环系统的全时生存概率恒为1，且开环截断在6步后存活率至少下降1/4（维持必要性）。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -134,6 +162,10 @@
 ## CGB.RenewableLearningCarrier.stock_and_recharge
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningCarrier.lean#L186)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：在微观转移中源头恒定维持4单位物质存量，且外源补充通量与机体声明的摄入通量严格相等。
 
@@ -154,6 +186,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningCarrier.lean#L197)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：在系统初始创生时，外源物质库中包含6单位独立于机体的初始有效能量储备。
 
 源码说明：The extra source stock is external to the old two-unit body at birth.
@@ -168,6 +204,10 @@
 ## CGB.RenewableLearningCarrier.source_energy_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningCarrier.lean#L207)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：沿可再生物理演化全过程，外源储能增量与排入汇的物质流之和由持续驱动通量严格平衡。
 

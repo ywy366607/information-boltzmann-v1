@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Nesting.lean#L44)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：子集S与外部补集直接接触的内部边界单元集合严格等价于补集Sᶜ的外部接触邻域outer。
 
 源码说明：`S`'s own boundary: the units of `S` touching the outside. It is `outer` of the complement.
@@ -25,6 +29,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Nesting.lean#L49)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在局域性公理P1b下，任何与S中单元共同参与同一跃迁事件的单元必须位于S内或与S边界相邻。
 
 源码说明：A participant of an event that also has a participant in `S` is in `S` or touches it.
@@ -39,6 +47,10 @@
 ## CGB.Medium.blanket_of_contact
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Nesting.lean#L57)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：只要两个全局状态在机体S及其接触邻域上完全一致，所有与S相关的局域事件发生率及其对S的作用效果均完全相同（定理T-N1马尔可夫接触毯）。
 
@@ -58,6 +70,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Nesting.lean#L71)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：未包含S中任何单元作为参与者的跃迁事件绝不改变子集S内的物理微观状态。
 
 源码说明：Events with no participant in `S` leave `S` unchanged.
@@ -72,6 +88,10 @@
 ## CGB.Medium.organism_blanket
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Nesting.lean#L76)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：机体区域O内部的状态变化与跃迁速率仅依赖于O内部状态及与其直接相连的边界单元状态。
 
@@ -91,6 +111,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Nesting.lean#L83)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：外部世界其余部分的状态演化仅依赖于外部自身以及机体O的接触边界，确立了机体对世界的马尔可夫边界公理。
 
 源码说明：The world's half (formerly the assumption `ReadsBoundary`): what happens to the rest reads only the rest and the organism's own boundary units.
@@ -108,6 +132,10 @@
 ## CGB.Medium.exchange_conserves
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Nesting.lean#L96)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：封闭跃迁事件中机体区域O内的物质增量严格等于外部环境区域Oᶜ中物质增量的相反数（定理T-N2交换守恒律）。
 
@@ -129,6 +157,10 @@
 ## CGB.JumpProcess.freezeOutside_balance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Nesting.lean#L127)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：当联合系统满足细致平衡时，在冻结外部世界状态后机体自身内部跃迁在诱导测度下同样保持细致平衡（定理T-N3）。
 

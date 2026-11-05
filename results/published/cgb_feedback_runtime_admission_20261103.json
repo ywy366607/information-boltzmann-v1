@@ -1,0 +1,90 @@
+{
+  "status": "runtime_admitted_for_paired_language_validation",
+  "organism_admitted": false,
+  "implementation": "existing GatedDeltaNetLM feedback_delta branch",
+  "cue_source": "existing v projection; same value is external write and cue",
+  "added_parameters": 32,
+  "added_recurrent_state_bytes": 0,
+  "precision": "FP32 (numerical derivative audits FP64)",
+  "initialization": "shared weights seed11 identical; eta=.1 and gain=2 are learned initial values, not forced latch values",
+  "update": "alpha*S + beta*k*((1-eta)*v+eta*softsign(gain*S.T*k+v)-alpha*S.T*k).T; then common row/column L1 admission",
+  "capacity": {
+    "budget": 32,
+    "arms": "both",
+    "reason": "common numerical guard one L1 unit per head coordinate, not a uniquely derived budget",
+    "scope": "actual matrix capacity; not P2a conservation"
+  },
+  "learning": "full present/fixed-window gradient, 32-byte graph horizon, state carried; no growing history tape",
+  "formal_sources": [
+    "tied_write_is_error_descent",
+    "feedback_write_read",
+    "feedback_renewal_joint_contract",
+    "feedback_potential_step",
+    "budgets"
+  ],
+  "formal_transfer_boundary": "Fixed-key raw-update latch is conditional. Learned keys, values, gates and capacity correction need measured joint language evidence.",
+  "numerical_tests": {
+    "suite": "tests/test_gated_deltanet.py + tests/test_gated_deltanet_evaluation.py",
+    "passed": 70,
+    "orchestration_test_passed": 1,
+    "checks": [
+      "kernel potential identity",
+      "all current parameter gradients",
+      "common initialization",
+      "causality and no target writes",
+      "chunk continuation",
+      "parameter/optimizer/state restore",
+      "CUDA Graph vs eager accumulated updates",
+      "actual-kernel latch/release and capacity incompatibility counterexample",
+      "frozen evaluator target alignment"
+    ]
+  },
+  "calibration": {
+    "decay_then_delta": {
+      "report_path": "results\\cgb_feedback_calibration_delta_20261103\\summary.json",
+      "parameters": 765088,
+      "state_bytes": 83968,
+      "training_bytes_per_second": 1301.950229910062,
+      "peak_allocated_mib": 58.71240234375,
+      "peak_reserved_mib": 102.0,
+      "all_parameter_tensors_changed": true,
+      "parameter_tensor_count": 62,
+      "feedback_parameter_changes": {},
+      "steps": 20,
+      "capability_claim": false
+    },
+    "feedback_delta": {
+      "report_path": "results\\cgb_feedback_calibration_renewal_20261103\\summary.json",
+      "parameters": 765120,
+      "state_bytes": 83968,
+      "training_bytes_per_second": 1047.5909091945075,
+      "peak_allocated_mib": 58.74755859375,
+      "peak_reserved_mib": 100.0,
+      "all_parameter_tensors_changed": true,
+      "parameter_tensor_count": 70,
+      "feedback_parameter_changes": {
+        "layers.0.feedback_logit": 0.0043523311614990234,
+        "layers.0.feedback_gain_raw": 0.004591226577758789,
+        "layers.1.feedback_logit": 0.0026557445526123047,
+        "layers.1.feedback_gain_raw": 0.0048787593841552734,
+        "layers.2.feedback_logit": 0.0047876834869384766,
+        "layers.2.feedback_gain_raw": 0.0047997236251831055,
+        "layers.3.feedback_logit": 0.0037772655487060547,
+        "layers.3.feedback_gain_raw": 0.0052793025970458984
+      },
+      "steps": 20,
+      "capability_claim": false
+    }
+  },
+  "run_root": "results/cgb_feedback_pair_20261103_5000",
+  "driver_pid": 2696,
+  "source_sha256": {
+    "scripts/ib_local/gated_deltanet.py": "809757aee5b43f9d4ee9b17f960ac4cd9ba3995c6d0d6b30be6f82f13025c976",
+    "scripts/ib_local/train_gated_deltanet.py": "edf093fdc23f19fde560b5fd0eaa4e05c759a8b1acf6db44c1e6eacc8e83b548",
+    "scripts/ib_local/train_cbim_malecns_internal_time.py": "28fb77c46ab882d3d007edd21d51eb2eda731f700b5d0539d5375a662992cd12",
+    "tests/test_gated_deltanet.py": "bbc9919dbe5f4639c86c0b5322daca81bea330ead49f516c85f59d0498688097",
+    "tests/test_gated_deltanet_evaluation.py": "74720296ebe0765aa202eb1b2c5b8752cc47211f9a7ceb7cb25141729aaace85",
+    "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689"
+  },
+  "acceptance": "Paired real language evidence; no result or convergence declared while running"
+}

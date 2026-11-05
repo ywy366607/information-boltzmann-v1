@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCRN.lean#L96)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：CRN
+
+分类说明：针对 CRN 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：成对化学反应事件对单元求和的改变量仅局限于参与反应的两个接触单元。
 
 源码说明：A pair event changes a unit-wise sum only at its two units.
@@ -31,6 +35,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCRN.lean#L117)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：CRN
+
+分类说明：针对 CRN 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：两位置不同时且相应储库势为零，成对反应前后总能量之差等于该反应定义的能量差 dE。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -46,6 +54,10 @@
 ## CGB.PairCRN.p1a
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCRN.lean#L125)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：CRN
+
+分类说明：针对 CRN 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若成对反应介质内容函数满足有限子水平集、统一上界和唯一零态，则该介质满足 P1a。
 
@@ -63,6 +75,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCRN.lean#L128)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：CRN
+
+分类说明：针对 CRN 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定成对反应介质满足 P1b，事件读取与写入均受参与位置局部性约束。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -77,6 +93,10 @@
 ## CGB.PairCRN.p2a
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCRN.lean#L152)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：CRN
+
+分类说明：针对 CRN 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若每个不触及边界身份页的成对反应都保持两端内容之和，则该介质满足闭事件内容守恒 P2a。
 
@@ -97,6 +117,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCRN.lean#L176)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：CRN
+
+分类说明：针对 CRN 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：若平静储库势为零、逆反应为对合、正反系数匹配且有效反应可逆，则成对反应介质满足 P2b。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -116,6 +140,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCRN.lean#L213)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：CRN
+
+分类说明：针对 CRN 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定成对反应介质满足 P2c：对每个自同构，同时重标记状态、刺激与事件可保持速率和作用的对应关系。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -130,6 +158,10 @@
 ## CGB.PairCRN.p3
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCRN.lean#L236)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：CRN
+
+分类说明：针对 CRN 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：指定成对反应介质满足 P3 的边界刺激依赖和初始状态不变条件。
 
@@ -146,6 +178,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCRN.lean#L256)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：CRN
+
+分类说明：针对 CRN 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：指定成对反应介质的接触关系满足所定义的齐次性。
 
 源码说明：The single compartment's contact is homogeneous (an optional model property).
@@ -160,6 +196,10 @@
 ## CGB.PairCRN.axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCRN.lean#L263)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：CRN
+
+分类说明：针对 CRN 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在定理列出的内容条件、平静储库势、内部反应守恒与逆反应条件下，指定成对反应介质满足 Axioms。
 

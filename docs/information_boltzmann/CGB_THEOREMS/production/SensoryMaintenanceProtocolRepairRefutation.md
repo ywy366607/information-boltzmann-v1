@@ -8,6 +8,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceProtocolRepairRefutation.lean#L7)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：感官维护协议修复反驳模型中细胞状态到离散策略编号的显式对照查表。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -31,6 +35,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceProtocolRepairRefutation.lean#L29)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：五步有限路径上的每一步转移概率在对抗环境下均严格为正。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -49,6 +57,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceProtocolRepairRefutation.lean#L44)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
+
 解释：受保护协议在有限时间内出现空质量态的概率严格为正，无法实现绝对保护。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -65,6 +77,10 @@
 ## CGB.SensoryMaintenanceProtocolRepairRefutation.protected_protocol_survival_lt_one
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceProtocolRepairRefutation.lean#L63)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对感知维护协议修复构造的候选实例或反驳见证。
 
 解释：反驳定理：声称受保护的感官维护协议在真实环境扰动下的长期存活率严格小于一。
 

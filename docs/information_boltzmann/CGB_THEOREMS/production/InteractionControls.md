@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InteractionControls.lean#L29)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：当系统扩展位独立演化时，将其投影折叠构成对原机体的严格模拟细化（Refines）。
 
 源码说明：Removing a bit is justified HERE by a universal transition equation. No conclusion about ignoring an arbitrary biological cell/state follows from this.
@@ -24,6 +28,10 @@
 ## CGB.InteractionControls.independent_bit_sameBehavior
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InteractionControls.lean#L35)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：忽略独立的无关状态位不会改变机体在所有输入序列下的可观测行为等价性。
 
@@ -41,6 +49,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InteractionControls.lean#L46)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：交替机与常数机在空历史下的首次可观测输出概率分布完全相同。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -55,6 +67,10 @@ CGB.InteractionControls.alternating.trace (fun x => ()) [] [false] false = 1 ∧
 ## CGB.InteractionControls.different_future
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InteractionControls.lean#L51)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：交替机与常数机在后续第二步输出概率上产生发散，展示仅凭单步观测无法区分内部动力学。
 
@@ -71,6 +87,10 @@ CGB.InteractionControls.alternating.trace (fun x => ()) [] [false, true] false =
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InteractionControls.lean#L57)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：基于首步单一观测所建立的等价关系不能提升为系统在未来交互流上的完全双互模拟。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -85,6 +105,10 @@ CGB.InteractionControls.alternating.trace (fun x => ()) [] [false, true] false =
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InteractionControls.lean#L63)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：物理能量证书在时钟尺度变换下破缺，确立物理时钟不能被任意时间重参数化替代。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -98,6 +122,10 @@ CGB.InteractionControls.alternating.trace (fun x => ()) [] [false, true] false =
 ## CGB.InteractionControls.actual_recovery_bridge
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InteractionControls.lean#L71)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：在受检的真实恢复子空间上该表征映射为恒等嵌入，构成了形式验证与真实行为的一致性桥梁。
 

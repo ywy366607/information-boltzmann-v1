@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RecoveryTransport.lean#L15)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：恢复传输单步迭代后的后继均值满足递推鞅关系。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -26,6 +30,10 @@
 ## CGB.RecoveryTransport.firstHit_eq
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RecoveryTransport.lean#L32)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：恢复传输算子作用下，两个分布的首次命中时间概率分布完全相等。
 
@@ -48,6 +56,10 @@
 ## CGB.RecoveryTransport.mean_eq
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RecoveryTransport.lean#L61)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：在保测度传输下，任意可观测量的均值在步进前后保持守恒。
 

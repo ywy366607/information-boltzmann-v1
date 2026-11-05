@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "kind": "numerical_identity_audit_not_capability",
+  "device": "cpu",
+  "dtype": "float64",
+  "seed": 735,
+  "labels": 256,
+  "identity_families": [
+    "affine_delta_factorization",
+    "same_key_contraction",
+    "cross_query_interference",
+    "orthogonal_read_preserved",
+    "realized_path_expansion",
+    "finite_prefix_language_bound",
+    "moving_query_and_head_accounted",
+    "double_budget_counterexample"
+  ],
+  "realized_path_length": 17,
+  "expansion_error": 4.440892098500626e-16,
+  "moving_readout_identity_error": 7.105427357601002e-15,
+  "language_change": 1.9043381405216202,
+  "language_change_bound": 13.038983182425069,
+  "body_admitted": false,
+  "training_runs": 0,
+  "new_production_theorems": 0,
+  "historical_gradient_claim": false,
+  "conserved_allocation_bridge": false,
+  "source_sha256": {
+    "scripts/audit_cgb_joint_reinvestment.py": "542be39ca84e3b921c6bc6711e5b7469a6070de4189ecdf307456cd566e6ff0c",
+    "lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+    "lean/CGBAxioms/CGBAxioms/GenerationAssociationCapacity.lean": "afbaae9b35df112be27935effb22c68c67ecc1530c0b9c488ab24e66459f66fe",
+    "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+    "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883"
+  },
+  "torch_version": "2.9.1+cu126",
+  "hardware": "cpu"
+}

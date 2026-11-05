@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceClosure.lean#L10)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：对单位置主体的所有状态函数求和，等于对该位置的所有单元状态逐个求和。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -23,6 +27,10 @@
 ## _private.CGBAxioms.SensoryMaintenanceClosure.0.CGB.SensoryMaintenanceClosure.sum_new
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceClosure.lean#L13)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：扩展感知维持机体状态求和分解为神经构型与储备量二重求和的展开式。
 
@@ -38,6 +46,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceClosure.lean#L19)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：在非静默有效感知下，扩展机体神经状态的后继投影与基础可再生学习后继完全一致。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -52,6 +64,10 @@
 ## _private.CGBAxioms.SensoryMaintenanceClosure.0.CGB.SensoryMaintenanceClosure.old_kernel
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceClosure.lean#L24)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：原宽限恢复转移核在确定性后继状态处取值为1，其余构型为0。
 
@@ -69,6 +85,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceClosure.lean#L39)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：对扩展感知机体的转移核在储备维度上求边缘和，精确等于原宽限恢复机体的转移核。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -84,6 +104,10 @@
 ## _private.CGBAxioms.SensoryMaintenanceClosure.0.CGB.SensoryMaintenanceClosure.cut_move
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceClosure.lean#L50)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在施加环路截断时，扩展机体与原系统在边缘分布驱动下的环境转移算子完全重合。
 
@@ -104,6 +128,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceClosure.lean#L67)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：扩展机体在截断演化下的概率律边际求和精确还原为原记忆-世界联合系统的截断演化律。
 
 源码说明：Recompute the actual cut with the augmented body's own marginal; summing its physical reserve gives exactly the old cut's memory/world law.
@@ -122,6 +150,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceClosure.lean#L100)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：在指定正常感知更新后，若主体单元为 vacuum，则后继储备为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -137,6 +169,10 @@
 ## _private.CGBAxioms.SensoryMaintenanceClosure.0.CGB.SensoryMaintenanceClosure.vacuum_reserve_zero
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceClosure.lean#L106)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在截断演化下，机体处于真空构型且储备非零的状态概率质量恒为零。
 
@@ -157,6 +193,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceClosure.lean#L127)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：扩展机体在第n步跌入死亡空虚状态的总概率质量精确等于原宽限系统在截断下的死态边缘累积概率。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -175,7 +215,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceClosure.lean#L138)
 
-解释：在施加环路截断后，机体存活概率在第7步衰减至不超过3/4，确立闭环反馈维持的不可替代性。
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
+解释：在指定的感知维护闭包模型中，施加环路截断后机体存活概率在第7步衰减至不超过3/4。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 

@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L43)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：基本向量空间内积与饱和函数数学语义。
+
 解释：有限实向量与自身点积非负。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -24,6 +28,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L46)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：基本向量空间内积与饱和函数数学语义。
+
 解释：有限实向量的自身点积为零时，该向量为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -37,6 +45,10 @@
 ## CGB.Generation.silent_rest_unique
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L53)
+
+分类：necessity；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：绑定写入动力学在静息条件下的零点唯一性。
 
 解释：对指定无写入更新 α·deltaStep，单位键、β 在零到二之间且 0≤α<1 时，唯一不动点为零；其他更新需另行核对。
 
@@ -54,6 +66,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L68)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：所定义的绑定写入等于 delta 更新加上目标值沿键方向的写入项。
 
 源码说明：The tied write is the delta step plus the write of the arrival.
@@ -68,6 +84,10 @@
 ## CGB.Generation.tied_write_is_error_descent
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L76)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：绑定写入可代数改写为按预测误差乘键方向进行的一步更新。
 
@@ -84,6 +104,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L83)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：单位键下，绑定写入后的预测误差等于原预测误差乘以 1−β。
 
 源码说明：With a unit key the prediction error shrinks by `1 - β`.
@@ -99,6 +123,10 @@
 ## CGB.Generation.binary_delta_crossEntropy_decreases
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L104)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入当前预测概率、二值真实目标与学习步长，经Delta规则更新概率，输出更新后概率严格保持在有效区间且对目标标签的交叉熵损失严格单调下降。
 
@@ -122,6 +150,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L168)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入写入键、查询键、当前状态、更新率与写入值，经绑定写入变换后沿查询键投影读出，输出读出改变量精确等于写入误差项乘以两键之间的几何内积。
 
 源码说明：The change in any other readout is exactly the prediction error times the key overlap and write gain. Orthogonal readouts are therefore preserved.
@@ -138,7 +170,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L203)
 
-解释：A matched reciprocal update contracts its splice mismatch by its release factor. No initial transpose relation is assumed.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：匹配的互惠接触更新按照其释放因子严格收缩剪接不匹配量，无需预先假设初始转置关系。
 
 源码说明：A matched reciprocal update contracts its splice mismatch by its release factor. No initial transpose relation is assumed.
 
@@ -155,7 +191,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L219)
 
-解释：The mismatch is geometric even when the common local statistic changes at each event. Thus alignment does not require either contact to stop learning.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：即使局部公共统计量在每个事件中动态变动，互惠接触对的更新不匹配量仍保持几何速率收缩，证明对齐无需任何接触冻结学习。
 
 源码说明：The mismatch is geometric even when the common local statistic changes at each event. Thus alignment does not require either contact to stop learning.
 
@@ -171,6 +211,10 @@
 ## CGB.Generation.reused_key_tracks_and_rewrites
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L239)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入单位模长键向量、初始状态与值序列，经多步键态外积动力学迭代，输出第t+1步键方向投影精确追踪上一时刻目标值，且目标改变时状态发生有效重写。
 
@@ -190,6 +234,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L256)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：预测值恰好等于目标值时，绑定写入不改变状态。
 
 源码说明：An exact prediction writes nothing.
@@ -203,6 +251,10 @@
 ## CGB.Generation.occurrence_decay_retains
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L263)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：当衰减系数位于零到一且每步权重不超过一时，按权重衰减的有限乘积不小于每步完整衰减。
 
@@ -218,6 +270,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L273)
 
+分类：side；适用范围：universal；审核：reviewed
+
+分类说明：纯代数、数值计算或概率混合等式辅助引理，与语言身体机制无直接因果约束关系。
+
 解释：未使用方向每步的衰减指数为零，因此任意有限步累计乘积为一。
 
 源码说明：An unused column keeps everything.
@@ -231,6 +287,10 @@
 ## CGB.Generation.no_latch_below_unit_gain
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L278)
+
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：单位增益以下任何压缩非线性均无法维持非零自锁存，迫使自锁存增益严格不小于1。
 
 解释：固定零点的一 Lipschitz 非线性与小于一的非负增益组合，其不动点只能是零。
 
@@ -247,6 +307,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L287)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：基本向量空间内积与饱和函数数学语义。
+
 解释：指定硬饱和函数在零点的值为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -260,6 +324,10 @@ CGB.Generation.hardSat 0 = 0
 ## CGB.Generation.hardSat_lipschitz
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L289)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：基本向量空间内积与饱和函数数学语义。
 
 解释：指定硬饱和函数不会增大任意两个输入之间的距离。
 
@@ -275,6 +343,10 @@ CGB.Generation.hardSat 0 = 0
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L293)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在增益至少为一时，硬饱和反馈有 −1、0 和 1 三个所列不动点。
 
 源码说明：**A latch above unit gain**: with saturation and `g ≥ 1`, `± 1` rest besides `0`.
@@ -289,6 +361,10 @@ CGB.Generation.hardSat 0 = 0
 ## CGB.Generation.self_listening_increment
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L311)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入自监听状态推进算子的前后两组参数与状态，经双变量变动展开，输出更新步长增量精确分解为状态变化项与参数敏感度项的二阶线性耦合。
 
@@ -306,6 +382,10 @@ CGB.Generation.hardSat 0 = 0
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L318)
 
+分类：side；适用范围：universal；审核：reviewed
+
+分类说明：纯代数、数值计算或概率混合等式辅助引理，与语言身体机制无直接因果约束关系。
+
 解释：输入自监听系数、内部状态与参数敏感度，经线性代数展开，输出自变状态更新与冻结状态更新之间的差值精确等于自反馈耦合增量项。
 
 源码说明：Freezing the self-listening input loses the feedback part of state credit.
@@ -319,6 +399,10 @@ CGB.Generation.hardSat 0 = 0
 ## CGB.Generation.self_listening_frozen_state_counterexample
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean#L324)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：自听冻结状态算术反例。
 
 解释：输入自监听状态反例赋值，经数值代数验证，输出当自反馈状态被固化时，反馈项不再提供有效增益导数（验证自反馈非冻结的必要性）。
 

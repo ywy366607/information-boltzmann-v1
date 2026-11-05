@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L54)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：当起点占据、终点空且两者不同时，跳跃操作等于交换这两个位置的状态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -24,6 +28,10 @@
 ## CGB.Models.xhopAct_of_not
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L57)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：当指定起终点不满足有效跳跃条件时，跳跃操作保持状态不变。
 
@@ -40,6 +48,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L60)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：有效跳跃后原终点被占据、原起点为空，因此交换端点的逆跳跃条件成立。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -54,6 +66,10 @@
 ## CGB.Models.xhopAct_back
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L65)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：当起点占据、终点空且两者不同时，先正向跳再反向跳恢复原状态。
 
@@ -70,6 +86,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L71)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：有限位置上，跳跃前后对任意布尔状态函数求和的结果相同。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -85,6 +105,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L78)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：跳跃操作不改变起点和终点之外的位置。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -98,6 +122,10 @@
 ## CGB.Models.xhopAct_congr
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L83)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：两个状态在跳跃端点一致时，跳跃后在任一端点的值也一致。
 
@@ -114,6 +142,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L88)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：将交换操作按任意置换共轭后，得到原端点交换与逆置换的对应关系。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -128,6 +160,10 @@
 ## CGB.Models.xhopAct_perm
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L97)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：同步置换跳跃端点和状态后，跳跃结果与原结果同步置换一致。
 
@@ -144,6 +180,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L108)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：对不同单占据位置，若一次指定跳跃将 a 的单粒子状态变为 b 的单粒子状态，则跳跃起终点分别为 a、b。
 
 源码说明：The content of `a` alone, moved by a hop, can only have gone along `a → b`.
@@ -158,6 +198,10 @@
 ## CGB.Models.ident_swap
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L121)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：两个位置身份相同时，交换这两个位置保持所有位置的身份标签。
 
@@ -174,6 +218,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L130)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：对只以相等性定义关系的可判定类型，存在将任意位置映到另一位置且保持相等关系的置换。
 
 源码说明：Homogeneous contact by equality: any swap is a symmetry.
@@ -188,6 +236,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L135)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：若布尔局部状态的内容量等于其自然数值，则介质满足 P1a 有限内容条件。
 
 源码说明：Occupancy content: a site is empty (the vacuum) or holds one unit.
@@ -201,6 +253,10 @@
 ## CGB.Models.xhop_isAut
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L165)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：在指定 xhop 构造中，任何保持位置身份标签的置换都是自同构。
 
@@ -217,6 +273,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L170)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：指定 xhop 跳跃介质满足 P1b 局部性条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -231,6 +291,10 @@
 ## CGB.Models.xhop_p2a
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L180)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：有限位置的指定 xhop 跳跃介质满足 P2a 内容守恒。
 
@@ -247,6 +311,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L183)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：有限位置的 xhop 介质若双向电导相等，则满足 P2b 平静细致平衡。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -261,6 +329,10 @@
 ## CGB.Models.xhop_p2c
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L193)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：若所有自同构保持 xhop 电导，则该介质满足 P2c 等变性。
 
@@ -278,6 +350,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L200)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：指定 xhop 介质满足只有边界感知外部刺激的条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -292,6 +368,10 @@
 ## CGB.Models.xhop_pages
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L206)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：指定 xhop 介质满足 P2c 时，相同端点身份页的不同位置对具有相同电导。
 
@@ -309,6 +389,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L271)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：对指定均一单位置事件构造，任意位置置换都是自同构。
 
 源码说明：Every permutation of units is a symmetry of `solo`.
@@ -325,6 +409,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L274)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：指定单位置事件介质满足 P1b 局部性条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -339,6 +427,10 @@
 ## CGB.Models.solo_p2a
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L287)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：若单位置事件逐个保持内容，指定 solo 介质满足 P2a。
 
@@ -356,6 +448,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L295)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：指定均一单位置事件介质满足 P2c 重标记等变条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -371,6 +467,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L304)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：指定 solo 介质满足 P3 边界与初始状态条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -385,6 +485,10 @@
 ## CGB.Models.solo_p2b
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L308)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：若 solo 构造的事件具有定理要求的配对逆操作和速率条件，则该介质满足 P2b。
 
@@ -405,6 +509,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L328)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：三状态翻转操作连续执行两次后返回原状态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -418,6 +526,10 @@
 ## CGB.Models.flipCost_flip12
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L330)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：三状态翻转操作保持所定义的内容量。
 
@@ -433,6 +545,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L332)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：三状态介质若采用指定 flipCost 内容函数，则满足 P1a。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -446,6 +562,10 @@
 ## CGB.Models.twinFlip_axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L343)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：所构造的 twinFlip 介质满足当前 Axioms 结构中列出的条件。
 
@@ -461,6 +581,10 @@ CGB.Models.twinFlip.Axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L347)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：交换 twinFlip 的零号和一号位置是其自同构。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -474,6 +598,10 @@ CGB.Models.twinFlip.IsAut (Equiv.swap 0 1)
 ## CGB.Models.rock_axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L355)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：所构造的 rock 介质满足当前 Axioms 结构中列出的条件。
 
@@ -489,6 +617,10 @@ CGB.Models.rock.Axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L360)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：rock 介质在任意刺激及状态对之间的跳跃速率为零。
 
 源码说明：The rock is frozen: no transition ever has positive rate, in any environment.
@@ -502,6 +634,10 @@ CGB.Models.rock.Axioms
 ## CGB.Models.ringAdj_refl
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L371)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：四位置环形接触关系对每个位置自反。
 
@@ -517,6 +653,10 @@ CGB.Models.rock.Axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L373)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：四位置环形接触关系是对称的。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -530,6 +670,10 @@ CGB.Models.rock.Axioms
 ## CGB.Models.ringAdj_shift
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L375)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：四位置环形接触关系在两个端点同时平移后保持不变。
 
@@ -545,6 +689,10 @@ CGB.Models.rock.Axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L409)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：seed 介质满足 P1b 局部接触条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -558,6 +706,10 @@ CGB.Models.seed.P1b
 ## CGB.Models.seed_p2a
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L452)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：seed 介质满足 P2a 闭事件内容守恒条件。
 
@@ -573,6 +725,10 @@ CGB.Models.seed.P2a
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L461)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：seed 介质满足 P2b 平静环境细致平衡条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -586,6 +742,10 @@ CGB.Models.seed.P2b
 ## CGB.Models.seed_aut_fix
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L480)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：seed 的任一自同构及其逆都固定被指定的零号和二号位置。
 
@@ -601,6 +761,10 @@ CGB.Models.seed.P2b
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L490)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：seed 介质满足 P2c 一致重标记等变条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -614,6 +778,10 @@ CGB.Models.seed.P2c
 ## CGB.Models.seed_p3
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L517)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：seed 介质满足 P3 边界与初始状态条件。
 
@@ -629,6 +797,10 @@ CGB.Models.seed.P3
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L529)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：所构造的 seed 介质满足当前 Axioms 结构中列出的条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -642,6 +814,10 @@ CGB.Models.seed.Axioms
 ## CGB.Models.seed_swap_isAut
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L533)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：交换 seed 的一号与三号位置是其自同构。
 
@@ -657,6 +833,10 @@ CGB.Models.seed.IsAut (Equiv.swap 1 3)
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L541)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：seed 在指定 food 刺激下的跳跃过程不满足可逆性。
 
 源码说明：The seed is driven: under food its open dynamics has no detailed balance. Excreted content never comes back through the sink. In the calm environment it is reversible.
@@ -670,6 +850,10 @@ CGB.Models.seed.IsAut (Equiv.swap 1 3)
 ## CGB.Models.seed_grows
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L567)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：seed 在 food 下存在从总内容一到总内容三的有限开放事件路径。
 
@@ -686,6 +870,10 @@ CGB.Models.seed.IsAut (Equiv.swap 1 3)
 ## CGB.Models.twinTape_witness
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L593)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：twinTape 见证违反 P1a 的有限子水平集部分，同时满足定理列出的其他公理与内容有界、唯一零态。
 
@@ -708,6 +896,10 @@ CGB.Models.seed.IsAut (Equiv.swap 1 3)
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L629)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：twinBag 见证违反 P1a 的统一有界部分，同时满足定理列出的其他公理与有限子水平集、唯一零态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -728,6 +920,10 @@ CGB.Models.seed.IsAut (Equiv.swap 1 3)
 ## CGB.Models.twinBlank_witness
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L657)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：twinBlank 见证违反 P1a 的唯一零态部分，同时满足定理列出的其他公理及另外两个内容条件。
 
@@ -751,6 +947,10 @@ CGB.Models.seed.IsAut (Equiv.swap 1 3)
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L675)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：twinToggle 见证违反 P2a，同时满足列出的 P1a、P1b、P2b、P2c、P3 和指定交换自同构。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -769,6 +969,10 @@ CGB.Models.seed.IsAut (Equiv.swap 1 3)
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L699)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：所构造的 twinCycle 介质不满足 P2b 平静细致平衡条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -782,6 +986,10 @@ CGB.Models.seed.IsAut (Equiv.swap 1 3)
 ## CGB.Models.twinCycle_witness
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L721)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：twinCycle 见证违反 P2b，同时满足列出的 P1a、P1b、P2a、P2c、P3 和指定交换自同构。
 
@@ -801,6 +1009,10 @@ CGB.Models.seed.IsAut (Equiv.swap 1 3)
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L746)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：任意两个位置的置换与该二元素空间上的加一操作交换。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -814,6 +1026,10 @@ CGB.Models.seed.IsAut (Equiv.swap 1 3)
 ## CGB.Models.farFlip_witness
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L754)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：farFlip 见证违反 P1b，同时满足列出的 P1a、P2、P3 条件并允许指定交换自同构。
 
@@ -833,6 +1049,10 @@ CGB.Models.seed.IsAut (Equiv.swap 1 3)
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L783)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
+
 解释：triLookup 见证违反 P2c，同时满足列出的 P1a、P1b、P2a、P2b 和 P3。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -848,6 +1068,10 @@ CGB.Models.seed.IsAut (Equiv.swap 1 3)
 ## CGB.Models.pairPreset_witness
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L798)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：pairPreset 见证违反 P3，同时满足列出的 P1a、P1b、P2 条件和指定交换自同构。
 
@@ -866,6 +1090,10 @@ CGB.Models.seed.IsAut (Equiv.swap 1 3)
 ## CGB.Models.innerClock_witness
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Models.lean#L821)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：针对具体玩具模型（如 rock、oscillator、farFlip、leaky_bucket）的性质或反例见证。
 
 解释：innerClock 见证违反 P3，同时满足列出的 P1a、P1b、P2 条件和指定交换自同构。
 

@@ -1,0 +1,608 @@
+{
+  "status": "completed_budget_limited",
+  "scope": "budget-limited; not a convergence proof",
+  "clock": "real common packet-arrival clock, not per-byte physical sampling",
+  "language_only": "systems 1/5 conditions; 2/3 co-learning; system 4 deferred",
+  "source_switch": "validation first-pass with online learning, not an asserted domain change",
+  "common_delivered_raw": 392000,
+  "cumulative_exposure_raw": 684000,
+  "common_delivered_scored_bytes": 391864,
+  "common_delivered_special_tokens": 136,
+  "cumulative_exposure_scored_bytes": 683778,
+  "cumulative_exposure_special_tokens": 222,
+  "best_criterion": "best_observed_first_pass_window",
+  "best_eligibility": "s_on non-warmup non-replay complete report_every-raw windows only",
+  "best": {
+    "criterion": "best_observed_first_pass_window",
+    "phase": "A_fresh",
+    "raw_start": 250000,
+    "raw_stop": 260000,
+    "scored_bytes": 10000,
+    "mean_nll_nats": 2.5816827136993408
+  },
+  "phases": {
+    "warmup/warmup": {
+      "raw_tokens": 100000,
+      "special_tokens": 50,
+      "scored_bytes": 99950,
+      "total_nll_nats": 289708.3052062988,
+      "replay": false,
+      "diagnostic_totals": [
+        74501.49217605591,
+        74459.39292621613,
+        81455245.0,
+        99426208.0,
+        3207.2847203314304,
+        0.0007142815738774289
+      ],
+      "learning_profile": {
+        "head_step": 0.01,
+        "value_step": 0.001,
+        "route_step": 0.001,
+        "contact_step": 0.001,
+        "s_contact_step": 0.001,
+        "record_s_return": true,
+        "collect_diagnostics": true,
+        "block_size": 128
+      },
+      "enabled_update_call_opportunities": {
+        "head": 99950,
+        "value": 99950,
+        "route": 99950,
+        "contact": 99950,
+        "s_contact": 99950
+      },
+      "window_mean_nll_distribution": {
+        "Min": 2.750350185240906,
+        "Median": 2.875223909299992,
+        "Mean": 2.898523880640222,
+        "Max": 3.2387659763855847
+      },
+      "window_distribution_scope": "unweighted distribution of logged window means, not per-byte losses",
+      "diagnostics": {
+        "S_actual_admitted_mass": 74501.49217605591,
+        "S_actual_released_mass": 74459.39292621613,
+        "mass_counting": "directed sum / 2; each reciprocal physical contact counted once",
+        "H_live_response_coordinates": 81455245.0,
+        "H_local_write_support_coordinates": 99426208.0,
+        "H_live_response_ratio": 0.8192532596636894,
+        "S_return_lambda_squared_norm_sum": 3207.2847203314304,
+        "S_conserved_transfer_squared_norm_sum": 0.0007142815738774289,
+        "S_return_lambda_collection": "enabled",
+        "S_conserved_transfer_collection": "enabled",
+        "scope": "actual executed forward; masses not energy/reward; squared norms not language benefit"
+      },
+      "mean_nll_nats": 2.8985323182220992,
+      "bits_per_byte": 4.181698201355413,
+      "phase_mean_scope": "scored-byte-weighted prequential NLL"
+    },
+    "A_firstpass/s_on": {
+      "raw_tokens": 100000,
+      "special_tokens": 24,
+      "scored_bytes": 99976,
+      "total_nll_nats": 270529.99085617065,
+      "replay": false,
+      "diagnostic_totals": [
+        76836.66757488251,
+        76849.0071773529,
+        81166397.0,
+        99010976.0,
+        5042.043145656586,
+        0.001096465801893487
+      ],
+      "learning_profile": {
+        "head_step": 0.01,
+        "value_step": 0.001,
+        "route_step": 0.001,
+        "contact_step": 0.001,
+        "s_contact_step": 0.001,
+        "record_s_return": true,
+        "collect_diagnostics": true,
+        "block_size": 128
+      },
+      "enabled_update_call_opportunities": {
+        "head": 99976,
+        "value": 99976,
+        "route": 99976,
+        "contact": 99976,
+        "s_contact": 99976
+      },
+      "window_mean_nll_distribution": {
+        "Min": 2.5984751556396484,
+        "Median": 2.7115465666707452,
+        "Mean": 2.7059575008648205,
+        "Max": 2.7950771516455393
+      },
+      "window_distribution_scope": "unweighted distribution of logged window means, not per-byte losses",
+      "diagnostics": {
+        "S_actual_admitted_mass": 76836.66757488251,
+        "S_actual_released_mass": 76849.0071773529,
+        "mass_counting": "directed sum / 2; each reciprocal physical contact counted once",
+        "H_live_response_coordinates": 81166397.0,
+        "H_local_write_support_coordinates": 99010976.0,
+        "H_live_response_ratio": 0.8197717089466929,
+        "S_return_lambda_squared_norm_sum": 5042.043145656586,
+        "S_conserved_transfer_squared_norm_sum": 0.001096465801893487,
+        "S_return_lambda_collection": "enabled",
+        "S_conserved_transfer_collection": "enabled",
+        "scope": "actual executed forward; masses not energy/reward; squared norms not language benefit"
+      },
+      "mean_nll_nats": 2.705949336402443,
+      "bits_per_byte": 3.9038596885245864,
+      "phase_mean_scope": "scored-byte-weighted prequential NLL"
+    },
+    "A_firstpass/s_off": {
+      "raw_tokens": 100000,
+      "special_tokens": 24,
+      "scored_bytes": 99976,
+      "total_nll_nats": 270478.9505996704,
+      "replay": false,
+      "diagnostic_totals": [
+        77032.6155576706,
+        77029.70917129517,
+        81162162.0,
+        98997984.0,
+        0.0,
+        0.0
+      ],
+      "learning_profile": {
+        "head_step": 0.01,
+        "value_step": 0.001,
+        "route_step": 0.001,
+        "contact_step": 0.001,
+        "s_contact_step": 0.0,
+        "record_s_return": true,
+        "collect_diagnostics": true,
+        "block_size": 128
+      },
+      "enabled_update_call_opportunities": {
+        "head": 99976,
+        "value": 99976,
+        "route": 99976,
+        "contact": 99976,
+        "s_contact": 0
+      },
+      "window_mean_nll_distribution": {
+        "Min": 2.5954803741455077,
+        "Median": 2.712622524827224,
+        "Mean": 2.705447154062499,
+        "Max": 2.7956019594421813
+      },
+      "window_distribution_scope": "unweighted distribution of logged window means, not per-byte losses",
+      "diagnostics": {
+        "S_actual_admitted_mass": 77032.6155576706,
+        "S_actual_released_mass": 77029.70917129517,
+        "mass_counting": "directed sum / 2; each reciprocal physical contact counted once",
+        "H_live_response_coordinates": 81162162.0,
+        "H_local_write_support_coordinates": 98997984.0,
+        "H_live_response_ratio": 0.8198365130344473,
+        "S_return_lambda_squared_norm_sum": null,
+        "S_conserved_transfer_squared_norm_sum": null,
+        "S_return_lambda_collection": "disabled_not_collected",
+        "S_conserved_transfer_collection": "disabled_not_collected",
+        "scope": "actual executed forward; masses not energy/reward; squared norms not language benefit"
+      },
+      "mean_nll_nats": 2.705438811311419,
+      "bits_per_byte": 3.903123156507516,
+      "phase_mean_scope": "scored-byte-weighted prequential NLL"
+    },
+    "B_firstpass/s_on": {
+      "raw_tokens": 64000,
+      "special_tokens": 24,
+      "scored_bytes": 63976,
+      "total_nll_nats": 172288.68787765503,
+      "replay": false,
+      "diagnostic_totals": [
+        49534.02527141571,
+        49544.62245845795,
+        51522301.0,
+        62458944.0,
+        4057.5112102627754,
+        0.000888058380894563
+      ],
+      "learning_profile": {
+        "head_step": 0.01,
+        "value_step": 0.001,
+        "route_step": 0.001,
+        "contact_step": 0.001,
+        "s_contact_step": 0.001,
+        "record_s_return": true,
+        "collect_diagnostics": true,
+        "block_size": 128
+      },
+      "enabled_update_call_opportunities": {
+        "head": 63976,
+        "value": 63976,
+        "route": 63976,
+        "contact": 63976,
+        "s_contact": 63976
+      },
+      "window_mean_nll_distribution": {
+        "Min": 2.6422348882057216,
+        "Median": 2.7066473241518287,
+        "Mean": 2.6886622420686628,
+        "Max": 2.722839917373657
+      },
+      "window_distribution_scope": "unweighted distribution of logged window means, not per-byte losses",
+      "diagnostics": {
+        "S_actual_admitted_mass": 49534.02527141571,
+        "S_actual_released_mass": 49544.62245845795,
+        "mass_counting": "directed sum / 2; each reciprocal physical contact counted once",
+        "H_live_response_coordinates": 51522301.0,
+        "H_local_write_support_coordinates": 62458944.0,
+        "H_live_response_ratio": 0.8248986886489788,
+        "S_return_lambda_squared_norm_sum": 4057.5112102627754,
+        "S_conserved_transfer_squared_norm_sum": 0.000888058380894563,
+        "S_return_lambda_collection": "enabled",
+        "S_conserved_transfer_collection": "enabled",
+        "scope": "actual executed forward; masses not energy/reward; squared norms not language benefit"
+      },
+      "mean_nll_nats": 2.693020630824919,
+      "bits_per_byte": 3.885207509102779,
+      "phase_mean_scope": "scored-byte-weighted prequential NLL"
+    },
+    "B_firstpass/s_off": {
+      "raw_tokens": 64000,
+      "special_tokens": 24,
+      "scored_bytes": 63976,
+      "total_nll_nats": 172096.62256622314,
+      "replay": false,
+      "diagnostic_totals": [
+        50600.43218135834,
+        50600.824275016785,
+        52573359.0,
+        62676480.0,
+        0.0,
+        0.0
+      ],
+      "learning_profile": {
+        "head_step": 0.01,
+        "value_step": 0.001,
+        "route_step": 0.001,
+        "contact_step": 0.001,
+        "s_contact_step": 0.0,
+        "record_s_return": true,
+        "collect_diagnostics": true,
+        "block_size": 128
+      },
+      "enabled_update_call_opportunities": {
+        "head": 63976,
+        "value": 63976,
+        "route": 63976,
+        "contact": 63976,
+        "s_contact": 0
+      },
+      "window_mean_nll_distribution": {
+        "Min": 2.6325706821951678,
+        "Median": 2.7011201339236353,
+        "Mean": 2.6850886771499844,
+        "Max": 2.721160737991333
+      },
+      "window_distribution_scope": "unweighted distribution of logged window means, not per-byte losses",
+      "diagnostics": {
+        "S_actual_admitted_mass": 50600.43218135834,
+        "S_actual_released_mass": 50600.824275016785,
+        "mass_counting": "directed sum / 2; each reciprocal physical contact counted once",
+        "H_live_response_coordinates": 52573359.0,
+        "H_local_write_support_coordinates": 62676480.0,
+        "H_live_response_ratio": 0.8388052264581546,
+        "S_return_lambda_squared_norm_sum": null,
+        "S_conserved_transfer_squared_norm_sum": null,
+        "S_return_lambda_collection": "disabled_not_collected",
+        "S_conserved_transfer_collection": "disabled_not_collected",
+        "scope": "actual executed forward; masses not energy/reward; squared norms not language benefit"
+      },
+      "mean_nll_nats": 2.690018484528935,
+      "bits_per_byte": 3.8808763275295393,
+      "phase_mean_scope": "scored-byte-weighted prequential NLL"
+    },
+    "A_revisit/s_on": {
+      "raw_tokens": 64000,
+      "special_tokens": 24,
+      "scored_bytes": 63976,
+      "total_nll_nats": 171505.012134552,
+      "replay": true,
+      "diagnostic_totals": [
+        49200.34371471405,
+        49211.46620178223,
+        51190681.0,
+        61903552.0,
+        4786.775694191456,
+        0.0010451519674887777
+      ],
+      "learning_profile": {
+        "head_step": 0.01,
+        "value_step": 0.001,
+        "route_step": 0.001,
+        "contact_step": 0.001,
+        "s_contact_step": 0.001,
+        "record_s_return": true,
+        "collect_diagnostics": true,
+        "block_size": 128
+      },
+      "enabled_update_call_opportunities": {
+        "head": 63976,
+        "value": 63976,
+        "route": 63976,
+        "contact": 63976,
+        "s_contact": 63976
+      },
+      "window_mean_nll_distribution": {
+        "Min": 2.6314872086835224,
+        "Median": 2.6857172073364257,
+        "Mean": 2.681730039038578,
+        "Max": 2.733709309000472
+      },
+      "window_distribution_scope": "unweighted distribution of logged window means, not per-byte losses",
+      "diagnostics": {
+        "S_actual_admitted_mass": 49200.34371471405,
+        "S_actual_released_mass": 49211.46620178223,
+        "mass_counting": "directed sum / 2; each reciprocal physical contact counted once",
+        "H_live_response_coordinates": 51190681.0,
+        "H_local_write_support_coordinates": 61903552.0,
+        "H_live_response_ratio": 0.8269425476586545,
+        "S_return_lambda_squared_norm_sum": 4786.775694191456,
+        "S_conserved_transfer_squared_norm_sum": 0.0010451519674887777,
+        "S_return_lambda_collection": "enabled",
+        "S_conserved_transfer_collection": "enabled",
+        "scope": "actual executed forward; masses not energy/reward; squared norms not language benefit"
+      },
+      "mean_nll_nats": 2.6807711037662876,
+      "bits_per_byte": 3.867535177162056,
+      "phase_mean_scope": "scored-byte-weighted prequential NLL"
+    },
+    "A_revisit/s_off": {
+      "raw_tokens": 64000,
+      "special_tokens": 24,
+      "scored_bytes": 63976,
+      "total_nll_nats": 171655.5471496582,
+      "replay": true,
+      "diagnostic_totals": [
+        50401.39158153534,
+        50401.70923233032,
+        52286266.0,
+        62033312.0,
+        0.0,
+        0.0
+      ],
+      "learning_profile": {
+        "head_step": 0.01,
+        "value_step": 0.001,
+        "route_step": 0.001,
+        "contact_step": 0.001,
+        "s_contact_step": 0.0,
+        "record_s_return": true,
+        "collect_diagnostics": true,
+        "block_size": 128
+      },
+      "enabled_update_call_opportunities": {
+        "head": 63976,
+        "value": 63976,
+        "route": 63976,
+        "contact": 63976,
+        "s_contact": 0
+      },
+      "window_mean_nll_distribution": {
+        "Min": 2.6390777342125817,
+        "Median": 2.691530140686035,
+        "Mean": 2.6842161789705945,
+        "Max": 2.7414179994812438
+      },
+      "window_distribution_scope": "unweighted distribution of logged window means, not per-byte losses",
+      "diagnostics": {
+        "S_actual_admitted_mass": 50401.39158153534,
+        "S_actual_released_mass": 50401.70923233032,
+        "mass_counting": "directed sum / 2; each reciprocal physical contact counted once",
+        "H_live_response_coordinates": 52286266.0,
+        "H_local_write_support_coordinates": 62033312.0,
+        "H_live_response_ratio": 0.8428740029228167,
+        "S_return_lambda_squared_norm_sum": null,
+        "S_conserved_transfer_squared_norm_sum": null,
+        "S_return_lambda_collection": "disabled_not_collected",
+        "S_conserved_transfer_collection": "disabled_not_collected",
+        "scope": "actual executed forward; masses not energy/reward; squared norms not language benefit"
+      },
+      "mean_nll_nats": 2.6831240957493154,
+      "bits_per_byte": 3.8709298270272217,
+      "phase_mean_scope": "scored-byte-weighted prequential NLL"
+    },
+    "A_fresh/s_on": {
+      "raw_tokens": 64000,
+      "special_tokens": 14,
+      "scored_bytes": 63986,
+      "total_nll_nats": 169480.00449752808,
+      "replay": false,
+      "diagnostic_totals": [
+        49744.52321910858,
+        49753.92369747162,
+        51556374.0,
+        62162080.0,
+        5149.733740091324,
+        0.0011226631132501552
+      ],
+      "learning_profile": {
+        "head_step": 0.01,
+        "value_step": 0.001,
+        "route_step": 0.001,
+        "contact_step": 0.001,
+        "s_contact_step": 0.001,
+        "record_s_return": true,
+        "collect_diagnostics": true,
+        "block_size": 128
+      },
+      "enabled_update_call_opportunities": {
+        "head": 63986,
+        "value": 63986,
+        "route": 63986,
+        "contact": 63986,
+        "s_contact": 63986
+      },
+      "window_mean_nll_distribution": {
+        "Min": 2.5772728424072264,
+        "Median": 2.6221896063019976,
+        "Mean": 2.6425866311445323,
+        "Max": 2.8145645425471812
+      },
+      "window_distribution_scope": "unweighted distribution of logged window means, not per-byte losses",
+      "diagnostics": {
+        "S_actual_admitted_mass": 49744.52321910858,
+        "S_actual_released_mass": 49753.92369747162,
+        "mass_counting": "directed sum / 2; each reciprocal physical contact counted once",
+        "H_live_response_coordinates": 51556374.0,
+        "H_local_write_support_coordinates": 62162080.0,
+        "H_live_response_ratio": 0.8293862431887736,
+        "S_return_lambda_squared_norm_sum": 5149.733740091324,
+        "S_conserved_transfer_squared_norm_sum": 0.0011226631132501552,
+        "S_return_lambda_collection": "enabled",
+        "S_conserved_transfer_collection": "enabled",
+        "scope": "actual executed forward; masses not energy/reward; squared norms not language benefit"
+      },
+      "mean_nll_nats": 2.6487044743776464,
+      "bits_per_byte": 3.821272809965039,
+      "phase_mean_scope": "scored-byte-weighted prequential NLL"
+    },
+    "A_fresh/s_off": {
+      "raw_tokens": 64000,
+      "special_tokens": 14,
+      "scored_bytes": 63986,
+      "total_nll_nats": 169443.18272018433,
+      "replay": false,
+      "diagnostic_totals": [
+        49431.525524139404,
+        49430.90548324585,
+        50917454.0,
+        61693856.0,
+        0.0,
+        0.0
+      ],
+      "learning_profile": {
+        "head_step": 0.01,
+        "value_step": 0.001,
+        "route_step": 0.001,
+        "contact_step": 0.001,
+        "s_contact_step": 0.0,
+        "record_s_return": true,
+        "collect_diagnostics": true,
+        "block_size": 128
+      },
+      "enabled_update_call_opportunities": {
+        "head": 63986,
+        "value": 63986,
+        "route": 63986,
+        "contact": 63986,
+        "s_contact": 0
+      },
+      "window_mean_nll_distribution": {
+        "Min": 2.573633623123169,
+        "Median": 2.6210203573307433,
+        "Mean": 2.641749072931695,
+        "Max": 2.813661372716438
+      },
+      "window_distribution_scope": "unweighted distribution of logged window means, not per-byte losses",
+      "diagnostics": {
+        "S_actual_admitted_mass": 49431.525524139404,
+        "S_actual_released_mass": 49430.90548324585,
+        "mass_counting": "directed sum / 2; each reciprocal physical contact counted once",
+        "H_live_response_coordinates": 50917454.0,
+        "H_local_write_support_coordinates": 61693856.0,
+        "H_live_response_ratio": 0.8253245509569057,
+        "S_return_lambda_squared_norm_sum": null,
+        "S_conserved_transfer_squared_norm_sum": null,
+        "S_return_lambda_collection": "disabled_not_collected",
+        "S_conserved_transfer_collection": "disabled_not_collected",
+        "scope": "actual executed forward; masses not energy/reward; squared norms not language benefit"
+      },
+      "mean_nll_nats": 2.648129008223429,
+      "bits_per_byte": 3.82044258779815,
+      "phase_mean_scope": "scored-byte-weighted prequential NLL"
+    }
+  },
+  "paired_differences": {
+    "A_firstpass": {
+      "replay": false,
+      "scored_bytes_match": true,
+      "s_on_scored_bytes": 99976,
+      "s_off_scored_bytes": 99976,
+      "s_on_minus_s_off_mean_nll_nats": 0.0005105250910242276,
+      "s_on_minus_s_off_bits_per_byte": 0.0007365320170702461
+    },
+    "B_firstpass": {
+      "replay": false,
+      "scored_bytes_match": true,
+      "s_on_scored_bytes": 63976,
+      "s_off_scored_bytes": 63976,
+      "s_on_minus_s_off_mean_nll_nats": 0.003002146295984165,
+      "s_on_minus_s_off_bits_per_byte": 0.00433118157323964
+    },
+    "A_revisit": {
+      "replay": true,
+      "scored_bytes_match": true,
+      "s_on_scored_bytes": 63976,
+      "s_off_scored_bytes": 63976,
+      "s_on_minus_s_off_mean_nll_nats": -0.0023529919830278523,
+      "s_on_minus_s_off_bits_per_byte": -0.0033946498651657997
+    },
+    "A_fresh": {
+      "replay": false,
+      "scored_bytes_match": true,
+      "s_on_scored_bytes": 63986,
+      "s_off_scored_bytes": 63986,
+      "s_on_minus_s_off_mean_nll_nats": 0.0005754661542174411,
+      "s_on_minus_s_off_bits_per_byte": 0.0008302221668889942
+    }
+  },
+  "comparison_scope": "one common birth, budget-limited branch comparison; not significance or capability proof",
+  "parameter_numbers": 34716,
+  "provenance": {
+    "train": {
+      "source": "openwebtext",
+      "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+      "split": "train",
+      "path": "data\\ib_owt_10000\\train.npy",
+      "tokens_available": 48145263,
+      "tokens_presented": 264000,
+      "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "tokenizer_sha256": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+      "token_file_sha256": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+      "split_rule": "NFC_document_sha256_mod100_98_1_1"
+    },
+    "validation": {
+      "source": "openwebtext",
+      "revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+      "split": "validation",
+      "path": "data\\ib_owt_10000\\validation.npy",
+      "tokens_available": 468139,
+      "tokens_presented": 64000,
+      "manifest_sha256": "3614c380d4c72688ac8ccde42f32ea0655d16bec1ba0874a924fd777af904d2d",
+      "tokenizer_sha256": "e727da4afe06d37d6ffff7db05ab21f69c5be39253ee7b7f7ec759cadab69c1d",
+      "token_file_sha256": "60d41d3fdda8c1718ad1735693eda0dae2b23a0032c5e04a29aac9d0c6d35d8c",
+      "split_rule": "NFC_document_sha256_mod100_98_1_1"
+    }
+  },
+  "config": {
+    "warmup": 100000,
+    "phase_bytes": 64000,
+    "report_every": 10000,
+    "graph_block": 128,
+    "d_model": 32,
+    "grid": 8,
+    "active_columns": 8,
+    "contact_rank": 1,
+    "seed": 20261031,
+    "head_step": 0.01,
+    "value_step": 0.001,
+    "route_step": 0.001,
+    "contact_step": 0.001,
+    "s_contact_step": 0.001,
+    "prediction_contract": "score arriving x_t from state through x_(t-1); then assimilate x_t",
+    "special_token_contract": "advance physical time without concatenating language runs",
+    "record_s_return": true,
+    "collect_diagnostics": true,
+    "protocol_sizing_override": false
+  },
+  "model_source": {
+    "scripts\\run_cgb_column_language_living.py": "82f3b055f92d94b015cf98a8ac17042f47267c16440028c6a82c9c30a59648ee",
+    "scripts\\run_cgb_column_language_admission.py": "441ced6caec8767766d7b901191dbccd50af48b0f150218122506513dd09c3f1",
+    "information_boltzmann\\core\\cgb_column_body.py": "c21e98eaa53db8191a9250fe24fdd0916cb85292874fd0475ede4f80914d7d48"
+  }
+}

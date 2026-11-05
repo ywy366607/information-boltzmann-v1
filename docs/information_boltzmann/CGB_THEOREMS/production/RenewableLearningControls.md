@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningControls.lean#L13)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：给出可再生学习控制律中细胞构型对应策略动作输出的显式分段查找表。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -33,6 +37,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningControls.lean#L35)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：给出机体在标准10步学习交互环路中各边转移概率值（分支处为1/2，其余为1）。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -49,6 +57,10 @@
 ## _private.CGBAxioms.RenewableLearningControls.0.CGB.RenewableLearningControls.cycle_payment
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningControls.lean#L42)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：机体在每个10步学习周期内，写入操作消耗与燃料补充总额精确平衡于4单位。
 
@@ -73,6 +85,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningControls.lean#L54)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：在经过前3步初始化过渡后，机体演化轨迹严格进入周期为10的标准学习循环。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -88,6 +104,10 @@
 ## _private.CGBAxioms.RenewableLearningControls.0.CGB.RenewableLearningControls.path_step
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningControls.lean#L56)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：在标准学习路径上，各时间步的单步转移概率均严格大于零。
 
@@ -106,6 +126,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningControls.lean#L80)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：沿标准学习路径演化，机体在所有时刻均保持激活状态而绝不退化为真空死态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -119,6 +143,10 @@
 ## _private.CGBAxioms.RenewableLearningControls.0.CGB.RenewableLearningControls.write_blocks
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningControls.lean#L94)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：在任意有限k个再学习周期内，累积写入成本为1+4k且累积充能为2+4k。
 
@@ -141,6 +169,10 @@
 ## CGB.RenewableLearningControls.arbitrary_relearning
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningControls.lean#L126)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：系统对任意指定次数的A-B-A再学习任务均存在正概率实现轨迹，且状态、信用与时钟严格连续无冷重置。
 
@@ -167,6 +199,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningControls.lean#L135)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：建立演化过程中状态概率测度沿合法转移步的前向单调推进不等式。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -184,6 +220,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningControls.lean#L148)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：机体在特定路径上的转移权重构成终态在对应时刻联合概率测度的严格下界。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -199,6 +239,10 @@
 ## _private.CGBAxioms.RenewableLearningControls.0.CGB.RenewableLearningControls.failure_weight
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningControls.lean#L171)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：在缺乏重新开放或再充能时，系统在第6步落入失败轨迹的概率质量为1/2。
 
@@ -218,6 +262,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningControls.lean#L178)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：在陷阱死态下，机体在任意有限视界内的恢复度量恒为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -236,6 +284,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningControls.lean#L191)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：在陷阱死态下，机体的全时期存活度量恒等于零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -253,6 +305,10 @@
 ## _private.CGBAxioms.RenewableLearningControls.0.CGB.RenewableLearningControls.survival_mass_bound
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningControls.lean#L199)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：导出系统存活概率严格受限于1减去失败路径概率测度的分析上界。
 
@@ -273,6 +329,10 @@
 ## CGB.RenewableLearningControls.paired_failure
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/RenewableLearningControls.lean#L231)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：在成对测试序列中，若同时缺乏重开与再充能则机体必发生确定性演化失败。
 

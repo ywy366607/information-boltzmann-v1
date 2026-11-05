@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortFlowHomology.lean#L30)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：PortFlowHomology 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：增广关联矩阵在同调链复合下满足闭合性，即端口边界链算子的二次复合作用为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -24,6 +28,10 @@ CGB.AlgebraicHomology.boundaryLaw CGB.PortFlowHomology.incidence CGB.PortFlowHom
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortFlowHomology.lean#L43)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：PortFlowHomology 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：加权增广关联矩阵与同调边界矩阵正交，确认了端口间流动的拓扑守恒性。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -37,6 +45,10 @@ CGB.AlgebraicHomology.boundaryLaw CGB.PortFlowHomology.weightedIncidence CGB.Por
 ## CGB.PortFlowHomology.weighted_flow_boundary_zero
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortFlowHomology.lean#L59)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：PortFlowHomology 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：加权物质流在端口网络边界上的净代数发散恒等于零（局部电流守恒定律）。
 

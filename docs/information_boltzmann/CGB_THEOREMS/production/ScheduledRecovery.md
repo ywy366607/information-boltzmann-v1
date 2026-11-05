@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ScheduledRecovery.lean#L28)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：在带有时间调度因子的恢复过程中，排位优先的候选状态具有更小的首达时间期望。
 
 源码说明：A local rank certificate proves recovery in the actual future kernel, without assuming a favourable stimulus sequence or the desired recovery score.
@@ -25,6 +29,10 @@
 ## _private.CGBAxioms.ScheduledRecovery.0.CGB.ScheduledRecovery.support_closed
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ScheduledRecovery.lean#L54)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：调度恢复过程中的正测度支撑集在有界转移核作用下保持时空前向封闭。
 
@@ -44,6 +52,10 @@
 ## CGB.ScheduledRecovery.survival_of_ranked
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ScheduledRecovery.lean#L84)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：排位优先的细胞在调度恢复协议下长期存活率拥有确定性的正数下界。
 

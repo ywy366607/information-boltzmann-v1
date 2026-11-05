@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "kind": "numerical_identity_audit_not_capability",
+  "device": "cuda",
+  "dtype": "float64",
+  "seed": 731,
+  "labels": 256,
+  "checks": 7,
+  "max_gradient_error": 1.6653345369377348e-16,
+  "joint_pullback_error": 0.0,
+  "conserved_budget_error": 2.842170943040401e-14,
+  "identical_wrong_predictors_current_log_score_gain": 0.05019339199312611,
+  "additive_readout_credit_mismatch": 0.14862011415903995,
+  "body_admitted": false,
+  "training_runs": 0,
+  "new_production_theorems": 0,
+  "source_sha256": {
+    "scripts/audit_cgb_joint_reinvestment.py": "e1d042cc21e74be36d5462a776708d8bfcafe59cb6c0d1b31f210c5d85513e9f",
+    "lean/CGBAxioms/CGBAxioms/Generation.lean": "b3d2544b48c13492c84df1e9ff63f268810684626495eb3543c2be4f26d94b0c",
+    "lean/CGBAxioms/CGBAxioms/GenerationReinvestment.lean": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+    "information_boltzmann/cgb/voxel_body.py": "9c9fd55565c7cbb9908863686c86a1de1844cbffb6c0637752d4b31911e05ce4"
+  },
+  "torch_version": "2.9.1+cu126",
+  "hardware": "NVIDIA GeForce GTX 1650"
+}

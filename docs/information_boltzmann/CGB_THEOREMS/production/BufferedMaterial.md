@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/BufferedMaterial.lean#L30)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：BufferedMaterial 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：对任意不超过容量4的缓冲存量，规范所有权构型均严格实现该存量分配。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -23,6 +27,10 @@
 ## _private.CGBAxioms.BufferedMaterial.0.CGB.BufferedMaterial.total
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/BufferedMaterial.lean#L34)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：BufferedMaterial 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：缓冲物质系统中所有空间位置（机体、源、汇与外部）的微观载体总数严格守恒为12。
 
@@ -43,6 +51,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/BufferedMaterial.lean#L44)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：BufferedMaterial 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在任意空间位置存在包含指定数量载体的合法子集以供物质传输调度。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -57,6 +69,10 @@
 ## CGB.BufferedMaterial.transport_exists
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/BufferedMaterial.lean#L54)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：BufferedMaterial 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：在给定的摄入、排出与源头补充守恒约束下，必定存在保守恒的局部物质传输转移。
 
@@ -82,6 +98,10 @@
 ## _private.CGBAxioms.BufferedMaterial.0.CGB.BufferedMaterial.available
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/BufferedMaterial.lean#L145)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：BufferedMaterial 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：只要离散机体执行非零跃迁，就存在满足进出通量计量的微观物质所有权转移。
 
@@ -112,6 +132,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/BufferedMaterial.lean#L160)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：BufferedMaterial 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：微观物质缓冲机体的转移步在投影后严格保真原离散机体的状态步。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -127,6 +151,10 @@
 ## _private.CGBAxioms.BufferedMaterial.0.CGB.BufferedMaterial.lift_sum
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/BufferedMaterial.lean#L166)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：BufferedMaterial 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：微观物质缓冲机体的总跃迁概率等于原系统相应跃迁核的归一化求和。
 
@@ -144,6 +172,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/BufferedMaterial.lean#L196)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：BufferedMaterial 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：微观带有物质存量跟踪的扩展机体严格弱模拟并细化原抽象机体。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -159,6 +191,10 @@
 ## CGB.BufferedMaterial.delivery
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/BufferedMaterial.lean#L210)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：BufferedMaterial 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：在有效微观转移下，源头、机体与汇之间的物质移动量与宏观物质账本进出通量精确匹配。
 
@@ -186,6 +222,10 @@
 ## CGB.BufferedMaterial.realized
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/BufferedMaterial.lean#L237)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：BufferedMaterial 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：在离散机体上建立的显式物质传输模型完全实现了抽象缓冲物质规则公理体系。
 

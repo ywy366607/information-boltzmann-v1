@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L39)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：建立空间网格单元占有率与感受化学势的对数比值精确解析关系（定理G26a）。
 
 源码说明：**G26a (the sensed potential of a world cell)**.
@@ -26,6 +30,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L45)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在受限再生率下，单点在T拍后的残余养分加上已被捕食总养分不超过初值加上总再生量。
 
 源码说明：Conservation at a site: food after `T` ticks plus everything eaten is at most the initial food plus the regeneration.
@@ -41,6 +49,10 @@
 ## CGB.Generation.stay_starves
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L58)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若机体停留在有限再生单点且维持消耗大于再生速率，其体内能量储备在T拍后必呈线性下界衰减（定理G26b）。
 
@@ -59,6 +71,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L74)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当维持生存的基础能耗大于单点养分补给极限时，原地不动的生命机体必在有限时间内耗尽储备而死亡。
 
 源码说明：The reserve is exhausted in finite time when living costs more than the site regenerates.
@@ -75,6 +91,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L91)
 
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：导出容量为V的单元中增加一个微观量子所需的精确自由能代价为log((n+1)/(V-n))。
 
 源码说明：Adding one quantum to a cell holding `n` of `V` costs exactly `log ((n + 1) / (V - n))`, so to a unit exchanging quanta with it the cell is a reservoir of potential `≈ log (n / V) = ln c`, and one exchange moves that potential only by `≈ 1/n`: the `PairCRN` reservoir and the receptors' `ln c` are the limit of exchanging with a large world cell (with G26a).
@@ -88,6 +108,10 @@
 ## CGB.Generation.missProb_ge
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L118)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：给出当当前状态存在具有不同边界读数的后继态时预测误差率的正下界估计。
 
@@ -104,6 +128,10 @@
 ## CGB.Generation.stream_never_dry
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L140)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在平稳遍历环境下若存在环境边界分歧，机体对下一刻观测的预测累积误差必随时间T呈线性下界增长（定理T-N7）。
 
@@ -125,6 +153,10 @@
 ## CGB.Generation.corpses_must_go
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationNesting.lean#L161)
+
+分类：semantics；适用范围：candidate；审核：reviewed；候选：Nesting
+
+分类说明：针对 Nesting 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在有限空间中若持续产生死亡个体，则必须存在尸体分解与清除机制以防止空间饱和终止流动（定理G26c）。
 

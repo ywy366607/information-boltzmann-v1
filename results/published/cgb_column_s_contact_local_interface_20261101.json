@@ -1,0 +1,52 @@
+{
+  "status": "current_spatial_s_contact_interface_verified",
+  "claim_scope": "Existing source/rank S participation tags modulate a current shared-pool parameter VJP using the actual preceding spatial contact's language return. This verifies a candidate local surrogate update, not historical parameter attribution or language capability.",
+  "not_claimed": [
+    "an exact long-horizon parameter gradient",
+    "recovery of historical contact_pre or individual H response directions",
+    "descent of current prequential CE or actual future CE",
+    "full-parameter online learning",
+    "action credit or language-life closure"
+  ],
+  "mechanism": {
+    "teaching": "issued one-hot-minus-prediction innovation returned through the original one-event H/flux <- S weight snapshot, H response gates, issued read route, tanh flux derivative and periodic divergence adjoint",
+    "tag": "input-state S times demand(C), read from the existing H/C/S state",
+    "local_potential": "sum(stopgrad(teaching * tag) * current_shared_pool(W; stopped input state, pre, gate, route and source))",
+    "update": "torch.func.vjp of the same current spatial pool, applied only to allocation/retain output rows; no cross-event pullback is saved",
+    "default_s_contact_step": 0.0,
+    "new_body_state_fields": 0,
+    "receipt_horizon_events": 1,
+    "cpu_phase_continuation": "carry the latest issued receipt together with H/C/S across train-to-validation boundaries"
+  },
+  "verification": {
+    "python_command": "D:/conda_envs/vox/python.exe -m pytest tests/test_cgb_column_body.py tests/test_cgb_s_contact_plasticity.py -q",
+    "python_tests_passed": 45,
+    "python_seconds": 5.93,
+    "cpu_cuda_graph": "passed, including capture restoration and phase continuation",
+    "lean_module": "CGBAxioms.GenerationContactPlasticity",
+    "complete_lean_build_and_audit": "passed",
+    "source_index_theorems": 1638,
+    "audit_guard_checks": 10,
+    "training_or_capability_experiment_run": false
+  },
+  "resource_check": {
+    "scope": "Deterministic repetition of only the current spatial pool VJP after warmup. Peak is live allocated temporary CUDA memory above fixed inputs, not allocator reservation, graph-capture storage, full return computation or end-to-end learner peak.",
+    "device": "NVIDIA GeForce GTX 1650",
+    "d_model": 32,
+    "grid_shape": [8, 8],
+    "active_columns": 8,
+    "contact_rank": 1,
+    "dtype": "float32",
+    "HCS_bytes": 18696,
+    "original_one_event_receipt_bytes": 23561,
+    "extra_s_return_receipt_bytes": 1600,
+    "total_one_event_receipt_bytes": 25161,
+    "workspace": [
+      {"local_calls": 1, "temporary_peak_bytes": 53248, "live_extra_bytes": 0},
+      {"local_calls": 64, "temporary_peak_bytes": 53248, "live_extra_bytes": 0},
+      {"local_calls": 256, "temporary_peak_bytes": 53248, "live_extra_bytes": 0}
+    ],
+    "temporary_peak_summary_bytes": {"min": 53248, "median": 53248, "mean": 53248, "max": 53248},
+    "interpretation": "The current-pool VJP has no growing live history in this fixed-shape check. O(1) refers to stream length at fixed body, rank and capture-block size, not to model size."
+  }
+}

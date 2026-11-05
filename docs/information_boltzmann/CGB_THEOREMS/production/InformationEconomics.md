@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InformationEconomics.lean#L33)
 
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：因果载体存在性充要等价于读出确定性与状态转移同态不变性。
+
 解释：输入历史空间编码函数、目标读出与后继推进算子，经同态等价分析，输出存在相容因果载体读出与推进算子充要等同于编码状态具有读出确定性与状态转移同态不变性。
 
 源码说明：**Causal carrier basis.** A finite state is a valid compressed carrier exactly when it supports both the required readout and the encoded successor for every future input.
@@ -28,6 +32,10 @@
 ## CGB.InformationEconomics.selective_write_contract
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InformationEconomics.lean#L60)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：信息经济学中预测增长与选择性写入的具体计算与记账合同。
 
 解释：输入因果候选支撑判定器、有限内存池及当前上下文与观测，经内存步进算子过滤，输出相容候选全保留且零手续费，不相容候选被剔除并消耗单位手续费储备。
 
@@ -49,6 +57,10 @@
 ## CGB.InformationEconomics.predictive_growth_contract
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InformationEconomics.lean#L81)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：信息经济学中预测增长与选择性写入的具体计算与记账合同。
 
 解释：输入真实环境分布与正值预测配置分布，经对数财富增长分解，输出预测增长率精确等于字符集最大熵减去交叉熵，且受真实香农熵上限严格约束。
 

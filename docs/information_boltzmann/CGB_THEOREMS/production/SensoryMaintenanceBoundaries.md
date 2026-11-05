@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceBoundaries.lean#L16)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：感官维持的两步功能边界定理：区分环境真实有效态需要至少跨越两步观测视界。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -28,6 +32,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceBoundaries.lean#L29)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：当且仅当边界传感器检测到外部补给脉冲时，内部感官储能账户才被允许充电。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -45,6 +53,10 @@
 ## CGB.SensoryMaintenanceBoundaries.two_tick_recharge_condition
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/SensoryMaintenanceBoundaries.lean#L41)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：SensoryMaintenance
+
+分类说明：针对具体 SensoryMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：系统在两步时钟内成功完成充能的充要条件是在该视界内接收到连续的有效充能信号。
 

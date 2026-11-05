@@ -1,0 +1,409 @@
+{
+  "status": "complete",
+  "organism_admitted": false,
+  "tests_passed": 14,
+  "new_tests": 6,
+  "formal": "Reuse GenerationClosedLoopCredit.objective_deriv_advantage for conditional bounded-episode credit; no new Lean claims",
+  "theorem_satisfaction_count_increased": false,
+  "arms": {
+    "coupled": {
+      "status": "complete",
+      "mode": "coupled",
+      "updates": 5000,
+      "external_bytes": 2555000,
+      "self_bytes": 5000,
+      "mean_selected_stream_nll": 1.4683035655856131,
+      "final_validation_nll": 1.4718237984925508,
+      "selected_counts": [
+        3578,
+        1422
+      ],
+      "executed_counts": [
+        3578,
+        1422
+      ],
+      "mean_nll_by_source": [
+        1.4556126442283408,
+        1.5002361370457544
+      ],
+      "max_policy_replay_error": 7.748603820800781e-07,
+      "update_seconds": 146.1189050998364,
+      "table_bytes": 241762304,
+      "gpu_peak_bytes": 110973440,
+      "organism_admitted": false,
+      "convergence_established": false,
+      "initial": {
+        "validation_nll": 1.5131855383515358,
+        "parameters": 831025,
+        "recurrent_bytes": 83968,
+        "table_bytes": 241762304,
+        "checkpoint_step": 5000
+      },
+      "config": {
+        "mode": "coupled",
+        "seed": 11,
+        "steps": 5000,
+        "tokens": 512,
+        "validate_every": 500,
+        "validation_bytes": 32768,
+        "checkpoint": "results\\cgb_retrieved_credit_20261103\\off\\last.pt",
+        "checkpoint_sha256": "b7cc70c3b1ce2b00e94f66a676c225671cfe61e73147061cb689f748b4357a21",
+        "corpus_sha256": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+        "bounds": [
+          [
+            8000000,
+            24000000
+          ],
+          [
+            24000000,
+            48145263
+          ]
+        ],
+        "validation_sha256": "3bece19b684ee32c3c6cdea1e37ac80d2453fd4c5b020bf9714b7d1057cc7533",
+        "sources": {
+          "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_action.py": "cb33ca8a1f0cf81b5ce60855a4bfef3ed607a2c63376cd2082644580f658ec00",
+          "scripts\\ib_local\\gated_deltanet.py": "3a0ab450d8e91a9c12ef161769d6a2bf7fc335257d2835ea77206dd31c96c623",
+          "scripts\\ib_local\\train_gdn_fast_table.py": "db7c530b21196b7107e4dc69dcd52e2abc3a2d8995cda99131790089c9cb597d",
+          "scripts\\ib_local\\retrieved_table_credit.py": "ece865bd0f20230a0baf5119f6e6df35840a8a58b53b0ce82b99a4a5c6cc5653",
+          "scripts\\ib_local\\train_retrieved_credit.py": "b3d9831a3145a1d18bf9198d8fb237e5ffc750bf343b3464ffdf32eefb6fac1e",
+          "scripts\\ib_local\\ngram_fast_table.py": "7dfc49a4260f90921406efe3d8881258998420f2bbd1bfcb07bcc005369280de"
+        },
+        "fused": "ac0b215e408e30b926aa319354ae235c19201802368de3a8d06bac7441861064",
+        "score": "mean external response NLL; own command excluded",
+        "baseline_decay": 0.95,
+        "claim": "conditional finite-window action bridge; not survival or long-horizon credit"
+      },
+      "validation_curve": [
+        {
+          "step": 500,
+          "nll": 1.4970913417637348
+        },
+        {
+          "step": 1000,
+          "nll": 1.4913693815469742
+        },
+        {
+          "step": 1500,
+          "nll": 1.5036632604897022
+        },
+        {
+          "step": 2000,
+          "nll": 1.4804253559559584
+        },
+        {
+          "step": 2500,
+          "nll": 1.4786297604441643
+        },
+        {
+          "step": 3000,
+          "nll": 1.5078995004296303
+        },
+        {
+          "step": 3500,
+          "nll": 1.4902331065386534
+        },
+        {
+          "step": 4000,
+          "nll": 1.4821454584598541
+        },
+        {
+          "step": 4500,
+          "nll": 1.487562796100974
+        },
+        {
+          "step": 5000,
+          "nll": 1.4718237984925508
+        }
+      ],
+      "mean_last_500_selected_nll": 1.4549075138568879,
+      "switches": 1675,
+      "command_execution_agreement": 1.0,
+      "mean_policy_entropy_nats": 0.19675446862771823,
+      "snapshot_bytes": 251903750,
+      "block_nll": [
+        {
+          "step": 500,
+          "nll": 1.4936149911880494
+        },
+        {
+          "step": 1000,
+          "nll": 1.5039580514431
+        },
+        {
+          "step": 1500,
+          "nll": 1.4819479441642762
+        },
+        {
+          "step": 2000,
+          "nll": 1.5075990884304047
+        },
+        {
+          "step": 2500,
+          "nll": 1.4290046381950379
+        },
+        {
+          "step": 3000,
+          "nll": 1.4360804166793824
+        },
+        {
+          "step": 3500,
+          "nll": 1.459973393201828
+        },
+        {
+          "step": 4000,
+          "nll": 1.512057862520218
+        },
+        {
+          "step": 4500,
+          "nll": 1.4038917561769486
+        },
+        {
+          "step": 5000,
+          "nll": 1.4549075138568879
+        }
+      ]
+    },
+    "randomized": {
+      "status": "complete",
+      "mode": "randomized",
+      "updates": 5000,
+      "external_bytes": 2555000,
+      "self_bytes": 5000,
+      "mean_selected_stream_nll": 1.468728238105774,
+      "final_validation_nll": 1.5162262488156557,
+      "selected_counts": [
+        3411,
+        1589
+      ],
+      "executed_counts": [
+        2532,
+        2468
+      ],
+      "mean_nll_by_source": [
+        1.4607644817463783,
+        1.4768985100271637
+      ],
+      "max_policy_replay_error": 7.022504396325679e-07,
+      "update_seconds": 134.43741889995,
+      "table_bytes": 241762304,
+      "gpu_peak_bytes": 110973440,
+      "organism_admitted": false,
+      "convergence_established": false,
+      "initial": {
+        "validation_nll": 1.5131855383515358,
+        "parameters": 831025,
+        "recurrent_bytes": 83968,
+        "table_bytes": 241762304,
+        "checkpoint_step": 5000
+      },
+      "config": {
+        "mode": "randomized",
+        "seed": 11,
+        "steps": 5000,
+        "tokens": 512,
+        "validate_every": 500,
+        "validation_bytes": 32768,
+        "checkpoint": "results\\cgb_retrieved_credit_20261103\\off\\last.pt",
+        "checkpoint_sha256": "b7cc70c3b1ce2b00e94f66a676c225671cfe61e73147061cb689f748b4357a21",
+        "corpus_sha256": "2f227239bc63b89daf31956701d243a93f9dd46671702fff03763b33dc6db4fb",
+        "bounds": [
+          [
+            8000000,
+            24000000
+          ],
+          [
+            24000000,
+            48145263
+          ]
+        ],
+        "validation_sha256": "3bece19b684ee32c3c6cdea1e37ac80d2453fd4c5b020bf9714b7d1057cc7533",
+        "sources": {
+          "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_action.py": "cb33ca8a1f0cf81b5ce60855a4bfef3ed607a2c63376cd2082644580f658ec00",
+          "scripts\\ib_local\\gated_deltanet.py": "3a0ab450d8e91a9c12ef161769d6a2bf7fc335257d2835ea77206dd31c96c623",
+          "scripts\\ib_local\\train_gdn_fast_table.py": "db7c530b21196b7107e4dc69dcd52e2abc3a2d8995cda99131790089c9cb597d",
+          "scripts\\ib_local\\retrieved_table_credit.py": "ece865bd0f20230a0baf5119f6e6df35840a8a58b53b0ce82b99a4a5c6cc5653",
+          "scripts\\ib_local\\train_retrieved_credit.py": "b3d9831a3145a1d18bf9198d8fb237e5ffc750bf343b3464ffdf32eefb6fac1e",
+          "scripts\\ib_local\\ngram_fast_table.py": "7dfc49a4260f90921406efe3d8881258998420f2bbd1bfcb07bcc005369280de"
+        },
+        "fused": "ac0b215e408e30b926aa319354ae235c19201802368de3a8d06bac7441861064",
+        "score": "mean external response NLL; own command excluded",
+        "baseline_decay": 0.95,
+        "claim": "conditional finite-window action bridge; not survival or long-horizon credit"
+      },
+      "validation_curve": [
+        {
+          "step": 500,
+          "nll": 1.4974239729344845
+        },
+        {
+          "step": 1000,
+          "nll": 1.4916528966277838
+        },
+        {
+          "step": 1500,
+          "nll": 1.493665149435401
+        },
+        {
+          "step": 2000,
+          "nll": 1.470865773037076
+        },
+        {
+          "step": 2500,
+          "nll": 1.4902924448251724
+        },
+        {
+          "step": 3000,
+          "nll": 1.4765406996011734
+        },
+        {
+          "step": 3500,
+          "nll": 1.488352658227086
+        },
+        {
+          "step": 4000,
+          "nll": 1.4939075000584126
+        },
+        {
+          "step": 4500,
+          "nll": 1.4702915772795677
+        },
+        {
+          "step": 5000,
+          "nll": 1.5162262488156557
+        }
+      ],
+      "mean_last_500_selected_nll": 1.476545492887497,
+      "switches": 2012,
+      "command_execution_agreement": 0.507,
+      "mean_policy_entropy_nats": 0.20965845035431538,
+      "snapshot_bytes": 251903750,
+      "block_nll": [
+        {
+          "step": 500,
+          "nll": 1.4911961951255799
+        },
+        {
+          "step": 1000,
+          "nll": 1.494274008512497
+        },
+        {
+          "step": 1500,
+          "nll": 1.4924637842178345
+        },
+        {
+          "step": 2000,
+          "nll": 1.5006125726699828
+        },
+        {
+          "step": 2500,
+          "nll": 1.486043131828308
+        },
+        {
+          "step": 3000,
+          "nll": 1.428773251056671
+        },
+        {
+          "step": 3500,
+          "nll": 1.4713860878944396
+        },
+        {
+          "step": 4000,
+          "nll": 1.3973602452278138
+        },
+        {
+          "step": 4500,
+          "nll": 1.4486276116371155
+        },
+        {
+          "step": 5000,
+          "nll": 1.476545492887497
+        }
+      ]
+    }
+  },
+  "difference_coupled_minus_randomized": {
+    "final_validation_nll": -0.04440245032310486,
+    "selected_stream_nll": -0.00042467252016087365
+  },
+  "observed_coupled_process_peak": {
+    "rss_bytes": 2455302144,
+    "commit_bytes": 3254018048,
+    "scope": "Observed Windows high-water mark at 4100 steps, not guaranteed whole-run maximum"
+  },
+  "interpretation": "Same-body action-language bridge runs. Coupled endpoint beats randomized, but ten fixed validation checks have nearly equal means; endpoint is not a stable policy-benefit claim. Matched replay fixes all 5000 actions/text responses and the terminal table; its comparison isolates the direct-versus-joint neural update on that one trajectory, not autonomous counterfactual behavior. Survival and cross-episode credit remain open.",
+  "remaining": [
+    "Common exogenous/revisit coverage after action; no causal attribution of validation difference beyond this intervention",
+    "Selection can favor easy text; a long-term usefulness objective is not established",
+    "Current bridge has immediate fixed-length replies, not delayed/silent interaction",
+    "Historical-write and cross-episode action credit remain truncated"
+  ],
+  "replay_no_policy": {
+    "status": "complete",
+    "updates": 5000,
+    "initial_validation_nll": 1.5131855383515358,
+    "final_validation_nll": 1.467263013124466,
+    "mean_selected_stream_nll": 1.4605292383670807,
+    "exposure_hashes_matched": 5000,
+    "terminal_table_exactly_equal": true,
+    "external_bytes": 2555000,
+    "self_bytes": 5000,
+    "gpu_peak_bytes": 110960128,
+    "table_bytes": 241762304,
+    "seconds": 146.39517670000004,
+    "autonomous": false,
+    "organism_admitted": false,
+    "validation_curve": [
+      {
+        "step": 500,
+        "nll": 1.4927992597222328
+      },
+      {
+        "step": 1000,
+        "nll": 1.4872203227132559
+      },
+      {
+        "step": 1500,
+        "nll": 1.4944528341293335
+      },
+      {
+        "step": 2000,
+        "nll": 1.4745700284838676
+      },
+      {
+        "step": 2500,
+        "nll": 1.4693285282701254
+      },
+      {
+        "step": 3000,
+        "nll": 1.5037279557436705
+      },
+      {
+        "step": 3500,
+        "nll": 1.4835130516439676
+      },
+      {
+        "step": 4000,
+        "nll": 1.4722872395068407
+      },
+      {
+        "step": 4500,
+        "nll": 1.4846965111792088
+      },
+      {
+        "step": 5000,
+        "nll": 1.467263013124466
+      }
+    ]
+  },
+  "validation_check_mean": {
+    "coupled": 1.4890843760222197,
+    "randomized": 1.4889218920841814,
+    "replay_no_policy": 1.4829858744516968
+  },
+  "same_exposure_coupled_minus_replay": {
+    "final_validation_nll": 0.0045607853680849075,
+    "validation_check_mean": 0.00609850157052283,
+    "selected_stream_nll": 0.00777432721853244
+  },
+  "decision": "Retain validated action interface; do not promote immediate-response-NLL policy update as beneficial. Assess actual future-language usefulness before additional policy mechanisms."
+}

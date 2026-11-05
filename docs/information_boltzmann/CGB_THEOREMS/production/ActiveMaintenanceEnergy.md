@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenanceEnergy.lean#L28)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：主动维护能量过程在任意步长下的概率分布律，与机体在环境感官驱动下的实际事件转移律（包含通道切断条件）完全一致。
 
 源码说明：The energy law is exactly the state law used in the viability comparison, including the cut's own distribution-dependent future, not a second process.
@@ -30,6 +34,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenanceEnergy.lean#L45)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：ActiveMaintenance
+
+分类说明：针对具体 ActiveMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：主动维护能量过程的正概率转移必然具有底层物理机体事件步的正概率支持。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -48,6 +56,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenanceEnergy.lean#L86)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：主动维护能量过程在零外加驱动功与耗散条件下满足等温账户能量平衡。
 
 源码说明：Conditional mean second-law admission for the explicitly declared internal entropy and bath units. Energy expenditure is fixed by outgoing material use.
@@ -63,6 +75,10 @@
 ## CGB.ActiveMaintenanceEnergy.availability_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ActiveMaintenanceEnergy.lean#L108)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：主动维护过程的平均储能增量与流出通量之和，严格守恒等于初始基准能量加累计流入通量。
 

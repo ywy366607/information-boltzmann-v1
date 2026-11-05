@@ -1,0 +1,2764 @@
+{
+  "schema_version": 5,
+  "date": "2026-11-03",
+  "status": "joint_generator_unfinished_language_feedback_review_complete",
+  "inventory_theorem_count": 1768,
+  "scope": "继承九项候选并将其串入三项生成承诺；未声称穷尽1768定理的全部相容组合",
+  "selection_method": "source_reading_plus_two_lightweight_reviews_not_keyword_classification",
+  "graph_kind": "condition_dependency_graph_with_candidate_branches_not_completed_generator",
+  "nodes": [
+    {
+      "id": "G1",
+      "label": "有界、可递推的局部交互",
+      "kind": "chosen_functional_constraint_not_update_rule"
+    },
+    {
+      "id": "G2",
+      "label": "同体有限容量与可逆局部交换",
+      "kind": "chosen_functional_constraint_not_update_rule"
+    },
+    {
+      "id": "G3",
+      "label": "语言条件证据改写同一交互",
+      "kind": "chosen_functional_constraint_not_update_rule"
+    },
+    {
+      "id": "context",
+      "label": "历史相关的参与/查询",
+      "kind": "construction_target"
+    },
+    {
+      "id": "joint",
+      "label": "同一联合规律Q及其预测P",
+      "kind": "conditional_algebra"
+    },
+    {
+      "id": "responsibility",
+      "label": "观察后解释r",
+      "kind": "conditional_algebra"
+    },
+    {
+      "id": "content",
+      "label": "改变共同交互E的内容学习",
+      "kind": "construction_target"
+    },
+    {
+      "id": "competition",
+      "label": "真实容量转移及剩余可用度",
+      "kind": "construction_target"
+    },
+    {
+      "id": "history",
+      "label": "可供后果读取的历史区别",
+      "kind": "construction_target"
+    },
+    {
+      "id": "scales",
+      "label": "同一交换的多种保持速度",
+      "kind": "construction_target"
+    },
+    {
+      "id": "compartments",
+      "label": "分化的局部耦合与增益",
+      "kind": "construction_target"
+    },
+    {
+      "id": "latch",
+      "label": "抗扰保持及证据可达释放",
+      "kind": "construction_target"
+    },
+    {
+      "id": "viability",
+      "label": "语言可用结构的持续维持",
+      "kind": "construction_target"
+    },
+    {
+      "id": "action",
+      "label": "行动改变后续语言",
+      "kind": "future_closure_target"
+    }
+  ],
+  "edges": [
+    {
+      "id": "E01",
+      "from_nodes": [
+        "G1"
+      ],
+      "to_node": "context",
+      "status": "conditional_lean_components",
+      "premises": "端点可保持过去；上下文影响写地址；不是仅当前字节寻址",
+      "claim": "可区分同字频不同语序，并给未来读写提供参与条件",
+      "theorems": [
+        "CGB.Generation.memoryless_same_frequencies_same_structure",
+        "CGB.Generation.memory_separates",
+        "CGB.Generation.ContextAssociation.context_write_separates_order"
+      ]
+    },
+    {
+      "id": "E02",
+      "from_nodes": [
+        "G1",
+        "context"
+      ],
+      "to_node": "joint",
+      "status": "paper_bridge_numerically_checked",
+      "premises": "正联合权重、有限求和；真实运行另需可计算表示",
+      "claim": "Choose a positive joint Q, whose marginals/conditionals provide a prediction decomposition; G1 alone does not generate or select Q.",
+      "theorems": [
+        "CGB.JumpProcess.freezeSlow_conditional_balance",
+        "CGB.Generation.binary_pair_decomposition",
+        "CGB.Generation.slot_reciprocity",
+        "CGB.Generation.Nonlinearity.key_query_read_interacts"
+      ],
+      "relation_kind": "static_probability_or_partial_derivative_identity_not_dynamic_implication"
+    },
+    {
+      "id": "E03",
+      "from_nodes": [
+        "joint",
+        "G3"
+      ],
+      "to_node": "responsibility",
+      "status": "paper_bridge_numerically_checked",
+      "premises": "先评分后观察；固定预测前上下文；正支撑",
+      "claim": "r=a*p(y)/P(y)；KL变分差等于KL(q||r)",
+      "theorems": [
+        "CGB.Reinvestment.reinvest_total",
+        "CGB.Reinvestment.credit_eq_new_share",
+        "CGB.InformationProjection.kl_nonneg_supported"
+      ],
+      "relation_kind": "static_probability_or_partial_derivative_identity_not_dynamic_implication"
+    },
+    {
+      "id": "E04",
+      "from_nodes": [
+        "responsibility",
+        "joint",
+        "G3"
+      ],
+      "to_node": "content",
+      "status": "paper_bridge_numerically_checked",
+      "premises": "同一可微交互E；有限联合状态；两项期望来自同一Q",
+      "claim": "log P的导数为条件相与自由相局部统计差；参数学习实现待接",
+      "theorems": [
+        "CGB.Medium.log_softmax_deriv",
+        "CGB.Medium.two_phase_drift",
+        "CGB.Reinvestment.no_exchange_iff",
+        "CGB.Generation.reciprocal_contact_teaching_deriv"
+      ],
+      "relation_kind": "static_probability_or_partial_derivative_identity_not_dynamic_implication"
+    },
+    {
+      "id": "E05",
+      "from_nodes": [
+        "content",
+        "G2"
+      ],
+      "to_node": "competition",
+      "status": "missing_same_body_realization",
+      "premises": "Actual capacity-to-belief mapping; bounded inflow/gate/release and nonnegative occupations/free fraction; outcome-sensitive exit required separately.",
+      "claim": "Joint content and capacity update remains unconstructed. Local admission suppression alone permits permanent within-pool monopoly.",
+      "theorems": [
+        "CGB.Reinvestment.gross_balanced",
+        "CGB.Generation.shared_contact_pool_vector_conserves_total",
+        "CGB.Generation.shared_pool_marginal_admission_is_anti_dominant",
+        "CGB.Continual.doubly_budgeted_max_differentiates"
+      ]
+    },
+    {
+      "id": "E06",
+      "from_nodes": [
+        "G2",
+        "content"
+      ],
+      "to_node": "history",
+      "status": "conditional_lean_components",
+      "premises": "两态交换参数合法；历史可读；固定T/w标签只作条件参照",
+      "claim": "同一局部状态可携带过去参与，而非逐事件追加历史页",
+      "theorems": [
+        "CGB.Generation.two_state_geometric",
+        "CGB.LanguageLifeKernel.delayed_credit_requires_history_carrier",
+        "CGB.CountedPopulation.tag_is_exact_credit"
+      ]
+    },
+    {
+      "id": "E07",
+      "from_nodes": [
+        "history",
+        "G3"
+      ],
+      "to_node": "content",
+      "status": "missing_variable_model_credit_bridge",
+      "premises": "后果需要的历史区别仍可读；模型参数会变；预算显式有界",
+      "claim": "后到证据能够改变相关旧结构；不宣称全参数精确全历史梯度",
+      "theorems": [
+        "CGB.LanguageLifeKernel.no_visible_only_delayed_credit_rule",
+        "CGB.Generation.contact_score_unsaturated_increment"
+      ]
+    },
+    {
+      "id": "E08",
+      "from_nodes": [
+        "competition",
+        "G2"
+      ],
+      "to_node": "scales",
+      "status": "conditional_tradeoff_then_generation_hypothesis",
+      "premises": "均匀混合恢复有已证信用衰减；学习异质速率尚未构造",
+      "claim": "保持/恢复权衡约束同一转移的不同时间响应",
+      "theorems": [
+        "CGB.CountedPopulation.recovers_from_floor",
+        "CGB.CountedPopulation.bracket_after",
+        "CGB.GradientFilter.vanishing_gain_loses_under_drift"
+      ]
+    },
+    {
+      "id": "E09",
+      "from_nodes": [
+        "scales",
+        "competition"
+      ],
+      "to_node": "compartments",
+      "status": "missing_self_organization_bridge",
+      "premises": "Given grouping and heterogeneous random-walk estimation class; local optimality imposed as a design condition. No compartment genesis theorem.",
+      "claim": "相同规律可跨组尺度复用，功能隔室不预先命名",
+      "theorems": [
+        "CGB.CountedPopulation.coarse_reinvest",
+        "CGB.CountedPopulation.local_ignores_outside",
+        "CGB.Medium.no_global_gain_for_heterogeneous_compartments",
+        "CGB.Generation.symmetric_stays_symmetric"
+      ]
+    },
+    {
+      "id": "E10",
+      "from_nodes": [
+        "content",
+        "scales",
+        "G2"
+      ],
+      "to_node": "latch",
+      "status": "missing_joint_basin_release_bridge",
+      "premises": "非线性协同、保持和反证退出须作用于同一转移；固定点不等于吸引盆",
+      "claim": "同一交互同时形成稳定结构及仍能学习的释放路径",
+      "theorems": [
+        "CGB.Generation.latch_above_unit_gain",
+        "CGB.ConservedMemory.remembers_of_quiet_and_actual_write",
+        "CGB.Medium.trap_irrecoverable",
+        "CGB.Continual.held_budget_starves"
+      ]
+    },
+    {
+      "id": "E11",
+      "from_nodes": [
+        "latch",
+        "context",
+        "content"
+      ],
+      "to_node": "viability",
+      "status": "missing_language_joint_realization",
+      "premises": "可存活性读取语言可用组织，不能只读总量或gross交换",
+      "claim": "保留及修正的结构继续改善未来语言交互",
+      "theorems": [
+        "CGB.ConservedMemory.conserving_calm_needs_organizational_viability",
+        "CGB.GradientFilter.fresh_decrease_unbiased"
+      ]
+    },
+    {
+      "id": "E12",
+      "from_nodes": [
+        "viability",
+        "joint"
+      ],
+      "to_node": "action",
+      "status": "future_closed_loop_construction",
+      "premises": "动作确实改变后续语言分布；结果调制可感知；不以易预测替代生存",
+      "claim": "预测/学习闭环进一步成为环境交互闭环",
+      "theorems": [
+        "CGB.Medium.modulation_needs_boundary",
+        "CGB.Medium.reward_two_phase_drift"
+      ]
+    },
+    {
+      "id": "E13",
+      "from_nodes": [
+        "content"
+      ],
+      "to_node": "context",
+      "status": "missing_same_body_realization",
+      "premises": "改变的是未来会重新使用的交互；不得仅更新辅助头或无关资源账",
+      "claim": "学到的内容改变后续上下文和参与，从而闭合生成圈",
+      "theorems": [
+        "CGB.Generation.memoryless_same_frequencies_same_structure",
+        "CGB.Reinvestment.no_exchange_iff"
+      ]
+    },
+    {
+      "id": "E14",
+      "from_nodes": [
+        "history"
+      ],
+      "to_node": "responsibility",
+      "status": "missing_same_body_realization",
+      "premises": "旧区别进入当前条件解释并影响后续更新",
+      "claim": "记忆通过再次读取参加当前学习，无须重放整个历史图",
+      "theorems": [
+        "CGB.LanguageLifeKernel.no_visible_only_delayed_credit_rule"
+      ]
+    },
+    {
+      "id": "E15",
+      "from_nodes": [
+        "G2"
+      ],
+      "to_node": "joint",
+      "status": "conditional_lean_constraint",
+      "premises": "Fixed energy and connected support; equilibrium readout for the invariance statement. Finite-time readout must be treated separately.",
+      "claim": "Symmetric conductance preserves equilibrium Q but can change transient predictions and memory; learning energy is not forced by this theorem.",
+      "theorems": [
+        "CGB.Medium.p2b_of_conductance"
+      ]
+    }
+  ],
+  "theorem_references": {
+    "CGB.Generation.memoryless_same_frequencies_same_structure": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean",
+      "line": 99,
+      "source_sha256": "d90983d0d715d08b0549c7f0f4bd439c1041693883a212b421d96c0fd0cefde1",
+      "signature": "∀ {B : Type u_1} {ι : Type u_2} [inst : Fintype B] (P Q : B → B → ℝ),\n  (∀ (b : B), ∑ a, P a b = ∑ a, Q a b) →\n    ∀ (ψ : ι → B → ℝ) (i j : ι),\n      CGB.Generation.coactivity P (fun k x b => ψ k b) i j = CGB.Generation.coactivity Q (fun k x b => ψ k b) i j",
+      "direct_proof_dependencies": [
+        "CGB.Generation.memoryless_coactivity"
+      ]
+    },
+    "CGB.Generation.memory_separates": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean",
+      "line": 113,
+      "source_sha256": "d90983d0d715d08b0549c7f0f4bd439c1041693883a212b421d96c0fd0cefde1",
+      "signature": "(∀ (b : Fin 2), ∑ a, CGB.Generation.alternating a b = ∑ a, CGB.Generation.repeating a b) ∧\n  CGB.Generation.coactivity CGB.Generation.alternating (fun k a b => if k = 0 then ↑↑a else ↑↑b) 0 1 ≠\n    CGB.Generation.coactivity CGB.Generation.repeating (fun k a b => if k = 0 then ↑↑a else ↑↑b) 0 1",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Generation.ContextAssociation.context_write_separates_order": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationContextAssociation.lean",
+      "line": 252,
+      "source_sha256": "7c1db82962222e17a884506214d10b1b07e0e36f9399d07c3cb3f29c9911a98e",
+      "signature": "∀ {Ctx : Type u_1} {k d : ℕ} (M : CGB.Generation.ContextAssociation.Model Ctx k d)\n  (s : CGB.Generation.ContextAssociation.State Ctx k d) (a b : CGB.Generation.ContextAssociation.Byte) (j : Fin k)\n  (i : Fin d),\n  M.address s.context j = 0 →\n    M.address (M.advance s.context a) j = 1 →\n      M.address (M.advance s.context b) j = 0 →\n        0 < M.evidence b →\n          M.value b i ≠ 0 →\n            (List.foldl (CGB.Generation.ContextAssociation.write M) s [a, b]).natural j i ≠\n              (List.foldl (CGB.Generation.ContextAssociation.write M) s [b, a]).natural j i",
+      "direct_proof_dependencies": []
+    },
+    "CGB.JumpProcess.freezeSlow_conditional_balance": {
+      "source": "lean/CGBAxioms/CGBAxioms/Generation.lean",
+      "line": 74,
+      "source_sha256": "b3d2544b48c13492c84df1e9ff63f268810684626495eb3543c2be4f26d94b0c",
+      "signature": "∀ {Q : Type u_2} {P : Type u_3} [inst : Fintype Q] [inst_1 : DecidableEq P] (K : CGB.JumpProcess (Q × P))\n  {π : Q × P → ℝ},\n  (∀ (x : Q × P), 0 < π x) →\n    (∀ (x y : Q × P), π x * K.rate x y = π y * K.rate y x) →\n      ∀ (p : P) (q q' : Q),\n        (π (q, p) / ∑ r, π (r, p)) * K.freezeSlow.rate (q, p) (q', p) =\n          (π (q', p) / ∑ r, π (r, p)) * K.freezeSlow.rate (q', p) (q, p)",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Generation.binary_pair_decomposition": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean",
+      "line": 25,
+      "source_sha256": "d90983d0d715d08b0549c7f0f4bd439c1041693883a212b421d96c0fd0cefde1",
+      "signature": "∀ (f : Fin 2 → Fin 2 → ℝ) (a b : Fin 2),\n  f a b = f 0 0 + (f 1 0 - f 0 0) * ↑↑a + (f 0 1 - f 0 0) * ↑↑b + CGB.Generation.interaction f * ↑↑a * ↑↑b",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Generation.slot_reciprocity": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean",
+      "line": 41,
+      "source_sha256": "d90983d0d715d08b0549c7f0f4bd439c1041693883a212b421d96c0fd0cefde1",
+      "signature": "∀ (E : Fin 2 → Fin 2 → ℝ), E 1 1 - E 0 1 - (E 1 0 - E 0 0) = E 1 1 - E 1 0 - (E 0 1 - E 0 0)",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Generation.Nonlinearity.key_query_read_interacts": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationNonlinearity.lean",
+      "line": 154,
+      "source_sha256": "04bf04eb8f53a7d56cc83cfe163e285a8fe2899de0ad1ce9c4aedf4cbfbb8a8a",
+      "signature": "CGB.Generation.Nonlinearity.contrast\n    (fun a b =>\n      CGB.Generation.associationRead (CGB.Generation.associationState (fun x x_1 => a) fun x x_1 => 1) (fun x => b) 0)\n    1 (-1) 1 (-1) =\n  4",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Reinvestment.reinvest_total": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationReinvestment.lean",
+      "line": 45,
+      "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+      "signature": "∀ {A : Type u_1} [inst : Fintype A] (a w : A → ℝ),\n  CGB.Reinvestment.predicted a w ≠ 0 → ∑ i, CGB.Reinvestment.reinvest a w i = 1",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Reinvestment.credit_eq_new_share": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationReinvestment.lean",
+      "line": 173,
+      "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+      "signature": "∀ {A : Type u_1} [inst : Fintype A] (a w : A → ℝ) (i : A),\n  w i ≠ 0 → a i / CGB.Reinvestment.predicted a w = CGB.Reinvestment.reinvest a w i / w i",
+      "direct_proof_dependencies": []
+    },
+    "CGB.InformationProjection.kl_nonneg_supported": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationInformationProjection.lean",
+      "line": 71,
+      "source_sha256": "7414c012529bbaa6e546ab07601d833823604ecc6129c0d4900834fc1eadf650",
+      "signature": "∀ {ι : Type u_1} [inst : Fintype ι] (x y : ι → ℝ),\n  (∀ (i : ι), 0 ≤ x i) →\n    (∀ (i : ι), 0 ≤ y i) →\n      (∀ (i : ι), 0 < x i → 0 < y i) → ∑ i, x i = 1 → ∑ i, y i = 1 → 0 ≤ CGB.InformationEnergy.kl x y",
+      "direct_proof_dependencies": [
+        "CGB.InformationEnergy.kl_nonneg",
+        "CGB.InformationProjection.log_sum_le"
+      ]
+    },
+    "CGB.Medium.log_softmax_deriv": {
+      "source": "lean/CGBAxioms/CGBAxioms/Generation.lean",
+      "line": 542,
+      "source_sha256": "b3d2544b48c13492c84df1e9ff63f268810684626495eb3543c2be4f26d94b0c",
+      "signature": "∀ {B : Type u_5} [inst : Fintype B] [inst_1 : DecidableEq B] (z : B → ℝ) (b b' : B) (x : ℝ),\n  HasDerivAt (fun t => Real.log (CGB.Medium.softmax (fun c => z c + if c = b then t * x else 0) b'))\n    (x * ((if b' = b then 1 else 0) - CGB.Medium.softmax z b)) 0",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Medium.two_phase_drift": {
+      "source": "lean/CGBAxioms/CGBAxioms/Generation.lean",
+      "line": 527,
+      "source_sha256": "b3d2544b48c13492c84df1e9ff63f268810684626495eb3543c2be4f26d94b0c",
+      "signature": "∀ {B : Type u_5} [inst : Fintype B] [inst_1 : DecidableEq B] (z : B → ℝ) (b b' : B) (x lam mu : ℝ),\n  (lam * x * if b' = b then 1 else 0) - mu * ∑ c, CGB.Medium.softmax z c * (x * if c = b then 1 else 0) =\n    x * ((lam * if b' = b then 1 else 0) - mu * CGB.Medium.softmax z b)",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Reinvestment.no_exchange_iff": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationReinvestment.lean",
+      "line": 77,
+      "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+      "signature": "∀ {A : Type u_1} [inst : Fintype A] (a w : A → ℝ),\n  CGB.Reinvestment.predicted a w ≠ 0 →\n    ((∀ (i : A), CGB.Reinvestment.reinvest a w i = a i) ↔ ∀ (i : A), a i ≠ 0 → w i = CGB.Reinvestment.predicted a w)",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Generation.reciprocal_contact_teaching_deriv": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationReciprocalCredit.lean",
+      "line": 98,
+      "source_sha256": "826ca3c0cd365026cbaa7e3c7383d052fe5f42f315445a2879a346a6bd383852",
+      "signature": "∀ {Target : Type u_1} {Source : Type u_2} [inst : Fintype Target] [inst_1 : Fintype Source]\n  [inst_2 : DecidableEq Target] [inst_3 : DecidableEq Source] (post : Target → ℝ) (contact : Target → Source → ℝ)\n  (pre : Source → ℝ) (target : Target) (source : Source) (teaching : ℝ),\n  HasDerivAt\n    (fun η =>\n      CGB.Generation.reciprocalContactRead post\n        (CGB.Generation.reciprocalContactPerturb contact target source (η * teaching)) pre)\n    (teaching * post target * pre source) 0",
+      "direct_proof_dependencies": [
+        "CGB.Generation.reciprocal_contact_response_deriv"
+      ]
+    },
+    "CGB.Reinvestment.gross_balanced": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationReinvestment.lean",
+      "line": 64,
+      "source_sha256": "f69b62fb0ab9526d8e50a4e108a6eb57263c34e3c615a7f14577d36036c9ec8d",
+      "signature": "∀ {A : Type u_1} [inst : Fintype A] (a w : A → ℝ),\n  ∑ i, a i = 1 →\n    CGB.Reinvestment.predicted a w ≠ 0 →\n      ∑ i, max (CGB.Reinvestment.reinvest a w i - a i) 0 = ∑ i, max (a i - CGB.Reinvestment.reinvest a w i) 0",
+      "direct_proof_dependencies": [
+        "CGB.Reinvestment.gains_eq_losses",
+        "CGB.Reinvestment.reinvest_total"
+      ]
+    },
+    "CGB.Generation.shared_contact_pool_vector_conserves_total": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean",
+      "line": 152,
+      "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+      "signature": "∀ {n : ℕ} (occupied target release : Fin n → ℝ) (inflow gate : ℝ),\n  ∑ i, target i = 1 →\n    ∑ i, CGB.Generation.sharedContactPoolVectorStep occupied target release inflow gate i +\n        CGB.Generation.sharedContactPoolFreeStep occupied release inflow gate =\n      1",
+      "direct_proof_dependencies": [
+        "CGB.Generation.shared_contact_pool_vector_total"
+      ]
+    },
+    "CGB.Generation.shared_pool_marginal_admission_is_anti_dominant": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean",
+      "line": 89,
+      "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+      "signature": "∀ (gate inflow target q₁ q₂ : ℝ),\n  0 < gate → 0 < inflow → 0 < target → q₁ < q₂ → gate * inflow * target * (1 - q₂) < gate * inflow * target * (1 - q₁)",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Continual.doubly_budgeted_max_differentiates": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean",
+      "line": 125,
+      "source_sha256": "aba276d7f2d9997fdbd9b7174b42375b8f7bc3ed4c75652cbb5ff13f0d415956",
+      "signature": "∀ {A : Fin 2 → Fin 2 → ℝ},\n  CGB.Continual.Nonneg A →\n    CGB.Continual.ColBudget A → CGB.Continual.RowBudget A → CGB.Continual.payoff A = 2 → A 0 0 ≠ A 1 0",
+      "direct_proof_dependencies": [
+        "CGB.Continual.doubly_budgeted_form",
+        "CGB.Continual.doubly_budgeted_max_iff_permutation"
+      ]
+    },
+    "CGB.Generation.two_state_geometric": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean",
+      "line": 137,
+      "source_sha256": "d90983d0d715d08b0549c7f0f4bd439c1041693883a212b421d96c0fd0cefde1",
+      "signature": "∀ (kp km p₀ : ℝ),\n  kp + km ≠ 0 →\n    ∀ (t : ℕ), CGB.Generation.twoStateIter kp km p₀ t - kp / (kp + km) = (1 - kp - km) ^ t * (p₀ - kp / (kp + km))",
+      "direct_proof_dependencies": []
+    },
+    "CGB.LanguageLifeKernel.delayed_credit_requires_history_carrier": {
+      "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+      "line": 107,
+      "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
+      "signature": "∀ {X C : Type} (rule : X → C) (visible : X) (credit₀ credit₁ : C),\n  credit₀ ≠ credit₁ → ¬(rule visible = credit₀ ∧ rule visible = credit₁)",
+      "direct_proof_dependencies": [
+        "CGB.LanguageLifeKernel.no_visible_only_delayed_credit_rule"
+      ]
+    },
+    "CGB.CountedPopulation.tag_is_exact_credit": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationCountedPopulation.lean",
+      "line": 428,
+      "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+      "signature": "∀ {A : Type u_1} [inst : Fintype A] {B : Type u_2} [Nonempty A] (T : A → A → ℝ),\n  (∀ (i j : A), 0 ≤ T i j) →\n    (∀ (i : A), ∑ j, T i j = 1) →\n      ∀ (w : B → A → ℝ),\n        (∀ (y : B) (i : A), 0 < w y i) →\n          ∀ (ys : List B) (a b : A → ℝ),\n            (∀ (i : A), 0 ≤ a i) →\n              ∑ i, a i = 1 →\n                HasDerivAt (fun θ => Real.log (CGB.CountedPopulation.lik T w (fun i => a i + θ * b i) ys))\n                  (CGB.CountedPopulation.tagFraction T w a b ys) 0",
+      "direct_proof_dependencies": [
+        "CGB.CountedPopulation.lik_add",
+        "CGB.CountedPopulation.lik_pos",
+        "CGB.CountedPopulation.lik_smul",
+        "CGB.CountedPopulation.tag_fraction_eq_posterior"
+      ]
+    },
+    "CGB.LanguageLifeKernel.no_visible_only_delayed_credit_rule": {
+      "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+      "line": 99,
+      "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
+      "signature": "∀ {X C : Type} (rule : X → C) (visible : X) (credit₀ credit₁ : C),\n  credit₀ ≠ credit₁ →\n    ¬(rule visible = CGB.LanguageLifeKernel.delayedCreditTarget credit₀ credit₁ false ∧\n        rule visible = CGB.LanguageLifeKernel.delayedCreditTarget credit₀ credit₁ true)",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Generation.contact_score_unsaturated_increment": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationContactEligibility.lean",
+      "line": 66,
+      "source_sha256": "75f2608faf933365a4bc946a0cf0feccfcab606af69901f874f043296e2a7145",
+      "signature": "∀ (q base weight participation δ : ℝ),\n  -1 ≤ base + weight * participation →\n    base + weight * participation ≤ 1 →\n      -1 ≤ base + (weight + δ) * participation →\n        base + (weight + δ) * participation ≤ 1 →\n          q * CGB.Generation.contactResponse base (weight + δ) participation -\n              q * CGB.Generation.contactResponse base weight participation =\n            q * δ * participation",
+      "direct_proof_dependencies": [
+        "CGB.Generation.contact_response_unsaturated_increment"
+      ]
+    },
+    "CGB.CountedPopulation.recovers_from_floor": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationCountedPopulation.lean",
+      "line": 209,
+      "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+      "signature": "∀ {A : Type u_1} [inst : Fintype A] {B : Type u_2} [Nonempty A] (ε : ℝ),\n  0 < ε →\n    ε ≤ 1 →\n      ∀ (w : B → A → ℝ),\n        (∀ (y : B) (i : A), 0 < w y i) →\n          ∀ (ys : List B) (a : A → ℝ),\n            (∀ (i : A), 0 ≤ a i) →\n              ∑ i, a i = 1 →\n                ∀ (i : A),\n                  ε / ↑(Fintype.card A) * (1 - ε) ^ ys.length * (List.map (fun y => w y i) ys).prod ≤\n                    CGB.CountedPopulation.mixWealth ε w (CGB.CountedPopulation.mix ε a) ys",
+      "direct_proof_dependencies": [
+        "CGB.CountedPopulation.mixWealth_ge_address",
+        "CGB.CountedPopulation.mix_floor",
+        "CGB.CountedPopulation.mix_pos",
+        "CGB.CountedPopulation.mix_total"
+      ]
+    },
+    "CGB.CountedPopulation.bracket_after": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationCountedPopulation.lean",
+      "line": 541,
+      "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+      "signature": "∀ {A : Type u_1} [inst : Fintype A] {B : Type u_2} [Nonempty A] (ε : ℝ),\n  0 < ε →\n    ε ≤ 1 →\n      ∀ (w : B → A → ℝ),\n        (∀ (y : B) (i : A), 0 < w y i) →\n          ∀ (ys : List B) (a b : A → ℝ) (lo hi : ℝ),\n            CGB.CountedPopulation.Bracketed a b lo hi →\n              (∀ (i : A), 0 ≤ a i) →\n                ∑ i, a i = 1 →\n                  ∃ lo' hi',\n                    CGB.CountedPopulation.Bracketed (CGB.CountedPopulation.tagAfter ε w (a, b) ys).1\n                        (CGB.CountedPopulation.tagAfter ε w (a, b) ys).2 lo' hi' ∧\n                      hi' - lo' = (1 - ε / ↑(Fintype.card A)) ^ ys.length * (hi - lo)",
+      "direct_proof_dependencies": [
+        "CGB.CountedPopulation.bracket_step",
+        "CGB.CountedPopulation.mix_pos",
+        "CGB.CountedPopulation.mix_total",
+        "CGB.CountedPopulation.predicted_pos_of_total",
+        "CGB.Reinvestment.reinvest_total"
+      ]
+    },
+    "CGB.GradientFilter.vanishing_gain_loses_under_drift": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean",
+      "line": 108,
+      "source_sha256": "eb10bebc737a9198af8ceb1962cdd4b033ec7268fc581167488500274bd0b735",
+      "signature": "∀ (V K : ℕ → ℝ) (q r M : ℝ),\n  0 < q →\n    0 ≤ r →\n      0 < M →\n        0 ≤ V 0 →\n          (∀ (t : ℕ), 0 ≤ K t) →\n            (∀ (t : ℕ), K t ≤ q / (4 * M)) →\n              (∀ (t : ℕ), V (t + 1) = (1 - K t) ^ 2 * V t + q + K t ^ 2 * r) → ∃ t, M < V t",
+      "direct_proof_dependencies": []
+    },
+    "CGB.CountedPopulation.coarse_reinvest": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationCountedPopulation.lean",
+      "line": 262,
+      "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+      "signature": "∀ {A : Type u_1} [inst : Fintype A] {C : Type u_3} [inst_1 : Fintype C] [inst_2 : DecidableEq C] (g : A → C)\n  (a w : A → ℝ),\n  (∀ (c : C), CGB.CountedPopulation.groupShare g a c ≠ 0) →\n    ∀ (c : C),\n      CGB.Reinvestment.reinvest (CGB.CountedPopulation.groupShare g a) (CGB.CountedPopulation.groupBet g a w) c =\n        ∑ i with g i = c, CGB.Reinvestment.reinvest a w i",
+      "direct_proof_dependencies": [
+        "CGB.CountedPopulation.coarse_predicted"
+      ]
+    },
+    "CGB.CountedPopulation.local_ignores_outside": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationCountedPopulation.lean",
+      "line": 297,
+      "source_sha256": "bfae5ac34828978e0da4e4f6dd5f5b60677f123a8bacc1259760856a64bb1912",
+      "signature": "∀ {A : Type u_1} [inst : Fintype A] {C : Type u_3} [inst_1 : DecidableEq C] (g : A → C) (a w w' : A → ℝ) (i : A),\n  (∀ (j : A), g j = g i → w j = w' j) →\n    CGB.CountedPopulation.localReinvest g a w i = CGB.CountedPopulation.localReinvest g a w' i",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Medium.no_global_gain_for_heterogeneous_compartments": {
+      "source": "lean/CGBAxioms/CGBAxioms/Generation.lean",
+      "line": 361,
+      "source_sha256": "b3d2544b48c13492c84df1e9ff63f268810684626495eb3543c2be4f26d94b0c",
+      "signature": "∀ {C : Type u_5} [Fintype C] [Nonempty C] (r : ℝ) (P : C → ℝ) (K : ℝ),\n  0 < r →\n    (∀ (c : C), 0 < P c) →\n      (∃ c d, P c ≠ P d) → 0 < K → K < 2 → ∃ c, P c < (P c ^ 2 / (P c + r) + K ^ 2 * r) / (K * (2 - K))",
+      "direct_proof_dependencies": [
+        "CGB.Medium.no_fixed_gain_for_two_volatilities"
+      ]
+    },
+    "CGB.Generation.symmetric_stays_symmetric": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean",
+      "line": 162,
+      "source_sha256": "d90983d0d715d08b0549c7f0f4bd439c1041693883a212b421d96c0fd0cefde1",
+      "signature": "∀ {X : Type u_1} (f σ : X → X),\n  (∀ (x : X), f (σ x) = σ (f x)) → ∀ (x₀ : X), σ x₀ = x₀ → ∀ (t : ℕ), σ (f^[t] x₀) = f^[t] x₀",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Generation.latch_above_unit_gain": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean",
+      "line": 293,
+      "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+      "signature": "∀ {g : ℝ},\n  1 ≤ g → CGB.Generation.hardSat (g * 1) = 1 ∧ CGB.Generation.hardSat (g * -1) = -1 ∧ CGB.Generation.hardSat (g * 0) = 0",
+      "direct_proof_dependencies": [
+        "CGB.Generation.hardSat_zero"
+      ]
+    },
+    "CGB.ConservedMemory.remembers_of_quiet_and_actual_write": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean",
+      "line": 248,
+      "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} {Obs : Type u_5} [inst : Fintype U]\n  [inst_1 : DecidableEq U] [inst_2 : Fintype Λ] [inst_3 : DecidableEq Λ] [inst_4 : Fintype A] [DecidableEq Obs]\n  [Fintype Obs] (M : CGB.Medium U Λ A I) (W : CGB.World U Λ I),\n  M.Clocked W.clock →\n    ∀ (observe : (U → Λ) → Obs),\n      (∀ (x y : U → Λ), 0 < M.kernel W.clock W.quiet x y → observe y = observe x) →\n        ∀ (n₀ : ℕ) (x₀ y : U → Λ) (wquiet wwrite : W.W),\n          W.sense wquiet = W.quiet →\n            0 < M.law W (fun x => W.sense) n₀ x₀ wquiet →\n              0 < M.law W (fun x => W.sense) n₀ x₀ wwrite →\n                0 < M.kernel W.clock (W.sense wwrite) x₀ y → observe y ≠ observe x₀ → M.Remembers W",
+      "direct_proof_dependencies": [
+        "CGB.ConservedMemory.observable_indicator_preserved",
+        "CGB.ConservedMemory.observed_memory_nonneg",
+        "CGB.ConservedMemory.observed_write_pos_of_transition",
+        "CGB.ConservedMemory.one_write_observed_mass",
+        "CGB.ConservedMemory.one_write_observed_row",
+        "CGB.ConservedMemory.remembers_of_conserved_observable",
+        "CGB.InformationProjection.condMutualInfo_pos_of_missing_rectangle"
+      ]
+    },
+    "CGB.Medium.trap_irrecoverable": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationLatchHealth.lean",
+      "line": 27,
+      "source_sha256": "b50829033f62fcdff489379eee5d11e71bc554a98aae16ed504ddbc143fc7803",
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} (M : CGB.Medium U Λ A I) [inst : Fintype U]\n  (B : Set (U → Λ)),\n  (∀ (x y : U → Λ), x ∈ B → M.OrgStep x y → y ∈ B) → (∀ x ∈ B, ¬M.CanTakeIn x) → ∀ x ∈ B, ¬M.Recoverable x",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Continual.held_budget_starves": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationContinualOptimizer.lean",
+      "line": 161,
+      "source_sha256": "aba276d7f2d9997fdbd9b7174b42375b8f7bc3ed4c75652cbb5ff13f0d415956",
+      "signature": "∀ (B s : ℝ) (n : ℕ), B ≤ ↑n * s → B - ↑n * s ≤ 0",
+      "direct_proof_dependencies": []
+    },
+    "CGB.ConservedMemory.conserving_calm_needs_organizational_viability": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationConservedMemory.lean",
+      "line": 416,
+      "source_sha256": "6a1df0eabf3a6f138b3ad4db5e008080a052f658a224e6191f20c541b9ad0494",
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} [inst : Fintype U] [inst_1 : DecidableEq U]\n  [inst_2 : Fintype Λ] [inst_3 : DecidableEq Λ] [inst_4 : Fintype A] (M : CGB.Medium U Λ A I) (W : CGB.World U Λ I),\n  M.Clocked W.clock →\n    (∀ (a : A) (x : U → Λ), 0 < M.rate a M.calm x → M.total (M.act a M.calm x) = M.total x) →\n      ∀ (score : ℕ → ℝ), (∀ (x : U → Λ), M.aliveInd W x = score (M.total x)) → ∀ (δ : ℝ) (T : ℕ), ¬M.Persists W δ T",
+      "direct_proof_dependencies": [
+        "CGB.ConservedMemory.event_observable_kernel",
+        "CGB.ConservedMemory.historical_persistence_requires_alive_change",
+        "CGB.ConservedMemory.observable_test_preserved"
+      ]
+    },
+    "CGB.GradientFilter.fresh_decrease_unbiased": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean",
+      "line": 452,
+      "source_sha256": "eb10bebc737a9198af8ceb1962cdd4b033ec7268fc581167488500274bd0b735",
+      "signature": "∀ (h e u ξ' : ℝ),\n  (h * e ^ 2 / 2 + ξ' * e - (h * (e - u) ^ 2 / 2 + ξ' * (e - u)) +\n        (h * e ^ 2 / 2 + -ξ' * e - (h * (e - u) ^ 2 / 2 + -ξ' * (e - u)))) /\n      2 =\n    h * e ^ 2 / 2 - h * (e - u) ^ 2 / 2",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Medium.modulation_needs_boundary": {
+      "source": "lean/CGBAxioms/CGBAxioms/Generation.lean",
+      "line": 298,
+      "source_sha256": "b3d2544b48c13492c84df1e9ff63f268810684626495eb3543c2be4f26d94b0c",
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} (M : CGB.Medium U Λ A I) [inst : Fintype A]\n  [inst_1 : DecidableEq (U → Λ)],\n  M.P1b →\n    M.OnlyBoundarySenses →\n      ∀ {s s' : U → I} {x y : U → Λ} (D : Set U),\n        (∀ (u : U), u ∈ D ↔ x u ≠ y u) →\n          (M.jump s).rate x y ≠ (M.jump s').rate x y → ∃ u, (u ∈ D ∨ u ∈ M.scope D) ∧ u ∈ M.boundary",
+      "direct_proof_dependencies": [
+        "CGB.Medium.rate_interior_stimulus_free"
+      ]
+    },
+    "CGB.Medium.reward_two_phase_drift": {
+      "source": "lean/CGBAxioms/CGBAxioms/Generation.lean",
+      "line": 642,
+      "source_sha256": "b3d2544b48c13492c84df1e9ff63f268810684626495eb3543c2be4f26d94b0c",
+      "signature": "∀ {B : Type u_5} [inst : Fintype B] [inst_1 : DecidableEq B] [Nonempty B] (z R : B → ℝ) (bl : ℝ) (b : B),\n  ∑ a, CGB.Medium.softmax z a * ((R a - bl) * ((if a = b then 1 else 0) - CGB.Medium.softmax z b)) =\n    CGB.Medium.softmax z b * (R b - ∑ a, CGB.Medium.softmax z a * R a)",
+      "direct_proof_dependencies": [
+        "CGB.Medium.softmax_sum"
+      ]
+    },
+    "CGB.Medium.p2b_of_conductance": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationLattice.lean",
+      "line": 39,
+      "source_sha256": "8134cb3170af78014b23438b8297e5d1837e9133d0a57358ed77912ac26c367d",
+      "signature": "∀ {U : Type u_1} {Λ : Type u_2} {A : Type u_3} {I : Type u_4} [Fintype U] [inst : Fintype A]\n  [inst_1 : DecidableEq (U → Λ)] (M : CGB.Medium U Λ A I) (E : (U → Λ) → ℝ) (κ : A → (U → Λ) → ℝ) (rev : A → A),\n  Function.Involutive rev →\n    (∀ (a : A) (x : U → Λ), M.act a M.calm x ≠ x → M.act (rev a) M.calm (M.act a M.calm x) = x) →\n      (∀ (a : A) (x : U → Λ), M.act a M.calm x ≠ x → κ (rev a) (M.act a M.calm x) = κ a x) →\n        (∀ (a : A) (x : U → Λ),\n            M.act a M.calm x ≠ x → M.rate a M.calm x = κ a x * Real.exp (-(E (M.act a M.calm x) - E x) / 2)) →\n          M.P2b",
+      "direct_proof_dependencies": [
+        "CGB.Medium.p2b_of_micro_weighted"
+      ]
+    },
+    "CGB.Generation.fixed_point_is_occupancy": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean",
+      "line": 175,
+      "source_sha256": "d90983d0d715d08b0549c7f0f4bd439c1041693883a212b421d96c0fd0cefde1",
+      "signature": "∀ {kp km : ℝ}, 0 < kp → 0 < km → kp / (kp + km) = CGB.Generation.occupancy (Real.log kp - Real.log km)",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Generation.available_strictAnti": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean",
+      "line": 183,
+      "source_sha256": "d90983d0d715d08b0549c7f0f4bd439c1041693883a212b421d96c0fd0cefde1",
+      "signature": "∀ {kp : ℝ}, 0 < kp → ∀ {m₁ m₂ : ℝ}, 0 < m₁ → m₁ < m₂ → kp / (kp + m₂) < kp / (kp + m₁)",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Generation.full_shared_pool_blocks_admission": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean",
+      "line": 77,
+      "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+      "signature": "∀ {n : ℕ} (occupied target : Fin n → ℝ) (inflow release gate : ℝ),\n  ∑ j, occupied j = 1 →\n    ∀ (i : Fin n),\n      CGB.Generation.sharedContactPoolStep occupied target inflow release gate i =\n        occupied i - gate * release * occupied i",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Generation.shared_contact_pool_vector_nonneg": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean",
+      "line": 161,
+      "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+      "signature": "∀ {n : ℕ} (occupied target release : Fin n → ℝ) (inflow gate : ℝ),\n  (∀ (i : Fin n), 0 ≤ occupied i) →\n    ∑ i, occupied i ≤ 1 →\n      (∀ (i : Fin n), 0 ≤ target i) →\n        (∀ (i : Fin n), 0 ≤ release i ∧ release i ≤ 1) →\n          0 ≤ inflow →\n            0 ≤ gate ∧ gate ≤ 1 →\n              ∀ (i : Fin n), 0 ≤ CGB.Generation.sharedContactPoolVectorStep occupied target release inflow gate i",
+      "direct_proof_dependencies": []
+    },
+    "CGB.Generation.shared_contact_pool_free_nonneg": {
+      "source": "lean/CGBAxioms/CGBAxioms/GenerationContactCompetition.lean",
+      "line": 179,
+      "source_sha256": "b7c973a581d59883e68023e7d34630d21450c91e407a9630bfdf44aea6606f4a",
+      "signature": "∀ {n : ℕ} (occupied release : Fin n → ℝ) (inflow gate : ℝ),\n  (∀ (i : Fin n), 0 ≤ occupied i) →\n    ∑ i, occupied i ≤ 1 →\n      (∀ (i : Fin n), 0 ≤ release i) →\n        0 ≤ inflow ∧ inflow ≤ 1 →\n          0 ≤ gate ∧ gate ≤ 1 → 0 ≤ CGB.Generation.sharedContactPoolFreeStep occupied release inflow gate",
+      "direct_proof_dependencies": []
+    }
+  },
+  "coverage": {
+    "original_nine_items_mapped": 9,
+    "original_nine_items_jointly_proved": false,
+    "global_maximum_proved": false,
+    "generator_minimum_proved": false,
+    "learned_self_organization_proved": false
+  },
+  "audit": "results/published/cgb_generator_exchange_construct_20261103.json",
+  "next_bridge": "Validate the existing GDN plus bounded fast-table candidate: held-out language, continuous relearning, full-state restore and total resource cost; then connect same-body actions to subsequent language. Feedback has no measured net OWT benefit at this budget. Forward sensitivity is conditional on a demonstrated credit gap, not the default next task.",
+  "compatibility_search_status": "one_conditional_joint_construction_checked_global_search_not_executed",
+  "generator_minimization_status": "interaction_evidence_content_deletions_checked_within_candidate_no_global_minimum",
+  "primary_review": {
+    "method": "Primary agent read all 39 complete statements and inspected source definitions/proofs at the decisive joins; no new delegation.",
+    "findings": [
+      "Common Q also admits context-free memoryless models.",
+      "Shared-pool admission suppression does not force winner release.",
+      "Fixed-energy conductance learning CAN change finite-time predictions.",
+      "G10c presupposes compartments and a scalar estimator objective.",
+      "Three functional commitments do not define a common state transition."
+    ],
+    "audit": "results/published/cgb_generator_self_review_20261103.json"
+  },
+  "local_generator_reference": {
+    "source": "lean/CGBAxioms/CGBAxioms/GenerationGrowth.lean",
+    "line": 128,
+    "transition": "s_next = s + u * (1-s) - d * s",
+    "shared_effects": [
+      "bounded available/used exchange for u,d,s in [0,1]",
+      "fixed-rate exponential history for 0<u+d<=1",
+      "equilibrium available fraction decreases with demand at fixed supply"
+    ],
+    "not_yet_derived": [
+      "useful historical attribution",
+      "learned useful releasable latches in real language",
+      "functional compartment generation"
+    ],
+    "progress": "Section 7.8 supplies language-dependent rates in one conditional construction; remaining obligations below."
+  },
+  "historical_audit": "results/published/cgb_generator_joint_law_audit_20261103.json",
+  "historical_self_review_audit": "results/published/cgb_generator_self_review_20261103.json",
+  "constructed_transition": {
+    "id": "H_exchange",
+    "status": "paper_derived_independently_reviewed_numerical_oracle_only",
+    "state": "retained allocation s on simplex, learned interaction K, learned content theta, causal context c",
+    "prediction": "a=softmax(K@s/tau); P(b)=sum_i a_i*p_theta(b|c,i)",
+    "update": "r=softmax(K@s/tau+log p_theta(y|c,i)); s_next=(1-gamma)*s+gamma*r",
+    "rate_identification": "u_i=gamma*r_i; d_i=gamma*(1-r_i)",
+    "content_and_interaction_learning": "current score pullback through both p and a; no claim about omitted historical derivatives",
+    "required_parameters": {
+      "tau": "positive",
+      "gamma": "in (0,1]; release requires sufficient accumulated updates"
+    },
+    "joint_witness": "N=2, tau=1, K=(2*log(3))*I: quiet stable allocations 1/4,3/4; sustained likelihood ratio <=1/27 releases upper branch",
+    "frozen_field_dissipation": "dF/dt=-tau*(KL(s||r)+KL(r||s)), K symmetric and evidence frozen",
+    "discrete_descent": "K positive semidefinite on simplex tangent space suffices for gamma in (0,1]",
+    "same_state_causal_path": [
+      "retained allocation",
+      "interaction field",
+      "prearrival language prediction",
+      "arrived likelihood",
+      "balanced reallocation",
+      "next prediction"
+    ],
+    "independent_review": "exchange_construct_review: checked identities, stability, release, and exact old-theorem applicability",
+    "deletions": [
+      {
+        "removed": "K interaction",
+        "failure": "fixed-evidence state difference contracts by (1-gamma)^n; no permanent bistable state"
+      },
+      {
+        "removed": "outcome contrast",
+        "failure": "quiet high branch is invariant; no language-directed release in this scalar map"
+      },
+      {
+        "removed": "content plasticity",
+        "failure": "common wrong predictions cannot be repaired by allocation alone"
+      }
+    ],
+    "still_open": [
+      "dual row/column budgets",
+      "local microscopic P2b refinement",
+      "useful learned differentiation",
+      "retrievable beyond-window credit",
+      "modern backbone mapping",
+      "finite precision budget preservation",
+      "language capability",
+      "action and life contract"
+    ],
+    "nontransferable_theorems": {
+      "grows_iff/no_exchange_iff": "old compare a and r; retained state update compares s and r",
+      "wealth_eq_mixture": "new prior softmax(K@s_next/tau) is not previous posterior",
+      "tag_is_exact_credit": "state-dependent interaction changes transport; fixed-T initial-tag theorem is insufficient",
+      "latch_above_unit_gain": "hard-saturation theorem does not prove logistic stability"
+    },
+    "new_lean_theorems": 0,
+    "training_runs": 0,
+    "body_replaced": false,
+    "selection_status": "retained_local_candidate_not_selected_global_core"
+  },
+  "selection_priority": "Maximize relevant jointly realizable constraint coverage; minimize shared causal generators without sacrificing that coverage. Do not let a preselected formula define the requirement set.",
+  "inventory_reconciliation": {
+    "inventory_count": 1768,
+    "original_N_reviewed": 1403,
+    "merged_review_proposals": {
+      "R": 186,
+      "M": 226,
+      "W": 53,
+      "N": 1303
+    },
+    "current_slice_references": 44,
+    "references_by_review_proposal": {
+      "R": 13,
+      "M": 21,
+      "N": 10
+    },
+    "not_yet_referenced_in_slice": 1724,
+    "reference_is_satisfaction": false,
+    "semantic_dispositions_complete": false,
+    "classification_registry_changed": false
+  },
+  "inside_out_frontier": {
+    "status": "closure_premise_ring_source_reviewed_common_generator_unfinished",
+    "method": "Expand existing review along causal premises as needed; do not wait for a second whole-library review. Global life and resource constraints remain active.",
+    "classification_axes": {
+      "working_categories": {
+        "R": 186,
+        "M": 226,
+        "W": 53,
+        "N": 1303
+      },
+      "N_use_roles": {
+        "joint_witness": 36,
+        "local_witness": 266,
+        "counterexample": 184,
+        "measurement": 58,
+        "helper": 800,
+        "meta": 51,
+        "duplicate": 1,
+        "side": 55
+      },
+      "roles_overlap": true,
+      "original_class_axis": [
+        "necessity",
+        "design",
+        "semantics",
+        "witness",
+        "side"
+      ]
+    },
+    "mechanical_review_model": "gpt-6-luna",
+    "mechanical_review_declarations": [
+      "CGB.GDNLife.assimilate_order_blind",
+      "CGB.Generation.memoryless_same_frequencies_same_structure",
+      "CGB.Generation.ContextAssociation.context_write_separates_order",
+      "CGB.Generation.exact_key_capacity",
+      "CGB.SelfProduction.positive_soft_query_changes_under_delta",
+      "CGB.Generation.tied_write_cross_read",
+      "CGB.Generation.gated_delta_contracts",
+      "CGB.Generation.silent_rest_unique",
+      "CGB.Generation.ContextAssociation.contraction_has_no_two_latches",
+      "CGB.LanguageLifeKernel.no_visible_only_delayed_credit_rule",
+      "CGB.LanguageLifeKernel.delayed_credit_requires_history_carrier",
+      "CGB.CountedPopulation.tag_is_exact_credit",
+      "CGB.Generation.export_forced",
+      "CGB.Generation.unselective_export_forgets",
+      "CGB.Generation.retention_needs_selectivity",
+      "CGB.Continual.held_budget_starves",
+      "CGB.Continual.column_budget_allows_wta",
+      "CGB.Continual.row_budget_allows_copies",
+      "CGB.Continual.doubly_budgeted_max_differentiates",
+      "CGB.Medium.no_global_gain_for_heterogeneous_compartments",
+      "CGB.Generation.local_anti_dominance_requires_demand_readout",
+      "CGB.Generation.shared_pool_marginal_admission_is_anti_dominant",
+      "CGB.Generation.shared_potential_forces_nesting",
+      "CGB.Generation.symmetric_stays_symmetric"
+    ],
+    "mechanical_review_artifacts": {
+      "results/cgb_theorem_traversal_20261103/inner_memory_inventory.json": "292b8fbea40a55e3cf40dc02cfdaea08e220c57151a91a3006e4e3bdfa1a867b",
+      "results/cgb_theorem_traversal_20261103/inner_exchange_inventory.json": "640fe0717fe9799f833332b385d33199a560a15c0b857072d9cc09b65ed14011"
+    },
+    "design_review_owner": "primary_agent",
+    "additional_parent_read_declarations": [
+      "CGB.LanguageLifeKernel.CausalState.realizes",
+      "CGB.LanguageLifeKernel.CausalState.minimal",
+      "CGB.LanguageLifeKernel.CausalState.separated_histories_capacity",
+      "CGB.SelfProduction.association_delta_read_contract",
+      "CGB.SelfProduction.association_affine_language_nll_bound",
+      "CGB.SelfProduction.softmax_nll_logit_error_bound",
+      "CGB.SelfProduction.delayed_readout_capacity_with_retrieval",
+      "CGB.SelfProduction.minimal_generator_conditional_joint_specification"
+    ],
+    "connections": [
+      {
+        "id": "F1",
+        "from": "future-distinguishable histories",
+        "to": "shared prediction and credit readout requirements",
+        "status": "design_join_using_existing_representation_obstructions",
+        "remaining": "one finite encoded state must retain the required distinctions; canonical realization can be infinite"
+      },
+      {
+        "id": "F2",
+        "from": "tied associative write",
+        "to": "current-error correction and cross-query interference",
+        "status": "existing_joint_theorem",
+        "theorem": "CGB.SelfProduction.association_delta_read_contract",
+        "remaining": "instantiate actual learned keys and carried matrix"
+      },
+      {
+        "id": "F3",
+        "from": "associative interference bound",
+        "to": "language NLL bound through affine readout",
+        "status": "existing_proof_composition",
+        "theorem": "CGB.SelfProduction.association_affine_language_nll_bound",
+        "remaining": "maintain bounded values, readout norm and actual state decomposition after updates"
+      },
+      {
+        "id": "F4",
+        "from": "repeatable address dynamics",
+        "to": "coexisting retained memory distinction",
+        "status": "premise_conflict_localized_not_solved",
+        "remaining": "do not impose strict contraction on the same full state that must admit distinct latches; specify observables without assuming separate modules"
+      },
+      {
+        "id": "F5",
+        "from": "semantic retention under finite capacity",
+        "to": "selective exchange and multi-end budgets",
+        "status": "representation_bridge_required",
+        "remaining": "map retained information to actual stored distinctions; material tag erasure need not equal semantic forgetting; scalar total budget does not imply row/column budgets"
+      }
+    ],
+    "do_not_count_as": "32 newly satisfied theorems; this is a connected audit frontier, not implementation admission",
+    "next": "Construct the same learnable interaction producing write, retention, retrieval and consequence-conditioned revision; keep action/world interface in the common condition graph. No training before the shared construction is specified.",
+    "context_review_declarations": [
+      "CGB.Generation.history_useless_of_independent",
+      "CGB.Generation.learner_loses_of_constant",
+      "CGB.Generation.settled_fixed_optimal",
+      "CGB.PredictiveHarvest.additive_payoff_mode",
+      "CGB.SelfProduction.open_world_closure_excludes_conflicting_safe_actions",
+      "CGB.ConstraintFreedom.arbitrarily_many_states_at_unit_capacity",
+      "CGB.SeedMemory.physical_memory_component",
+      "CGB.GraceMemory.remembers_with_reachable_action_change"
+    ],
+    "all_class_policy": {
+      "R": "state the constraint and test its premises on the common object",
+      "M": "use a construction with its actual preconditions, not every alternative at once",
+      "W": "record environment/information/closure assumptions; body success cannot silently assume them",
+      "N": "use proof helpers, measurement, joint witnesses and counterexamples; follow dependency and reviewed semantic links",
+      "counting": "candidate mapping, proof support and jointly realized properties are separate counts",
+      "exclusions": "inapplicable or conflicting branches retain a reason; unknown stays pending"
+    },
+    "support_report": {
+      "artifact": "results/published/cgb_generator_frontier_support_20261103.json",
+      "source_read_seed_count": 179,
+      "resolved_dependency_theorems": {
+        "total": 403,
+        "by_label": {
+          "M": 78,
+          "N": 217,
+          "R": 98,
+          "W": 10
+        },
+        "pending_or_unknown": []
+      },
+      "semantic_neighbors_pending_review": 51,
+      "unresolved_dependency_names": 75,
+      "joint_body_satisfaction": null,
+      "scope": "Seeds are source-read; dependency support is mechanically traced, not newly reviewed semantic coverage. Related neighbors are next-review candidates, not proof edges or admitted body properties."
+    },
+    "second_ring_parent_read_declarations": [
+      "CGB.Generation.association_slot_retention",
+      "CGB.Generation.bounded_decoder_association_readout",
+      "CGB.Generation.normalized_assimilation_decoder_bound",
+      "CGB.Generation.collision_of_excess_keys",
+      "CGB.Generation.tied_write_is_error_descent",
+      "CGB.Generation.reused_key_tracks_and_rewrites",
+      "CGB.Generation.exact_prediction_no_write",
+      "CGB.SelfProduction.association_assimilation_query_change",
+      "CGB.SelfProduction.association_assimilation_improves_iff",
+      "CGB.SelfProduction.association_assimilation_softmax_improves_iff",
+      "CGB.SelfProduction.one_hot_delta_is_precision_assimilation",
+      "CGB.SelfProduction.mixed_key_delta_differs_from_slot_assimilation",
+      "CGB.SelfProduction.precision_distinguishes_equal_mean_histories",
+      "CGB.SelfProduction.repeated_assimilation_retention",
+      "CGB.SelfProduction.repeated_assimilation_association_readout",
+      "CGB.SelfProduction.repeated_assimilation_probe_family",
+      "CGB.Generation.occurrence_decay_retains",
+      "CGB.Generation.Nonlinearity.linear_recurrence_no_interaction",
+      "CGB.Generation.Nonlinearity.association_read_additive_in_contents",
+      "CGB.Generation.Nonlinearity.additive_error_floor",
+      "CGB.Generation.Nonlinearity.key_query_read_interacts",
+      "CGB.Generation.Nonlinearity.one_rectifier_reads_interaction",
+      "CGB.SelfProduction.state_conditioned_logloss_decomposition",
+      "CGB.SelfProduction.merged_histories_binary_logloss_floor",
+      "CGB.SelfProduction.precision_binary_sample_gain_not_future_guarantee",
+      "CGB.SelfProduction.categorical_precision_next_loss_direction",
+      "CGB.GradientFilter.in_sample_decrease_bias_mean",
+      "CGB.GradientFilter.fresh_decrease_unbiased",
+      "CGB.InformationProjection.condMutualInfo_project_le",
+      "CGB.Generation.process_noise_gain_floor",
+      "CGB.GradientFilter.vanishing_gain_loses_under_drift",
+      "CGB.GradientFilter.occurrence_clock_beats_time_clock",
+      "CGB.CountedPopulation.extinct_stays_extinct",
+      "CGB.CountedPopulation.concentrated_absorbing",
+      "CGB.CountedPopulation.coarse_reinvest",
+      "CGB.CountedPopulation.local_keeps_group_total",
+      "CGB.CountedPopulation.local_ignores_outside",
+      "CGB.CountedPopulation.bracket_after",
+      "CGB.Generation.single_pool_falls_below_power",
+      "CGB.Generation.bank_power_law_lower_bound",
+      "CGB.Generation.geometric_bank_covers",
+      "CGB.Medium.two_phase_drift",
+      "CGB.Medium.log_softmax_deriv",
+      "CGB.Medium.phases_must_balance",
+      "CGB.Medium.reward_two_phase_drift",
+      "CGB.Medium.outcome_blind_drift_zero",
+      "CGB.Reinvestment.no_exchange_iff",
+      "CGB.LanguageExistence.no_global_finite_gdn_codec",
+      "CGB.LanguageExistence.recurrent_gain_excludes_eventual_stationary_descent",
+      "CGB.LanguageLifeKernel.Approximation.fold_error",
+      "CGB.LanguageLifeKernel.Approximation.invariant_error",
+      "CGB.RecoveryControls.passive_intake_not_persistence",
+      "CGB.RecoveryControls.passive_full_not_alive",
+      "CGB.RecoveryControls.actual_recovery_distinguishes_world_moves",
+      "CGB.ActiveInference.silence_condition_required",
+      "CGB.CausalLearning.no_safe_exploration"
+    ],
+    "second_ring_review": {
+      "owner": "parent",
+      "groups": [
+        {
+          "id": "read_write_transport",
+          "theorems": [
+            "CGB.Generation.association_slot_retention",
+            "CGB.Generation.bounded_decoder_association_readout",
+            "CGB.Generation.normalized_assimilation_decoder_bound",
+            "CGB.Generation.collision_of_excess_keys",
+            "CGB.Generation.tied_write_is_error_descent",
+            "CGB.Generation.reused_key_tracks_and_rewrites",
+            "CGB.Generation.exact_prediction_no_write"
+          ],
+          "premise": "Association superposition and actual queries; decoder bound requires bounded values and an actual decoder; tied-write latest-value result uses one fixed unit key and beta=1.",
+          "consequence": "Use realized-path matrix transport to account for retained content, not a new per-event archive. Latest-value overwrite is a reuse witness, not semantic memory capacity.",
+          "disposition": "joint_construction_constraint",
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_theorems_only_joint_bridge_not_formalized"
+        },
+        {
+          "id": "joint_readout_changes",
+          "theorems": [
+            "CGB.SelfProduction.association_assimilation_query_change",
+            "CGB.SelfProduction.association_assimilation_improves_iff",
+            "CGB.SelfProduction.association_assimilation_softmax_improves_iff",
+            "CGB.SelfProduction.one_hot_delta_is_precision_assimilation",
+            "CGB.SelfProduction.mixed_key_delta_differs_from_slot_assimilation",
+            "CGB.SelfProduction.precision_distinguishes_equal_mean_histories"
+          ],
+          "premise": "Positive prior precision, nonnegative input weights; softmax criterion includes query/head/bias changes. One-hot equivalence assumes no global decay; mixed keys have an explicit counterexample.",
+          "consequence": "Account for state, query and readout jointly. Do not transfer slotwise precision-gain guarantees to arbitrary mixed-key delta dynamics.",
+          "disposition": "joint_construction_constraint",
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_theorems_only_joint_bridge_not_formalized"
+        },
+        {
+          "id": "repeated_retention",
+          "theorems": [
+            "CGB.SelfProduction.repeated_assimilation_retention",
+            "CGB.SelfProduction.repeated_assimilation_association_readout",
+            "CGB.SelfProduction.repeated_assimilation_probe_family",
+            "CGB.Generation.occurrence_decay_retains"
+          ],
+          "premise": "Repeated identical slot evidence, no prior step; probe-family bound needs each absolute deviation within tolerance. Occurrence-decay inequality assumes 0<alpha<=1 and use exponent<=1.",
+          "consequence": "These conditional alternatives show shared memory/readout accounting. They do not certify arbitrary learned delta trajectories or require an explicit age register.",
+          "disposition": "conditional_alternative",
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_theorems_only_joint_bridge_not_formalized"
+        },
+        {
+          "id": "nonadditive_representation",
+          "theorems": [
+            "CGB.Generation.Nonlinearity.linear_recurrence_no_interaction",
+            "CGB.Generation.Nonlinearity.association_read_additive_in_contents",
+            "CGB.Generation.Nonlinearity.additive_error_floor",
+            "CGB.Generation.Nonlinearity.key_query_read_interacts",
+            "CGB.Generation.Nonlinearity.one_rectifier_reads_interaction"
+          ],
+          "premise": "Additive two-source predictor versus a target with nonzero interaction contrast; fixed query for additive-content result.",
+          "consequence": "Learned cross-history queries or nonlinear interactions must be expressible on the real prediction path. MLP is allowed but not forced; key/query product is an existing witness, not a language model.",
+          "disposition": "joint_construction_constraint",
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_theorems_only_joint_bridge_not_formalized"
+        },
+        {
+          "id": "future_information_score",
+          "theorems": [
+            "CGB.SelfProduction.state_conditioned_logloss_decomposition",
+            "CGB.SelfProduction.merged_histories_binary_logloss_floor",
+            "CGB.SelfProduction.precision_binary_sample_gain_not_future_guarantee",
+            "CGB.SelfProduction.categorical_precision_next_loss_direction",
+            "CGB.GradientFilter.in_sample_decrease_bias_mean",
+            "CGB.GradientFilter.fresh_decrease_unbiased",
+            "CGB.InformationProjection.condMutualInfo_project_le"
+          ],
+          "premise": "Specified joint law for entropy/KL; equally weighted opposite labels for merged-history floor; fixed quadratic and symmetric fresh noise for unbiasedness; deterministic coarsening of a finite nonnegative joint law for CMI.",
+          "consequence": "Separate missing distinctions from decoder mismatch and current fitting from future value. Reusing existing state for compression is allowed; general language evaluation is not proved unbiased by a quadratic identity.",
+          "disposition": "joint_construction_constraint",
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_theorems_only_joint_bridge_not_formalized"
+        },
+        {
+          "id": "adaptive_gain",
+          "theorems": [
+            "CGB.Generation.process_noise_gain_floor",
+            "CGB.GradientFilter.vanishing_gain_loses_under_drift",
+            "CGB.GradientFilter.occurrence_clock_beats_time_clock"
+          ],
+          "premise": "Gain floor assumes positive process variance and incoming precision floor; variance blowup uses an explicit random-walk error recursion; occurrence-clock comparison is a stationary scalar EMA model.",
+          "consequence": "Do not freeze all plasticity or force every memory direction to drift. Local gains must remain responsive on drifting directions; Kalman form is one conditional realization.",
+          "disposition": "conditional_alternative",
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_theorems_only_joint_bridge_not_formalized"
+        },
+        {
+          "id": "scale_and_recovery",
+          "theorems": [
+            "CGB.CountedPopulation.extinct_stays_extinct",
+            "CGB.CountedPopulation.concentrated_absorbing",
+            "CGB.CountedPopulation.coarse_reinvest",
+            "CGB.CountedPopulation.local_keeps_group_total",
+            "CGB.CountedPopulation.local_ignores_outside",
+            "CGB.CountedPopulation.bracket_after",
+            "CGB.Generation.single_pool_falls_below_power",
+            "CGB.Generation.bank_power_law_lower_bound",
+            "CGB.Generation.geometric_bank_covers"
+          ],
+          "premise": "Pure multiplicative reinvestment has absorbing zero support; coarse/local identities assume a supplied grouping and nonzero group sums; tag contraction uses positive uniform mixing; finite geometric bank covers only its declared delay band.",
+          "consequence": "Same exchange law can commute with coarse-graining and stay local. Group generation and healthy support recovery still need construction; a bank of clocks is not forced by the horizon bound.",
+          "disposition": "joint_construction_constraint",
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_theorems_only_joint_bridge_not_formalized"
+        },
+        {
+          "id": "balanced_current_learning",
+          "theorems": [
+            "CGB.Medium.two_phase_drift",
+            "CGB.Medium.log_softmax_deriv",
+            "CGB.Medium.phases_must_balance",
+            "CGB.Medium.reward_two_phase_drift",
+            "CGB.Medium.outcome_blind_drift_zero",
+            "CGB.Reinvestment.no_exchange_iff"
+          ],
+          "premise": "Specific categorical boundary logits and two-term drift; phase-balance necessity assumes proportionality to the score for all logits/targets; outcome-blind zero drift uses sampling from that same policy.",
+          "consequence": "Observed and predicted contributions may be computed analytically. No separate sleep module follows. Equal live bets stop allocation changes even when all predictors are wrong, so content learning must remain reachable.",
+          "disposition": "joint_construction_constraint",
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_theorems_only_joint_bridge_not_formalized"
+        },
+        {
+          "id": "finite_realization",
+          "theorems": [
+            "CGB.LanguageExistence.no_global_finite_gdn_codec",
+            "CGB.LanguageExistence.recurrent_gain_excludes_eventual_stationary_descent",
+            "CGB.LanguageLifeKernel.Approximation.fold_error",
+            "CGB.LanguageLifeKernel.Approximation.invariant_error"
+          ],
+          "premise": "Finite physical code versus all real states; stationary loss on a finite body; full-update error recursion and invariant budget must be supplied.",
+          "consequence": "Charge precision and workspace. Bounded-state indefinite operation is possible without eternal loss descent; a uniform numerical error certificate must not impose global contraction that destroys latches.",
+          "disposition": "joint_construction_constraint",
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_theorems_only_joint_bridge_not_formalized"
+        },
+        {
+          "id": "world_and_persistence",
+          "theorems": [
+            "CGB.RecoveryControls.passive_intake_not_persistence",
+            "CGB.RecoveryControls.passive_full_not_alive",
+            "CGB.RecoveryControls.actual_recovery_distinguishes_world_moves",
+            "CGB.ActiveInference.silence_condition_required",
+            "CGB.CausalLearning.no_safe_exploration"
+          ],
+          "premise": "Specific finite physical witness for passive intake; actual world access changes recovery for a fixed body. Silence needs action-conditioning only if its law depends on action. Robust-safe action is impossible when every action has a bad allowed outcome.",
+          "consequence": "Keep system4 boundary open in the design. Predictive compression and intake availability alone do not certify life; use witnesses as semantic controls, not food modules or universal language-body requirements.",
+          "disposition": "joint_construction_constraint",
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_theorems_only_joint_bridge_not_formalized"
+        }
+      ],
+      "excluded_application": [
+        {
+          "theorem": "CGB.InformationThermodynamics.erased_information_floor",
+          "reason": "The floor is an explicit RecorderContract field, not a derivation that language CE is heat or that a second food account is required."
+        }
+      ],
+      "signatures_sha256": {
+        "CGB.Generation.association_slot_retention": "eb38a87cdbe9122facc03df4ec37fe78a4225e8b40cb3e90251dfc0b5757c279",
+        "CGB.Generation.bounded_decoder_association_readout": "15c219a64c1f65c249fe873a180ef2f7d7dfe64e8c707a741395e96b0d625e87",
+        "CGB.Generation.normalized_assimilation_decoder_bound": "649503c0c2b2a96533a203a3501697b142efdc3a72edb01d0d0e4a4d32a4bdc7",
+        "CGB.Generation.collision_of_excess_keys": "c1b20095bff3d1ae2d53afbc477f669c55f0dfe90982271e15dafc80d669aa8e",
+        "CGB.Generation.tied_write_is_error_descent": "805abf92a81db18bdcd55092d19148dc6d6b146d7b1965a3fadf49dad1611930",
+        "CGB.Generation.reused_key_tracks_and_rewrites": "f5fc5c8e76429e316c7ae9d84fc158db779ce3321583b6b8795330fde3a35400",
+        "CGB.Generation.exact_prediction_no_write": "3a6c3d8c4b724421b7383ccc9799e398f5ed0fee28a8768360ccb74dfd4f0318",
+        "CGB.SelfProduction.association_assimilation_query_change": "4f244412a78a8665a60f83e54801ae82f65e6a16d9f0cde7b7817e6728e037a6",
+        "CGB.SelfProduction.association_assimilation_improves_iff": "d4be937464368485ed3247eeebeec3a23d3c0b1f69bff93bb5fe1e5157f8ec60",
+        "CGB.SelfProduction.association_assimilation_softmax_improves_iff": "799fc296b94e1edb3bd7f511e92c7b00407363a421a76a47e213bd5a67e9ce27",
+        "CGB.SelfProduction.one_hot_delta_is_precision_assimilation": "5a5a285074cc75083b8ee7a5679cbf2c526e29eb9d96020350c5fd0f253630fa",
+        "CGB.SelfProduction.mixed_key_delta_differs_from_slot_assimilation": "fa7712ac1e1951c76a706439408fdc0b87ddb9617cd71ab67531c9968dad5720",
+        "CGB.SelfProduction.precision_distinguishes_equal_mean_histories": "b858379ef0e1b53fc8e0687b26d8a801cd6410c5f9560318f528361139aff4ce",
+        "CGB.SelfProduction.repeated_assimilation_retention": "6edaf5937e0639dccf762729f5f96eeda673d7a90812987923f2cd03b7789c53",
+        "CGB.SelfProduction.repeated_assimilation_association_readout": "0ba53f1c54c2916872a3b1b92fe5ff00cfc44cc74115524d9419ed21f0ce2299",
+        "CGB.SelfProduction.repeated_assimilation_probe_family": "f732eeaf93b36e6ec321b10fbb5943628a1349ff6ae54836dead6efa463a9ca5",
+        "CGB.Generation.occurrence_decay_retains": "f309755f24c92448bd33f0253c8e0915ec96ba654ece08057b087d7a9431b539",
+        "CGB.Generation.Nonlinearity.linear_recurrence_no_interaction": "d8fdf2c36260dd533a6b2b1190bda5a58dd907adc0d456029db474b1c8990e8f",
+        "CGB.Generation.Nonlinearity.association_read_additive_in_contents": "c48ac65a672f9e6bcb1ffd46362f3d26b7ef1e3a100d2ce825b99253c34c7edb",
+        "CGB.Generation.Nonlinearity.additive_error_floor": "754cc00b1402e28ce66768520207f49f0e60fb248da7168f1f943339492939d2",
+        "CGB.Generation.Nonlinearity.key_query_read_interacts": "be834b5c6e5ed95c7d7c1cf3f295f4163931892a7566bb7f8c9138a0b6dad134",
+        "CGB.Generation.Nonlinearity.one_rectifier_reads_interaction": "84d567be4728de2324113946795f68284c21473b66e1bec3b17001601e04094a",
+        "CGB.SelfProduction.state_conditioned_logloss_decomposition": "6d50dc76d0252b65dd144178e79b723ee5aefe9512ea55a35c5b77896b12dfe7",
+        "CGB.SelfProduction.merged_histories_binary_logloss_floor": "b42420ef1896f7520275e915f0d103dd53de9e9331811308dfcfa7280c16015e",
+        "CGB.SelfProduction.precision_binary_sample_gain_not_future_guarantee": "16d3fa9c7340b9f402d451c6f82fc16541ab3b5a3e91e776786a91f30a6cd714",
+        "CGB.SelfProduction.categorical_precision_next_loss_direction": "56dbb5e49c8eaf48f0a58ed12e2b08d08fa68b29d7121d0b3d419815958498e8",
+        "CGB.GradientFilter.in_sample_decrease_bias_mean": "e6129d5a76af7615088d63e1e1eda41e2d0a5537e9b1cad6e445e0488ce175d4",
+        "CGB.GradientFilter.fresh_decrease_unbiased": "e0c567e7b71bb05785f2d602273bcf8695bbb769a879fe80fea5af07ace10a23",
+        "CGB.InformationProjection.condMutualInfo_project_le": "a6aa0e370e1e9315e7ffb68a0b6a3104465030f597486d8ff92cdb9b3f358ebd",
+        "CGB.Generation.process_noise_gain_floor": "c039bc8c2ecff1b432b27defa1c1cf07e5328a7f17713f910d127ea5f5c403ad",
+        "CGB.GradientFilter.vanishing_gain_loses_under_drift": "b4dec37fa8d7490d083e5834b856d1f1b71b1e1ed9b66d8972805c3c164f9dcd",
+        "CGB.GradientFilter.occurrence_clock_beats_time_clock": "8537fee2a8eefc0f054ec847a3ab91bda26f1588cfd3b5396f594b95ab1f3408",
+        "CGB.CountedPopulation.extinct_stays_extinct": "93a5c040f186e1a8562e998fa135f61e6ccf46d434ed49086586a2edece761ef",
+        "CGB.CountedPopulation.concentrated_absorbing": "9bfb76755d33dde91151da5828de3796d8db5a124fc337ce3c29b2e50fe3f1c5",
+        "CGB.CountedPopulation.coarse_reinvest": "9b8d43227d55275b824554a571bb80efca7480a700015366b7928712acb0c48b",
+        "CGB.CountedPopulation.local_keeps_group_total": "068e73ab06c30e2d4ac676f15916b871dd4ede6095ae2349c2e8afdcf8884be9",
+        "CGB.CountedPopulation.local_ignores_outside": "5c0fde94edc577afcf8a60d7c1fafe706fcce559689807c292d629dae68540ad",
+        "CGB.CountedPopulation.bracket_after": "72145c639dcaeeffc89ac73dc23e1a173e93ea779f84e3dbedb5921f3cf980d1",
+        "CGB.Generation.single_pool_falls_below_power": "40838483de77a4d80a865e205cc5bd0cc9c51523d16b52718d0e6b0ffd65dc29",
+        "CGB.Generation.bank_power_law_lower_bound": "7435e54f2a2f72ad1310ce918c529a5ed91414a6ba1727acc4fda2f586ba8715",
+        "CGB.Generation.geometric_bank_covers": "1c1f1efb48bf6ea86ace4815397872fe287d54d1c17fafe943fa93c0afb91044",
+        "CGB.Medium.two_phase_drift": "68601744bf1028b89edf42e724eb7720a019f0d6e4e199cb12abb731de8fbb50",
+        "CGB.Medium.log_softmax_deriv": "44c0d1afd35cae9c0f4f057767440a0b063347bc61817924da788d3402f30f60",
+        "CGB.Medium.phases_must_balance": "aa7ba764b12bed5db4d08cbc6cad7cfb1020ff5c86c428567212dfde1e618025",
+        "CGB.Medium.reward_two_phase_drift": "7a9175714bfd35ceef4504fa63a81a702a9d260502d3bcabfba178f1c9316211",
+        "CGB.Medium.outcome_blind_drift_zero": "e4565467c46dcb28eeec1e394614aa8ba8dfb12a42afdc398ad4610189b4c310",
+        "CGB.Reinvestment.no_exchange_iff": "15dfcfa0a42478bc72cecc51fe275233d78230f57e5e3de092889d48a14b7cec",
+        "CGB.LanguageExistence.no_global_finite_gdn_codec": "6491f705cfffee5be01cc04f84ca0d4e4210e2a74bcc203673a87283e764bf69",
+        "CGB.LanguageExistence.recurrent_gain_excludes_eventual_stationary_descent": "5aca8fea08ca8968fd9157a200ce80d3e6cd16e731b321250cf4299888aa3084",
+        "CGB.LanguageLifeKernel.Approximation.fold_error": "a3f695cf04d1575cc44512e9535b58cacd131991d08fc4bc9e3a6abb42aa4013",
+        "CGB.LanguageLifeKernel.Approximation.invariant_error": "f0ac19999e1415402ab60ecf72349ba952ef7c358af849fb83f69bbec3ddc98f",
+        "CGB.RecoveryControls.passive_intake_not_persistence": "784ea0eb43cf44124df096230655dd06dbb9c60daace7d27c97c5275785d912d",
+        "CGB.RecoveryControls.passive_full_not_alive": "0ab0c4bd4dbecb62670111b9d53db10a8fc32d81507a30e5e266ec6a8b23672d",
+        "CGB.RecoveryControls.actual_recovery_distinguishes_world_moves": "a92266ff4e8d7c1607400d3af8cc6c87546ca819deb6d0ec320dc7f5bd2c9cf1",
+        "CGB.ActiveInference.silence_condition_required": "b399e1a6ba8e4ffaef3d48aed6d0b9e5e9e9786a17509ced8c4aca2d1486ade7",
+        "CGB.CausalLearning.no_safe_exploration": "ea278b1fc31ce9a48071bc942344d9e6d69412ec86da15abe9240dc251ed8d29"
+      },
+      "independent_review": "not_performed_this_turn_user_requested_parent_review",
+      "same_body_joint_admission": false
+    },
+    "third_ring_parent_read_declarations": [
+      "CGB.Generation.contact_retention_bounds",
+      "CGB.Generation.response_gated_contact_closed_holds",
+      "CGB.Generation.response_gated_contact_write_distinguishes",
+      "CGB.Generation.shared_contact_pool_vector_affine",
+      "CGB.Generation.response_gated_vector_history_expansion",
+      "CGB.Generation.response_gated_vector_no_injection_retention",
+      "CGB.Generation.response_gated_vector_zero_without_injection",
+      "CGB.Generation.response_gated_vector_history_difference",
+      "CGB.Generation.response_gated_vector_nonzero_retention_distinguishes",
+      "CGB.Generation.response_gated_vector_source_difference",
+      "CGB.Generation.shared_contact_pool_vector_conserves_total",
+      "CGB.Generation.shared_contact_pool_vector_nonneg",
+      "CGB.Generation.shared_contact_pool_vector_total_le_one",
+      "CGB.Generation.full_shared_pool_vector_blocks_admission",
+      "CGB.Generation.shared_contact_pool_vector_endpoint_agreement",
+      "CGB.Generation.unused_column_kept",
+      "CGB.Generation.ContextAssociation.held_coordinate_survives_suffix",
+      "CGB.GradientFilter.usage_normalized_gain_anti_dominant"
+    ],
+    "third_ring_review": {
+      "owner": "parent",
+      "groups": [
+        {
+          "id": "contact_gated_history",
+          "theorems": [
+            "CGB.Generation.contact_retention_bounds",
+            "CGB.Generation.response_gated_contact_closed_holds",
+            "CGB.Generation.response_gated_contact_write_distinguishes",
+            "CGB.Generation.shared_contact_pool_vector_affine",
+            "CGB.Generation.response_gated_vector_history_expansion",
+            "CGB.Generation.response_gated_vector_no_injection_retention",
+            "CGB.Generation.response_gated_vector_zero_without_injection",
+            "CGB.Generation.response_gated_vector_history_difference",
+            "CGB.Generation.response_gated_vector_nonzero_retention_distinguishes",
+            "CGB.Generation.response_gated_vector_source_difference"
+          ],
+          "premise": "The actual shared-pool vector recurrence; gate/release in [0,1] for retention bounds. Comparing histories requires equal ACTUAL injections, not just equal external inputs; source contrast assumes equal release on the two coordinates.",
+          "consequence": "Participation and release can retain history in the same bounded coordinates, without storing a new trace page. A nonzero exact-real product alone does not establish finite-precision decodability.",
+          "disposition": "conditional_bridge_to_existing_content_not_runtime_equivalence",
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_production_theorems_with_explicit_premises"
+        },
+        {
+          "id": "shared_capacity_and_contact_consistency",
+          "theorems": [
+            "CGB.Generation.shared_contact_pool_vector_conserves_total",
+            "CGB.Generation.shared_contact_pool_vector_nonneg",
+            "CGB.Generation.shared_contact_pool_vector_total_le_one",
+            "CGB.Generation.full_shared_pool_vector_blocks_admission",
+            "CGB.Generation.shared_contact_pool_vector_endpoint_agreement"
+          ],
+          "premise": "Nonnegative occupation with total<=1, normalized nonnegative target, bounded inflow/gate/release as stated; endpoint agreement assumes the same state and inputs.",
+          "consequence": "Release and admission can share one implicit free complement. These are positive-occupation laws, not automatically signed neural-content laws, and total conservation alone does not prevent monopoly.",
+          "disposition": "reuse_capacity_constraints_no_new_reservoir",
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_production_theorems_with_explicit_premises"
+        },
+        {
+          "id": "unused_support_and_local_gain",
+          "theorems": [
+            "CGB.Generation.unused_column_kept",
+            "CGB.Generation.ContextAssociation.held_coordinate_survives_suffix",
+            "CGB.GradientFilter.usage_normalized_gain_anti_dominant"
+          ],
+          "premise": "Zero use exponent for exact no-decay; the actual transition must leave the projection unchanged for the suffix; normalized gain requires positive numerator and positive ordered local demand.",
+          "consequence": "Do not age untouched content merely because another contact was used. Usage normalization provides one local anti-dominance construction, not a theorem that Adam prevents global winner-take-all or that a use accumulator must be added.",
+          "disposition": "constrain_existing_update_do_not_add_controller",
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_production_theorems_with_explicit_premises"
+        }
+      ],
+      "signatures_sha256": {
+        "CGB.Generation.contact_retention_bounds": "5fb3f1f7d88751bfc9664b2939c68e80125ccf453181c62470a5eec01ff17e35",
+        "CGB.Generation.response_gated_contact_closed_holds": "c50a2c95e2396bce3b410a1b8c6ae5ec290af49c3f1c8f0160d485d9844042f0",
+        "CGB.Generation.response_gated_contact_write_distinguishes": "312ca3c5e93401152cbe3d3888157eb0bcf6b8914c30a6487dc374e40cf18898",
+        "CGB.Generation.shared_contact_pool_vector_affine": "c4ffb07a2455e18c5962dffc0d4d91a7c1280b89a35adc6ffbe38ac16427fde6",
+        "CGB.Generation.response_gated_vector_history_expansion": "234a66e6356478d809b566cf241ce9b8cf048f06ce6edd90274b93a3d3972467",
+        "CGB.Generation.response_gated_vector_no_injection_retention": "41b05523434c85c8de62b7fcbabf7012f2ffbf8b0da26d42cc4db400e979dc31",
+        "CGB.Generation.response_gated_vector_zero_without_injection": "3949c6f01e38010f400930952b7395bcf568d3cc25c054ba404906a582544a9e",
+        "CGB.Generation.response_gated_vector_history_difference": "983ecc09a811e973744e7e2822e8a7c3663c9b3004873ea81bfce706d951680f",
+        "CGB.Generation.response_gated_vector_nonzero_retention_distinguishes": "5b53415c5b9a5a5046ec1d6c9dd9304800163242928069d448788f099802aa1e",
+        "CGB.Generation.response_gated_vector_source_difference": "743a1b6de5d873b4f5ee85c6ac2737dd3482c6d69b5c6cf5883acdac79fc9c7f",
+        "CGB.Generation.shared_contact_pool_vector_conserves_total": "10d3e0e7494658354ba7a247ff46cf0e3fc143116b6625562987510353c4ed4d",
+        "CGB.Generation.shared_contact_pool_vector_nonneg": "7bd058322b787dbeb84d0e0249a16f748a7d8ebe2a1f5467114e827156ec3634",
+        "CGB.Generation.shared_contact_pool_vector_total_le_one": "c607bdaf0f94179dd5a08e5f9b69ad2dd62a82fbadf2048250a950bbf73c0e74",
+        "CGB.Generation.full_shared_pool_vector_blocks_admission": "36beb2b99303a4fd8bfb603c07b50dcde8e60f3092a8eb216324832a5df3ca30",
+        "CGB.Generation.shared_contact_pool_vector_endpoint_agreement": "2d98d82b10b68e68b4c73ceca67f217ef8f36ab0e2ee4252ff31cbb2e4e8ed99",
+        "CGB.Generation.unused_column_kept": "07f09506454a7527526e7099d67cdb92c86a0618bf0de20c715b8150f66435f8",
+        "CGB.Generation.ContextAssociation.held_coordinate_survives_suffix": "82b1648f52cd5bb2d2a3654b1208b096f8b6bfa2da494c1b1f8cf436ca695e79",
+        "CGB.GradientFilter.usage_normalized_gain_anti_dominant": "f1981cd20802176f559f9e7802d6a6aa33fdd514ee49e82772570c5726b5b0bd"
+      },
+      "independent_review": false,
+      "same_body_joint_admission": false,
+      "source_count": 18,
+      "causal_chain": [
+        "participation chooses contact",
+        "innovation changes conditional content",
+        "contact-local retention carries past distinctions",
+        "capacity reallocation changes actual retrieval",
+        "future language must still decode the distinction"
+      ],
+      "corrections": [
+        "retention_needs_selectivity rules out a uniform positive hazard floor; it does not itself prove the hazard converges to zero",
+        "shared_pool_marginal_admission_is_anti_dominant concerns occupied BUNDLE mass; it is not an anti-monopoly law for rows within a full normalized bundle",
+        "usage_normalized_gain_anti_dominant also applies to the stated AdaGrad/Adam-form gain; blanket claims that Adam has no local anti-dominance are unsupported"
+      ]
+    },
+    "fourth_ring_parent_read_declarations": [
+      "CGB.Medium.jump_rate_local",
+      "CGB.Medium.equilibrium_ratio_local",
+      "CGB.Medium.local_markov_of_single_unit_moves",
+      "CGB.Medium.rate_interior_stimulus_free",
+      "CGB.Medium.interior_detailed_balance",
+      "CGB.Medium.coupling_vanishes_beyond_scope",
+      "CGB.Medium.modulation_needs_boundary",
+      "CGB.Medium.blanket_of_contact",
+      "CGB.Medium.untouched_unchanged",
+      "CGB.Medium.world_blanket",
+      "CGB.Medium.exchange_conserves",
+      "CGB.Generation.binary_pair_decomposition",
+      "CGB.Generation.interaction_unique",
+      "CGB.Generation.slot_reciprocity",
+      "CGB.Generation.memory_separates",
+      "CGB.Generation.two_state_geometric",
+      "CGB.Generation.symmetric_exchange",
+      "CGB.Generation.fixed_point_is_occupancy",
+      "CGB.Generation.inhibitory_slot_antitone",
+      "CGB.Generation.available_strictAnti",
+      "CGB.Generation.driven_cycle_not_balanced",
+      "CGB.Generation.adapted_gap_zero",
+      "CGB.Generation.latch_needs_unit_gain",
+      "CGB.Generation.innate_optimal_of_constant",
+      "CGB.Generation.learner_beats_innate",
+      "CGB.Generation.beaten_forever_iff_never_settles",
+      "CGB.Generation.DynamicTeaching.teaching_response_deriv",
+      "CGB.Generation.DynamicTeaching.stopped_teaching_complete_iff",
+      "CGB.SelfProduction.indistinguishable_joint_worlds_cannot_both_stay_viable",
+      "CGB.SelfProduction.joint_viability_policy_generation",
+      "CGB.SelfProduction.stochastic_joint_viability_policy_generation",
+      "CGB.SelfProduction.open_world_input_not_body_determined",
+      "CGB.SelfProduction.open_world_body_prediction_iff",
+      "CGB.SelfProduction.reachable_consequence_readout_iff"
+    ],
+    "fourth_ring_review": {
+      "owner": "parent",
+      "groups": [
+        {
+          "id": "local_events_induce_interfaces",
+          "theorems": [
+            "CGB.Medium.jump_rate_local",
+            "CGB.Medium.equilibrium_ratio_local",
+            "CGB.Medium.local_markov_of_single_unit_moves",
+            "CGB.Medium.rate_interior_stimulus_free",
+            "CGB.Medium.interior_detailed_balance",
+            "CGB.Medium.coupling_vanishes_beyond_scope",
+            "CGB.Medium.modulation_needs_boundary",
+            "CGB.Medium.blanket_of_contact",
+            "CGB.Medium.untouched_unchanged",
+            "CGB.Medium.world_blanket",
+            "CGB.Medium.exchange_conserves"
+          ],
+          "premise": "P1b; equilibrium claims also need positive detailed balance and supported reverse/single-site moves; OnlyBoundarySenses for stimulus isolation; closed positive-rate event and P2a for exchange.",
+          "consequence": "Contacts induce boundary dependence and untouched-state persistence. Subsystem gain is complementary loss, not a second account. Medium predicates are not yet instantiated by the neural runtime. Local ratios do not alone prove arbitrary global energy factorization.",
+          "generator_connections": [
+            "G1_contextual_transition",
+            "G2_same_content_exchange",
+            "G3_boundary_conditioned_update"
+          ],
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_production_theorems_not_runtime_admission"
+        },
+        {
+          "id": "history_shapes_coupled_structure",
+          "theorems": [
+            "CGB.Generation.binary_pair_decomposition",
+            "CGB.Generation.interaction_unique",
+            "CGB.Generation.slot_reciprocity",
+            "CGB.Generation.memory_separates",
+            "CGB.Generation.two_state_geometric",
+            "CGB.Generation.symmetric_exchange",
+            "CGB.Generation.fixed_point_is_occupancy",
+            "CGB.Generation.inhibitory_slot_antitone",
+            "CGB.Generation.available_strictAnti"
+          ],
+          "premise": "Binary endpoints for unique product interaction; mixed energy differences for reciprocity; a binary-stream coactivity witness; fixed rates with nonzero sum for the geometric formula; positive rates/equilibrium and negative inhibitory coupling where stated.",
+          "consequence": "History in participating endpoints can differentiate temporal structure. Reciprocity is not task-gradient alignment. Fixed-rate two-state dynamics have one geometric mode; actual decay needs a contraction range. Reuse the contact law, do not install named biological controllers.",
+          "generator_connections": [
+            "G1_history_in_participants",
+            "G2_competing_coupled_content",
+            "G3_local_activity_evidence"
+          ],
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_production_theorems_not_runtime_admission"
+        },
+        {
+          "id": "circulation_adaptation_latching",
+          "theorems": [
+            "CGB.Generation.driven_cycle_not_balanced",
+            "CGB.Generation.adapted_gap_zero",
+            "CGB.Generation.latch_needs_unit_gain"
+          ],
+          "premise": "Unequal forward/reverse cycle products; a specific integral-reference fixed point with g(0)=0; two distinct fixed points of a differentiable scalar map, respectively.",
+          "consequence": "A reference gap vanishes at its adapted fixed point; circulation and a retained alternative are different properties. A slope-one point is necessary in the stated latch family, not sufficient for stable memory. Constrain existing dynamics; no extra clock or reference pool.",
+          "generator_connections": [
+            "G1_internal_dynamics",
+            "G2_retention_release",
+            "G3_adaptive_response"
+          ],
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_production_theorems_not_runtime_admission"
+        },
+        {
+          "id": "worlds_that_reward_learning",
+          "theorems": [
+            "CGB.Generation.innate_optimal_of_constant",
+            "CGB.Generation.learner_loses_of_constant",
+            "CGB.Generation.learner_beats_innate",
+            "CGB.Generation.beaten_forever_iff_never_settles"
+          ],
+          "premise": "The explicit leaveValue threshold family: constant mean and positive learning cost, or two means and cost below one-quarter gap. Improvement is existential at some patch.",
+          "consequence": "World structure and costs constrain learning benefit. These do not prove the mean is learnable, uniform improvement, or that endless novelty is universally necessary. Use future language evidence, not a new food score.",
+          "generator_connections": [
+            "G1_world_structure",
+            "G3_evidence_cost_benefit"
+          ],
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_production_theorems_not_runtime_admission"
+        },
+        {
+          "id": "changing_teaching_and_response",
+          "theorems": [
+            "CGB.Generation.DynamicTeaching.teaching_response_deriv",
+            "CGB.Generation.DynamicTeaching.stopped_teaching_complete_iff"
+          ],
+          "premise": "Both teaching and response vary differentiably with the same parameter. Stopped teaching is complete iff its omitted product vanishes.",
+          "consequence": "Current autograd can include both terms. Delayed stopped-teaching updates must justify omission; this does not force BPTT, full historical Jacobians, or gradient matching as the only learning objective.",
+          "generator_connections": [
+            "G3_same_parameter_coupling",
+            "G1_future_readout"
+          ],
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_production_theorems_not_runtime_admission"
+        },
+        {
+          "id": "joint_world_policy_and_self_consequence",
+          "theorems": [
+            "CGB.SelfProduction.indistinguishable_joint_worlds_cannot_both_stay_viable",
+            "CGB.SelfProduction.joint_viability_policy_generation",
+            "CGB.SelfProduction.stochastic_joint_viability_policy_generation",
+            "CGB.SelfProduction.open_world_input_not_body_determined",
+            "CGB.SelfProduction.open_world_body_prediction_iff",
+            "CGB.SelfProduction.reachable_consequence_readout_iff"
+          ],
+          "premise": "Compatible hidden worlds behind a body state; one action safe for ALL compatible viable worlds (and supported events), plus a viable seed. Exact reachable consequence readout requires merged reachable histories to agree on all action consequences.",
+          "consequence": "The same historical distinctions support prediction and eventual action. Classical.choice existence is not efficient synthesis or a trained self-model. Universal safety is stronger than probabilistic survival. System 4 remains an interface constraint.",
+          "generator_connections": [
+            "G1_sufficient_history",
+            "G3_consequence_learning",
+            "shared_viability_world_contract"
+          ],
+          "reviewer": "parent_source_read",
+          "formal_status": "existing_production_theorems_not_runtime_admission"
+        }
+      ],
+      "source_count": 34,
+      "revisited_existing_seeds": [
+        "CGB.Generation.learner_loses_of_constant"
+      ],
+      "signatures_sha256": {
+        "CGB.Medium.jump_rate_local": "be6448114d615e2addeaf070e342ffc8c7595747efc08ea559fce264fa256552",
+        "CGB.Medium.equilibrium_ratio_local": "38e65d9a7b409340a84f70235c2d28f6a3844b99a0bbccd202ec65dd418163e7",
+        "CGB.Medium.local_markov_of_single_unit_moves": "59bf0713ee3e61af8126a1363ce71699ee637530d7af51d3502bc38c9a3491c2",
+        "CGB.Medium.rate_interior_stimulus_free": "04999f2dcee1a47db1fed0f08d000083e3f8c3c4573f9c492fa5f0258b25c918",
+        "CGB.Medium.interior_detailed_balance": "84cff738bc5dd009594f441700e79c29dcfb15fccbcb1eddf41f76c6b005e117",
+        "CGB.Medium.coupling_vanishes_beyond_scope": "2b68c524c93b8b7888d2f8d2332f7d37666f6eb57acaac104098f4f31ea1d903",
+        "CGB.Medium.modulation_needs_boundary": "b4f4c702f5638898e9a06ba081c213b94bbedeb964aca26ee6b890cad0df7fce",
+        "CGB.Medium.blanket_of_contact": "7f4ac5213fc11bc34e23945d35560907834629aac2cbedd8cd54f6d453db9e8a",
+        "CGB.Medium.untouched_unchanged": "44fd5e46187e7aa3f6586eb2b34a39abb46fb78a50ab3f613ad357fb82c1135e",
+        "CGB.Medium.world_blanket": "d83848ff0a397f41a3583ad035d2b1a6a2dfedfb91e465ce072009c541b08f69",
+        "CGB.Medium.exchange_conserves": "06004f9b2da269cde6fa96ae0c4d341c5e5a9fcbfd7801f9ad8c7916d1ca8890",
+        "CGB.Generation.binary_pair_decomposition": "763eabbd18b9d2096881e7d2cf218b5a76fb5f117cf942f4ff50e34a1f210403",
+        "CGB.Generation.interaction_unique": "9f7f2495f1b2f397a8693e6e0dadeb9c3717321f0a82871d314923ad7fa0d62b",
+        "CGB.Generation.slot_reciprocity": "2b5c10c8a01b740b9c4342612c309f0a5cebe407abde31f1bc6668ed050fae7d",
+        "CGB.Generation.memory_separates": "2fa4ddf766039bb35ec8583910ed42eb6040f5ec9ddb2d1f51b977329d1eb74c",
+        "CGB.Generation.two_state_geometric": "3083b2f34033244ef7a13289b3f095afb9a471684a9e83dd70f5d21700ea45fa",
+        "CGB.Generation.symmetric_exchange": "0fba77df6f0073c34e58918b1ee34d203bed118f3efea35582a23aabf8ad4841",
+        "CGB.Generation.fixed_point_is_occupancy": "64e535747ccd8ff2832d374eb52b22bc3ee48ce7c018dc5be5a4dfea903f2c6a",
+        "CGB.Generation.inhibitory_slot_antitone": "977cc952b4d8267d46cfdeb0541aff452c2648be7057af76bdfbfff45422b17f",
+        "CGB.Generation.available_strictAnti": "be874da3b649d6d105d28e4f940f6a6e632cbdecf3b8f4780b60f408861aaedc",
+        "CGB.Generation.driven_cycle_not_balanced": "feed6f474a0e16320bfb201775ca4d65ea419fc31933a5aa4dd9804b9d27bab2",
+        "CGB.Generation.adapted_gap_zero": "4d29451da94d1fdafe263005271dcda485f4aaba5452159c4d5458b53e750f23",
+        "CGB.Generation.latch_needs_unit_gain": "2278eb99c3f175d7838f906b80cf8136f4393810b6b978dfb0fd6ca75976dafc",
+        "CGB.Generation.innate_optimal_of_constant": "7f66b92667a601ab7ae25d75c6999033e527a93b4f469faaeb24710ad7504ffd",
+        "CGB.Generation.learner_loses_of_constant": "60e04b07d4d87e45645035bc14184fc8fa55eb89980196e64bf581aa5eca1e1c",
+        "CGB.Generation.learner_beats_innate": "532b2748b73a0aa03704a39b6c0e50bfb7d2097b4ba82966c908bd813812f9be",
+        "CGB.Generation.beaten_forever_iff_never_settles": "ec7e7f081cafe84b7cdcc22329cdc68a74b64c07dbf659a08d105266b832248c",
+        "CGB.Generation.DynamicTeaching.teaching_response_deriv": "a079f3732c3c1333a31b678406539f4b9f33381c999d59c36a667a67baa0e4f5",
+        "CGB.Generation.DynamicTeaching.stopped_teaching_complete_iff": "e483307d1028df43f5f746f5c1104ef921bb320ad5e860449c321884f3dc4471",
+        "CGB.SelfProduction.indistinguishable_joint_worlds_cannot_both_stay_viable": "c111e3d9b0ededf46f61ca906661b32b7846f2521a5d75dd271401f0fb9e45b6",
+        "CGB.SelfProduction.joint_viability_policy_generation": "09afd3f50a275071384233730e7392df2fee20ccf16afc92eb0b2c73f3b9609c",
+        "CGB.SelfProduction.stochastic_joint_viability_policy_generation": "687f87c87b8c874b117139d4a3c8df242837758c47262c0b439c7cbfebcc53ab",
+        "CGB.SelfProduction.open_world_input_not_body_determined": "1908f2d13cf0b7c876f6cf310d23a92fc14fece34fcbca37848a5a6b484863f9",
+        "CGB.SelfProduction.open_world_body_prediction_iff": "dde9ba0389d0f6375fbcfc77ac1a62eb6641848955aee1bcce4c0f26617d6424",
+        "CGB.SelfProduction.reachable_consequence_readout_iff": "39e8a05fd8b26af057b7663874014bce1c14ba301b9c4502930fa79ad890c910"
+      },
+      "independent_review": false,
+      "same_body_joint_admission": false,
+      "extra_generators": 0,
+      "extra_persistent_fields": 0,
+      "exclusions_after_source_read": [
+        {
+          "theorem": "CGB.DivisionTree.Lineage.exists_tree_of_clog_depth",
+          "reason": "Binary lineage is an optional hierarchy/cost construction, not a required neural division rule; outside present seeds."
+        },
+        {
+          "theorem": "CGB.DivisionTree.sharedPrefix_ultrametric",
+          "reason": "Prefix nesting does not establish functional regions or memory timescales; no runtime tree added."
+        },
+        {
+          "theorem": "CGB.SelfProduction.passive_opportunity_forces_activity",
+          "reason": "General potential/intake theorem not instantiated with information semantics; do not add an arbitrary food or survival account."
+        }
+      ],
+      "causal_chain": [
+        "local contacts constrain information paths",
+        "history-dependent participants distinguish temporal structures",
+        "coupled responses let shared state learn and reorganize",
+        "world variation and future evidence determine benefit",
+        "world/action consequences constrain compression",
+        "verified safe-action closure would generate persistent trajectories"
+      ]
+    },
+    "closure_parent_read_declarations": [
+      "CGB.LanguageLifeKernel.history_readout_exists_iff",
+      "CGB.LanguageLifeKernel.history_transition_exists_iff",
+      "CGB.LanguageLifeKernel.external_causal_readout_exists_iff",
+      "CGB.LanguageLifeKernel.external_trace_requires_retrieved_distinction",
+      "CGB.LanguageLifeKernel.observational_record_does_not_fix_intervention",
+      "CGB.LanguageLifeKernel.CausalState.fold_refines",
+      "CGB.LanguageLifeKernel.CausalState.finite_bound",
+      "CGB.LanguageLifeKernel.CausalState.finite_alphabets_unbounded",
+      "CGB.GDNLife.Process.future_reserve_recoverable_iff",
+      "CGB.GDNLife.Process.loses_future_language_distinction_iff_not_preserved",
+      "CGB.GDNLife.Process.recurrent_external_information_forces_activity",
+      "CGB.GDNLife.Process.recurrent_external_evidence_forces_activity",
+      "CGB.GDNLife.Process.scored_external_language_trajectory",
+      "CGB.ActiveInference.viable_not_eventually_passive",
+      "CGB.ActiveInference.action_condition_required",
+      "CGB.ActiveInference.active_closure",
+      "CGB.SelfProduction.counterfactual_passive_bound_forces_activity",
+      "CGB.SelfProduction.exists_infinite_self_producing_trajectory",
+      "CGB.SelfProduction.action_consequence_model_exists",
+      "CGB.SelfProduction.action_distinction_preserved"
+    ],
+    "feedback_parent_read_declarations": [
+      "CGB.Generation.contraction_unique_rest",
+      "CGB.Generation.linear_hold_keeps_error",
+      "CGB.Generation.no_latch_below_unit_gain",
+      "CGB.Generation.latch_above_unit_gain",
+      "CGB.Medium.trap_irrecoverable",
+      "CGB.Medium.trap_insensitive",
+      "CGB.PairCRN.pair_rate_ratio",
+      "CGB.Generation.no_valley",
+      "CGB.Generation.equilibrium_memory_bound",
+      "CGB.Generation.self_listening_increment",
+      "CGB.Generation.self_listening_frozen_state_gap"
+    ]
+  },
+  "association_transport_bridge": {
+    "status": "paper_derived_numerically_checked_not_formalized",
+    "transition": "S_next = S + beta (v - S k) k^T = S A + beta v k^T; A = I - beta k k^T",
+    "bound": "fixed q and head row l1 <= c: abs(NLL_T - NLL_0) <= 2c sum_t abs(beta_t) norm_inf(v_t-S_t k_t) abs(k_t^T q)",
+    "scope": "same evaluation target/query/head across the finite-prefix comparison; actual state-dependent keys allowed in realized-path identity, not frozen-path full gradient",
+    "moving_readout": "delta_logits = delta_bias + delta_head S q + head_next [S delta_q + beta (v-Sk) (k^T q_next)]",
+    "resource": "runtime current S only; unrolled contributions are analysis objects, not stored histories",
+    "conservation_gap": "delta write may change row totals even when column totals are preserved; no signed-state mass interpretation is admitted",
+    "audit": "results/published/cgb_generator_association_transport_20261103.json",
+    "body_admitted": false
+  },
+  "versioned_synthesis": {
+    "version": "V1.12",
+    "date": "2026-11-03",
+    "specification": "docs/information_boltzmann/CGB_MINIMAL_GENERATOR_20261103.md",
+    "kind": "conditional_shared_state_design_specification",
+    "coverage_report": "results/published/cgb_generator_frontier_support_20261103.json",
+    "support_counts": {
+      "M": 72,
+      "N": 195,
+      "R": 80,
+      "W": 10,
+      "total": 357
+    },
+    "joint_satisfaction": null,
+    "global_maximum_proved": false,
+    "global_minimum_proved": false,
+    "generator_commitments": [
+      {
+        "id": "G1",
+        "operation": "context_dependent_bounded_recurrence",
+        "shared_roles": [
+          "prediction",
+          "ordered_memory",
+          "compression",
+          "historical_participation"
+        ]
+      },
+      {
+        "id": "G2",
+        "operation": "finite_capacity_exchange_on_actual_content",
+        "shared_roles": [
+          "competition",
+          "differentiation",
+          "selective_retention",
+          "release"
+        ]
+      },
+      {
+        "id": "G3",
+        "operation": "outcome_conditioned_rewrite_of_same_relations",
+        "shared_roles": [
+          "content_learning",
+          "allocation_learning",
+          "local_gain",
+          "conditional_delayed_credit"
+        ]
+      }
+    ],
+    "algorithm_dispositions": [
+      {
+        "algorithm": "learned_gated_associative_recurrence",
+        "decision": "selected_language_backbone",
+        "implementation": "scripts/ib_local/gated_deltanet.py",
+        "premise": "Explicit decay_then_delta, learned queries/keys/values/gates, finite state and workspace; no transfer of alpha=1 retention to general decay."
+      },
+      {
+        "algorithm": "persistent_nonlinear_evidence_exchange",
+        "decision": "selected_local_construction_template_pending_same_content_mapping",
+        "premise": "Actual mixture readout for posterior responsibilities; stated conditions for stable basins and release; total budget alone does not imply double budget."
+      },
+      {
+        "algorithm": "joint_content_and_allocation_score",
+        "decision": "selected_learning_requirement",
+        "premise": "Use derivatives of the actual prediction path; mixture scores are not arbitrary GDN scores."
+      },
+      {
+        "algorithm": "pure_multiplicative_reinvestment",
+        "decision": "algebraic_reference_and_absorbing_state_counterexample"
+      },
+      {
+        "algorithm": "natural_precision_assimilation",
+        "decision": "conditional_gain_alternative",
+        "premise": "One-hot/no-global-decay equivalence only; mixed-key counterexample retained."
+      },
+      {
+        "algorithm": "local_coarse_reinvestment_and_cycle_exchange",
+        "decision": "conditional_organization_tools",
+        "premise": "Given grouping and nonzero masses; no claim of grouping genesis or full optimizer."
+      },
+      {
+        "algorithm": "microscopic_reversible_counted_exchange",
+        "decision": "alternative_refinement_and_witness_not_mandatory_integer_body"
+      }
+    ],
+    "joint_interfaces_pending": [
+      "useful_language_retention_and_release",
+      "general_anti_monopoly",
+      "retained_history_to_future_modulation"
+    ],
+    "coverage_group_map": {
+      "read_write_transport": [
+        "G1",
+        "G2"
+      ],
+      "joint_readout_changes": [
+        "G1",
+        "G3"
+      ],
+      "repeated_retention": [
+        "G1",
+        "G2"
+      ],
+      "nonadditive_representation": [
+        "G1"
+      ],
+      "future_information_score": [
+        "G1",
+        "G3"
+      ],
+      "adaptive_gain": [
+        "G2",
+        "G3"
+      ],
+      "scale_and_recovery": [
+        "G1",
+        "G2",
+        "G3"
+      ],
+      "balanced_current_learning": [
+        "G2",
+        "G3"
+      ],
+      "finite_realization": [
+        "G1",
+        "G2",
+        "G3"
+      ],
+      "world_and_persistence": [
+        "G1",
+        "G2",
+        "G3"
+      ]
+    },
+    "mapping_semantics": "Design obligations and conditional tools, not proved satisfaction; use second_ring_review group premises and proof dependency report for exact scope.",
+    "runtime_changes_this_version": true,
+    "training_run_this_version": true,
+    "implementation_followup": "availability_contact_implementation"
+  },
+  "actual_content_capacity_bridge": {
+    "status": "lean_reference_and_runtime_interface_verified_not_language_admission",
+    "implementation": "scripts/ib_local/gated_deltanet.py",
+    "configuration": "recurrence=decay_then_delta; content_budget>0; disabled by default",
+    "reference": "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean",
+    "evidence": "results/published/cgb_generator_content_budget_20261103.json",
+    "tests": "tests/test_gated_deltanet.py: 29 passed including CUDA graph learning steps",
+    "construction": "U_ij * b / max(b, sum_j abs(U_ij), sum_i abs(U_ij))",
+    "hypothesis": "Use actual signed-memory L1 capacity retraction as the first implementation bridge; not uniquely derived and not persistent evidence exchange.",
+    "lean_public_results": [
+      "budgets",
+      "feasible_fixed",
+      "implicit_slack",
+      "read_correction"
+    ],
+    "lean_namespace": "BudgetedAssociationWriteReview",
+    "new_production_theorems": 0,
+    "support_count_change": 0,
+    "additional_persistent_elements": 0,
+    "additional_parameters": 0,
+    "known_cost": "Shared-endpoint competition can disrupt an orthogonal old query. Add (Snext-U)^T q to retention accounting.",
+    "not_established": [
+      "equal_marginal_transport",
+      "healthy_latch",
+      "anti_monopoly",
+      "long_horizon_credit",
+      "language_quality_gain"
+    ],
+    "next": "Construct evidence-conditioned exchange inside this actual-content feasible set, checking retention/release and content learning jointly.",
+    "evidence_scope": "Historical V1.6; its optional code remains available, it is not the new joint recurrence."
+  },
+  "joint_content_exchange_bridge": {
+    "status": "runtime_integrated_lean_invariants_numerical_joint_stability_not_language_admission",
+    "configuration": "recurrence=evidence_exchange, content_budget>0",
+    "implementation": "scripts/ib_local/gated_deltanet.py",
+    "reference": "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean",
+    "evidence": "results/published/cgb_generator_joint_content_exchange_20261103.json",
+    "tests": "tests/test_gated_deltanet.py: 32 passed including GPU capture and complete learner restoration",
+    "state": "a>=0, sum(a)=1; weighted actual content M_i=a_i*c_i; ||M_i||_1<=a_i*b",
+    "transition": [
+      "r=softmax(g*a+address-0.5*||bounded_value-M_i/a_i||^2)",
+      "a_next=(1-rate)*a+rate*r",
+      "M_next=(1-rate)*M+rate*r*bounded_value^T",
+      "read=M_next^T*q"
+    ],
+    "additional_state_per_head": "key_dimension scalars",
+    "additional_parameters": 0,
+    "numerical_hypothesis": "Unit-variance Gaussian latent value likelihood; not exact language-byte posterior",
+    "formal_results": [
+      "joint_exchange_budget",
+      "actual_weighted_read",
+      "joint_fixed_lift",
+      "exchanged_gains_equal_losses"
+    ],
+    "numerical_conditions": "Two rows, matching common content, neutral address, gain=2 ln 3, rate=0.3; stable joint allocations 1/4 and 3/4; finite counterevidence switches branches.",
+    "full_joint_jacobian_radius": 0.9471877649503246,
+    "not_established": [
+      "useful_language_latching",
+      "general_anti_monopoly",
+      "long_horizon_credit",
+      "global_life_admission"
+    ],
+    "source_support_count_change": 0,
+    "new_production_theorems": 0,
+    "independent_review": false,
+    "comparison_caveat": "Total content L1<=b here; older row/column retraction allows total L1<=keys*b. Same b is not same feasible domain.",
+    "next": "Calibrate complete model numerical behavior, cost and matched baselines before real-language learning/retention/release evaluation; retain anti-monopoly and delayed-credit obligations."
+  },
+  "language_runtime_comparison": {
+    "status": "completed_no_demonstrated_long_memory_advantage",
+    "report": "results/published/cgb_joint_language_gpu_20261103.json",
+    "tests": "35 GDN and 5 shared-trainer tests passed",
+    "graph_fix": "Stable gradient buffers required for accumulation across graph replays; both recurrences agree with eager updates.",
+    "results": {
+      "exchange_minus_delta_final_validation_nll": -0.003873586654663086,
+      "exchange_wall_update_slowdown": 2.199419545182942,
+      "conclusion": "Near-equal final held-out score. Exchange is slower and has a much smaller measured cross-chunk matrix contribution. No demonstrated useful long-memory/latch benefit. Both learn language; all parameter tensors changed.",
+      "allocation": "Strong concentration, but some heads switch under real input; concentration alone is neither healthy retention nor permanent freezing.",
+      "next": "Keep delta reference. Diagnose how allocation preference relates to actual content retention/readout before altering rules or increasing budget.",
+      "organism_admitted": false,
+      "convergence_established": false,
+      "independent_review": false
+    },
+    "updates_per_arm": 5000,
+    "exposures_per_arm": 640000
+  },
+  "content_retention_diagnosis": {
+    "status": "conditional_refinement_implemented_with_direct_C_storage; see contact_exchange_implementation",
+    "problem": "Allocation can be stable while conditional associations are uniformly overwritten. Real-language causal attribution remains open.",
+    "executed_rule_obstruction": "For posterior r=a, conditional c_i_next=(1-gamma)*c_i+gamma*v; row contrasts shrink by 1-gamma independently of row participation.",
+    "minimal_conditional_refinement": {
+      "state": "Reuse (a,M), c_i=M_i/a_i only for positive a_i. No new permanent fields or learned parameters proposed.",
+      "transient_rate": "lambda_i=gamma*r_i, sum(lambda)=gamma",
+      "proposal": "a_next=(1-gamma)*a+gamma*r; c_i_next=(1-lambda_i)*c_i+lambda_i*v; M_i_next=a_i_next*c_i_next",
+      "status": "implemented as contact_exchange with direct conditional C storage; old (a,M) reference remains historical",
+      "formal_scope": "Local content L1 bound, total write-rate budget, zero-contact hold, matching-content no-write, exact local difference and actual-read decomposition",
+      "unresolved": [
+        "Weighted read may still suppress retained content when its share falls",
+        "Softmax has strictly positive contacts in exact arithmetic; exact zero-contact hold does not imply actual inactive rows exist",
+        "Posterior likelihood/positive feedback can still concentrate allocation",
+        "Division by tiny shares and finite-precision loss need explicit treatment",
+        "State-dependent rates/injections differ between histories; fixed-rate retention is conditional",
+        "Real-language benefit and efficiency not measured"
+      ]
+    },
+    "formal_review": "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean",
+    "new_review_theorems": [
+      "fixed_allocation_content_contrast",
+      "selective_contact_budget",
+      "contact_write_retention",
+      "selective_actual_read"
+    ],
+    "new_production_theorems": 0,
+    "verification": {
+      "lean": "pass; base axioms only",
+      "runtime_identity": "2 passed: CPU/CUDA float64 actual V1.7 kernel with posterior=prior",
+      "test": "tests/test_gated_deltanet.py::test_fixed_exchange_allocation_still_erases_content_contrast"
+    },
+    "competing_explanations": [
+      "content overwrite even at fixed allocation",
+      "weighted-content/output-scale restriction",
+      "allocation feedback dominating bounded latent evidence"
+    ],
+    "next": "Close retained-content to future-read relation under changing allocation before runtime replacement; keep the delta reference.",
+    "independent_review": false,
+    "organism_admitted": false
+  },
+  "contact_exchange_implementation": {
+    "status": "implemented_tests_and_gpu_engineering_calibration_passed",
+    "report": "results/published/cgb_contact_exchange_body_20261103.json",
+    "mode": "contact_exchange",
+    "state": "C and a; actual weighted content M=a*C; same bytes as evidence_exchange",
+    "theorem_to_runtime": [
+      {
+        "theorems": [
+          "selective_contact_budget",
+          "contact_write_retention"
+        ],
+        "premises": "normalized nonnegative r, gamma in [0,1], bounded C/v",
+        "runtime": "same snapshot posterior; lambda=gamma*r; C_next=(1-lambda)*C+lambda*v",
+        "verified": "CPU/CUDA formula, gradcheck, row bounds and local retention identity"
+      },
+      {
+        "theorems": [
+          "joint_exchange_budget",
+          "exchanged_gains_equal_losses"
+        ],
+        "premises": "nonnegative normalized a,r and gamma in [0,1]",
+        "runtime": "unchanged a_next=(1-gamma)*a+gamma*r",
+        "verified": "share budget and actual checkpoint sum error 1.19e-7; joint_exchange_budget applies to the share part, not its OLD content update"
+      },
+      {
+        "theorems": [
+          "decoded_content_budget",
+          "selective_actual_read"
+        ],
+        "premises": "conditional rows bounded; nonnegative normalized next share",
+        "runtime": "real read C_next.T@(a_next*q)",
+        "verified": "layer read and next state versus explicit reference; weighted capacity bound"
+      }
+    ],
+    "extra_state_bytes": 0,
+    "extra_parameters": 0,
+    "tests_passed": 43,
+    "gpu_calibration": {
+      "artifact": "results\\cgb_joint_gpu_20261103\\contact_calibration_20\\summary.json",
+      "updates": 20,
+      "byte_exposures": 2560,
+      "parameters": 765088,
+      "persistent_state_bytes": 86016,
+      "peak_allocated_mib": 58.67724609375,
+      "peak_reserved_mib": 92.0,
+      "training_bytes_per_second": 1090.6556374687375,
+      "initial_validation_nll": 5.55164098739624,
+      "final_validation_nll": 4.514858245849609,
+      "convergence_established": false,
+      "capability_claim": false,
+      "final_checkpoint_checks": {
+        "all_parameter_tensors_changed": true,
+        "parameter_tensor_count": 62,
+        "optimizer_steps": [
+          20
+        ],
+        "conditional_row_mass_max": 0.6563879251480103,
+        "decoded_total_mass_max": 0.6507616639137268,
+        "share_total_max_error": 1.1920928955078125e-07,
+        "all_state_finite": true
+      }
+    },
+    "independent_review": false,
+    "joint_357_theorem_admission": false
+  },
+  "availability_contact_implementation": {
+    "status": "implemented_and_5000_updates_complete_predictive_regression_observed",
+    "report": "results/published/cgb_available_contact_body_20261103.json",
+    "configuration": "contact_exchange, contact_availability=True",
+    "state": "existing C,a; additional persistent state bytes=0; additional learned parameters=0",
+    "joint_relation": "Same pre-event availability-weighted evidence controls content writing, conserved allocation and actual future read.",
+    "theorem_to_runtime": [
+      {
+        "theorems": [
+          "simplex_has_available_contact",
+          "available_posterior_contract"
+        ],
+        "premises": "at least two rows, simplex a, strictly positive exact-real scores",
+        "runtime": "log-space normalization of score*(1-a), exact full row excluded",
+        "verified": "CPU/CUDA oracle, full-corner finite gradients, permutation equivariance"
+      },
+      {
+        "theorems": [
+          "available_weight_anti",
+          "CGB.Generation.shared_pool_marginal_admission_is_anti_dominant"
+        ],
+        "premises": "fixed positive incoming score",
+        "runtime": "same a supplies remaining room 1-a",
+        "verified": "formal reuse; state-dependent positive feedback is not removed"
+      },
+      {
+        "theorems": [
+          "available_joint_contract",
+          "contact_write_retention",
+          "selective_actual_read"
+        ],
+        "premises": "same normalized posterior, gamma in [0,1], bounded C and v",
+        "runtime": "lambda=gamma*p; simultaneous C and a update; actual read C.T@(a*q)",
+        "verified": "joint budgets, local hold, full-contact release; layer reference, derivatives and restore"
+      }
+    ],
+    "latch_reachability": {
+      "level": "numerical conditional joint-state dynamics",
+      "conditions": "two rows, common C=v, neutral address, gain=4 ln 3, gamma=0.3; a=(1/4,3/4) or reverse",
+      "test": "test_available_contact_joint_latch_survives_and_releases",
+      "claim": "stable joint basins and finite counterevidence switching remain possible; not a useful-language-latch proof"
+    },
+    "unchanged_generator_count": 3,
+    "tests_passed": 50,
+    "independent_review": false,
+    "remaining_joint_obligations": [
+      "useful_language_retention_and_retrieval",
+      "general_anti_monopoly",
+      "beyond_window_credit",
+      "action_niche_closure",
+      "microscopic_Medium_instantiation"
+    ],
+    "source_support_count": 357,
+    "source_support_is_runtime_admission": false,
+    "language_result": {
+      "report": "results\\published\\cgb_available_contact_body_20261103.json",
+      "final_validation_nll": 1.9026787281036377,
+      "cross_chunk_matrix_erasure_nll_cost": 0.0038834810256958008,
+      "predictive_upgrade": false,
+      "organism_admitted": false,
+      "all_parameters_updated": true
+    },
+    "association_review": {
+      "report": "results/published/cgb_available_contact_body_20261103.json#association_and_sinkhorn_review",
+      "sinkhorn_in_runtime": false,
+      "delta_read_invariants_transferred": false,
+      "counterexample_verified_cpu_cuda": true
+    }
+  },
+  "joint_construction_audit": {
+    "scope": "Source-reviewed premise bindings for all existing 15 design arrows, not a formal proof or complete inventory search.",
+    "root": "User original definition, main chain and five systems; existing joint contracts are outputs/material, never completed roots.",
+    "source_review": [
+      {
+        "name": "CGB.LanguageLifeKernel.history_readout_exists_iff",
+        "group": "shared_history_carrier",
+        "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+        "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
+        "signature_sha256": "6163a1987ec1198d984b14c15311f56e9170927c85586649762acdb7a2fc3035",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.LanguageLifeKernel.history_transition_exists_iff",
+        "group": "shared_history_carrier",
+        "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+        "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
+        "signature_sha256": "4367f613faec8da483e72f41ff9117a1691739452cb00e677cf713bb1731acc1",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.LanguageLifeKernel.external_causal_readout_exists_iff",
+        "group": "shared_history_carrier",
+        "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+        "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
+        "signature_sha256": "ffe60592a9d87fc5e9faf7d8b8847784ae8166627167d4bfa6aba8fe14c47c45",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.LanguageLifeKernel.external_trace_requires_retrieved_distinction",
+        "group": "shared_history_carrier",
+        "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+        "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
+        "signature_sha256": "7c6549fbea999ee81729cd9d95a0e26aa140aab7b7a83a8bbcd6d88c38433fbe",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.LanguageLifeKernel.observational_record_does_not_fix_intervention",
+        "group": "shared_history_carrier",
+        "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+        "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
+        "signature_sha256": "428b6380578750cea2997a8e3630ed1850a3547feec54731c9c4cfe81b2f655c",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.LanguageLifeKernel.CausalState.realizes",
+        "group": "shared_history_carrier",
+        "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+        "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
+        "signature_sha256": "e5469babb63db545e4c2baa3882647c8892867fa34cf16a10bd1927ac5c984d5",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.LanguageLifeKernel.CausalState.fold_refines",
+        "group": "shared_history_carrier",
+        "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+        "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
+        "signature_sha256": "95bdd82d4d38e7bfac44eb0565876697cc0ff5a0e4354aa45b66f77be04f240a",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.LanguageLifeKernel.CausalState.minimal",
+        "group": "shared_history_carrier",
+        "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+        "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
+        "signature_sha256": "10d51bae2a609eac9df364a9cc32443b0d820c6ca08ab1593d9a74f9787297c8",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.LanguageLifeKernel.CausalState.finite_bound",
+        "group": "shared_history_carrier",
+        "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+        "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
+        "signature_sha256": "34e8c02e5f03981fd891c3cc4fa0dfb4d6be74d58a45dc3ea43ffacb11d29ed6",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.LanguageLifeKernel.CausalState.finite_alphabets_unbounded",
+        "group": "shared_history_carrier",
+        "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+        "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
+        "signature_sha256": "95d5a0768c9f1ac554ae02d406b4c42e0df10af79a1115af5a84c6750c2bead6",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.LanguageLifeKernel.CausalState.separated_histories_capacity",
+        "group": "shared_history_carrier",
+        "source": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+        "source_sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883",
+        "signature_sha256": "1bb977e5222dc4e9e7fbe21ab6a64ffc83fa20b2f494d7fd42d5d592faa7af5b",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.GDNLife.Process.future_reserve_recoverable_iff",
+        "group": "language_reserve_and_world_premises",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean",
+        "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
+        "signature_sha256": "dd42e5d900deebcb41df9987cb7a7d13969bf83af8cd434120f9fbc1895fd244",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.GDNLife.Process.loses_future_language_distinction_iff_not_preserved",
+        "group": "language_reserve_and_world_premises",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean",
+        "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
+        "signature_sha256": "4b57bf09be827e655ab58128fe719d4a2e839717e955b165770f9e3cd1c10a44",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.GDNLife.Process.recurrent_external_information_forces_activity",
+        "group": "language_reserve_and_world_premises",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean",
+        "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
+        "signature_sha256": "d5f17bc7aa3bbc7d9bab33019393a903a6483eec9c3dea61555e17e1cfe6aed6",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.GDNLife.Process.recurrent_external_evidence_forces_activity",
+        "group": "language_reserve_and_world_premises",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean",
+        "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
+        "signature_sha256": "222265f60341c92f243eebb363d8bcdf4f2835840398d6e47bb5caf79eacdc51",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.GDNLife.Process.scored_external_language_trajectory",
+        "group": "language_reserve_and_world_premises",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean",
+        "source_sha256": "5fcb5493add63d47e23b6c6ff2982af03588a959ca509f51105f0e62cdba5de2",
+        "signature_sha256": "b79d564d334b7f1f63fc203a0737e0e335bf26e1fd2644f711c59f1135cffba0",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.ActiveInference.viable_not_eventually_passive",
+        "group": "action_and_joint_contract_premises",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean",
+        "source_sha256": "aa7b173e798f344a828bbc06f55a61edf974f4b261e3f34df2dd5beb225cd14e",
+        "signature_sha256": "d83427c413ed73732601e2afc6a3b6ab3dba1622bf2b894937eb4d01f0a0b809",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.ActiveInference.action_condition_required",
+        "group": "action_and_joint_contract_premises",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean",
+        "source_sha256": "aa7b173e798f344a828bbc06f55a61edf974f4b261e3f34df2dd5beb225cd14e",
+        "signature_sha256": "bd02953e4220abb448f4bc8394a019c3550916d6ade2e9f48301f2feb182b916",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.ActiveInference.silence_condition_required",
+        "group": "action_and_joint_contract_premises",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean",
+        "source_sha256": "aa7b173e798f344a828bbc06f55a61edf974f4b261e3f34df2dd5beb225cd14e",
+        "signature_sha256": "b399e1a6ba8e4ffaef3d48aed6d0b9e5e9e9786a17509ced8c4aca2d1486ade7",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.ActiveInference.active_closure",
+        "group": "action_and_joint_contract_premises",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean",
+        "source_sha256": "aa7b173e798f344a828bbc06f55a61edf974f4b261e3f34df2dd5beb225cd14e",
+        "signature_sha256": "a03c21576fd29e3f5c717fffb0d15ca8715f94bc497b917d32eac4469acc375f",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.SelfProduction.counterfactual_passive_bound_forces_activity",
+        "group": "action_and_joint_contract_premises",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+        "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+        "signature_sha256": "074171e7886a05876fef8c86c76efeae3988c1c8530133de6996d0e617f1dedb",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.SelfProduction.exists_infinite_self_producing_trajectory",
+        "group": "action_and_joint_contract_premises",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+        "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+        "signature_sha256": "54b6039f5e2abc53c6c58f183f61c4c55f29ec990786865cf8002db3121ecfb4",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.SelfProduction.action_consequence_model_exists",
+        "group": "action_and_joint_contract_premises",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+        "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+        "signature_sha256": "eb9e366a5f12759181f643fcc6153e671d5d66390b3fcdb8a48602f3849a29c5",
+        "status": "source_read_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.SelfProduction.action_distinction_preserved",
+        "group": "action_and_joint_contract_premises",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+        "source_sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+        "signature_sha256": "281de3aa85fdf4283c2a430ef8439f109437303dea2f2518f9a25751369aa2a3",
+        "status": "source_read_not_body_satisfaction"
+      }
+    ],
+    "new_seed_count": 20,
+    "edges": [
+      {
+        "edge": "E01",
+        "premise_origins": [
+          "definition",
+          "construction",
+          "target"
+        ],
+        "current_binding": "partial_runtime_path",
+        "required": "Recursive state exists; repeatable task-sufficient contextual addressing must be generated by the actual learned transition.",
+        "shared_carrier": "Z.fast and learned projections",
+        "unclosed_relation": "An input-dependent recurrence need not separate required histories.",
+        "jointly_realized": false,
+        "current_event_bridge": "shared_memory_learning_bridge; local runtime/formula evidence only, not complete edge realization"
+      },
+      {
+        "edge": "E02",
+        "premise_origins": [
+          "construction"
+        ],
+        "current_binding": "alternative_not_required",
+        "required": "A tractable positive joint model and a mapping to actual neural readout must be chosen.",
+        "shared_carrier": "actual byte readout or explicit joint-model branch",
+        "unclosed_relation": "G1 does not select Q; do not turn every hidden coordinate into a mandatory mixture expert.",
+        "jointly_realized": false
+      },
+      {
+        "edge": "E03",
+        "premise_origins": [
+          "construction",
+          "target"
+        ],
+        "current_binding": "latent_only_not_language_posterior",
+        "required": "The likelihood in the responsibility must be the likelihood used to score the actual arrived event.",
+        "shared_carrier": "contact_exchange_content versus actual byte CE",
+        "unclosed_relation": "Gaussian latent-value similarity is not next-byte posterior responsibility.",
+        "jointly_realized": false
+      },
+      {
+        "edge": "E04",
+        "premise_origins": [
+          "construction",
+          "target"
+        ],
+        "current_binding": "local_gradient_path_partial",
+        "required": "Pull the language score through the actual shared update; expectation identities need executable inference.",
+        "shared_carrier": "learned projections, gates and readout",
+        "unclosed_relation": "Current/fixed-window gradients work locally; they do not certify the latent-posterior identity or all historical credit.",
+        "jointly_realized": false,
+        "current_event_bridge": "shared_memory_learning_bridge; local runtime/formula evidence only, not complete edge realization"
+      },
+      {
+        "edge": "E05",
+        "premise_origins": [
+          "definition",
+          "construction",
+          "target"
+        ],
+        "current_binding": "local_invariants_only",
+        "required": "Define actual conserved quantity separately from finite capacity; preserve positivity and a usable exit under evidence.",
+        "shared_carrier": "delta shared matrix or contact C,a branch",
+        "unclosed_relation": "Simplex preservation and per-row bounds do not establish useful competition or the full Medium contract.",
+        "jointly_realized": false
+      },
+      {
+        "edge": "E06",
+        "premise_origins": [
+          "construction",
+          "target"
+        ],
+        "current_binding": "history_carrier_not_sufficiency",
+        "required": "Current complete state must separate histories needing different later attribution, not just carry net flow.",
+        "shared_carrier": "same fast and slow state used by prediction",
+        "unclosed_relation": "Constant-rate geometric retention and fixed-T exact tags cannot be transplanted to learned variable transitions.",
+        "jointly_realized": false
+      },
+      {
+        "edge": "E07",
+        "premise_origins": [
+          "target",
+          "world"
+        ],
+        "current_binding": "variable_model_credit_open",
+        "required": "Returned consequence must be identifiable and matched to readable history under ongoing parameter change.",
+        "shared_carrier": "shared retrieval and actual learning path",
+        "unclosed_relation": "History exists and gradients exist does not prove their delayed causal correspondence.",
+        "jointly_realized": false
+      },
+      {
+        "edge": "E08",
+        "premise_origins": [
+          "world",
+          "construction",
+          "target"
+        ],
+        "current_binding": "conditional_tradeoff",
+        "required": "Read the different retention and tracking demands from the same interaction; preserve plasticity under declared drift.",
+        "shared_carrier": "state-dependent gates and content",
+        "unclosed_relation": "One frozen decay law or a positive per-tick gain does not guarantee perpetual correction.",
+        "jointly_realized": false
+      },
+      {
+        "edge": "E09",
+        "premise_origins": [
+          "world",
+          "construction",
+          "target"
+        ],
+        "current_binding": "organization_open",
+        "required": "Specify how differing local demands alter shared interactions and effective grouping.",
+        "shared_carrier": "learned coupling; fixed heads are implementation scaffolding",
+        "unclosed_relation": "G10c assumes heterogeneous compartments; it does not generate them.",
+        "jointly_realized": false
+      },
+      {
+        "edge": "E10",
+        "premise_origins": [
+          "construction",
+          "world",
+          "target"
+        ],
+        "current_binding": "local_basin_witness_only",
+        "required": "Retention, observability and reachable evidence-dependent exit must hold for the same state and admissible inputs.",
+        "shared_carrier": "actual content, read weights and learned interactions",
+        "unclosed_relation": "Retained C with negligible read weight may not preserve useful reserve.",
+        "jointly_realized": false
+      },
+      {
+        "edge": "E11",
+        "premise_origins": [
+          "definition",
+          "world",
+          "target"
+        ],
+        "current_binding": "viability_not_generated",
+        "required": "Retained structure must remain usable in future interaction under one declared world and precision contract.",
+        "shared_carrier": "actual future language readout",
+        "unclosed_relation": "Do not substitute share mass, gross exchange, or an assumed all-time score margin for viability.",
+        "jointly_realized": false
+      },
+      {
+        "edge": "E12",
+        "premise_origins": [
+          "world",
+          "target"
+        ],
+        "current_binding": "action_loop_open",
+        "required": "World permits and identifies action effects; body must learn/select actions and realize sustained useful interaction.",
+        "shared_carrier": "shared output, boundary response, shared update",
+        "unclosed_relation": "World response oracle and recurrent useful evidence are not an acquired self-model or learned policy.",
+        "jointly_realized": false
+      },
+      {
+        "edge": "E13",
+        "premise_origins": [
+          "construction",
+          "target"
+        ],
+        "current_binding": "runtime_feedback_partial",
+        "required": "Content changes must affect later context and participation with required distinctions preserved.",
+        "shared_carrier": "same trained projections and recurrent forward",
+        "unclosed_relation": "Runtime coupling exists; language-sufficient history and its acquisition remain unproved.",
+        "jointly_realized": false,
+        "current_event_bridge": "shared_memory_learning_bridge; local runtime/formula evidence only, not complete edge realization"
+      },
+      {
+        "edge": "E14",
+        "premise_origins": [
+          "world",
+          "target"
+        ],
+        "current_binding": "retrieval_credit_open",
+        "required": "Attribution readout must factor through actual current state or actually retrieved view, for the declared consequence family.",
+        "shared_carrier": "shared history encoding and retrieval",
+        "unclosed_relation": "Next-byte sufficiency alone does not imply attribution sufficiency.",
+        "jointly_realized": false,
+        "current_event_bridge": "shared_memory_learning_bridge; local runtime/formula evidence only, not complete edge realization"
+      },
+      {
+        "edge": "E15",
+        "premise_origins": [
+          "construction",
+          "definition"
+        ],
+        "current_binding": "medium_refinement_open",
+        "required": "Map full learned update to a common microscopic or coarse-grained medium including its boundary and reverse-rate premises.",
+        "shared_carrier": "whole state including learning parameters",
+        "unclosed_relation": "Fixed-energy equilibrium invariance is not P2b for the complete neural update.",
+        "jointly_realized": false
+      }
+    ],
+    "shared_history_construction": {
+      "status": "mathematical_composition_of_existing_results_not_new_Lean_or_runtime",
+      "rule": "Two histories may share state only if all registered future readouts agree under every common admissible continuation, and encoding is compatible with one-step advance.",
+      "readout_family": "prediction, retrieved content, delayed attribution, action consequences; analysis contract, not extra runtime pages",
+      "unproved": "finite effective encoding for the selected joint world/task family; learning that encoding; minimal update primitives",
+      "approximation": "Use declared errors and fibre diameter/separation bounds; epsilon-closeness is not an equivalence relation."
+    },
+    "next_construct": "Instantiate a shared learnable interaction affecting future writing, retention, retrieval and consequence-conditioned revision in the existing neural carrier; preserve an action-conditioned boundary interface.",
+    "guard_against_circular_proof": [
+      "Do not root the construction at Contract.closed.",
+      "Do not assume recurrent useful external evidence as the output of an unconstructed policy.",
+      "Do not identify the world response oracle with an acquired self-model."
+    ],
+    "body_or_training_changed": false,
+    "new_lean_declarations": 0,
+    "joint_satisfaction_count": null
+  },
+  "shared_memory_learning_bridge": {
+    "status": "existing_runtime_current_event_bridge_formally_partially_and_numerically_verified",
+    "construction": "One existing delta memory S shapes current key/query/value/retention/write-gain teaching through the actual language score. Learned projections and gates subsequently change memory use.",
+    "reused_production_theorems": [
+      "CGB.Generation.tiedWrite_eq_delta_add",
+      "CGB.Generation.tied_write_is_error_descent",
+      "CGB.Generation.tied_write_cross_read",
+      "CGB.SelfProduction.association_delta_read_contract",
+      "CGB.Generation.response_gated_vector_history_expansion",
+      "CGB.LanguageLifeKernel.history_readout_exists_iff"
+    ],
+    "review_theorems": [
+      "BudgetedAssociationWriteReview.memory_read_query_direction",
+      "BudgetedAssociationWriteReview.equal_read_different_current_teaching"
+    ],
+    "formal_scope": "Bilinear current query directional derivative and equal-read/different-current-teaching countermodel; the five full delta teaching formulas are paper-derived and numerically audited, not all formalized.",
+    "runtime_report": "results/published/cgb_shared_memory_learning_20261103.json",
+    "max_numeric_error": 8.881784197001252e-16,
+    "runtime_parameter_tensors_checked": 14,
+    "pre_event_memory_detached": true,
+    "source_sha256": {
+      "scripts/audit_cgb_joint_reinvestment.py": "c5ba482e0db92e88dca37909d4c1f77c0a037ce189a5b3e8ed703c9d0cb6f000",
+      "scripts/ib_local/gated_deltanet.py": "452f80c0e1dc467f07e47c65db839b9d8a21eb1204ac644cbd224f8b8734172a",
+      "tests/test_gated_deltanet.py": "502b6a8e3f854bc97b31c1ab6db0844f3d1130a5a3f11580ad04e8929c24a999",
+      "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean": "f2c1f2b2aa664f2c778c2af51254bc822495c009227b9df9db0e8611ac2b80ab"
+    },
+    "runtime_files_modified": false,
+    "additional_persistent_state_elements": 0,
+    "training_runs": 0,
+    "production_support_count_unchanged": 389,
+    "stronger_bindings": [
+      "E01",
+      "E04",
+      "E13",
+      "E14"
+    ],
+    "historical_parameter_credit_proved": false,
+    "whole_optimizer_step_certified": false,
+    "remaining_joint_conditions": [
+      "learned and readable sufficient histories",
+      "capacity/conservation refinement",
+      "healthy retention and release",
+      "state-dependent organization",
+      "action-world-policy closure"
+    ],
+    "next": "Construct retention/release and later retrievability using this same arrived-language teaching and existing state; account for actual optimizer step and all retained world/medium requirements.",
+    "minimum_parameter_gradient_norm": 0.0006556729319312789,
+    "source_provenance": "Hashes identify the earlier verified revision; later audit/proof extensions are recorded in retention_retrieval_bridge."
+  },
+  "retention_retrieval_bridge": {
+    "status": "conditional_same_state_algebra_and_runtime_interface_verified",
+    "review_theorem": "BudgetedAssociationWriteReview.decayed_write_joint_retention_retrieval",
+    "reused_production_theorems": [
+      "CGB.Generation.tied_write_error_shrinks",
+      "CGB.Generation.tied_write_cross_read",
+      "CGB.Generation.gated_delta_contracts",
+      "CGB.Generation.silent_rest_unique",
+      "CGB.SelfProduction.softmax_nll_logit_error_bound",
+      "CGB.GradientFilter.no_linear_gain_separates",
+      "CGB.Generation.histories_merge",
+      "CGB.Generation.histories_merge_uniform",
+      "CGB.Generation.linear_hold_keeps_error"
+    ],
+    "formal_scope": "One decay-then-delta update: selected-key rewrite, moving-query retrieval identity, and absolute error bound on the SAME resulting state.",
+    "compatibility": "alpha=beta=1 rewrites the selected unit key while preserving orthogonal reads; finite sigmoid runtime is governed by the approximate bound, not assumed endpoint attainment.",
+    "conditional_history_scope": "Shared realized future controls only: old matrix differences contract by at most product(alpha). Mathematical composition and numeric check, not a newly formalized history theorem.",
+    "runtime_report": "results/published/cgb_retention_retrieval_20261103.json",
+    "source_sha256": {
+      "scripts/audit_cgb_joint_reinvestment.py": "153d2e9a34ad4097543d45979e1d31c583806a4c97ac28d551a00d7567f6f168",
+      "scripts/ib_local/gated_deltanet.py": "452f80c0e1dc467f07e47c65db839b9d8a21eb1204ac644cbd224f8b8734172a",
+      "tests/test_gated_deltanet.py": "502b6a8e3f854bc97b31c1ab6db0844f3d1130a5a3f11580ad04e8929c24a999",
+      "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean": "bfdaa41b8ad611865d553ae4c9536fd66ce77bc8c8a3ac8765afe97d1605de90",
+      "lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+      "lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean": "40d149b303903637478cb56de93fd19b4693784171b65bcab8b62908ae581568",
+      "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c",
+      "lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean": "eb10bebc737a9198af8ceb1962cdd4b033ec7268fc581167488500274bd0b735",
+      "scripts/ib_local/train_cbim_malecns_internal_time.py": "28fb77c46ab882d3d007edd21d51eb2eda731f700b5d0539d5375a662992cd12"
+    },
+    "max_numeric_identity_error": 6.661338147750939e-16,
+    "runtime_includes_convolution_cache": true,
+    "optimizer_interface_steps": 1,
+    "full_trainer_certified": false,
+    "healthy_regenerative_latch_proved": false,
+    "new_review_theorems": 1,
+    "additional_persistent_state_elements": 0,
+    "body_modified": false,
+    "training_runs": 0,
+    "production_support_count_unchanged": 389,
+    "joint_satisfaction_count": null,
+    "strengthened_relations": [
+      "E05",
+      "E06",
+      "E07",
+      "E08",
+      "E14"
+    ],
+    "next": "Trace regeneration and evidence-driven release through the existing full learned feedback, composing this conditional storage/readout bridge with compatible basin conditions on the SAME state. Do not add a latch page or count independent witnesses as joint coverage.",
+    "lean_review_compiled": true,
+    "lean_review_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "source_provenance": "Hashes refer to the previous completed revision, retained as historical evidence; feedback_renewal_bridge records the latest extension."
+  },
+  "feedback_renewal_bridge": {
+    "status": "conditional_readback_joint_mode_formally_verified_tensor_embedding_numerically_checked",
+    "source_review": [
+      {
+        "name": "CGB.Generation.contraction_unique_rest",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean",
+        "source_sha256": "6678c32f9d4073ac156a73e1744642d036b8ada801ac1990c76781697b298c7f",
+        "signature_sha256": "9f61e20eb291d6194b52e505d07c74d608290ecc05f874efd69bcf7c560b77ff",
+        "status": "source_read_conditional_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.Generation.linear_hold_keeps_error",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean",
+        "source_sha256": "40d149b303903637478cb56de93fd19b4693784171b65bcab8b62908ae581568",
+        "signature_sha256": "d152983c2b82b2a17b5b3e1d15a157006390553e3e051553524b6ee05ca7f120",
+        "status": "source_read_conditional_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.Generation.no_latch_below_unit_gain",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean",
+        "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+        "signature_sha256": "9db7c8b91217a9254b1c959fedc270c9ff90931cdde1b99be52494dba75279bf",
+        "status": "source_read_conditional_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.Generation.latch_above_unit_gain",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean",
+        "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+        "signature_sha256": "4256f4a3ab4b35c47fee931571760e384fdce1fdb342214bc94be64b5ccf318d",
+        "status": "source_read_conditional_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.Medium.trap_irrecoverable",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationLatchHealth.lean",
+        "source_sha256": "b50829033f62fcdff489379eee5d11e71bc554a98aae16ed504ddbc143fc7803",
+        "signature_sha256": "70dfef083814796f671589ed1547ca9fda65135c59dc9ed31fdfef909ce0cbd6",
+        "status": "source_read_conditional_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.Medium.trap_insensitive",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationLatchHealth.lean",
+        "source_sha256": "b50829033f62fcdff489379eee5d11e71bc554a98aae16ed504ddbc143fc7803",
+        "signature_sha256": "9619e7257658914d1ec075a828a599bd272af445a07c30ed924d89a30cc1714c",
+        "status": "source_read_conditional_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.PairCRN.pair_rate_ratio",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationLatchHealth.lean",
+        "source_sha256": "b50829033f62fcdff489379eee5d11e71bc554a98aae16ed504ddbc143fc7803",
+        "signature_sha256": "6c7602ad0d289b9bf3d204654f5af3e4d02a13daa09e2dcba186aa10a37c7ea2",
+        "status": "source_read_conditional_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.Generation.no_valley",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationIgnition.lean",
+        "source_sha256": "6dc8aea36ff58c3550e66de8ab37d9e541836d21bc1b7e6fa6929ea04818ea0a",
+        "signature_sha256": "0d87eed220e721dd4fc8bcf53e6a4f09702094623f05029e94eee56017137715",
+        "status": "source_read_conditional_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.Generation.equilibrium_memory_bound",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationIgnition.lean",
+        "source_sha256": "6dc8aea36ff58c3550e66de8ab37d9e541836d21bc1b7e6fa6929ea04818ea0a",
+        "signature_sha256": "6c5e63938ba9166703aecc88935152dd1aac178f89673821b0f7e89fac5d35b4",
+        "status": "source_read_conditional_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.Generation.self_listening_increment",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean",
+        "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+        "signature_sha256": "7d426c52d7c4c07c2b540c5f76b7f08dea405e23928fb319b4e3f453f19e365b",
+        "status": "source_read_conditional_not_body_satisfaction"
+      },
+      {
+        "name": "CGB.Generation.self_listening_frozen_state_gap",
+        "source": "lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean",
+        "source_sha256": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+        "signature_sha256": "5e04cc5cc8dc8a338d085868f3b585555ffcf03f2adaba99d8e3f6d91c42fe9e",
+        "status": "source_read_conditional_not_body_satisfaction"
+      }
+    ],
+    "original_runtime_finding": "Fixed-parameter delta fast-state cascade is feedforward across layers; nonlinear post-read MLP is not a nonlinear self-renewal of the same matrix. Parameter-learning and action feedback are outside this restricted finding.",
+    "construction": "S+ = alpha*S + beta*k*((1-eta)*v+eta*softsign(g*S.T*k+u)-alpha*S.T*k).T",
+    "formal_review_declarations": [
+      "BudgetedAssociationWriteReview.feedback_write_read",
+      "BudgetedAssociationWriteReview.feedback_renewal_joint_contract"
+    ],
+    "formal_scope": "Unit-key read-back reduction; one nonempty rational-saturation coefficient choice with bounded state, two restoring basins, opposite cue release, and a held-state evidence response. No all-matrix language/P2a certificate.",
+    "certificate": {
+      "alpha": 0.5,
+      "beta": 0.5,
+      "gain": 4,
+      "feedback_strength": 1,
+      "rests": [
+        "-5/12",
+        "5/12"
+      ],
+      "basin_radius": "1/4",
+      "restoring_error_factor": "7/10",
+      "release_cue_magnitude": 8
+    },
+    "coefficient_policy": "Proof witness, not recommended fixed hyperparameters. Real gates, cue and gain must be linked to learned language evidence.",
+    "baseline_inclusion": "eta=0 exactly recovers original delta; this endpoint was numerically checked.",
+    "source_sha256": {
+      "scripts/audit_cgb_joint_reinvestment.py": "018e1b2aab5edbd660d1e477f3ca0700581e778bdcc9cd4791f068803c0e1e28",
+      "scripts/ib_local/gated_deltanet.py": "452f80c0e1dc467f07e47c65db839b9d8a21eb1204ac644cbd224f8b8734172a",
+      "tests/test_gated_deltanet.py": "502b6a8e3f854bc97b31c1ab6db0844f3d1130a5a3f11580ad04e8929c24a999",
+      "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+      "lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+      "lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean": "40d149b303903637478cb56de93fd19b4693784171b65bcab8b62908ae581568",
+      "lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean": "6678c32f9d4073ac156a73e1744642d036b8ada801ac1990c76781697b298c7f",
+      "lean/CGBAxioms/CGBAxioms/GenerationLatchHealth.lean": "b50829033f62fcdff489379eee5d11e71bc554a98aae16ed504ddbc143fc7803"
+    },
+    "lean_review_compiled": true,
+    "lean_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "runtime_report": "results/published/cgb_feedback_renewal_20261103.json",
+    "matrix_fixed_point_jacobian_radius": 0.5312500000000003,
+    "held_cue_response_diagonal": 0.07031249999999999,
+    "new_review_theorems": 2,
+    "body_modified": false,
+    "new_memory_arrays": 0,
+    "training_runs": 0,
+    "joint_body_satisfaction": null,
+    "conditions_still_open": [
+      "language-derived cue usefulness/reachability",
+      "moving learned key compatibility",
+      "simultaneous multiple-mode interference",
+      "full capacity/P2a refinement",
+      "gradient/optimizer and scan cost of installed feedback",
+      "action-world closure"
+    ],
+    "resource_limit": "Per-event nonlinear state feedback loses the existing affine-in-state associative scan. A compatible GPU schedule/representation and measured cost are required before body installation.",
+    "strengthened_relations": [
+      "E04",
+      "E06",
+      "E08",
+      "E10",
+      "E14"
+    ],
+    "next": "Validate the existing GDN plus bounded fast-table candidate: held-out language, continuous relearning, full-state restore and total resource cost; then connect same-body actions to subsequent language. Feedback has no measured net OWT benefit at this budget. Forward sensitivity is conditional on a demonstrated credit gap, not the default next task.",
+    "parameter_family": {
+      "neutral_input": "u=v=0",
+      "a": "alpha*(1-beta)",
+      "assumptions": "0<=a<1, beta*eta>0, gain>0",
+      "nonzero_rest_threshold": "beta*eta*gain > 1-a",
+      "rests": "plus/minus (beta*eta/(1-a)-1/gain)",
+      "scope": "paper algebra and numerical identities; general bifurcation not newly formalized"
+    },
+    "ttt_potential_bridge": {
+      "status": "selected_coordinate_potential_and_endogenous_target_derivative_formalized",
+      "formal_declarations": [
+        "BudgetedAssociationWriteReview.endogenous_target_error_derivative",
+        "BudgetedAssociationWriteReview.feedback_potential_step"
+      ],
+      "primitive": "Integral of softResponse; derivative proved by continuity and FTC without assuming an antiderivative",
+      "matrix_scope": "Exact gradient identity and fixed-event descent bound derived on paper and checked numerically; matrix theorem not yet formalized",
+      "runtime_report": "results/published/cgb_feedback_renewal_20261103.json#ttt_potential_bridge",
+      "new_review_theorems": 2,
+      "matrix_gradient_checks": 48,
+      "not_claimed": [
+        "language_NLL_descent",
+        "published_TTT_Linear_implementation_equivalence",
+        "changed_event_global_potential_descent",
+        "complete_living_body"
+      ],
+      "additional_persistent_arrays": 0,
+      "source_sha256": {
+        "scripts/audit_cgb_joint_reinvestment.py": "018e1b2aab5edbd660d1e477f3ca0700581e778bdcc9cd4791f068803c0e1e28",
+        "scripts/ib_local/gated_deltanet.py": "452f80c0e1dc467f07e47c65db839b9d8a21eb1204ac644cbd224f8b8734172a",
+        "tests/test_gated_deltanet.py": "502b6a8e3f854bc97b31c1ab6db0844f3d1130a5a3f11580ad04e8929c24a999",
+        "lean/CGBAxioms/reviews/budgeted_association_write_20261103.lean": "b89523a73957eed3cfca805c216fecb6a72ca41fe766495167437d9727030689",
+        "lean/CGBAxioms/CGBAxioms/GenerationColumnMemory.lean": "9221268652acc9babc33535a2dd5f52fdb17dcc72f5a71c13f63900239ba37ad",
+        "lean/CGBAxioms/CGBAxioms/GenerationLinearMemory.lean": "40d149b303903637478cb56de93fd19b4693784171b65bcab8b62908ae581568",
+        "lean/CGBAxioms/CGBAxioms/GenerationPersistence.lean": "6678c32f9d4073ac156a73e1744642d036b8ada801ac1990c76781697b298c7f",
+        "lean/CGBAxioms/CGBAxioms/GenerationLatchHealth.lean": "b50829033f62fcdff489379eee5d11e71bc554a98aae16ed504ddbc143fc7803"
+      }
+    },
+    "implementation": {
+      "status": "initial_pair_stopped_followup_three_seed_validation_complete",
+      "run_root": "results/cgb_feedback_pair_20261103_5000",
+      "admission_report": "results/published/cgb_feedback_runtime_admission_20261103.json",
+      "recurrence": "feedback_delta",
+      "cue": "existing learned value projection",
+      "additional_parameters": 32,
+      "additional_recurrent_state_bytes": 0,
+      "tests_passed": 71,
+      "steps_per_arm": 5000,
+      "bytes_per_arm": 2560000,
+      "capability_verdict": "no_measured_net_owt_gain_at_tested_budget",
+      "organism_admitted": false,
+      "initial_run_actual_steps": {
+        "decay_then_delta": 5000,
+        "feedback_delta": 3800
+      },
+      "followup_report": "results/cgb_feedback_birth_20261103/RESULT.md"
+    }
+  },
+  "latest_execution_review": {
+    "date": "2026-11-03",
+    "status": "feedback_language_stage_complete_no_measured_net_gain",
+    "handoff": "docs/information_boltzmann/CGB_CLAUDE_HANDOFF_20261103.md",
+    "evidence": [
+      "results/cgb_feedback_birth_20261103/RESULT.md",
+      "results/cgb_long_memory_diagnosis_20261103/README.md",
+      "results/cgb_recall_t1b_20261103/RESULT.md",
+      "results/cgb_gdn_fast_table_20261103/RESULT.md"
+    ],
+    "feedback_validation_nll_mean_paired_delta": 0.0007,
+    "feedback_off_nll_cost_range": [
+      0.015,
+      0.022
+    ],
+    "interpretation": "Path used, no net advantage over independently trained control. Increased history use does not imply improved final NLL. Recall failure does not isolate latch lifetime.",
+    "candidate": "existing GDN plus bounded fast table; not final architecture admission",
+    "table_mib_approx": 908,
+    "resource_matched_superiority": false,
+    "remaining": [
+      "table-aware independent evaluation",
+      "complete neural/table/optimizer restore",
+      "total bounded resource accounting",
+      "same-body action-world closure"
+    ],
+    "mode_task": "Existing diagnostic; full result not reviewed here; not organism admission or an extra language-training prerequisite",
+    "organism_admitted": false,
+    "coverage_count_changed": false
+  }
+}

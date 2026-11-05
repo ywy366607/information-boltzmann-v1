@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L39)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：给出学习维持模型中细胞各构型对应策略动作的显式分段查找表。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -23,6 +27,10 @@
 ## CGB.LearningMaintenance.plant_admission
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L66)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：对任意给定状态转移表，指定 plant 构造满足 Axioms 和速率一的逐事件时钟条件。
 
@@ -39,6 +47,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L103)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：指定学习维护身体满足 Axioms 和速率一的逐事件时钟条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -52,6 +64,10 @@ CGB.LearningMaintenance.body.Axioms ∧ CGB.LearningMaintenance.body.EventClocke
 ## CGB.LearningMaintenance.reads_boundary
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L139)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：指定世界的转移只依赖该身体边界上可见的状态。
 
@@ -67,7 +83,11 @@ CGB.LearningMaintenance.body.ReadsBoundary CGB.LearningMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L165)
 
-解释：对单位置、四种主体状态的任意实函数求和，等于其在四个常值构型上的值之和。
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
+解释：在自然学习维护见证模型中，对单位置四状态单元的任意实函数求和等于其在四个常值构型上的求和。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
 
@@ -81,6 +101,10 @@ CGB.LearningMaintenance.body.ReadsBoundary CGB.LearningMaintenance.world
 ## _private.CGBAxioms.LearningMaintenance.0.CGB.LearningMaintenance.kernel_table
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L174)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：给出学习维持机体转移核在写塑性激活时的显式查找表。
 
@@ -98,6 +122,10 @@ CGB.LearningMaintenance.body.ReadsBoundary CGB.LearningMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L191)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：给出自然环境交互流下联合状态概率分布各步的解析递推解。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -114,6 +142,10 @@ CGB.LearningMaintenance.body.ReadsBoundary CGB.LearningMaintenance.world
 ## _private.CGBAxioms.LearningMaintenance.0.CGB.LearningMaintenance.recovery_step
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L214)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
 
 解释：给出多步物质恢复度函数的向后贝尔曼动态规划递推方程。
 
@@ -136,6 +168,10 @@ CGB.LearningMaintenance.body.ReadsBoundary CGB.LearningMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L241)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：在正常学习交互下机体的恢复度量与预设前瞻恢复概率完全一致。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -150,6 +186,10 @@ CGB.LearningMaintenance.body.ReadsBoundary CGB.LearningMaintenance.world
 ## _private.CGBAxioms.LearningMaintenance.0.CGB.LearningMaintenance.natural_alive
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L247)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：给出学习机体存活指示函数的显式结构形式。
 
@@ -168,6 +208,10 @@ CGB.LearningMaintenance.body.ReadsBoundary CGB.LearningMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L263)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：指定学习维护见证的自然闭环交换生存评分在每个时刻为一。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -184,6 +228,10 @@ CGB.LearningMaintenance.body.ReadsBoundary CGB.LearningMaintenance.world
 ## _private.CGBAxioms.LearningMaintenance.0.CGB.LearningMaintenance.starve_world_step
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L282)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在指定世界状态 5 下，给定见证的世界转移以权重一保持状态 5，其余后继权重为零。
 
@@ -202,6 +250,10 @@ CGB.LearningMaintenance.body.ReadsBoundary CGB.LearningMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L294)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：在指定世界状态 5 下，给定见证的闭环或断环材料恢复概率对任意有限期限均为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -215,6 +267,10 @@ CGB.LearningMaintenance.body.ReadsBoundary CGB.LearningMaintenance.world
 ## _private.CGBAxioms.LearningMaintenance.0.CGB.LearningMaintenance.cut_move_early
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L314)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在指定世界状态编号小于三时，断环世界转移与原世界转移一致。
 
@@ -236,6 +292,10 @@ CGB.LearningMaintenance.body.ReadsBoundary CGB.LearningMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L328)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：在 n≤2 时，指定断环身体—世界联合分布等于定义的 density。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -254,6 +314,10 @@ CGB.LearningMaintenance.body.ReadsBoundary CGB.LearningMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L348)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：在演化第3步学习机体陷入饥饿死态的概率质量精确为1/2。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -268,6 +332,10 @@ CGB.LearningMaintenance.starveMass✝ 3 = 1 / 2
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L358)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：学习系统陷入饥饿死态的累积概率质量随时间步单调递增。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -281,6 +349,10 @@ CGB.LearningMaintenance.starveMass✝ 3 = 1 / 2
 ## _private.CGBAxioms.LearningMaintenance.0.CGB.LearningMaintenance.cut_alive_bound
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L384)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：指定断环见证的单状态生命指标至多为：世界状态等于 5 时零，否则一。
 
@@ -299,6 +371,10 @@ CGB.LearningMaintenance.starveMass✝ 3 = 1 / 2
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L399)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：指定断环见证的生存评分不超过一减定义的饥饿状态概率质量。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -315,6 +391,10 @@ CGB.LearningMaintenance.starveMass✝ 3 = 1 / 2
 ## CGB.LearningMaintenance.cut_survival
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L426)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：指定断环对照中，从第 3 拍起的交换生存评分不超过二分之一。
 
@@ -334,6 +414,10 @@ CGB.LearningMaintenance.starveMass✝ 3 = 1 / 2
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L439)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：指定有限学习维护见证在自然闭环下满足交换持续性及相对断环的自维持定义。
 
 源码说明：The original gross-exchange goals hold during paid identification and all subsequent times. This does not certify the full cognitive or encoded target.
@@ -350,6 +434,10 @@ CGB.Exchange.Persists CGB.LearningMaintenance.body CGB.LearningMaintenance.world
 ## CGB.LearningMaintenance.starvation_depletes
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L452)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在该有限学习维护见证中，指定饥饿世界状态下一步以概率一到达零身体状态，且零状态对任意刺激保持不变。
 
@@ -371,6 +459,10 @@ CGB.Exchange.Persists CGB.LearningMaintenance.body CGB.LearningMaintenance.world
 ## CGB.LearningMaintenance.sustained_exchange
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L468)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在指定自然分布下，从第 2 拍起每拍平均登记输入与输出均为一。
 
@@ -399,6 +491,10 @@ CGB.Exchange.Persists CGB.LearningMaintenance.body CGB.LearningMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L479)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：指定有限反馈更新实现同一候选筛选规则，并满足更新后内容成本加筛选费用等于原成本。
 
 源码说明：The finite physical feedback update realizes the previous candidate filter, using the action chosen BEFORE feedback. No model identifier enters the policy.
@@ -420,6 +516,10 @@ CGB.Exchange.Persists CGB.LearningMaintenance.body CGB.LearningMaintenance.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L488)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：通用审查归类。
+
 解释：在指定有限见证中，公共初态采取动作二，收到与 h 对应的反馈后策略转为 h、候选集变为 {h} 且写储备为零。
 
 源码说明：Both branches use one common initial controller; actual feedback determines which singleton memory and specialized resource action it acquires.
@@ -437,6 +537,10 @@ CGB.Exchange.Persists CGB.LearningMaintenance.body CGB.LearningMaintenance.world
 ## CGB.LearningMaintenance.normal_resources
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/LearningMaintenance.lean#L497)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：LearningMaintenance
+
+分类说明：针对具体 LearningMaintenance 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：指定自然分布下，平均内容成本前两拍为二、之后为一；平均输入为一，平均输出仅第 1 拍为二、其他拍为一。
 

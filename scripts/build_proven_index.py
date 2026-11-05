@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 LEAN = ROOT / "lean" / "CGBAxioms" / "CGBAxioms"
 OUT = ROOT / "docs" / "information_boltzmann" / "CGB_PROVEN_INDEX.md"
 INVENTORY = LEAN.parent / ".lake" / "audit_inventory.json"
+CLASSES = OUT.parent / "CGB_THEOREM_CLASSES.json"
 DECL = re.compile(r"^(?:private\s+)?(theorem|lemma|def|structure|noncomputable def|abbrev)\s+([^\s:({\[]+)")
 AUDIT_SPEC = importlib.util.spec_from_file_location("cgb_index_audit", LEAN.parent / "scripts/audit.py")
 AUDIT = importlib.util.module_from_spec(AUDIT_SPEC)
@@ -105,6 +106,9 @@ def main():
     args = parser.parse_args()
     inventory = checked_inventory(args.inventory)
     authored = [r for r in inventory["declarations"] if r["kind"] == "theorem" and r["source_declared"]]
+    classifications = json.loads(CLASSES.read_text(encoding="utf-8"))["theorems"]
+    if set(classifications) != {r["name"] for r in authored}:
+        raise ValueError("Theorem classification does not cover exactly the audited source theorems")
     modules, covered = [], set()
     for path in sorted(LEAN.rglob("*.lean")):
         relative = path.relative_to(LEAN.parent).as_posix()
@@ -125,6 +129,7 @@ def main():
              "新工作开始前先检索已有机制；点击完整定理名查看源码、前提及结论。",
              "渐进检索入口：[主题导航与逐条完整陈述](CGB_THEOREMS/README.md)；"
              "先查主题，再按模块阅读。无源码解释的条目明确标注，避免把机器猜测当作定理含义。",
+             "分类标注来自 `CGB_THEOREM_CLASSES.json`；draft 为未审核种子，不代表定稿。",
              "",
              f"共 **{len(authored)}** 条已审计源码定理/引理，来自 **{len(inventory['summary']['modules'])}** 个生产模块。"
              f"编译声明共 **{inventory['summary']['declarations']}** 项，含定义及自动生成项，不作为机制数量。",
@@ -169,7 +174,11 @@ def main():
             parts.append(f"_{header}_")
         parts.append("")
         for name, doc, line in thms:
-            parts.append(f"- {source_link(path, name, line)}" + (f"：{doc}" if doc else ""))
+            matches = [r for r in authored if r["module"] == "CGBAxioms." + path.stem
+                       and (r["name"] == name or r["name"].endswith("." + name))]
+            category = classifications[matches[0]["name"]]
+            label = f"{category['class']} / {category.get('scope') or '未定'} / {category['status']}"
+            parts.append(f"- {source_link(path, name, line)} [{label}]" + (f"：{doc}" if doc else ""))
         parts.append("")
     rendered = "\n".join(parts) + "\n"
     if checked_inventory(args.inventory) != inventory:

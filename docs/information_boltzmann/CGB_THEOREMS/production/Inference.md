@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Inference.lean#L50)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：Inference 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：马尔可夫跳跃介质中的局部事件速率仅依赖于局部毯内状态，毯外跃迁不影响局部概率流。
 
 源码说明：Under P3, the full dynamics reads the stimulus only at the boundary.
@@ -27,6 +31,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Inference.lean#L56)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：Inference 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：时间离散化核算子在马尔可夫毯内局部化，外部状态的演化在给定毯条件后对内部条件独立。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -42,6 +50,10 @@
 ## CGB.Medium.blanket_of_axioms
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Inference.lean#L73)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：Inference 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：满足基础公理的局部介质自然存在马尔可夫毯结构，使得内部与外部在给定边界下条件独立。
 
@@ -59,6 +71,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Inference.lean#L119)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：惰性岩石具体玩具模型见证。
+
 解释：惰性岩石模型定理：缺乏内部代谢反应网络的无机系统摄入速率恒为零。
 
 源码说明：The rock satisfies all six axioms but can never take anything in: it was never alive.
@@ -73,6 +89,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Inference.lean#L124)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：惰性岩石具体玩具模型见证。
+
 解释：惰性岩石非生命定理：无法维持负熵流的被动系统不能在非平稳耗散环境中实现持久存在。
 
 源码说明：So the rock persists in no world.
@@ -86,6 +106,10 @@
 ## CGB.finite_reweighting_improves_iff
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Inference.lean#L134)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Inference 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：有限样本重加权提高事件概率当且仅当该事件内部的加权期望严格大于全空间全局加权期望。
 

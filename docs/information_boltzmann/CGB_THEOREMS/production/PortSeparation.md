@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortSeparation.lean#L54)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：PortSeparation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：两分离端口各自持有局部能量与物质预算，彼此独立核算且总和守恒。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -30,6 +34,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortSeparation.lean#L65)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：PortSeparation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：饥饿推进定理：在持续匮乏条件下，系统状态单调流向确定的休眠或重启吸引子。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -49,6 +57,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortSeparation.lean#L74)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：PortSeparation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：当两端资源均告空时，分离端口下一步系统的联合状态保持为空。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -63,6 +75,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortSeparation.lean#L92)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：PortSeparation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：端口分离结构满足广义系统准入准则，两端无意图隐蔽信道。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -76,6 +92,10 @@ CGB.PortSeparation.body.Axioms ∧ CGB.PortSeparation.body.EventClocked 1
 ## CGB.PortSeparation.legacy_rules
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortSeparation.lean#L129)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：PortSeparation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：端口分离体系在退化情形下与传统无隔离交互系统的动力学规则保持向后兼容。
 
@@ -93,6 +113,10 @@ CGB.PortSeparation.body.Axioms ∧ CGB.PortSeparation.body.EventClocked 1
 ## CGB.PortSeparation.actual_transition
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortSeparation.lean#L148)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：PortSeparation 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：端口分离机制下的复合状态实际转移与两独立子系统局部转移的乘积精确重合。
 

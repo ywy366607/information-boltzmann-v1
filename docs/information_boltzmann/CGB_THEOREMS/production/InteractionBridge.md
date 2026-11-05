@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InteractionBridge.lean#L27)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
+
 解释：交互机单步联合转移概率等于与当前观测匹配的分量核转移概率值。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -25,6 +29,10 @@
 ## CGB.Interaction.Machine.ofKernels_marginal
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InteractionBridge.lean#L33)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
 
 解释：交互机的输出观测值在全观测空间边际求和后，精确还原为底层状态转移核。
 
@@ -42,6 +50,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InteractionBridge.lean#L40)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
+
 解释：由马尔可夫核族构成的交互机其标记首达时间与底层分量核的持续时间分布等价。
 
 源码说明：Observe a time protocol in the existing external world clock. A list history supplies the tick number to the test context, not extra internal body storage.
@@ -58,6 +70,10 @@
 ## CGB.Medium.intakeCoalgebra_firstHit
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InteractionBridge.lean#L91)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
 
 解释：摄入余代数下观测序列的首达时间分布与底层物理介质的击中时钟完全相容。
 
@@ -78,6 +94,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InteractionBridge.lean#L101)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
+
 解释：摄入余代数结构确保了系统在具有正摄入流时能实现实际状态恢复。
 
 源码说明：This normal-world observation yields the existing actualRecover, not a different coalgebraic notion of success or a favourable-stimulus menu.
@@ -95,6 +115,10 @@
 ## CGB.Medium.refinement_preserves_recovery_and_time
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/InteractionBridge.lean#L112)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：环境与主体开放交互边界及通道投影的结构语义。
 
 解释：系统精细化映射保结构定理：粗粒化到精细介质的状态提升严格保持恢复概率与特征耗时。
 

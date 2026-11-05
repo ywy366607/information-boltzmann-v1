@@ -1,0 +1,976 @@
+{
+  "summary": {
+    "cycles": 512,
+    "elapsed_seconds": 1126.171511300001,
+    "settlement": "continuation",
+    "external_bytes": 263168,
+    "self_bytes": 12416,
+    "optimizer_steps": 2048,
+    "replay_samples": 16384,
+    "parameter_count": 894916,
+    "initial_nll": {
+      "familiar": 0.0070804309216327965,
+      "noise": 13.27157974243164,
+      "easy": 13.925566673278809,
+      "hard": 13.67544174194336,
+      "changing": 13.688800811767578
+    },
+    "final_nll": {
+      "familiar": 0.0038376239826902747,
+      "noise": 0.806877076625824,
+      "easy": 0.49000532925128937,
+      "hard": 0.43204085528850555,
+      "changing": 0.44483165442943573
+    },
+    "visits": {
+      "familiar": 57,
+      "noise": 59,
+      "easy": 78,
+      "hard": 188,
+      "changing": 130
+    },
+    "moves": 307,
+    "choices": {
+      "silence": 124,
+      "generate": 253,
+      "reuse": 135
+    },
+    "max_policy_replay_error": 3.814697265625e-06,
+    "exact_next_step_parameter_error": 0.0,
+    "peak_cuda_bytes": 193759744,
+    "scope": "semantic-free mechanism diagnostic, one continuing individual; no real-language capability claim"
+  },
+  "analysis": {
+    "transition_and_candidate_replay": true,
+    "external_sha256": "2ce421676ac7daf4150d08cf08e37252b136f7fdec26fccb2448375c21adf83a",
+    "entropy_floors_nats": {
+      "familiar": 0.0,
+      "noise": 0.6931471805599453,
+      "easy": 0.42270908780599087,
+      "hard": 0.42270908780599087,
+      "changing": 0.42270908780599087
+    },
+    "blocks": [
+      {
+        "start": 1,
+        "end": 64,
+        "visits": {
+          "familiar": 14,
+          "noise": 6,
+          "easy": 9,
+          "hard": 17,
+          "changing": 18
+        },
+        "choices": {
+          "silence": 9,
+          "generate": 48,
+          "reuse": 7
+        },
+        "g": {
+          "familiar": 3.7674610991546487e-06,
+          "noise": 0.030059436957041424,
+          "easy": 1.0256276494926877,
+          "hard": 0.008379312122569364,
+          "changing": 0.00617572996351454
+        },
+        "multiroom_opportunities": 62,
+        "offered": {
+          "familiar": 34,
+          "noise": 18,
+          "easy": 25,
+          "hard": 38,
+          "changing": 30
+        },
+        "noise_when_learning_alternative": {
+          "n": 18,
+          "policy_noise_probability": 0.4002032125782635,
+          "uniform_candidate_noise_probability": 0.40740740740740733,
+          "actual_noise_fraction": 0.3333333333333333
+        },
+        "heldout_nll": [
+          0.0014348698750836775,
+          0.8364620208740234,
+          0.5124583840370178,
+          0.5737345814704895,
+          0.4284586012363434
+        ],
+        "witnesses": {
+          "familiar": 30,
+          "noise": 0,
+          "easy": 0,
+          "hard": 1,
+          "changing": 1,
+          "mixed": 0
+        }
+      },
+      {
+        "start": 65,
+        "end": 128,
+        "visits": {
+          "familiar": 7,
+          "noise": 4,
+          "easy": 10,
+          "hard": 21,
+          "changing": 22
+        },
+        "choices": {
+          "silence": 14,
+          "generate": 35,
+          "reuse": 15
+        },
+        "g": {
+          "familiar": 0.0002790184095959246,
+          "noise": 0.02114798128604889,
+          "easy": 0.0009092092514038086,
+          "hard": 0.0053447215330033075,
+          "changing": 0.0014398477294228294
+        },
+        "multiroom_opportunities": 58,
+        "offered": {
+          "familiar": 28,
+          "noise": 15,
+          "easy": 22,
+          "hard": 40,
+          "changing": 42
+        },
+        "noise_when_learning_alternative": {
+          "n": 15,
+          "policy_noise_probability": 0.33059132443740963,
+          "uniform_candidate_noise_probability": 0.3888888888888889,
+          "actual_noise_fraction": 0.26666666666666666
+        },
+        "heldout_nll": [
+          0.007718431996181607,
+          0.7138309180736542,
+          0.4783301502466202,
+          0.49265584349632263,
+          0.43348194658756256
+        ],
+        "witnesses": {
+          "familiar": 24,
+          "noise": 0,
+          "easy": 1,
+          "hard": 7,
+          "changing": 0,
+          "mixed": 0
+        }
+      },
+      {
+        "start": 129,
+        "end": 192,
+        "visits": {
+          "familiar": 11,
+          "noise": 2,
+          "easy": 1,
+          "hard": 35,
+          "changing": 15
+        },
+        "choices": {
+          "silence": 21,
+          "generate": 18,
+          "reuse": 25
+        },
+        "g": {
+          "familiar": 0.0008513478422339011,
+          "noise": 0.011258900165557861,
+          "easy": 0.0015259981155395508,
+          "hard": 0.0013594542230878557,
+          "changing": 0.0009362518787384034
+        },
+        "multiroom_opportunities": 62,
+        "offered": {
+          "familiar": 28,
+          "noise": 14,
+          "easy": 15,
+          "hard": 61,
+          "changing": 35
+        },
+        "noise_when_learning_alternative": {
+          "n": 14,
+          "policy_noise_probability": 0.29863701441458296,
+          "uniform_candidate_noise_probability": 0.3571428571428571,
+          "actual_noise_fraction": 0.14285714285714285
+        },
+        "heldout_nll": [
+          0.0032742071198299527,
+          1.6830999851226807,
+          0.7130082547664642,
+          0.414845272898674,
+          0.6916449666023254
+        ],
+        "witnesses": {
+          "familiar": 23,
+          "noise": 0,
+          "easy": 1,
+          "hard": 8,
+          "changing": 0,
+          "mixed": 0
+        }
+      },
+      {
+        "start": 193,
+        "end": 256,
+        "visits": {
+          "familiar": 4,
+          "noise": 6,
+          "easy": 10,
+          "hard": 23,
+          "changing": 21
+        },
+        "choices": {
+          "silence": 17,
+          "generate": 23,
+          "reuse": 24
+        },
+        "g": {
+          "familiar": -2.598959872557316e-05,
+          "noise": 0.0016377369562784831,
+          "easy": -5.5596232414245605e-05,
+          "hard": 0.0002405423185099726,
+          "changing": 0.0009425310861496698
+        },
+        "multiroom_opportunities": 63,
+        "offered": {
+          "familiar": 15,
+          "noise": 16,
+          "easy": 29,
+          "hard": 55,
+          "changing": 41
+        },
+        "noise_when_learning_alternative": {
+          "n": 16,
+          "policy_noise_probability": 0.3785815965384245,
+          "uniform_candidate_noise_probability": 0.35416666666666663,
+          "actual_noise_fraction": 0.375
+        },
+        "heldout_nll": [
+          0.0020740364561788738,
+          0.8314263820648193,
+          0.47471678256988525,
+          0.40983736515045166,
+          0.43097029626369476
+        ],
+        "witnesses": {
+          "familiar": 23,
+          "noise": 0,
+          "easy": 1,
+          "hard": 8,
+          "changing": 0,
+          "mixed": 0
+        }
+      },
+      {
+        "start": 257,
+        "end": 320,
+        "visits": {
+          "familiar": 6,
+          "noise": 6,
+          "easy": 12,
+          "hard": 28,
+          "changing": 12
+        },
+        "choices": {
+          "silence": 18,
+          "generate": 33,
+          "reuse": 13
+        },
+        "g": {
+          "familiar": 4.384447432433566e-05,
+          "noise": 0.008459885915120443,
+          "easy": 0.0027952417731285095,
+          "hard": 0.0013526433280536107,
+          "changing": 0.002089438339074453
+        },
+        "multiroom_opportunities": 58,
+        "offered": {
+          "familiar": 25,
+          "noise": 13,
+          "easy": 33,
+          "hard": 53,
+          "changing": 22
+        },
+        "noise_when_learning_alternative": {
+          "n": 13,
+          "policy_noise_probability": 0.4036099145618769,
+          "uniform_candidate_noise_probability": 0.3333333333333333,
+          "actual_noise_fraction": 0.46153846153846156
+        },
+        "heldout_nll": [
+          0.002173437462261063,
+          0.7751131951808929,
+          0.48054271936416626,
+          0.5141744613647461,
+          0.48591187596321106
+        ],
+        "witnesses": {
+          "familiar": 22,
+          "noise": 0,
+          "easy": 3,
+          "hard": 7,
+          "changing": 0,
+          "mixed": 0
+        }
+      },
+      {
+        "start": 321,
+        "end": 384,
+        "visits": {
+          "familiar": 4,
+          "noise": 10,
+          "easy": 4,
+          "hard": 24,
+          "changing": 22
+        },
+        "choices": {
+          "silence": 15,
+          "generate": 36,
+          "reuse": 13
+        },
+        "g": {
+          "familiar": -1.279418938793242e-05,
+          "noise": 0.0033100008964538573,
+          "easy": 0.00120621919631958,
+          "hard": 0.000707934300104777,
+          "changing": -0.00015357272191481158
+        },
+        "multiroom_opportunities": 60,
+        "offered": {
+          "familiar": 18,
+          "noise": 31,
+          "easy": 18,
+          "hard": 44,
+          "changing": 39
+        },
+        "noise_when_learning_alternative": {
+          "n": 31,
+          "policy_noise_probability": 0.3125567366519282,
+          "uniform_candidate_noise_probability": 0.38709677419354843,
+          "actual_noise_fraction": 0.3225806451612903
+        },
+        "heldout_nll": [
+          0.0022396350977942348,
+          0.731488436460495,
+          0.4808875024318695,
+          0.4292104244232178,
+          0.4442993104457855
+        ],
+        "witnesses": {
+          "familiar": 20,
+          "noise": 2,
+          "easy": 3,
+          "hard": 7,
+          "changing": 0,
+          "mixed": 0
+        }
+      },
+      {
+        "start": 385,
+        "end": 448,
+        "visits": {
+          "familiar": 7,
+          "noise": 8,
+          "easy": 16,
+          "hard": 23,
+          "changing": 10
+        },
+        "choices": {
+          "silence": 17,
+          "generate": 34,
+          "reuse": 13
+        },
+        "g": {
+          "familiar": 0.0001871740137825587,
+          "noise": 0.0002188161015510559,
+          "easy": 0.00043300725519657135,
+          "hard": 0.001251790834509808,
+          "changing": 0.0012078315019607544
+        },
+        "multiroom_opportunities": 61,
+        "offered": {
+          "familiar": 19,
+          "noise": 25,
+          "easy": 29,
+          "hard": 48,
+          "changing": 28
+        },
+        "noise_when_learning_alternative": {
+          "n": 24,
+          "policy_noise_probability": 0.3823159420862794,
+          "uniform_candidate_noise_probability": 0.3611111111111111,
+          "actual_noise_fraction": 0.2916666666666667
+        },
+        "heldout_nll": [
+          0.001982992689590901,
+          0.7871748208999634,
+          0.44777825474739075,
+          0.41824543476104736,
+          0.4627579152584076
+        ],
+        "witnesses": {
+          "familiar": 19,
+          "noise": 2,
+          "easy": 4,
+          "hard": 7,
+          "changing": 0,
+          "mixed": 0
+        }
+      },
+      {
+        "start": 449,
+        "end": 512,
+        "visits": {
+          "familiar": 4,
+          "noise": 17,
+          "easy": 16,
+          "hard": 17,
+          "changing": 10
+        },
+        "choices": {
+          "silence": 13,
+          "generate": 26,
+          "reuse": 25
+        },
+        "g": {
+          "familiar": 9.237417543772608e-06,
+          "noise": 0.00034435706980088176,
+          "easy": 0.0002701710909605026,
+          "hard": 2.3124849095064053e-05,
+          "changing": 9.169280529022216e-05
+        },
+        "multiroom_opportunities": 62,
+        "offered": {
+          "familiar": 14,
+          "noise": 29,
+          "easy": 38,
+          "hard": 40,
+          "changing": 30
+        },
+        "noise_when_learning_alternative": {
+          "n": 27,
+          "policy_noise_probability": 0.4416602549177629,
+          "uniform_candidate_noise_probability": 0.4320987654320988,
+          "actual_noise_fraction": 0.5555555555555556
+        },
+        "heldout_nll": [
+          0.0038376239826902747,
+          0.806877076625824,
+          0.49000532925128937,
+          0.43204085528850555,
+          0.44483165442943573
+        ],
+        "witnesses": {
+          "familiar": 19,
+          "noise": 2,
+          "easy": 5,
+          "hard": 6,
+          "changing": 0,
+          "mixed": 0
+        }
+      }
+    ],
+    "noise_opportunities": {
+      "first_half": {
+        "n": 63,
+        "policy_noise_probability": 0.3555674831649022,
+        "uniform_candidate_noise_probability": 0.3783068783068782,
+        "actual_noise_fraction": 0.2857142857142857
+      },
+      "second_half": {
+        "n": 95,
+        "policy_noise_probability": 0.37933260229857346,
+        "uniform_candidate_noise_probability": 0.38596491228070173,
+        "actual_noise_fraction": 0.4
+      }
+    },
+    "first_visit": {
+      "familiar": 4,
+      "noise": 26,
+      "easy": 1,
+      "hard": 8,
+      "changing": 3
+    },
+    "change": {
+      "turn": 257,
+      "prechange_nll": 0.43097029626369476,
+      "new_rule_first_nll_before_learning": 1.5183996558189392,
+      "first_return": 257,
+      "returned_within_128": true,
+      "prechange_visits": 76,
+      "postchange_visits": 54,
+      "final_nll": 0.44483165442943573
+    },
+    "gold_future_alignment": {
+      "overall": {
+        "n": 40,
+        "pearson": 0.9869291778066583,
+        "spearman": -0.14746716697936213,
+        "material_n": 37,
+        "material_sign_agreement": 0.35135135135135137
+      },
+      "first_half": {
+        "n": 20,
+        "pearson": 0.9880885262012445,
+        "spearman": 0.08421052631578946,
+        "material_n": 17,
+        "material_sign_agreement": 0.47058823529411764
+      },
+      "second_half": {
+        "n": 20,
+        "pearson": -0.23180795445094293,
+        "spearman": -0.38345864661654133,
+        "material_n": 20,
+        "material_sign_agreement": 0.25
+      }
+    },
+    "continuation_future_alignment": {
+      "overall": {
+        "n": 40,
+        "pearson": 0.9869291778066583,
+        "spearman": -0.14746716697936213,
+        "material_n": 37,
+        "material_sign_agreement": 0.35135135135135137
+      },
+      "first_half": {
+        "n": 20,
+        "pearson": 0.9880885262012445,
+        "spearman": 0.08421052631578946,
+        "material_n": 17,
+        "material_sign_agreement": 0.47058823529411764
+      },
+      "second_half": {
+        "n": 20,
+        "pearson": -0.23180795445094293,
+        "spearman": -0.38345864661654133,
+        "material_n": 20,
+        "material_sign_agreement": 0.25
+      }
+    },
+    "note": "Future bank is a researcher diagnostic, not reward. Empirical allocation is not causal attribution to the neural F; opportunities are reported separately."
+  },
+  "source_hashes": {
+    "D:\\information-boltzmann-v1\\scratch\\run_learning_rooms_20261105.py": "8eb06920ef1a75dc7665c8b8f1e15346da550f2384e45968c4cbcf912dd724ce",
+    "scripts\\ib_local\\learning_rooms_world.py": "52e0662a15be770d5807c110fad1b91c7a02941a9a71af82294f6cab5d72c1d6",
+    "scripts\\ib_local\\navigation_live_witness.py": "79888ec3da665289395b0cc70308187b0a6c7ac9efb945e1c9c437e0e934cf2a",
+    "scripts\\ib_local\\language_navigation_kanli_v4t.py": "ca05404c454cdbe815c7f3132b68a38e88f08ba43ed808b6999d138c27e017c3",
+    "scripts\\ib_local\\navigation_settlement.py": "c227e86b614bfd6e4976075d8261254ef8d4c00057fda06f4c70109aadc3e24f",
+    "scripts\\ib_local\\language_navigation_kanli_v4b.py": "b014f0be2a8e7040ca953182dae0f27235401b64ff0cff3124df3d0ade391e4e",
+    "scripts\\ib_local\\language_navigation_kanli_v4c.py": "9b24bf9f53d73ab6deb0c6f7fee46ddd12068fee79f62c1eab243c929f5999a5",
+    "scripts\\ib_local\\language_navigation_kanli_v4p.py": "8b02b1ecc2671b9077b1f5b0e03405f5753871848747789417b19787354ef6b4",
+    "scripts\\ib_local\\language_navigation_kanli_v4q.py": "454b5f009c87be1ea1dcc082e7d803090dcf5e17127ab5264c36e993233d0e65"
+  },
+  "protocol": "docs/information_boltzmann/CGB_LEARNING_ROOMS_20261105.md",
+  "settlement_comparison": {
+    "control": {
+      "root": "results\\cgb_learning_rooms_direct_20261105",
+      "settlement": "witness",
+      "config": {
+        "stage": "five learning-progress rooms, full continuing symbol individual",
+        "mode": "active",
+        "seed": 11,
+        "topic_window": 4096,
+        "checkpoint": "results\\cgb_retrieved_credit_20261103\\off\\last.pt",
+        "checkpoint_sha256": "b7cc70c3b1ce2b00e94f66a676c225671cfe61e73147061cb689f748b4357a21",
+        "source_raw_bounds": [
+          8000000,
+          56000000
+        ],
+        "world_source_bytes": null,
+        "validation_sha256": {
+          "0": "2b8110ae4d019341d3e6f947559e1eeda598a23b94afd3c8545aa75c9304ba21",
+          "1": "b9d12ed3ff620ada90af9142e67bab106326473e5e6413647394a343271193c1"
+        },
+        "sources": {
+          "D:\\information-boltzmann-v1\\scripts\\ib_local\\run_language_navigation_kanli_v4.py": "04cde29d6a523d7286117118e73d24142d17cb339c2c83713fee4d95897248a8",
+          "scripts\\ib_local\\language_navigation_kanli_v4.py": "6ae83add73f675e6bf57e59c47c371012e6d7f3576e19af7db15abcc5e7f7216",
+          "scripts\\ib_local\\language_navigation_turns_v3.py": "d751158ecf66856944a56f1f2c23f2bf6ff2fdb802f067c69a1a25e856fd3ea9",
+          "scripts\\ib_local\\language_navigation_world_v3.py": "2f3ca8a6050a757f3d88af38c32221d4b252669aee59e4b5bb61c34ceddc4cc9",
+          "scripts\\ib_local\\latent_navigation_v3.py": "ac9d4b4ff4d8b23bde0276bb13f4d24f6adac6642cca723cee462e5acc32be5c",
+          "scripts\\ib_local\\latent_navigation_v2.py": "21c20cf1984d2613b8ef83fa1472178a53c3b2deb531f4eb0f40f70a382c22ad",
+          "scripts\\ib_local\\language_navigation_kanli_v4b.py": "6789c960ba1c602aeb194cbeffe702bd81b8067a3b06d3debfe897a100c63c18",
+          "scripts\\ib_local\\language_navigation_kanli_v4c.py": "4365b0a4c631abad0c915ea723e04882147de54795f24e8ad71a5d01b8db78dc",
+          "scripts\\ib_local\\language_navigation_kanli_v4d.py": "efd6e292b5a4fbf3b7a8f54a4da1cb0272f7b2ecf909504b56b4df95702e2726",
+          "scripts\\ib_local\\language_navigation_kanli_v4e.py": "536e0cc0974b08e0fc84ba96294d2b8c25d1883c6c4cd927d6248ea918291200",
+          "scripts\\ib_local\\language_navigation_kanli_v4f.py": "05a66c5e55b7f6a39659bd304e3d9062373f687bb56c202f995f7c7d15bf5efa",
+          "scripts\\ib_local\\language_navigation_kanli_v4g.py": "60b597383f76d3a1e3ca92cd94619ff83817fb5bc58c6fb37a1f28eeaf409215",
+          "scripts\\ib_local\\language_navigation_kanli_v4h.py": "5e2ffcf7443e7249ada0406c9e2efc1e93fb32681d33dac32f2eff14bd5561aa",
+          "scripts\\ib_local\\language_navigation_kanli_v4i.py": "783d76c29f38544af114a689595b60d23dbe894b2c8a150c4eb9b0f16916d208",
+          "scripts\\ib_local\\language_navigation_kanli_v4j.py": "287d37f34ca4c125f5c11378f5d3197dc7d25faa8188da5de5b36ab76bbc642d"
+        },
+        "world": "bounded topic window read cyclically; the world takes up the END of the utterance (\u63a5\u8bdd) and continues from there",
+        "source_snapshot": "results\\cgb_symbol_navigation_20261105\\last.pt.gz",
+        "source_sha256": "9b6cd9a55ad16aee0cedaddbc5f1b2529efb5ac237aa4c0bf249327433157a1f",
+        "retained": "all learned and carried organism state, optimizer, fast table, episode/witness memories, pending credit; only world replaced",
+        "response_bytes": 257,
+        "holdout_bytes": 257,
+        "cycles": 512,
+        "switch_turn": 256,
+        "parameter_count": 894916,
+        "routing": "direct_bits",
+        "routing_note": "last three byte parities address all rooms; periodic continuation leads directly to a learnable room",
+        "validation": "no-write frozen-current-table/no-learning score, five independently generated 1024-byte banks, pre/post same bank",
+        "sources_new": {
+          "D:\\information-boltzmann-v1\\scratch\\run_learning_rooms_20261105.py": "70c6b86acf66daba74bb5d09805e1394639ce0726c4180a7702a946d1817bd39",
+          "scripts\\ib_local\\learning_rooms_world.py": "52e0662a15be770d5807c110fad1b91c7a02941a9a71af82294f6cab5d72c1d6",
+          "scripts\\ib_local\\navigation_live_witness.py": "79888ec3da665289395b0cc70308187b0a6c7ac9efb945e1c9c437e0e934cf2a",
+          "scripts\\ib_local\\language_navigation_kanli_v4t.py": "ca05404c454cdbe815c7f3132b68a38e88f08ba43ed808b6999d138c27e017c3"
+        }
+      },
+      "summary": {
+        "cycles": 512,
+        "elapsed_seconds": 957.7985942000014,
+        "external_bytes": 263168,
+        "self_bytes": 9056,
+        "optimizer_steps": 2048,
+        "replay_samples": 16384,
+        "parameter_count": 894916,
+        "initial_nll": {
+          "familiar": 0.0070804309216327965,
+          "noise": 13.27157974243164,
+          "easy": 13.925566673278809,
+          "hard": 13.67544174194336,
+          "changing": 13.688800811767578
+        },
+        "final_nll": {
+          "familiar": 0.0030757790082134306,
+          "noise": 0.7307080030441284,
+          "easy": 0.466267853975296,
+          "hard": 0.41692353785037994,
+          "changing": 0.48094069957733154
+        },
+        "visits": {
+          "familiar": 188,
+          "noise": 51,
+          "easy": 60,
+          "hard": 180,
+          "changing": 33
+        },
+        "moves": 204,
+        "choices": {
+          "silence": 229,
+          "generate": 126,
+          "reuse": 157
+        },
+        "max_policy_replay_error": 1.9073486328125e-06,
+        "exact_next_step_parameter_error": 0.0,
+        "peak_cuda_bytes": 194307072,
+        "scope": "semantic-free mechanism diagnostic, one continuing individual; no real-language capability claim"
+      },
+      "input_sha256": "0cf8c1382eaaaef6d7ab725de18e870b78696eaafe058731e586f5a055f28933",
+      "signal_delivery": {
+        "scope": "historical witness control; new wiring fields not required"
+      },
+      "halves": {
+        "first_half": {
+          "visits": {
+            "familiar": 37,
+            "noise": 43,
+            "easy": 36,
+            "hard": 119,
+            "changing": 21
+          },
+          "familiar_fraction": 0.14453125,
+          "familiar_opportunities": {
+            "decisions": 96,
+            "policy_probability": 0.4139152653515339,
+            "uniform_candidate_probability": 0.38715277777777773,
+            "actual_fraction": 0.3854166666666667
+          },
+          "noise_opportunities": {
+            "n": 80,
+            "policy_noise_probability": 0.42061298550688664,
+            "uniform_candidate_noise_probability": 0.4083333333333333,
+            "actual_noise_fraction": 0.4875
+          },
+          "mean_wood_policy_tv": 0.0011335165625752097,
+          "mean_residual_policy_tv": 8.530284832497514e-06,
+          "mean_precision": 0.22645207983380955,
+          "mean_critic_rms": 8.02660939868339,
+          "reward_replay_samples": null,
+          "gold_alignment": {
+            "n": 20,
+            "pearson": 0.03434019239172549,
+            "spearman": 0.18045112781954886,
+            "material_n": 20,
+            "material_sign_agreement": 0.65
+          }
+        },
+        "second_half": {
+          "visits": {
+            "familiar": 151,
+            "noise": 8,
+            "easy": 24,
+            "hard": 61,
+            "changing": 12
+          },
+          "familiar_fraction": 0.58984375,
+          "familiar_opportunities": {
+            "decisions": 207,
+            "policy_probability": 0.7504933022214595,
+            "uniform_candidate_probability": 0.4460547504025765,
+            "actual_fraction": 0.7294685990338164
+          },
+          "noise_opportunities": {
+            "n": 15,
+            "policy_noise_probability": 0.3452614237864812,
+            "uniform_candidate_noise_probability": 0.3777777777777777,
+            "actual_noise_fraction": 0.5333333333333333
+          },
+          "mean_wood_policy_tv": 0.0010934837428067112,
+          "mean_residual_policy_tv": 4.821729635295924e-05,
+          "mean_precision": 0.18959255191986635,
+          "mean_critic_rms": 6.173266696430323,
+          "reward_replay_samples": null,
+          "gold_alignment": {
+            "n": 20,
+            "pearson": -0.5626038188303785,
+            "spearman": -0.6616541353383457,
+            "material_n": 20,
+            "material_sign_agreement": 0.2
+          }
+        }
+      },
+      "change": {
+        "first_visit_after_flip": 274,
+        "first_arrival_after_flip": 274,
+        "visits_after_flip": 12,
+        "already_there_on_first_postflip_turn": false
+      },
+      "final_mean_future_nll": 0.41958317469106987,
+      "mean_post_update_audit_nll": 0.7840824994117657,
+      "audit_mean_scope": "Fixed 40 audit times; descriptive, not an integral over all 512 turns.",
+      "maximum_absolute_settlement": 0.3976801708340645,
+      "maximum_critic_rms": 12.041271623216229,
+      "return_interpretation": "First post-flip exposure is not necessarily a navigated return; also report actual arrivals and whether the body was already there."
+    },
+    "candidate": {
+      "root": "results\\cgb_learning_rooms_progress_20261105",
+      "settlement": "continuation",
+      "config": {
+        "stage": "five learning-progress rooms, full continuing symbol individual",
+        "mode": "active",
+        "seed": 11,
+        "topic_window": 4096,
+        "checkpoint": "results\\cgb_retrieved_credit_20261103\\off\\last.pt",
+        "checkpoint_sha256": "b7cc70c3b1ce2b00e94f66a676c225671cfe61e73147061cb689f748b4357a21",
+        "source_raw_bounds": [
+          8000000,
+          56000000
+        ],
+        "world_source_bytes": null,
+        "validation_sha256": {
+          "0": "2b8110ae4d019341d3e6f947559e1eeda598a23b94afd3c8545aa75c9304ba21",
+          "1": "b9d12ed3ff620ada90af9142e67bab106326473e5e6413647394a343271193c1"
+        },
+        "sources": {
+          "D:\\information-boltzmann-v1\\scripts\\ib_local\\run_language_navigation_kanli_v4.py": "04cde29d6a523d7286117118e73d24142d17cb339c2c83713fee4d95897248a8",
+          "scripts\\ib_local\\language_navigation_kanli_v4.py": "6ae83add73f675e6bf57e59c47c371012e6d7f3576e19af7db15abcc5e7f7216",
+          "scripts\\ib_local\\language_navigation_turns_v3.py": "d751158ecf66856944a56f1f2c23f2bf6ff2fdb802f067c69a1a25e856fd3ea9",
+          "scripts\\ib_local\\language_navigation_world_v3.py": "2f3ca8a6050a757f3d88af38c32221d4b252669aee59e4b5bb61c34ceddc4cc9",
+          "scripts\\ib_local\\latent_navigation_v3.py": "ac9d4b4ff4d8b23bde0276bb13f4d24f6adac6642cca723cee462e5acc32be5c",
+          "scripts\\ib_local\\latent_navigation_v2.py": "21c20cf1984d2613b8ef83fa1472178a53c3b2deb531f4eb0f40f70a382c22ad",
+          "scripts\\ib_local\\language_navigation_kanli_v4b.py": "b014f0be2a8e7040ca953182dae0f27235401b64ff0cff3124df3d0ade391e4e",
+          "scripts\\ib_local\\language_navigation_kanli_v4c.py": "9b24bf9f53d73ab6deb0c6f7fee46ddd12068fee79f62c1eab243c929f5999a5",
+          "scripts\\ib_local\\language_navigation_kanli_v4d.py": "efd6e292b5a4fbf3b7a8f54a4da1cb0272f7b2ecf909504b56b4df95702e2726",
+          "scripts\\ib_local\\language_navigation_kanli_v4e.py": "536e0cc0974b08e0fc84ba96294d2b8c25d1883c6c4cd927d6248ea918291200",
+          "scripts\\ib_local\\language_navigation_kanli_v4f.py": "05a66c5e55b7f6a39659bd304e3d9062373f687bb56c202f995f7c7d15bf5efa",
+          "scripts\\ib_local\\language_navigation_kanli_v4g.py": "60b597383f76d3a1e3ca92cd94619ff83817fb5bc58c6fb37a1f28eeaf409215",
+          "scripts\\ib_local\\language_navigation_kanli_v4h.py": "5e2ffcf7443e7249ada0406c9e2efc1e93fb32681d33dac32f2eff14bd5561aa",
+          "scripts\\ib_local\\language_navigation_kanli_v4i.py": "783d76c29f38544af114a689595b60d23dbe894b2c8a150c4eb9b0f16916d208",
+          "scripts\\ib_local\\language_navigation_kanli_v4j.py": "287d37f34ca4c125f5c11378f5d3197dc7d25faa8188da5de5b36ab76bbc642d"
+        },
+        "world": "bounded topic window read cyclically; the world takes up the END of the utterance (\u63a5\u8bdd) and continues from there",
+        "source_snapshot": "results\\cgb_symbol_navigation_20261105\\last.pt.gz",
+        "source_sha256": "9b6cd9a55ad16aee0cedaddbc5f1b2529efb5ac237aa4c0bf249327433157a1f",
+        "retained": "all learned and carried organism state, optimizer, fast table, episode/witness memories, pending credit; only world replaced",
+        "response_bytes": 257,
+        "holdout_bytes": 257,
+        "cycles": 512,
+        "switch_turn": 256,
+        "parameter_count": 894916,
+        "routing": "direct_bits",
+        "routing_note": "last three byte parities address all rooms; periodic continuation leads directly to a learnable room",
+        "settlement": "continuation",
+        "settlement_migration": {
+          "old_kind": "witness",
+          "new_kind": "continuation",
+          "metadata_bytes": 8192,
+          "policy": "retain all data, parameters and moments; exclude incompatible labels from reward reads/replay",
+          "pending_credit": "pay previous reward once without cross-objective bootstrap",
+          "learned_priors": "retain critic, wood means/errors, interoception and optimizer as transfer priors"
+        },
+        "validation": "no-write frozen-current-table/no-learning score, five independently generated 1024-byte banks, pre/post same bank",
+        "sources_new": {
+          "D:\\information-boltzmann-v1\\scratch\\run_learning_rooms_20261105.py": "8eb06920ef1a75dc7665c8b8f1e15346da550f2384e45968c4cbcf912dd724ce",
+          "scripts\\ib_local\\learning_rooms_world.py": "52e0662a15be770d5807c110fad1b91c7a02941a9a71af82294f6cab5d72c1d6",
+          "scripts\\ib_local\\navigation_live_witness.py": "79888ec3da665289395b0cc70308187b0a6c7ac9efb945e1c9c437e0e934cf2a",
+          "scripts\\ib_local\\language_navigation_kanli_v4t.py": "ca05404c454cdbe815c7f3132b68a38e88f08ba43ed808b6999d138c27e017c3",
+          "scripts\\ib_local\\navigation_settlement.py": "c227e86b614bfd6e4976075d8261254ef8d4c00057fda06f4c70109aadc3e24f",
+          "scripts\\ib_local\\language_navigation_kanli_v4b.py": "b014f0be2a8e7040ca953182dae0f27235401b64ff0cff3124df3d0ade391e4e",
+          "scripts\\ib_local\\language_navigation_kanli_v4c.py": "9b24bf9f53d73ab6deb0c6f7fee46ddd12068fee79f62c1eab243c929f5999a5",
+          "scripts\\ib_local\\language_navigation_kanli_v4p.py": "8b02b1ecc2671b9077b1f5b0e03405f5753871848747789417b19787354ef6b4",
+          "scripts\\ib_local\\language_navigation_kanli_v4q.py": "454b5f009c87be1ea1dcc082e7d803090dcf5e17127ab5264c36e993233d0e65"
+        }
+      },
+      "summary": {
+        "cycles": 512,
+        "elapsed_seconds": 1126.171511300001,
+        "settlement": "continuation",
+        "external_bytes": 263168,
+        "self_bytes": 12416,
+        "optimizer_steps": 2048,
+        "replay_samples": 16384,
+        "parameter_count": 894916,
+        "initial_nll": {
+          "familiar": 0.0070804309216327965,
+          "noise": 13.27157974243164,
+          "easy": 13.925566673278809,
+          "hard": 13.67544174194336,
+          "changing": 13.688800811767578
+        },
+        "final_nll": {
+          "familiar": 0.0038376239826902747,
+          "noise": 0.806877076625824,
+          "easy": 0.49000532925128937,
+          "hard": 0.43204085528850555,
+          "changing": 0.44483165442943573
+        },
+        "visits": {
+          "familiar": 57,
+          "noise": 59,
+          "easy": 78,
+          "hard": 188,
+          "changing": 130
+        },
+        "moves": 307,
+        "choices": {
+          "silence": 124,
+          "generate": 253,
+          "reuse": 135
+        },
+        "max_policy_replay_error": 3.814697265625e-06,
+        "exact_next_step_parameter_error": 0.0,
+        "peak_cuda_bytes": 193759744,
+        "scope": "semantic-free mechanism diagnostic, one continuing individual; no real-language capability claim"
+      },
+      "input_sha256": "06b271960df0b2ecbc6c0d055ca43120ba5af22432b90c3ff54a2c5500846580",
+      "signal_delivery": {
+        "checked_rounds": 512,
+        "reward_to_wood": true,
+        "reward_to_interoception": true,
+        "previous_reward_to_delayed_td": true,
+        "migrated_pending_reward_has_no_cross_objective_bootstrap": true
+      },
+      "halves": {
+        "first_half": {
+          "visits": {
+            "familiar": 36,
+            "noise": 18,
+            "easy": 30,
+            "hard": 96,
+            "changing": 76
+          },
+          "familiar_fraction": 0.140625,
+          "familiar_opportunities": {
+            "decisions": 105,
+            "policy_probability": 0.3469074703398205,
+            "uniform_candidate_probability": 0.35873015873015873,
+            "actual_fraction": 0.34285714285714286
+          },
+          "noise_opportunities": {
+            "n": 63,
+            "policy_noise_probability": 0.3555674831649022,
+            "uniform_candidate_noise_probability": 0.3783068783068782,
+            "actual_noise_fraction": 0.2857142857142857
+          },
+          "mean_wood_policy_tv": 0.0002127823554474162,
+          "mean_residual_policy_tv": 9.092764230445027e-07,
+          "mean_precision": 0.02429056718265003,
+          "mean_critic_rms": 81.47718328205511,
+          "reward_replay_samples": 5.1328125,
+          "gold_alignment": {
+            "n": 20,
+            "pearson": 0.9880885262012445,
+            "spearman": 0.08421052631578946,
+            "material_n": 17,
+            "material_sign_agreement": 0.47058823529411764
+          }
+        },
+        "second_half": {
+          "visits": {
+            "familiar": 21,
+            "noise": 41,
+            "easy": 48,
+            "hard": 92,
+            "changing": 54
+          },
+          "familiar_fraction": 0.08203125,
+          "familiar_opportunities": {
+            "decisions": 76,
+            "policy_probability": 0.36361685059474486,
+            "uniform_candidate_probability": 0.33771929824561403,
+            "actual_fraction": 0.27631578947368424
+          },
+          "noise_opportunities": {
+            "n": 95,
+            "policy_noise_probability": 0.37933260229857346,
+            "uniform_candidate_noise_probability": 0.38596491228070173,
+            "actual_noise_fraction": 0.4
+          },
+          "mean_wood_policy_tv": 0.002059681330138119,
+          "mean_residual_policy_tv": 1.8235368770547211e-06,
+          "mean_precision": 0.2125517778661546,
+          "mean_critic_rms": 6.973587618854486,
+          "reward_replay_samples": 11.03515625,
+          "gold_alignment": {
+            "n": 20,
+            "pearson": -0.23180795445094293,
+            "spearman": -0.38345864661654133,
+            "material_n": 20,
+            "material_sign_agreement": 0.25
+          }
+        }
+      },
+      "change": {
+        "first_visit_after_flip": 257,
+        "first_arrival_after_flip": 266,
+        "visits_after_flip": 54,
+        "already_there_on_first_postflip_turn": true
+      },
+      "final_mean_future_nll": 0.43551850791554897,
+      "mean_post_update_audit_nll": 0.7069441293467753,
+      "audit_mean_scope": "Fixed 40 audit times; descriptive, not an integral over all 512 turns.",
+      "maximum_absolute_settlement": 9.035699129104614,
+      "maximum_critic_rms": 211.9619906564238,
+      "return_interpretation": "First post-flip exposure is not necessarily a navigated return; also report actual arrivals and whether the body was already there."
+    },
+    "preregistered": {
+      "familiar_share_reduced": true,
+      "changed_room_first_visit_earlier": true,
+      "settlement_future_spearman_above_point3_both_halves": false
+    },
+    "final_mean_future_nll_delta": 0.015935333224479098,
+    "earlier_actual_arrival_after_flip": true,
+    "scope": "One-seed closed-loop development diagnostic; migration is part of intervention. Balanced future evaluation never enters reward. No convergence or real-language claim."
+  },
+  "rule_change_components": {
+    "source_cycle": 256,
+    "measured_cycle": 257,
+    "actual_transition_metrics_exact": true,
+    "exact_runtime_fields": 91,
+    "copied_transition_cost": {
+      "external_bytes": 514,
+      "self_bytes": 0,
+      "optimizer_steps": 4
+    },
+    "score_convention": "Same unseen heldout bytes and same response-end recurrent state; frozen table reads with identical actual prefix, no probe-target updates. Post state uses response neural update plus latent-memory commit only.",
+    "L00": 1.4666831493377686,
+    "L01": 1.1025789976119995,
+    "L11": 1.1035622358322144,
+    "response_table_contribution": 0.36410415172576904,
+    "response_neural_and_latent_contribution": -0.0009832382202148438,
+    "joint_response_progress": 0.3631209135055542,
+    "existing_cached_progress": -0.0007940530776977539,
+    "whole_turn_balanced_future_improvement": 0.1030993817199487,
+    "scope": "Posthoc one-turn component diagnosis; two ordered contributions telescope, not an order-independent attribution or a new training result. Main individual unchanged."
+  }
+}

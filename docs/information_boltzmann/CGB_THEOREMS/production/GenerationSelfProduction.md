@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L33)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入字符数不小于2的有限字母表与正的特征分数增量，经两阶段更新求导分析，输出得分正步长更新严格降低目标字符的交叉熵损失。
 
 源码说明：On a finite alphabet with at least two symbols, a positive finite two-phase score step strictly improves the probability of the observed symbol on the same frozen feature. It does not assert future improvement.
@@ -28,6 +32,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L80)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入对数几率变动上界为δ的Softmax输出头，经中值定理与范数放缩，输出观测字节的负对数似然损失改变量严格不超过2*δ。
 
 源码说明：If every byte logit changes by at most δ, the observed-byte negative log likelihood changes by at most 2δ. This is a per-readout bound, not a claim that the approximate state follows the reference on later ticks.
@@ -43,6 +51,10 @@
 ## CGB.SelfProduction.association_affine_language_nll_bound
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L122)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入关联干扰证书与仿射读出头，经对数Softmax李普希茨连续性放缩，输出语言负对数似然损失偏差受关联干扰矩阵一致上界控制。
 
@@ -66,6 +78,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L171)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入固定未来查询与外部检索视图，经联想检索容量定理，输出外周检索使得延迟读出容量不再受限于单步内部工作区维度。
 
 源码说明：For a fixed future query, externally retrieved views share the burden of distinguishing histories with the finite body. If every listed history needs a different answer, the number of histories cannot exceed the product of body states and possible returned views. No assumption stores the external world inside the body; retrieval itself must actually supply the view.
@@ -84,6 +100,10 @@
 ## CGB.SelfProduction.association_delta_read_contract
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L190)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入单步行增量矩阵与关联读出契约，经线性组合代数装配，输出全矩阵读出增量精确等于各行增量在查询方向上的投影之和。
 
@@ -107,6 +127,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L213)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入单热单位基底键向量与精度更新步长，经Delta规则代数计算，输出单热键增量更新形式严格等价于单槽位精度吸收更新。
 
 源码说明：For an exactly one-hot key, no global decay, and precision-derived gain, the delta write agrees with slotwise precision assimilation: only the keyed slot changes. This does not assert equality for mixed keys or nonzero decay.
@@ -124,6 +148,10 @@
 ## CGB.SelfProduction.precision_distinguishes_equal_mean_histories
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L229)
+
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：自生产动力学中消除歧义、维持长期存活与主动干预的必然限制。
 
 解释：输入均值相同但精度不同的两个槽位与相同到达观测，经贝叶斯自然参数后验计算，输出两槽位后继均值严格不相等（证明确定性均值单变量无法复现精度动态）。
 
@@ -147,6 +175,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L253)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入混合非单热键向量与到达观测，经矩阵增量代数展开，输出多键混合更新与单槽位解耦吸收更新在特征流形上产生不同几何位移。
 
 源码说明：A normalized mixed key gives a concrete obstruction to general equality: the delta write couples the first slot to the second, while independent precision assimilation with zero target leaves its zero mean unchanged.
@@ -163,6 +195,10 @@ CGB.Generation.dot key key = 1 ∧
 ## CGB.SelfProduction.positive_soft_query_changes_under_delta
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L265)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入严格正的软寻址键与正查询向量，经内积严格正性传递，输出任意具有非零新息的Delta写入必然导致每个正查询方向上的读出值发生改变。
 
@@ -184,6 +220,10 @@ CGB.Generation.dot key key = 1 ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L288)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入自然参数吸收步进与查询变动，经双线性矩阵乘积展开，输出新查询下的读出增量精确由旧态偏差项与新到达项共同线性构成。
 
 源码说明：Query change under the existing natural-parameter assimilation: `weight` is the per-slot sum of observation weights and `weighted` the corresponding value-weighted sum. The identity includes zero observation weight and allows slot contributions to cancel; no separate resource state is introduced.
@@ -204,6 +244,10 @@ CGB.Generation.dot key key = 1 ∧
 ## CGB.SelfProduction.association_assimilation_improves_iff
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L308)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入固定查询与目标下的自然参数吸收算子，经内积对偶性推导，输出吸收改善读出准确度当且仅当目标与旧读出的差值与新信息保持同向对齐。
 
@@ -227,6 +271,10 @@ CGB.Generation.dot key key = 1 ∧
 ## CGB.SelfProduction.association_assimilation_softmax_improves_iff
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L336)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入逐槽吸收算子与仿射输出头更新，经交叉熵微分不等式分析，输出输出层Softmax交叉熵严格下降充要等价于参数更新与真实梯度内积为负。
 
@@ -262,6 +310,10 @@ CGB.Generation.dot key key = 1 ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L399)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入无先验介入条件下的重复相同槽位输入证据，经吸收递推方程求解，输出状态保持因子精确按(1 - weight)^n几何幂次递推。
 
 源码说明：With no intervening prior step, repeated identical slot evidence is accumulated by the existing natural/precision update. Its resulting mean retains exactly `p₀ / (p₀ + n*w)` of the initial error. This describes one slot in exact arithmetic, not a learned language-quality guarantee.
@@ -285,6 +337,10 @@ CGB.Generation.dot key key = 1 ∧
 ## CGB.SelfProduction.repeated_assimilation_association_readout
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L434)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入单槽位保持衰减律与多步吸收算子，经矩阵级数复合，输出多步重复吸收后的关联读出精确等价于累积衰减加权的值读出矩阵。
 
@@ -310,6 +366,10 @@ CGB.Generation.dot key key = 1 ∧
 ## CGB.SelfProduction.repeated_assimilation_probe_family
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L460)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入未来查询探测族与重复吸收序列，经误差界传递定理，输出当目标槽位在重复吸收中维持高置信度时，整个探测族持续保持高精度读出。
 
@@ -337,6 +397,10 @@ CGB.Generation.dot key key = 1 ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L503)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入利用真实物理状态的条件预测器与任意固定盲目预测器，经琴生不等式，输出利用物理状态的条件预测器的期望对数损失严格小于等于任意固定预测器。
 
 源码说明：In a declared joint distribution, an oracle using the actual conditional byte law at each body state has no higher expected log loss than any fixed strictly positive normalized predictor. The weights are state probabilities; no additional resource state is introduced. This does not establish that the body can learn the conditional law, or that prediction improves viability.
@@ -359,6 +423,10 @@ CGB.Generation.dot key key = 1 ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L522)
 
+分类：necessity；适用范围：universal；审核：reviewed
+
+分类说明：自生产动力学中消除歧义、维持长期存活与主动干预的必然限制。
+
 解释：输入在内部状态中被合并消除的两个相异二值历史，经期望对数损失下界分析，输出混淆历史使得预测器的期望交叉熵损失存在严格正的无法消除底线。
 
 源码说明：If two equally likely histories share the same accessible state but require opposite next-byte predictions, any positive binary predictor pays at least `log 2` nats of expected loss. A predictor with the distinguishing information can assign probability one to the correct byte and has zero loss. The equal probabilities are a world condition, not a universal drift law.
@@ -375,6 +443,10 @@ CGB.Generation.dot key key = 1 ∧
 ## CGB.SelfProduction.state_conditioned_logloss_decomposition
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L547)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入依赖于状态的条件预测器与真实联合分布，经条件期望展开，输出期望对数损失精确分解为状态条件熵与预测分布相对熵之和。
 
@@ -400,6 +472,10 @@ CGB.Generation.dot key key = 1 ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L575)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入现有的可再生见证系统，经单步转移分析，输出系统重开放已排除分支的过程无法被压缩表示为单一的旧状态步进算子。
 
 源码说明：The existing renewable witness actually reopens an excluded candidate; no single old `advance` step from the same memory can implement that change.
@@ -417,6 +493,10 @@ CGB.Generation.dot key key = 1 ∧
 ## CGB.SelfProduction.renewable_witness_unbounded_supported_writes
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L586)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入认证的可再生生命过程，经写入计数序列分析，输出该系统在无限时间轴上具有任意长且带有正概率支撑的有效物理写入序列。
 
@@ -439,6 +519,10 @@ CGB.Generation.dot key key = 1 ∧
 ## CGB.SelfProduction.renewable_maintenance_and_supported_relearning
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L607)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入随机本体-环境耦合过程，经稳态与重学习检验，输出系统同时具备操作级负熵稳态维持与带正概率支撑的循环再学习能力。
 
@@ -473,6 +557,10 @@ CGB.Exchange.Persists CGB.RenewableLearningClosure.body CGB.RenewableLearning.wo
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L641)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入认证的随机过程，经过动作干预对比，输出施加不同的外周干预动作能够在世界中引发具有显著物理差异的可区分转移后果。
 
 源码说明：The already-certified stochastic process also has a concrete world-side action contrast. On live bodies its world law depends on the body only through the selected action. Two body states select different actions and give different next-world probabilities. This is not a fixed-body action intervention or a proof about a language world.
@@ -501,6 +589,10 @@ CGB.Exchange.SelfMaintains CGB.RenewableLearningClosure.body CGB.RenewableLearni
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L680)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入显式动作转移核与既有世界模型，经归一化与边缘分布检验，输出该动作核在各状态下归一化且与既有世界转移完全一致。
 
 源码说明：This action kernel is normalized and agrees with the existing world for every live body. Explicit actions induce different next-world laws at a fixed world state. A do-action interpretation assumes this world mechanism remains invariant under intervention; multi-step survival is a separate obligation.
@@ -526,6 +618,10 @@ CGB.Exchange.SelfMaintains CGB.RenewableLearningClosure.body CGB.RenewableLearni
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L739)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入提供原始认证策略的可再生动作机，经马尔可夫转移核求值，输出该动作机精确复现原始系统的全部联合事件与正概率支撑轨迹。
 
 源码说明：Supplying the old policy reproduces every joint event and successor-state probability of the original uncut process, including the vacuum case.
@@ -542,6 +638,10 @@ CGB.Exchange.SelfMaintains CGB.RenewableLearningClosure.body CGB.RenewableLearni
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L767)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入通过闭环策略关闭显式动作端口的自主系统，经动力学轨迹比对，输出闭环自主演化完全等同于由外周策略驱动的联合系统演化。
 
 源码说明：Closing the explicit action port with the existing policy recovers the whole original machine, not just a one-step marginal or a sample trace.
@@ -555,6 +655,10 @@ CGB.SelfProduction.renewableActionAutonomous = CGB.RenewableLearning.process tru
 ## CGB.SelfProduction.renewable_action_zero_failure_steps
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L776)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入施加零动作干预的动作端口系统，经步数计数与故障判定，输出系统在不超过预设的有限故障步数内彻底失去存活能力。
 
@@ -576,6 +680,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L800)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入在可再生系统中施加恒定为0的动作干预，经有限步推进，输出系统在有限步内必以概率1衰变塌缩至真空死亡状态。
 
 源码说明：In the specified intervention model, constant action zero reaches vacuum with probability one after two ticks and remains there. This is a distinct intervention from the registered marginal-ghost cut, not a general survival or language-world theorem.
@@ -593,6 +701,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.renewable_world_hidden_branch_and_delayed_consequence
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L862)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入处于就绪对齐状态的本体，经隐藏分支演化求解，输出系统具有两条正概率演化支路，并在延迟时刻表现出互斥的物理后果。
 
@@ -622,6 +734,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L886)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入就绪状态与对应食物环境配对的对齐状态，经可达性分析，输出该对齐状态具有严格正的生成概率，在物理演化中必然可达。
 
 源码说明：The aligned `aReady/feedA` state used above has a positive-probability three-step prefix from the actual initial state in the original process.
@@ -638,6 +754,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.renewable_hidden_branch_reopens_and_rewrites
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L912)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入认证世界中以正概率发生的隐藏环境变化，经内部状态重开放演化，输出系统能够安全重新开放隐藏分支并在状态中重新写入最新区分信息。
 
@@ -684,6 +804,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L951)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入正常演化路径与重开放被禁用的对照路径，经有限步轨迹比较，输出两路径在前缀阶段完全一致，随后在触发重开放处明确分化。
 
 源码说明：The recorded normal and reopen-disabled paths agree through tick four. On the same mismatch, the normal body reopens while the disabled body holds the old candidate; the following world move distinguishes the resulting actions. Both paths and the paired survival bound are existing certificates.
@@ -710,6 +834,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L996)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入任意可观测块序列的单步转移，经分块转移核展开，输出块内每一步及跨块转移均严格满足正概率支撑的可观测块契约。
 
 源码说明：Every step of either block, including the transition to either next block, has positive probability in the unchanged autonomous process. The world sensor at offset two distinguishes the two blocks. These are finite-path support facts, not an almost-sure statement or a language-performance experiment.
@@ -731,6 +859,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.renewable_observable_path_contract
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1031)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入选定分支序列的任意有限前缀，经正概率生成路径核验，输出系统全部分支前缀严格具备正概率支撑，保证演化无死角覆盖。
 
@@ -754,6 +886,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.renewable_observable_from_birth
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1075)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入系统初始出生状态，经有限前缀概率推演，输出从初始态出发的每一个选定分支序列的有限前缀均具有严格为正的生成概率。
 
@@ -789,6 +925,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1169)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入由确定性自生产规则生成的物理状态序列，经离散时间归纳法，输出在任意有限时间步系统状态均严格落在可存活集合内。
 
 源码说明：The same rule generates a valid state at every finite time.
@@ -803,6 +943,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.actual_actions_reproduce_trajectory
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1185)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入在同一世界中重放实际采取的动作序列，经确定性历史重现归纳，输出重放序列精确无误复现原始的本体状态与观察历史轨迹。
 
@@ -819,6 +963,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.passive_opportunity_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1196)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入具有非负单步消耗的机会势能函数与被动策略，经裂项累加展开，输出从任意时刻起的累积被动摄入受当前剩余机会预算严格控制。
 
@@ -843,6 +991,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.passive_opportunity_bounds_eventual_interventions
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1223)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入有限被动机会势能与被动动作干预，经势能单调递减分析，输出系统在被动模式下所能获得的全部累积摄入严格受限于初始机会势能。
 
@@ -869,6 +1021,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.counterfactual_passive_bound_forces_activity
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1259)
+
+分类：necessity；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产动力学中消除歧义、维持长期存活与主动干预的必然限制。
 
 解释：输入反事实最终被动干预具有有限累积信号的环境，经反证法推导，输出任何能够长期存活的策略必然具有无界的主动干预动作。
 
@@ -899,6 +1055,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1283)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入有限被动机会预算与生命存活所需的无界实际摄入，经能量预算矛盾分析，输出系统为维持生存必然要求循环往复执行非被动主动干预。
 
 源码说明：Finite passive opportunity and unbounded actual intake force recurrent non-passive action in the same deterministic world.
@@ -919,6 +1079,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1298)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入自生产契约规范，经无穷轨迹归纳构造，输出系统存在一条全局存活且持续满足自生产公理的无限长物理演化轨迹。
 
 源码说明：**Unbounded self-production.** The contract generates one trajectory indexed by all natural causal ticks, and every prefix remains in its viable niche. This is the deterministic infinite-duration statement.
@@ -936,6 +1100,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1311)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入以动作为条件的边界转移规则，经自身确定性映射构造，输出边界规则本身直接构成一个精确的自条件因果模型（无需引入额外辅助通道）。
 
 源码说明：The action-conditioned boundary rule itself is an exact self-consequence model when that rule is available to the organism's persistent state.
@@ -950,6 +1118,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.action_distinction_preserved
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1318)
+
+分类：necessity；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产动力学中消除歧义、维持长期存活与主动干预的必然限制。
 
 解释：输入在存活状态下具有不同边界后果的两个动作，经状态转移推进，输出系统执行两动作后的后继状态必然可区分。
 
@@ -969,6 +1141,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1479)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入满足可存活谓词的因果内存状态与任意到达字节，经转移保持性推导，输出经后继算子推进后的新状态依然严格满足存活条件。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -986,6 +1162,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.candidate_erase_balance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1507)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入因果支撑判定器、内存状态与当前观测，经候选集消除计数计算，输出推进后的候选集基数加上被擦除候选数严格等于原候选集基数。
 
@@ -1005,6 +1185,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1516)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入因果内存状态与观测，经手续费核算与擦除比较，输出单步产生的消除手续费不超过实际被擦除的因果候选数量。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -1020,6 +1204,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.effective_write_erases_distinction
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1524)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入因果内存池与观测，若产生单位消除手续费，经逆向推理，输出单步被擦除的因果候选数严格大于零。
 
@@ -1037,6 +1225,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1533)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入有限模型空间与有限储备预算，经基数组合数计算，输出因果内存状态空间的离散势精确等于2^|Model| * (reserve + 1)。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -1053,6 +1245,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.generated_history_encodes_self_production
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1574)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入生成的物理历史序列，经递归状态等价性验证，输出历史序列编码与底层状态递推关系在所有时间步精确一致。
 
@@ -1072,6 +1268,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.generated_boundary_signal_forces_active
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1593)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入由边界衍生的非负存活信号序列，经发散性条件检验，输出为维持信号无界性，系统动作序列绝不能最终陷入被动静止。
 
@@ -1105,6 +1305,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1614)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入语言准入候选模型与生成的轨迹，经过时间对齐检验，输出物理轨迹各步与语言编码模型在预测、读出和动作上完全对齐。
 
 源码说明：The admission history follows the self-production trajectory when its encoded initial state and every action-conditioned transition agree. Only encoded state equality is required; histories themselves need not coincide.
@@ -1128,6 +1332,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.language_self_production_active_if_aligned
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1634)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入诱导契约生成轨迹且边界信号与存活信号对齐的系统，经反证法，输出若生存需要无界信号则自生产轨迹的动作策略绝不陷入最终被动。
 
@@ -1156,6 +1364,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.language_joint_admission_self_production_active_if_aligned
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1667)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入对齐的语言自生产候选模型与无界累积信号条件，经主动推理生存闭包推导，输出该系统在满足联合准入与自生产的同时其策略绝非最终被动。
 
@@ -1189,6 +1401,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1697)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入单射探测映射与可恢复性判定，经候选子集求交与差分展开，输出探测损失精确等于更新前后被消除的因果候选数量差。
 
 源码说明：Under explicit injective-probe and recoverability conditions, probe loss is exactly the candidate distinction erased by the update.
@@ -1208,6 +1424,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1731)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入任意外部控制动作序列与语言候选系统，经可存活区域不变性验证，输出所有外部控制轨迹在所有时间步始终保持在语言存活流形内。
 
 源码说明：Every externally controlled trajectory remains in the existing language viability region, since the language contract admits every boundary byte.
@@ -1226,6 +1446,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.language_controlled_memory_eventually_stops
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1749)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入基于单向候选消除的语言自生产模型与任意动作序列，经有限状态下确界分析，输出系统内部物理内存在有限步后必彻底停止更新。
 
@@ -1249,6 +1473,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1813)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入语言自生产契约生成的自主轨迹，经有限消除基数递推，输出自主轨迹上的全部因果内存在经历有限步演化后必停止改变。
 
 源码说明：The autonomous self-production trajectory inherits the same eventual memory freeze; infinite viability does not by itself imply lifelong learning.
@@ -1269,6 +1497,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.language_candidate_eventually_constant_boundary
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1835)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入候选自生产语言模型，若内部记忆最终冻结，经策略与响应递推，输出该自治见证的策略动作与边界字节在有限步后必恒定为常数（无法自主生成无限变化的边界流）。
 
@@ -1297,6 +1529,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1861)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入受控擦除模型与到达观测，经因果候选基数守恒，输出推进后的相容候选数加上受控擦除数精确等于原候选集基数。
 
 源码说明：Candidate elimination telescopes along every intervention, not merely along the organism's chosen policy.
@@ -1319,6 +1555,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1898)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入有限候选族受控消除过程与任意动作序列，经有限基数分析，输出单向消除产生的耗散信号序列必然有界，无法满足无界生存信号条件。
 
 源码说明：Consequently, permanently eliminating a finite candidate family cannot produce the unbounded signal for any policy, even an active one.
@@ -1338,6 +1578,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.language_probe_loss_eq_dissipation
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1932)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入语言自生产候选实体、当前历史与到达字节，经候选参考探测桥接计算，输出探测损失精确等于该步语言耗散度量。
 
@@ -1365,6 +1609,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1980)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入语言自生产候选模型、历史与到达字节，经候选参考探测桥接计算，输出探测损失精确等于该步语言耗散度量。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -1386,6 +1634,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L1998)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入语言自生产候选模型与历史输入，经耗散度量展开，输出编码状态下的单步语言耗散精确等于被擦除因果候选的数量。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -1405,6 +1657,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.language_cumulative_erasure_balance
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2013)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入编码历史与字节输入序列，经累积消除计数求和，输出任意时刻剩余候选数加上累积语言耗散精确等于初始候选集基数。
 
@@ -1428,6 +1684,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2041)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入任意长输入字节序列与初始历史，经单向消除有界性检验，输出系统在全时域累积消除的因果候选总数受初始候选集基数一致上界控制。
 
 源码说明：The total number of eliminated distinctions cannot exceed the finite initial candidate set, regardless of the length of the stream.
@@ -1449,6 +1709,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2056)
 
+分类：necessity；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产动力学中消除歧义、维持长期存活与主动干预的必然限制。
+
 解释：输入有限候选集的单向消除机制，经有限基数势能分析，输出单向消除产生的有效信号在有限步后必耗尽，无法独立提供发散无界的生存信号。
 
 源码说明：Finite one-way candidate elimination cannot itself supply the unbounded signal assumed by the active-inference contract.
@@ -1467,6 +1731,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.language_self_production_bridge
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2071)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入语言自生产候选模型，经自生产契约映射提升，输出该候选模型直接诱导出一个良定的自生产契约实例。
 
@@ -1489,6 +1757,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2086)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入语言自生产候选模型，经联合公理规约检验，输出候选模型同时通过语言生命联合准入且在自身诱导的契约下满足自生产公理。
 
 源码说明：The named joint-admission proposition and the infinite self-producing trajectory now form one explicit language-life existence statement.
@@ -1510,6 +1782,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2103)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入语言候选模型自身动作条件下的边界转移核，经恒等映射构造，输出系统存在精确预测自身动作边界后果的因果模型。
 
 源码说明：In the joined language contract, the self-consequence predictor is a single function of the persistent memory, action, and boundary response.
@@ -1528,6 +1804,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2145)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入语言生命候选模型，经因果充分统计量与容量分析，输出系统在无限流下具备充分压缩载体、有限容量界、无界存活及形式因果后果模型。
 
 源码说明：Joint candidate-contract theorem. The finite state is the compressed carrier; the two fibre conditions make it a causal sufficient statistic; the next conjuncts expose capacity, dissipation, infinite viability, and a mathematical action-consequence function using the supplied world response. It does not establish a learned self-model.
@@ -1544,6 +1824,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.language_candidate_predictive_growth_positive
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2179)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入语言候选分配超越再投资成本的编码历史，经对数增益下界推导，输出预测流契约在所有该类历史上具有严格为正的净对数期望增长。
 
@@ -1565,6 +1849,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.language_conditional_joint_existence
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2202)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入满足轨迹对齐、交叉熵阈值与块学习递推条件的语言候选实体，经联合准入综合定理，输出同一候选模型全时域满足联合准入、无限存活、非最终被动性及正预测增长。
 
@@ -1608,6 +1896,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.minimal_generator_conditional_joint_existence
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2242)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入满足对齐、学习优势与收缩条件的最小生成元，经联合存在性定理，输出系统存在满足联合准入、无界自生产且非最终被动的语言生命实例。
 
@@ -1678,6 +1970,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2288)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入最小生成元驱动的无限流系统，经完整性定理推导，输出该系统在无限流输入下完全具备因果压缩充分性、状态容量界与无限存活保证。
 
 源码说明：The minimal generator is sufficient: `read` and `next` are materialized by history factorization, after which the complete joint theorem applies unchanged.
@@ -1697,6 +1993,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2301)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入可容许最小生成元，经无限流状态闭包推演，输出存在满足全开流语言生命候选准入的完整无限流生命系统。
 
 源码说明：Given an admissible minimal generator, there is a candidate satisfying the candidate specification. This assumes the generator and does not establish existence of an organism satisfying all original life requirements.
@@ -1715,6 +2015,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2345)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入可再生语言生成器与历史状态，经读出与推进算子检验，输出其读出值精确复现目标要求，且其单步推进与历史推进同态严格等价。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -1731,6 +2035,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.renewable_language_carrier_trajectory
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2375)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入可再生状态载体与生成轨迹，经逐项比较，输出该载体轨迹精确复现目标读出、字节状态转移以及与历史序列的一致对齐。
 
@@ -1752,6 +2060,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.precision_binary_update_is_predictive_improvement
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2409)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入任意正到达精度的二值输入与当前预测概率，经自然参数增量分析，输出精度导出的吸收更新严格降低到达样本的交叉熵损失且保持概率有界。
 
@@ -1775,6 +2087,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.precision_binary_sample_gain_not_future_guarantee
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2429)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入样本二值到达与底层平稳流，经信息散度比较，输出单步精度更新虽改进到达样本损失，但不保证已校准预测器在真实流上的期望损失能进一步降低。
 
@@ -1801,6 +2117,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2464)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入分类精度加权的自然参数吸收更新，经方向导数展开，输出吸收步进在下一字符预测方向上严格单调降低交叉熵损失。
 
 源码说明：Categorical precision-weighted assimilation improves the next symbol's log loss exactly when that symbol repeats the observed symbol; a different symbol becomes strictly less likely. This is a one-step realised outcome, not a claim about expected loss for a general language distribution.
@@ -1821,6 +2141,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.renewable_language_life_gate
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2521)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入可再生载体、显式预测付费机制与动作干预对比，经联合准入条件审核，输出系统通过可再生语言生命的全部门控公理。
 
@@ -1869,6 +2193,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2592)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入可再生生成元，经可再生门控存在性定理，输出由生成元构造的轨迹在每个有限前缀上均严格满足可再生语言生命准入规约。
 
 源码说明：Existential form of the renewable gate. The generated trajectory is the same one used by the carrier, active signal, and recurrent-learning clauses; it is not a separately chosen witness.
@@ -1902,6 +2230,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2675)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入开放世界单条具体演化轨迹，经存活与可再生性评定，输出该轨迹在面对任意开放输入流时均全局维持存活且严格实现可再生契约。
 
 源码说明：One open-world trajectory remains viable and realizes the readout for the history of its own delivered inputs. The external world and proof-side history need not be finite or stored inside the organism.
@@ -1930,6 +2262,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.renewable_open_language_joint_gate
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2715)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入开放本体-环境联合演化轨迹，经开流联合准入门控综合评定，输出开流系统在全时域上完全满足语言生命联合门控准入条件。
 
@@ -2007,6 +2343,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2794)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入开放流环境下的多类到达输入与精度更新，经方向导数分解，输出精度加权吸收步进沿下一字符对数似然梯度方向产生严格正向收益。
 
 源码说明：The categorical innovation condition applied to the actual boundary and the next actual boundary on one viable open-world trajectory. The next symbol is used only to assess the result; it is not an input to the earlier update.
@@ -2048,6 +2388,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.open_world_precision_update_improves_next_prediction
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2832)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入开流到达观测与严格正的输入精度，经自然参数步进凸性放缩，输出吸收更新后对下一时刻到达字符的预测交叉熵严格降低。
 
@@ -2110,6 +2454,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2902)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入对外部状态具有部分遮蔽观测的开放世界模型，经互信息上界定理，输出本体可摄取的外源信息流受遮蔽信道容量严格限制。
 
 源码说明：Under the same fixed delivered symbol, identical starting bodies have identical body states and actions for any two evolving external worlds. If those worlds instead require opposite equally likely next-bit predictions, the common body-only prediction has at least one bit of average log loss. The separation of future targets is an explicit world condition.
@@ -2141,6 +2489,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2934)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入具有开流冲突环境的安全转移闭包，经反证法，输出在面对未观测外源扰动时系统不可能同时存在两个互斥且绝对安全的外周动作。
 
 源码说明：The present `RenewableOpenWorld.closed` quantifies over every hidden world state at a viable encoded body. It therefore excludes a pair of worlds that require two different actions for even one-step body viability. This pinpoints a limitation of that contract, not an impossibility of life in such worlds.
@@ -2160,6 +2512,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.indistinguishable_joint_worlds_cannot_both_stay_viable
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2951)
+
+分类：necessity；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产动力学中消除歧义、维持长期存活与主动干预的必然限制。
 
 解释：输入对当前本体完全隐藏不可区分的两个外部世界，经反事实存活推演，输出单一固定盲目策略不可能在两个对立世界中同时永久存活。
 
@@ -2181,6 +2537,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.joint_viability_policy_generation
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L2976)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入局部相容的联合存活区域，经充要条件构造，输出存在仅依赖本体状态的策略能够使系统在正概率路径上全时域保持在存活区间内。
 
@@ -2204,6 +2564,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3007)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入在某封闭区域内起始的有限状态机与外部不可达状态，经单步转移闭包归纳，输出外部状态在任意时间步的前向生成概率恒为零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -2221,6 +2585,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.stochastic_joint_viability_policy_generation
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3039)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入随机物理环境模型，经仅依赖本体状态的马尔可夫策略构造，输出该策略能确保系统在所有正概率转移路径上全时域保持在可存活区间内。
 
@@ -2247,6 +2615,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.stochastic_joint_recovery_policy_generation
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3072)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入具有操作级恢复需求的系统模型，经随机策略参数化，输出构造出一个随机闭环策略，使系统同时满足操作级恢复与确定性可达性要求。
 
@@ -2278,6 +2650,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3115)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入满足分级恢复证书的系统与任意正概率支撑无限序列，经时间窗口覆盖定理，输出在任意长度为horizon的连续窗口内必包含至少一个标记事件。
 
 源码说明：The existing ranked recovery certificate forces a marked event in every `horizon`-tick window along every infinite sequence of supported transitions. The sequence is a mathematical path, not an asserted infinite-path measure; the mark can denote any actually declared event.
@@ -2296,6 +2672,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.ranked_exists_recurrently_marked_path
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3162)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入带有分级恢复证书的有限事件核与种子初态，经确定性路径提升，输出存在一条正概率支撑的无限路径，在其任意有限视界窗口内必循环出现标记恢复事件。
 
@@ -2316,6 +2696,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.masked_world_prediction_and_viability_limit
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3201)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入隐藏变量不可观测的受遮蔽世界，经贝叶斯滤波可辨识性分析，输出本体预测准确度与存活概率受限于对未观测隐变量的先验不确定性。
 
@@ -2369,6 +2753,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3234)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入外生开放流环境，经因果干预分析，输出到达输入字符序列独立于本体微观物理状态及其内部读出动作。
 
 源码说明：If hidden world states can give different boundary inputs at the same organism state and action, no state-only predictor is correct for both.
@@ -2386,6 +2774,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.open_world_body_prediction_iff
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3247)
+
+分类：necessity；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产动力学中消除歧义、维持长期存活与主动干预的必然限制。
 
 解释：输入开放世界模型与依赖本体的预测算子，经充要等价性推导，输出存在准确本体预测器当且仅当本体状态包含外部世界后继状态的充分统计量。
 
@@ -2408,6 +2800,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.reachable_consequence_readout_iff
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3268)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入限制在可达联合状态集上的后果预测器，经单态延拓推演，输出存在精确后果预测算子充要等价于在所有可达状态上因果读出相容。
 
@@ -2432,6 +2828,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3364)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入开放流世界中的外部输入流，经因果干预隔离分析，输出外部世界的字符流由外生过程生成，不被本体内部微观动作所虚假篡改。
 
 源码说明：In the existing open-stream witness, every action intervention leaves the external cursor on exactly the same trajectory. Actions affect the boundary response but not the evolution of this world's own state.
@@ -2450,6 +2850,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.existing_renewable_open_stream_witness
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3380)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入外部字符游标单向推进的开放流模型，经有限状态吸收检验，输出系统在每个时钟周期稳步摄入并处理外源字符流。
 
@@ -2479,6 +2883,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3405)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入开放环境的首个外源输入，经初始探测步进，输出有限状态载体精确记录并锁存首个外部输入信号，供后续多周期读取。
 
 源码说明：On the initial probe, the existing finite carrier records which external answer arrived. The value is supplied by the world, not the body state.
@@ -2497,6 +2905,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.renewable_open_distinct_inputs_reach_distinct_states
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3422)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入在首个观察位上取值不同的两个外源世界输入，经开放流初始探测，输出系统在首个时间步即转移至两个完全不同且互斥的内部物理状态。
 
@@ -2529,6 +2941,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3436)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入开放见证世界中的初始探测动作与替代动作，经状态转移单步比较，输出改变初始动作对后继本体微观物理状态产生本质改变。
 
 源码说明：In this witness world, replacing the initial probe by the passive action changes the next body state: the passive step retains `search`, while the actual probe records the external answer.
@@ -2553,6 +2969,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3454)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入在开放流见证系统上施加全被动动作干预，经状态转移轨迹追踪，输出全被动策略使系统永久停滞在未初始化的初始搜索态，无法进入工作循环。
 
 源码说明：In the open-stream witness an always-passive intervention stays in the non-vacuum `search` state forever. The witness therefore does not establish that activity is necessary for its non-vacuum viability predicate.
@@ -2571,6 +2991,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.renewable_open_stream_recurrently_writes
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3474)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入处于开放流中的见证系统，经时钟节拍分析，输出系统每隔三个时间步循环回到探测状态并执行一次物理有效写入。
 
@@ -2595,6 +3019,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.renewable_open_probe_records_then_reopens
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3537)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入开放探测机制，经时序演化分解，输出每次探测能够连续保留当前外源比特两个周期，随后按节拍安全重开放隐藏分支。
 
@@ -2624,6 +3052,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 ## CGB.SelfProduction.renewable_open_probe_enables_conditional_action
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3585)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入存储了初始外源探测记录的内部载体，经下游动作策略读取，输出已记录的历史信息直接使下游动作能够执行有条件的差异化动作分支。
 
@@ -2657,6 +3089,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3614)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入简单循环重写机制与相隔两周期的历史区分，经重写覆盖推导，输出若仅依赖无保护的循环重写，新到达输入将不可逆抹除旧的延迟历史区分信息。
 
 源码说明：Recurrent writing is not enough for delayed credit: if two streams differ at one probe but agree at the next, the body first distinguishes them and then merges them. No body-only readout can recover the earlier bit after that merge. A world observation or accessible external record can change the information available to a later rule and is not ruled out here.
@@ -2686,6 +3122,10 @@ CGB.SelfProduction.renewableActionMachine.step 0 CGB.RenewableLearning.initial (
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3646)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入可再生载体转移规则，经相容性检验，输出派生出的新状态转移算子完全继承并复用旧见证系统的写入与恢复规则。
 
 源码说明：The derived transition admits the old witness's writing, renewal and reopening steps on one finite carrier.
@@ -2707,6 +3147,10 @@ CGB.SelfProduction.renewableLanguageNext CGB.SelfProduction.existingRenewableCar
 ## CGB.SelfProduction.existing_renewable_autonomous_cycle
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3659)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入确定性见证世界模型，经有限周期轨迹闭包分析，输出系统在无外部重启下能够自主运转并循环往复保持自维持闭环。
 
@@ -2731,6 +3175,10 @@ CGB.SelfProduction.renewableLanguageNext CGB.SelfProduction.existingRenewableCar
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3701)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入闭合三状态循环轨迹与单调非增的固定状态预测损失，经有限循环鸽巢分析，输出该损失在整个循环轨道上的所有状态处必恒定为同一常数。
 
 源码说明：On the existing closed three-state witness, a fixed state-dependent loss that never increases cannot strictly improve anywhere in the cycle. In particular, recurrent strict improvement against one stationary law requires allowing loss increases, changing the state/world, or changing the comparison. This does not constrain a nonperiodic open-world trajectory.
@@ -2754,6 +3202,10 @@ CGB.SelfProduction.renewableLanguageNext CGB.SelfProduction.existingRenewableCar
 ## CGB.SelfProduction.existing_renewable_cycle_active_and_viable
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3722)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入有限见证系统循环轨迹，经真空态与被动策略排查，输出该循环轨迹全局脱离真空死态、拒绝最终被动性且始终位于存活流形内。
 
@@ -2780,6 +3232,10 @@ CGB.SelfProduction.renewableLanguageNext CGB.SelfProduction.existingRenewableCar
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3745)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入静息条件下本体冻结的物理介质，经世界归一化核展开，输出在首个观测之后的任意长静息延迟时刻其带标签记忆边际分布恒定不变。
 
 源码说明：When quiet freezes the body, the historical tagged memory law has the same body marginal after the first observation at every later time. The world may still evolve; this uses only normalization of its transition kernel.
@@ -2796,6 +3252,10 @@ CGB.SelfProduction.renewableLanguageNext CGB.SelfProduction.existingRenewableCar
 ## CGB.SelfProduction.quiet_identity_old_memory_iff_one_write
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3776)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入静息条件下内部微观状态冻结的物理本体，经无限时间条件互信息化简，输出该历史记忆保持公理成立充要等价于存在单次正信息写入。
 
@@ -2814,6 +3274,10 @@ CGB.SelfProduction.renewableLanguageNext CGB.SelfProduction.existingRenewableCar
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3797)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入在静息条件下内部微观状态完全冻结的本体，经公理矛盾推导，输出系统无法满足要求静息动态调整的历史持久性公理Persists。
 
 源码说明：If calm freezes every body state, the historical `Persists` contract is impossible: under permanent calm its body-only alive score stays at the initial value, which normal persistence requires to be above threshold.
@@ -2830,6 +3294,10 @@ CGB.SelfProduction.renewableLanguageNext CGB.SelfProduction.existingRenewableCar
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3834)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入在静息条件下冻结的优雅恢复见证本体，经反证法推导，输出该本体无法满足要求非平凡静息演化的历史持久性公理Persists。
 
 源码说明：The grace witness freezes under calm, so it cannot satisfy the old long-disconnection requirement, regardless of its other operational proofs.
@@ -2843,6 +3311,10 @@ CGB.SelfProduction.renewableLanguageNext CGB.SelfProduction.existingRenewableCar
 ## CGB.SelfProduction.sensory_loss_and_historical_interrupt_differ
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3846)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入单次感知丢失冲击与要求完全无中断的历史持久性公理，经鲁棒性对比，输出感知维持系统能容忍单次感知丢失，但该动态演化不满足严格的静态历史公理。
 
@@ -2878,6 +3350,10 @@ CGB.SelfProduction.renewableLanguageNext CGB.SelfProduction.existingRenewableCar
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3872)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入优雅恢复见证模型，经单次写入检验充分性证明，输出历史记忆保持准则成立充要等同于仅检验单步写入后的状态差异。
 
 源码说明：In the same grace witness, the old memory criterion only tests whether one observation can add conditional information before quiet freezing.
@@ -2894,6 +3370,10 @@ CGB.GraceRecovery.body.Remembers CGB.GraceRecovery.world ↔
 ## CGB.SelfProduction.grace_reachable_memory_changes_action
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3885)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入优雅恢复世界中两条已认证的有限路径，经策略查表比较，输出两路径在终止时刻根据其保留的不同记忆选择不同的外部动作。
 
@@ -2914,6 +3394,10 @@ have q := CGB.SelfProduction.renewableObservableFromBirth fun x => true;
 ## CGB.SelfProduction.grace_reachable_equal_budget_memory_contrast
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3923)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入来自同一起始状态的两条历史轨迹，经算术比对，输出两条可达历史在达到相同预算和环境的同时内部记忆状态显著不同。
 
@@ -2957,6 +3441,10 @@ have q := CGB.SelfProduction.renewableObservableFromBirth fun x => true;
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L3971)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入非真空本体状态与环境状态，经策略动作重连映射，输出环境自发转移核与外周动作驱动转移核严格重合。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -2972,6 +3460,10 @@ have q := CGB.SelfProduction.renewableObservableFromBirth fun x => true;
 ## CGB.SelfProduction.grace_action_intervention_contrast
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4015)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入重连本体内部策略后的动作干预，经轨迹概率比对，输出策略重连精确复现原随机过程在每个有限视界内的全部转移概率。
 
@@ -3000,6 +3492,10 @@ have q := CGB.SelfProduction.renewableObservableFromBirth fun x => true;
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4056)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入既有优雅恢复见证模型，经局部马尔可夫核参数提取，输出其满足随机联合生成元的全部局部条件。
 
 源码说明：The existing grace witness supplies the local conditions of the stochastic joint generator: its already-proved good region is invariant under the original body policy. The selected policy is not asserted to equal that original policy; equality of the original policy's full law is the separate `grace_action_intervention_contrast` result.
@@ -3022,6 +3518,10 @@ have q := CGB.SelfProduction.renewableObservableFromBirth fun x => true;
 ## CGB.SelfProduction.grace_joint_recovery_generator_exists
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4078)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入有限优雅恢复环境模型，经生成元参数提取，输出系统存在满足强化联合恢复生成元条件的具体物理生成元。
 
@@ -3046,6 +3546,10 @@ have mark :=
 ## CGB.SelfProduction.grace_reachable_one_action_consequence
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4108)
+
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入已认证的前缀路径并在终止处施加单步动作覆盖，经转移核求值，输出单步动作干预以严格为正的概率产生不同的环境状态。
 
@@ -3080,6 +3584,10 @@ have path := CGB.SelfProduction.renewableObservableFromBirth fun x => true;
 ## CGB.SelfProduction.grace_one_reopening_intervention_consequence
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4139)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入在出现不匹配时覆盖重开放的一个事件干预，经转移追踪，输出单次动作覆盖导致系统在有限步后进入可区分的后继支路。
 
@@ -3129,6 +3637,10 @@ have off :=
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4191)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入恒定执行动作0的干预策略，经2步动力学推进，输出两步后本体以概率1衰变塌缩至真空死态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -3144,6 +3656,10 @@ CGB.Energetics.law (CGB.SelfProduction.graceActionAlways 0) CGB.RenewableLearnin
 ## CGB.SelfProduction.grace_recovery_learning_joint
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4233)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入优雅恢复随机过程，经联合恢复与学习公理检验，输出该系统同时具备操作持久性、单次写入记忆保持及循环重学习能力。
 
@@ -3176,6 +3692,10 @@ CGB.Exchange.Persists CGB.GraceRecovery.body CGB.GraceRecovery.world CGB.GraceRe
 ## CGB.SelfProduction.grace_original_policy_joint_certificate
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4255)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入具体本体策略及其对应随机过程，经联合条件验证，输出该系统同时满足确定性存活、操作级恢复与可达动作对比三项证书。
 
@@ -3220,6 +3740,10 @@ have mark :=
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4299)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入优雅恢复系统的任意正概率支撑无限路径，经吸收态分析，输出只要系统维持存活，则该路径必无限循环摄入外周负熵。
 
 源码说明：On every infinite supported path of the original grace process, actual intake occurs in every three-tick window. This strengthens finite-prefix support for intake only, not for paid learning writes.
@@ -3244,6 +3768,10 @@ have mark :=
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4316)
 
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入原始优雅恢复随机过程，经可达分支遍历，输出存在至少一条具有正概率支撑的无限路径能够无限循环摄入外周负熵。
 
 源码说明：The original process has at least one infinite supported path, and each three-tick window on that path contains actual intake.
@@ -3267,6 +3795,10 @@ have mark :=
 ## CGB.SelfProduction.grace_infinite_supported_learning_and_intake
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4339)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入已登记的带付费重学习路径，经无穷时间极限提升，输出该路径自身构成一条同时具有持续学习和持续物质摄入的无限有效路径。
 
@@ -3302,6 +3834,10 @@ path 0 = CGB.RenewableLearning.initial ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4380)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入优雅恢复随机过程，经特定路径构造，输出存在一条正概率支撑的无限路径，在其有限前缀后不再发生任何物理写入。
 
 源码说明：The same grace process also admits an infinite supported path that stops paid writing after its initial phase. Thus bounded-gap ranked recurrence of paid writes cannot hold on every supported path from the seed, even though a different supported path has unbounded writing. This does not decide the probability of eventual stopping under an infinite-path measure.
@@ -3323,6 +3859,10 @@ path 0 = CGB.RenewableLearning.initial ∧
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4436)
 
+分类：design；适用范围：universal；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
+
 解释：输入具有独立不可逆失效概率的分块学习系统，经伯努利概率连乘，输出持续学习整体失败的概率随时间块数呈指数几何衰减。
 
 源码说明：Minimal probabilistic upgrade for persistent learning: if the probability of no useful learning event after `n` completed blocks is `q n`, and every block has conditional success at least `p`, then failure is bounded by `(1-p)^n`. This is an abstract finite-prefix inequality; a real infinite process must separately prove the conditional minorization premise.
@@ -3336,6 +3876,10 @@ path 0 = CGB.RenewableLearning.initial ∧
 ## CGB.SelfProduction.language_conditional_joint_specification
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4465)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入语言自生产候选模型，经条件联合规约展开，输出系统各步完全满足可存活、非被动、正对数增长以及块学习有界衰减等多项综合保证。
 
@@ -3381,6 +3925,10 @@ path 0 = CGB.RenewableLearning.initial ∧
 ## CGB.SelfProduction.minimal_generator_conditional_joint_specification
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4496)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入满足相容条件的最小生成元，经综合规约展开，输出系统各时间步满足轨迹可存活、策略非被动与正预测增长等多重保证。
 
@@ -3453,6 +4001,10 @@ path 0 = CGB.RenewableLearning.initial ∧
 ## CGB.SelfProduction.exists_conditionally_operating_language_life_of_minimal_generator
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean#L4548)
+
+分类：design；适用范围：world_contract；审核：reviewed
+
+分类说明：自生产机体语言生成、关联吸收更新、自我预测模型与耗散记账机制。
 
 解释：输入可容许的最小生成元，经全门控存在性提升，输出存在一个条件运行的语言生命候选实体，其完整联合闭环全时域成立。
 

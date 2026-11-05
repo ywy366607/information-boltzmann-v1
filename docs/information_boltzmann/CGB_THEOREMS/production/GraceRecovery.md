@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L50)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：给出宽限恢复模型中各细胞构型对应策略动作的显式分段查找表。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -33,6 +37,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L68)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：在良性状态下，宽限恢复环境的转移概率与标准可再生学习环境的转移完全相同。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -47,6 +55,10 @@
 ## _private.CGBAxioms.GraceRecovery.0.CGB.GraceRecovery.good_safe
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L73)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：所有处于良性集合的状态必然属于安全集合。
 
@@ -63,6 +75,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L76)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：处于安全集合的机体构型必非真空空虚死态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -77,6 +93,10 @@
 ## _private.CGBAxioms.GraceRecovery.0.CGB.GraceRecovery.normal_good
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L79)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：在正常环境转移下，安全状态在一步演化后依然保持在良性集合内。
 
@@ -95,6 +115,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L86)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：在正常环境转移下，安全状态集合在一步转移后保持前向不变封闭性。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -112,6 +136,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L92)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：处于良性状态的机体在经历空闲等待转移后依然维持在安全状态集内。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -126,6 +154,10 @@
 ## _private.CGBAxioms.GraceRecovery.0.CGB.GraceRecovery.normal_zero
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L99)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：安全机体若在某步未获得摄入，则环境必发生未命中转移并进入探测态。
 
@@ -146,6 +178,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L107)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：空闲等待步在势能度量上产生严格进展，排除系统发生无限死锁循环。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -162,6 +198,10 @@
 ## CGB.GraceRecovery.supported
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L117)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：所有受支持的机体事件均精确执行原局部更新，且空闲状态摄入通量严格为零。
 
@@ -183,6 +223,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L157)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：在探测环境A或B中，系统的恢复势能函数值严格不超过1。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -197,6 +241,10 @@
 ## _private.CGBAxioms.GraceRecovery.0.CGB.GraceRecovery.stimulus_before
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L162)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：在单步中断时刻之前，施加给机体的刺激信号严格等于环境真实传感器感知信号。
 
@@ -213,6 +261,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L166)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
+
 解释：在设定的中断时刻n₀，环境向机体注入的刺激被严格置换为空闲静默信号。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -226,6 +278,10 @@
 ## _private.CGBAxioms.GraceRecovery.0.CGB.GraceRecovery.stimulus_after
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L169)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：在中断时刻n₀之后，输入刺激信号瞬时恢复为环境真实的实时传感器观测。
 
@@ -241,6 +297,10 @@
 ## _private.CGBAxioms.GraceRecovery.0.CGB.GraceRecovery.scheduled_closed
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L173)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：首次命中核、恢复准则与吸收态时变转移边界分析。
 
 解释：安全区域在时序中断协议驱动下依然保持步步前向不变封闭性。
 
@@ -258,6 +318,10 @@
 ## _private.CGBAxioms.GraceRecovery.0.CGB.GraceRecovery.scheduled_progress
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L200)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在指定中断协议、区域条件和正概率一步下，若该步没有摄入，则定义的势函数严格下降。
 
@@ -279,6 +343,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L240)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：位于宽限恢复安全区域内的所有机体构型其所含有效物质总量均严格大于零。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -292,6 +360,10 @@
 ## CGB.GraceRecovery.one_tick_survival
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L251)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在遭受单拍感知中断扰动后，机体在宽限恢复协议下的全时生存概率恒等于1。
 
@@ -310,6 +382,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L258)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
+
 解释：机体具备对单拍环境感知中断的完全容忍耐受性（单拍耐受定理成立）。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -324,6 +400,10 @@ CGB.Exchange.ToleratesSensoryInterruption CGB.GraceRecovery.body CGB.GraceRecove
 ## CGB.GraceRecovery.natural_survival
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GraceRecovery.lean#L291)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：GraceRecovery
+
+分类说明：针对具体 GraceRecovery 身体/环境模型实例的生存、截断或转移性质验证。
 
 解释：在自然无干扰的环境感知流驱动下，机体的全时段综合生存概率恒等于1。
 

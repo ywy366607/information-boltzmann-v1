@@ -10,7 +10,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L25)
 
-解释：Transposing a finite linear contact read returns exactly the same scalar contraction; the return is not an independently learned feedback matrix.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：转置有限线性接触读出所得到的标量收缩算子与原前向读出伴随完全一致；反向返回系数直接对应同一物理接触权重，而非独立的外部反馈矩阵。
 
 源码说明：Transposing a finite linear contact read returns exactly the same scalar contraction; the return is not an independently learned feedback matrix.
 
@@ -25,7 +29,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L39)
 
-解释：Incoming-minus-outgoing periodic flux has the next-minus-local adjoint. `next.symm` is the predecessor, so this covers any finite periodic geometry.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：对于任意有限周期几何上的流入减流出通量，其伴随算子精确等于后继减去局部的前向差分；周期置换的前驱即其逆映射。
 
 源码说明：Incoming-minus-outgoing periodic flux has the next-minus-local adjoint. `next.symm` is the predecessor, so this covers any finite periodic geometry.
 
@@ -40,7 +48,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L53)
 
-解释：Two transport directions add their local adjoints without retaining a transport trajectory or its past pullbacks.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：两个传输方向上的局部通量伴随可直接线性相加，无需保存历史传输轨迹或执行过去的伴随反传。
 
 源码说明：Two transport directions add their local adjoints without retaining a transport trajectory or its past pullbacks.
 
@@ -52,11 +64,33 @@
     ∑ i, ((v (p i) - v i) * f i + (v (q i) - v i) * g i)
 ```
 
+## CGB.Generation.ContactPlasticity.tanh_offset_deriv
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L66)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：双曲正切函数在任意实数基值偏移下的局部一阶导数精确等于一减去该点双曲正切值的平方。
+
+源码说明：The actual bounded transport law has the exact local factor used by the runtime: an infinitesimal change of a pre-flow changes `tanh flow` by `1 - tanh(flow)^2`. Combined with `periodic_flux_return`, this is a purely current-event pullback through the conservative flow, not a stored temporal gradient.
+
+形式陈述：
+
+```lean
+∀ (raw : ℝ), HasDerivAt (fun θ => Real.tanh (raw + θ)) (1 - Real.tanh raw ^ 2) 0
+```
+
 ## CGB.Generation.ContactPlasticity.allocation_normalization_cancels
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L63)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L95)
 
-解释：Positive total drive cancels between admission and normalized target. No assumption on the capacity divisor is needed for this algebraic identity.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：当总驱动量非零时，准入有效驱动项与归一化目标项中的总驱动因子精确相消，证明两步归一化代数形式在任何正容量除数下均保持不变。
 
 源码说明：Positive total drive cancels between admission and normalized target. No assumption on the capacity divisor is needed for this algebraic identity.
 
@@ -69,9 +103,13 @@
 
 ## CGB.Generation.ContactPlasticity.normalized_actual_pool
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L73)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L105)
 
-解释：The cancellation holds inside the actual shared reservoir, with its old occupation and coordinatewise release unchanged.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：在实际共享池中，总驱动量非零时归一化因子的代数对消依然严格成立，旧占用分布与逐坐标释放率保持不变。
 
 源码说明：The cancellation holds inside the actual shared reservoir, with its old occupation and coordinatewise release unchanged.
 
@@ -88,9 +126,13 @@
 
 ## CGB.Generation.ContactPlasticity.sigmoid_runtime_formula
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L96)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L128)
 
-解释：Mathlib's sigmoid is exactly the runtime logistic expression.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：标准 Sigmoid 函数的值域和代数形式严格等于数值运行时的 logistic 表达式 1 / (1 + exp(-x))。
 
 源码说明：Mathlib's sigmoid is exactly the runtime logistic expression.
 
@@ -102,9 +144,13 @@
 
 ## CGB.Generation.ContactPlasticity.endpoint_allocation_deriv
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L102)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L134)
 
-解释：Exact allocation response to one endpoint's local pre-weight perturbation; `pre` is fixed and the sigmoid supplies the current post-response factor.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：在端点分配中，关于单侧参数扰动在原点处的一阶导数精确等于均值 Sigmoid 导数形式乘以 pre/2。
 
 源码说明：Exact allocation response to one endpoint's local pre-weight perturbation; `pre` is fixed and the sigmoid supplies the current post-response factor.
 
@@ -118,9 +164,13 @@
 
 ## CGB.Generation.ContactPlasticity.endpoint_retention_deriv
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L113)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L145)
 
-解释：Exact mean-retention response at one perturbed endpoint. Unlike allocation, the sigmoid is applied before the two endpoints are averaged.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：在端点保持中，关于单侧参数扰动在原点处的一阶导数精确等于单侧 Sigmoid 导数形式乘以 pre/2。
 
 源码说明：Exact mean-retention response at one perturbed endpoint. Unlike allocation, the sigmoid is applied before the two endpoints are averaged.
 
@@ -134,9 +184,13 @@
 
 ## CGB.Generation.ContactPlasticity.local_potential_zero_eligibility
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L131)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L163)
 
-解释：Vanishing participation tags make the entire parameter-dependent proxy identically zero, not merely its value at a chosen parameter.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：当所有槽位的参与资格标记均为零时，整个依赖参数的局部更新代理量在全空间恒等于零，而非仅在选定参数点处为零。
 
 源码说明：Vanishing participation tags make the entire parameter-dependent proxy identically zero, not merely its value at a chosen parameter.
 
@@ -150,9 +204,13 @@
 
 ## CGB.Generation.ContactPlasticity.local_potential_zero_return
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L137)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L169)
 
-解释：A zero current local return also makes the stopped-coefficient proxy zero.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：当当拍局部语言返回标量为零时，具有停止梯度的局部更新代理项全部分量恒等于零。
 
 源码说明：A zero current local return also makes the stopped-coefficient proxy zero.
 
@@ -166,9 +224,13 @@
 
 ## CGB.Generation.ContactPlasticity.local_potential_deriv
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L145)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L177)
 
-解释：Exact current-event derivative through the actual inflow and coordinatewise release. Old S, target, gate, lambda and eligibility are constant here; this is not the derivative of a state trajectory or of the current language CE.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：当前事件通过实际流入与逐坐标释放所产生的精确局部势能导数，在历史状态、门控与资格迹固定时构成严格的单拍因果 VJP，不跨越时间反传。
 
 源码说明：Exact current-event derivative through the actual inflow and coordinatewise release. Old S, target, gate, lambda and eligibility are constant here; this is not the derivative of a state trajectory or of the current language CE.
 
@@ -191,9 +253,13 @@
 
 ## CGB.Generation.ContactPlasticity.allocation_pool_pre_post_coefficient
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L167)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L199)
 
-解释：Actual normalized allocation, allowing target and total admission to vary together. `capacity` is rank K, not the number of source-expanded coordinates. Only the selected source's drive is nonzero in the runtime instantiation.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：在目标分布与总准入量同时变动的归一化分配更新下，任意槽位的一阶导数精确分解为选通驱动增量、总体准入驱动及池保持因子的代数线性组合。
 
 源码说明：Actual normalized allocation, allowing target and total admission to vary together. `capacity` is rank K, not the number of source-expanded coordinates. Only the selected source's drive is nonzero in the runtime instantiation.
 
@@ -216,9 +282,13 @@
 
 ## CGB.Generation.ContactPlasticity.retention_pool_pre_post_coefficient
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L201)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L233)
 
-解释：The actual release is A*(1-retention), so a retention logit's response has a positive sign and is contracted with old S across all source coordinates. Equal per-rank endpoint logits across sources specialize this sum directly.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：实际释放形式为 A*(1-retention)，因此保持度 logits 的导数具有正号并与各源坐标上的旧 S 状态收缩，直接给出逐 rank 端点 logits 的梯度解析形式。
 
 源码说明：The actual release is A*(1-retention), so a retention logit's response has a positive sign and is contracted with old S across all source coordinates. Equal per-rank endpoint logits across sources specialize this sum directly.
 
@@ -238,9 +308,13 @@
 
 ## CGB.Generation.ContactPlasticity.local_direction_self_nonneg
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L225)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationContactPlasticity.lean#L257)
 
-解释：A parameter direction contracted with itself is nonnegative. This concerns only the local proxy's own direction, not descent of a different CE objective.
+分类：design；适用范围：candidate；审核：reviewed；候选：Column
+
+分类说明：针对 Column 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：任意有限维参数方向向量与自身的内积（平方和）严格非负；该性质保证局部代理梯度的自乘积始终构成非负上升度量。
 
 源码说明：A parameter direction contracted with itself is nonnegative. This concerns only the local proxy's own direction, not descent of a different CE objective.
 

@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortContracts.lean#L25)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：PortContracts 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：复合交互协议在感官投影下精确提取出纯环境信号交互轨迹。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -26,6 +30,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortContracts.lean#L30)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：PortContracts 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：复合交互协议在资源投影下精确还原为单端口纯物质流动协议。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -41,6 +49,10 @@
 ## CGB.PortContracts.admission_port_factorizes
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortContracts.lean#L47)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：PortContracts 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：准入端口合约在感官测量与资源补给之间实现完全的笛卡尔因子分解。
 
@@ -59,6 +71,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortContracts.lean#L53)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：PortContracts 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：准入储库合约保证资源在有限步骤内被有效利用，且空储库单步不产生虚假利用。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -76,6 +92,10 @@
 ## CGB.PortContracts.recovery_preserved
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortContracts.lean#L69)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：PortContracts 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：在满足端口合约的相互作用下，系统的状态可恢复性在端口连接前后保持不变。
 
@@ -96,6 +116,10 @@
 ## CGB.PortContracts.elapsed_preserved
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/PortContracts.lean#L81)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：PortContracts 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：端口协议作用下，系统所经历的物理流逝时间与各端口局部时钟严格对齐。
 

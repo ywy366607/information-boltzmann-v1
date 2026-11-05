@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L53)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：SeedMemory
+
+分类说明：针对 SeedMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入种子环境时钟算子，经结构事件界校验，输出系统满足有限离散时钟界公理Clocked。
 
 源码说明：The existing structural event bound admits this world's exact clock.
@@ -23,6 +27,10 @@ CGB.Models.seed.Clocked CGB.SeedMemory.world.clock
 ## CGB.SeedMemory.law_one
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L57)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：SeedMemory
+
+分类说明：针对 SeedMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入物理介质、世界模型与首步感知调度，经单步转移律坍缩，输出单步联合概率等于世界转移项与介质转移核的标量乘积。
 
@@ -41,6 +49,10 @@ CGB.Models.seed.Clocked CGB.SeedMemory.world.clock
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L76)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：SeedMemory
+
+分类说明：针对 SeedMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入初始种子状态与输入动作，经介质动作推进，输出首步跳跃后的状态严格等于预设的写入前状态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -54,6 +66,10 @@ CGB.Models.seed.act (Sum.inl (0, 1)) CGB.Models.seed.calm CGB.Models.seed.init =
 ## CGB.SeedMemory.first_hop_pos
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L81)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：SeedMemory
+
+分类说明：针对 SeedMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入初始状态与写入前状态，经物理核单步积分，输出首步转移概率严格大于零。
 
@@ -69,6 +85,10 @@ CGB.Models.seed.act (Sum.inl (0, 1)) CGB.Models.seed.calm CGB.Models.seed.init =
 ## CGB.SeedMemory.prefix_pos
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L90)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：SeedMemory
+
+分类说明：针对 SeedMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入布尔输入标签，经单步可达性验证，输出该标签在写入前状态具有严格正的生成概率。
 
@@ -86,6 +106,10 @@ CGB.Models.seed.act (Sum.inl (0, 1)) CGB.Models.seed.calm CGB.Models.seed.init =
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L97)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：SeedMemory
+
+分类说明：针对 SeedMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入写入前微观态与写入动作，经物质源摄入动作变换，输出状态精确转变为写入后微观态。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -100,6 +124,10 @@ CGB.Models.seed.act (Sum.inr true) CGB.Models.food CGB.SeedMemory.beforeWrite = 
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L102)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：SeedMemory
+
+分类说明：针对 SeedMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入写入前后状态，经总占有数求和算子，输出写入动作使系统物质总占有数从1严格增加到2。
 
 源码说明：Food really increases total from one to two through the existing source.
@@ -113,6 +141,10 @@ CGB.Models.seed.total CGB.SeedMemory.beforeWrite = 1 ∧ CGB.Models.seed.total C
 ## CGB.SeedMemory.write_pos
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L106)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：SeedMemory
+
+分类说明：针对 SeedMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入写入动作刺激与写入前后状态，经转移核求值，输出写入转移概率严格大于零。
 
@@ -130,6 +162,10 @@ CGB.Models.seed.total CGB.SeedMemory.beforeWrite = 1 ∧ CGB.Models.seed.total C
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L116)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：SeedMemory
+
+分类说明：针对 SeedMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入静息转移对，经粗粒化观测算子投影，输出任意正概率静息跳跃均严格保持宏观读出观测值不变。
 
 源码说明：Positive quiet transitions preserve the readout even though hops continue.
@@ -146,6 +182,10 @@ CGB.Models.seed.total CGB.SeedMemory.beforeWrite = 1 ∧ CGB.Models.seed.total C
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L125)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：SeedMemory
+
+分类说明：针对 SeedMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入种子物理介质与世界模型，经实际正概率前缀与摄入通道的条件互信息综合，输出系统满足条件互信息记忆保持公理Remembers。
 
 源码说明：The original full-body CMI memory clause, derived from actual positive prefixes and source intake, with no assumed positive-information premise.
@@ -160,6 +200,10 @@ CGB.Models.seed.Remembers CGB.SeedMemory.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L135)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：SeedMemory
+
+分类说明：针对 SeedMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入静息条件下的种子介质，经反应事件搜索，输出存在正速率物理事件能够改变本体微观状态（静息不等于恒等静止）。
 
 源码说明：Quiet is not an identity dynamics: a positive-rate event changes the body.
@@ -173,6 +217,10 @@ CGB.Models.seed.Remembers CGB.SeedMemory.world
 ## CGB.SeedMemory.partial_has_hop
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L142)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：SeedMemory
+
+分类说明：针对 SeedMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入部分占据的4位环状布尔微观状态，经邻接关系搜索，输出必然存在相邻的一对占据与非占据节点允许发生跳跃。
 
@@ -189,6 +237,10 @@ CGB.Models.seed.Remembers CGB.SeedMemory.world
 ## CGB.SeedMemory.partial_rate_one
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L153)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：SeedMemory
+
+分类说明：针对 SeedMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入部分占据微观态与任意外部刺激，经动作空间检验，输出存在速率为1的合法跳跃动作使物理状态发生非平凡改变。
 
@@ -207,6 +259,10 @@ CGB.Models.seed.Remembers CGB.SeedMemory.world
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L169)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：SeedMemory
+
+分类说明：针对 SeedMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入部分占据的种子微观态与调度序列，经多步保持核连乘分析，输出连续n步未离开当前微观态的保持概率受(1 - 1/18)^n几何衰减约束。
 
 源码说明：The probability of never leaving a partial microstate has a geometric bound, while the coarse memory remains. This is not a bound on return visits.
@@ -224,6 +280,10 @@ CGB.Models.seed.Remembers CGB.SeedMemory.world
 ## CGB.SeedMemory.physical_memory_component
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSeedMemory.lean#L181)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：SeedMemory
+
+分类说明：针对 SeedMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入种子物理介质与世界模型，经公理检验与静息分析，输出该介质同时满足物理公理、有界时钟、记忆保持公理以及具有非平凡静息状态转移。
 

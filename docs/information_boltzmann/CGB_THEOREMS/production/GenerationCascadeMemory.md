@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L29)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：CascadeMemory
+
+分类说明：针对 CascadeMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：对于正时间常数和正系数，足够晚时单个指数池轨迹小于 c/t。
 
 源码说明：One pool's trace drops below `c / t` once `t > 2 τ / c`.
@@ -23,6 +27,10 @@
 ## CGB.Generation.bank_trace_ge_one_term
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L58)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：CascadeMemory
+
+分类说明：针对 CascadeMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：正时间常数的有限池组轨迹总和不小于其中任一单池轨迹。
 
@@ -41,6 +49,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L63)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：CascadeMemory
+
+分类说明：针对 CascadeMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：正时间常数 τ 位于 [t,γt] 时，其指数轨迹 exp(−t/τ)/τ 具有给定的 1/t 型下界。
 
 源码说明：A pool with `t ≤ τ ≤ γ t` alone keeps `1 / (e γ t)`.
@@ -54,6 +66,10 @@
 ## CGB.Generation.bank_power_law_lower_bound
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L77)
+
+分类：necessity；适用范围：candidate；审核：reviewed；候选：CascadeMemory
+
+分类说明：级联多尺度时间常数记忆池轨迹的幂律积分下界。
 
 解释：若有限记忆池中有时间常数位于 t 到 γt 之间，则该池组的总轨迹有一个与 1/t 成比例的下界。
 
@@ -75,6 +91,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L84)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：CascadeMemory
+
+分类说明：针对 CascadeMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：对于正初始时间常数和大于一的几何比，覆盖范围内的任意 t 都有一个池时间常数落在 [t,γt]。
 
 源码说明：Geometric time constants cover the band: every `t ∈ [τ₀, τ₀ γ^m]` has a level `k ≤ m` with `t ≤ τ₀ γ^k ≤ γ t`.
@@ -90,7 +110,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L123)
 
-解释：A ranked release is exactly the reciprocal of its ranked relaxation time.
+分类：design；适用范围：candidate；审核：reviewed；候选：CascadeMemory
+
+分类说明：针对 CascadeMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：各等级上的分级释放速率精确等于其对应分级弛豫时间的倒数。
 
 源码说明：A ranked release is exactly the reciprocal of its ranked relaxation time.
 
@@ -104,7 +128,11 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationCascadeMemory.lean#L130)
 
-解释：Adjacent ranks have the geometric time-scale ratio used by `geometric_bank_covers`.
+分类：design；适用范围：candidate；审核：reviewed；候选：CascadeMemory
+
+分类说明：针对 CascadeMemory 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：相邻等级的分级弛豫时间保持严格的几何级数时间尺度比率 γ，支撑多尺度时间记忆池的完备覆盖。
 
 源码说明：Adjacent ranks have the geometric time-scale ratio used by `geometric_bank_covers`.
 

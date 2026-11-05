@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L73)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入模型参数与字节输入，经指数函数严格正性传递，输出寻址权重在每个槽位上均严格为正。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -23,6 +27,10 @@
 ## CGB.GDNLife.action_head_score_deriv
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L107)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入模型与状态，经G14对数Softmax法则展开，输出动作头对数得分对输出对数几率的导数精确等价于Softmax指示差分。
 
@@ -47,6 +55,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L187)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入模型与基底扰动，经Softmax求导法则，输出地址对数几率基底坐标扰动的精确Softmax导数。
 
 源码说明：Exact softmax derivative for an address-logit basis coordinate. This is the G14 finite-alphabet score identity applied to the GDN address, rather than an assumed attention-gradient rule.
@@ -62,6 +74,10 @@
 ## CGB.GDNLife.assimilate_addressLogitPerturb_natural_deriv
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L211)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入模型、状态与地址扰动，经自然参数积分展开，输出地址侧对GDN自然参数变动的精确导数。
 
@@ -79,6 +95,10 @@
 ## CGB.GDNLife.assimilate_addressLogitPerturb_precision_deriv
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L235)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入状态与地址扰动，经精度累加分析，输出地址扰动导致的精度变动严格受地址敏感度调控。
 
@@ -98,6 +118,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L262)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：输入Softplus置信度参数，经微积分导数计算，输出Softplus置信度参数的精确一阶导数等于标准Logistic Sigmoid函数。
 
 源码说明：Exact derivative of the actual softplus confidence parametrization.
@@ -108,9 +132,34 @@
 ∀ (r : ℝ), HasDerivAt (fun θ => CGB.GDNLife.likelihoodSoftplus (r + θ)) (CGB.GDNLife.likelihoodSlope r) 0
 ```
 
+## CGB.GDNLife.likelihood_posterior_mean_deriv
+
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L301)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：在分母非零条件下，GDN 似然 softplus 门控后验均值关于局部未归一化 logits 偏移的一阶导数精确等于解析后验斜率。
+
+源码说明：Exact local posterior sensitivity for the learned likelihood logit. A confidence update changes both C's natural numerator and its precision, so the usable direction is their quotient-rule combination, rather than the natural write alone. This is the runtime refinement of the preceding two arrival sensitivity identities; it adds no trace and no reverse-time graph.
+
+形式陈述：
+
+```lean
+∀ (natural precision arrivalWeight value raw : ℝ),
+  precision + arrivalWeight * CGB.GDNLife.likelihoodSoftplus raw ≠ 0 →
+    HasDerivAt (fun θ => CGB.GDNLife.likelihoodPosteriorMean natural precision arrivalWeight value (raw + θ))
+      (CGB.GDNLife.likelihoodPosteriorSlope natural precision arrivalWeight value raw) 0
+```
+
 ## CGB.GDNLife.assimilate_likelihoodLogitPerturb_natural_deriv
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L302)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L353)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入模型与似然对数几率扰动，经自然参数增量求导，输出似然对数几率对自然参数更新的精确导数。
 
@@ -127,7 +176,11 @@
 
 ## CGB.GDNLife.assimilate_likelihoodLogitPerturb_precision_deriv
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L319)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L370)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入学习置信度参数与扰动，经精度更新方程求导，输出置信度对存储自然精度的精确导数。
 
@@ -143,7 +196,11 @@
 
 ## CGB.GDNLife.assimilate_likelihoodLogitPerturb_zero
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L338)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L389)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入表示当前置信度的原始对数几率，经零扰动求值，输出零摄动下自然参数与精度导数恒为零。
 
@@ -159,7 +216,11 @@
 
 ## CGB.GDNLife.prepare_valuePerturb
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L346)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L397)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入未到达字节编码扰动，经准备算子求解，输出改变未来字节编码无法影响在当前流逝时间下预先准备好的预测状态。
 
@@ -175,7 +236,11 @@
 
 ## CGB.GDNLife.incoming_valuePerturb
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L353)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L404)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入字节编码器扰动，经流入强度核算，输出修改字节值编码严格保持到达包的流入权重不变。
 
@@ -190,7 +255,11 @@
 
 ## CGB.GDNLife.assimilate_valuePerturb_natural
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L362)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L413)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入字节编码器单点扰动，经自然参数累加展开，输出编码坐标扰动对存储自然参数的精确一阶变动。
 
@@ -207,7 +276,11 @@
 
 ## CGB.GDNLife.assimilate_valuePerturb_precision
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L378)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L429)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入字节编码器扰动，经精度更新分析，输出该扰动使存储精度严格保持不变。
 
@@ -224,7 +297,11 @@
 
 ## CGB.GDNLife.assimilate_valuePerturb_difference
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L387)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L438)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入两组编码器坐标摄动，经有限差分比较，输出输入编码器不同坐标引起的精确有限差分。
 
@@ -242,7 +319,11 @@
 
 ## CGB.GDNLife.valueEligibility_zero_of_no_incoming
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L397)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L448)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入无流入到达包（流入强度为零），经资格迹传递链展开，输出该槽位处编码器值的后向资格迹恒等于零。
 
@@ -257,7 +338,11 @@
 
 ## CGB.GDNLife.value_sensitivity_two_arrivals
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L405)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L456)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入连续两次到达事件，经自然参数吸收链推演，输出编码器值敏感度由同一自然状态载体连续运载与复合传递。
 
@@ -277,7 +362,11 @@
 
 ## CGB.GDNLife.initial_positive
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L434)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L485)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入正的初始精度参数，经初始状态构造，输出初始GDN物理状态满足正精度公理。
 
@@ -294,7 +383,11 @@
 
 ## CGB.GDNLife.prior_zero
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L438)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L489)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入GDN状态与零流逝时间，经先验算子求值，输出零时间流逝下的先验状态严格等于当前状态。
 
@@ -308,7 +401,11 @@
 
 ## CGB.GDNLife.prior_natural_difference
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L451)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L502)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入保持槽位精度不变的扰动，经先验时间衰减传递，输出先验演化精确保留自然参数在各槽位上的差分。
 
@@ -325,7 +422,11 @@
 
 ## CGB.GDNLife.value_sensitivity_through_prior
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L472)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L523)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入编码器写入敏感度，经物理先验时间演化，输出敏感度在经历时间先验后依然保存在相同的自然状态流形中。
 
@@ -346,7 +447,11 @@
 
 ## CGB.GDNLife.feature_difference_of_shared_query
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L492)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L543)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入共享查询与相同精度下的两组自然状态，经特征解码映射，输出两状态特征读出之差精确正比于自然参数之差。
 
@@ -365,7 +470,11 @@
 
 ## CGB.GDNLife.feature_valuePerturb
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L509)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L560)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入字节值编码器摄动，经预测读出分析，输出未到达字节的值编码扰动对当前已准备的特征读出无直接影响。
 
@@ -380,7 +489,11 @@
 
 ## CGB.GDNLife.assimilate_lastByte_of_positive
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L516)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L567)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入正置信度到达包，经因果缓存写入，输出该到达字节精确成为下一次预测的因果查询。
 
@@ -395,7 +508,11 @@
 
 ## CGB.GDNLife.value_read_eligibility_exact
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L534)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L585)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入单步字节编码器方向，经因果读出展开，输出该方向对下一因果读出的资格迹精确等于槽位权重归一化因子。
 
@@ -415,7 +532,11 @@
 
 ## CGB.GDNLife.value_future_read_eligibility_exact
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L587)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L638)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入后继准备好的读出状态，经前向敏感度递推，输出后继特征读出的前向资格迹精确满足一步前向闭式递推。
 
@@ -438,7 +559,11 @@
 
 ## CGB.GDNLife.assimilate_head
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L658)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L709)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入模型、状态与到达包，经吸收步进计算，输出吸收操作仅写入物理内存场与因果缓存，输出头权重矩阵保持不变。
 
@@ -453,7 +578,11 @@
 
 ## CGB.GDNLife.assimilate_bias
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L661)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L712)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入模型、状态与到达包，经吸收更新算子，输出吸收变换保持读出头的偏置参数严格不变。
 
@@ -468,7 +597,11 @@
 
 ## CGB.GDNLife.prior_head
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L665)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L716)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入物理时间先验转移算子，经参数传递性验证，输出时间先验仅迁移记忆均值与精度，严格保留相同的输出头矩阵与偏置。
 
@@ -483,7 +616,11 @@
 
 ## CGB.GDNLife.prior_bias
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L669)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L720)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入GDN状态与经过时间，经先验衰减演化，输出时间先验演化严格保持输出头偏置不变。
 
@@ -498,7 +635,11 @@
 
 ## CGB.GDNLife.value_future_logit_eligibility_exact
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L684)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L735)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入后继字节对数几率位移，经链式法则推导，输出后继对数几率位移精确等于输出头权重与编码器前向资格迹的内积。
 
@@ -525,7 +666,11 @@
 
 ## CGB.GDNLife.byte_log_softmax_direction_deriv
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L721)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L772)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入对数几率方向向量，经有限维Softmax求导展开，输出字节对数Softmax沿整个对数几率方向的一阶导数。
 
@@ -541,7 +686,11 @@
 
 ## CGB.GDNLife.value_future_log_likelihood_deriv
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L777)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L828)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入未来后继字节到达与GDN单步位移，经G14导数法则，输出未来对数似然对编码器值的全导数精确由前向资格迹给出。
 
@@ -566,9 +715,13 @@
 
 ## CGB.GDNLife.value_future_teaching_direction_deriv
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L814)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L865)
 
-解释：An endogenous teaching amplitude need not be a transpose of the forward path. The only admission condition for this immediate language path is its measurable alignment with the already-derived future score: scaling a local direction by `teaching` gives the corresponding directional derivative. This is deliberately an identity, not a claim that a particular circuit has learnt the amplitude or that delayed action credit is solved.
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：内生教学幅度无需是前向通路的转置；局部方向经教学标量缩放后精确导出对应的未来方向导数，这确立了即时语言路径的导数恒等式，而非假设电路已预先学习了该幅度。
 
 源码说明：An endogenous teaching amplitude need not be a transpose of the forward path. The only admission condition for this immediate language path is its measurable alignment with the already-derived future score: scaling a local direction by `teaching` gives the corresponding directional derivative. This is deliberately an identity, not a claim that a particular circuit has learnt the amplitude or that delayed action credit is solved.
 
@@ -588,9 +741,13 @@
 
 ## CGB.GDNLife.positive_teaching_alignment_is_local_ascent
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L832)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L883)
 
-解释：Positive alignment with the exact future score is the minimal local ascent admission for a learned teaching signal. It does not mandate how the signal is represented; a concrete shared-body rule must establish the premise without preset transposed weights.
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：在 GDN 动力学中，学得教学信号与未来精确分值方向的正对齐是局部梯度上升的充要准入条件；该条件仅要求可测量的对齐，不强制要求预设对称转置权重矩阵。
 
 源码说明：Positive alignment with the exact future score is the minimal local ascent admission for a learned teaching signal. It does not mandate how the signal is represented; a concrete shared-body rule must establish the premise without preset transposed weights.
 
@@ -614,7 +771,11 @@
 
 ## CGB.GDNLife.value_future_score_factor
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L855)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L906)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入编码器值得分函数，经梯度因式分解，输出未来得分精确分解为前向资格迹因子与即时创新误差的乘积。
 
@@ -633,7 +794,11 @@
 
 ## CGB.GDNLife.address_nonneg
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L905)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L956)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入模型参数与输入字节，经软寻址Softmax计算，输出地址权重向量各槽位分量恒非负。
 
@@ -647,7 +812,11 @@
 
 ## CGB.GDNLife.incoming_nonneg
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L909)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L960)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入模型参数与到达包，经流入权重映射，输出到达各槽位的流入强度非负。
 
@@ -661,7 +830,11 @@
 
 ## CGB.GDNLife.prior_positive
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L914)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L965)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入满足正精度的GDN状态与非负流逝时间，经时间先验指数衰减，输出衰减后状态的精度依然严格保持正性。
 
@@ -676,7 +849,11 @@
 
 ## CGB.GDNLife.assimilate_positive
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L926)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L977)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入正精度初始状态与到达包，经吸收更新，输出更新后状态的所有槽位精度继续保持严格正性。
 
@@ -691,7 +868,11 @@
 
 ## CGB.GDNLife.step_positive
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L931)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L982)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入正精度的GDN状态与到达包，经单步复合推进更新，输出完整步进后的后继状态依然满足正精度条件。
 
@@ -706,7 +887,11 @@
 
 ## CGB.GDNLife.zero_precision_keeps_last_byte
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L937)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L988)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入零精度输入包，经状态更新判定，输出零精度输入保持既有最后观测缓存不变，避免虚假覆写。
 
@@ -721,7 +906,11 @@
 
 ## CGB.GDNLife.first_observation_sets_last_byte
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L943)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L994)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入零初始精度状态与首个输入字节，经缓存写入规则，输出即使在零精度下首个观测字节仍精确写入因果查询缓存。
 
@@ -736,7 +925,11 @@
 
 ## CGB.GDNLife.positive_observation_sets_last_byte
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L949)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1000)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入任意正置信度到达观测，经因果读出更新，输出该字节直接写入下一次因果查询。
 
@@ -751,7 +944,11 @@
 
 ## CGB.GDNLife.step_positive_observation_sets_last_byte
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L958)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1009)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入完整GDN单步推进算子与正置信度输入，经端到端追踪，输出完整步进精确保持因果查询缓存写入。
 
@@ -766,7 +963,11 @@
 
 ## CGB.GDNLife.distinct_live_bytes_separate_steps
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L968)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1019)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入两个不同的有效输入字节，经状态写入推进，输出更新后的后继状态必然可分离且两两不等。
 
@@ -782,7 +983,11 @@
 
 ## CGB.GDNLife.step_source_irrelevant
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L981)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1032)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入外部源标签，经状态学习转移比对，输出输入源标签不改变语言费用或GDN学习规则本身。
 
@@ -801,7 +1006,11 @@
 
 ## CGB.GDNLife.preparation_uses_only_elapsed
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L985)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1036)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入当前已到达历史与未来未到达字节，经因果隔离分析，输出预测准备过程仅依赖流逝时间与历史，无法窥探未来字节。
 
@@ -816,7 +1025,11 @@
 
 ## CGB.GDNLife.head_update_preserves_memory
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L990)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1041)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入局部头参数更新算子，经状态分量独立性分析，输出局部读出头参数学习绝不改变内部记忆状态或其不确定度（精度）。
 
@@ -831,7 +1044,11 @@
 
 ## CGB.GDNLife.head_update_logits
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L996)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1047)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入参数更新步长与特征向量，经仿射变换展开，输出参数步进在输出层诱导出大小精确为学习率乘以特征模方的一阶对数几率增量。
 
@@ -847,9 +1064,13 @@
 
 ## CGB.GDNLife.head_update_other_feature
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1015)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1066)
 
-解释：A G14 head update remains a rank-one change when read on a later feature. The complete effect of this *one known update* is recoverable from its boundary receipt (`innovation`, saved feature) and the later feature through one inner product. This does not supply the derivative of the later feature with respect to an earlier contact parameter; that separate causal factor is the open long-credit obligation.
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
+解释：在 G14 先验更新下，对后续特征的读出变化保持一阶秩一修正形式；该单步更新对后继特征的完整效应可由边界回执与后继特征的单一内积直接恢复，无需提前存储全局历史雅可比矩阵。
 
 源码说明：A G14 head update remains a rank-one change when read on a later feature. The complete effect of this *one known update* is recoverable from its boundary receipt (`innovation`, saved feature) and the later feature through one inner product. This does not supply the derivative of the later feature with respect to an earlier contact parameter; that separate causal factor is the open long-credit obligation.
 
@@ -863,7 +1084,11 @@
 
 ## CGB.GDNLife.head_update_improves_saved_feature
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1031)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1082)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入保存特征向量，经局部仿射头参数单步更新，输出保存特征上的分类负对数似然损失严格单调下降。
 
@@ -881,7 +1106,11 @@
 
 ## CGB.GDNLife.carrier_next
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1070)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1121)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入GDN生命载体模型、初始正状态与策略响应映射，经单步推进算子，输出可再生语言后继步进精确等同于标准GDN单步更新算子。
 
@@ -898,7 +1127,11 @@
 
 ## CGB.GDNLife.carrier_fold
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1078)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1129)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入实际输入历史序列，经实状态载体连续折叠，输出历史序列折叠轨迹不依赖离散状态替换，直接在连续GDN状态上执行。
 
@@ -916,7 +1149,11 @@
 
 ## CGB.GDNLife.exists_open_real_gdn_trajectory
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1103)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1154)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：GDNLife 显式开放真实轨迹见证。
 
 解释：输入连续GDN动力学模型，经开流轨迹存在性定理，输出存在一条连续可存活且产生正信息的真实无限流轨迹。
 
@@ -941,7 +1178,11 @@
 
 ## CGB.GDNLife.finish_saved_logits
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1130)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1181)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入保存的特征向量与局部头更新，经仿射映射分解，输出吸收后的局部更新不改变基于保存特征的中间对数几率。
 
@@ -957,7 +1198,11 @@
 
 ## CGB.GDNLife.byte_softmax_pos
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1140)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1191)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入任意实对数几率向量与字节目标，经Softmax指数归一化，输出归一化字节预测概率严格大于零。
 
@@ -971,7 +1216,11 @@
 
 ## CGB.GDNLife.finish_saved_nll_improves
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1147)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1198)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入保存特征与到达字节目标，经梯度下降步进分析，输出基于保存特征的当前字节负对数似然损失在正学习率下严格单调下降。
 
@@ -989,7 +1238,11 @@
 
 ## CGB.GDNLife.future_ce_improves_of_target_mass
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1160)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1211)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入目标字符分布具有正概率质量的条件，经期望梯度分解，输出分布级条件能够保证未来交叉熵严格改进。
 
@@ -1010,7 +1263,11 @@
 
 ## CGB.GDNLife.finish_future_ce_improves
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1189)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1240)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入局部头更新与未来转移律，经交叉熵求导分析，输出具体头更新能够严格降低系统在未来语言律下的预测交叉熵。
 
@@ -1043,7 +1300,11 @@
 
 ## CGB.GDNLife.real_bias_injective
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1220)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1271)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入实数头偏置族，经实坐标嵌入检验，输出实偏置参数族在输出层具备单射可辨识性。
 
@@ -1057,7 +1318,11 @@
 
 ## CGB.GDNLife.prior_logits
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1225)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1276)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入GDN状态、经过时间与特征向量，经仿射头计算，输出时间先验演化不改变由当前特征生成的输出对数几率。
 
@@ -1072,7 +1337,11 @@
 
 ## CGB.GDNLife.step_ne_of_positive_head_step
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1234)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1285)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入正的真实读出头学习步长，经状态差异比较，输出正头学习步使本体状态在每个到达输入下均发生真实物理改变。
 
@@ -1087,7 +1356,11 @@
 
 ## CGB.GDNLife.Process.run_initial
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1287)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1338)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入离散运行过程，经初值提取，输出第0步联合状态精确等于本体与环境的初始状态元组。
 
@@ -1102,7 +1375,11 @@
 
 ## CGB.GDNLife.Process.run_step
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1289)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1340)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入GDN过程与当前时间步，经联合转移核步进，输出第n+1步联合状态精确等于本体更新与环境演化的直和推进。
 
@@ -1119,7 +1396,11 @@
 
 ## CGB.GDNLife.Process.run_positive
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1297)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1348)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入正定初值的GDN离散过程与任意时间步，经数学归纳法推演，输出全轨迹上各时刻本体状态的精度恒严格为正。
 
@@ -1134,7 +1415,11 @@
 
 ## CGB.GDNLife.Process.run_body_step
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1301)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1352)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入离散物理过程模型与时间步，经多步迭代推进，输出第n+1步的本体状态精确由前一步快照与到达包经finish算子生成。
 
@@ -1149,7 +1434,11 @@
 
 ## CGB.GDNLife.Process.self_speech_action_contrast_writes_body
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1310)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1361)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入发出不同自生语言字节的两个候选动作，经因果回馈写入，输出不同自生言语动作在本体中写入可区分的物理内部状态。
 
@@ -1170,7 +1459,11 @@
 
 ## CGB.GDNLife.Process.next_byte_improves
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1326)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1377)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入外部世界真实生成的下一字节，经自回归吸收步进，输出更新对世界真实下一字节的预测对数似然严格单调提升。
 
@@ -1196,7 +1489,11 @@
 
 ## CGB.GDNLife.Process.externallyUseful_improves
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1360)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1411)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入有用外部事件凭据，经因果响应分析，输出有用事件的发生能严格改善系统的外周适应度与预测增益。
 
@@ -1212,7 +1509,11 @@
 
 ## CGB.GDNLife.Process.self_not_externallyUseful
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1369)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1420)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入自身复制发出的语言字节，经信息论有用性判据，输出复制自身的自生字节绝不可能凭空转化为有价值的外部独立环境证据。
 
@@ -1227,7 +1528,11 @@
 
 ## CGB.GDNLife.Process.externalInformation_nonneg
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1404)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1455)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入外部语言转移律，经互信息非负性检验，输出系统外部语言条件互信息恒非负。
 
@@ -1242,7 +1547,11 @@
 
 ## CGB.GDNLife.Process.ExternalLanguageLaw.information_nonneg
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1413)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1464)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入状态与动作索引的机会测度，经条件互信息非负性继承，输出各状态动作条件下的信息增益测度恒非负。
 
@@ -1257,7 +1566,11 @@
 
 ## CGB.GDNLife.Process.future_reserve_preserved_keeps_signature_distinction
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1452)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1503)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：针对 GDNLife 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：输入保留的未来语言储备，经特征签名映射，输出保持的未来储备保证不同语言签名在演化中不可默默合并。
 
@@ -1277,7 +1590,11 @@
 
 ## CGB.GDNLife.Process.future_reserve_recoverable_iff
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1495)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1546)
+
+分类：necessity；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：GDN 动力学中未来储备保持与循环外部证据迫使主动性的充要约束。
 
 解释：输入未来状态区分，经耗散测度分析，输出未来区分度可无损恢复当且仅当该过程的所有离散签名均未发生耗散。
 
@@ -1297,7 +1614,11 @@
 
 ## CGB.GDNLife.Process.loses_future_language_distinction_iff_not_preserved
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1510)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1561)
+
+分类：necessity；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：GDN 动力学中未来储备保持与循环外部证据迫使主动性的充要约束。
 
 解释：输入两先前可区分的未来语言签名，经等价性证明，输出二者合并丧失区分度当且仅当未来储备未被有效保留。
 
@@ -1314,7 +1635,11 @@
 
 ## CGB.GDNLife.Process.recurrent_external_information_forces_activity
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1533)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1584)
+
+分类：necessity；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：GDN 动力学中未来储备保持与循环外部证据迫使主动性的充要约束。
 
 解释：输入循环外部信息流与GDN物理模型，经信息论主动必要性定理，输出维持循环正信息摄入严格迫使系统必须维持主动干预策略。
 
@@ -1336,7 +1661,11 @@
 
 ## CGB.GDNLife.Process.recurrent_external_evidence_forces_activity
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1552)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1603)
+
+分类：necessity；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：GDN 动力学中未来储备保持与循环外部证据迫使主动性的充要约束。
 
 解释：输入循环出现的外部证据序列与生存约束，经反证法推导，输出若策略最终退化为被动停滞，则无法循环摄取生存所需外部证据。
 
@@ -1354,7 +1683,11 @@
 
 ## CGB.GDNLife.Process.scored_external_language_trajectory
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1570)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1621)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：GDNLife 显式开放真实轨迹见证。
 
 解释：输入实数GDN模型与外部语言流，经打分联合轨迹判定，输出存在满足条件语言级打分联合轨迹，且每步维持有效正预测增益。
 
@@ -1387,7 +1720,11 @@
 
 ## CGB.GDNLife.Process.scored_joint_trajectory
 
-[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1612)
+[源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationGDNLife.lean#L1663)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：GDNLife
+
+分类说明：GDNLife 显式开放真实轨迹见证。
 
 解释：输入连续实数GDN生命过程，经开流联合状态演化，输出全时域联合轨迹在无截断下严格满足条件打分与存活标准。
 

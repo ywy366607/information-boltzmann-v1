@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialExchange.lean#L26)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：MaterialExchange 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：任意带有物质进出账本的介质必满足总物质封闭守恒公理P2a。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -24,6 +28,10 @@
 ## CGB.Medium.net_increase_implies_incoming
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialExchange.lean#L34)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：MaterialExchange 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：若介质局域事件导致总物质净增加，则该事件必包含来自外部环境的正输入通量。
 
@@ -41,6 +49,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialExchange.lean#L40)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：MaterialExchange 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在正跃迁率事件下，局部物质存量保持不变当且仅当该事件的输入物质通量与输出通量严格平衡。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -56,6 +68,10 @@
 ## CGB.Exchange.recovery_bounds
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialExchange.lean#L66)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：MaterialExchange 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：在任意调度策略与环境交互下，物质恢复度测度严格有界在区间[0, 1]内。
 
@@ -74,6 +90,10 @@
 ## CGB.Exchange.recovery_zero_without_incoming
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialExchange.lean#L71)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：MaterialExchange 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：若外部环境对机体完全关闭物质输入通量，则机体任意时刻的恢复度均恒为零。
 
@@ -94,6 +114,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialExchange.lean#L90)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：MaterialExchange 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：机体在任意截断与时序交互过程下的生存概率度量严格介于0与1之间。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -111,6 +135,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialExchange.lean#L112)
 
+分类：necessity；适用范围：world_contract；审核：reviewed
+
+分类说明：无外部输入供给时开放系统无法持续生存的必要性定理。
+
 解释：在缺乏外部物质补给的封闭耗散环境下，机体不可能在任意正阈值δ下实现持久生存。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -127,6 +155,10 @@
 ## CGB.Description.ExchangeBook.one_percent_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialExchange.lean#L162)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：MaterialExchange 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：当且仅当基因组编码比特数不超过几何点数平方的百分之一且位点数非零时，该交换账本满足1%基因组开销预算。
 

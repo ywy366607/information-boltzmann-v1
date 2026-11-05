@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Medium.lean#L161)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Medium 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：有限步可达状态集合上的总概率和在介质动力学下守恒为一。
 
 源码说明：P2a confines the closed dynamics to a content shell.
@@ -24,6 +28,10 @@
 ## CGB.Medium.finite_reachable
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Medium.lean#L172)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Medium 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：在局部有限跳跃介质中，从任意给定初态出发的有限步可达微观状态集合是有限集。
 
@@ -41,6 +49,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Medium.lean#L183)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Medium 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：局部介质在指定配置下的总允许物理状态空间是有限类型。
 
 源码说明：With the capacity bound the whole state space is finite: the premise "finite state space" of the life definition.
@@ -55,6 +67,10 @@
 ## CGB.Medium.energy_of_p2b
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Medium.lean#L192)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Medium 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：满足 P2b 细致平衡的介质存在一个与微观状态对应的实值能量函数。
 
@@ -74,6 +90,10 @@
 ## CGB.Medium.p2b_of_micro
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/Medium.lean#L199)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：Medium 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：微观可逆性与对称速率必然导出介质在静默环境下的 P2b 平衡条件。
 

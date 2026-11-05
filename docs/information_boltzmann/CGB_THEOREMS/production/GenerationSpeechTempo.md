@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L59)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：SpeechTempo
+
+分类说明：针对 SpeechTempo 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当 α<1 时，(1−α)^(k/r) 等于指定指数形式 exp(−k·(−log(1−α))/r)。
 
 源码说明：The settling factor is the unified reference's geometric bound: `(1 - α) ^ (k / r)` with `L = -log (1 - α)`.
@@ -23,6 +27,10 @@
 ## CGB.SpeechTempo.retention_pos
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L65)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：SpeechTempo
+
+分类说明：针对 SpeechTempo 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：对任意实数 τ 和 r，所定义的 retention 严格为正。
 
@@ -38,6 +46,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L67)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：SpeechTempo
+
+分类说明：针对 SpeechTempo 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当 r 和 τ 为正时，所定义的 retention 不超过一。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -51,6 +63,10 @@
 ## CGB.SpeechTempo.settled_nonneg
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L73)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：SpeechTempo
+
+分类说明：针对 SpeechTempo 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若 kL/r 非负，则按定义计算的 settled 值非负。
 
@@ -66,6 +82,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L80)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：SpeechTempo
+
+分类说明：针对 SpeechTempo 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：对任意实数 k、L 和 r，所定义的 settled 不超过一。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -79,6 +99,10 @@
 ## CGB.SpeechTempo.settled_le
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L84)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：SpeechTempo
+
+分类说明：针对 SpeechTempo 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：对任意实数 k、L 和 r，所定义的 settled 不超过 kL/r。
 
@@ -94,6 +118,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L93)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：SpeechTempo
+
+分类说明：针对 SpeechTempo 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在指定非负与正性条件下，useful 值不超过 r。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -107,6 +135,10 @@
 ## CGB.SpeechTempo.useful_le_capacity
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L105)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：SpeechTempo
+
+分类说明：针对 SpeechTempo 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：在 C≥0、τ>0、kL≥0 和 r>0 的条件下，指定 useful 值不超过参数 C。
 
@@ -122,6 +154,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L115)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：SpeechTempo
+
+分类说明：针对 SpeechTempo 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：在指定非负与正性条件下，useful 值不超过 CkL/r。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -135,6 +171,10 @@
 ## CGB.SpeechTempo.tempo_band
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L127)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：SpeechTempo
+
+分类说明：针对 SpeechTempo 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：当 C≥0、τ>0、kL≥0 且 r>0 时，若 r 小于 u 或大于 CkL/u，则定义的 useful 小于正阈值 u。
 
@@ -152,6 +192,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L139)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：SpeechTempo
+
+分类说明：针对 SpeechTempo 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：当 τ 为正时，对任意正 ε，足够小的正速率 r 使 retention 小于 ε。
 
 源码说明：Too slow: per unit, the earlier part is forgotten, whatever the listener's capacity.
@@ -165,6 +209,10 @@
 ## CGB.SpeechTempo.fast_settling_vanishes
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L155)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：SpeechTempo
+
+分类说明：针对 SpeechTempo 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：若 kL 非负，则对任意正 ε，足够大的速率 r 使定义的 settled 值小于 ε。
 
@@ -180,6 +228,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L166)
 
+分类：design；适用范围：candidate；审核：reviewed；候选：SpeechTempo
+
+分类说明：针对 SpeechTempo 候选机制的具体算法、更新导数、结构收敛性或介质性质。
+
 解释：对有限序列逐项截断到 C 再求和，结果不超过总和与 nC 两者的较小值。
 
 源码说明：Uniform information density, upper bound: with a per-slot capacity `C`, the slots absorb at most the total sent and at most `n C`; anything above capacity in a slot is lost.
@@ -193,6 +245,10 @@
 ## CGB.SpeechTempo.uniform_attains
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationSpeechTempo.lean#L173)
+
+分类：design；适用范围：candidate；审核：reviewed；候选：SpeechTempo
+
+分类说明：针对 SpeechTempo 候选机制的具体算法、更新导数、结构收敛性或介质性质。
 
 解释：对正整数 n，n 个相同的 min(I/n,C) 之和等于 min(I,nC)。
 

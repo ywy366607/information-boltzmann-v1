@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialSourceControls.lean#L62)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：离散物料源控制系统构成了物理介质与粗粒化时钟之间的合法实现关系，满足状态投影与时钟对应。
 
 源码说明：Explicit source realization: no changed body dynamics, no extra physical ticks, and no nonempty-body false positive standing in for actual replacement.
@@ -26,6 +30,10 @@
 ## CGB.MaterialSourceControls.supply_exchange_exhaustion
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialSourceControls.lean#L100)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：描述两步物料补给交换与耗竭动力学：物料从外部移入源、源转移至机体、机体排至汇后，源处于耗竭态而机体守恒维持单位占用。
 
@@ -54,6 +62,10 @@ CGB.MaterialSource.moved (CGB.MaterialSourceControls.owner 0) (CGB.MaterialSourc
 ## CGB.MaterialSourceControls.no_future_intake_after_exhaustion
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialSourceControls.lean#L118)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：外部物料源一旦耗竭，在后续任意时间步都不会再产生新的摄入事件，粗粒化系统的首次命中概率恒为零。
 

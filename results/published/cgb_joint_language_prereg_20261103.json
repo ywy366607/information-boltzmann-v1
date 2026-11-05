@@ -1,0 +1,82 @@
+{
+  "status": "preregistered",
+  "date": "2026-11-03",
+  "purpose": "Test whole-model learning and cost of the existing V1.7 joint recurrence, not claim an organism or isolate latching causality.",
+  "arms": [
+    "decay_then_delta",
+    "evidence_exchange"
+  ],
+  "seed": 11,
+  "parameters_each": 765088,
+  "model": {
+    "vocab": 256,
+    "width": 128,
+    "layers": 4,
+    "heads": 4,
+    "mlp_hidden": 256,
+    "causal_conv": 4
+  },
+  "updates_each": 5000,
+  "bytes_per_update": 128,
+  "fixed_bptt_window": 32,
+  "exposures_each": 640000,
+  "unique_train_bytes": 576000,
+  "phases_updates": {
+    "A_first": [
+      0,
+      3500
+    ],
+    "B_fresh": [
+      3500,
+      4000
+    ],
+    "A_revisit": [
+      4000,
+      4500
+    ],
+    "C_fresh": [
+      4500,
+      5000
+    ]
+  },
+  "revisit_source_bytes": [
+    384000,
+    448000
+  ],
+  "phase_boundaries": "All actual bridge transitions scored; live state and optimizer never reset.",
+  "optimizer": {
+    "type": "AdamW",
+    "lr": 0.0003,
+    "weight_decay": 0.01,
+    "lexical_and_dynamics_grad_clip": 1
+  },
+  "validation": {
+    "split": "validation",
+    "scored_bytes": 16384,
+    "warmup_bytes": 32,
+    "every_updates": 1000,
+    "mode": "frozen sidecar; live learner untouched; test split untouched"
+  },
+  "controls": "Same common weights at birth except semantically different alpha bias; identical parameter counts and byte stream. Additional share state 2048 bytes. Candidate content budget=1 is a declared initial choice, not an optimum.",
+  "limitations": [
+    "The recurrences have different feasible content domains and read scales; cannot attribute difference to latching alone.",
+    "A/B are source intervals, not externally labeled tasks.",
+    "No long-horizon gradient or anti-monopoly guarantee.",
+    "5000 updates is budget-limited unless convergence is observed; no strong architecture verdict."
+  ],
+  "decisions": {
+    "nonfinite": "stop failed arm and diagnose numerical failure before training further",
+    "candidate_worse": "keep delta reference; inspect actual memory use, scale and posterior concentration before adding mechanisms",
+    "candidate_better": "retain as conditional runtime evidence; causally isolate mechanism before claiming useful latch",
+    "near_equal": "report no demonstrated advantage"
+  },
+  "engineering": {
+    "backend": "CUDA Graph FP32; projections/MLP vectorized within chunks; exact nonlinear recurrence sequential",
+    "calibration_exchange_bytes_s": 1026.25,
+    "calibration_delta_bytes_s": 2248.55,
+    "calibration_peak_allocated_mib": 58.69,
+    "graph_gradient_fix": "Preallocate stable gradient buffers before graph capture; 2-update multi-chunk eager equivalence passed in both arms"
+  },
+  "qualification": "35 GDN tests passed. Lean joint capacity/read invariants previously passed; general stability/release only conditional numerical evidence.",
+  "independent_review": false
+}

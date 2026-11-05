@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintFreedom.lean#L19)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：具体状态/模型存在性见证。
+
 解释：对任意 n，存在 n+1 个局部状态的内容函数，使内容都不超过一且零内容状态唯一。
 
 源码说明：P1a is qualitative: an arbitrarily large FINITE state alphabet may have capacity 1. A quantitative information/content relation is not encoded in it.
@@ -23,6 +27,10 @@
 ## CGB.ConstraintFreedom.arbitrary_driven_tables_admitted
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintFreedom.lean#L49)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintFreedom 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：有限状态、唯一零态及非负速率下，任意更新表都能由指定开放单点介质满足相应公理。
 
@@ -41,6 +49,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintFreedom.lean#L80)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：ConstraintFreedom 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：指定开放单点构造可在非对角状态转移上复现原跳跃过程速率，并按定义处理对角项。
 
 源码说明：With one event per target state, the exposed-site family reproduces the off-diagonal rates of ANY finite Markov jump process under its driven input. This is a statement about the permissiveness of the core representation, not an encoded-budget or life witness. Self-jumps are omitted just as in Medium.jump.
@@ -57,6 +69,10 @@
 ## CGB.ConstraintFreedom.constant_protocol_can_be_driven
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/ConstraintFreedom.lean#L88)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：具体状态/模型存在性见证。
 
 解释：固定的 food 刺激协议仍可对应非可逆的 seed 跳跃过程。
 

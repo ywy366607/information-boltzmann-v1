@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOrganismEcoliV1.lean#L52)
 
+分类：witness；适用范围：candidate；审核：reviewed；候选：Ecoli
+
+分类说明：大肠杆菌特定趋化/代谢动力学生物实例化见证。
+
 解释：大肠杆菌 V1 演化形态模型实例严格满足 CGB 物理介质六公理。
 
 源码说明：**The organism is a model of the CGB axioms** (M3: unique free state, and every rule between two interior pages conserves content).
@@ -23,6 +27,10 @@ CGB.Organisms.EcoliV1.medium.Axioms
 ## CGB.Organisms.EcoliV1.metabolizes
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOrganismEcoliV1.lean#L58)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：Ecoli
+
+分类说明：大肠杆菌特定趋化/代谢动力学生物实例化见证。
 
 解释：大肠杆菌 V1 模型存在能够净改变机体分子数总量的代谢反应路径。
 
@@ -39,6 +47,10 @@ CGB.Organisms.EcoliV1.medium.Axioms
 ## CGB.Organisms.EcoliV1.exposed
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/GenerationOrganismEcoliV1.lean#L65)
+
+分类：witness；适用范围：candidate；审核：reviewed；候选：Ecoli
+
+分类说明：大肠杆菌特定趋化/代谢动力学生物实例化见证。
 
 解释：大肠杆菌 V1 模型具备与外界环境进行能量与信息交换的暴露边界。
 

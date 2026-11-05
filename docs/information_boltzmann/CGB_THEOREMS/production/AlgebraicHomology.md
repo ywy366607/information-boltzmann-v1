@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AlgebraicHomology.lean#L27)
 
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：AlgebraicHomology 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：向量经由两个关联矩阵相继作用的结果，恒等于经由两矩阵点积复合所得复合矩阵直接作用的结果。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -26,6 +30,10 @@
 ## CGB.AlgebraicHomology.boundary_boundary_zero
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/AlgebraicHomology.lean#L35)
+
+分类：semantics；适用范围：universal；审核：reviewed
+
+分类说明：AlgebraicHomology 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：若两个代数关联矩阵 d1 和 d2 满足边界律，则二者的复合作用矩阵满足 d2 ∘ d1 = 0，即复合边界算子的二次作用恒为零。
 

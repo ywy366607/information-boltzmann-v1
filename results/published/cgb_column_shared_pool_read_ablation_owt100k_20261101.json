@@ -1,0 +1,74 @@
+{
+  "status": "shared_contact_pool_read_ablation",
+  "claim_scope": "Matched one-seed continuous OpenWebText UTF-8 byte read ablation for the shared finite S-contact pool in CGBColumnLanguageBody.",
+  "not_claimed": [
+    "delayed three-factor learning",
+    "full-parameter learning",
+    "general language capability",
+    "life closure"
+  ],
+  "matched_controls": {
+    "same_seed": true,
+    "same_data": true,
+    "same_model_shape": {
+      "d_model": true,
+      "grid_shape": true,
+      "active_columns": true,
+      "contact_rank": true
+    },
+    "same_persistent_state_bytes": {
+      "frozen_readout": true,
+      "bias_only_g14": true,
+      "local_g14_readout": true,
+      "local_g14_value_credit": true
+    },
+    "only_intended_difference": "contact_to_activity is zeroed in muted arm; reciprocal shared-pool S write remains active"
+  },
+  "enabled_record": "results/published/cgb_column_shared_pool_g14_owt100k_20261101.json",
+  "muted_record": "results/published/cgb_column_shared_pool_muted_g14_owt100k_20261101.json",
+  "validation_bpb": {
+    "frozen_readout": {
+      "enabled": 7.985257296258391,
+      "muted": 8.05401530995504,
+      "enabled_minus_muted": -0.06875801369664813
+    },
+    "bias_only_g14": {
+      "enabled": 4.706434166822026,
+      "muted": 4.706434166822026,
+      "enabled_minus_muted": 0.0
+    },
+    "local_g14_readout": {
+      "enabled": 4.159447118187166,
+      "muted": 4.185737902117566,
+      "enabled_minus_muted": -0.026290783930400075
+    },
+    "local_g14_value_credit": {
+      "enabled": 4.1488361743914846,
+      "muted": 4.167829425498492,
+      "enabled_minus_muted": -0.018993251107007225
+    }
+  },
+  "train_bpb": {
+    "frozen_readout": {
+      "enabled": 7.979040894867522,
+      "muted": 8.054914096292563,
+      "enabled_minus_muted": -0.07587320142504161
+    },
+    "bias_only_g14": {
+      "enabled": 4.923337560166641,
+      "muted": 4.923337560166641,
+      "enabled_minus_muted": 0.0
+    },
+    "local_g14_readout": {
+      "enabled": 4.209373116394643,
+      "muted": 4.404134240508248,
+      "enabled_minus_muted": -0.19476112411360536
+    },
+    "local_g14_value_credit": {
+      "enabled": 4.205082560107457,
+      "muted": 4.396626218073407,
+      "enabled_minus_muted": -0.19154365796594952
+    }
+  },
+  "interpretation": "A negative enabled_minus_muted value favors the shared-pool S-to-H read. Bias-only equality is a null check because that arm does not read H/C/S features."
+}

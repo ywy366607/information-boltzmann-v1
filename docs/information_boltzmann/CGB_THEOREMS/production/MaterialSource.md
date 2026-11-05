@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialSource.lean#L43)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：MaterialSource 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：物料源系统的三室物质守恒律：机体、源与汇以及流动通量在任意允许转移中严格守恒。
 
 源码说明：One transport law yields both body balance and the accessible-source budget. Positive gross turnover at constant body count consumes source stock unless there is explicit supply or recycling. No irreversibility is postulated.
@@ -44,6 +48,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialSource.lean#L61)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：MaterialSource 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：单步发生的位置间物料转移量严格不超过源位置当前的有效物料存量。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -58,6 +66,10 @@
 ## CGB.MaterialSource.no_intake_from_empty_source
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialSource.lean#L69)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：MaterialSource 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：当物料源存量为空时，向机体的净摄入转移量严格为零。
 
@@ -75,6 +87,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialSource.lean#L76)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：MaterialSource 模块的基础物理公理、守恒流同调、端口代数或语义规范。
+
 解释：在两点间若没有物理位置变更事件发生，则对应的宏观物料传输通量为零。
 
 源码说明：With identities fixed, an unchanged ownership state cannot be labelled as positive gross transport. A coarse constant-content state may still refine it.
@@ -90,6 +106,10 @@
 ## CGB.MaterialSource.source_budget
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialSource.lean#L86)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：MaterialSource 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：物料源存量变化严格等于外界补给流入量与流向机体的摄入量之差。
 
@@ -118,6 +138,10 @@
 ## CGB.MaterialSource.intake_bound_without_refill
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/MaterialSource.lean#L103)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：MaterialSource 模块的基础物理公理、守恒流同调、端口代数或语义规范。
 
 解释：在无外部补给条件下，从物料源转移至机体的总摄入量不超过源的初始物料储量。
 

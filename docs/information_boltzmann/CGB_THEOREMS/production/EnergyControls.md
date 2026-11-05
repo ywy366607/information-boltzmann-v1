@@ -10,6 +10,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EnergyControls.lean#L24)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：在该有限物料见证中，内部、外部、功接收与热接收四部分之和始终等于 2a。
 
 源码没有为此声明提供文字说明；下列形式陈述是可核对的条件与结论，需阅读上下文后才能给出可靠解释。
@@ -26,6 +30,10 @@
 ## CGB.EnergyControls.material_energy_binding
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EnergyControls.lean#L43)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：该物料见证的每个受支持事件中，物料能量端口由同一外部物料转移量确定。
 
@@ -46,6 +54,10 @@
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EnergyControls.lean#L54)
 
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
+
 解释：当 a 非负时，该见证的指定 T=1、零系统熵账本满足所定义的等温条件。
 
 源码说明：Nonnegative mean production for the declared T=1, zero-system-entropy accounting interpretation along the actual process; not a derivation of the microscopic entropy function or of local detailed balance.
@@ -62,6 +74,10 @@
 ## CGB.EnergyControls.same_material_different_energy
 
 [源码位置](../../../../lean/CGBAxioms/CGBAxioms/EnergyControls.lean#L75)
+
+分类：witness；适用范围：universal；审核：reviewed
+
+分类说明：消融对照组或具体控制实验世界，用于隔离单一机制因果效应的实验见证。
 
 解释：该见证中相同的物料转移可对应不同的能量账本，说明单凭物料计数不能唯一确定功或化学能。
 
