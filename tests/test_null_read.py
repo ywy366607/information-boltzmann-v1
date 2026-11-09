@@ -16,6 +16,8 @@ def populated():
     with torch.no_grad():
         w.encoder.weight.copy_(torch.eye(3))
         w.encoder.bias.zero_()
+        w.value_map.weight.copy_(torch.eye(3))
+        w.value_map.bias.zero_()
     w.memory.clock.fill_(256)
     for i,value in enumerate((1.,2.)):
         key = torch.tensor([1.,0.,0.])

@@ -40,7 +40,7 @@ def retained_value_probe(wrapper, slot, version, mode):
         if not bool(m.occupied[read.slots].all()):
             raise ValueError('full real memory required')
         q = F.normalize(self.encoder(query.float().cpu()),dim=-1)
-        keys = F.normalize(self.encoder(m.source),dim=-1)
+        keys = self.sealed_addresses()
         scores = (q @ keys.T).masked_fill(~m.occupied,-torch.inf)
         selected = slot in chosen
         victim_index = chosen.index(slot) if selected else int(read.weights[0].argmin())
@@ -56,14 +56,14 @@ def retained_value_probe(wrapper, slot, version, mode):
         receipts.append(receipt)
         if mode == 'inspect' or (mode == 'swap' and selected):
             return value
-        old = self.encoder(self.replayed[victim_index].float().cpu())
+        old = self.value_map(self.replayed[victim_index].float().cpu())
         weight = read.weights[:,victim_index,None]
         if mode == 'drop':
             return value-weight*old
         capsule = self.capsules[slot]
         if capsule is None or capsule.version != version:
             raise ValueError('protected capsule and record version diverged')
-        new = self.encoder(replay(capsule)[:,-1].float().cpu())
+        new = self.value_map(replay(capsule)[:,-1].float().cpu())
         return value+weight*(new-old)
 
     wrapper.retrieve = types.MethodType(retrieve,wrapper)

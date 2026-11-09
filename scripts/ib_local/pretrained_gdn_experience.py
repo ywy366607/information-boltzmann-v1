@@ -19,6 +19,12 @@ from scripts.ib_local.navigation_read_credit import configure_read_credit
 from scripts.ib_local.pretrained_gdn import RecallInlet, new_recurrent_cache
 
 
+def _seal(value):
+    if value is None:
+        return None
+    return value.detach().cpu().clone()
+
+
 def copy_tree(value, device='cpu'):
     """A bounded, detached observation; never retain an earlier autograd graph."""
     if isinstance(value, torch.Tensor):
@@ -122,7 +128,9 @@ class LayerExperienceRecall(nn.Module):
         if consolidation_rule not in ('preference', 'evidence', 'retention'):
             raise ValueError('unknown bounded consolidation rule')
         self.memory.consolidation_rule = consolidation_rule
-        self.encoder = nn.Linear(width, latent_dim)  # CPU, live current encoder
+        self.encoder = nn.Linear(width, latent_dim)  # address query only
+        self.value_map = nn.Linear(width, latent_dim)
+        self.value_map.load_state_dict(self.encoder.state_dict())
         self.inlet = RecallInlet(width, latent_dim, device=device)
         # One virtual zero-valued candidate, not a historical experience slot.
         # Its key/bias learn from the same language loss as the real read.
@@ -134,6 +142,8 @@ class LayerExperienceRecall(nn.Module):
         self.read_interval = read_interval
         self.suppressed_record = None
         self.capsules = [None] * capacity
+        self.addresses = [None] * capacity
+        self.position_addresses = [None] * capacity
         self.current = None
         self.replayed = []
         self.replayed_by_slot = {}
@@ -153,6 +163,7 @@ class LayerExperienceRecall(nn.Module):
 
     def get_extra_state(self):
         return dict(replay_tokens=self.replay_tokens, capsules=self.capsules,
+                    addresses=self.addresses, position_addresses=self.position_addresses,
                     capture_full_window=self.capture_full_window,
                     reactivation_mode=self.reactivation_mode,
                     detach_replay=self.detach_replay,null_read_enabled=self.null_read_enabled,
@@ -183,6 +194,12 @@ class LayerExperienceRecall(nn.Module):
             state[prefix+'null_key'] = torch.full_like(self.null_key,self.null_key.numel()**-.5)
         if prefix+'null_bias' not in state:
             state[prefix+'null_bias'] = torch.zeros_like(self.null_bias)
+        # A snapshot from the shared-encoder readout starts the value map at
+        # that same encoder, then the two maps learn apart.
+        for name in ('weight', 'bias'):
+            key, source = prefix+'value_map.'+name, prefix+'encoder.'+name
+            if key not in state and source in state:
+                state[key] = state[source].detach().clone()
         super()._load_from_state_dict(state,prefix,*args)
 
     def set_extra_state(self, state):
@@ -191,6 +208,9 @@ class LayerExperienceRecall(nn.Module):
         # A restored learner replaces slots on commit. Its slot list must not
         # alias the source checkpoint used to initialize a second branch.
         self.capsules = list(state['capsules'])
+        blank = [None] * len(self.capsules)
+        self.addresses = [_seal(item) for item in state.get('addresses', blank)]
+        self.position_addresses = [_seal(item) for item in state.get('position_addresses', blank)]
         self.detach_replay = state.get('detach_replay', False)
         self.capture_full_window = state.get('capture_full_window', False)
         self.reactivation_mode = state.get('reactivation_mode', 'legacy_endpoint')
@@ -216,7 +236,7 @@ class LayerExperienceRecall(nn.Module):
             occupied = self.memory.occupied
             # Initialize in the body's existing address coordinates, without
             # a target, external utility score, or new scale hyperparameter.
-            encoded = (self.encoder(self.memory.source[occupied]) if bool(occupied.any())
+            encoded = (self.sealed_addresses()[occupied] if bool(occupied.any())
                        else self.encoder.bias[None])
             center = F.normalize(encoded,dim=-1).mean(0)
             if float(center.norm()) > 1e-12:
@@ -230,9 +250,60 @@ class LayerExperienceRecall(nn.Module):
         return ((normalized_query*F.normalize(self.null_key,dim=0)).sum(-1,keepdim=True)
                 /self.memory.temperature+self.null_bias)
 
-    def read(self,query):
-        return self.memory.read(query.float().cpu(),self.encoder,
-                                null_logit=self.null_logit if self.null_read_enabled else None)
+    def remember_address(self, slot, source):
+        """Fix one slot's key from the address encoder at write time."""
+        self.addresses[slot] = F.normalize(self.encoder(source.float()), dim=-1).detach()
+
+    def sealed_addresses(self):
+        """Stored write-time keys. A slot with none uses the current encoder for this read only."""
+        latent = self.encoder.out_features
+        rows = []
+        with torch.no_grad():
+            for index in range(self.memory.capacity):
+                saved = self.addresses[index]
+                if saved is None:
+                    if bool(self.memory.occupied[index]):
+                        saved = F.normalize(self.encoder(self.memory.source[index].float()), dim=-1)
+                    else:
+                        saved = self.encoder.weight.new_zeros(latent)
+                rows.append(saved.detach())
+        return torch.stack(rows)
+
+    def sealed_position_addresses(self, slot, inputs):
+        saved = self.position_addresses[slot]
+        if saved is None or saved.shape[0] != inputs.shape[0]:
+            with torch.no_grad():
+                saved = F.normalize(self.encoder(inputs.float()), dim=-1).detach()
+        return saved
+
+    def _encode_value(self, response):
+        return self.value_map(response.float().cpu())
+
+    def read(self, query):
+        from scripts.ib_local.experience_consolidation import consolidates_reads
+        from scripts.ib_local.latent_navigation_v2 import TransitionRead
+        from scripts.ib_local.navigation_read_credit import read_logits
+        memory = self.memory
+        q = F.normalize(self.encoder(query.float().cpu()), dim=-1)
+        scores = (q @ self.sealed_addresses().T).masked_fill(~memory.occupied, -1e4)
+        if consolidates_reads(memory):
+            from scripts.ib_local.experience_consolidation import select_read_slots
+            selected, slots = select_read_slots(memory, scores)
+        else:
+            selected, slots = scores.topk(memory.topk, dim=-1)
+        valid = memory.occupied[slots]
+        logits = read_logits(memory, selected, slots, valid)
+        if not self.null_read_enabled:
+            weights = logits.softmax(-1) * valid
+            weights = weights / weights.sum(-1, keepdim=True).clamp_min(1e-12)
+        else:
+            empty = self.null_logit(q)
+            if empty.shape != (*logits.shape[:-1], 1):
+                raise ValueError('one finite null logit per query required')
+            combined = torch.cat((logits.masked_fill(~valid, -torch.inf), empty), dim=-1)
+            weights = combined.softmax(-1)[..., :-1] * valid
+        unused = torch.zeros(query.shape[0], self.encoder.out_features)
+        return TransitionRead(unused, unused, slots, weights)
 
     def begin(self, optimizer_group, *, query_limit=128):
         if self.current is not None:
@@ -275,9 +346,9 @@ class LayerExperienceRecall(nn.Module):
                 response = response.detach()
             self.replayed.append(response)
             self.replayed_by_slot[slot] = response
-            values.append(self.encoder(response.float().cpu()))
+            values.append(self._encode_value(response))
             if self.detach_replay_older_than is not None:
-                held_values.append(self.encoder(response.detach().float().cpu()))
+                held_values.append(self._encode_value(response.detach()))
         indices = torch.tensor([lookup[slot] for slot in slots],dtype=torch.long,
                                device=read.slots.device).reshape(read.slots.shape)
         selected_values = torch.cat(values, dim=0)[indices]
@@ -339,12 +410,12 @@ class LayerExperienceRecall(nn.Module):
                 response = response.detach()
             self.replayed.append(response)
             self.replayed_by_slot[slot] = response
-            keys = F.normalize(self.encoder(inputs[0].float().cpu()), dim=-1)
+            keys = self.sealed_position_addresses(slot, inputs[0])
             position_weights = (q @ keys.T / self.memory.temperature).softmax(-1)
-            value = position_weights @ self.encoder(response[0].float().cpu())
+            value = position_weights @ self._encode_value(response[0])
             values.append(value)
             if self.detach_replay_older_than is not None:
-                held_values.append(position_weights @ self.encoder(response[0].detach().float().cpu()))
+                held_values.append(position_weights @ self._encode_value(response[0].detach()))
             # birth is the legacy key at index64. Only call the entire replay
             # old when its LATEST actual input is older than the cutoff.
             ends.append(int(self.memory.birth[slot]) - (self.replay_tokens-1) + inputs.shape[1]-1)
@@ -473,6 +544,9 @@ class LayerExperienceRecall(nn.Module):
             int(m.read_credit_version[slot]),
             copy_tree(current['inputs'][:, self.replay_tokens:self.replay_tokens+m.long])
                 if self.capture_full_window else None)
+        self.remember_address(slot, source[source_index])
+        self.position_addresses[slot] = F.normalize(
+            self.encoder(self.capsules[slot].complete_inputs[0].float()), dim=-1).detach()
         m.history[m.history_cursor].copy_(source[-1])
         m.history_valid[m.history_cursor] = True
         m.history_clock[m.history_cursor] = m.clock

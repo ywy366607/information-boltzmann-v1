@@ -18,6 +18,8 @@ def populated():
     with torch.no_grad():
         wrapper.encoder.weight.copy_(torch.eye(3))
         wrapper.encoder.bias.zero_()
+        wrapper.value_map.weight.copy_(torch.eye(3))
+        wrapper.value_map.bias.zero_()
     memory = wrapper.memory
     memory.clock.fill_(256)
     for i, value in enumerate((2., -2.)):

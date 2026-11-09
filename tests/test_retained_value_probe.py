@@ -15,6 +15,8 @@ def stored():
     with torch.no_grad():
         w.encoder.weight.copy_(torch.eye(3))
         w.encoder.bias.zero_()
+        w.value_map.weight.copy_(torch.eye(3))
+        w.value_map.bias.zero_()
     w.memory.clock.fill_(256)
     for i,(key,value) in enumerate(zip(([1.,0.,0.],[.9,.1,0.],[0.,0.,1.]),
                                      ([2.,1.,0.],[-1.,0.,2.],[1.,3.,4.]))):
@@ -33,8 +35,8 @@ def test_swap_and_vacancy_preserve_actual_mixture_weight_and_other_contributions
     with torch.no_grad():
         full = w.retrieve(query,lambda c:c.inputs)
         weights = w.last_read.weights.clone()
-        original = w.encoder(w.replayed[1])
-        candidate = w.encoder(w.capsules[2].inputs[:,-1])
+        original = w.value_map(w.replayed[1])
+        candidate = w.value_map(w.capsules[2].inputs[:,-1])
         with retained_value_probe(w,2,version,'drop') as dropped:
             drop = w.retrieve(query,lambda c:c.inputs)
         with retained_value_probe(w,2,version,'swap') as swapped:
