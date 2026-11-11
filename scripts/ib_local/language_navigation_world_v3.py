@@ -82,8 +82,8 @@ class BroadLanguageWorld(LanguageNavigationWorld):
         self.cursor = int(cursor)
         self.seen = np.zeros(len(data), dtype=np.bool_)
 
-    def state_dict(self):
-        state = super().state_dict()
+    def state_dict(self, *, copy_arrays=True):
+        state = super().state_dict(copy_arrays=copy_arrays)
         state.update(seed=self.seed, rng=self.rng.bit_generator.state)
         return state
 

@@ -59,7 +59,7 @@ def save_checkpoint(engine, output, cycle, config):
         ('rows','count','tag','err','epoch','last_write')}, history=int(table.history),
         events=table.events, config={k:getattr(table,k) for k in
         ('orders','heads','slots_log2','gain_floor','err_floor','prior_weight')})
-    world_state = engine.world.state_dict()
+    world_state = getattr(engine.world, 'checkpoint_state_dict', engine.world.state_dict)()
     for k,v in world_state.items():
         if isinstance(v,np.ndarray):
             world_state[k] = torch.from_numpy(v)
@@ -152,9 +152,14 @@ def main():
     if args.variant == 'q':
         files.append(Path('scripts/ib_local/language_navigation_kanli_v4q.py'))
     files += [Path(f'scripts/ib_local/language_navigation_kanli_v4{s}.py') for s in ('k', 'l', 'm')]
+    files += [Path(f'scripts/ib_local/{name}.py') for name in (
+        'navigation_retrieval', 'navigation_read_credit', 'latent_navigation_v2',
+        'latent_navigation_v3', 'language_navigation_v2', 'language_navigation_kanli_v4')]
     cfg.update(stage=f'v4{args.variant} shared loop with calibrated latent residual', fused=fused,
                cycles=args.cycles, validation_bytes=len(valid)-1, language_weight=10., sigreg_weight=.001,
                outcome_weight=engine.outcome_weight, replay_batch=engine.replay_batch,
+               read_credit=engine.model.memory.read_credit_enabled,
+               retrieval_layout='model.retrieval payload / model.memory continuous experience',
                optimizer_lrs=[g['lr'] for g in engine.optimizer.param_groups],
                stop='fixed 128-turn diagnostic budget, not convergence' if args.cycles == 128 else 'fixed diagnostic budget',
                parameter_count=sum(p.numel() for p in engine.model.parameters()),
@@ -170,6 +175,7 @@ def main():
         if saved['config']['stage'] != cfg['stage']:
             raise ValueError('checkpoint variant mismatch')
         restore(engine, saved)
+        cfg['read_credit'] = engine.model.memory.read_credit_enabled
         start_cycle = saved['cycle']
         cfg['resume_checkpoint'] = str(args.resume_checkpoint)
         cfg['resume_cycle'] = start_cycle

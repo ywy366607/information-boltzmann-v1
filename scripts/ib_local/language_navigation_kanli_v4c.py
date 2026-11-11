@@ -200,6 +200,8 @@ class WitnessEngine(ImaginingEngine):
         short_at = min(own+memory.short, len(timeline)-1)
         long_at = min(memory.long, len(timeline)-1)
         source, action, long = timeline[0], timeline[own], timeline[long_at]
+        if hasattr(self, '_capture_mother_response_boundary'):
+            self._capture_mother_response_boundary(features.detach(), own, len(response), info)
         outcome_loss, outcome_diag = self._outcome_loss(source, action, long)  # same method for stages 4-5b; overridable from stage 6
         post = float(after_diag['ce'])
         # The habit's actor of the PREVIOUS cycle is applied now, with its TD advantage.
@@ -233,11 +235,15 @@ class WitnessEngine(ImaginingEngine):
             utterance.decode('utf-8'); utf8_valid = True
         except UnicodeDecodeError:
             utf8_valid = False
+        mother_len = int(info.get('mother_bytes', 0)) if info.get('source') == 'mother' else 0
+        mother_nll = float(token_ce[own:own+mother_len].mean()) if mother_len > 0 else None
+        ambient_nll = float(token_ce[own+mother_len:own+len(response)].mean()) if mother_len < len(response) else None
         return dict(mode=self.mode, choice=('silence', 'generate', 'reuse')[record['choice']],
             choice_probability=probs3.tolist(), reused_slot=record['reused_slot'],
             utterance_hex=utterance.hex(), utf8_valid=utf8_valid, spoke=own > 0,
             truncated=record['truncated'], external_bytes=len(response)+len(heldout), self_bytes=own,
-            world=info, response_nll=float(diag['ce']), heldout_pre_nll=pre, heldout_post_nll=post,
+            world=info, response_nll=float(diag['ce']), mother_response_nll=mother_nll,
+            ambient_response_nll=ambient_nll, heldout_pre_nll=pre, heldout_post_nll=post,
             progress=pre-post, fresh=bool(info['holdout_position_fresh']),
             joint_pre_nll=joint_pre, joint_post_nll=joint_post,
             joint_progress=joint_pre-joint_post if joint else None,
@@ -250,6 +256,7 @@ class WitnessEngine(ImaginingEngine):
             short_loss=float(diag['latent']), long_loss=float(diag['latent_long']), **outcome_diag,
             episode_slot=slot, episode_merged=merged, age_component_ablation=component_ablation,
             gradient_norms=[response_norm, heldout_norm], updates=2,
+            read_credit=dict(response=diag.get('read_credit'), heldout=after_diag.get('read_credit')),
             habit_logits=record['habit_logits'], imagination_offset=record['offset'],
             imagined_value=record['values'], precision=self.precision(),
             critic_rms=None if self.critic_error is None else float(np.sqrt(self.critic_error)),

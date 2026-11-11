@@ -26,32 +26,33 @@ from scripts.ib_local.latent_navigation_v2 import LatentNavigationV2, Transition
 from scripts.ib_local.retrieved_table_credit import RetrievedCreditTable
 from scripts.ib_local.run_ngram_fast_table import protocol_stream
 from scripts.ib_local.train_gdn_fast_table import FLOOR, TableGDN
+from scripts.ib_local.table_branch import table_branch
 
 
 @torch.no_grad()
 def validate(model, table, valid, chunk=512):
-    """Fixed weights; clone tables, score each byte before clone assimilation.
+    """Fixed weights; journal table rows, score before sidecar assimilation.
 
     Cold recurrent context in the validation sidecar; live body remains intact.
     The latent sidecar also commits observed validation only after scoring.
     """
-    clone = RetrievedCreditTable.from_state_dict(table.state_dict())
-    clone.history = np.uint64(0)
     old_memory = model.memory
     model.memory = copy.deepcopy(old_memory)
     state = model.initial_state(1, device=next(model.parameters()).device)
     total = count = 0
     try:
-        for i in range(0, len(valid)-1, chunk):
-            raw = valid[i:min(i+chunk+1,len(valid))]
-            _, prob, _ = clone.run_credit(raw, max_window=chunk)
-            ids = torch.tensor(raw[:-1].astype(np.int64), device=state.device)[None]
-            targets = torch.tensor(raw[1:].astype(np.int64), device=state.device)[None]
-            logp = torch.tensor(np.log(np.maximum(prob,FLOOR)), device=state.device)[None]
-            logits, state, _, features, read = model.predict_observed(ids,state,logp)
-            total += float(F.cross_entropy(logits.flatten(0,1),targets.flatten(),reduction='sum'))
-            count += len(raw)-1
-            model.commit_observed(features, read)
+        with table_branch(table) as clone:
+            clone.history = np.uint64(0)
+            for i in range(0, len(valid)-1, chunk):
+                raw = valid[i:min(i+chunk+1,len(valid))]
+                _, prob, _ = clone.run_credit(raw, max_window=chunk)
+                ids = torch.tensor(raw[:-1].astype(np.int64), device=state.device)[None]
+                targets = torch.tensor(raw[1:].astype(np.int64), device=state.device)[None]
+                logp = torch.tensor(np.log(np.maximum(prob,FLOOR)), device=state.device)[None]
+                logits, state, _, features, read = model.predict_observed(ids,state,logp)
+                total += float(F.cross_entropy(logits.flatten(0,1),targets.flatten(),reduction='sum'))
+                count += len(raw)-1
+                model.commit_observed(features, read)
     finally:
         model.memory = old_memory
     return total/count

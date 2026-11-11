@@ -120,9 +120,16 @@ class DialogueEngine:
                 if grad is not None:
                     if p.grad is None: p.grad = -advantage*grad
                     else: p.grad.add_(grad, alpha=-advantage)
-        norms = torch.stack([torch.nn.utils.clip_grad_norm_(group, 1., foreach=True) for group in self.groups])
+        norms = torch.stack([torch.nn.utils.clip_grad_norm_(group, 1., foreach=True).to(loss.device)
+                             for group in self.groups])
         if not torch.isfinite(loss) or not torch.isfinite(norms).all():
             raise FloatingPointError('nonfinite dialogue update')
+        if hasattr(self.model.memory, 'settle_read_credit'):
+            memory = self.model.memory
+            if memory.read_credit_enabled and memory.read_credit_rule == 'adam':
+                from scripts.ib_local.navigation_read_credit import configure_read_credit
+                configure_read_credit(memory, 'adam', self.optimizer.param_groups[0])
+            diagnostics['read_credit'] = self.model.memory.settle_read_credit()
         receipt = TransitionRead(None, None, diagnostics['read_slots'], diagnostics['read_weights'])
         self.model.commit_observed(features, receipt)
         self.optimizer.step()

@@ -28,8 +28,17 @@ def live_sigreg(current, historical, valid, directions):
 
 
 class LiveSigregBody(LatentNavigationV3):
+    def long_prediction_loss(self, h):
+        prior = self.memory.pending[:len(h)]
+        prior_view = self.memory.pending_view[:len(h)]
+        valid = self.memory.pending_valid[:len(h)].to(h.dtype)
+        pred = self.long_predictor(torch.cat((self.encoder(prior), self.encoder(prior_view)), -1))
+        error = (pred-self.encoder(h)).square().mean(-1)
+        return (error*valid).sum()/valid.sum().clamp_min(1)
+
     def objective(self, ids, targets, state, table_logp, directions,
                   prediction_weight=.1, regularization_weight=.01, score_mask=None):
+        self.memory.begin_read_credit()
         logits, next_state, diagnostics, h, read = self.predict_observed(ids, state, table_logp)
         if score_mask is not None:
             # The scored response window begins after the self-utterance.
@@ -51,12 +60,7 @@ class LiveSigregBody(LatentNavigationV3):
             short_loss = F.mse_loss(pred, self.encoder(h[short:]))
         else:
             short_loss = h.sum()*0
-        prior = self.memory.pending[:len(h)]
-        prior_view = self.memory.pending_view[:len(h)]
-        valid = self.memory.pending_valid[:len(h)].to(h.dtype)
-        pred = self.long_predictor(torch.cat((self.encoder(prior), self.encoder(prior_view)), -1))
-        error = (pred-self.encoder(h)).square().mean(-1)
-        long_loss = (error*valid).sum()/valid.sum().clamp_min(1)
+        long_loss = self.long_prediction_loss(h)
         # history is stored bounded data; only its current re-encoding is live.
         regularizer = live_sigreg(self.encoder(h), self.encoder(self.memory.history),
                                  self.memory.history_valid, directions)

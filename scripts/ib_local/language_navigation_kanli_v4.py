@@ -46,8 +46,8 @@ class TopicWorld(BroadLanguageWorld):
         self.window, self.anchor, self.offset = int(window), int(self.cursor), 0
         self.moves = 0
 
-    def state_dict(self):
-        state = super().state_dict()
+    def state_dict(self, *, copy_arrays=True):
+        state = super().state_dict(copy_arrays=copy_arrays)
         state.update(anchor=self.anchor, offset=self.offset, moves=self.moves)
         return state
 
@@ -82,25 +82,44 @@ class TopicWorld(BroadLanguageWorld):
 
 
 class UtteranceMemory(ExperienceMemory):
-    """Experience table that also keeps the words of each experience."""
+    """Compatibility facade over causal features and a separate payload table.
+
+    attach() installs the payload table at model.retrieval. The causal memory's
+    state_dict then contains no words; old word accessors remain read ports.
+    """
     def __init__(self, *args, max_utterance=32, **kw):
         super().__init__(*args, **kw)
         self.max_utterance = max_utterance
-        self.register_buffer('words', torch.zeros(self.capacity, max_utterance, dtype=torch.uint8))
-        self.register_buffer('word_count', torch.zeros(self.capacity, dtype=torch.long))
+        from scripts.ib_local.navigation_retrieval import ExactUtteranceTable
+        self.retrieval = ExactUtteranceTable(self.capacity, max_utterance)
+        object.__setattr__(self, '_retrieval_store', self.retrieval)
+        self.register_load_state_dict_pre_hook(self._load_legacy_words)
+        self.read_credit_enabled = True
+
+    @staticmethod
+    def _load_legacy_words(module, state, prefix, *args):
+        for field in ('words', 'word_count'):
+            old, new = prefix + field, prefix + 'retrieval.' + field
+            if old in state:
+                if new in state and not torch.equal(state[new], state[old]):
+                    raise ValueError('conflicting legacy retrieval payloads')
+                state[new] = state.pop(old)
+
+    @property
+    def words(self):
+        return self._retrieval_store.words
+
+    @property
+    def word_count(self):
+        return self._retrieval_store.word_count
 
     @torch.no_grad()
     def commit_experience(self, source, action, short, long, encoder, utterance, progress, source_time):
         slot, merged = self.commit_episode(source, action, short, long, encoder,
                                            progress=progress, source_time=source_time)
         # A merged slot keeps the words that brought at least as much progress.
-        if utterance and (not merged or progress >= float(self.progress[slot])):
-            n = min(len(utterance), self.max_utterance)
-            self.words[slot].zero_()
-            self.words[slot, :n] = torch.as_tensor(np.frombuffer(utterance[:n], np.uint8), device=self.words.device)
-            self.word_count[slot] = n
-        elif not utterance and not merged:
-            self.word_count[slot] = 0
+        self._retrieval_store.write(slot, utterance, merged=merged,
+            keep=not merged or progress >= float(self.progress[slot]))
         return slot, merged
 
 
@@ -114,11 +133,16 @@ class KanLiHeads(nn.Module):
 
 
 def attach(model, seed=23, max_utterance=32):
-    """Replace the experience table by one that keeps words; add the heads."""
+    """Install distinct retrieval/causal tables and the existing action heads."""
     old = model.memory
     memory = UtteranceMemory(old.width, old.capacity, old.short, old.long, old.topk, old.threshold,
                              old.temperature, old.mode, old.history_size, max_utterance=max_utterance)
     model.memory = memory.to(old.source.device)
+    # Transfer ownership, not a copy. Shared slot indices retain the exact
+    # previous retrieval behaviour while causal state contains no byte payload.
+    model.retrieval = memory._modules.pop('retrieval')
+    from scripts.ib_local.navigation_retrieval import split_retrieval_state
+    model.register_load_state_dict_pre_hook(split_retrieval_state)
     latent = model.encoder.out_features
     with torch.random.fork_rng(devices=[]):
         torch.random.default_generator.manual_seed(seed)

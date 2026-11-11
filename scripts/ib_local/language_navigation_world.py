@@ -90,8 +90,12 @@ class LanguageNavigationWorld:
             raise ValueError('invalid source-position range')
         self.seen[start:end] = True
 
-    def state_dict(self):
-        return dict(cursor=self.cursor, seen=self.seen.copy())
+    def state_dict(self, *, copy_arrays=True):
+        return dict(cursor=self.cursor, seen=self.seen.copy() if copy_arrays else self.seen)
+
+    def checkpoint_state_dict(self):
+        """Borrow arrays only while the caller pauses events for serialization."""
+        return self.state_dict(copy_arrays=False)
 
     def load_state_dict(self, state):
         if (not 0 <= state['cursor'] <= len(self.data) or

@@ -247,6 +247,8 @@ class LatentNavigationV2(LatentNavigationBody):
 
     def objective(self, ids, targets, state, table_logp, directions,
                   prediction_weight=.1, regularization_weight=.01, score_mask=None):
+        if hasattr(self.memory, 'begin_read_credit'):
+            self.memory.begin_read_credit()
         logits, next_state, diagnostics, h, read = self.predict_observed(ids, state, table_logp)
         token_ce = F.cross_entropy(logits.flatten(0, 1), targets.flatten(), reduction='none')
         if score_mask is None:

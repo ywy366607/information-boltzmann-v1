@@ -28,8 +28,6 @@ F is still trained (unchanged), but it no longer enters the choice.
 """
 from __future__ import annotations
 
-import copy
-
 import numpy as np
 import torch
 from torch import nn
@@ -38,6 +36,7 @@ from scripts.ib_local.language_action import peek
 from scripts.ib_local.language_navigation_kanli_v4 import GENERATE, REUSE, SILENCE
 from scripts.ib_local.language_navigation_kanli_v4b import INTERO
 from scripts.ib_local.language_navigation_kanli_v4e import EqualEngine, torch_multinomial
+from scripts.ib_local.table_branch import table_branch
 
 
 class FilmEngine(EqualEngine):
@@ -95,6 +94,11 @@ class FilmEngine(EqualEngine):
         inputs = torch.cat((z.expand(3, -1), film, self.intero().expand(3, -1), torch.eye(3, device=z.device), recalled), -1)
         return heads.critic(inputs).squeeze(-1)+recalled[:, 0], inputs
 
+    def _choice_offset(self, values, available):
+        """Default route, numerically identical to the original inline rule."""
+        centered = values-values[available].mean()
+        return (self.precision()*centered).masked_fill(~available, 0.)
+
     @torch.no_grad()
     def _utter(self):
         self.decision.start(self.recurrent)
@@ -110,14 +114,16 @@ class FilmEngine(EqualEngine):
             reuse_words = memory.words[slot, :int(memory.word_count[slot])].cpu().numpy()
         films, draft = [0., 0., 0.], None
         if self.mode != 'silence':
-            _, _, _, films[SILENCE] = self._film(b'', copy.deepcopy(self.table))
-            draft, draft_logp, _, films[GENERATE] = self._film(None, copy.deepcopy(self.table))
+            with table_branch(self.table) as branch:
+                _, _, _, films[SILENCE] = self._film(b'', branch)
+            with table_branch(self.table) as branch:
+                draft, draft_logp, _, films[GENERATE] = self._film(None, branch)
             if slot is not None:
-                films[REUSE] = self._film(reuse_words, copy.deepcopy(self.table))[3]
+                with table_branch(self.table) as branch:
+                    films[REUSE] = self._film(reuse_words, branch)[3]
         values, inputs = self._value(h[None], films)
         available = habit[0] > -1e3
-        centered = values-values[available].mean()
-        offset = (self.precision()*centered).masked_fill(~available, 0.)
+        offset = self._choice_offset(values, available)
         logits = habit[0]+offset
         record = dict(feeling=self.intero()[0].clone(), choice_logits=logits.tolist(), habit_logits=habit[0].tolist(),
                       offset=offset.tolist(), values=values.tolist(), critic_inputs=inputs, films=list(films),

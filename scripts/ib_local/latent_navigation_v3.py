@@ -1,9 +1,9 @@
 """Bounded action-experience storage for a continuous language body.
 
-This is a staging component: callers must supply *observed* body's hidden
-features at the source, after self-hearing the action, and at both successor
-horizons. It is not yet connected to the live v2 DialogueEngine. In particular
-the stored heldout progress is an observation, not automatic causal credit.
+Callers supply observed body features at the source, after self-hearing the
+action, and at both successor horizons. The v4 loop commits these episodes.
+Measured progress remains an observation; read-time credit is settled from
+actual prediction derivatives without changing that observation's identity.
 """
 from __future__ import annotations
 
@@ -32,15 +32,107 @@ class ExperienceMemory(TransitionMemory):
         self.register_buffer('progress', torch.zeros(capacity))
         self.register_buffer('progress_valid', torch.zeros(capacity, dtype=torch.bool))
         self.register_buffer('episodes', torch.zeros((), dtype=torch.long))
+        # A record's measured outcome and the usefulness of reading that record
+        # are different quantities. Reuse the existing record capacity.
+        self.register_buffer('read_credit_mean', torch.zeros(capacity))
+        self.register_buffer('read_credit_count', torch.zeros(capacity, dtype=torch.long))
+        self.register_buffer('read_credit_version', torch.zeros(capacity, dtype=torch.long))
+        self.register_buffer('read_credit_first', torch.zeros(capacity))
+        self.register_buffer('read_credit_second', torch.zeros(capacity))
+        self.register_buffer('read_credit_steps', torch.zeros(capacity, dtype=torch.long))
+        self.register_buffer('retention_utility_first', torch.zeros(capacity))
+        self.register_buffer('retention_utility_second', torch.zeros(capacity))
+        self.register_buffer('retention_utility_steps', torch.zeros(capacity, dtype=torch.long))
+        self.read_credit_rule = 'mean'
+        self.read_credit_lr = 3e-4
+        self.read_credit_betas = (.9, .999)
+        self.read_credit_eps = 1e-8
+        self.read_credit_enabled = False
+        # Opt-in for the pretrained replay candidate; legacy individuals keep
+        # their original selection/replacement until explicitly migrated.
+        self.consolidation_enabled = False
+        self.consolidation_rule = 'preference'
+        self._read_participation = []
+        self._read_credit_active = False
+        self._read_credit_entries = 0
 
-    def read(self, features, encoder):
-        q = F.normalize(encoder(features), dim=-1)
+    def get_extra_state(self):
+        return dict(super().get_extra_state(), read_credit_enabled=self.read_credit_enabled,
+                    consolidation_enabled=self.consolidation_enabled,
+                    consolidation_rule=self.consolidation_rule,
+                    read_credit_rule=self.read_credit_rule, read_credit_lr=self.read_credit_lr,
+                    read_credit_betas=self.read_credit_betas, read_credit_eps=self.read_credit_eps)
+
+    def set_extra_state(self, state):
+        self.read_credit_enabled = state.get('read_credit_enabled', self.read_credit_enabled)
+        self.consolidation_enabled = state.get('consolidation_enabled', False)
+        self.consolidation_rule = state.get('consolidation_rule', 'preference')
+        if self.consolidation_rule not in ('preference', 'evidence', 'retention', 'utility'):
+            raise ValueError('unknown bounded consolidation rule')
+        for name in ('read_credit_rule','read_credit_lr','read_credit_betas','read_credit_eps'):
+            if name in state:
+                setattr(self, name, state[name])
+        super().set_extra_state(state)
+
+    def _load_from_state_dict(self, state, prefix, *args):
+        # Existing complete individuals migrate with neutral read credit.
+        for name in ('read_credit_mean', 'read_credit_count', 'read_credit_version',
+                     'read_credit_first', 'read_credit_second', 'read_credit_steps',
+                     'retention_utility_first', 'retention_utility_second', 'retention_utility_steps'):
+            if prefix + name not in state:
+                state[prefix + name] = torch.zeros_like(getattr(self, name))
+        self._read_participation = []
+        self._read_credit_active = False
+        self._read_credit_entries = 0
+        super()._load_from_state_dict(state, prefix, *args)
+
+    def begin_read_credit(self):
+        # One live training objective at a time, as in the continuing engine.
+        # No unconsumed graph or receipt is carried across observation windows.
+        self._read_participation = []
+        self._read_credit_active = True
+        self._read_credit_entries = 0
+
+    def settle_read_credit(self):
+        from scripts.ib_local.navigation_read_credit import settle_read_credit
+        return settle_read_credit(self)
+
+    def read(self, features, encoder, *, null_logit=None):
+        return self.read_encoded(encoder(features), encoder, null_logit=null_logit)
+
+    def read_encoded(self, latent, encoder, *, null_logit=None, eligible=None):
+        """Same finite read, accepting an already encoded (possibly predicted) state.
+
+        Does not commit an observation or touch the memory clock. The caller
+        owns the distinction between imagined and actually observed states.
+        """
+        q = F.normalize(latent, dim=-1)
         keys = F.normalize(encoder(self.source), dim=-1)
-        scores = (q @ keys.T).masked_fill(~self.occupied, -1e4)
-        selected, slots = scores.topk(self.topk, dim=-1)
-        valid = self.occupied[slots]
-        weights = (selected / self.temperature).softmax(-1) * valid
-        weights = weights / weights.sum(-1, keepdim=True).clamp_min(1e-12)
+        if latent.ndim != 2 or latent.shape[-1] != keys.shape[-1]:
+            raise ValueError('expected [queries, latent_width] encoded states')
+        occupied = self.occupied if eligible is None else self.occupied & eligible
+        scores = (q @ keys.T).masked_fill(~occupied, -1e4)
+        from scripts.ib_local.experience_consolidation import consolidates_reads
+        if consolidates_reads(self):
+            from scripts.ib_local.experience_consolidation import select_read_slots
+            selected, slots = select_read_slots(self, scores)
+        else:
+            selected, slots = scores.topk(self.topk, dim=-1)
+        valid = occupied[slots]
+        from scripts.ib_local.navigation_read_credit import read_logits
+        logits = read_logits(self, selected, slots, valid)
+        if null_logit is None:
+            # Exact legacy path: all assigned mass goes to occupied records.
+            weights = logits.softmax(-1) * valid
+            weights = weights / weights.sum(-1, keepdim=True).clamp_min(1e-12)
+        else:
+            empty = null_logit(q)
+            if empty.shape != (*logits.shape[:-1],1):
+                raise ValueError('one finite null logit per query required')
+            combined = torch.cat((logits.masked_fill(~valid,-torch.inf),empty),dim=-1)
+            # The final candidate has exactly zero value. Its mass must NOT
+            # be renormalized back into the occupied historical records.
+            weights = combined.softmax(-1)[...,:-1] * valid
         # The injected value recalls the experienced action-state; predictors
         # can use the observed successor independently through long_value.
         action = (weights[..., None] * encoder(self.action)[slots]).sum(-2)
@@ -110,7 +202,10 @@ class ExperienceMemory(TransitionMemory):
             slot = int(index)
             hit = bool(best >= self.threshold)
         if not hit:
-            if self.mode == 'fifo':
+            if self.consolidation_enabled:
+                from scripts.ib_local.experience_consolidation import replacement_slot
+                slot = replacement_slot(self)
+            elif self.mode == 'fifo':
                 slot = int(self.cursor)
                 self.cursor.copy_((self.cursor + 1) % self.capacity)
             else:
@@ -122,8 +217,19 @@ class ExperienceMemory(TransitionMemory):
             self.birth[slot] = source_time
             self.last_touch[slot] = self.clock
             self.progress_valid[slot] = False
+            self.read_credit_mean[slot] = 0
+            self.read_credit_count[slot] = 0
+            self.read_credit_first[slot] = 0
+            self.read_credit_second[slot] = 0
+            self.read_credit_steps[slot] = 0
         else:
             self.merged_total.add_(1)
+        # Even a merge changes the represented experience. An outstanding
+        # receipt cannot silently be assigned to this new mixture.
+        self.retention_utility_first[slot] = 0
+        self.retention_utility_second[slot] = 0
+        self.retention_utility_steps[slot] = 0
+        self.read_credit_version[slot].add_(1)
         n = int(self.count[slot])
         for store, value in zip((self.source, self.action, self.successor, self.long_successor), inputs):
             store[slot].copy_((store[slot] * n + value.detach()) / (n + 1))

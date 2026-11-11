@@ -124,6 +124,8 @@ class SharedContextWoodEngine(ResidualWoodEngine):
         result['wood_unpooled_error'] = (old_base-target).square().tolist()
         result['wood_unpooled_base'] = old_base.tolist()
         self.audit_unpooled.observe(choice, target, old_base, old_base)
+        if hasattr(self.model.wood_evidence, 'last_gain_clip'):
+            result['gain_innovation_clip'] = dict(self.model.wood_evidence.last_gain_clip)
         result.update(world_before=before, wood_common=self._forecast['common'].tolist(),
             wood_action_contrasts=self._forecast['contrasts'].tolist(),
             wood_all_predictions=self._forecast['used'].tolist(),

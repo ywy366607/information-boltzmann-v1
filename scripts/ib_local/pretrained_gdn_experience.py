@@ -153,6 +153,10 @@ class LayerExperienceRecall(nn.Module):
         self.detach_replay_older_than = None
         self.query_clock_offsets = None
         self.suppress_older_than = None  # observation-only selected-value cut
+        # Optional checked program over (read-weight micro-units, age tokens).
+        # Off for every existing checkpoint unless explicitly installed.
+        self.causal_relation = None
+        self.causal_receipt = None
 
     @property
     def storage_nbytes(self):
@@ -168,7 +172,65 @@ class LayerExperienceRecall(nn.Module):
                     reactivation_mode=self.reactivation_mode,
                     detach_replay=self.detach_replay,null_read_enabled=self.null_read_enabled,
                     recall_placement=self.recall_placement, read_interval=self.read_interval,
-                    detach_replay_older_than=self.detach_replay_older_than)
+                    detach_replay_older_than=self.detach_replay_older_than,
+                    causal_relation=self.causal_relation)
+
+    def install_causal_relation(self, relation):
+        """Install checked data at an event boundary, never a prior receipt fit."""
+        from scripts.ib_local.causal_relation_runtime import CheckedRelation
+        if self.current is not None or self.memory._read_credit_active:
+            raise RuntimeError('finish current observation before installing a relation')
+        if not isinstance(relation, CheckedRelation) or relation.inputs != 2:
+            raise ValueError('a checked two-input causal relation is required')
+        self.causal_relation = dict(code=[dict(op=i.op,arg=i.arg) for i in relation.code],
+                                    digest=relation.digest, count=0, feedback_sum=0.)
+
+    def _relation_weights(self, read, ages):
+        """Apply a program to information available at read time only.
+
+        Its micro-unit result is a proposed change to the read multiplier.
+        This candidate mapping is explicitly bounded to [0,2]. The leaf's
+        post-loss gradient measures local sensitivity, not finite removal.
+        """
+        if self.causal_relation is None:
+            return read.weights
+        from scripts.ib_local.executable_causal_relation import parse_candidate, execute
+        code = parse_candidate(self.causal_relation['code'], 2)
+        weights = read.weights.detach().cpu()
+        ages = ages.detach().cpu()
+        changes = []
+        for weight, age in zip(weights.flatten().tolist(), ages.flatten().tolist()):
+            x = [round(float(weight)*1_000_000), max(0, min(int(age), 10**9))]
+            changes.append(max(-1., min(1., execute(code,x)/1_000_000)))
+        values = torch.tensor(changes, dtype=read.weights.dtype, device=read.weights.device).reshape_as(read.weights)
+        multiplier = (1 + values).detach()
+        if torch.is_grad_enabled() and self.memory._read_credit_active:
+            multiplier.requires_grad_(True)
+            self.causal_receipt = (multiplier, values.detach(), read.slots.detach().clone(),
+                                   self.memory.read_credit_version[read.slots].detach().clone(),
+                                   self.memory.occupied[read.slots].detach().clone())
+        return read.weights * multiplier
+
+    def settle_causal_relation(self):
+        """Settle only the matching read after its actual loss has arrived."""
+        receipt, self.causal_receipt = self.causal_receipt, None
+        if receipt is None:
+            return dict(records=0)
+        multiplier, predictions, slots, versions, valid = receipt
+        if not torch.equal(self.memory.read_credit_version[slots], versions):
+            raise RuntimeError('relation receipt no longer matches episode versions')
+        if multiplier.grad is None:
+            return dict(records=0)
+        target = -multiplier.grad.detach()
+        if not bool(torch.isfinite(target).all()):
+            raise FloatingPointError('nonfinite causal-relation feedback')
+        # Proposed change and loss derivative have different meanings; do not
+        # claim their numerical difference is a prediction error.
+        self.causal_relation['count'] += int(valid.sum())
+        self.causal_relation['feedback_sum'] += float(target[valid].sum())
+        return dict(records=int(valid.sum()), proposed_change=predictions.cpu().tolist(),
+                    feedback=target.cpu().tolist(), valid=valid.cpu().tolist(),
+                    semantics='negative local loss derivative by read multiplier')
 
     @staticmethod
     def validate_read_interval(interval):
@@ -227,6 +289,8 @@ class LayerExperienceRecall(nn.Module):
         self.current, self.replayed, self.last_read = None, [], None
         self.replayed_by_slot = {}
         self.suppressed_record = None
+        self.causal_relation = state.get('causal_relation')
+        self.causal_receipt = None
 
     @torch.no_grad()
     def enable_null_read(self):
@@ -362,7 +426,10 @@ class LayerExperienceRecall(nn.Module):
             older = ages > self.detach_replay_older_than
             held_selected = torch.cat(held_values, dim=0)[indices]
             selected_values = torch.where(older[..., None], held_selected, selected_values)
-        weights = read.weights
+        offsets = (torch.zeros(query.shape[0], dtype=torch.long)
+                   if self.query_clock_offsets is None else self.query_clock_offsets)
+        ages = self.memory.clock + offsets.to(read.slots.device)[:, None] - self.memory.birth[read.slots]
+        weights = self._relation_weights(read, ages)
         if self.suppress_older_than is not None:
             ages = self.memory.clock-self.memory.birth[read.slots]
             # Hold other contributions fixed rather than renormalizing them.
@@ -431,7 +498,7 @@ class LayerExperienceRecall(nn.Module):
         if self.detach_replay_older_than is not None:
             held = torch.stack(held_values, dim=1)[rows, indices]
             selected = torch.where((ages > self.detach_replay_older_than)[..., None], held, selected)
-        weights = read.weights
+        weights = self._relation_weights(read, ages)
         if self.suppress_older_than is not None:
             weights = weights * (ages <= self.suppress_older_than)
         if self.suppressed_record is not None:
