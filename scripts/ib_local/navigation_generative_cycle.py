@@ -5,6 +5,7 @@ import copy
 from dataclasses import replace
 
 import torch
+from scripts.ib_local.navigation_gain_units import wood_choice_logits
 from torch import nn
 from torch.nn import functional as F
 
@@ -74,7 +75,7 @@ class GenerativeCycleMixin:
             features = torch.cat((binding_feature(self.model, source, source,
                 now['mother']['mean'], Port.MOTHER), binding_feature(self.model, later, later,
                 preview['mother']['mean'], Port.MOTHER, internal=True)))
-            prior = torch.stack((now['value'][0], preview['value'][0]))*self.precision()
+            prior = wood_choice_logits(self, torch.stack((now['value'][0], preview['value'][0])))
             logits = self.model.binding_choice(features).flatten()+prior
             selected = int(torch.multinomial(logits.softmax(0), 1))
             self._binding_choices.append(dict(features=features.detach().clone(),
@@ -131,7 +132,7 @@ class GenerativeCycleMixin:
         # selector receives the SAME real delayed policy factor as word choice.
         utility = torch.stack([imagine(model, state, s, a, ridge=self.relation_ridge,
             reward_valid=self.reward_label_valid(wood=True))['expected_after_value'][0] for s,a,_ in bindings])
-        prior = self.precision()*utility
+        prior = wood_choice_logits(self, utility)
         logits = model.binding_choice(features).flatten()+prior
         selected = int(torch.multinomial(logits.softmax(0), 1))
         self._binding_choices.append(dict(features=features.detach().clone(),

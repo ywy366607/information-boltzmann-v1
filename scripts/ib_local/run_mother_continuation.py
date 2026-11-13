@@ -58,6 +58,8 @@ def continuation_parser():
     p.add_argument('--causal-relation-capacity', type=int, default=65536)
     p.add_argument('--generative-relations', action='store_true',
                    help='explicit whole-loop typed binding/program/evidence/internal-work migration')
+    p.add_argument('--repair-gain-units', action='store_true',
+                   help='explicit repair of raw-gain/wood/critic units; preserve inherited weights and moments')
     p.add_argument('--ambient-policy', choices=('reply','quiet'),
                    help='explicit event-boundary migration of inherited ambient navigation')
     p.add_argument('--mother-policy', choices=('legacy', 'responsive', 'responsive_v2', 'responsive_v3'),
@@ -374,6 +376,14 @@ def prepare_continuation(args, *, provider_factory=None, resume_output=False):
             revision='same finite evidence U, functional scope sharing/refutation',
             actor='all binding and internal choices join the original delayed policy trace',
             preserved='original parameters, Adam, S/P, world, facts and pending credit')
+    if getattr(args, 'repair_gain_units', False) and config.get('gain_units') is None:
+        from scripts.ib_local.navigation_gain_units import configure_gain_units
+        configure_gain_units(engine)
+        config['gain_units'] = dict(schema=1, repaired_at_cycle=start_cycle,
+            critic_scale=100., wood_scale=10., raw_scale=1.,
+            repair='TD bootstrap divided by critic scale; wood logits converted before critic precision',
+            retained='all old weights, optimizer, calibration, real gains, history and pending participation',
+            previous='legacy bootstrap used /10 with a 100*g critic; effective discount was 10*gamma')
     if args.shared_cache:
         args.shared_cache.parent.mkdir(parents=True, exist_ok=True)
     inherited_policy = provider_state.get('mother_ambient_policy','quiet') if is_mother else 'reply'

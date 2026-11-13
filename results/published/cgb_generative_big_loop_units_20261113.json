@@ -1,0 +1,138 @@
+{
+  "summary": {
+    "events": 316,
+    "first_cycle": 3569,
+    "last_cycle": 3884,
+    "g_mean": 0.02058252159364616,
+    "precision_mean": 0.01021145371105836,
+    "critic_rms_mean": 104.92582631005678,
+    "mother_before_learning": {
+      "n": 316,
+      "first_mean": 0.030204087831787293,
+      "second_mean": 0.04059881810393609,
+      "first_lower": 246,
+      "mean_first_minus_second": -0.010394730272148794
+    },
+    "delivered_program_next_mse": 0.6429891283076907,
+    "saved_next_boundary_mse": 0.6429891283076907,
+    "composed_transition_vs_wrong_action": {
+      "n": 315,
+      "first_mean": 0.6429891283076907,
+      "second_mean": 0.6635577369067404,
+      "first_lower": 176,
+      "mean_first_minus_second": -0.020568608599049704
+    },
+    "draft_future_value_span_mean": 0.014481238313490831,
+    "draft_probability_max": 0.2501266598701477,
+    "draft_probability_mean_tv_uniform": 2.56723429583296e-05,
+    "open_role_max_probability": 0.3938695192337036,
+    "actual_actions": {
+      "silence": 42,
+      "generate": 249,
+      "reuse": 25
+    }
+  },
+  "updates": 1896,
+  "external_bytes": 303360,
+  "open_roles": {
+    "action": 98,
+    "condition": 111,
+    "mother": 107
+  },
+  "real_commits": 315,
+  "rejected_commit_cycles": [
+    3734
+  ],
+  "program_score_commits": 314,
+  "internal_steps": 283,
+  "relation_identities": 153,
+  "repeated_identities": 65,
+  "reused_identity_events": 163,
+  "fixed_validation": [
+    {
+      "cycle": 3634,
+      "owt_nll": 1.3463900610804558,
+      "mother_nll": 1.081663180142641,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar"
+    },
+    {
+      "cycle": 3698,
+      "owt_nll": 1.353601910173893,
+      "mother_nll": 1.0825266279280186,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar"
+    },
+    {
+      "cycle": 3762,
+      "owt_nll": 1.3691201880574226,
+      "mother_nll": 1.1147154495120049,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar"
+    },
+    {
+      "cycle": 3826,
+      "owt_nll": 1.3585960939526558,
+      "mother_nll": 1.0961696840822697,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar"
+    }
+  ],
+  "initial_validation": {
+    "owt_nll": 1.3521473407745361,
+    "mother_nll": 1.0492148101329803,
+    "bytes_each": 8192,
+    "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar"
+  },
+  "score_semantics": {
+    "mother": "same-event raw original prior versus updated mother predictor, frozen before learning",
+    "raw_boundary": "pending next_latent is overwritten by the delivered composed program; both MSE fields measure the same forecast",
+    "calibration": "same saved previous prediction versus actual two-event gain",
+    "logits": "draft logit span equals current precision times predicted future-value span"
+  },
+  "checkpoint": {
+    "path": "results\\cgb_generative_joint_20261113\\learning\\last.pt.gz",
+    "sha256": "c1ebef416256ba6b8e71c6a7def48ed6073fe103ecf254d6c6429389c38406b9",
+    "gzip_crc_passed": true,
+    "uncompressed_bytes": 324038689,
+    "scope": "stream integrity; cycle and referenced manifest still require checkpoint metadata inspection"
+  },
+  "unresolved": [
+    "old/new whole-body observations are policy selected, not matched controls",
+    "no sufficiently trained larger same-loop body comparison",
+    "available logs do not give true consequences of unexecuted drafts"
+  ],
+  "units_reproduction": {
+    "real_events": 316,
+    "first_cycle": 3569,
+    "last_cycle": 3884,
+    "critic_scale": 100.0,
+    "wood_scale": 10.0,
+    "gamma": 0.8,
+    "actual_legacy_target_max_error": 0.0,
+    "actual_critic_error_ema_max_error": 7.275957614183426e-12,
+    "legacy_self_bootstrap_coefficient": 8.0,
+    "repaired_self_bootstrap_coefficient": 0.8,
+    "actual_target_abs_error_mean": 116.55773531805866,
+    "repaired_target_abs_error_mean_on_SAME_saved_values": 3.544579974722258,
+    "final_critic_rms": 148.13885616883783,
+    "scope": "arithmetic reproduction on saved real forecasts; no repaired training trajectory or benefit claim",
+    "actual_path": "world_cycle_step -> _settle_previous -> SCALE*y -> critic_error -> precision -> draft/role/internal logits",
+    "correction": "same gain units across the full chain; preserve old calibration and relearn it, no manual precision boost"
+  },
+  "checkpoint_verified": {
+    "cycle": 3884,
+    "manifest_sha256": "f3ab1caf888afd8dd04ad1b497b4ad9beed761a0a9b64624d56f1bf8801a7b6a",
+    "manifest_matches": true,
+    "sqlite_quick_check": true,
+    "sqlite_foreign_keys": true,
+    "archive_relations": 188,
+    "archive_episodes": 4470
+  },
+  "repair_validation": {
+    "tests_passed": 49,
+    "complete_repaired_body_migration": false,
+    "new_real_training_events": 0
+  },
+  "scope": "real saved trajectory and numerical unit correction; no trained repair benefit yet"
+}

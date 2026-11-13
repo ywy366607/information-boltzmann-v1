@@ -19,9 +19,10 @@ from torch.nn import functional as F
 
 def sha256(path):
     digest = hashlib.sha256()
-    with Path(path).open('rb') as stream:
-        for block in iter(lambda: stream.read(1 << 20), b''):
-            digest.update(block)
+    buffer = bytearray(65536)
+    with Path(path).open('rb', buffering=0) as stream:
+        while (size := stream.readinto(buffer)):
+            digest.update(memoryview(buffer)[:size])
     return digest.hexdigest()
 
 

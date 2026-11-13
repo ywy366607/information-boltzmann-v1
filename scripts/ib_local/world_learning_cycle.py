@@ -17,6 +17,7 @@ from torch.nn import functional as F
 
 from scripts.ib_local.navigation_live_witness import frozen_table_logp
 from scripts.ib_local.navigation_settlement import settlement_code
+from scripts.ib_local.navigation_gain_units import td_gain_target
 
 
 @dataclass(frozen=True)
@@ -132,8 +133,7 @@ def world_cycle_step(engine, directions, age_ablate=False):
                 actor_norm = float(torch.stack([g.norm() for g in actor if g is not None]).norm())
             if engine.prev is not None:
                 same = engine.prev.get('settlement_kind', 'witness') == engine.settlement_kind
-                td = engine._settle_previous(engine.prev['g'] +
-                    (engine.gamma*value_now/10. if same else 0.))
+                td = engine._settle_previous(td_gain_target(engine, engine.prev['g'], value_now, same))
                 if not same:
                     td['objective_boundary'] = True
                 delayed, advantage = td.pop('actor'), td['advantage']

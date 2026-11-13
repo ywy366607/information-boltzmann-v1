@@ -15,6 +15,7 @@ from scripts.ib_local.navigation_causal_program import CausalProgramEngine
 from scripts.ib_local.navigation_direct_read import causal_prefix, gain_state
 from scripts.ib_local.navigation_momentum_wood import decision_momentum_read
 from scripts.ib_local.table_branch import table_branch
+from scripts.ib_local.navigation_gain_units import wood_choice_logits
 
 
 def proposal_log_probability(choice_logp, proposals, selection_logp):
@@ -53,7 +54,7 @@ class JointCycleMixin:
         forecast = imagine(self.model, self._program_question_state, source, actions,
             ridge=self.relation_ridge, reward_valid=self.reward_label_valid(wood=True),
             momentum=momentum)
-        logits = self.precision()*forecast['expected_after_value']
+        logits = wood_choice_logits(self, forecast['expected_after_value'])
         logp = logits.log_softmax(0)
         selected = int(torch.multinomial(logp.exp(), 1))
         self._joint_proposals = [dict(words=v[0], logp=v[1], probs=v[2]) for v in candidates]
