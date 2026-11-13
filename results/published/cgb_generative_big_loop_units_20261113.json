@@ -131,8 +131,36 @@
   },
   "repair_validation": {
     "tests_passed": 49,
-    "complete_repaired_body_migration": false,
-    "new_real_training_events": 0
+    "complete_repaired_body_migration": true,
+    "new_real_training_events": 0,
+    "independent_cuda_restore": true,
+    "restored_fields": {
+      "model": true,
+      "optimizer": true,
+      "engine": true,
+      "table": true,
+      "world": true,
+      "torch_rng": true,
+      "cuda_rng": true,
+      "numpy_rng": true,
+      "python_rng": true,
+      "cycle": true,
+      "engine_fields": true
+    },
+    "inherited_preserved": {
+      "model": true,
+      "engine": true,
+      "optimizer_state": true,
+      "whole": true,
+      "optimizer_groups": true,
+      "corrected_schema": true
+    }
   },
-  "scope": "real saved trajectory and numerical unit correction; no trained repair benefit yet"
+  "scope": "real saved trajectory and numerical unit correction; no trained repair benefit yet",
+  "repaired_checkpoint": {
+    "path": "results\\cgb_generative_joint_20261113\\unit_repair_migrated_3884\\last.pt.gz",
+    "sha256": "8ac9a1196fa711772f6d4081e10845f7caa51202bd596e894256903418742154",
+    "cycle": 3884,
+    "new_training_events": 0
+  }
 }

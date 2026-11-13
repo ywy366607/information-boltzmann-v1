@@ -2,6 +2,8 @@
 
 ## 3884轮整圈核查：金的TD单位错误压弱木火（2026-11-13）
 
+**后续实机完成：**已从原3884实际完整CUDA身体显式迁移`--repair-gain-units`，结果`unit_repair_migrated_3884/migration.json passed=true`：原model、每个engine字段、Adam状态/参数组、快表、世界及所有RNG逐值保持，总953352参数全部可训练且在optimizer，只新增单位schema。随后独立CUDA进程重建并重新保存，`unit_repair_restore_3884/restore_audit.json`全部逻辑值一致。修复续接源为`results/cgb_generative_joint_20261113/unit_repair_migrated_3884/last.pt.gz`及同目录manifest档案；仍3884轮、0新增世界事件/优化器更新，尚未重启训练。下文“完整迁移尚未运行”为此实机核对前的历史状态。
+
 本次按用户要求继续检查完整大环，实际读取3569–3884的316轮、1896次优化器更新、303360外部字节，以及3884完整检查点和绑定SSD档案。没有重新训练、调用妈妈或构造合成能力任务。完整观察报告`results/cgb_generative_joint_20261113/big_loop_audit_corrected_labels/report.json`；检查点元数据`big_loop_audit/checkpoint_inspection.json`；前一份审计里将next_boundary日志误名为raw的字段以corrected_labels报告为准：生产CausalProgram会覆盖next_latent，两个MSE字段实际测同一交付程序。
 
 ### 五行交接与证据
