@@ -1,0 +1,247 @@
+{
+  "kind": "read_credit_consolidation_real_text_wiring",
+  "status": "passed",
+  "checkpoint": "E:\\cgb_gdn340_probe\\credit_retention_20261106\\migrated.pt",
+  "seed": "restored checkpoint RNG",
+  "checkpoint_sha256": "356ed343b78201e3580759018def5addc5701c5d7cfd329f623307a9ac66acb8",
+  "source_updates": 227,
+  "layers": {
+    "1": {
+      "changed_surviving_records": 2,
+      "changed_over_128_tokens": 2,
+      "strengthened": 0,
+      "weakened": 2,
+      "max_preference_change": 0.7615905404090881,
+      "max_lifetime_multiplier_change": 0.533076822757721,
+      "observed_multiplier_min": 0.4669228494167328,
+      "observed_multiplier_max": 2.1416807174682617,
+      "next_credit_victim": 9,
+      "next_oldest_victim": 3,
+      "victim_differs_from_oldest": true,
+      "preference": [
+        0.0,
+        0.0,
+        0.0,
+        -0.47473374009132385,
+        0.7615903615951538,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.7615912556648254,
+        0.0,
+        0.0,
+        0.0,
+        -0.7615905404090881,
+        0.0,
+        -0.33692634105682373,
+        0.0,
+        -0.7615910768508911,
+        0.7615909576416016,
+        -0.7615894675254822,
+        0.0,
+        -0.7615898251533508,
+        0.18909145891666412,
+        0.3790200352668762,
+        0.0,
+        0.0,
+        0.0,
+        -0.7615896463394165,
+        0.0,
+        0.0,
+        0.6916374564170837,
+        -0.7615904211997986
+      ],
+      "cpu_storage_bytes": 39840583,
+      "storage_bytes_delta": 0
+    },
+    "12": {
+      "changed_surviving_records": 2,
+      "changed_over_128_tokens": 2,
+      "strengthened": 0,
+      "weakened": 2,
+      "max_preference_change": 0.7615904808044434,
+      "max_lifetime_multiplier_change": 0.5330767631530762,
+      "observed_multiplier_min": 0.46692293882369995,
+      "observed_multiplier_max": 2.141681432723999,
+      "next_credit_victim": 4,
+      "next_oldest_victim": 3,
+      "victim_differs_from_oldest": true,
+      "preference": [
+        0.0,
+        0.0,
+        0.0,
+        0.7615908980369568,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.7615911364555359,
+        0.237307608127594,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.7615912556648254,
+        0.1034298986196518,
+        0.0,
+        -0.4204738140106201,
+        0.6527423858642578,
+        0.0,
+        0.0,
+        0.0,
+        -0.7615906596183777,
+        0.0,
+        0.0,
+        -0.7615904808044434,
+        0.0,
+        -0.7615910768508911
+      ],
+      "cpu_storage_bytes": 39840583,
+      "storage_bytes_delta": 0
+    }
+  },
+  "consolidation_rule": "retention",
+  "capacity": 64,
+  "real_tokens": 128,
+  "executed_updates": 2,
+  "training_data": "OWT real stream offset 14336",
+  "token_sha256": "408f77858edf7e6c501912b5afe54386b269dea3fa3153bd64f8d5ef68838b9a",
+  "source_sha256": "98c7b65a1679a045004582108df8d58fe46613741405b10100e85f80723f2c99",
+  "hypothesis": "current outcome changes both read preference and age-adjusted retention",
+  "scope": "one real update plus exact repeat; not learned long-term latch or NLL advantage",
+  "migration_forward_max_difference": 0.0,
+  "migration_only_changes_retention_policy": true,
+  "null_migration_preserves_existing_individual": true,
+  "ce_before_null": 2.11808180809021,
+  "new_null_parameters": 130,
+  "migrated_checkpoint": "E:\\cgb_gdn340_probe\\null_read_20261106\\migrated.pt",
+  "migrated_new_updates": 0,
+  "migration_disk_restore_exact": true,
+  "update": {
+    "nll_sum": 270.5277404785156,
+    "target_tokens": 128,
+    "traffic": {},
+    "supervised_tokens": 128,
+    "supervised_nll_sum": 270.5277404785156,
+    "ce": 2.1134979724884033,
+    "last_target_nll": 4.587409496307373,
+    "sigreg": 56.54759979248047,
+    "reads": {
+      "1": {
+        "ages_tokens": [
+          2752,
+          960
+        ],
+        "weights": [
+          0.3449136018753052,
+          0.33939000964164734
+        ],
+        "slots": [
+          13,
+          27
+        ],
+        "query_position": 0,
+        "null_weight": 0.3156963586807251
+      },
+      "12": {
+        "ages_tokens": [
+          704,
+          1728
+        ],
+        "weights": [
+          0.34718242287635803,
+          0.3083707094192505
+        ],
+        "slots": [
+          29,
+          21
+        ],
+        "query_position": 0,
+        "null_weight": 0.34444689750671387
+      }
+    },
+    "diagnostics": {
+      "symmetric_logit_max": 0.0,
+      "old_read_cut_nll_delta": -0.01590871810913086,
+      "layer1_old_native_grad_norms": {
+        "layer1.A_log": 0.00011181578884134069,
+        "layer1.dt_bias": 8.353635348612443e-05,
+        "layer1.q_proj.weight": 0.0007814256241545081,
+        "layer1.k_proj.weight": 0.0011701850453391671,
+        "layer1.v_proj.weight": 0.0009463518508709967,
+        "layer1.a_proj.weight": 0.000226833057240583,
+        "layer1.b_proj.weight": 3.571457273210399e-05,
+        "layer1.q_conv1d.weight": 0.0016432771226391196,
+        "layer1.k_conv1d.weight": 0.0023878635838627815,
+        "layer1.v_conv1d.weight": 0.0031193557661026716,
+        "layer1.g_proj.weight": 0.0007571887108497322,
+        "layer1.o_norm.weight": 0.0012154595460742712,
+        "layer1.o_proj.weight": 0.0017547332681715488
+      },
+      "layer12_old_native_grad_norms": {
+        "layer12.A_log": 0.0002915655495598912,
+        "layer12.dt_bias": 0.00021204720542300493,
+        "layer12.q_proj.weight": 0.002673547016456723,
+        "layer12.k_proj.weight": 0.0029733411502093077,
+        "layer12.v_proj.weight": 0.004872693680226803,
+        "layer12.a_proj.weight": 0.0011741393245756626,
+        "layer12.b_proj.weight": 0.0005042686825618148,
+        "layer12.q_conv1d.weight": 0.007866494357585907,
+        "layer12.k_conv1d.weight": 0.006574114318937063,
+        "layer12.v_conv1d.weight": 0.006757935043424368,
+        "layer12.g_proj.weight": 0.0037941799964755774,
+        "layer12.o_norm.weight": 0.003155355341732502,
+        "layer12.o_proj.weight": 0.0058462307788431644
+      }
+    },
+    "credit": {
+      "1": {
+        "records": 2,
+        "participations": 2,
+        "stale": 0,
+        "credit_sum": -0.007485397160053253,
+        "null_bias_gradient": -0.007485394366085529,
+        "null_key_gradient_norm": 0.029129162430763245
+      },
+      "12": {
+        "records": 2,
+        "participations": 2,
+        "stale": 0,
+        "credit_sum": -0.03947652131319046,
+        "null_bias_gradient": -0.03947652503848076,
+        "null_key_gradient_norm": 0.1435478925704956
+      }
+    },
+    "updates": 228,
+    "tokens": 369152,
+    "recurrence_bytes": 25755648,
+    "experience_cpu_bytes": 79681166
+  },
+  "peak_cuda_allocated_bytes": 1495740928,
+  "null_update": {
+    "1": {
+      "bias_change": 0.000299999606795609,
+      "key_change_norm": 0.0023999775294214487,
+      "real_credit_sum": -0.007485397160053253,
+      "null_bias_gradient": -0.007485394366085529
+    },
+    "12": {
+      "bias_change": 0.0002999998687300831,
+      "key_change_norm": 0.002400006866082549,
+      "real_credit_sum": -0.03947652131319046,
+      "null_bias_gradient": -0.03947652503848076
+    }
+  },
+  "real_credit_balances_null_gradient": true,
+  "next_update_restore_exact": true,
+  "snapshot_file_written": true,
+  "old_individual_unchanged": true,
+  "source_checkpoint_unchanged": true,
+  "retained_new_updates": 0,
+  "seconds": 73.01468260000001
+}

@@ -1,0 +1,47 @@
+{
+  "kind": "read_credit_consolidation_real_text_wiring",
+  "status": "passed",
+  "consolidation_rule": "evidence",
+  "source_updates": 21,
+  "capacity": 64,
+  "real_tokens": 128,
+  "executed_updates": 2,
+  "next_update_restore_exact": true,
+  "peak_cuda_allocated_bytes": 1495739904,
+  "layers": {
+    "1": {
+      "changed_surviving_records": 2,
+      "changed_over_128_tokens": 2,
+      "strengthened": 0,
+      "weakened": 2,
+      "max_preference_change": 0.9614731669425964,
+      "max_lifetime_multiplier_change": 1.3228530883789062,
+      "observed_multiplier_min": 0.4668847620487213,
+      "observed_multiplier_max": 2.1413891315460205,
+      "next_credit_victim": 27,
+      "next_oldest_victim": 11,
+      "victim_differs_from_oldest": true,
+      "cpu_storage_bytes": 39840583,
+      "storage_bytes_delta": 0
+    },
+    "12": {
+      "changed_surviving_records": 1,
+      "changed_over_128_tokens": 1,
+      "strengthened": 0,
+      "weakened": 1,
+      "max_preference_change": 0.08369415998458862,
+      "max_lifetime_multiplier_change": 0.1719503402709961,
+      "observed_multiplier_min": 0.46692296862602234,
+      "observed_multiplier_max": 1.969731330871582,
+      "next_credit_victim": 12,
+      "next_oldest_victim": 11,
+      "victim_differs_from_oldest": true,
+      "cpu_storage_bytes": 39840583,
+      "storage_bytes_delta": 0
+    }
+  },
+  "raw_report": "E:\\cgb_gdn340_probe\\consolidation_evidence_20261106\\wiring.json",
+  "raw_sha256": "7eaa0a158edb42131aa44258807a51812bce82ba4320dd4e2fa2232b6dbf2052",
+  "interpretation": "Existing bias-corrected signed credit moments normalized by RMS engage bounded retrieval/retention on an actual trained state. Complete next update restores exactly; neither absolute usefulness nor long-SFT benefit is established by this one-step audit.",
+  "theorem_count_delta": 0
+}

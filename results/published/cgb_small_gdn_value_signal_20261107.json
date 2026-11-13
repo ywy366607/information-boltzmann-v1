@@ -1,0 +1,191 @@
+{
+  "status": "complete",
+  "optimizer_updates": 0,
+  "records": [
+    {
+      "checkpoint": "source",
+      "case": 0,
+      "value_swapped": false,
+      "original": "4440241",
+      "replacement": "6461405",
+      "first_digit_prediction": "a",
+      "original_first_digit_probability": 0.00077137938933447,
+      "replacement_first_digit_probability": 2.5474728317931294e-05,
+      "original_vs_replacement_log_odds": 3.4104933738708496,
+      "answer_distance_bytes": 281,
+      "value_input_gradient_norm": 0.14186574518680573,
+      "last32_input_gradient_norm": 6.476168155670166,
+      "alpha_mean": [
+        0.8271847367286682,
+        0.8944235444068909,
+        0.956524133682251,
+        0.8779255747795105
+      ]
+    },
+    {
+      "checkpoint": "source",
+      "case": 0,
+      "value_swapped": true,
+      "original": "4440241",
+      "replacement": "6461405",
+      "first_digit_prediction": "a",
+      "original_first_digit_probability": 0.0002571220393292606,
+      "replacement_first_digit_probability": 0.0004480472707655281,
+      "original_vs_replacement_log_odds": -0.5553479194641113,
+      "answer_distance_bytes": 281,
+      "value_input_gradient_norm": 0.16759972274303436,
+      "last32_input_gradient_norm": 7.475118160247803,
+      "alpha_mean": [
+        0.8271800875663757,
+        0.8945887088775635,
+        0.9566017985343933,
+        0.8775779604911804
+      ]
+    },
+    {
+      "checkpoint": "source",
+      "case": 1,
+      "value_swapped": false,
+      "original": "6461405",
+      "replacement": "4440241",
+      "first_digit_prediction": "a",
+      "original_first_digit_probability": 0.0005259836325421929,
+      "replacement_first_digit_probability": 0.0003122156485915184,
+      "original_vs_replacement_log_odds": 0.521575927734375,
+      "answer_distance_bytes": 257,
+      "value_input_gradient_norm": 0.1616283655166626,
+      "last32_input_gradient_norm": 7.2065534591674805,
+      "alpha_mean": [
+        0.8257942199707031,
+        0.8887959718704224,
+        0.9551005363464355,
+        0.8734437823295593
+      ]
+    },
+    {
+      "checkpoint": "source",
+      "case": 1,
+      "value_swapped": true,
+      "original": "6461405",
+      "replacement": "4440241",
+      "first_digit_prediction": "a",
+      "original_first_digit_probability": 2.958241748274304e-05,
+      "replacement_first_digit_probability": 0.000924273335840553,
+      "original_vs_replacement_log_odds": -3.4418277740478516,
+      "answer_distance_bytes": 257,
+      "value_input_gradient_norm": 0.1777632087469101,
+      "last32_input_gradient_norm": 9.6159029006958,
+      "alpha_mean": [
+        0.825799286365509,
+        0.8887262344360352,
+        0.955044150352478,
+        0.8738482594490051
+      ]
+    },
+    {
+      "checkpoint": "adapted1024",
+      "case": 0,
+      "value_swapped": false,
+      "original": "4440241",
+      "replacement": "6461405",
+      "first_digit_prediction": "7",
+      "original_first_digit_probability": 0.15680979192256927,
+      "replacement_first_digit_probability": 0.09059076756238937,
+      "original_vs_replacement_log_odds": 0.5486812591552734,
+      "answer_distance_bytes": 281,
+      "value_input_gradient_norm": 0.0018128283554688096,
+      "last32_input_gradient_norm": 0.12493272870779037,
+      "alpha_mean": [
+        0.8129507303237915,
+        0.8410468101501465,
+        0.963479220867157,
+        0.895754873752594
+      ]
+    },
+    {
+      "checkpoint": "adapted1024",
+      "case": 0,
+      "value_swapped": true,
+      "original": "4440241",
+      "replacement": "6461405",
+      "first_digit_prediction": "7",
+      "original_first_digit_probability": 0.15392816066741943,
+      "replacement_first_digit_probability": 0.09266705811023712,
+      "original_vs_replacement_log_odds": 0.5074729919433594,
+      "answer_distance_bytes": 281,
+      "value_input_gradient_norm": 0.002043797867372632,
+      "last32_input_gradient_norm": 0.12320496141910553,
+      "alpha_mean": [
+        0.8129002451896667,
+        0.8406198024749756,
+        0.9634920358657837,
+        0.8957323431968689
+      ]
+    },
+    {
+      "checkpoint": "adapted1024",
+      "case": 1,
+      "value_swapped": false,
+      "original": "6461405",
+      "replacement": "4440241",
+      "first_digit_prediction": "7",
+      "original_first_digit_probability": 0.09273595362901688,
+      "replacement_first_digit_probability": 0.154131218791008,
+      "original_vs_replacement_log_odds": -0.5080480575561523,
+      "answer_distance_bytes": 257,
+      "value_input_gradient_norm": 0.001804879866540432,
+      "last32_input_gradient_norm": 0.11063389480113983,
+      "alpha_mean": [
+        0.8119315505027771,
+        0.8336034417152405,
+        0.9618808031082153,
+        0.8932317495346069
+      ]
+    },
+    {
+      "checkpoint": "adapted1024",
+      "case": 1,
+      "value_swapped": true,
+      "original": "6461405",
+      "replacement": "4440241",
+      "first_digit_prediction": "7",
+      "original_first_digit_probability": 0.0906144455075264,
+      "replacement_first_digit_probability": 0.157035231590271,
+      "original_vs_replacement_log_odds": -0.5498565435409546,
+      "answer_distance_bytes": 257,
+      "value_input_gradient_norm": 0.0016207818407565355,
+      "last32_input_gradient_norm": 0.11455564200878143,
+      "alpha_mean": [
+        0.8119860887527466,
+        0.8340005874633789,
+        0.9618362188339233,
+        0.8933730125427246
+      ]
+    }
+  ],
+  "model_and_memories_unchanged": true,
+  "checkpoints_unchanged": true,
+  "paired_interventions": [
+    {
+      "checkpoint": "source",
+      "case": 0,
+      "paired_log_odds_change": 3.965841293334961
+    },
+    {
+      "checkpoint": "source",
+      "case": 1,
+      "paired_log_odds_change": 3.9634037017822266
+    },
+    {
+      "checkpoint": "adapted1024",
+      "case": 0,
+      "paired_log_odds_change": 0.04120826721191406
+    },
+    {
+      "checkpoint": "adapted1024",
+      "case": 1,
+      "paired_log_odds_change": 0.041808485984802246
+    }
+  ],
+  "source_script": "E:/cgb_small_gdn_20261107/audit_value_signal.py"
+}

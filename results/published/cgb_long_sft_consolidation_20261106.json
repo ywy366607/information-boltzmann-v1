@@ -1,0 +1,286 @@
+{
+  "kind": "real_long_sft_consolidation_pair",
+  "status": "complete",
+  "task_sha256": "e1bed56667b1bfb4eb0eadeb3863d0a3259abd42b966fa4a55c707ecb7a748c0",
+  "window": 128,
+  "capacity": 64,
+  "distinct_train_questions": 84,
+  "epochs": 2,
+  "arms": {
+    "off": {
+      "examples": 168,
+      "updates": 186,
+      "real_tokens": 333268,
+      "compute_padding_tokens": 11988,
+      "supervised_answer_tokens": 1886,
+      "source_age_max_tokens": 4032,
+      "question_records_retrieved": 21,
+      "question_records_present_after_update": 372,
+      "question_record_opportunities": 372,
+      "curve": [
+        {
+          "examples": 0,
+          "updates": 0,
+          "answer_nll": 2.2888794554803606,
+          "question_swap_gap": 0.01693868637084961,
+          "matching_correct": 3,
+          "admissions": {}
+        },
+        {
+          "examples": 42,
+          "updates": 46,
+          "answer_nll": 2.1619670247673093,
+          "question_swap_gap": 0.0070638954639434814,
+          "matching_correct": 3,
+          "admissions": {
+            "full_admissions": 1354,
+            "actual_not_oldest": 0,
+            "credit_not_oldest": 808,
+            "evicted_positive": 60,
+            "evicted_negative": 62,
+            "max_evicted_age": 4160
+          }
+        },
+        {
+          "examples": 84,
+          "updates": 93,
+          "answer_nll": 2.1969421501446487,
+          "question_swap_gap": 0.011235535144805908,
+          "matching_correct": 3,
+          "admissions": {
+            "full_admissions": 2696,
+            "actual_not_oldest": 0,
+            "credit_not_oldest": 1523,
+            "evicted_positive": 124,
+            "evicted_negative": 121,
+            "max_evicted_age": 4160
+          }
+        },
+        {
+          "examples": 126,
+          "updates": 139,
+          "answer_nll": 1.9627573472216613,
+          "question_swap_gap": 0.0072054192423820496,
+          "matching_correct": 2,
+          "admissions": {
+            "full_admissions": 4050,
+            "actual_not_oldest": 0,
+            "credit_not_oldest": 2301,
+            "evicted_positive": 180,
+            "evicted_negative": 184,
+            "max_evicted_age": 4160
+          }
+        },
+        {
+          "examples": 168,
+          "updates": 186,
+          "answer_nll": 2.105717990631448,
+          "question_swap_gap": 0.01686805486679077,
+          "matching_correct": 3,
+          "admissions": {
+            "full_admissions": 5392,
+            "actual_not_oldest": 0,
+            "credit_not_oldest": 3075,
+            "evicted_positive": 239,
+            "evicted_negative": 244,
+            "max_evicted_age": 4160
+          }
+        }
+      ],
+      "epochs": {
+        "1": {
+          "examples": 84,
+          "supervised_answer_tokens": 943,
+          "prequential_answer_nll": 2.216809401393316
+        },
+        "2": {
+          "examples": 84,
+          "supervised_answer_tokens": 943,
+          "prequential_answer_nll": 1.9353288537876983
+        }
+      },
+      "admissions": {
+        "full_admissions": 5392,
+        "actual_not_oldest": 0,
+        "credit_not_oldest": 3075,
+        "evicted_positive": 239,
+        "evicted_negative": 244,
+        "max_evicted_age": 4160
+      },
+      "checkpoint": "E:\\cgb_gdn340_probe\\qasper_sft_evidence_20261106\\off_last.pt",
+      "checkpoint_examples": 168,
+      "episode_storage_max_bytes": 79681166
+    },
+    "on": {
+      "examples": 168,
+      "updates": 186,
+      "real_tokens": 333268,
+      "compute_padding_tokens": 11988,
+      "supervised_answer_tokens": 1886,
+      "source_age_max_tokens": 8256,
+      "question_records_retrieved": 12,
+      "question_records_present_after_update": 364,
+      "question_record_opportunities": 372,
+      "curve": [
+        {
+          "examples": 0,
+          "updates": 0,
+          "answer_nll": 2.2951504789796986,
+          "question_swap_gap": 0.01848241686820984,
+          "matching_correct": 3,
+          "admissions": {}
+        },
+        {
+          "examples": 42,
+          "updates": 46,
+          "answer_nll": 2.1448184063560083,
+          "question_swap_gap": -0.0031552165746688843,
+          "matching_correct": 2,
+          "admissions": {
+            "full_admissions": 1354,
+            "actual_not_oldest": 732,
+            "credit_not_oldest": 732,
+            "evicted_positive": 27,
+            "evicted_negative": 68,
+            "max_evicted_age": 8512
+          }
+        },
+        {
+          "examples": 84,
+          "updates": 93,
+          "answer_nll": 2.2132064471567485,
+          "question_swap_gap": 0.006758078932762146,
+          "matching_correct": 3,
+          "admissions": {
+            "full_admissions": 2696,
+            "actual_not_oldest": 1408,
+            "credit_not_oldest": 1408,
+            "evicted_positive": 60,
+            "evicted_negative": 136,
+            "max_evicted_age": 8896
+          }
+        },
+        {
+          "examples": 126,
+          "updates": 139,
+          "answer_nll": 1.9876339955437452,
+          "question_swap_gap": 0.001945100724697113,
+          "matching_correct": 3,
+          "admissions": {
+            "full_admissions": 4050,
+            "actual_not_oldest": 2107,
+            "credit_not_oldest": 2107,
+            "evicted_positive": 85,
+            "evicted_negative": 203,
+            "max_evicted_age": 8896
+          }
+        },
+        {
+          "examples": 168,
+          "updates": 186,
+          "answer_nll": 2.123155416402602,
+          "question_swap_gap": 0.031503334641456604,
+          "matching_correct": 3,
+          "admissions": {
+            "full_admissions": 5392,
+            "actual_not_oldest": 2748,
+            "credit_not_oldest": 2748,
+            "evicted_positive": 110,
+            "evicted_negative": 273,
+            "max_evicted_age": 8896
+          }
+        }
+      ],
+      "epochs": {
+        "1": {
+          "examples": 84,
+          "supervised_answer_tokens": 943,
+          "prequential_answer_nll": 2.218940730818003
+        },
+        "2": {
+          "examples": 84,
+          "supervised_answer_tokens": 943,
+          "prequential_answer_nll": 1.9775520314088175
+        }
+      },
+      "admissions": {
+        "full_admissions": 5392,
+        "actual_not_oldest": 2748,
+        "credit_not_oldest": 2748,
+        "evicted_positive": 110,
+        "evicted_negative": 273,
+        "max_evicted_age": 8896
+      },
+      "checkpoint": "E:\\cgb_gdn340_probe\\qasper_sft_evidence_20261106\\on_last.pt",
+      "checkpoint_examples": 168,
+      "episode_storage_max_bytes": 79681166
+    }
+  },
+  "connection_gate": {
+    "symmetric_logit_max": 0.0,
+    "old_read_cut_nll_delta": 0.038600921630859375,
+    "old_native_gradient_nonzero": {
+      "layer1_old_native_grad_norms": true,
+      "layer12_old_native_grad_norms": true
+    }
+  },
+  "answer_nll_on_minus_off": 0.017437425771154036,
+  "swap_gap_on_minus_off": 0.014635279774665833,
+  "peak_cuda_allocated_bytes": 1495740416,
+  "paired_curve": [
+    {
+      "examples": 0,
+      "answer_nll_on_minus_off": 0.0062710234993379466,
+      "swap_gap_on_minus_off": 0.0015437304973602295
+    },
+    {
+      "examples": 42,
+      "answer_nll_on_minus_off": -0.017148618411300998,
+      "swap_gap_on_minus_off": -0.010219112038612366
+    },
+    {
+      "examples": 84,
+      "answer_nll_on_minus_off": 0.01626429701209986,
+      "swap_gap_on_minus_off": -0.004477456212043762
+    },
+    {
+      "examples": 126,
+      "answer_nll_on_minus_off": 0.024876648322083916,
+      "swap_gap_on_minus_off": -0.0052603185176849365
+    },
+    {
+      "examples": 168,
+      "answer_nll_on_minus_off": 0.017437425771154036,
+      "swap_gap_on_minus_off": 0.014635279774665833
+    }
+  ],
+  "mean_trained_curve_nll_on_minus_off": 0.010357438173509204,
+  "trained_curve_points_favoring_on": 1,
+  "trained_curve_points": 4,
+  "final_minus_initial_nll_difference": 0.01116640227181609,
+  "per_paper_final": [
+    {
+      "paper_id": "2001.07786",
+      "mean_answer_nll_on_minus_off": -0.028800606727600098,
+      "swap_gap_on_minus_off": 0.0216141939163208
+    },
+    {
+      "paper_id": "1912.08904",
+      "mean_answer_nll_on_minus_off": 0.08947932720184326,
+      "swap_gap_on_minus_off": 0.03152060508728027
+    },
+    {
+      "paper_id": "1612.03226",
+      "mean_answer_nll_on_minus_off": -0.03743016719818115,
+      "swap_gap_on_minus_off": 0.025062978267669678
+    },
+    {
+      "paper_id": "1603.01514",
+      "mean_answer_nll_on_minus_off": 0.037610530853271484,
+      "swap_gap_on_minus_off": -0.019656658172607422
+    }
+  ],
+  "raw_report": "E:\\cgb_gdn340_probe\\qasper_sft_evidence_20261106\\pair.json",
+  "raw_sha256": "dc304434a322ab409772c032d2cdec2a6ec3ba7df2b9077fe41ad28f93607b8f",
+  "scope": "same-seed finite-budget restricted QASPER excerpts; no official benchmark or convergence claim"
+}

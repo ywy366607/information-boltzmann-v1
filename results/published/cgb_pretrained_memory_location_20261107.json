@@ -1,0 +1,120 @@
+{
+  "status": "complete",
+  "protocol": "Frozen location-of-memory audit: no standard attention, recall vs native S.\n\nSame existing491-update pretrained branch and existing12 official single-needle\ncases. Disable extra experience hooks, then erase only native recurrent states\nbefore the last prompt token (retain short-convolution buffers). A matched\nnative control uses exactly the same split. No optimizer updates or new rules.\n",
+  "source_sha256": "273d3285d193755c4eec440a05619578160cc8be0f7d5f381f0e3221e1705206",
+  "source_updates": 491,
+  "model_attention_config": null,
+  "actual_layer_types": [
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet",
+    "fla.layers.gated_deltanet.GatedDeltaNet"
+  ],
+  "standard_softmax_attention_layers": 0,
+  "lexical_fast_table_present": false,
+  "extra_experience_layers": [
+    2,
+    13
+  ],
+  "persistent_optimizer_updates": 0,
+  "generation_cap": 32,
+  "new_lean_coverage": 0,
+  "source_script_sha256": "5d2226b410de0c8ced3e3747edac52c6fdc2f9b4ffad93ac5f70627ec9cd1d70",
+  "manifest_sha256": "49a2c6909ac89bb846c17ed0d82a8bacfb697c66541a680ff1ef314957bb6307",
+  "seconds": 552.1586105823517,
+  "summary": {
+    "512": {
+      "complete": {
+        "cases": 4,
+        "exact": 4,
+        "mean_answer_nll": 0.28702497482299805
+      },
+      "native_only": {
+        "cases": 4,
+        "exact": 4,
+        "mean_answer_nll": 0.22487882897257805
+      },
+      "erase_native_S": {
+        "cases": 4,
+        "exact": 0,
+        "mean_answer_nll": 3.455090641975403
+      },
+      "native_counterfactual": {
+        "cases": 4,
+        "exact": 4,
+        "mean_answer_nll": 0.21967361867427826
+      }
+    },
+    "2048": {
+      "complete": {
+        "cases": 4,
+        "exact": 4,
+        "mean_answer_nll": 0.42566029727458954
+      },
+      "native_only": {
+        "cases": 4,
+        "exact": 4,
+        "mean_answer_nll": 0.42531346529722214
+      },
+      "erase_native_S": {
+        "cases": 4,
+        "exact": 0,
+        "mean_answer_nll": 3.3483853936195374
+      },
+      "native_counterfactual": {
+        "cases": 4,
+        "exact": 4,
+        "mean_answer_nll": 0.4468042850494385
+      }
+    },
+    "4096": {
+      "complete": {
+        "cases": 4,
+        "exact": 3,
+        "mean_answer_nll": 0.5183303356170654
+      },
+      "native_only": {
+        "cases": 4,
+        "exact": 2,
+        "mean_answer_nll": 0.7865882068872452
+      },
+      "erase_native_S": {
+        "cases": 4,
+        "exact": 0,
+        "mean_answer_nll": 3.4582688212394714
+      },
+      "native_counterfactual": {
+        "cases": 4,
+        "exact": 4,
+        "mean_answer_nll": 0.6355777643620968
+      }
+    }
+  },
+  "complete_state_restored": true,
+  "source_unchanged": true,
+  "script_unchanged": true,
+  "peak_cuda_bytes": 1274058752,
+  "raw_report": "E:\\cgb_gdn340_probe\\ruler_20261107\\memory_location_20261107.json",
+  "raw_report_sha256": "4be528b140c67ee9f191dea07c543cf28dadf4d81ed0225cb6659588de3de36c",
+  "interpretation": "24 actual GatedDeltaNet layers, attn=null, no standard sliding/window attention or lexical fast table. Complete11/12, native-only10/12, erase S before last prompt token0/12, native counterfactual12/12. Reset at the beginning of each question differs from erasing S after reading it. No reset-vs-continuous comparison was performed. Small-body training carries S while its independent-request evaluation starts S empty; quantify this mismatch before assigning all failures to readout."
+}

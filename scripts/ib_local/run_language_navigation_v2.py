@@ -37,7 +37,10 @@ def validate(model, table, valid, chunk=512):
     The latent sidecar also commits observed validation only after scoring.
     """
     old_memory = model.memory
-    model.memory = copy.deepcopy(old_memory)
+    # The live archive is a process-owned disk connection. A frozen sidecar
+    # owns only a copy of the hot episode state and must never page/write it.
+    archive = getattr(old_memory, '_causal_archive', None)
+    model.memory = copy.deepcopy(old_memory, {id(archive): None} if archive is not None else None)
     state = model.initial_state(1, device=next(model.parameters()).device)
     total = count = 0
     try:

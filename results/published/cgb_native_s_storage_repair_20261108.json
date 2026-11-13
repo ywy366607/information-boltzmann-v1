@@ -1,0 +1,90 @@
+{
+  "status": "admission_passed_raw_resumed",
+  "cpu_tests_passed": 49,
+  "scope": "storage policy and recovery equivalence; future retention/relearning not concluded",
+  "output": "D:\\information-boltzmann-v1\\results\\cgb_native_s_credit_20261108\\local_storage_repair_serial_v2",
+  "admission_seconds": 152.7293015999894,
+  "complete_disk_next_update_equal": true,
+  "passive_archive_learning_equivalent": true,
+  "archive_policy_learning_digests": [
+    {
+      "sha256": "4caa370ff3479087aedbaea8645dbd421cbd9741494746778dee465f3ef1fb0f",
+      "tensor_occurrences": 820,
+      "unique_tensor_views": 820,
+      "tensor_bytes_hashed": 290054662,
+      "largest_tensor_buffer_bytes": 4194304
+    },
+    {
+      "sha256": "4caa370ff3479087aedbaea8645dbd421cbd9741494746778dee465f3ef1fb0f",
+      "tensor_occurrences": 820,
+      "unique_tensor_views": 820,
+      "tensor_bytes_hashed": 290054662,
+      "largest_tensor_buffer_bytes": 4194304
+    }
+  ],
+  "experience_bytes_on_off": [
+    504224398,
+    478206606
+  ],
+  "original11_unchanged": true,
+  "main_source_unchanged": true,
+  "main_updates": 0,
+  "resumed_from": {
+    "path": "F:\\cgb_native_s_credit_20261108\\retention_serial\\raw\\checkpoint_000032.pt",
+    "sha256": "aff3e1a480ba7b46dd4a44739803912eed194bd03fd9bd44149dddc5573fd482",
+    "committed_formal_updates": 32,
+    "actual_next_arrival": 4156,
+    "unsaved_later_attempt_excluded": true
+  },
+  "observed_formal_updates": 40,
+  "overlap_comparison": {
+    "scope": "actual resumed branch overlap with interrupted old attempt, not independent benefit comparison",
+    "rows": [
+      {
+        "formal_update": 33,
+        "all_non_storage_untimed_metrics_equal": true,
+        "nll_old": 4.164156351389465,
+        "nll_new": 4.164156351389465,
+        "credit_norm_old": 0.0529083665780175,
+        "credit_norm_new": 0.0529083665780175,
+        "history_equal": true,
+        "different_top_keys": []
+      },
+      {
+        "formal_update": 34,
+        "all_non_storage_untimed_metrics_equal": true,
+        "nll_old": 3.5958643305220903,
+        "nll_new": 3.5958643305220903,
+        "credit_norm_old": 0.01051886865844101,
+        "credit_norm_new": 0.01051886865844101,
+        "history_equal": true,
+        "different_top_keys": []
+      },
+      {
+        "formal_update": 35,
+        "all_non_storage_untimed_metrics_equal": true,
+        "nll_old": 3.8550484159295593,
+        "nll_new": 3.8550484159295593,
+        "credit_norm_old": 0.03495770619734118,
+        "credit_norm_new": 0.03495770619734118,
+        "history_equal": true,
+        "different_top_keys": []
+      },
+      {
+        "formal_update": 36,
+        "all_non_storage_untimed_metrics_equal": true,
+        "nll_old": 3.066427358319743,
+        "nll_new": 3.066427358319743,
+        "credit_norm_old": 0.00803412140811602,
+        "credit_norm_new": 0.00803412140811602,
+        "history_equal": true,
+        "different_top_keys": []
+      }
+    ],
+    "all_equal": true
+  },
+  "latest_process_private_bytes": 4167565312,
+  "new_body_theorem_coverage": 0,
+  "new_production_theorem_coverage": 0,
+  "caution": "The current run has not yet crossed the old58 memory stop. Do not equate short admission with steady-state resource or learning success."
+}

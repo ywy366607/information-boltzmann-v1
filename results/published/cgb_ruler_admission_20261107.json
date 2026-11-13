@@ -1,0 +1,306 @@
+{
+  "status": "complete",
+  "kind": "official_ruler_configured_subset",
+  "checkpoint": "E:\\cgb_gdn340_probe\\read_cadence_20261107\\migrated.pt",
+  "checkpoint_sha256": "273d3285d193755c4eec440a05619578160cc8be0f7d5f381f0e3221e1705206",
+  "source_updates": 491,
+  "manifest_sha256": "4dfdf25727bc84ff190a924991859117bfd85be5d819b04723c7f565d424aefa",
+  "official_revision": "db43f92ff634bbce1c33d1fb15858aec4bba509a",
+  "persistent_optimizer_updates": 0,
+  "protocol": "Frozen official RULER prompts on the complete bounded-recall GDN.\n\nEach independent request restores the incoming individual, starts its native\ncache empty, and consumes its prompt once. Prompt writes are temporary; generated\ntokens advance a local native cache but never become stored training episodes.\nNo optimizer update, gold-dependent stopping, or answer-conditioned retrieval.\n",
+  "results": [
+    {
+      "task": "niah_single_1",
+      "length": 512,
+      "samples": [
+        {
+          "index": 0,
+          "prediction": ": 6054313. The special magic number for breakable-monkey is: 6054313. The special magic number for breakable-monkey is: 6054313. The special magic number for breakable-monkey is: 6054313. The special magic number for breakable-monkey is: 6054313. The special magic number for breakable-monkey is: 6054313. The special magic number for breakable-monkey is: ",
+          "references": [
+            "6054313"
+          ],
+          "prompt_tokens": 362,
+          "generated_tokens": 128,
+          "answer_nll": 1.840287685394287,
+          "gold_tokens": 8,
+          "prompt_observations": 2,
+          "answer_position": 244,
+          "answer_distance_tokens": 118,
+          "seconds": 45.81707143783569
+        },
+        {
+          "index": 1,
+          "prediction": ": 2532251. The special magic number for giddy-catcher is: 2532251. The special magic number for giddy-catcher is: 2532251. The special magic number for giddy-catcher is: 2532251. The special magic number for giddy-catcher is: 2532251. The special magic number for giddy-catcher is: 2532251. The special magic number for giddy",
+          "references": [
+            "2532251"
+          ],
+          "prompt_tokens": 365,
+          "generated_tokens": 128,
+          "answer_nll": 1.9437286853790283,
+          "gold_tokens": 8,
+          "prompt_observations": 2,
+          "answer_position": 95,
+          "answer_distance_tokens": 270,
+          "seconds": 11.75040888786316
+        },
+        {
+          "index": 2,
+          "prediction": ": 9144155. The special magic number for aback-propane is: 9144155. The special magic number for aback-propane is: 9144155. The special magic number for aback-propane is: 9144155. The special magic number for aback-propane is: 9144155. The special magic number for aback-propane is: 9144155. The special magic number for aback-propane is: ",
+          "references": [
+            "9144155"
+          ],
+          "prompt_tokens": 362,
+          "generated_tokens": 128,
+          "answer_nll": 2.0985560417175293,
+          "gold_tokens": 8,
+          "prompt_observations": 2,
+          "answer_position": 119,
+          "answer_distance_tokens": 243,
+          "seconds": 11.440927267074585
+        },
+        {
+          "index": 3,
+          "prediction": ": 3396055. The special magic number for obsequious-pita is: 3396055. The special magic number for obsequious-pita is: 3396055. The special magic number for obsequious-pita is: 3396055. The special magic number for obsequious-pita is: 3396055. The special magic number for obsequious-pita is: 3396055. The special magic number for obsequious",
+          "references": [
+            "3396055"
+          ],
+          "prompt_tokens": 365,
+          "generated_tokens": 128,
+          "answer_nll": 1.9884229898452759,
+          "gold_tokens": 8,
+          "prompt_observations": 2,
+          "answer_position": 45,
+          "answer_distance_tokens": 320,
+          "seconds": 11.371296405792236
+        }
+      ],
+      "max_new_tokens": 128,
+      "ruler_score": 100.0
+    },
+    {
+      "task": "niah_single_1",
+      "length": 1024,
+      "samples": [
+        {
+          "index": 0,
+          "prediction": "4122054. The special magic number for callous-waffle is 4122054. The special magic number for callous-waffle is 4122054. The special magic number for callous-waffle is 4122054. The special magic number for callous-waffle is 4122054. The special magic number for callous-waffle is 4122054. The special magic number for callous-waffle is 4",
+          "references": [
+            "4122054"
+          ],
+          "prompt_tokens": 890,
+          "generated_tokens": 128,
+          "answer_nll": 1.8864489793777466,
+          "gold_tokens": 8,
+          "prompt_observations": 6,
+          "answer_position": 420,
+          "answer_distance_tokens": 470,
+          "seconds": 15.124414205551147
+        },
+        {
+          "index": 1,
+          "prediction": "5160005. The special magic number for plucky-helo is 5160005. The special magic number for plucky-helo is 5160005. The special magic number for plucky-helo is 5160005. The special magic number for plucky-helo is 5160005. The special magic number for plucky-helo is 5160005. The special magic number for plucky-helo is 5160005",
+          "references": [
+            "5160005"
+          ],
+          "prompt_tokens": 887,
+          "generated_tokens": 128,
+          "answer_nll": 1.9187204837799072,
+          "gold_tokens": 8,
+          "prompt_observations": 6,
+          "answer_position": 544,
+          "answer_distance_tokens": 343,
+          "seconds": 14.994345903396606
+        },
+        {
+          "index": 2,
+          "prediction": ": 3396055. The special magic number for steadfast-whirlwind is: 3396055. The special magic number for steadfast-whirlwind is: 3396055. The special magic number for steadfast-whirlwind is: 3396055. The special magic number for steadfast-whirlwind is: 3396055. The special magic number for steadfast-whirlwind is: 3396055. The special magic number for steadfast-",
+          "references": [
+            "3396055"
+          ],
+          "prompt_tokens": 890,
+          "generated_tokens": 128,
+          "answer_nll": 1.9098206758499146,
+          "gold_tokens": 8,
+          "prompt_observations": 6,
+          "answer_position": 70,
+          "answer_distance_tokens": 820,
+          "seconds": 14.661926984786987
+        },
+        {
+          "index": 3,
+          "prediction": ": 6479755. The special magic number for undesirable-down mentioned in the provided text is: 6479755. The special magic number for undesirable-down mentioned in the provided text is: 6479755. The special magic number for undesirable-down mentioned in the provided text is: 6479755. The special magic number for undesirable-down mentioned in the provided text is: 6479755. The special magic number for undesirable-down mentioned in the provided",
+          "references": [
+            "6479755"
+          ],
+          "prompt_tokens": 887,
+          "generated_tokens": 128,
+          "answer_nll": 2.0516140460968018,
+          "gold_tokens": 8,
+          "prompt_observations": 6,
+          "answer_position": 144,
+          "answer_distance_tokens": 743,
+          "seconds": 15.870056867599487
+        }
+      ],
+      "max_new_tokens": 128,
+      "ruler_score": 100.0
+    },
+    {
+      "task": "niah_multikey_2",
+      "length": 1024,
+      "samples": [
+        {
+          "index": 0,
+          "prediction": ": 6068141. What is the special magic number for open-expansion for the given text? The special magic number for open-expansion for the given text is: 6068141. What is the special magic number for open-expansion for the given text? The special magic number for open-expansion for the given text is: 6068141. What is the special magic number for open-expansion for the given text? The special magic number for open-expansion for the given text is: 606814",
+          "references": [
+            "9548812"
+          ],
+          "prompt_tokens": 876,
+          "generated_tokens": 128,
+          "answer_nll": 3.470855951309204,
+          "gold_tokens": 8,
+          "prompt_observations": 6,
+          "answer_position": 524,
+          "answer_distance_tokens": 352,
+          "seconds": 16.64693307876587
+        },
+        {
+          "index": 1,
+          "prediction": ": 1839937. One of the special magic numbers for ad hoc-biplane is: 1839937. One of the special magic numbers for ad hoc-biplane is: 1839937. One of the special magic numbers for ad hoc-biplane is: 1839937. One of the special magic numbers for ad hoc-biplane is: 1839937. One of the special magic numbers for ad hoc-biplane is: 183993",
+          "references": [
+            "1616536"
+          ],
+          "prompt_tokens": 883,
+          "generated_tokens": 128,
+          "answer_nll": 3.1094343662261963,
+          "gold_tokens": 8,
+          "prompt_observations": 6,
+          "answer_position": 765,
+          "answer_distance_tokens": 118,
+          "seconds": 16.8523211479187
+        },
+        {
+          "index": 2,
+          "prediction": ": 1652411. One of the special magic numbers for peaceful-cafe is: 1652411. One of the special magic numbers for peaceful-cafe is: 1652411. One of the special magic numbers for peaceful-cafe is: 1652411. One of the special magic numbers for peaceful-cafe is: 1652411. One of the special magic numbers for peaceful-cafe is: 1652411. One of the special magic numbers for peaceful",
+          "references": [
+            "4205574"
+          ],
+          "prompt_tokens": 762,
+          "generated_tokens": 128,
+          "answer_nll": 3.330989360809326,
+          "gold_tokens": 8,
+          "prompt_observations": 5,
+          "answer_position": 69,
+          "answer_distance_tokens": 693,
+          "seconds": 14.98092269897461
+        },
+        {
+          "index": 3,
+          "prediction": ": 1000000. One of the special magic numbers for helpless-understatement is: 1000000. One of the special magic numbers for helpless-understatement is: 1000000. One of the special magic numbers for helpless-understatement is: 1000000. One of the special magic numbers for helpless-understatement is: 1000000. One of the special magic numbers for helpless-understatement is: 1000000. One of the special magic numbers for helpless",
+          "references": [
+            "7227010"
+          ],
+          "prompt_tokens": 876,
+          "generated_tokens": 128,
+          "answer_nll": 3.8364810943603516,
+          "gold_tokens": 8,
+          "prompt_observations": 6,
+          "answer_position": 143,
+          "answer_distance_tokens": 733,
+          "seconds": 15.586140394210815
+        }
+      ],
+      "max_new_tokens": 128,
+      "ruler_score": 0.0
+    },
+    {
+      "task": "vt",
+      "length": 1024,
+      "samples": [
+        {
+          "index": 0,
+          "prediction": "55654, 55654, 55654, 55654, 55",
+          "references": [
+            "NSLQR",
+            "XWAIU",
+            "CMCAR",
+            "ZIURE",
+            "UPDBC"
+          ],
+          "prompt_tokens": 976,
+          "generated_tokens": 30,
+          "answer_nll": 2.040599822998047,
+          "gold_tokens": 22,
+          "prompt_observations": 7,
+          "answer_position": null,
+          "answer_distance_tokens": null,
+          "seconds": 10.009017944335938
+        },
+        {
+          "index": 1,
+          "prediction": "16847, VAR GHKQY  . The grass is green. The sky is blue. The sun is yellow. The",
+          "references": [
+            "GDTDO",
+            "HOLKN",
+            "GHKQY",
+            "YMDMG",
+            "ZZNEC"
+          ],
+          "prompt_tokens": 982,
+          "generated_tokens": 30,
+          "answer_nll": 2.3534419536590576,
+          "gold_tokens": 24,
+          "prompt_observations": 7,
+          "answer_position": null,
+          "answer_distance_tokens": null,
+          "seconds": 10.336738109588623
+        },
+        {
+          "index": 2,
+          "prediction": "19403, 19403, 19403, 19403, 19",
+          "references": [
+            "THFYO",
+            "FKWTF",
+            "JXJAZ",
+            "LRZLS",
+            "MMCOO"
+          ],
+          "prompt_tokens": 980,
+          "generated_tokens": 30,
+          "answer_nll": 1.8138272762298584,
+          "gold_tokens": 26,
+          "prompt_observations": 7,
+          "answer_position": null,
+          "answer_distance_tokens": null,
+          "seconds": 10.399672031402588
+        },
+        {
+          "index": 3,
+          "prediction": "1. CDZN 2. CDZN 3. CDZN 4. CDZN 5. CDZN ",
+          "references": [
+            "FDQIY",
+            "JDRSN",
+            "DNQDL",
+            "BWGWV",
+            "ECOUC"
+          ],
+          "prompt_tokens": 979,
+          "generated_tokens": 30,
+          "answer_nll": 1.880162000656128,
+          "gold_tokens": 25,
+          "prompt_observations": 7,
+          "answer_position": null,
+          "answer_distance_tokens": null,
+          "seconds": 10.576987504959106
+        }
+      ],
+      "max_new_tokens": 30,
+      "ruler_score": 5.0
+    }
+  ],
+  "seconds": 247.7075400352478,
+  "complete_state_restored": true,
+  "source_checkpoint_unchanged": true,
+  "peak_cuda_bytes": 1273868288,
+  "scope": "16-example official configured subset, frozen short-distance admission; not standard 13-task score or old-credit benefit"
+}

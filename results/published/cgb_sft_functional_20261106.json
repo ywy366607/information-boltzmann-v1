@@ -1,0 +1,2743 @@
+{
+  "status": "complete",
+  "kind": "real_qasper_generation_continuation_latch",
+  "source_pair": "E:\\cgb_gdn340_probe\\qasper_sft_native_credit_20261106\\pair.json",
+  "task_sha256": "e1bed56667b1bfb4eb0eadeb3863d0a3259abd42b966fa4a55c707ecb7a748c0",
+  "source_checkpoints": {
+    "full": "E:\\cgb_gdn340_probe\\qasper_sft_native_credit_20261106\\full_last.pt",
+    "held": "E:\\cgb_gdn340_probe\\qasper_sft_native_credit_20261106\\held_last.pt"
+  },
+  "source_checkpoint_sha256": {
+    "full": "63c8bbaac37721d8f4bb1e9f26b739780564e71ff04b075d49ec9ee72951323f",
+    "held": "d17e93552ce5ed432d45f6d8bb024fcd1d56e8feaeab0c1aa8a86596bb08d1be"
+  },
+  "source_sha256": "4dc13c273ae5757a1134faa7903adf8c0de7a6623296c04895e5562e1e597b92",
+  "protocol": {
+    "validation_papers": 8,
+    "max_new_tokens": 32,
+    "stopping": "greedy until EOS/newline or fixed cap; no gold-length stopping",
+    "scoring": "lowercase/punctuation/articles/whitespace normalized EM and token F1; real single-span references",
+    "layouts": [
+      "early",
+      "near"
+    ],
+    "continual": "4 seen A questions ->4 unused train B questions ->same4 A; no phase reset",
+    "latch": "two real questions on the same paper, same2048 original continuation tokens; compare content separation with local S perturbation recovery",
+    "latch_perturbation_relative_norm": 0.001,
+    "boundary": "finite-time local evidence; slow forgetting or generic contraction alone is not an attractor latch"
+  },
+  "arms": {
+    "full": {
+      "generation": [
+        {
+          "id": "1038542243efe5ab3e65c89385e53c4831cd9981",
+          "paper_id": "2001.07786",
+          "layout": "early",
+          "prompt_tokens": 2085,
+          "answer_tokens": 16,
+          "answer_nll": 1.9528958797454834,
+          "question_distance_tokens": 2056,
+          "references": [
+            "Diachronic Usage Relatedness (DURel) gold standard data set"
+          ],
+          "prediction": "LSCD vectors are used to align vector spaces with CD.",
+          "generated_tokens": 14,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "e2b0cd30cf56a4b13f96426489367024310c3a05",
+          "paper_id": "2001.07786",
+          "layout": "early",
+          "prompt_tokens": 2080,
+          "answer_tokens": 26,
+          "answer_nll": 2.566619579608624,
+          "question_distance_tokens": 2056,
+          "references": [
+            "As the metric to assess how well the model's output fits the gold ranking Spearman's $\\rho $ was used",
+            "Spearman's rank-order correlation"
+          ],
+          "prediction": "LSCD, PPMI, CD, and CDJ are used to align vector spaces with the SGNS + OP alignment.",
+          "generated_tokens": 28,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.13333333333333333,
+          "original_validation": true
+        },
+        {
+          "id": "05c49b9f84772e6df41f530d86c1f7a1da6aa489",
+          "paper_id": "1912.08904",
+          "layout": "early",
+          "prompt_tokens": 1939,
+          "answer_tokens": 22,
+          "answer_nll": 2.1988499381325464,
+          "question_distance_tokens": 1912,
+          "references": [
+            "The current implementation of Macaw supports a command line interface as well as mobile, desktop, and web apps."
+          ],
+          "prediction": "Macaw is a conversational search and retrieval system for CIS. It is designed to support multi-stage, multi-task, multi-device interactions",
+          "generated_tokens": 32,
+          "hit_generation_cap": true,
+          "em": 0.0,
+          "f1": 0.11764705882352941,
+          "original_validation": true
+        },
+        {
+          "id": "6ecb69360449bb9915ac73c0a816c8ac479cbbfc",
+          "paper_id": "1912.08904",
+          "layout": "early",
+          "prompt_tokens": 1940,
+          "answer_tokens": 9,
+          "answer_nll": 2.2481922573513455,
+          "question_distance_tokens": 1912,
+          "references": [
+            "text, speech, image, click, etc"
+          ],
+          "prediction": "Macaw is a conversational search and retrieval system.",
+          "generated_tokens": 13,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "f94b53db307685d572aefad52cd55f53d23769c2",
+          "paper_id": "1612.03226",
+          "layout": "early",
+          "prompt_tokens": 2056,
+          "answer_tokens": 4,
+          "answer_nll": 2.2483725547790527,
+          "question_distance_tokens": 2027,
+          "references": [
+            "Fisher Information Ratio"
+          ],
+          "prediction": "the probabilities over the characters are computed from the probabilities over the characters.",
+          "generated_tokens": 17,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "aa7d327ef98f9f9847b447d4def04889b4508d7a",
+          "paper_id": "1612.03226",
+          "layout": "early",
+          "prompt_tokens": 2061,
+          "answer_tokens": 24,
+          "answer_nll": 1.3069838682810466,
+          "question_distance_tokens": 2027,
+          "references": [
+            "1,700-hour ( INLINEFORM2 1.1M instances) unlabeled dataset",
+            "INLINEFORM2 is queried for the \u201cmost informative\u201d instance(s) INLINEFORM3"
+          ],
+          "prediction": "the probabilities over the characters are computed from the probabilities over the characters.",
+          "generated_tokens": 17,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "4986f420884f917d1f60d3cea04dc8e64d3b5bf1",
+          "paper_id": "1603.01514",
+          "layout": "early",
+          "prompt_tokens": 1999,
+          "answer_tokens": 11,
+          "answer_nll": 2.3309404199773613,
+          "question_distance_tokens": 1969,
+          "references": [
+            "CLV as a parent of the two corresponding role variables",
+            "crosslingual latent variables"
+          ],
+          "prediction": "the parallel corpus of the monolingual model is generated twice by the parallel process, once by the parallel process and once by the parallel process.",
+          "generated_tokens": 32,
+          "hit_generation_cap": true,
+          "em": 0.0,
+          "f1": 0.07142857142857142,
+          "original_validation": true
+        },
+        {
+          "id": "50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed",
+          "paper_id": "1603.01514",
+          "layout": "early",
+          "prompt_tokens": 1996,
+          "answer_tokens": 21,
+          "answer_nll": 2.3666725158691406,
+          "question_distance_tokens": 1969,
+          "references": [
+            "Bayesian model of garg2012unsupervised as our base monolingual model"
+          ],
+          "prediction": "the monolingual model is generated twice by the parallel process, with the CLVs being generated twice by the parallel process.",
+          "generated_tokens": 28,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.16,
+          "original_validation": true
+        },
+        {
+          "id": "e025061e199b121f2ac8f3d9637d9bf987d65cd5",
+          "paper_id": "1712.00991",
+          "layout": "early",
+          "prompt_tokens": 1908,
+          "answer_tokens": 5,
+          "answer_nll": 2.5477279663085937,
+          "question_distance_tokens": 1880,
+          "references": [
+            "15.5",
+            "average:15.5"
+          ],
+          "prediction": "the sentences in the corpus are about the performance appraisal process.",
+          "generated_tokens": 16,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        },
+        {
+          "id": "61652a3da85196564401d616d251084a25ab4596",
+          "paper_id": "1712.00991",
+          "layout": "early",
+          "prompt_tokens": 1910,
+          "answer_tokens": 6,
+          "answer_nll": 2.4956940015157065,
+          "question_distance_tokens": 1880,
+          "references": [
+            "26972",
+            "26972 sentences"
+          ],
+          "prediction": "the PA corpus contains 4528 sentences in 2177 comments about the performance of employees in a large IT company.",
+          "generated_tokens": 30,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.1111111111111111,
+          "original_validation": false
+        },
+        {
+          "id": "7561a968470a8936d10e1ba722d2f38b5a9a4d38",
+          "paper_id": "1605.06083",
+          "layout": "early",
+          "prompt_tokens": 2070,
+          "answer_tokens": 7,
+          "answer_nll": 1.7143666403634208,
+          "question_distance_tokens": 2043,
+          "references": [
+            "30,000",
+            "collection of over 30,000 images with 5 crowdsourced descriptions each"
+          ],
+          "prediction": "the Flickr30K data is not only a collection of images, but also a collection of annotations. The annotations are based on the F",
+          "generated_tokens": 32,
+          "hit_generation_cap": true,
+          "em": 0.0,
+          "f1": 0.21428571428571427,
+          "original_validation": false
+        },
+        {
+          "id": "26c2e1eb12143d985e4fb50543cf0d1eb4395e67",
+          "paper_id": "1605.06083",
+          "layout": "early",
+          "prompt_tokens": 2071,
+          "answer_tokens": 28,
+          "answer_nll": 2.55718994140625,
+          "question_distance_tokens": 2043,
+          "references": [
+            "adjectives are used to create \u201cmore narrow labels [or subtypes] for individuals who do not fit with general social category expectations\u201d"
+          ],
+          "prediction": "the Flickr30K data is not only a collection of images, but also a collection of annotations. The annotations are based on the F",
+          "generated_tokens": 32,
+          "hit_generation_cap": true,
+          "em": 0.0,
+          "f1": 0.10256410256410256,
+          "original_validation": false
+        },
+        {
+          "id": "808f0ad46ca4eb4ea5492f9e14ca043fe1e206cc",
+          "paper_id": "1910.08293",
+          "layout": "early",
+          "prompt_tokens": 1993,
+          "answer_tokens": 8,
+          "answer_nll": 1.405663251876831,
+          "question_distance_tokens": 1966,
+          "references": [
+            "45,821 characters"
+          ],
+          "prediction": "TV Tropes BIBREF1, TV Tropes BIBREF2, and TV Tropes BIBREF3.",
+          "generated_tokens": 29,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        },
+        {
+          "id": "36ae003c7cb2a1bbfa90b89c671bc286bd3b3dfd",
+          "paper_id": "1910.08293",
+          "layout": "early",
+          "prompt_tokens": 1994,
+          "answer_tokens": 23,
+          "answer_nll": 2.352591141410496,
+          "question_distance_tokens": 1966,
+          "references": [
+            "attributes are determined by human viewers and their impressions of the characters, and are correlated with human-like characteristics"
+          ],
+          "prediction": "TV Tropes BIBREF1, TV Tropes BIBREF2, and TV Tropes BIBREF3.",
+          "generated_tokens": 29,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.07407407407407407,
+          "original_validation": false
+        },
+        {
+          "id": "193ee49ae0f8827a6e67388a10da59e137e7769f",
+          "paper_id": "2004.01853",
+          "layout": "early",
+          "prompt_tokens": 1885,
+          "answer_tokens": 11,
+          "answer_nll": 2.6930857571688565,
+          "question_distance_tokens": 1859,
+          "references": [
+            "recovers a masked document to its original form"
+          ],
+          "prediction": "LSTMs and Transformers are trained with the masked token language modeling objective, which removes the independent token language modeling objective.",
+          "generated_tokens": 29,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.08,
+          "original_validation": false
+        },
+        {
+          "id": "ed2eb4e54b641b7670ab5a7060c7b16c628699ab",
+          "paper_id": "2004.01853",
+          "layout": "early",
+          "prompt_tokens": 1890,
+          "answer_tokens": 1,
+          "answer_nll": 8.31039810180664,
+          "question_distance_tokens": 1859,
+          "references": [
+            "SR"
+          ],
+          "prediction": "LSTMs and Transformers are trained with the language modeling objective, which is a sequence-to-sequence learning objective BIBREF2.",
+          "generated_tokens": 31,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        },
+        {
+          "id": "1038542243efe5ab3e65c89385e53c4831cd9981",
+          "paper_id": "2001.07786",
+          "layout": "near",
+          "prompt_tokens": 2085,
+          "answer_tokens": 16,
+          "answer_nll": 1.790186882019043,
+          "question_distance_tokens": 4,
+          "references": [
+            "Diachronic Usage Relatedness (DURel) gold standard data set"
+          ],
+          "prediction": "the corpus used for the task is the DAF corpus.",
+          "generated_tokens": 15,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "e2b0cd30cf56a4b13f96426489367024310c3a05",
+          "paper_id": "2001.07786",
+          "layout": "near",
+          "prompt_tokens": 2080,
+          "answer_tokens": 26,
+          "answer_nll": 2.6615506685697117,
+          "question_distance_tokens": 4,
+          "references": [
+            "As the metric to assess how well the model's output fits the gold ranking Spearman's $\\rho $ was used",
+            "Spearman's rank-order correlation"
+          ],
+          "prediction": "the team uses a structured questionnaire to evaluate the performance of the models.",
+          "generated_tokens": 16,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.16666666666666666,
+          "original_validation": true
+        },
+        {
+          "id": "05c49b9f84772e6df41f530d86c1f7a1da6aa489",
+          "paper_id": "1912.08904",
+          "layout": "near",
+          "prompt_tokens": 1939,
+          "answer_tokens": 22,
+          "answer_nll": 2.06719970703125,
+          "question_distance_tokens": 4,
+          "references": [
+            "The current implementation of Macaw supports a command line interface as well as mobile, desktop, and web apps."
+          ],
+          "prediction": "Macaw has a number of interfaces, such as the following:",
+          "generated_tokens": 15,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.25,
+          "original_validation": true
+        },
+        {
+          "id": "6ecb69360449bb9915ac73c0a816c8ac479cbbfc",
+          "paper_id": "1912.08904",
+          "layout": "near",
+          "prompt_tokens": 1940,
+          "answer_tokens": 9,
+          "answer_nll": 1.9934255811903212,
+          "question_distance_tokens": 4,
+          "references": [
+            "text, speech, image, click, etc"
+          ],
+          "prediction": "Macaw supports multiple question answering techniques, such as multiple-choice, fill-in-the-blank, and multiple-choice questions.",
+          "generated_tokens": 29,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "f94b53db307685d572aefad52cd55f53d23769c2",
+          "paper_id": "1612.03226",
+          "layout": "near",
+          "prompt_tokens": 2056,
+          "answer_tokens": 4,
+          "answer_nll": 2.2235159873962402,
+          "question_distance_tokens": 4,
+          "references": [
+            "Fisher Information Ratio"
+          ],
+          "prediction": "we compute the variance from the model outputs, normalized by the number of timesteps.",
+          "generated_tokens": 19,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "aa7d327ef98f9f9847b447d4def04889b4508d7a",
+          "paper_id": "1612.03226",
+          "layout": "near",
+          "prompt_tokens": 2061,
+          "answer_tokens": 24,
+          "answer_nll": 1.2094941139221191,
+          "question_distance_tokens": 4,
+          "references": [
+            "1,700-hour ( INLINEFORM2 1.1M instances) unlabeled dataset",
+            "INLINEFORM2 is queried for the \u201cmost informative\u201d instance(s) INLINEFORM3"
+          ],
+          "prediction": "1000 samples.",
+          "generated_tokens": 8,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "4986f420884f917d1f60d3cea04dc8e64d3b5bf1",
+          "paper_id": "1603.01514",
+          "layout": "near",
+          "prompt_tokens": 1999,
+          "answer_tokens": 11,
+          "answer_nll": 2.124010432850231,
+          "question_distance_tokens": 4,
+          "references": [
+            "CLV as a parent of the two corresponding role variables",
+            "crosslingual latent variables"
+          ],
+          "prediction": "the CLVs are generated by the monolingual model, and the CLVs are generated by the parallel corpus.",
+          "generated_tokens": 28,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed",
+          "paper_id": "1603.01514",
+          "layout": "near",
+          "prompt_tokens": 1996,
+          "answer_tokens": 21,
+          "answer_nll": 2.450257074265253,
+          "question_distance_tokens": 4,
+          "references": [
+            "Bayesian model of garg2012unsupervised as our base monolingual model"
+          ],
+          "prediction": "the CLVs are generated by the monolingual model, and the corresponding CLVs are generated by the parallel corpus.",
+          "generated_tokens": 29,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.17391304347826086,
+          "original_validation": true
+        },
+        {
+          "id": "e025061e199b121f2ac8f3d9637d9bf987d65cd5",
+          "paper_id": "1712.00991",
+          "layout": "near",
+          "prompt_tokens": 1908,
+          "answer_tokens": 5,
+          "answer_nll": 1.4203380584716796,
+          "question_distance_tokens": 4,
+          "references": [
+            "15.5",
+            "average:15.5"
+          ],
+          "prediction": "15.25 seconds.",
+          "generated_tokens": 9,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        },
+        {
+          "id": "61652a3da85196564401d616d251084a25ab4596",
+          "paper_id": "1712.00991",
+          "layout": "near",
+          "prompt_tokens": 1910,
+          "answer_tokens": 6,
+          "answer_nll": 2.378438154856364,
+          "question_distance_tokens": 4,
+          "references": [
+            "26972",
+            "26972 sentences"
+          ],
+          "prediction": "1000000000000000000000000000000",
+          "generated_tokens": 32,
+          "hit_generation_cap": true,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        },
+        {
+          "id": "7561a968470a8936d10e1ba722d2f38b5a9a4d38",
+          "paper_id": "1605.06083",
+          "layout": "near",
+          "prompt_tokens": 2070,
+          "answer_tokens": 7,
+          "answer_nll": 1.142707688467843,
+          "question_distance_tokens": 4,
+          "references": [
+            "30,000",
+            "collection of over 30,000 images with 5 crowdsourced descriptions each"
+          ],
+          "prediction": "10,000 images.",
+          "generated_tokens": 10,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.16666666666666666,
+          "original_validation": false
+        },
+        {
+          "id": "26c2e1eb12143d985e4fb50543cf0d1eb4395e67",
+          "paper_id": "1605.06083",
+          "layout": "near",
+          "prompt_tokens": 2071,
+          "answer_tokens": 28,
+          "answer_nll": 2.6948890686035156,
+          "question_distance_tokens": 4,
+          "references": [
+            "adjectives are used to create \u201cmore narrow labels [or subtypes] for individuals who do not fit with general social category expectations\u201d"
+          ],
+          "prediction": "the Flickr30K data is based on the Flickr30K data, which is a subset of the Flickr30K",
+          "generated_tokens": 32,
+          "hit_generation_cap": true,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        },
+        {
+          "id": "808f0ad46ca4eb4ea5492f9e14ca043fe1e206cc",
+          "paper_id": "1910.08293",
+          "layout": "near",
+          "prompt_tokens": 1993,
+          "answer_tokens": 8,
+          "answer_nll": 1.1149168014526367,
+          "question_distance_tokens": 4,
+          "references": [
+            "45,821 characters"
+          ],
+          "prediction": "2016 TV Tropes characters.",
+          "generated_tokens": 12,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.3333333333333333,
+          "original_validation": false
+        },
+        {
+          "id": "36ae003c7cb2a1bbfa90b89c671bc286bd3b3dfd",
+          "paper_id": "1910.08293",
+          "layout": "near",
+          "prompt_tokens": 1994,
+          "answer_tokens": 23,
+          "answer_nll": 2.2160545017408286,
+          "question_distance_tokens": 4,
+          "references": [
+            "attributes are determined by human viewers and their impressions of the characters, and are correlated with human-like characteristics"
+          ],
+          "prediction": "HLAs are the set of HLAs on the right side of Figure FIGREF1.",
+          "generated_tokens": 22,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.14285714285714285,
+          "original_validation": false
+        },
+        {
+          "id": "193ee49ae0f8827a6e67388a10da59e137e7769f",
+          "paper_id": "2004.01853",
+          "layout": "near",
+          "prompt_tokens": 1885,
+          "answer_tokens": 11,
+          "answer_nll": 2.433916438709606,
+          "question_distance_tokens": 4,
+          "references": [
+            "recovers a masked document to its original form"
+          ],
+          "prediction": "LSTMs and Transformers.",
+          "generated_tokens": 9,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        },
+        {
+          "id": "ed2eb4e54b641b7670ab5a7060c7b16c628699ab",
+          "paper_id": "2004.01853",
+          "layout": "near",
+          "prompt_tokens": 1890,
+          "answer_tokens": 1,
+          "answer_nll": 8.461592674255371,
+          "question_distance_tokens": 4,
+          "references": [
+            "SR"
+          ],
+          "prediction": "extractive summarization.",
+          "generated_tokens": 6,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        }
+      ],
+      "continual": {
+        "baseline_A": {
+          "summary": {
+            "questions": 4,
+            "answer_nll": 1.679591421353615
+          },
+          "rows": [
+            {
+              "id": "52b113e66fd691ae18b9bb8a8d17e1ee7054bb81",
+              "paper_id": "2003.05377",
+              "layout": "early",
+              "prompt_tokens": 2038,
+              "answer_tokens": 5,
+              "answer_nll": 1.7286169052124023,
+              "question_distance_tokens": 2010,
+              "references": [
+                "Vagalume website"
+              ]
+            },
+            {
+              "id": "36b5f0f62ee9be1ab50d1bb6170e98328d45997d",
+              "paper_id": "2003.05377",
+              "layout": "early",
+              "prompt_tokens": 2038,
+              "answer_tokens": 11,
+              "answer_nll": 1.2013235092163086,
+              "question_distance_tokens": 2010,
+              "references": [
+                "Word2Vec, Wang2Vec, and FastText"
+              ]
+            },
+            {
+              "id": "082c88e132b4f1bf68abdc3a21ac4af180de1113",
+              "paper_id": "1706.07179",
+              "layout": "early",
+              "prompt_tokens": 2001,
+              "answer_tokens": 21,
+              "answer_nll": 2.232009524390811,
+              "question_distance_tokens": 1973,
+              "references": [
+                "the memory slots correspond to entities and the edges correspond to relationships between entities, each represented as a vector."
+              ]
+            },
+            {
+              "id": "60fd7ef7986a5752b31d3bd12bbc7da6843547a4",
+              "paper_id": "1706.07179",
+              "layout": "early",
+              "prompt_tokens": 2000,
+              "answer_tokens": 22,
+              "answer_nll": 1.3802750327370383,
+              "question_distance_tokens": 1973,
+              "references": [
+                "We compare the performance with the Recurrent Entity Networks model (EntNet) BIBREF17"
+              ]
+            }
+          ]
+        },
+        "baseline_B": {
+          "summary": {
+            "questions": 4,
+            "answer_nll": 3.192842108862741
+          },
+          "rows": [
+            {
+              "id": "675d7c48541b6368df135f71f9fc13a398f0c8c6",
+              "paper_id": "1901.03438",
+              "layout": "early",
+              "prompt_tokens": 1876,
+              "answer_tokens": 4,
+              "answer_nll": 3.7570347785949707,
+              "question_distance_tokens": 1846,
+              "references": [
+                "the transformer models"
+              ]
+            },
+            {
+              "id": "868c69c8f623e30b96df5b5c8336070994469f60",
+              "paper_id": "1901.03438",
+              "layout": "early",
+              "prompt_tokens": 1875,
+              "answer_tokens": 12,
+              "answer_nll": 3.754166920979818,
+              "question_distance_tokens": 1846,
+              "references": [
+                "CoLA contains example sentences from linguistics publications labeled by experts"
+              ]
+            },
+            {
+              "id": "a9d530d68fb45b52d9bad9da2cd139db5a4b2f7c",
+              "paper_id": "1811.00942",
+              "layout": "early",
+              "prompt_tokens": 2007,
+              "answer_tokens": 9,
+              "answer_nll": 2.4873809814453125,
+              "question_distance_tokens": 1978,
+              "references": [
+                "Kneser\u2013Ney smoothing"
+              ]
+            },
+            {
+              "id": "e07df8f613dbd567a35318cd6f6f4cb959f5c82d",
+              "paper_id": "1811.00942",
+              "layout": "early",
+              "prompt_tokens": 2008,
+              "answer_tokens": 3,
+              "answer_nll": 2.31166934967041,
+              "question_distance_tokens": 1978,
+              "references": [
+                "perplexity"
+              ]
+            }
+          ]
+        },
+        "A": {
+          "training": [
+            {
+              "id": "52b113e66fd691ae18b9bb8a8d17e1ee7054bb81",
+              "accounting": {
+                "real_tokens": 2043,
+                "padding_tokens": 6,
+                "answer_tokens": 5,
+                "question_boundary": 2038
+              },
+              "updates": 1,
+              "answer_nll": 1.6449295282363892
+            },
+            {
+              "id": "36b5f0f62ee9be1ab50d1bb6170e98328d45997d",
+              "accounting": {
+                "real_tokens": 2049,
+                "padding_tokens": 0,
+                "answer_tokens": 11,
+                "question_boundary": 2038
+              },
+              "updates": 1,
+              "answer_nll": 1.279433012008667
+            },
+            {
+              "id": "082c88e132b4f1bf68abdc3a21ac4af180de1113",
+              "accounting": {
+                "real_tokens": 2022,
+                "padding_tokens": 27,
+                "answer_tokens": 21,
+                "question_boundary": 2001
+              },
+              "updates": 1,
+              "answer_nll": 2.184124231338501
+            },
+            {
+              "id": "60fd7ef7986a5752b31d3bd12bbc7da6843547a4",
+              "accounting": {
+                "real_tokens": 2022,
+                "padding_tokens": 27,
+                "answer_tokens": 22,
+                "question_boundary": 2000
+              },
+              "updates": 1,
+              "answer_nll": 1.1508029699325562
+            }
+          ],
+          "A_probe": {
+            "summary": {
+              "questions": 4,
+              "answer_nll": 1.3182846489599196,
+              "em": 0.0,
+              "f1": 0.058823529411764705
+            },
+            "rows": [
+              {
+                "id": "52b113e66fd691ae18b9bb8a8d17e1ee7054bb81",
+                "paper_id": "2003.05377",
+                "layout": "early",
+                "prompt_tokens": 2038,
+                "answer_tokens": 5,
+                "answer_nll": 1.6009592056274413,
+                "question_distance_tokens": 2010,
+                "references": [
+                  "Vagalume website"
+                ],
+                "prediction": "LSTM network is implemented as a graph cycle.",
+                "generated_tokens": 11,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.0
+              },
+              {
+                "id": "36b5f0f62ee9be1ab50d1bb6170e98328d45997d",
+                "paper_id": "2003.05377",
+                "layout": "early",
+                "prompt_tokens": 2038,
+                "answer_tokens": 11,
+                "answer_nll": 1.0659802176735618,
+                "question_distance_tokens": 2010,
+                "references": [
+                  "Word2Vec, Wang2Vec, and FastText"
+                ],
+                "prediction": "LSTM network is implemented as a graph cycle.",
+                "generated_tokens": 11,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.0
+              },
+              {
+                "id": "082c88e132b4f1bf68abdc3a21ac4af180de1113",
+                "paper_id": "1706.07179",
+                "layout": "early",
+                "prompt_tokens": 2001,
+                "answer_tokens": 21,
+                "answer_nll": 1.6873773847307478,
+                "question_distance_tokens": 1973,
+                "references": [
+                  "the memory slots correspond to entities and the edges correspond to relationships between entities, each represented as a vector."
+                ],
+                "prediction": "RelNet model BIBREF17 , BIBREF18 , BIBREF18 , BIBREF18 , BIBREF18",
+                "generated_tokens": 32,
+                "hit_generation_cap": true,
+                "em": 0.0,
+                "f1": 0.0
+              },
+              {
+                "id": "60fd7ef7986a5752b31d3bd12bbc7da6843547a4",
+                "paper_id": "1706.07179",
+                "layout": "early",
+                "prompt_tokens": 2000,
+                "answer_tokens": 22,
+                "answer_nll": 1.027876853942871,
+                "question_distance_tokens": 1973,
+                "references": [
+                  "We compare the performance with the Recurrent Entity Networks model (EntNet) BIBREF17"
+                ],
+                "prediction": "RelNet model BIBREF17 , BIBREF18 , BIBREF18 , BIBREF18 , BIBREF18",
+                "generated_tokens": 32,
+                "hit_generation_cap": true,
+                "em": 0.0,
+                "f1": 0.23529411764705882
+              }
+            ]
+          },
+          "B_probe": {
+            "summary": {
+              "questions": 4,
+              "answer_nll": 3.183149661336626
+            },
+            "rows": [
+              {
+                "id": "675d7c48541b6368df135f71f9fc13a398f0c8c6",
+                "paper_id": "1901.03438",
+                "layout": "early",
+                "prompt_tokens": 1876,
+                "answer_tokens": 4,
+                "answer_nll": 2.6773664951324463,
+                "question_distance_tokens": 1846,
+                "references": [
+                  "the transformer models"
+                ]
+              },
+              {
+                "id": "868c69c8f623e30b96df5b5c8336070994469f60",
+                "paper_id": "1901.03438",
+                "layout": "early",
+                "prompt_tokens": 1875,
+                "answer_tokens": 12,
+                "answer_nll": 3.972469965616862,
+                "question_distance_tokens": 1846,
+                "references": [
+                  "CoLA contains example sentences from linguistics publications labeled by experts"
+                ]
+              },
+              {
+                "id": "a9d530d68fb45b52d9bad9da2cd139db5a4b2f7c",
+                "paper_id": "1811.00942",
+                "layout": "early",
+                "prompt_tokens": 2007,
+                "answer_tokens": 9,
+                "answer_nll": 2.626685460408529,
+                "question_distance_tokens": 1978,
+                "references": [
+                  "Kneser\u2013Ney smoothing"
+                ]
+              },
+              {
+                "id": "e07df8f613dbd567a35318cd6f6f4cb959f5c82d",
+                "paper_id": "1811.00942",
+                "layout": "early",
+                "prompt_tokens": 2008,
+                "answer_tokens": 3,
+                "answer_nll": 2.3696386019388833,
+                "question_distance_tokens": 1978,
+                "references": [
+                  "perplexity"
+                ]
+              }
+            ]
+          }
+        },
+        "B": {
+          "training": [
+            {
+              "id": "675d7c48541b6368df135f71f9fc13a398f0c8c6",
+              "accounting": {
+                "real_tokens": 1880,
+                "padding_tokens": 41,
+                "answer_tokens": 4,
+                "question_boundary": 1876
+              },
+              "updates": 1,
+              "answer_nll": 2.623018264770508
+            },
+            {
+              "id": "868c69c8f623e30b96df5b5c8336070994469f60",
+              "accounting": {
+                "real_tokens": 1887,
+                "padding_tokens": 34,
+                "answer_tokens": 12,
+                "question_boundary": 1875
+              },
+              "updates": 1,
+              "answer_nll": 3.335233688354492
+            },
+            {
+              "id": "a9d530d68fb45b52d9bad9da2cd139db5a4b2f7c",
+              "accounting": {
+                "real_tokens": 2016,
+                "padding_tokens": 33,
+                "answer_tokens": 9,
+                "question_boundary": 2007
+              },
+              "updates": 1,
+              "answer_nll": 2.814685106277466
+            },
+            {
+              "id": "e07df8f613dbd567a35318cd6f6f4cb959f5c82d",
+              "accounting": {
+                "real_tokens": 2011,
+                "padding_tokens": 38,
+                "answer_tokens": 3,
+                "question_boundary": 2008
+              },
+              "updates": 1,
+              "answer_nll": 2.3141980171203613
+            }
+          ],
+          "A_probe": {
+            "summary": {
+              "questions": 4,
+              "answer_nll": 1.504593307689085,
+              "em": 0.0,
+              "f1": 0.02631578947368421
+            },
+            "rows": [
+              {
+                "id": "52b113e66fd691ae18b9bb8a8d17e1ee7054bb81",
+                "paper_id": "2003.05377",
+                "layout": "early",
+                "prompt_tokens": 2038,
+                "answer_tokens": 5,
+                "answer_nll": 1.296591091156006,
+                "question_distance_tokens": 2010,
+                "references": [
+                  "Vagalume website"
+                ],
+                "prediction": "LSTM is a recursive neural network that receives input from the previous unit and predicts the next unit.",
+                "generated_tokens": 23,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.0
+              },
+              {
+                "id": "36b5f0f62ee9be1ab50d1bb6170e98328d45997d",
+                "paper_id": "2003.05377",
+                "layout": "early",
+                "prompt_tokens": 2038,
+                "answer_tokens": 11,
+                "answer_nll": 0.9709973768754439,
+                "question_distance_tokens": 2010,
+                "references": [
+                  "Word2Vec, Wang2Vec, and FastText"
+                ],
+                "prediction": "LSTM is a recursive neural network that receives input from the previous unit and predicts the next unit.",
+                "generated_tokens": 23,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.10526315789473684
+              },
+              {
+                "id": "082c88e132b4f1bf68abdc3a21ac4af180de1113",
+                "paper_id": "1706.07179",
+                "layout": "early",
+                "prompt_tokens": 2001,
+                "answer_tokens": 21,
+                "answer_nll": 2.054387410481771,
+                "question_distance_tokens": 1973,
+                "references": [
+                  "the memory slots correspond to entities and the edges correspond to relationships between entities, each represented as a vector."
+                ],
+                "prediction": "the EntNet model BIBREF17 achieves 0.2% error on 11 of the tasks which are better than the Entnet model",
+                "generated_tokens": 32,
+                "hit_generation_cap": true,
+                "em": 0.0,
+                "f1": 0.0
+              },
+              {
+                "id": "60fd7ef7986a5752b31d3bd12bbc7da6843547a4",
+                "paper_id": "1706.07179",
+                "layout": "early",
+                "prompt_tokens": 2000,
+                "answer_tokens": 22,
+                "answer_nll": 1.2938610423694958,
+                "question_distance_tokens": 1973,
+                "references": [
+                  "We compare the performance with the Recurrent Entity Networks model (EntNet) BIBREF17"
+                ],
+                "prediction": "RelNet models are able to reason about entities and relations from text corpora.",
+                "generated_tokens": 17,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.0
+              }
+            ]
+          },
+          "B_probe": {
+            "summary": {
+              "questions": 4,
+              "answer_nll": 2.761506404195513
+            },
+            "rows": [
+              {
+                "id": "675d7c48541b6368df135f71f9fc13a398f0c8c6",
+                "paper_id": "1901.03438",
+                "layout": "early",
+                "prompt_tokens": 1876,
+                "answer_tokens": 4,
+                "answer_nll": 3.2855589389801025,
+                "question_distance_tokens": 1846,
+                "references": [
+                  "the transformer models"
+                ]
+              },
+              {
+                "id": "868c69c8f623e30b96df5b5c8336070994469f60",
+                "paper_id": "1901.03438",
+                "layout": "early",
+                "prompt_tokens": 1875,
+                "answer_tokens": 12,
+                "answer_nll": 3.4234536488850913,
+                "question_distance_tokens": 1846,
+                "references": [
+                  "CoLA contains example sentences from linguistics publications labeled by experts"
+                ]
+              },
+              {
+                "id": "a9d530d68fb45b52d9bad9da2cd139db5a4b2f7c",
+                "paper_id": "1811.00942",
+                "layout": "early",
+                "prompt_tokens": 2007,
+                "answer_tokens": 9,
+                "answer_nll": 1.8802261352539062,
+                "question_distance_tokens": 1978,
+                "references": [
+                  "Kneser\u2013Ney smoothing"
+                ]
+              },
+              {
+                "id": "e07df8f613dbd567a35318cd6f6f4cb959f5c82d",
+                "paper_id": "1811.00942",
+                "layout": "early",
+                "prompt_tokens": 2008,
+                "answer_tokens": 3,
+                "answer_nll": 2.058821519215902,
+                "question_distance_tokens": 1978,
+                "references": [
+                  "perplexity"
+                ]
+              }
+            ]
+          }
+        },
+        "A_return": {
+          "training": [
+            {
+              "id": "52b113e66fd691ae18b9bb8a8d17e1ee7054bb81",
+              "accounting": {
+                "real_tokens": 2043,
+                "padding_tokens": 6,
+                "answer_tokens": 5,
+                "question_boundary": 2038
+              },
+              "updates": 1,
+              "answer_nll": 1.2633507251739502
+            },
+            {
+              "id": "36b5f0f62ee9be1ab50d1bb6170e98328d45997d",
+              "accounting": {
+                "real_tokens": 2049,
+                "padding_tokens": 0,
+                "answer_tokens": 11,
+                "question_boundary": 2038
+              },
+              "updates": 1,
+              "answer_nll": 1.0532219409942627
+            },
+            {
+              "id": "082c88e132b4f1bf68abdc3a21ac4af180de1113",
+              "accounting": {
+                "real_tokens": 2022,
+                "padding_tokens": 27,
+                "answer_tokens": 21,
+                "question_boundary": 2001
+              },
+              "updates": 1,
+              "answer_nll": 1.9514447450637817
+            },
+            {
+              "id": "60fd7ef7986a5752b31d3bd12bbc7da6843547a4",
+              "accounting": {
+                "real_tokens": 2022,
+                "padding_tokens": 27,
+                "answer_tokens": 22,
+                "question_boundary": 2000
+              },
+              "updates": 1,
+              "answer_nll": 1.0784763097763062
+            }
+          ],
+          "A_probe": {
+            "summary": {
+              "questions": 4,
+              "answer_nll": 1.1724899017204673,
+              "em": 0.0,
+              "f1": 0.1088073719652667
+            },
+            "rows": [
+              {
+                "id": "52b113e66fd691ae18b9bb8a8d17e1ee7054bb81",
+                "paper_id": "2003.05377",
+                "layout": "early",
+                "prompt_tokens": 2038,
+                "answer_tokens": 5,
+                "answer_nll": 1.2847893714904786,
+                "question_distance_tokens": 2010,
+                "references": [
+                  "Vagalume website"
+                ],
+                "prediction": "LSTM is a type of network that receives input from the previous unit and predicts the next unit.",
+                "generated_tokens": 22,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.0
+              },
+              {
+                "id": "36b5f0f62ee9be1ab50d1bb6170e98328d45997d",
+                "paper_id": "2003.05377",
+                "layout": "early",
+                "prompt_tokens": 2038,
+                "answer_tokens": 11,
+                "answer_nll": 0.9246906800703569,
+                "question_distance_tokens": 2010,
+                "references": [
+                  "Word2Vec, Wang2Vec, and FastText"
+                ],
+                "prediction": "LSTM is a type of network that receives input from the previous unit and predicts the current unit.",
+                "generated_tokens": 22,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.10526315789473684
+              },
+              {
+                "id": "082c88e132b4f1bf68abdc3a21ac4af180de1113",
+                "paper_id": "1706.07179",
+                "layout": "early",
+                "prompt_tokens": 2001,
+                "answer_tokens": 21,
+                "answer_nll": 1.527829306466239,
+                "question_distance_tokens": 1973,
+                "references": [
+                  "the memory slots correspond to entities and the edges correspond to relationships between entities, each represented as a vector."
+                ],
+                "prediction": "RelNet model is able to reason about entities and relations from text corpora for question answering BIBREF17 .",
+                "generated_tokens": 25,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.18181818181818182
+              },
+              {
+                "id": "60fd7ef7986a5752b31d3bd12bbc7da6843547a4",
+                "paper_id": "1706.07179",
+                "layout": "early",
+                "prompt_tokens": 2000,
+                "answer_tokens": 22,
+                "answer_nll": 0.931679292158647,
+                "question_distance_tokens": 1973,
+                "references": [
+                  "We compare the performance with the Recurrent Entity Networks model (EntNet) BIBREF17"
+                ],
+                "prediction": "RelNet model is able to reason about entities and relations from text corpora for question answering BIBREF17 .",
+                "generated_tokens": 25,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.14814814814814814
+              }
+            ]
+          },
+          "B_probe": {
+            "summary": {
+              "questions": 4,
+              "answer_nll": 2.8860364300864085
+            },
+            "rows": [
+              {
+                "id": "675d7c48541b6368df135f71f9fc13a398f0c8c6",
+                "paper_id": "1901.03438",
+                "layout": "early",
+                "prompt_tokens": 1876,
+                "answer_tokens": 4,
+                "answer_nll": 2.1525654792785645,
+                "question_distance_tokens": 1846,
+                "references": [
+                  "the transformer models"
+                ]
+              },
+              {
+                "id": "868c69c8f623e30b96df5b5c8336070994469f60",
+                "paper_id": "1901.03438",
+                "layout": "early",
+                "prompt_tokens": 1875,
+                "answer_tokens": 12,
+                "answer_nll": 3.7647040685017905,
+                "question_distance_tokens": 1846,
+                "references": [
+                  "CoLA contains example sentences from linguistics publications labeled by experts"
+                ]
+              },
+              {
+                "id": "a9d530d68fb45b52d9bad9da2cd139db5a4b2f7c",
+                "paper_id": "1811.00942",
+                "layout": "early",
+                "prompt_tokens": 2007,
+                "answer_tokens": 9,
+                "answer_nll": 2.351885265774197,
+                "question_distance_tokens": 1978,
+                "references": [
+                  "Kneser\u2013Ney smoothing"
+                ]
+              },
+              {
+                "id": "e07df8f613dbd567a35318cd6f6f4cb959f5c82d",
+                "paper_id": "1811.00942",
+                "layout": "early",
+                "prompt_tokens": 2008,
+                "answer_tokens": 3,
+                "answer_nll": 1.951780637105306,
+                "question_distance_tokens": 1978,
+                "references": [
+                  "perplexity"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "latch": [
+        {
+          "paper_id": "1603.01514",
+          "curve": [
+            {
+              "age_tokens": 0,
+              "content_distance": 0.1005602926598951,
+              "perturbation_distance": 0.0019066337646506878,
+              "content_retained_fraction": 1.0,
+              "perturbation_remaining_fraction": 1.0,
+              "content_prediction_js": null,
+              "perturbation_prediction_js": null
+            },
+            {
+              "age_tokens": 128,
+              "content_distance": 0.09135560238288888,
+              "perturbation_distance": 0.0030505171876678925,
+              "content_retained_fraction": 0.9084659557611133,
+              "perturbation_remaining_fraction": 1.5999492111306306,
+              "content_prediction_js": 4.656147211790085e-05,
+              "perturbation_prediction_js": 3.8591861084569246e-07
+            },
+            {
+              "age_tokens": 512,
+              "content_distance": 0.1802922056188375,
+              "perturbation_distance": 0.002511492847408807,
+              "content_retained_fraction": 1.7928766996393262,
+              "perturbation_remaining_fraction": 1.317239259039837,
+              "content_prediction_js": 0.00013444171054288745,
+              "perturbation_prediction_js": 1.4897642586220172e-07
+            },
+            {
+              "age_tokens": 2048,
+              "content_distance": 0.07638666850834294,
+              "perturbation_distance": 0.0026542678582455043,
+              "content_retained_fraction": 0.7596106424102229,
+              "perturbation_remaining_fraction": 1.3921225499391015,
+              "content_prediction_js": 1.910064383991994e-05,
+              "perturbation_prediction_js": 1.9793480987573275e-07
+            }
+          ]
+        },
+        {
+          "paper_id": "1712.00991",
+          "curve": [
+            {
+              "age_tokens": 0,
+              "content_distance": 0.3325691102159017,
+              "perturbation_distance": 0.0020820702741635414,
+              "content_retained_fraction": 1.0,
+              "perturbation_remaining_fraction": 1.0,
+              "content_prediction_js": null,
+              "perturbation_prediction_js": null
+            },
+            {
+              "age_tokens": 128,
+              "content_distance": 0.40224368739953803,
+              "perturbation_distance": 0.0033009621841542445,
+              "content_retained_fraction": 1.2095040550771659,
+              "perturbation_remaining_fraction": 1.5854230402863734,
+              "content_prediction_js": 0.001897650770843029,
+              "perturbation_prediction_js": 1.7444253899157047e-06
+            },
+            {
+              "age_tokens": 512,
+              "content_distance": 0.28624197924716815,
+              "perturbation_distance": 0.0025435219008100775,
+              "content_retained_fraction": 0.8606992365025776,
+              "perturbation_remaining_fraction": 1.2216311487526144,
+              "content_prediction_js": 0.00041932129533961415,
+              "perturbation_prediction_js": 5.297060852171853e-07
+            },
+            {
+              "age_tokens": 2048,
+              "content_distance": 0.23323579931511065,
+              "perturbation_distance": 0.002629610413786955,
+              "content_retained_fraction": 0.7013152819986664,
+              "perturbation_remaining_fraction": 1.2629787026969512,
+              "content_prediction_js": 0.0017682472243905067,
+              "perturbation_prediction_js": 1.5694731700932607e-06
+            }
+          ]
+        }
+      ],
+      "frozen_source_restore_exact": true,
+      "adapted_checkpoint": "E:\\cgb_gdn340_probe\\qasper_sft_functional_20261106\\full_adapted_last.pt",
+      "generation_summary": {
+        "early": {
+          "questions": 16,
+          "answer_nll": 2.238253941407075,
+          "em": 0.0,
+          "f1": 0.06652774785127726
+        },
+        "near": {
+          "questions": 16,
+          "answer_nll": 2.1349342148583212,
+          "em": 0.0,
+          "f1": 0.07708980331262939
+        }
+      },
+      "source_checkpoint_unchanged": true
+    },
+    "held": {
+      "generation": [
+        {
+          "id": "1038542243efe5ab3e65c89385e53c4831cd9981",
+          "paper_id": "2001.07786",
+          "layout": "early",
+          "prompt_tokens": 2085,
+          "answer_tokens": 16,
+          "answer_nll": 1.9527602195739746,
+          "question_distance_tokens": 2056,
+          "references": [
+            "Diachronic Usage Relatedness (DURel) gold standard data set"
+          ],
+          "prediction": "LSCD vectors are used to align vector spaces with CD.",
+          "generated_tokens": 14,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "e2b0cd30cf56a4b13f96426489367024310c3a05",
+          "paper_id": "2001.07786",
+          "layout": "early",
+          "prompt_tokens": 2080,
+          "answer_tokens": 26,
+          "answer_nll": 2.5954754169170675,
+          "question_distance_tokens": 2056,
+          "references": [
+            "As the metric to assess how well the model's output fits the gold ranking Spearman's $\\rho $ was used",
+            "Spearman's rank-order correlation"
+          ],
+          "prediction": "LSCD vectors are used to align vector spaces with CD.",
+          "generated_tokens": 14,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.16,
+          "original_validation": true
+        },
+        {
+          "id": "05c49b9f84772e6df41f530d86c1f7a1da6aa489",
+          "paper_id": "1912.08904",
+          "layout": "early",
+          "prompt_tokens": 1939,
+          "answer_tokens": 22,
+          "answer_nll": 2.2040828358043325,
+          "question_distance_tokens": 1912,
+          "references": [
+            "The current implementation of Macaw supports a command line interface as well as mobile, desktop, and web apps."
+          ],
+          "prediction": "Macaw is a conversational search and retrieval system.",
+          "generated_tokens": 13,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.17391304347826086,
+          "original_validation": true
+        },
+        {
+          "id": "6ecb69360449bb9915ac73c0a816c8ac479cbbfc",
+          "paper_id": "1912.08904",
+          "layout": "early",
+          "prompt_tokens": 1940,
+          "answer_tokens": 9,
+          "answer_nll": 2.2663021087646484,
+          "question_distance_tokens": 1912,
+          "references": [
+            "text, speech, image, click, etc"
+          ],
+          "prediction": "Macaw is a conversational search and retrieval system. It is designed to support multi-stage information seeking and retrieval.",
+          "generated_tokens": 27,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "f94b53db307685d572aefad52cd55f53d23769c2",
+          "paper_id": "1612.03226",
+          "layout": "early",
+          "prompt_tokens": 2056,
+          "answer_tokens": 4,
+          "answer_nll": 2.2760400772094727,
+          "question_distance_tokens": 2027,
+          "references": [
+            "Fisher Information Ratio"
+          ],
+          "prediction": "the probabilities over the characters are computed from the probabilities over the characters.",
+          "generated_tokens": 17,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "aa7d327ef98f9f9847b447d4def04889b4508d7a",
+          "paper_id": "1612.03226",
+          "layout": "early",
+          "prompt_tokens": 2061,
+          "answer_tokens": 24,
+          "answer_nll": 1.2192309697469075,
+          "question_distance_tokens": 2027,
+          "references": [
+            "1,700-hour ( INLINEFORM2 1.1M instances) unlabeled dataset",
+            "INLINEFORM2 is queried for the \u201cmost informative\u201d instance(s) INLINEFORM3"
+          ],
+          "prediction": "the probabilities over the characters are computed from the probabilities over the characters.",
+          "generated_tokens": 17,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "4986f420884f917d1f60d3cea04dc8e64d3b5bf1",
+          "paper_id": "1603.01514",
+          "layout": "early",
+          "prompt_tokens": 1999,
+          "answer_tokens": 11,
+          "answer_nll": 2.363320090553977,
+          "question_distance_tokens": 1969,
+          "references": [
+            "CLV as a parent of the two corresponding role variables",
+            "crosslingual latent variables"
+          ],
+          "prediction": "the monolingual model is generated twice by the parallel corpus, with the corresponding CLVs being generated twice by the parallel corpus.",
+          "generated_tokens": 31,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.08,
+          "original_validation": true
+        },
+        {
+          "id": "50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed",
+          "paper_id": "1603.01514",
+          "layout": "early",
+          "prompt_tokens": 1996,
+          "answer_tokens": 21,
+          "answer_nll": 2.3888426281156994,
+          "question_distance_tokens": 1969,
+          "references": [
+            "Bayesian model of garg2012unsupervised as our base monolingual model"
+          ],
+          "prediction": "the monolingual model is generated twice by the parallel process, with the CLVs being generated twice by the parallel process.",
+          "generated_tokens": 28,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.16,
+          "original_validation": true
+        },
+        {
+          "id": "e025061e199b121f2ac8f3d9637d9bf987d65cd5",
+          "paper_id": "1712.00991",
+          "layout": "early",
+          "prompt_tokens": 1908,
+          "answer_tokens": 5,
+          "answer_nll": 2.6245491027832033,
+          "question_distance_tokens": 1880,
+          "references": [
+            "15.5",
+            "average:15.5"
+          ],
+          "prediction": "the sentences in this paper are about the performance appraisal process.",
+          "generated_tokens": 15,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        },
+        {
+          "id": "61652a3da85196564401d616d251084a25ab4596",
+          "paper_id": "1712.00991",
+          "layout": "early",
+          "prompt_tokens": 1910,
+          "answer_tokens": 6,
+          "answer_nll": 2.5353194872538247,
+          "question_distance_tokens": 1880,
+          "references": [
+            "26972",
+            "26972 sentences"
+          ],
+          "prediction": "the sentences in the corpus are about the performance appraisal process.",
+          "generated_tokens": 16,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.2,
+          "original_validation": false
+        },
+        {
+          "id": "7561a968470a8936d10e1ba722d2f38b5a9a4d38",
+          "paper_id": "1605.06083",
+          "layout": "early",
+          "prompt_tokens": 2070,
+          "answer_tokens": 7,
+          "answer_nll": 1.7273270743233817,
+          "question_distance_tokens": 2043,
+          "references": [
+            "30,000",
+            "collection of over 30,000 images with 5 crowdsourced descriptions each"
+          ],
+          "prediction": "the Flickr30K data is not only a collection of images, but also a collection of annotations. The annotations are based on the F",
+          "generated_tokens": 32,
+          "hit_generation_cap": true,
+          "em": 0.0,
+          "f1": 0.21428571428571427,
+          "original_validation": false
+        },
+        {
+          "id": "26c2e1eb12143d985e4fb50543cf0d1eb4395e67",
+          "paper_id": "1605.06083",
+          "layout": "early",
+          "prompt_tokens": 2071,
+          "answer_tokens": 28,
+          "answer_nll": 2.57049560546875,
+          "question_distance_tokens": 2043,
+          "references": [
+            "adjectives are used to create \u201cmore narrow labels [or subtypes] for individuals who do not fit with general social category expectations\u201d"
+          ],
+          "prediction": "the Flickr30K data is not only a collection of images, but also a collection of annotations. The annotations are based on the F",
+          "generated_tokens": 32,
+          "hit_generation_cap": true,
+          "em": 0.0,
+          "f1": 0.10256410256410256,
+          "original_validation": false
+        },
+        {
+          "id": "808f0ad46ca4eb4ea5492f9e14ca043fe1e206cc",
+          "paper_id": "1910.08293",
+          "layout": "early",
+          "prompt_tokens": 1993,
+          "answer_tokens": 8,
+          "answer_nll": 1.3801345825195312,
+          "question_distance_tokens": 1966,
+          "references": [
+            "45,821 characters"
+          ],
+          "prediction": "HLAs are the set of HLAs on the right side of Figure FIGREF1.",
+          "generated_tokens": 22,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        },
+        {
+          "id": "36ae003c7cb2a1bbfa90b89c671bc286bd3b3dfd",
+          "paper_id": "1910.08293",
+          "layout": "early",
+          "prompt_tokens": 1994,
+          "answer_tokens": 23,
+          "answer_nll": 2.24761962890625,
+          "question_distance_tokens": 1966,
+          "references": [
+            "attributes are determined by human viewers and their impressions of the characters, and are correlated with human-like characteristics"
+          ],
+          "prediction": "TV Tropes BIBREF1, TV Tropes BIBREF2, TV Tropes BIBREF3, TV Tropes B",
+          "generated_tokens": 32,
+          "hit_generation_cap": true,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        },
+        {
+          "id": "193ee49ae0f8827a6e67388a10da59e137e7769f",
+          "paper_id": "2004.01853",
+          "layout": "early",
+          "prompt_tokens": 1885,
+          "answer_tokens": 11,
+          "answer_nll": 2.7292570634321733,
+          "question_distance_tokens": 1859,
+          "references": [
+            "recovers a masked document to its original form"
+          ],
+          "prediction": "LSTMs and Transformers are trained with the masked token language modeling objective, which removes the dependence of the encoder on the masked token",
+          "generated_tokens": 32,
+          "hit_generation_cap": true,
+          "em": 0.0,
+          "f1": 0.07692307692307693,
+          "original_validation": false
+        },
+        {
+          "id": "ed2eb4e54b641b7670ab5a7060c7b16c628699ab",
+          "paper_id": "2004.01853",
+          "layout": "early",
+          "prompt_tokens": 1890,
+          "answer_tokens": 1,
+          "answer_nll": 8.201549530029297,
+          "question_distance_tokens": 1859,
+          "references": [
+            "SR"
+          ],
+          "prediction": "LSTMs and Transformers are trained with the BERT, BIBREF2, BIBF2, BIBF3, BIBF",
+          "generated_tokens": 32,
+          "hit_generation_cap": true,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        },
+        {
+          "id": "1038542243efe5ab3e65c89385e53c4831cd9981",
+          "paper_id": "2001.07786",
+          "layout": "near",
+          "prompt_tokens": 2085,
+          "answer_tokens": 16,
+          "answer_nll": 1.6948328018188477,
+          "question_distance_tokens": 4,
+          "references": [
+            "Diachronic Usage Relatedness (DURel) gold standard data set"
+          ],
+          "prediction": "the corpus used for the task is the DAF corpus.",
+          "generated_tokens": 15,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "e2b0cd30cf56a4b13f96426489367024310c3a05",
+          "paper_id": "2001.07786",
+          "layout": "near",
+          "prompt_tokens": 2080,
+          "answer_tokens": 26,
+          "answer_nll": 2.668673882117638,
+          "question_distance_tokens": 4,
+          "references": [
+            "As the metric to assess how well the model's output fits the gold ranking Spearman's $\\rho $ was used",
+            "Spearman's rank-order correlation"
+          ],
+          "prediction": "the team uses a structured questionnaire to evaluate the performance of the models.",
+          "generated_tokens": 16,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.16666666666666666,
+          "original_validation": true
+        },
+        {
+          "id": "05c49b9f84772e6df41f530d86c1f7a1da6aa489",
+          "paper_id": "1912.08904",
+          "layout": "near",
+          "prompt_tokens": 1939,
+          "answer_tokens": 22,
+          "answer_nll": 2.052166158502752,
+          "question_distance_tokens": 4,
+          "references": [
+            "The current implementation of Macaw supports a command line interface as well as mobile, desktop, and web apps."
+          ],
+          "prediction": "Macaw has a number of interfaces, such as the following:",
+          "generated_tokens": 15,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.25,
+          "original_validation": true
+        },
+        {
+          "id": "6ecb69360449bb9915ac73c0a816c8ac479cbbfc",
+          "paper_id": "1912.08904",
+          "layout": "near",
+          "prompt_tokens": 1940,
+          "answer_tokens": 9,
+          "answer_nll": 2.005268308851454,
+          "question_distance_tokens": 4,
+          "references": [
+            "text, speech, image, click, etc"
+          ],
+          "prediction": "Macaw supports multiple question answering techniques, such as multiple-choice, fill-in-the-blank, and multiple-choice questions.",
+          "generated_tokens": 29,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "f94b53db307685d572aefad52cd55f53d23769c2",
+          "paper_id": "1612.03226",
+          "layout": "near",
+          "prompt_tokens": 2056,
+          "answer_tokens": 4,
+          "answer_nll": 2.228541612625122,
+          "question_distance_tokens": 4,
+          "references": [
+            "Fisher Information Ratio"
+          ],
+          "prediction": "we compute the variance from the model outputs, normalized by the number of timesteps.",
+          "generated_tokens": 19,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "aa7d327ef98f9f9847b447d4def04889b4508d7a",
+          "paper_id": "1612.03226",
+          "layout": "near",
+          "prompt_tokens": 2061,
+          "answer_tokens": 24,
+          "answer_nll": 1.2846614519755046,
+          "question_distance_tokens": 4,
+          "references": [
+            "1,700-hour ( INLINEFORM2 1.1M instances) unlabeled dataset",
+            "INLINEFORM2 is queried for the \u201cmost informative\u201d instance(s) INLINEFORM3"
+          ],
+          "prediction": "1000 samples.",
+          "generated_tokens": 8,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "4986f420884f917d1f60d3cea04dc8e64d3b5bf1",
+          "paper_id": "1603.01514",
+          "layout": "near",
+          "prompt_tokens": 1999,
+          "answer_tokens": 11,
+          "answer_nll": 2.0927274877374824,
+          "question_distance_tokens": 4,
+          "references": [
+            "CLV as a parent of the two corresponding role variables",
+            "crosslingual latent variables"
+          ],
+          "prediction": "the CLVs are generated by the monolingual model, and the CLVs are generated by the parallel corpus.",
+          "generated_tokens": 28,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": true
+        },
+        {
+          "id": "50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed",
+          "paper_id": "1603.01514",
+          "layout": "near",
+          "prompt_tokens": 1996,
+          "answer_tokens": 21,
+          "answer_nll": 2.508219219389416,
+          "question_distance_tokens": 4,
+          "references": [
+            "Bayesian model of garg2012unsupervised as our base monolingual model"
+          ],
+          "prediction": "the CLVs are generated by the monolingual model, and the corresponding CLVs are generated by the parallel corpus.",
+          "generated_tokens": 29,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.17391304347826086,
+          "original_validation": true
+        },
+        {
+          "id": "e025061e199b121f2ac8f3d9637d9bf987d65cd5",
+          "paper_id": "1712.00991",
+          "layout": "near",
+          "prompt_tokens": 1908,
+          "answer_tokens": 5,
+          "answer_nll": 1.405806541442871,
+          "question_distance_tokens": 4,
+          "references": [
+            "15.5",
+            "average:15.5"
+          ],
+          "prediction": "15.25 seconds.",
+          "generated_tokens": 9,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        },
+        {
+          "id": "61652a3da85196564401d616d251084a25ab4596",
+          "paper_id": "1712.00991",
+          "layout": "near",
+          "prompt_tokens": 1910,
+          "answer_tokens": 6,
+          "answer_nll": 2.435375531514486,
+          "question_distance_tokens": 4,
+          "references": [
+            "26972",
+            "26972 sentences"
+          ],
+          "prediction": "1000000000000000000000000000000",
+          "generated_tokens": 32,
+          "hit_generation_cap": true,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        },
+        {
+          "id": "7561a968470a8936d10e1ba722d2f38b5a9a4d38",
+          "paper_id": "1605.06083",
+          "layout": "near",
+          "prompt_tokens": 2070,
+          "answer_tokens": 7,
+          "answer_nll": 1.245206015450614,
+          "question_distance_tokens": 4,
+          "references": [
+            "30,000",
+            "collection of over 30,000 images with 5 crowdsourced descriptions each"
+          ],
+          "prediction": "the Flickr dataset is 10,000 images.",
+          "generated_tokens": 16,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.13333333333333333,
+          "original_validation": false
+        },
+        {
+          "id": "26c2e1eb12143d985e4fb50543cf0d1eb4395e67",
+          "paper_id": "1605.06083",
+          "layout": "near",
+          "prompt_tokens": 2071,
+          "answer_tokens": 28,
+          "answer_nll": 2.6069436754499162,
+          "question_distance_tokens": 4,
+          "references": [
+            "adjectives are used to create \u201cmore narrow labels [or subtypes] for individuals who do not fit with general social category expectations\u201d"
+          ],
+          "prediction": "the Flickr30K data.",
+          "generated_tokens": 10,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        },
+        {
+          "id": "808f0ad46ca4eb4ea5492f9e14ca043fe1e206cc",
+          "paper_id": "1910.08293",
+          "layout": "near",
+          "prompt_tokens": 1993,
+          "answer_tokens": 8,
+          "answer_nll": 1.107297658920288,
+          "question_distance_tokens": 4,
+          "references": [
+            "45,821 characters"
+          ],
+          "prediction": "2016 TV Tropes characters.",
+          "generated_tokens": 12,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.3333333333333333,
+          "original_validation": false
+        },
+        {
+          "id": "36ae003c7cb2a1bbfa90b89c671bc286bd3b3dfd",
+          "paper_id": "1910.08293",
+          "layout": "near",
+          "prompt_tokens": 1994,
+          "answer_tokens": 23,
+          "answer_nll": 2.208854343580163,
+          "question_distance_tokens": 4,
+          "references": [
+            "attributes are determined by human viewers and their impressions of the characters, and are correlated with human-like characteristics"
+          ],
+          "prediction": "HLAs are the set of HLAs on the right side of Figure FIGREF1.",
+          "generated_tokens": 22,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.14285714285714285,
+          "original_validation": false
+        },
+        {
+          "id": "193ee49ae0f8827a6e67388a10da59e137e7769f",
+          "paper_id": "2004.01853",
+          "layout": "near",
+          "prompt_tokens": 1885,
+          "answer_tokens": 11,
+          "answer_nll": 2.4346608248623935,
+          "question_distance_tokens": 4,
+          "references": [
+            "recovers a masked document to its original form"
+          ],
+          "prediction": "LSTMs and Transformers.",
+          "generated_tokens": 9,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        },
+        {
+          "id": "ed2eb4e54b641b7670ab5a7060c7b16c628699ab",
+          "paper_id": "2004.01853",
+          "layout": "near",
+          "prompt_tokens": 1890,
+          "answer_tokens": 1,
+          "answer_nll": 8.671727180480957,
+          "question_distance_tokens": 4,
+          "references": [
+            "SR"
+          ],
+          "prediction": "extractive summarization.",
+          "generated_tokens": 6,
+          "hit_generation_cap": false,
+          "em": 0.0,
+          "f1": 0.0,
+          "original_validation": false
+        }
+      ],
+      "continual": {
+        "baseline_A": {
+          "summary": {
+            "questions": 4,
+            "answer_nll": 1.6654415938813807
+          },
+          "rows": [
+            {
+              "id": "52b113e66fd691ae18b9bb8a8d17e1ee7054bb81",
+              "paper_id": "2003.05377",
+              "layout": "early",
+              "prompt_tokens": 2038,
+              "answer_tokens": 5,
+              "answer_nll": 1.7228153228759766,
+              "question_distance_tokens": 2010,
+              "references": [
+                "Vagalume website"
+              ]
+            },
+            {
+              "id": "36b5f0f62ee9be1ab50d1bb6170e98328d45997d",
+              "paper_id": "2003.05377",
+              "layout": "early",
+              "prompt_tokens": 2038,
+              "answer_tokens": 11,
+              "answer_nll": 1.2037683833729138,
+              "question_distance_tokens": 2010,
+              "references": [
+                "Word2Vec, Wang2Vec, and FastText"
+              ]
+            },
+            {
+              "id": "082c88e132b4f1bf68abdc3a21ac4af180de1113",
+              "paper_id": "1706.07179",
+              "layout": "early",
+              "prompt_tokens": 2001,
+              "answer_tokens": 21,
+              "answer_nll": 2.2064136323474703,
+              "question_distance_tokens": 1973,
+              "references": [
+                "the memory slots correspond to entities and the edges correspond to relationships between entities, each represented as a vector."
+              ]
+            },
+            {
+              "id": "60fd7ef7986a5752b31d3bd12bbc7da6843547a4",
+              "paper_id": "1706.07179",
+              "layout": "early",
+              "prompt_tokens": 2000,
+              "answer_tokens": 22,
+              "answer_nll": 1.3668563149192117,
+              "question_distance_tokens": 1973,
+              "references": [
+                "We compare the performance with the Recurrent Entity Networks model (EntNet) BIBREF17"
+              ]
+            }
+          ]
+        },
+        "baseline_B": {
+          "summary": {
+            "questions": 4,
+            "answer_nll": 3.180235641343253
+          },
+          "rows": [
+            {
+              "id": "675d7c48541b6368df135f71f9fc13a398f0c8c6",
+              "paper_id": "1901.03438",
+              "layout": "early",
+              "prompt_tokens": 1876,
+              "answer_tokens": 4,
+              "answer_nll": 3.749617099761963,
+              "question_distance_tokens": 1846,
+              "references": [
+                "the transformer models"
+              ]
+            },
+            {
+              "id": "868c69c8f623e30b96df5b5c8336070994469f60",
+              "paper_id": "1901.03438",
+              "layout": "early",
+              "prompt_tokens": 1875,
+              "answer_tokens": 12,
+              "answer_nll": 3.730627695719401,
+              "question_distance_tokens": 1846,
+              "references": [
+                "CoLA contains example sentences from linguistics publications labeled by experts"
+              ]
+            },
+            {
+              "id": "a9d530d68fb45b52d9bad9da2cd139db5a4b2f7c",
+              "paper_id": "1811.00942",
+              "layout": "early",
+              "prompt_tokens": 2007,
+              "answer_tokens": 9,
+              "answer_nll": 2.5138973659939237,
+              "question_distance_tokens": 1978,
+              "references": [
+                "Kneser\u2013Ney smoothing"
+              ]
+            },
+            {
+              "id": "e07df8f613dbd567a35318cd6f6f4cb959f5c82d",
+              "paper_id": "1811.00942",
+              "layout": "early",
+              "prompt_tokens": 2008,
+              "answer_tokens": 3,
+              "answer_nll": 2.2185069719950357,
+              "question_distance_tokens": 1978,
+              "references": [
+                "perplexity"
+              ]
+            }
+          ]
+        },
+        "A": {
+          "training": [
+            {
+              "id": "52b113e66fd691ae18b9bb8a8d17e1ee7054bb81",
+              "accounting": {
+                "real_tokens": 2043,
+                "padding_tokens": 6,
+                "answer_tokens": 5,
+                "question_boundary": 2038
+              },
+              "updates": 1,
+              "answer_nll": 1.6461222171783447
+            },
+            {
+              "id": "36b5f0f62ee9be1ab50d1bb6170e98328d45997d",
+              "accounting": {
+                "real_tokens": 2049,
+                "padding_tokens": 0,
+                "answer_tokens": 11,
+                "question_boundary": 2038
+              },
+              "updates": 1,
+              "answer_nll": 1.268769383430481
+            },
+            {
+              "id": "082c88e132b4f1bf68abdc3a21ac4af180de1113",
+              "accounting": {
+                "real_tokens": 2022,
+                "padding_tokens": 27,
+                "answer_tokens": 21,
+                "question_boundary": 2001
+              },
+              "updates": 1,
+              "answer_nll": 2.1806604862213135
+            },
+            {
+              "id": "60fd7ef7986a5752b31d3bd12bbc7da6843547a4",
+              "accounting": {
+                "real_tokens": 2022,
+                "padding_tokens": 27,
+                "answer_tokens": 22,
+                "question_boundary": 2000
+              },
+              "updates": 1,
+              "answer_nll": 1.1740158796310425
+            }
+          ],
+          "A_probe": {
+            "summary": {
+              "questions": 4,
+              "answer_nll": 1.3375212620880643,
+              "em": 0.0,
+              "f1": 0.058823529411764705
+            },
+            "rows": [
+              {
+                "id": "52b113e66fd691ae18b9bb8a8d17e1ee7054bb81",
+                "paper_id": "2003.05377",
+                "layout": "early",
+                "prompt_tokens": 2038,
+                "answer_tokens": 5,
+                "answer_nll": 1.5968055725097656,
+                "question_distance_tokens": 2010,
+                "references": [
+                  "Vagalume website"
+                ],
+                "prediction": "LSTM network is implemented as a graph cycle.",
+                "generated_tokens": 11,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.0
+              },
+              {
+                "id": "36b5f0f62ee9be1ab50d1bb6170e98328d45997d",
+                "paper_id": "2003.05377",
+                "layout": "early",
+                "prompt_tokens": 2038,
+                "answer_tokens": 11,
+                "answer_nll": 1.0738834901289507,
+                "question_distance_tokens": 2010,
+                "references": [
+                  "Word2Vec, Wang2Vec, and FastText"
+                ],
+                "prediction": "LSTM network is implemented as a graph cycle.",
+                "generated_tokens": 11,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.0
+              },
+              {
+                "id": "082c88e132b4f1bf68abdc3a21ac4af180de1113",
+                "paper_id": "1706.07179",
+                "layout": "early",
+                "prompt_tokens": 2001,
+                "answer_tokens": 21,
+                "answer_nll": 1.733961196172805,
+                "question_distance_tokens": 1973,
+                "references": [
+                  "the memory slots correspond to entities and the edges correspond to relationships between entities, each represented as a vector."
+                ],
+                "prediction": "RelNet model BIBREF17 , BIBREF18 , BIBREF18 , BIBREF18 , BIBREF18",
+                "generated_tokens": 32,
+                "hit_generation_cap": true,
+                "em": 0.0,
+                "f1": 0.0
+              },
+              {
+                "id": "60fd7ef7986a5752b31d3bd12bbc7da6843547a4",
+                "paper_id": "1706.07179",
+                "layout": "early",
+                "prompt_tokens": 2000,
+                "answer_tokens": 22,
+                "answer_nll": 1.031991958618164,
+                "question_distance_tokens": 1973,
+                "references": [
+                  "We compare the performance with the Recurrent Entity Networks model (EntNet) BIBREF17"
+                ],
+                "prediction": "RelNet model BIBREF17 , BIBREF18 , BIBREF18 , BIBREF18 , BIBREF18",
+                "generated_tokens": 32,
+                "hit_generation_cap": true,
+                "em": 0.0,
+                "f1": 0.23529411764705882
+              }
+            ]
+          },
+          "B_probe": {
+            "summary": {
+              "questions": 4,
+              "answer_nll": 3.1832837206976756
+            },
+            "rows": [
+              {
+                "id": "675d7c48541b6368df135f71f9fc13a398f0c8c6",
+                "paper_id": "1901.03438",
+                "layout": "early",
+                "prompt_tokens": 1876,
+                "answer_tokens": 4,
+                "answer_nll": 2.754173517227173,
+                "question_distance_tokens": 1846,
+                "references": [
+                  "the transformer models"
+                ]
+              },
+              {
+                "id": "868c69c8f623e30b96df5b5c8336070994469f60",
+                "paper_id": "1901.03438",
+                "layout": "early",
+                "prompt_tokens": 1875,
+                "answer_tokens": 12,
+                "answer_nll": 3.9445184071858725,
+                "question_distance_tokens": 1846,
+                "references": [
+                  "CoLA contains example sentences from linguistics publications labeled by experts"
+                ]
+              },
+              {
+                "id": "a9d530d68fb45b52d9bad9da2cd139db5a4b2f7c",
+                "paper_id": "1811.00942",
+                "layout": "early",
+                "prompt_tokens": 2007,
+                "answer_tokens": 9,
+                "answer_nll": 2.6526387532552085,
+                "question_distance_tokens": 1978,
+                "references": [
+                  "Kneser\u2013Ney smoothing"
+                ]
+              },
+              {
+                "id": "e07df8f613dbd567a35318cd6f6f4cb959f5c82d",
+                "paper_id": "1811.00942",
+                "layout": "early",
+                "prompt_tokens": 2008,
+                "answer_tokens": 3,
+                "answer_nll": 2.302426815032959,
+                "question_distance_tokens": 1978,
+                "references": [
+                  "perplexity"
+                ]
+              }
+            ]
+          }
+        },
+        "B": {
+          "training": [
+            {
+              "id": "675d7c48541b6368df135f71f9fc13a398f0c8c6",
+              "accounting": {
+                "real_tokens": 1880,
+                "padding_tokens": 41,
+                "answer_tokens": 4,
+                "question_boundary": 1876
+              },
+              "updates": 1,
+              "answer_nll": 2.7096753120422363
+            },
+            {
+              "id": "868c69c8f623e30b96df5b5c8336070994469f60",
+              "accounting": {
+                "real_tokens": 1887,
+                "padding_tokens": 34,
+                "answer_tokens": 12,
+                "question_boundary": 1875
+              },
+              "updates": 1,
+              "answer_nll": 3.3286051750183105
+            },
+            {
+              "id": "a9d530d68fb45b52d9bad9da2cd139db5a4b2f7c",
+              "accounting": {
+                "real_tokens": 2016,
+                "padding_tokens": 33,
+                "answer_tokens": 9,
+                "question_boundary": 2007
+              },
+              "updates": 1,
+              "answer_nll": 2.772080898284912
+            },
+            {
+              "id": "e07df8f613dbd567a35318cd6f6f4cb959f5c82d",
+              "accounting": {
+                "real_tokens": 2011,
+                "padding_tokens": 38,
+                "answer_tokens": 3,
+                "question_boundary": 2008
+              },
+              "updates": 1,
+              "answer_nll": 2.222233533859253
+            }
+          ],
+          "A_probe": {
+            "summary": {
+              "questions": 4,
+              "answer_nll": 1.5142767793041165,
+              "em": 0.0,
+              "f1": 0.08055555555555555
+            },
+            "rows": [
+              {
+                "id": "52b113e66fd691ae18b9bb8a8d17e1ee7054bb81",
+                "paper_id": "2003.05377",
+                "layout": "early",
+                "prompt_tokens": 2038,
+                "answer_tokens": 5,
+                "answer_nll": 1.330769157409668,
+                "question_distance_tokens": 2010,
+                "references": [
+                  "Vagalume website"
+                ],
+                "prediction": "LSTM is a type of deep learning network that receives input from the previous unit and predicts the next unit.",
+                "generated_tokens": 24,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.0
+              },
+              {
+                "id": "36b5f0f62ee9be1ab50d1bb6170e98328d45997d",
+                "paper_id": "2003.05377",
+                "layout": "early",
+                "prompt_tokens": 2038,
+                "answer_tokens": 11,
+                "answer_nll": 0.9772241765802557,
+                "question_distance_tokens": 2010,
+                "references": [
+                  "Word2Vec, Wang2Vec, and FastText"
+                ],
+                "prediction": "LSTM is a type of neural network that receives input from the previous unit and predicts the next unit.",
+                "generated_tokens": 23,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.1
+              },
+              {
+                "id": "082c88e132b4f1bf68abdc3a21ac4af180de1113",
+                "paper_id": "1706.07179",
+                "layout": "early",
+                "prompt_tokens": 2001,
+                "answer_tokens": 21,
+                "answer_nll": 2.079725356329055,
+                "question_distance_tokens": 1973,
+                "references": [
+                  "the memory slots correspond to entities and the edges correspond to relationships between entities, each represented as a vector."
+                ],
+                "prediction": "RelNet model BIBREF17 achieves 0.2% error on 11 of the tasks which are better than the Entnet model B",
+                "generated_tokens": 32,
+                "hit_generation_cap": true,
+                "em": 0.0,
+                "f1": 0.0
+              },
+              {
+                "id": "60fd7ef7986a5752b31d3bd12bbc7da6843547a4",
+                "paper_id": "1706.07179",
+                "layout": "early",
+                "prompt_tokens": 2000,
+                "answer_tokens": 22,
+                "answer_nll": 1.2847629893909802,
+                "question_distance_tokens": 1973,
+                "references": [
+                  "We compare the performance with the Recurrent Entity Networks model (EntNet) BIBREF17"
+                ],
+                "prediction": "RelNet model BIBREF17 achieves 0.2% error on 11 of the tasks which are better than the Entnet model B",
+                "generated_tokens": 32,
+                "hit_generation_cap": true,
+                "em": 0.0,
+                "f1": 0.2222222222222222
+              }
+            ]
+          },
+          "B_probe": {
+            "summary": {
+              "questions": 4,
+              "answer_nll": 2.7668938636779785
+            },
+            "rows": [
+              {
+                "id": "675d7c48541b6368df135f71f9fc13a398f0c8c6",
+                "paper_id": "1901.03438",
+                "layout": "early",
+                "prompt_tokens": 1876,
+                "answer_tokens": 4,
+                "answer_nll": 3.2962706089019775,
+                "question_distance_tokens": 1846,
+                "references": [
+                  "the transformer models"
+                ]
+              },
+              {
+                "id": "868c69c8f623e30b96df5b5c8336070994469f60",
+                "paper_id": "1901.03438",
+                "layout": "early",
+                "prompt_tokens": 1875,
+                "answer_tokens": 12,
+                "answer_nll": 3.468980153401693,
+                "question_distance_tokens": 1846,
+                "references": [
+                  "CoLA contains example sentences from linguistics publications labeled by experts"
+                ]
+              },
+              {
+                "id": "a9d530d68fb45b52d9bad9da2cd139db5a4b2f7c",
+                "paper_id": "1811.00942",
+                "layout": "early",
+                "prompt_tokens": 2007,
+                "answer_tokens": 9,
+                "answer_nll": 1.8606609768337674,
+                "question_distance_tokens": 1978,
+                "references": [
+                  "Kneser\u2013Ney smoothing"
+                ]
+              },
+              {
+                "id": "e07df8f613dbd567a35318cd6f6f4cb959f5c82d",
+                "paper_id": "1811.00942",
+                "layout": "early",
+                "prompt_tokens": 2008,
+                "answer_tokens": 3,
+                "answer_nll": 1.9714117050170898,
+                "question_distance_tokens": 1978,
+                "references": [
+                  "perplexity"
+                ]
+              }
+            ]
+          }
+        },
+        "A_return": {
+          "training": [
+            {
+              "id": "52b113e66fd691ae18b9bb8a8d17e1ee7054bb81",
+              "accounting": {
+                "real_tokens": 2043,
+                "padding_tokens": 6,
+                "answer_tokens": 5,
+                "question_boundary": 2038
+              },
+              "updates": 1,
+              "answer_nll": 1.2986116409301758
+            },
+            {
+              "id": "36b5f0f62ee9be1ab50d1bb6170e98328d45997d",
+              "accounting": {
+                "real_tokens": 2049,
+                "padding_tokens": 0,
+                "answer_tokens": 11,
+                "question_boundary": 2038
+              },
+              "updates": 1,
+              "answer_nll": 1.0655869245529175
+            },
+            {
+              "id": "082c88e132b4f1bf68abdc3a21ac4af180de1113",
+              "accounting": {
+                "real_tokens": 2022,
+                "padding_tokens": 27,
+                "answer_tokens": 21,
+                "question_boundary": 2001
+              },
+              "updates": 1,
+              "answer_nll": 1.910618782043457
+            },
+            {
+              "id": "60fd7ef7986a5752b31d3bd12bbc7da6843547a4",
+              "accounting": {
+                "real_tokens": 2022,
+                "padding_tokens": 27,
+                "answer_tokens": 22,
+                "question_boundary": 2000
+              },
+              "updates": 1,
+              "answer_nll": 1.0883129835128784
+            }
+          ],
+          "A_probe": {
+            "summary": {
+              "questions": 4,
+              "answer_nll": 1.1743444669044625,
+              "em": 0.0,
+              "f1": 0.1088073719652667
+            },
+            "rows": [
+              {
+                "id": "52b113e66fd691ae18b9bb8a8d17e1ee7054bb81",
+                "paper_id": "2003.05377",
+                "layout": "early",
+                "prompt_tokens": 2038,
+                "answer_tokens": 5,
+                "answer_nll": 1.2697362899780273,
+                "question_distance_tokens": 2010,
+                "references": [
+                  "Vagalume website"
+                ],
+                "prediction": "LSTM is a type of network that receives input from the previous unit and predicts the next unit.",
+                "generated_tokens": 22,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.0
+              },
+              {
+                "id": "36b5f0f62ee9be1ab50d1bb6170e98328d45997d",
+                "paper_id": "2003.05377",
+                "layout": "early",
+                "prompt_tokens": 2038,
+                "answer_tokens": 11,
+                "answer_nll": 0.9530387358231978,
+                "question_distance_tokens": 2010,
+                "references": [
+                  "Word2Vec, Wang2Vec, and FastText"
+                ],
+                "prediction": "LSTM is a type of network that receives input from the previous unit and predicts the next unit.",
+                "generated_tokens": 22,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.10526315789473684
+              },
+              {
+                "id": "082c88e132b4f1bf68abdc3a21ac4af180de1113",
+                "paper_id": "1706.07179",
+                "layout": "early",
+                "prompt_tokens": 2001,
+                "answer_tokens": 21,
+                "answer_nll": 1.5124766031901042,
+                "question_distance_tokens": 1973,
+                "references": [
+                  "the memory slots correspond to entities and the edges correspond to relationships between entities, each represented as a vector."
+                ],
+                "prediction": "RelNet model is able to reason about entities and relations from text corpora for question answering BIBREF17 .",
+                "generated_tokens": 25,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.18181818181818182
+              },
+              {
+                "id": "60fd7ef7986a5752b31d3bd12bbc7da6843547a4",
+                "paper_id": "1706.07179",
+                "layout": "early",
+                "prompt_tokens": 2000,
+                "answer_tokens": 22,
+                "answer_nll": 0.9405548789284446,
+                "question_distance_tokens": 1973,
+                "references": [
+                  "We compare the performance with the Recurrent Entity Networks model (EntNet) BIBREF17"
+                ],
+                "prediction": "RelNet model is able to reason about entities and relations from text corpora for question answering BIBREF17 .",
+                "generated_tokens": 25,
+                "hit_generation_cap": false,
+                "em": 0.0,
+                "f1": 0.14814814814814814
+              }
+            ]
+          },
+          "B_probe": {
+            "summary": {
+              "questions": 4,
+              "answer_nll": 2.8522917202540805
+            },
+            "rows": [
+              {
+                "id": "675d7c48541b6368df135f71f9fc13a398f0c8c6",
+                "paper_id": "1901.03438",
+                "layout": "early",
+                "prompt_tokens": 1876,
+                "answer_tokens": 4,
+                "answer_nll": 2.1517386436462402,
+                "question_distance_tokens": 1846,
+                "references": [
+                  "the transformer models"
+                ]
+              },
+              {
+                "id": "868c69c8f623e30b96df5b5c8336070994469f60",
+                "paper_id": "1901.03438",
+                "layout": "early",
+                "prompt_tokens": 1875,
+                "answer_tokens": 12,
+                "answer_nll": 3.7115602493286133,
+                "question_distance_tokens": 1846,
+                "references": [
+                  "CoLA contains example sentences from linguistics publications labeled by experts"
+                ]
+              },
+              {
+                "id": "a9d530d68fb45b52d9bad9da2cd139db5a4b2f7c",
+                "paper_id": "1811.00942",
+                "layout": "early",
+                "prompt_tokens": 2007,
+                "answer_tokens": 9,
+                "answer_nll": 2.3157071007622614,
+                "question_distance_tokens": 1978,
+                "references": [
+                  "Kneser\u2013Ney smoothing"
+                ]
+              },
+              {
+                "id": "e07df8f613dbd567a35318cd6f6f4cb959f5c82d",
+                "paper_id": "1811.00942",
+                "layout": "early",
+                "prompt_tokens": 2008,
+                "answer_tokens": 3,
+                "answer_nll": 1.959042231241862,
+                "question_distance_tokens": 1978,
+                "references": [
+                  "perplexity"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "latch": [
+        {
+          "paper_id": "1603.01514",
+          "curve": [
+            {
+              "age_tokens": 0,
+              "content_distance": 0.12081139374500055,
+              "perturbation_distance": 0.0019206980607705051,
+              "content_retained_fraction": 1.0,
+              "perturbation_remaining_fraction": 1.0,
+              "content_prediction_js": null,
+              "perturbation_prediction_js": null
+            },
+            {
+              "age_tokens": 128,
+              "content_distance": 0.03504453856479094,
+              "perturbation_distance": 0.0027529370610382205,
+              "content_retained_fraction": 0.2900764363232186,
+              "perturbation_remaining_fraction": 1.4333002762203317,
+              "content_prediction_js": 1.8785944121191278e-05,
+              "perturbation_prediction_js": 3.999558373379841e-08
+            },
+            {
+              "age_tokens": 512,
+              "content_distance": 0.2016590316962783,
+              "perturbation_distance": 0.0023380379591802607,
+              "content_retained_fraction": 1.6692054072476372,
+              "perturbation_remaining_fraction": 1.217285531200222,
+              "content_prediction_js": 0.0002337753539904952,
+              "perturbation_prediction_js": -2.3861645104261697e-08
+            },
+            {
+              "age_tokens": 2048,
+              "content_distance": 0.0501489228414099,
+              "perturbation_distance": 0.0029579644473531437,
+              "content_retained_fraction": 0.4151009378077403,
+              "perturbation_remaining_fraction": 1.5400465631576312,
+              "content_prediction_js": 7.974168511282187e-06,
+              "perturbation_prediction_js": 1.5124265928534442e-07
+            }
+          ]
+        },
+        {
+          "paper_id": "1712.00991",
+          "curve": [
+            {
+              "age_tokens": 0,
+              "content_distance": 0.4100844263587195,
+              "perturbation_distance": 0.002095276027111356,
+              "content_retained_fraction": 1.0,
+              "perturbation_remaining_fraction": 1.0,
+              "content_prediction_js": null,
+              "perturbation_prediction_js": null
+            },
+            {
+              "age_tokens": 128,
+              "content_distance": 0.44599984060726183,
+              "perturbation_distance": 0.0032677611138489803,
+              "content_retained_fraction": 1.0875805369334497,
+              "perturbation_remaining_fraction": 1.5595850243913045,
+              "content_prediction_js": 0.0020359018817543983,
+              "perturbation_prediction_js": 1.2127566151320934e-06
+            },
+            {
+              "age_tokens": 512,
+              "content_distance": 0.3137233570743623,
+              "perturbation_distance": 0.0025953501424864525,
+              "content_retained_fraction": 0.7650213880590876,
+              "perturbation_remaining_fraction": 1.2386674160848017,
+              "content_prediction_js": 0.0005896691000089049,
+              "perturbation_prediction_js": 1.7220190784428269e-07
+            },
+            {
+              "age_tokens": 2048,
+              "content_distance": 0.22572458432252035,
+              "perturbation_distance": 0.0026631637459048098,
+              "content_retained_fraction": 0.5504344223134892,
+              "perturbation_remaining_fraction": 1.2710324136034572,
+              "content_prediction_js": 0.0017179346177726984,
+              "perturbation_prediction_js": 3.8429243431892246e-07
+            }
+          ]
+        }
+      ],
+      "frozen_source_restore_exact": true,
+      "adapted_checkpoint": "E:\\cgb_gdn340_probe\\qasper_sft_functional_20261106\\held_adapted_last.pt",
+      "generation_summary": {
+        "early": {
+          "questions": 16,
+          "answer_nll": 2.2319843232094705,
+          "em": 0.0,
+          "f1": 0.07298037107819716
+        },
+        "near": {
+          "questions": 16,
+          "answer_nll": 2.133350187593752,
+          "em": 0.0,
+          "f1": 0.07500646997929605
+        }
+      },
+      "source_checkpoint_unchanged": true
+    }
+  },
+  "interface_gate": {
+    "real_question_id": "1038542243efe5ab3e65c89385e53c4831cd9981",
+    "first_generated_token_matches_causal_teacher_prefix": true,
+    "full_source_state_restored_exact": true,
+    "smoke_only_generation_cap": 2
+  }
+}

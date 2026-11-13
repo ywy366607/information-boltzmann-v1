@@ -1,0 +1,3663 @@
+{
+  "kind": "real_stream_eligibility_correspondence",
+  "status": "complete",
+  "checkpoint": "E:\\cgb_gdn340_probe\\qasper_sft_native_credit_20261106\\full_last.pt",
+  "source_updates": 211,
+  "checkpoint_sha256": "63c8bbaac37721d8f4bb1e9f26b739780564e71ff04b075d49ec9ee72951323f",
+  "dataset_revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+  "stream_sha256": "962b54dff7fb9c8702630a7d98eb4835dd5e6c64298010fcefa2e9c5fdb57714",
+  "source_sha256": "571cd8899606e0c1b58ea60941d4d9f0adedd81ce348daf91ada8e60d81d3e0f",
+  "protocol": {
+    "window": 128,
+    "offset": 8192,
+    "mark_tokens": 4096,
+    "pairs": 16,
+    "future_tokens": 512,
+    "common_trajectory": "matched post-update state retained, all sidecar observations rolled back",
+    "exchange": "permute teaching only among selected responses older than128tokens; forward values and live encoders unchanged",
+    "scope": "correlated one-update real-OWT route probes, not converged language capability or proof that the extra route is necessary"
+  },
+  "records": [
+    {
+      "pair": 1,
+      "stream_start": 12288,
+      "forward_exact": true,
+      "current_ce": 3.8645715713500977,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              30,
+              24
+            ],
+            "ages_tokens": [
+              2624,
+              3392
+            ],
+            "versions": [
+              89,
+              89
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 1.3016034396385563,
+            "received_norm": 1.3016034396385563,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              1.0043169770217935,
+              0.8279607018118234
+            ],
+            "per_record_received_norm": [
+              1.0043169770217935,
+              0.8279607018118234
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              30,
+              19
+            ],
+            "ages_tokens": [
+              2624,
+              4032
+            ],
+            "versions": [
+              89,
+              89
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.2593485072016772,
+            "received_norm": 0.2593485072016772,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.19342770522249395,
+              0.17276391706632024
+            ],
+            "per_record_received_norm": [
+              0.19342770522249395,
+              0.17276391706632024
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              30,
+              24
+            ],
+            "ages_tokens": [
+              2624,
+              3392
+            ],
+            "versions": [
+              89,
+              89
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 1.3016034396385563,
+            "received_norm": 1.3016034396385563,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.24940572405485112,
+            "per_record_sent_norm": [
+              1.0043169770217935,
+              0.8279607018118234
+            ],
+            "per_record_received_norm": [
+              0.8279607018118234,
+              1.0043169770217935
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              30,
+              19
+            ],
+            "ages_tokens": [
+              2624,
+              4032
+            ],
+            "versions": [
+              89,
+              89
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.2593485072016772,
+            "received_norm": 0.2593485072016772,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.029223102679265554,
+            "per_record_sent_norm": [
+              0.19342770522249395,
+              0.17276391706632024
+            ],
+            "per_record_received_norm": [
+              0.17276391706632024,
+              0.19342770522249395
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              30,
+              24
+            ],
+            "ages_tokens": [
+              2624,
+              3392
+            ],
+            "versions": [
+              89,
+              89
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              30,
+              19
+            ],
+            "ages_tokens": [
+              2624,
+              4032
+            ],
+            "versions": [
+              89,
+              89
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 2,
+      "nonzero_changed_teaching": 2,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 0.456619596930212,
+          "exchanged_old_gradient_norm": 0.4493220640356381,
+          "difference_norm": 0.06284998704305861,
+          "cosine": 0.9905032876530835
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.573990053740819,
+          "exchanged_old_gradient_norm": 0.573119258442032,
+          "difference_norm": 0.08763809845074984,
+          "cosine": 0.9883275063311081
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.02335509118662941,
+          "exchanged_old_gradient_norm": 0.02416498466796432,
+          "difference_norm": 0.0036778178296363027,
+          "cosine": 0.9885976461140343
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.5485368364955204,
+          "exchanged_old_gradient_norm": 0.5265729317362182,
+          "difference_norm": 0.07953309681154351,
+          "cosine": 0.9898853927657183
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.04593095022626569,
+          "exchanged_old_gradient_norm": 0.04241479656689907,
+          "difference_norm": 0.00819420534295909,
+          "cosine": 0.9859400942077702
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 9.765475988388062e-05,
+        "exchanged": 9.084213525056839e-05
+      },
+      "next_continuation_nll": {
+        "matched": 3.279624283313751,
+        "exchanged": 3.279435157775879,
+        "held": 3.2794317603111267
+      },
+      "matched_minus_exchanged": 0.00018912553787231445,
+      "matched_minus_held": 0.00019252300262451172
+    },
+    {
+      "pair": 2,
+      "stream_start": 12416,
+      "forward_exact": true,
+      "current_ce": 3.71793532371521,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              22,
+              4
+            ],
+            "ages_tokens": [
+              3776,
+              1984
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.1171377130506945,
+            "received_norm": 0.1171377130506945,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.08315536690261877,
+              0.08250108347190174
+            ],
+            "per_record_received_norm": [
+              0.08315536690261877,
+              0.08250108347190174
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              19,
+              30
+            ],
+            "ages_tokens": [
+              64,
+              2752
+            ],
+            "versions": [
+              90,
+              89
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.2584404202118047,
+            "received_norm": 0.2584404202118047,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.18556811744712728,
+              0.17987752662960252
+            ],
+            "per_record_received_norm": [
+              0.18556811744712728,
+              0.17987752662960252
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              22,
+              4
+            ],
+            "ages_tokens": [
+              3776,
+              1984
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.1171377130506945,
+            "received_norm": 0.1171377130506945,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0009259583349967468,
+            "per_record_sent_norm": [
+              0.08315536690261877,
+              0.08250108347190174
+            ],
+            "per_record_received_norm": [
+              0.08250108347190174,
+              0.08315536690261877
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              19,
+              30
+            ],
+            "ages_tokens": [
+              64,
+              2752
+            ],
+            "versions": [
+              90,
+              89
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.2584404202118047,
+            "received_norm": 0.2584404202118047,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.18556811744712728,
+              0.17987752662960252
+            ],
+            "per_record_received_norm": [
+              0.18556811744712728,
+              0.17987752662960252
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              22,
+              4
+            ],
+            "ages_tokens": [
+              3776,
+              1984
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              19,
+              30
+            ],
+            "ages_tokens": [
+              64,
+              2752
+            ],
+            "versions": [
+              90,
+              89
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 1,
+      "nonzero_changed_teaching": 1,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 0.3980156785245564,
+          "exchanged_old_gradient_norm": 0.3980505680369991,
+          "difference_norm": 0.0005106994382627482,
+          "cosine": 0.9999991807232314
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.352531917793615,
+          "exchanged_old_gradient_norm": 0.35253070403486997,
+          "difference_norm": 0.0005297568884930694,
+          "cosine": 0.9999988709178076
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.012234757371413175,
+          "exchanged_old_gradient_norm": 0.01223521372477543,
+          "difference_norm": 2.7304783030652347e-05,
+          "cosine": 0.9999975104594052
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.36776042392310165,
+          "exchanged_old_gradient_norm": 0.3677776058661272,
+          "difference_norm": 0.00048752849217197016,
+          "cosine": 0.9999991224336181
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.02852370549082588,
+          "exchanged_old_gradient_norm": 0.02853292143183078,
+          "difference_norm": 6.990006134984554e-05,
+          "cosine": 0.9999970504401305
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 6.75152987241745e-05,
+        "exchanged": 6.75152987241745e-05
+      },
+      "next_continuation_nll": {
+        "matched": 3.0687869787216187,
+        "exchanged": 3.0686063170433044,
+        "held": 3.0686903595924377
+      },
+      "matched_minus_exchanged": 0.00018066167831420898,
+      "matched_minus_held": 9.66191291809082e-05
+    },
+    {
+      "pair": 3,
+      "stream_start": 12544,
+      "forward_exact": true,
+      "current_ce": 2.7459826469421387,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              21,
+              17
+            ],
+            "ages_tokens": [
+              4032,
+              448
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.3879399071124185,
+            "received_norm": 0.3879399071124185,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.2872660061492498,
+              0.26072133254003416
+            ],
+            "per_record_received_norm": [
+              0.2872660061492498,
+              0.26072133254003416
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              24,
+              19
+            ],
+            "ages_tokens": [
+              3648,
+              192
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.1880073807506498,
+            "received_norm": 0.1880073807506498,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.14556031107478612,
+              0.11899147472206276
+            ],
+            "per_record_received_norm": [
+              0.14556031107478612,
+              0.11899147472206276
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              21,
+              17
+            ],
+            "ages_tokens": [
+              4032,
+              448
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.3879399071124185,
+            "received_norm": 0.3879399071124185,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.03754000728554873,
+            "per_record_sent_norm": [
+              0.2872660061492498,
+              0.26072133254003416
+            ],
+            "per_record_received_norm": [
+              0.26072133254003416,
+              0.2872660061492498
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              24,
+              19
+            ],
+            "ages_tokens": [
+              3648,
+              192
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.1880073807506498,
+            "received_norm": 0.1880073807506498,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.03757404880174513,
+            "per_record_sent_norm": [
+              0.14556031107478612,
+              0.11899147472206276
+            ],
+            "per_record_received_norm": [
+              0.11899147472206276,
+              0.14556031107478612
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              21,
+              17
+            ],
+            "ages_tokens": [
+              4032,
+              448
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              24,
+              19
+            ],
+            "ages_tokens": [
+              3648,
+              192
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 2,
+      "nonzero_changed_teaching": 2,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 0.3225977418213639,
+          "exchanged_old_gradient_norm": 0.3244755318582603,
+          "difference_norm": 0.05610222005262799,
+          "cosine": 0.9849824180501503
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.25765234922859537,
+          "exchanged_old_gradient_norm": 0.24987767221485024,
+          "difference_norm": 0.04377520098003496,
+          "cosine": 0.9855873145114802
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.014583715353685515,
+          "exchanged_old_gradient_norm": 0.012388283683239415,
+          "difference_norm": 0.0027440822826434435,
+          "cosine": 0.992499835858521
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.25669675586765056,
+          "exchanged_old_gradient_norm": 0.2639078906295802,
+          "difference_norm": 0.04382537988495461,
+          "cosine": 0.9862079652840517
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.02604926424041444,
+          "exchanged_old_gradient_norm": 0.02503850653547447,
+          "difference_norm": 0.0034258800508720185,
+          "cosine": 0.9917859143115108
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 5.498528480529785e-05,
+        "exchanged": 4.5843422412872314e-05
+      },
+      "next_continuation_nll": {
+        "matched": 3.246662199497223,
+        "exchanged": 3.2468162178993225,
+        "held": 3.2467358112335205
+      },
+      "matched_minus_exchanged": -0.00015401840209960938,
+      "matched_minus_held": -7.361173629760742e-05
+    },
+    {
+      "pair": 4,
+      "stream_start": 12672,
+      "forward_exact": true,
+      "current_ce": 2.8099582195281982,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              24,
+              3
+            ],
+            "ages_tokens": [
+              3776,
+              2368
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.329667277122787,
+            "received_norm": 0.329667277122787,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.23403536130533567,
+              0.23218088479509552
+            ],
+            "per_record_received_norm": [
+              0.23403536130533567,
+              0.23218088479509552
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              21,
+              19
+            ],
+            "ages_tokens": [
+              64,
+              320
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.6208027497388344,
+            "received_norm": 0.6208027497388344,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.4724607906476777,
+              0.40271187638790734
+            ],
+            "per_record_received_norm": [
+              0.4724607906476777,
+              0.40271187638790734
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              24,
+              3
+            ],
+            "ages_tokens": [
+              3776,
+              2368
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.329667277122787,
+            "received_norm": 0.329667277122787,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0026244596494502956,
+            "per_record_sent_norm": [
+              0.23403536130533567,
+              0.23218088479509552
+            ],
+            "per_record_received_norm": [
+              0.23218088479509552,
+              0.23403536130533567
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              21,
+              19
+            ],
+            "ages_tokens": [
+              64,
+              320
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.6208027497388344,
+            "received_norm": 0.6208027497388344,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.4724607906476777,
+              0.40271187638790734
+            ],
+            "per_record_received_norm": [
+              0.4724607906476777,
+              0.40271187638790734
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              24,
+              3
+            ],
+            "ages_tokens": [
+              3776,
+              2368
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              21,
+              19
+            ],
+            "ages_tokens": [
+              64,
+              320
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 1,
+      "nonzero_changed_teaching": 1,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 0.9635662717982946,
+          "exchanged_old_gradient_norm": 0.9635964367829043,
+          "difference_norm": 0.0007280117900899127,
+          "cosine": 0.9999997150794326
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.6808528365702614,
+          "exchanged_old_gradient_norm": 0.6811712507765123,
+          "difference_norm": 0.0016663651820784703,
+          "cosine": 0.9999971156578149
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.04229802450486237,
+          "exchanged_old_gradient_norm": 0.042298945867715175,
+          "difference_norm": 4.247950732519229e-05,
+          "cosine": 0.9999994959484425
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.6922603216949553,
+          "exchanged_old_gradient_norm": 0.6923760735430937,
+          "difference_norm": 0.0011146112718596727,
+          "cosine": 0.9999987179759009
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.17616340719320747,
+          "exchanged_old_gradient_norm": 0.17617643480044234,
+          "difference_norm": 0.00015054469452275272,
+          "cosine": 0.9999996376127445
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 7.540732622146606e-05,
+        "exchanged": 7.540732622146606e-05
+      },
+      "next_continuation_nll": {
+        "matched": 3.2631824612617493,
+        "exchanged": 3.2631987929344177,
+        "held": 3.2635965943336487
+      },
+      "matched_minus_exchanged": -1.633167266845703e-05,
+      "matched_minus_held": -0.00041413307189941406
+    },
+    {
+      "pair": 5,
+      "stream_start": 12800,
+      "forward_exact": true,
+      "current_ce": 3.830958127975464,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              15,
+              24
+            ],
+            "ages_tokens": [
+              960,
+              3904
+            ],
+            "versions": [
+              90,
+              89
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 1.0111934891112546,
+            "received_norm": 1.0111934891112546,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.7978237884679898,
+              0.6212805123095182
+            ],
+            "per_record_received_norm": [
+              0.7978237884679898,
+              0.6212805123095182
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              21,
+              22
+            ],
+            "ages_tokens": [
+              192,
+              64
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.2609477804588714,
+            "received_norm": 0.2609477804588714,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.19064154158285343,
+              0.17818402495545022
+            ],
+            "per_record_received_norm": [
+              0.19064154158285343,
+              0.17818402495545022
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              15,
+              24
+            ],
+            "ages_tokens": [
+              960,
+              3904
+            ],
+            "versions": [
+              90,
+              89
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 1.0111934891112546,
+            "received_norm": 1.0111934891112546,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.2496700644931948,
+            "per_record_sent_norm": [
+              0.7978237884679898,
+              0.6212805123095182
+            ],
+            "per_record_received_norm": [
+              0.6212805123095182,
+              0.7978237884679898
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              21,
+              22
+            ],
+            "ages_tokens": [
+              192,
+              64
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.2609477804588714,
+            "received_norm": 0.2609477804588714,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.19064154158285343,
+              0.17818402495545022
+            ],
+            "per_record_received_norm": [
+              0.19064154158285343,
+              0.17818402495545022
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              15,
+              24
+            ],
+            "ages_tokens": [
+              960,
+              3904
+            ],
+            "versions": [
+              90,
+              89
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              21,
+              22
+            ],
+            "ages_tokens": [
+              192,
+              64
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 1,
+      "nonzero_changed_teaching": 1,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 0.44155155553305503,
+          "exchanged_old_gradient_norm": 0.4288613887228572,
+          "difference_norm": 0.053578036973312156,
+          "cosine": 0.992845631169438
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.4070880816093633,
+          "exchanged_old_gradient_norm": 0.4002908090727768,
+          "difference_norm": 0.07685994581379077,
+          "cosine": 0.98201559301156
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.020275421411491114,
+          "exchanged_old_gradient_norm": 0.020700833992625716,
+          "difference_norm": 0.0023065225261427254,
+          "cosine": 0.9938779505837614
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.318140467056857,
+          "exchanged_old_gradient_norm": 0.3238719285326261,
+          "difference_norm": 0.044176960650338215,
+          "cosine": 0.9906889828515467
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.07689799139715124,
+          "exchanged_old_gradient_norm": 0.07699952961955954,
+          "difference_norm": 0.004735037866921534,
+          "cosine": 0.998107594965633
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 3.180652856826782e-05,
+        "exchanged": 3.5412609577178955e-05
+      },
+      "next_continuation_nll": {
+        "matched": 3.0328851342201233,
+        "exchanged": 3.0330920815467834,
+        "held": 3.033136487007141
+      },
+      "matched_minus_exchanged": -0.00020694732666015625,
+      "matched_minus_held": -0.00025135278701782227
+    },
+    {
+      "pair": 6,
+      "stream_start": 12928,
+      "forward_exact": true,
+      "current_ce": 2.8789329528808594,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              30,
+              22
+            ],
+            "ages_tokens": [
+              3264,
+              192
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.13743198869320436,
+            "received_norm": 0.13743198869320436,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.09857421936987061,
+              0.09576364023881757
+            ],
+            "per_record_received_norm": [
+              0.09857421936987061,
+              0.09576364023881757
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              21,
+              3
+            ],
+            "ages_tokens": [
+              320,
+              2624
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.17874145573875264,
+            "received_norm": 0.17874145573875264,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.1283531169374325,
+              0.1243944748453654
+            ],
+            "per_record_received_norm": [
+              0.1283531169374325,
+              0.1243944748453654
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              30,
+              22
+            ],
+            "ages_tokens": [
+              3264,
+              192
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.13743198869320436,
+            "received_norm": 0.13743198869320436,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.003974939059147458,
+            "per_record_sent_norm": [
+              0.09857421936987061,
+              0.09576364023881757
+            ],
+            "per_record_received_norm": [
+              0.09576364023881757,
+              0.09857421936987061
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              21,
+              3
+            ],
+            "ages_tokens": [
+              320,
+              2624
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.17874145573875264,
+            "received_norm": 0.17874145573875264,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.005598616881582596,
+            "per_record_sent_norm": [
+              0.1283531169374325,
+              0.1243944748453654
+            ],
+            "per_record_received_norm": [
+              0.1243944748453654,
+              0.1283531169374325
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              30,
+              22
+            ],
+            "ages_tokens": [
+              3264,
+              192
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              21,
+              3
+            ],
+            "ages_tokens": [
+              320,
+              2624
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 2,
+      "nonzero_changed_teaching": 2,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 0.19612359157023884,
+          "exchanged_old_gradient_norm": 0.19309194754054512,
+          "difference_norm": 0.006095250155251505,
+          "cosine": 0.9996308252849759
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.15486658372933443,
+          "exchanged_old_gradient_norm": 0.15338630653875432,
+          "difference_norm": 0.004726182024985438,
+          "cosine": 0.9995759614070225
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.011883527744796799,
+          "exchanged_old_gradient_norm": 0.011546877709324548,
+          "difference_norm": 0.00037356148699164564,
+          "cosine": 0.9999044767936921
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.12438220155720972,
+          "exchanged_old_gradient_norm": 0.12298185961088458,
+          "difference_norm": 0.003954865467277044,
+          "cosine": 0.9995528462151126
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.044922669708138505,
+          "exchanged_old_gradient_norm": 0.043802347761957856,
+          "difference_norm": 0.0011911719370022754,
+          "cosine": 0.9999583859864479
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 3.0502676963806152e-05,
+        "exchanged": 2.956390380859375e-05
+      },
+      "next_continuation_nll": {
+        "matched": 3.297668755054474,
+        "exchanged": 3.2976677417755127,
+        "held": 3.2977330684661865
+      },
+      "matched_minus_exchanged": 1.0132789611816406e-06,
+      "matched_minus_held": -6.431341171264648e-05
+    },
+    {
+      "pair": 7,
+      "stream_start": 13056,
+      "forward_exact": true,
+      "current_ce": 3.428666114807129,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              19,
+              22
+            ],
+            "ages_tokens": [
+              704,
+              320
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.23546046869115816,
+            "received_norm": 0.23546046869115816,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.16648247320839876,
+              0.16650891396761514
+            ],
+            "per_record_received_norm": [
+              0.16648247320839876,
+              0.16650891396761514
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              22,
+              19
+            ],
+            "ages_tokens": [
+              320,
+              704
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.4165866681117763,
+            "received_norm": 0.4165866681117763,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.316320414581564,
+              0.2710827315920708
+            ],
+            "per_record_received_norm": [
+              0.316320414581564,
+              0.2710827315920708
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              19,
+              22
+            ],
+            "ages_tokens": [
+              704,
+              320
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.23546046869115816,
+            "received_norm": 0.23546046869115816,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 7.946960124647343e-05,
+            "per_record_sent_norm": [
+              0.16648247320839876,
+              0.16650891396761514
+            ],
+            "per_record_received_norm": [
+              0.16650891396761514,
+              0.16648247320839876
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              22,
+              19
+            ],
+            "ages_tokens": [
+              320,
+              704
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.4165866681117763,
+            "received_norm": 0.4165866681117763,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.06397585989961395,
+            "per_record_sent_norm": [
+              0.316320414581564,
+              0.2710827315920708
+            ],
+            "per_record_received_norm": [
+              0.2710827315920708,
+              0.316320414581564
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              19,
+              22
+            ],
+            "ages_tokens": [
+              704,
+              320
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              22,
+              19
+            ],
+            "ages_tokens": [
+              320,
+              704
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 2,
+      "nonzero_changed_teaching": 2,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 0.6382108714868197,
+          "exchanged_old_gradient_norm": 0.6723667741834529,
+          "difference_norm": 0.07475447545014813,
+          "cosine": 0.9948479556303399
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.4052574189093413,
+          "exchanged_old_gradient_norm": 0.43013126869078167,
+          "difference_norm": 0.05097246624841801,
+          "cosine": 0.9943220705528975
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.012695082556808557,
+          "exchanged_old_gradient_norm": 0.012850490870607068,
+          "difference_norm": 0.0020523204071343152,
+          "cosine": 0.9871646513424454
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.4650554170184984,
+          "exchanged_old_gradient_norm": 0.5082134992506236,
+          "difference_norm": 0.06274091931347986,
+          "cosine": 0.9956128086534874
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.06183441817913337,
+          "exchanged_old_gradient_norm": 0.06228303695013185,
+          "difference_norm": 0.004219176781812976,
+          "cosine": 0.9977149937221756
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 5.875527858734131e-05,
+        "exchanged": 6.172992289066315e-05
+      },
+      "next_continuation_nll": {
+        "matched": 3.4879412055015564,
+        "exchanged": 3.487776815891266,
+        "held": 3.4877142906188965
+      },
+      "matched_minus_exchanged": 0.00016438961029052734,
+      "matched_minus_held": 0.0002269148826599121
+    },
+    {
+      "pair": 8,
+      "stream_start": 13184,
+      "forward_exact": true,
+      "current_ce": 2.906498432159424,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              30,
+              3
+            ],
+            "ages_tokens": [
+              3520,
+              2880
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.23946275760653554,
+            "received_norm": 0.23946275760653554,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.17012849531759738,
+              0.1685191602207198
+            ],
+            "per_record_received_norm": [
+              0.17012849531759738,
+              0.1685191602207198
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              19,
+              22
+            ],
+            "ages_tokens": [
+              832,
+              448
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.31541398257397674,
+            "received_norm": 0.31541398257397674,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.23231869413020173,
+              0.21334011521702778
+            ],
+            "per_record_received_norm": [
+              0.23231869413020173,
+              0.21334011521702778
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              30,
+              3
+            ],
+            "ages_tokens": [
+              3520,
+              2880
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.23946275760653554,
+            "received_norm": 0.23946275760653554,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0022769744220918196,
+            "per_record_sent_norm": [
+              0.17012849531759738,
+              0.1685191602207198
+            ],
+            "per_record_received_norm": [
+              0.1685191602207198,
+              0.17012849531759738
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              19,
+              22
+            ],
+            "ages_tokens": [
+              832,
+              448
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.31541398257397674,
+            "received_norm": 0.31541398257397674,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.026839928658880234,
+            "per_record_sent_norm": [
+              0.23231869413020173,
+              0.21334011521702778
+            ],
+            "per_record_received_norm": [
+              0.21334011521702778,
+              0.23231869413020173
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              30,
+              3
+            ],
+            "ages_tokens": [
+              3520,
+              2880
+            ],
+            "versions": [
+              89,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              19,
+              22
+            ],
+            "ages_tokens": [
+              832,
+              448
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 2,
+      "nonzero_changed_teaching": 2,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 0.4842828375599251,
+          "exchanged_old_gradient_norm": 0.4702089038976494,
+          "difference_norm": 0.03051084303046072,
+          "cosine": 0.9983908859255157
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.3467551124832648,
+          "exchanged_old_gradient_norm": 0.33734650382069176,
+          "difference_norm": 0.02135879963187061,
+          "cosine": 0.9984284193310764
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.01026161602929906,
+          "exchanged_old_gradient_norm": 0.010148412902137976,
+          "difference_norm": 0.0008655766710347504,
+          "cosine": 0.9964643063522617
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.3890998659162848,
+          "exchanged_old_gradient_norm": 0.3711694738669882,
+          "difference_norm": 0.02650210593026399,
+          "cosine": 0.9986814243001775
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.04990715268263782,
+          "exchanged_old_gradient_norm": 0.049496094715609514,
+          "difference_norm": 0.0019401221347232266,
+          "cosine": 0.9992723075217312
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 4.544854164123535e-05,
+        "exchanged": 4.470348358154297e-05
+      },
+      "next_continuation_nll": {
+        "matched": 3.946815609931946,
+        "exchanged": 3.9468241333961487,
+        "held": 3.9468518495559692
+      },
+      "matched_minus_exchanged": -8.52346420288086e-06,
+      "matched_minus_held": -3.62396240234375e-05
+    },
+    {
+      "pair": 9,
+      "stream_start": 13312,
+      "forward_exact": true,
+      "current_ce": 2.9067037105560303,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              15,
+              3
+            ],
+            "ages_tokens": [
+              1472,
+              3008
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.3720453182633869,
+            "received_norm": 0.3720453182633869,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.29215323230185014,
+              0.2303566966625586
+            ],
+            "per_record_received_norm": [
+              0.29215323230185014,
+              0.2303566966625586
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              19,
+              22
+            ],
+            "ages_tokens": [
+              960,
+              576
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.16654779788757862,
+            "received_norm": 0.16654779788757862,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.12049672555187003,
+              0.11497264071281937
+            ],
+            "per_record_received_norm": [
+              0.12049672555187003,
+              0.11497264071281937
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              15,
+              3
+            ],
+            "ages_tokens": [
+              1472,
+              3008
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.3720453182633869,
+            "received_norm": 0.3720453182633869,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.08739356342372093,
+            "per_record_sent_norm": [
+              0.29215323230185014,
+              0.2303566966625586
+            ],
+            "per_record_received_norm": [
+              0.2303566966625586,
+              0.29215323230185014
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              19,
+              22
+            ],
+            "ages_tokens": [
+              960,
+              576
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.16654779788757862,
+            "received_norm": 0.16654779788757862,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.007812386926252919,
+            "per_record_sent_norm": [
+              0.12049672555187003,
+              0.11497264071281937
+            ],
+            "per_record_received_norm": [
+              0.11497264071281937,
+              0.12049672555187003
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              15,
+              3
+            ],
+            "ages_tokens": [
+              1472,
+              3008
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              19,
+              22
+            ],
+            "ages_tokens": [
+              960,
+              576
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 2,
+      "nonzero_changed_teaching": 2,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 0.2821161854280553,
+          "exchanged_old_gradient_norm": 0.2804510392771103,
+          "difference_norm": 0.027026749762738472,
+          "cosine": 0.9954014500865372
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.26522785442114694,
+          "exchanged_old_gradient_norm": 0.29041716091081415,
+          "difference_norm": 0.05094595693852277,
+          "cosine": 0.9872707201160389
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.007118144524820907,
+          "exchanged_old_gradient_norm": 0.007612748821734754,
+          "difference_norm": 0.001201254506949881,
+          "cosine": 0.9889425270717385
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.23670403680329766,
+          "exchanged_old_gradient_norm": 0.24453192903842227,
+          "difference_norm": 0.03096433686496109,
+          "cosine": 0.9922469939346287
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.03331636733572366,
+          "exchanged_old_gradient_norm": 0.03611221984908,
+          "difference_norm": 0.0047081675486860194,
+          "cosine": 0.99403635747521
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 3.814883530139923e-05,
+        "exchanged": 4.476495087146759e-05
+      },
+      "next_continuation_nll": {
+        "matched": 4.0697919726371765,
+        "exchanged": 4.069750607013702,
+        "held": 4.069776296615601
+      },
+      "matched_minus_exchanged": 4.1365623474121094e-05,
+      "matched_minus_held": 1.5676021575927734e-05
+    },
+    {
+      "pair": 10,
+      "stream_start": 13440,
+      "forward_exact": true,
+      "current_ce": 3.9374139308929443,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              1,
+              6
+            ],
+            "ages_tokens": [
+              3392,
+              2752
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.1564294613892464,
+            "received_norm": 0.1564294613892464,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.1108059461516795,
+              0.11041838020891645
+            ],
+            "per_record_received_norm": [
+              0.1108059461516795,
+              0.11041838020891645
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              22,
+              19
+            ],
+            "ages_tokens": [
+              704,
+              1088
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.18032474009026603,
+            "received_norm": 0.18032474009026603,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.12904949564520868,
+              0.12594935316363978
+            ],
+            "per_record_received_norm": [
+              0.12904949564520868,
+              0.12594935316363978
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              1,
+              6
+            ],
+            "ages_tokens": [
+              3392,
+              2752
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.1564294613892464,
+            "received_norm": 0.1564294613892464,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0005499795215995647,
+            "per_record_sent_norm": [
+              0.1108059461516795,
+              0.11041838020891645
+            ],
+            "per_record_received_norm": [
+              0.11041838020891645,
+              0.1108059461516795
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              22,
+              19
+            ],
+            "ages_tokens": [
+              704,
+              1088
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.18032474009026603,
+            "received_norm": 0.18032474009026603,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0043846018802818,
+            "per_record_sent_norm": [
+              0.12904949564520868,
+              0.12594935316363978
+            ],
+            "per_record_received_norm": [
+              0.12594935316363978,
+              0.12904949564520868
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              1,
+              6
+            ],
+            "ages_tokens": [
+              3392,
+              2752
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              22,
+              19
+            ],
+            "ages_tokens": [
+              704,
+              1088
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 2,
+      "nonzero_changed_teaching": 2,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 0.27875650044340494,
+          "exchanged_old_gradient_norm": 0.2810679768433991,
+          "difference_norm": 0.005130100184648339,
+          "cosine": 0.9998661446601426
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.1959789832005998,
+          "exchanged_old_gradient_norm": 0.1974973346961533,
+          "difference_norm": 0.0036049664426123056,
+          "cosine": 0.9998619002517031
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.00637851628245125,
+          "exchanged_old_gradient_norm": 0.006401881658531849,
+          "difference_norm": 0.00016945351019494295,
+          "cosine": 0.9996550888720932
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.21653587636211616,
+          "exchanged_old_gradient_norm": 0.21935505799925623,
+          "difference_norm": 0.004385458988180794,
+          "cosine": 0.9998812117512065
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.03391246823515243,
+          "exchanged_old_gradient_norm": 0.03396159077997358,
+          "difference_norm": 0.00034013634604909205,
+          "cosine": 0.9999508215647515
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 4.742702003568411e-05,
+        "exchanged": 4.7356938011944294e-05
+      },
+      "next_continuation_nll": {
+        "matched": 3.994775891304016,
+        "exchanged": 3.9949408769607544,
+        "held": 3.9949949979782104
+      },
+      "matched_minus_exchanged": -0.00016498565673828125,
+      "matched_minus_held": -0.00021910667419433594
+    },
+    {
+      "pair": 11,
+      "stream_start": 13568,
+      "forward_exact": true,
+      "current_ce": 4.210888862609863,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              23,
+              9
+            ],
+            "ages_tokens": [
+              704,
+              2496
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.965873917289242,
+            "received_norm": 0.965873917289242,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.717024818541381,
+              0.6471381874803597
+            ],
+            "per_record_received_norm": [
+              0.717024818541381,
+              0.6471381874803597
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              11,
+              21
+            ],
+            "ages_tokens": [
+              2240,
+              960
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.6960783925909678,
+            "received_norm": 0.6960783925909678,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.5142855492371311,
+              0.4690794202242174
+            ],
+            "per_record_received_norm": [
+              0.5142855492371311,
+              0.4690794202242174
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              23,
+              9
+            ],
+            "ages_tokens": [
+              704,
+              2496
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.965873917289242,
+            "received_norm": 0.965873917289242,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0988350815516265,
+            "per_record_sent_norm": [
+              0.717024818541381,
+              0.6471381874803597
+            ],
+            "per_record_received_norm": [
+              0.6471381874803597,
+              0.717024818541381
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              11,
+              21
+            ],
+            "ages_tokens": [
+              2240,
+              960
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.6960783925909678,
+            "received_norm": 0.6960783925909678,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0639314566945718,
+            "per_record_sent_norm": [
+              0.5142855492371311,
+              0.4690794202242174
+            ],
+            "per_record_received_norm": [
+              0.4690794202242174,
+              0.5142855492371311
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              23,
+              9
+            ],
+            "ages_tokens": [
+              704,
+              2496
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              11,
+              21
+            ],
+            "ages_tokens": [
+              2240,
+              960
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 2,
+      "nonzero_changed_teaching": 2,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 0.9112235198624791,
+          "exchanged_old_gradient_norm": 0.9093424039700904,
+          "difference_norm": 0.09292962747833704,
+          "cosine": 0.9947910757436879
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.8571356269757738,
+          "exchanged_old_gradient_norm": 0.8519258087036898,
+          "difference_norm": 0.07684262475681974,
+          "cosine": 0.9959754051694917
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.10093893274548471,
+          "exchanged_old_gradient_norm": 0.09449974700916582,
+          "difference_norm": 0.010023833958795365,
+          "cosine": 0.9969065956594834
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.6746722337161238,
+          "exchanged_old_gradient_norm": 0.6641274817135695,
+          "difference_norm": 0.06495383615175936,
+          "cosine": 0.9954160912744937
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.21980312800198634,
+          "exchanged_old_gradient_norm": 0.2226210266644241,
+          "difference_norm": 0.020751097642791688,
+          "cosine": 0.9956811431431183
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 5.811452865600586e-05,
+        "exchanged": 5.40316104888916e-05
+      },
+      "next_continuation_nll": {
+        "matched": 3.53582364320755,
+        "exchanged": 3.5357877016067505,
+        "held": 3.5359477400779724
+      },
+      "matched_minus_exchanged": 3.594160079956055e-05,
+      "matched_minus_held": -0.00012409687042236328
+    },
+    {
+      "pair": 12,
+      "stream_start": 13696,
+      "forward_exact": true,
+      "current_ce": 4.7422966957092285,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              18,
+              2
+            ],
+            "ages_tokens": [
+              1472,
+              3520
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.329829180802449,
+            "received_norm": 0.329829180802449,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.23849205555298192,
+              0.22783508936712968
+            ],
+            "per_record_received_norm": [
+              0.23849205555298192,
+              0.22783508936712968
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              21,
+              30
+            ],
+            "ages_tokens": [
+              1088,
+              4032
+            ],
+            "versions": [
+              90,
+              89
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.7119609603921957,
+            "received_norm": 0.7119609603921957,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.523795440482323,
+              0.4822102712017931
+            ],
+            "per_record_received_norm": [
+              0.523795440482323,
+              0.4822102712017931
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              18,
+              2
+            ],
+            "ages_tokens": [
+              1472,
+              3520
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.329829180802449,
+            "received_norm": 0.329829180802449,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.01507152987475402,
+            "per_record_sent_norm": [
+              0.23849205555298192,
+              0.22783508936712968
+            ],
+            "per_record_received_norm": [
+              0.22783508936712968,
+              0.23849205555298192
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              21,
+              30
+            ],
+            "ages_tokens": [
+              1088,
+              4032
+            ],
+            "versions": [
+              90,
+              89
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.7119609603921957,
+            "received_norm": 0.7119609603921957,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.05881067747906578,
+            "per_record_sent_norm": [
+              0.523795440482323,
+              0.4822102712017931
+            ],
+            "per_record_received_norm": [
+              0.4822102712017931,
+              0.523795440482323
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              18,
+              2
+            ],
+            "ages_tokens": [
+              1472,
+              3520
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              21,
+              30
+            ],
+            "ages_tokens": [
+              1088,
+              4032
+            ],
+            "versions": [
+              90,
+              89
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 2,
+      "nonzero_changed_teaching": 2,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 1.0144683571493105,
+          "exchanged_old_gradient_norm": 1.0199130858110528,
+          "difference_norm": 0.07648125522749602,
+          "cosine": 0.9971876347784849
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.9223720725250137,
+          "exchanged_old_gradient_norm": 0.9526304348917979,
+          "difference_norm": 0.07676658252246964,
+          "cosine": 0.9971676029101123
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.05862661339416178,
+          "exchanged_old_gradient_norm": 0.05783256681648862,
+          "difference_norm": 0.004893060341415364,
+          "cosine": 0.9965622562731985
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.8082415542020764,
+          "exchanged_old_gradient_norm": 0.8443427747071176,
+          "difference_norm": 0.06899541022260447,
+          "cosine": 0.9974671001162145
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.14745064369690425,
+          "exchanged_old_gradient_norm": 0.13582100222774568,
+          "difference_norm": 0.01626988360295411,
+          "cosine": 0.9967678325350753
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 9.28826630115509e-05,
+        "exchanged": 9.873509407043457e-05
+      },
+      "next_continuation_nll": {
+        "matched": 2.956307113170624,
+        "exchanged": 2.9563449025154114,
+        "held": 2.9561110138893127
+      },
+      "matched_minus_exchanged": -3.7789344787597656e-05,
+      "matched_minus_held": 0.00019609928131103516
+    },
+    {
+      "pair": 13,
+      "stream_start": 13824,
+      "forward_exact": true,
+      "current_ce": 3.4006528854370117,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              30,
+              23
+            ],
+            "ages_tokens": [
+              64,
+              960
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.34548273522801476,
+            "received_norm": 0.34548273522801476,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.24511274522701448,
+              0.2434708657476439
+            ],
+            "per_record_received_norm": [
+              0.24511274522701448,
+              0.2434708657476439
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              19,
+              6
+            ],
+            "ages_tokens": [
+              1472,
+              3136
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.033642255639419874,
+            "received_norm": 0.033642255639419874,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.024181728698792565,
+              0.023389000868914222
+            ],
+            "per_record_received_norm": [
+              0.024181728698792565,
+              0.023389000868914222
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              30,
+              23
+            ],
+            "ages_tokens": [
+              64,
+              960
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.34548273522801476,
+            "received_norm": 0.34548273522801476,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.24511274522701448,
+              0.2434708657476439
+            ],
+            "per_record_received_norm": [
+              0.24511274522701448,
+              0.2434708657476439
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              19,
+              6
+            ],
+            "ages_tokens": [
+              1472,
+              3136
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.033642255639419874,
+            "received_norm": 0.033642255639419874,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0011211264197078118,
+            "per_record_sent_norm": [
+              0.024181728698792565,
+              0.023389000868914222
+            ],
+            "per_record_received_norm": [
+              0.023389000868914222,
+              0.024181728698792565
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              30,
+              23
+            ],
+            "ages_tokens": [
+              64,
+              960
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              19,
+              6
+            ],
+            "ages_tokens": [
+              1472,
+              3136
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 1,
+      "nonzero_changed_teaching": 1,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 0.11543007114378041,
+          "exchanged_old_gradient_norm": 0.11517242564188929,
+          "difference_norm": 0.001806114699103726,
+          "cosine": 0.9998798111081454
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.10640431656899153,
+          "exchanged_old_gradient_norm": 0.10646970829828718,
+          "difference_norm": 0.0012057126095088857,
+          "cosine": 0.9999360275517931
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.004482391514991692,
+          "exchanged_old_gradient_norm": 0.004479091410153332,
+          "difference_norm": 8.294641131877929e-05,
+          "cosine": 0.9998289285670826
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.08723118831186576,
+          "exchanged_old_gradient_norm": 0.08720270832448863,
+          "difference_norm": 0.0012681151190113455,
+          "cosine": 0.9998943507310695
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.02344285918430953,
+          "exchanged_old_gradient_norm": 0.0234002531772273,
+          "difference_norm": 0.00018242473179684587,
+          "cosine": 0.9999713221854478
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 3.0353665351867676e-05,
+        "exchanged": 3.0353665351867676e-05
+      },
+      "next_continuation_nll": {
+        "matched": 2.6366846561431885,
+        "exchanged": 2.63683819770813,
+        "held": 2.636839509010315
+      },
+      "matched_minus_exchanged": -0.00015354156494140625,
+      "matched_minus_held": -0.00015485286712646484
+    },
+    {
+      "pair": 14,
+      "stream_start": 13952,
+      "forward_exact": true,
+      "current_ce": 3.6101760864257812,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              30,
+              22
+            ],
+            "ages_tokens": [
+              192,
+              1216
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.1480512969713718,
+            "received_norm": 0.1480512969713718,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.10505213978993411,
+              0.10432274181817436
+            ],
+            "per_record_received_norm": [
+              0.10505213978993411,
+              0.10432274181817436
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              31,
+              10
+            ],
+            "ages_tokens": [
+              64,
+              2752
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.16737063108316655,
+            "received_norm": 0.16737063108316655,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.12255679659217827,
+              0.11398578752739694
+            ],
+            "per_record_received_norm": [
+              0.12255679659217827,
+              0.11398578752739694
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              30,
+              22
+            ],
+            "ages_tokens": [
+              192,
+              1216
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.1480512969713718,
+            "received_norm": 0.1480512969713718,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0010324297413786966,
+            "per_record_sent_norm": [
+              0.10505213978993411,
+              0.10432274181817436
+            ],
+            "per_record_received_norm": [
+              0.10432274181817436,
+              0.10505213978993411
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              31,
+              10
+            ],
+            "ages_tokens": [
+              64,
+              2752
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.16737063108316655,
+            "received_norm": 0.16737063108316655,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.12255679659217827,
+              0.11398578752739694
+            ],
+            "per_record_received_norm": [
+              0.12255679659217827,
+              0.11398578752739694
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              30,
+              22
+            ],
+            "ages_tokens": [
+              192,
+              1216
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              31,
+              10
+            ],
+            "ages_tokens": [
+              64,
+              2752
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 1,
+      "nonzero_changed_teaching": 1,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 0.21462458340016213,
+          "exchanged_old_gradient_norm": 0.21463835963127423,
+          "difference_norm": 0.0005784008286445962,
+          "cosine": 0.9999963709364624
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.2366420528551805,
+          "exchanged_old_gradient_norm": 0.23663798438598174,
+          "difference_norm": 0.0005658490973919506,
+          "cosine": 0.9999971412746977
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.008075224410854363,
+          "exchanged_old_gradient_norm": 0.008074864470143876,
+          "difference_norm": 1.975073453434008e-05,
+          "cosine": 0.9999970097850815
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.1991370938213213,
+          "exchanged_old_gradient_norm": 0.1991298416999165,
+          "difference_norm": 0.0004556225948788498,
+          "cosine": 0.9999973831311645
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.016131586175924428,
+          "exchanged_old_gradient_norm": 0.016134565008886582,
+          "difference_norm": 5.5966625371240604e-05,
+          "cosine": 0.9999939998536181
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 2.70158052444458e-05,
+        "exchanged": 2.70158052444458e-05
+      },
+      "next_continuation_nll": {
+        "matched": 2.4838094115257263,
+        "exchanged": 2.483732223510742,
+        "held": 2.4837461709976196
+      },
+      "matched_minus_exchanged": 7.718801498413086e-05,
+      "matched_minus_held": 6.324052810668945e-05
+    },
+    {
+      "pair": 15,
+      "stream_start": 14080,
+      "forward_exact": true,
+      "current_ce": 2.3736624717712402,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              21,
+              1
+            ],
+            "ages_tokens": [
+              1472,
+              4032
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.12617655831948715,
+            "received_norm": 0.12617655831948715,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.0966217130125823,
+              0.08114658615040518
+            ],
+            "per_record_received_norm": [
+              0.0966217130125823,
+              0.08114658615040518
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              21,
+              26
+            ],
+            "ages_tokens": [
+              1472,
+              832
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.19591569290842248,
+            "received_norm": 0.19591569290842248,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.1394685415070452,
+              0.1375917317925932
+            ],
+            "per_record_received_norm": [
+              0.1394685415070452,
+              0.1375917317925932
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              21,
+              1
+            ],
+            "ages_tokens": [
+              1472,
+              4032
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.12617655831948715,
+            "received_norm": 0.12617655831948715,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.02188516579183543,
+            "per_record_sent_norm": [
+              0.0966217130125823,
+              0.08114658615040518
+            ],
+            "per_record_received_norm": [
+              0.08114658615040518,
+              0.0966217130125823
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              21,
+              26
+            ],
+            "ages_tokens": [
+              1472,
+              832
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.19591569290842248,
+            "received_norm": 0.19591569290842248,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0026548062464539445,
+            "per_record_sent_norm": [
+              0.1394685415070452,
+              0.1375917317925932
+            ],
+            "per_record_received_norm": [
+              0.1375917317925932,
+              0.1394685415070452
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              21,
+              1
+            ],
+            "ages_tokens": [
+              1472,
+              4032
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              21,
+              26
+            ],
+            "ages_tokens": [
+              1472,
+              832
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 2,
+      "nonzero_changed_teaching": 2,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 0.2574791092957971,
+          "exchanged_old_gradient_norm": 0.25629636654701304,
+          "difference_norm": 0.010354259383218047,
+          "cosine": 0.9991982855933168
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.247135025035883,
+          "exchanged_old_gradient_norm": 0.24767741174683164,
+          "difference_norm": 0.011710264570273318,
+          "cosine": 0.9988822362196311
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.017250254878398576,
+          "exchanged_old_gradient_norm": 0.017107897190080885,
+          "difference_norm": 0.00034704517144856437,
+          "cosine": 0.9998302789753777
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.2102919518351722,
+          "exchanged_old_gradient_norm": 0.21192685081669504,
+          "difference_norm": 0.007297901609542942,
+          "cosine": 0.9994324609222366
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.05043631709731297,
+          "exchanged_old_gradient_norm": 0.050126887881654994,
+          "difference_norm": 0.001657854245518408,
+          "cosine": 0.9994753742032574
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 1.379847526550293e-05,
+        "exchanged": 1.3947486877441406e-05
+      },
+      "next_continuation_nll": {
+        "matched": 2.554381489753723,
+        "exchanged": 2.5541996359825134,
+        "held": 2.5541303753852844
+      },
+      "matched_minus_exchanged": 0.0001818537712097168,
+      "matched_minus_held": 0.0002511143684387207
+    },
+    {
+      "pair": 16,
+      "stream_start": 14208,
+      "forward_exact": true,
+      "current_ce": 2.416487455368042,
+      "signals": {
+        "matched": [
+          {
+            "layer": 1,
+            "slots": [
+              15,
+              31
+            ],
+            "ages_tokens": [
+              2368,
+              320
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.4378963367705819,
+            "received_norm": 0.4378963367705819,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.30994327904278324,
+              0.3093353609487643
+            ],
+            "per_record_received_norm": [
+              0.30994327904278324,
+              0.3093353609487643
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              18,
+              11
+            ],
+            "ages_tokens": [
+              1984,
+              2880
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0,
+            "sent_norm": 0.25231625101759525,
+            "received_norm": 0.25231625101759525,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0,
+            "per_record_sent_norm": [
+              0.19014556773709337,
+              0.1658558217172752
+            ],
+            "per_record_received_norm": [
+              0.19014556773709337,
+              0.1658558217172752
+            ]
+          }
+        ],
+        "exchanged": [
+          {
+            "layer": 1,
+            "slots": [
+              15,
+              31
+            ],
+            "ages_tokens": [
+              2368,
+              320
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.4378963367705819,
+            "received_norm": 0.4378963367705819,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.0008687717359918258,
+            "per_record_sent_norm": [
+              0.30994327904278324,
+              0.3093353609487643
+            ],
+            "per_record_received_norm": [
+              0.3093353609487643,
+              0.30994327904278324
+            ]
+          },
+          {
+            "layer": 12,
+            "slots": [
+              18,
+              11
+            ],
+            "ages_tokens": [
+              1984,
+              2880
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              1,
+              0
+            ],
+            "exchanged_entries": 2,
+            "sent_norm": 0.25231625101759525,
+            "received_norm": 0.25231625101759525,
+            "correspondence_exact": true,
+            "changed_teaching_norm": 0.03435097144381452,
+            "per_record_sent_norm": [
+              0.19014556773709337,
+              0.1658558217172752
+            ],
+            "per_record_received_norm": [
+              0.1658558217172752,
+              0.19014556773709337
+            ]
+          }
+        ],
+        "held": [
+          {
+            "layer": 1,
+            "slots": [
+              15,
+              31
+            ],
+            "ages_tokens": [
+              2368,
+              320
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          },
+          {
+            "layer": 12,
+            "slots": [
+              18,
+              11
+            ],
+            "ages_tokens": [
+              1984,
+              2880
+            ],
+            "versions": [
+              90,
+              90
+            ],
+            "permutation": [
+              0,
+              1
+            ],
+            "exchanged_entries": 0
+          }
+        ]
+      },
+      "exchanged_compartments": 2,
+      "nonzero_changed_teaching": 2,
+      "old_gradient_by_group": {
+        "address": {
+          "matched_old_gradient_norm": 0.33724496661457554,
+          "exchanged_old_gradient_norm": 0.33773185468886374,
+          "difference_norm": 0.03940667478552783,
+          "cosine": 0.9931840596835938
+        },
+        "content": {
+          "matched_old_gradient_norm": 0.45238019181653677,
+          "exchanged_old_gradient_norm": 0.43796080228694967,
+          "difference_norm": 0.04655623979058234,
+          "cosine": 0.995054721189215
+        },
+        "erase_write_gain": {
+          "matched_old_gradient_norm": 0.03502732882125232,
+          "exchanged_old_gradient_norm": 0.03598412204966416,
+          "difference_norm": 0.0054863027182836255,
+          "cosine": 0.9884229516675889
+        },
+        "readout": {
+          "matched_old_gradient_norm": 0.38326235997358504,
+          "exchanged_old_gradient_norm": 0.3699821085244301,
+          "difference_norm": 0.04312090171740669,
+          "cosine": 0.9940654283430551
+        },
+        "retention": {
+          "matched_old_gradient_norm": 0.0574565599053163,
+          "exchanged_old_gradient_norm": 0.061431787343988443,
+          "difference_norm": 0.00627725821634967,
+          "cosine": 0.9966566832105642
+        }
+      },
+      "fp32_update_max_difference_from_held": {
+        "matched": 3.4332275390625e-05,
+        "exchanged": 3.0040740966796875e-05
+      },
+      "next_continuation_nll": {
+        "matched": 2.6167622804641724,
+        "exchanged": 2.6153910160064697,
+        "held": 2.6170382499694824
+      },
+      "matched_minus_exchanged": 0.0013712644577026367,
+      "matched_minus_held": -0.0002759695053100586
+    }
+  ],
+  "active_exchanged_compartments": 27,
+  "mean_matched_minus_exchanged": 9.379163384437561e-05,
+  "mean_matched_minus_held": -3.571808338165283e-05,
+  "matched_better_than_exchanged": 7,
+  "matched_better_than_held": 9,
+  "executed_optimizer_updates": 48,
+  "retained_optimizer_updates": 16,
+  "source_checkpoint_unchanged": true,
+  "checkpoint_after_probe": "E:\\cgb_gdn340_probe\\eligibility_correspondence_20261106\\matched_last.pt"
+}

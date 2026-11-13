@@ -72,6 +72,34 @@ def mother_response_evidence(engine, packet, batch=1):
             torch.ones(batch, dtype=torch.bool, device=m.source.device))
 
 
+def carry_question_parent(engine, receipt, parent, child_slot):
+    """Keep the actually reactivated mother observation in the next receipt.
+
+    The existing fixed-size receipt remains the only allocation. A parent is
+    evidence, not a semantic identity or an imagined observation. Reject a
+    replaced/merged parent and never point the new record at itself.
+    """
+    result = {key: receipt[key].detach().clone() for key in ('slots', 'stamps', 'valid')}
+    if (not getattr(engine, 'question_parent_carry', False) or
+            not getattr(engine, 'joint_question_update', False) or
+            not getattr(engine, 'mother_shadow_enabled', False) or
+            parent is None or parent['anchor'] == child_slot or
+            mother_response_evidence(engine, parent) is None):
+        return result, False
+    slot, stamp = parent['anchor'], parent['stamp']
+    same = result['valid'] & (result['slots'] == slot) & (result['stamps'] == stamp)
+    if bool(same.any()):
+        return result, True
+    # Invalid entries are free. Otherwise replace the lowest-ranked support;
+    # local_relation returns the original nearest-neighbour order.
+    free = torch.nonzero(~result['valid']).flatten()
+    index = int(free[0]) if len(free) else len(result['valid']) - 1
+    result['slots'][index] = slot
+    result['stamps'][index] = stamp
+    result['valid'][index] = True
+    return result, True
+
+
 def relation_from_receipt(engine, source, action, packet, *, outcome_kind='decision'):
     if packet is None:
         return source.new_zeros((len(source), engine.model.encoder.out_features)), False
@@ -159,6 +187,8 @@ class PersistentQuestionEngine(MotherBoundaryEngine):
         row = super().step(directions, age_ablate)
         m, slot = self.model.memory, row['episode_slot']
         receipt = self._question_turn_receipt
+        receipt, parent_carried = carry_question_parent(
+            self, receipt, self._retained_question_receipt, slot)
         m.question_valid[slot] = False
         if int(m.count[slot]) == 1:
             m.question_slots[slot].copy_(receipt['slots'])
@@ -171,6 +201,7 @@ class PersistentQuestionEngine(MotherBoundaryEngine):
             anchor=None if packet is None else packet['anchor'],
             anchor_stamp=None if packet is None else packet['stamp'],
             used=self._retained_question_used,
+            parent_evidence_carried=parent_carried and bool(m.question_valid[slot]),
             correction_norm=float(self._retained_question_delta.norm()),
             actual_boundary_used=self._retained_actual_boundary_used)
         return row

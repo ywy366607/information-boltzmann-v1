@@ -6,7 +6,7 @@ from scripts.ib_local.navigation_mother_boundary import configure_mother_boundar
 from scripts.ib_local.navigation_mother_boundary import MotherBoundaryEngine
 from scripts.ib_local.navigation_internal_rollout import InternalRolloutEngine
 from scripts.ib_local.navigation_persistent_question import (
-    actual_boundary_evidence, configure_persistent_question, mother_response_evidence,
+    actual_boundary_evidence, carry_question_parent, configure_persistent_question, mother_response_evidence,
     retained_receipt, relation_from_receipt)
 from scripts.ib_local.navigation_question_context import configure_question_context
 from scripts.ib_local.navigation_relation_wood import configure_relation_wood, local_relation
@@ -136,6 +136,47 @@ def test_mother_relation_real_and_imagined_use_same_solve():
     ab, _ = local_relation(e.model, source, action, receipt=receipt, prior_extra=a, extra=b, outcome_kind='mother')
     ba, _ = local_relation(e.model, source, action, receipt=receipt, prior_extra=b, extra=a, outcome_kind='mother')
     torch.testing.assert_close(ab, ba, atol=1e-6, rtol=1e-5)
+
+
+def test_next_question_receipt_carries_only_live_observed_parent():
+    e = candidate(); m = e.model.memory
+    e.joint_question_update = e.mother_shadow_enabled = True
+    e.question_parent_carry = True
+    m.question_valid[0] = True; m.question_stamp[0] = m.last_write[0]
+    m.mother_valid[0] = True; m.mother_stamp[0] = m.last_write[0]
+    parent = dict(anchor=0, stamp=int(m.last_write[0]))
+    k = min(m.topk, m.capacity)
+    receipt = dict(slots=torch.ones(k, dtype=torch.long),
+                   stamps=m.last_write[1].repeat(k), valid=torch.ones(k, dtype=torch.bool))
+    carried, ok = carry_question_parent(e, receipt, parent, child_slot=2)
+    assert ok and carried['slots'][-1] == 0
+    assert carried['stamps'][-1] == parent['stamp']
+    assert torch.all(receipt['slots'] == 1)  # original decision is untouched
+    m.last_write[0] += 1
+    unchanged, ok = carry_question_parent(e, receipt, parent, child_slot=2)
+    assert not ok and torch.equal(unchanged['slots'], receipt['slots'])
+    assert not carry_question_parent(e, receipt, parent, child_slot=0)[1]
+
+
+def test_carried_parent_is_real_evidence_in_later_same_relation_solve():
+    e = candidate(); m = e.model.memory
+    e.joint_question_update = e.mother_shadow_enabled = True
+    e.question_parent_carry = True
+    m.question_valid[0] = True; m.question_stamp[0] = m.last_write[0]
+    m.mother_valid[0] = True; m.mother_stamp[0] = m.last_write[0]
+    source = torch.randn(1, m.width); action = torch.randn(1, m.width)
+    _, r = local_relation(e.model, source, action, outcome_kind='mother')
+    receipt = {key: value[0].clone() for key, value in r.items() if key in ('slots', 'stamps', 'valid')}
+    receipt['valid'].fill_(False)
+    parent = dict(anchor=0, stamp=int(m.last_write[0]))
+    carried, ok = carry_question_parent(e, receipt, parent, child_slot=1)
+    assert ok
+    packed = tuple(carried[key][None] for key in ('slots', 'stamps', 'valid'))
+    _, used = local_relation(e.model, source, action, receipt=packed, outcome_kind='mother')
+    assert int(used['valid'].sum()) == 1
+    m.last_write[0] += 1
+    _, expired = local_relation(e.model, source, action, receipt=packed, outcome_kind='mother')
+    assert not expired['valid'].any()
 
 
 def test_mother_shadow_migration_preserves_pending_and_calibration():

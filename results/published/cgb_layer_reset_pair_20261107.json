@@ -1,0 +1,213 @@
+{
+  "status": "complete",
+  "raw_report": "E:\\cgb_small_gdn_20261107\\layer_reset_pair\\report.json",
+  "seconds": 683.9260303974152,
+  "steps_per_arm": 4096,
+  "observed_bytes_per_arm": 524288,
+  "source_checkpoint": "E:\\cgb_small_gdn_20261107\\return_admission\\selected\\last.pt.gz",
+  "source_sha256": "c8564de9edff2905c2cf9f8e0fef6cfb90e369b75e14f1d80764a03c2e66a5fa",
+  "source_unchanged": true,
+  "executed_sources_unchanged": true,
+  "admissions": {
+    "all_carry": {
+      "policy": {
+        "schema": 1,
+        "reset_layers": [],
+        "boundary_bytes": 128,
+        "scope": "associative_S_only_keep_convolution"
+      },
+      "training_inference_logits_max_error": 0.0,
+      "training_inference_state_and_memory_exact": true,
+      "disk_next_update_exact": true,
+      "saved_policy_restored": true,
+      "passed": true
+    },
+    "alternating_S_reset": {
+      "policy": {
+        "schema": 1,
+        "reset_layers": [
+          0,
+          2
+        ],
+        "boundary_bytes": 128,
+        "scope": "associative_S_only_keep_convolution"
+      },
+      "training_inference_logits_max_error": 0.0,
+      "training_inference_state_and_memory_exact": true,
+      "disk_next_update_exact": true,
+      "saved_policy_restored": true,
+      "passed": true
+    }
+  },
+  "new_lean_coverage": 0,
+  "arms": {
+    "all_carry": {
+      "policy": {
+        "schema": 1,
+        "reset_layers": [],
+        "boundary_bytes": 128,
+        "scope": "associative_S_only_keep_convolution"
+      },
+      "completed_updates": 4096,
+      "validation_curve": [
+        {
+          "update": 0,
+          "nll": 1.3174062967300415,
+          "nll_after_first1024": 1.2682538075156207
+        },
+        {
+          "update": 512,
+          "nll": 1.356074333190918,
+          "nll_after_first1024": 1.3064565919384106
+        },
+        {
+          "update": 1024,
+          "nll": 1.3593432903289795,
+          "nll_after_first1024": 1.312417271139141
+        },
+        {
+          "update": 1536,
+          "nll": 1.3454138040542603,
+          "nll_after_first1024": 1.2981405446086636
+        },
+        {
+          "update": 2048,
+          "nll": 1.3904882669448853,
+          "nll_after_first1024": 1.3375559809858828
+        },
+        {
+          "update": 2560,
+          "nll": 1.362936019897461,
+          "nll_after_first1024": 1.311644499625506
+        },
+        {
+          "update": 3072,
+          "nll": 1.372753381729126,
+          "nll_after_first1024": 1.3232434861366702
+        },
+        {
+          "update": 3584,
+          "nll": 1.3548882007598877,
+          "nll_after_first1024": 1.3045077714110707
+        },
+        {
+          "update": 4096,
+          "nll": 1.3630701303482056,
+          "nll_after_first1024": 1.3154029548077533
+        }
+      ],
+      "post_start_validation_mean": 1.3631209284067154,
+      "last4_validation_mean": 1.36341193318367,
+      "final_minus_initial_validation_nll": 0.04566383361816406,
+      "phase_summaries": {
+        "A_first_in_run": {
+          "mean_prequential_nll": 1.423879457754083,
+          "last256_mean_prequential_nll": 1.4747735895216465
+        },
+        "B_first_in_run": {
+          "mean_prequential_nll": 1.4894480619987007,
+          "last256_mean_prequential_nll": 1.5365378198912367
+        },
+        "A_revisit": {
+          "mean_prequential_nll": 1.2934145806357265,
+          "last256_mean_prequential_nll": 1.3264123953413218
+        },
+        "C_first_in_run": {
+          "mean_prequential_nll": 1.4662277195602655,
+          "last256_mean_prequential_nll": 1.3965371146332473
+        }
+      },
+      "A_revisit_improvement": 0.13046487711835653,
+      "checkpoint": "E:\\cgb_small_gdn_20261107\\layer_reset_pair\\all_carry\\last.pt.gz"
+    },
+    "alternating_S_reset": {
+      "policy": {
+        "schema": 1,
+        "reset_layers": [
+          0,
+          2
+        ],
+        "boundary_bytes": 128,
+        "scope": "associative_S_only_keep_convolution"
+      },
+      "completed_updates": 4096,
+      "validation_curve": [
+        {
+          "update": 0,
+          "nll": 1.3210840225219727,
+          "nll_after_first1024": 1.2714694041903383
+        },
+        {
+          "update": 512,
+          "nll": 1.354562520980835,
+          "nll_after_first1024": 1.3056602622610687
+        },
+        {
+          "update": 1024,
+          "nll": 1.3612117767333984,
+          "nll_after_first1024": 1.3126212123251868
+        },
+        {
+          "update": 1536,
+          "nll": 1.347788691520691,
+          "nll_after_first1024": 1.3002950637986317
+        },
+        {
+          "update": 2048,
+          "nll": 1.3941876888275146,
+          "nll_after_first1024": 1.3404831710448748
+        },
+        {
+          "update": 2560,
+          "nll": 1.3627604246139526,
+          "nll_after_first1024": 1.3131423057587155
+        },
+        {
+          "update": 3072,
+          "nll": 1.379509687423706,
+          "nll_after_first1024": 1.3283408428556842
+        },
+        {
+          "update": 3584,
+          "nll": 1.3551437854766846,
+          "nll_after_first1024": 1.3056706942744154
+        },
+        {
+          "update": 4096,
+          "nll": 1.366545557975769,
+          "nll_after_first1024": 1.3202245464850932
+        }
+      ],
+      "post_start_validation_mean": 1.365213766694069,
+      "last4_validation_mean": 1.365989863872528,
+      "final_minus_initial_validation_nll": 0.04546153545379639,
+      "phase_summaries": {
+        "A_first_in_run": {
+          "mean_prequential_nll": 1.4284012027201243,
+          "last256_mean_prequential_nll": 1.4795640208758414
+        },
+        "B_first_in_run": {
+          "mean_prequential_nll": 1.4926579774037236,
+          "last256_mean_prequential_nll": 1.5414255790528841
+        },
+        "A_revisit": {
+          "mean_prequential_nll": 1.2964722964679822,
+          "last256_mean_prequential_nll": 1.3286657077260315
+        },
+        "C_first_in_run": {
+          "mean_prequential_nll": 1.4688927852548659,
+          "last256_mean_prequential_nll": 1.3986717916559428
+        }
+      },
+      "A_revisit_improvement": 0.13192890625214204,
+      "checkpoint": "E:\\cgb_small_gdn_20261107\\layer_reset_pair\\alternating_S_reset\\last.pt.gz"
+    }
+  },
+  "comparison": {
+    "final_reset_minus_carry": 0.0034754276275634766,
+    "post_start_checkpoints_carry_better": 6,
+    "post_start_checkpoints": 8,
+    "all_four_phase_means_favor_carry": true
+  },
+  "conclusion": "In this matched fixed-budget real-language continuation, all-carry is slightly better; alternating layers1/3 S reset has no measured advantage. Both arms improve on A revisit but worsen independent validation relative to their own initial scores. This does not isolate S memory from weights/table contributions or establish convergence or long-credit gains. Keep all-carry as working default and original platform unchanged; next study consolidation/selective retention on an already-capable GDN."
+}

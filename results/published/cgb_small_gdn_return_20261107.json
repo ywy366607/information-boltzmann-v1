@@ -1,0 +1,162 @@
+{
+  "status": "complete",
+  "source": {
+    "checkpoint": "E:\\cgb_causal_wood_20261106\\direct_pair_replay_fixed\\train_real_causal\\last.pt.gz",
+    "sha256": "c8564de9edff2905c2cf9f8e0fef6cfb90e369b75e14f1d80764a03c2e66a5fa",
+    "cycle": 1792,
+    "world_source_bytes": 40128875,
+    "topic_window": 4096,
+    "world_source_sha256": "71c15501401a4e471f5de2208a90de82be1ef800931680bb0366c577cb79448b",
+    "source_raw_bounds": [
+      8000000,
+      56000000
+    ],
+    "world": "same restored OWT ReplyTopicWorld, including cursor, seen bitmap and RNG",
+    "optimizer_states": 94,
+    "pending_actor": true
+  },
+  "scope": "Restore the continuing small body and assess official RULER in UTF-8 bytes.\n\nThis is an independent, frozen request sidecar, not an organism reset. Native\nstate starts empty per request; the learned lexical and causal memories remain.\nTheir temporary assimilation is rolled back after each request. Generation has\na declared byte cap: this256-byte vocabulary has no EOS token.\n",
+  "original_generator_budget": 512,
+  "manifest_sha256": "49a2c6909ac89bb846c17ed0d82a8bacfb697c66541a680ff1ef314957bb6307",
+  "data_sha256": "a6091cc2a7cc452043b32f32ce287707c708533f86262b165839af67a334c906",
+  "official_revision": "db43f92ff634bbce1c33d1fb15858aec4bba509a",
+  "optimizer_steps": 0,
+  "samples": [
+    {
+      "index": 0,
+      "references": [
+        "2622302"
+      ],
+      "prediction": " a state of the state of the state of the state of the state of the state of the state of the state of the state of the state of",
+      "prompt_bytes": 1356,
+      "answer_distance_bytes": 356,
+      "answer_nll": 3.4960954478010535,
+      "answer_bytes": 8,
+      "generated_bytes": 128,
+      "generation_cap_bytes": 128,
+      "has_eos": false,
+      "official_contains": false,
+      "standalone_number": false,
+      "first_number_exact": false,
+      "first_number_prefix": false,
+      "first_number": null
+    },
+    {
+      "index": 1,
+      "references": [
+        "4610712"
+      ],
+      "prediction": " a state of the state of the state of the state of the state of the state of the state of the state of the state of the state of",
+      "prompt_bytes": 1347,
+      "answer_distance_bytes": 350,
+      "answer_nll": 3.8597709760069847,
+      "answer_bytes": 8,
+      "generated_bytes": 128,
+      "generation_cap_bytes": 128,
+      "has_eos": false,
+      "official_contains": false,
+      "standalone_number": false,
+      "first_number_exact": false,
+      "first_number_prefix": false,
+      "first_number": null
+    },
+    {
+      "index": 2,
+      "references": [
+        "7565577"
+      ],
+      "prediction": " a state of the state of the state of the state of the state of the state of the state of the state of the state of the state of",
+      "prompt_bytes": 1350,
+      "answer_distance_bytes": 1162,
+      "answer_nll": 4.086424145847559,
+      "answer_bytes": 8,
+      "generated_bytes": 128,
+      "generation_cap_bytes": 128,
+      "has_eos": false,
+      "official_contains": false,
+      "standalone_number": false,
+      "first_number_exact": false,
+      "first_number_prefix": false,
+      "first_number": null
+    },
+    {
+      "index": 3,
+      "references": [
+        "8855227"
+      ],
+      "prediction": " a state of the state of the state of the state of the state of the state of the state of the state of the state of the state of",
+      "prompt_bytes": 1365,
+      "answer_distance_bytes": 632,
+      "answer_nll": 3.505974419414997,
+      "answer_bytes": 8,
+      "generated_bytes": 128,
+      "generation_cap_bytes": 128,
+      "has_eos": false,
+      "official_contains": false,
+      "standalone_number": false,
+      "first_number_exact": false,
+      "first_number_prefix": false,
+      "first_number": null
+    }
+  ],
+  "parameter_audit": {
+    "neural_parameters": 895812,
+    "trainable_parameters": 895812,
+    "all_parameters_owned_by_optimizer": true,
+    "architecture": {
+      "vocab_size": 256,
+      "d": 128,
+      "layers": 4,
+      "heads": 4,
+      "recurrence": "decay_then_delta",
+      "mlp_hidden": 256,
+      "conv_kernel": 4,
+      "content_budget": 32.0,
+      "contact_availability": false,
+      "decay_init": "log_timescale",
+      "feedback_init": "constant"
+    },
+    "mlp_present_per_layer": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "note": "All parameters are available for learning; task-inactive navigation heads need not receive language gradients."
+  },
+  "gradient_audit": {
+    "window_bytes": 128,
+    "answer_nll": 3.496095657348633,
+    "optimizer_steps": 0,
+    "layers": [
+      {
+        "layer": 1,
+        "gdn_gradient_norm": 3.1444899031275555,
+        "mlp_gradient_norm": 3.628721147561052
+      },
+      {
+        "layer": 2,
+        "gdn_gradient_norm": 2.391225436251804,
+        "mlp_gradient_norm": 1.6989966468905728
+      },
+      {
+        "layer": 3,
+        "gdn_gradient_norm": 2.5912953342398923,
+        "mlp_gradient_norm": 0.9793906251754825
+      },
+      {
+        "layer": 4,
+        "gdn_gradient_norm": 2.2112342862080014,
+        "mlp_gradient_norm": 1.1879172231336743
+      }
+    ],
+    "embedding_decoder_tied_gradient_norm": 7.062363147735596
+  },
+  "seconds": 7.378293991088867,
+  "ruler_score": 0.0,
+  "first_number_exact_count": 0,
+  "model_and_tables_unchanged": true,
+  "source_checkpoint_unchanged": true,
+  "selected_checkpoint": "E:\\cgb_small_gdn_20261107\\return_admission\\selected\\last.pt.gz",
+  "peak_cuda_bytes": 104963072
+}

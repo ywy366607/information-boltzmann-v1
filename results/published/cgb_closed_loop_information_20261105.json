@@ -1,0 +1,2481 @@
+{
+  "scope": "real complete OWT body-world diagnostic branches; no saved learner change",
+  "source": {
+    "checkpoint": "E:\\cgb_water_reply_20261105\\train_adam_journal\\last.pt.gz",
+    "sha256": "4d917547b308b6ee8b7c4506ce504901fdb04559da8507ed1a0d74a60ade7394",
+    "cycle": 768,
+    "world_source_bytes": 40128875,
+    "topic_window": 4096,
+    "world_source_sha256": "71c15501401a4e471f5de2208a90de82be1ef800931680bb0366c577cb79448b",
+    "source_raw_bounds": [
+      8000000,
+      56000000
+    ],
+    "world": "same restored OWT ReplyTopicWorld, including cursor, seen bitmap and RNG",
+    "optimizer_states": 93,
+    "pending_actor": true
+  },
+  "primary_checkpoint_unchanged": true,
+  "executed_sources_integrity": true,
+  "start_repeat_exact": true,
+  "collected_turns": {
+    "full": 256,
+    "cut": 128,
+    "pulse": 64
+  },
+  "external_bytes": {
+    "full": 245760,
+    "cut": 122880,
+    "pulse": 61440
+  },
+  "projection": {
+    "channels": [
+      "recalled_progress",
+      "recall_entropy",
+      "forecast_match",
+      "forecast_gain",
+      "p_generate",
+      "p_reuse",
+      "response_nll",
+      "short_latent_loss",
+      "settled_gain",
+      "critic_rms",
+      "world_match_fraction",
+      "world_seen_fraction"
+    ],
+    "groups": {
+      "water": [
+        0,
+        1
+      ],
+      "wood": [
+        2,
+        3
+      ],
+      "fire": [
+        4,
+        5
+      ],
+      "earth": [
+        6,
+        7
+      ],
+      "metal": [
+        8,
+        9
+      ],
+      "world": [
+        10,
+        11
+      ]
+    }
+  },
+  "numerical_tests": 27,
+  "deslice_interface_passed": true,
+  "causal_interventions": {
+    "cut": {
+      "turns": 128,
+      "first_utterance_divergence": 2,
+      "first_action_divergence": 2,
+      "first_world_position_divergence": 2,
+      "different_utterances": 119,
+      "different_world_positions": 127,
+      "max_action_distribution_tv": 0.6676392778754234,
+      "mean_observable_distance": [
+        1.036619811098014,
+        37.118477229658396,
+        1.2322770702356043,
+        1.5584116463217896,
+        0.953339046847156,
+        1.3579428217817002,
+        1.0234303483299207,
+        1.1591141785171653,
+        1.2343790578994074,
+        0.4302292113845922,
+        1.2062483835050217,
+        0.6346404722323573
+      ],
+      "mean_response_nll_difference": 0.019778736867010593,
+      "note": "After world divergence the NLLs score different inputs, not matched capability."
+    },
+    "pulse": {
+      "turns": 64,
+      "first_utterance_divergence": null,
+      "first_action_divergence": null,
+      "first_world_position_divergence": null,
+      "different_utterances": 0,
+      "different_world_positions": 0,
+      "max_action_distribution_tv": 0.00812363438308239,
+      "mean_observable_distance": [
+        0.00041122078164972336,
+        0.003271049014937096,
+        1.029623764484952e-08,
+        8.602818960407487e-05,
+        0.0014292391137861132,
+        0.0011660451250557191,
+        1.9783743928356278e-05,
+        0.00028436999273776116,
+        0.00010892790266221591,
+        0.00023751236591143494,
+        0.0,
+        0.0
+      ],
+      "mean_response_nll_difference": 7.413327693939209e-07,
+      "note": "After world divergence the NLLs score different inputs, not matched capability."
+    },
+    "cut_initial_policy_tv": 0.346574354916811
+  },
+  "geometric_information": {
+    "1": {
+      "lag": 1,
+      "ntrain": 127,
+      "nvalid": 63,
+      "ntest": 65,
+      "dimensions": 12,
+      "inactive_channels": [],
+      "mutual_information_gaussian_nats": 3.6263281115370103,
+      "minimum_projected_phi_g": {
+        "phi_g_nats": 0.16842167058414415,
+        "converged": true,
+        "max_gradient": 9.47951352824029e-06,
+        "start_spread": 1.574296248918472e-11,
+        "iterations": 347,
+        "si_gaussian_nats": 0.7972116164738727,
+        "left": [
+          "water",
+          "wood",
+          "fire",
+          "earth",
+          "metal"
+        ],
+        "right": [
+          "world"
+        ],
+        "validation_predictive_cut_penalty": -0.006020694337206784
+      },
+      "validation_selected_partition": {
+        "phi_g_nats": 0.42284381374062097,
+        "converged": true,
+        "max_gradient": 7.82193926741734e-06,
+        "start_spread": 1.7577050925865478e-11,
+        "iterations": 345,
+        "si_gaussian_nats": 0.8656741804783632,
+        "left": [
+          "water",
+          "fire",
+          "earth"
+        ],
+        "right": [
+          "wood",
+          "metal",
+          "world"
+        ],
+        "validation_predictive_cut_penalty": -1.4991539419885354
+      },
+      "heldout_predictive_cut_penalty": {
+        "mean": -3.053450764262682,
+        "ci95": [
+          -4.054291880289908,
+          -2.1583456689721205
+        ],
+        "samples": 65,
+        "bootstrap_block": 8
+      },
+      "full_vs_no_history_nll_improvement": {
+        "mean": -13.811853624291802,
+        "ci95": [
+          -35.533329687676876,
+          5.281704832550519
+        ],
+        "samples": 65,
+        "bootstrap_block": 8
+      },
+      "all_converged": true,
+      "gaussian_bounds_ok": true,
+      "partitions": [
+        {
+          "phi_g_nats": 0.20498430693942105,
+          "converged": true,
+          "max_gradient": 9.114492403729732e-06,
+          "start_spread": 5.693578941645683e-11,
+          "iterations": 410,
+          "si_gaussian_nats": 0.3616030748244352,
+          "left": [
+            "water"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.3195493928983021
+        },
+        {
+          "phi_g_nats": 0.3334604740783256,
+          "converged": true,
+          "max_gradient": 5.734615323985242e-06,
+          "start_spread": 2.298961021551804e-11,
+          "iterations": 250,
+          "si_gaussian_nats": 1.1657970595699894,
+          "left": [
+            "water",
+            "wood"
+          ],
+          "right": [
+            "fire",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -1.1229596238291706
+        },
+        {
+          "phi_g_nats": 0.40459662871763147,
+          "converged": true,
+          "max_gradient": 2.214470970846014e-05,
+          "start_spread": 1.319477860306506e-11,
+          "iterations": 366,
+          "si_gaussian_nats": 0.726774924706092,
+          "left": [
+            "water",
+            "fire"
+          ],
+          "right": [
+            "wood",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.6654620808067506
+        },
+        {
+          "phi_g_nats": 0.44384289647113384,
+          "converged": true,
+          "max_gradient": 7.142735662011923e-06,
+          "start_spread": 8.274270157926367e-12,
+          "iterations": 273,
+          "si_gaussian_nats": 1.1916319739368388,
+          "left": [
+            "water",
+            "wood",
+            "fire"
+          ],
+          "right": [
+            "earth",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.9061035936397641
+        },
+        {
+          "phi_g_nats": 0.3865225570730777,
+          "converged": true,
+          "max_gradient": 5.99242763274528e-06,
+          "start_spread": 4.214495419319064e-11,
+          "iterations": 377,
+          "si_gaussian_nats": 0.716674208154747,
+          "left": [
+            "water",
+            "earth"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -1.0896717784184706
+        },
+        {
+          "phi_g_nats": 0.4139685136735727,
+          "converged": true,
+          "max_gradient": 7.501579231048181e-06,
+          "start_spread": 1.1872280936131574e-11,
+          "iterations": 233,
+          "si_gaussian_nats": 1.3159103804915482,
+          "left": [
+            "water",
+            "wood",
+            "earth"
+          ],
+          "right": [
+            "fire",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.8847895410530292
+        },
+        {
+          "phi_g_nats": 0.42284381374062097,
+          "converged": true,
+          "max_gradient": 7.82193926741734e-06,
+          "start_spread": 1.7577050925865478e-11,
+          "iterations": 345,
+          "si_gaussian_nats": 0.8656741804783632,
+          "left": [
+            "water",
+            "fire",
+            "earth"
+          ],
+          "right": [
+            "wood",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -1.4991539419885354
+        },
+        {
+          "phi_g_nats": 0.34999250126861536,
+          "converged": true,
+          "max_gradient": 4.7816951978066885e-06,
+          "start_spread": 1.7920775974289427e-11,
+          "iterations": 268,
+          "si_gaussian_nats": 1.0997588836914733,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "earth"
+          ],
+          "right": [
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.8118538267177725
+        },
+        {
+          "phi_g_nats": 0.39463158030648504,
+          "converged": true,
+          "max_gradient": 6.388026634348016e-06,
+          "start_spread": 3.113775903784699e-11,
+          "iterations": 286,
+          "si_gaussian_nats": 0.6781336934381184,
+          "left": [
+            "water",
+            "metal"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "earth",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.7491243851787922
+        },
+        {
+          "phi_g_nats": 0.377529075089317,
+          "converged": true,
+          "max_gradient": 2.8654335314895163e-06,
+          "start_spread": 1.6338930208803504e-11,
+          "iterations": 236,
+          "si_gaussian_nats": 1.2759195836452992,
+          "left": [
+            "water",
+            "wood",
+            "metal"
+          ],
+          "right": [
+            "fire",
+            "earth",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -1.48290788803952
+        },
+        {
+          "phi_g_nats": 0.4405777165600826,
+          "converged": true,
+          "max_gradient": 2.196439075914798e-06,
+          "start_spread": 5.026201677083009e-12,
+          "iterations": 308,
+          "si_gaussian_nats": 0.8552344673872057,
+          "left": [
+            "water",
+            "fire",
+            "metal"
+          ],
+          "right": [
+            "wood",
+            "earth",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.5681176866611438
+        },
+        {
+          "phi_g_nats": 0.31062433257293875,
+          "converged": true,
+          "max_gradient": 2.15688517888263e-05,
+          "start_spread": 3.348432642269472e-11,
+          "iterations": 367,
+          "si_gaussian_nats": 1.0839883235304812,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "metal"
+          ],
+          "right": [
+            "earth",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.5390770952715173
+        },
+        {
+          "phi_g_nats": 0.5249776063032563,
+          "converged": true,
+          "max_gradient": 4.164573472792072e-06,
+          "start_spread": 1.0534684236063185e-11,
+          "iterations": 332,
+          "si_gaussian_nats": 0.8451455096460867,
+          "left": [
+            "water",
+            "earth",
+            "metal"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -1.1211561593406956
+        },
+        {
+          "phi_g_nats": 0.39860341144906286,
+          "converged": true,
+          "max_gradient": 1.7828679549662898e-06,
+          "start_spread": 3.225597566824945e-11,
+          "iterations": 269,
+          "si_gaussian_nats": 1.2220498504117199,
+          "left": [
+            "water",
+            "wood",
+            "earth",
+            "metal"
+          ],
+          "right": [
+            "fire",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.8452001352014995
+        },
+        {
+          "phi_g_nats": 0.40381645288494994,
+          "converged": true,
+          "max_gradient": 2.8925027379319225e-06,
+          "start_spread": 1.6488144183313125e-11,
+          "iterations": 314,
+          "si_gaussian_nats": 0.796568597157818,
+          "left": [
+            "water",
+            "fire",
+            "earth",
+            "metal"
+          ],
+          "right": [
+            "wood",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.9163557672193733
+        },
+        {
+          "phi_g_nats": 0.16842167058414415,
+          "converged": true,
+          "max_gradient": 9.47951352824029e-06,
+          "start_spread": 1.574296248918472e-11,
+          "iterations": 347,
+          "si_gaussian_nats": 0.7972116164738727,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "earth",
+            "metal"
+          ],
+          "right": [
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.006020694337206784
+        },
+        {
+          "phi_g_nats": 0.2771908530253233,
+          "converged": true,
+          "max_gradient": 6.479202402085553e-06,
+          "start_spread": 5.3717030823463574e-12,
+          "iterations": 313,
+          "si_gaussian_nats": 0.9953699100637996,
+          "left": [
+            "water",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.19581013634698657
+        },
+        {
+          "phi_g_nats": 0.41839646730575897,
+          "converged": true,
+          "max_gradient": 2.271534474825198e-05,
+          "start_spread": 1.6835421945415874e-11,
+          "iterations": 307,
+          "si_gaussian_nats": 0.8227732527819889,
+          "left": [
+            "water",
+            "wood",
+            "world"
+          ],
+          "right": [
+            "fire",
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -1.2047583586396786
+        },
+        {
+          "phi_g_nats": 0.4193407800271398,
+          "converged": true,
+          "max_gradient": 1.7800778132445786e-05,
+          "start_spread": 2.7351454434665357e-11,
+          "iterations": 250,
+          "si_gaussian_nats": 1.2031507376334671,
+          "left": [
+            "water",
+            "fire",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.6726764748734355
+        },
+        {
+          "phi_g_nats": 0.4596277984918151,
+          "converged": true,
+          "max_gradient": 4.4301830082252995e-06,
+          "start_spread": 1.738076349511175e-11,
+          "iterations": 358,
+          "si_gaussian_nats": 0.6803710268018035,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "world"
+          ],
+          "right": [
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -1.0723042736837172
+        },
+        {
+          "phi_g_nats": 0.38417270390958613,
+          "converged": true,
+          "max_gradient": 2.3322260976974794e-05,
+          "start_spread": 7.568168314264767e-12,
+          "iterations": 273,
+          "si_gaussian_nats": 1.2257681492621364,
+          "left": [
+            "water",
+            "earth",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.8595494453877507
+        },
+        {
+          "phi_g_nats": 0.41105210245959434,
+          "converged": true,
+          "max_gradient": 3.2201274323893453e-06,
+          "start_spread": 5.297096095091547e-12,
+          "iterations": 278,
+          "si_gaussian_nats": 0.8148149805422378,
+          "left": [
+            "water",
+            "wood",
+            "earth",
+            "world"
+          ],
+          "right": [
+            "fire",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.8365938976868263
+        },
+        {
+          "phi_g_nats": 0.366223547204946,
+          "converged": true,
+          "max_gradient": 1.936979904610477e-05,
+          "start_spread": 3.568256801145253e-11,
+          "iterations": 237,
+          "si_gaussian_nats": 1.2062911345660785,
+          "left": [
+            "water",
+            "fire",
+            "earth",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -1.4476743527976716
+        },
+        {
+          "phi_g_nats": 0.2878201003254093,
+          "converged": true,
+          "max_gradient": 7.719705990420394e-06,
+          "start_spread": 1.3731238368563936e-11,
+          "iterations": 170,
+          "si_gaussian_nats": 0.4478734889995373,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "earth",
+            "world"
+          ],
+          "right": [
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.7575627622588974
+        },
+        {
+          "phi_g_nats": 0.3610821457375355,
+          "converged": true,
+          "max_gradient": 1.1961510072129441e-05,
+          "start_spread": 7.795541989707999e-12,
+          "iterations": 244,
+          "si_gaussian_nats": 1.168188370902823,
+          "left": [
+            "water",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": -0.6438426848642732
+        },
+        {
+          "phi_g_nats": 0.33722545583746033,
+          "converged": true,
+          "max_gradient": 4.9536897667474744e-06,
+          "start_spread": 2.674394039559047e-11,
+          "iterations": 355,
+          "si_gaussian_nats": 0.7734517381073784,
+          "left": [
+            "water",
+            "wood",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "fire",
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": -1.460774795994061
+        },
+        {
+          "phi_g_nats": 0.3402515391819172,
+          "converged": true,
+          "max_gradient": 9.03595220073777e-06,
+          "start_spread": 2.97672997362497e-11,
+          "iterations": 267,
+          "si_gaussian_nats": 1.1800871546128775,
+          "left": [
+            "water",
+            "fire",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": -0.49477216289609766
+        },
+        {
+          "phi_g_nats": 0.21990343506376497,
+          "converged": true,
+          "max_gradient": 1.4661410431226522e-05,
+          "start_spread": 5.333511410299252e-12,
+          "iterations": 518,
+          "si_gaussian_nats": 0.42487092028784446,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": -0.6892576332795795
+        },
+        {
+          "phi_g_nats": 0.40763703165071963,
+          "converged": true,
+          "max_gradient": 2.8226963710743493e-06,
+          "start_spread": 3.0596858380249614e-11,
+          "iterations": 241,
+          "si_gaussian_nats": 1.1955633690310803,
+          "left": [
+            "water",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "fire"
+          ],
+          "validation_predictive_cut_penalty": -0.848891061833352
+        },
+        {
+          "phi_g_nats": 0.2791046001101751,
+          "converged": true,
+          "max_gradient": 1.0575897270247198e-05,
+          "start_spread": 9.889866703360894e-12,
+          "iterations": 421,
+          "si_gaussian_nats": 0.574238878321867,
+          "left": [
+            "water",
+            "wood",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "fire"
+          ],
+          "validation_predictive_cut_penalty": -0.7603658246966049
+        },
+        {
+          "phi_g_nats": 0.2187058749501105,
+          "converged": true,
+          "max_gradient": 6.254988875973028e-06,
+          "start_spread": 3.12239123445579e-11,
+          "iterations": 279,
+          "si_gaussian_nats": 0.9592870297517759,
+          "left": [
+            "water",
+            "fire",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "wood"
+          ],
+          "validation_predictive_cut_penalty": -0.7498321381339156
+        }
+      ],
+      "meaning": "Projected Gaussian Phi_G; held-out cut score is separate; not IIT3/4 Phi."
+    },
+    "2": {
+      "lag": 2,
+      "ntrain": 127,
+      "nvalid": 63,
+      "ntest": 64,
+      "dimensions": 12,
+      "inactive_channels": [],
+      "mutual_information_gaussian_nats": 2.930725983614233,
+      "minimum_projected_phi_g": {
+        "phi_g_nats": 0.1344630208037696,
+        "converged": true,
+        "max_gradient": 1.0251781960884967e-05,
+        "start_spread": 7.608136343151273e-12,
+        "iterations": 251,
+        "si_gaussian_nats": 0.3116366654238094,
+        "left": [
+          "water"
+        ],
+        "right": [
+          "wood",
+          "fire",
+          "earth",
+          "metal",
+          "world"
+        ],
+        "validation_predictive_cut_penalty": -0.3882669420902446
+      },
+      "validation_selected_partition": {
+        "phi_g_nats": 0.37511015705772977,
+        "converged": true,
+        "max_gradient": 3.92262426480568e-06,
+        "start_spread": 1.5162093802700838e-11,
+        "iterations": 187,
+        "si_gaussian_nats": 1.1013751931566174,
+        "left": [
+          "water",
+          "earth",
+          "world"
+        ],
+        "right": [
+          "wood",
+          "fire",
+          "metal"
+        ],
+        "validation_predictive_cut_penalty": -1.0431386589334226
+      },
+      "heldout_predictive_cut_penalty": {
+        "mean": -2.6077149048238386,
+        "ci95": [
+          -3.581952742313162,
+          -1.6501376354909125
+        ],
+        "samples": 64,
+        "bootstrap_block": 8
+      },
+      "full_vs_no_history_nll_improvement": {
+        "mean": -7.754049027326048,
+        "ci95": [
+          -22.988406373450506,
+          4.390199149293337
+        ],
+        "samples": 64,
+        "bootstrap_block": 8
+      },
+      "all_converged": true,
+      "gaussian_bounds_ok": true,
+      "partitions": [
+        {
+          "phi_g_nats": 0.1344630208037696,
+          "converged": true,
+          "max_gradient": 1.0251781960884967e-05,
+          "start_spread": 7.608136343151273e-12,
+          "iterations": 251,
+          "si_gaussian_nats": 0.3116366654238094,
+          "left": [
+            "water"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.3882669420902446
+        },
+        {
+          "phi_g_nats": 0.38624116994140145,
+          "converged": true,
+          "max_gradient": 2.514138820802257e-06,
+          "start_spread": 9.936940159605001e-12,
+          "iterations": 187,
+          "si_gaussian_nats": 1.1441179392432814,
+          "left": [
+            "water",
+            "wood"
+          ],
+          "right": [
+            "fire",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": 0.1322373119959896
+        },
+        {
+          "phi_g_nats": 0.2632387423971183,
+          "converged": true,
+          "max_gradient": 2.48543217182945e-06,
+          "start_spread": 1.0550671447617788e-11,
+          "iterations": 255,
+          "si_gaussian_nats": 0.572271258588426,
+          "left": [
+            "water",
+            "fire"
+          ],
+          "right": [
+            "wood",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.5312463425339619
+        },
+        {
+          "phi_g_nats": 0.3169911190942365,
+          "converged": true,
+          "max_gradient": 7.905713676685733e-06,
+          "start_spread": 1.885602785023366e-12,
+          "iterations": 161,
+          "si_gaussian_nats": 1.026038498304294,
+          "left": [
+            "water",
+            "wood",
+            "fire"
+          ],
+          "right": [
+            "earth",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": 0.05655071810295036
+        },
+        {
+          "phi_g_nats": 0.2784648279589801,
+          "converged": true,
+          "max_gradient": 5.849206596104188e-06,
+          "start_spread": 6.1879390500507725e-12,
+          "iterations": 284,
+          "si_gaussian_nats": 0.5824360854144244,
+          "left": [
+            "water",
+            "earth"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.8536742635896734
+        },
+        {
+          "phi_g_nats": 0.41626595191562465,
+          "converged": true,
+          "max_gradient": 2.461726242329634e-06,
+          "start_spread": 2.687627898012579e-12,
+          "iterations": 146,
+          "si_gaussian_nats": 1.2099108702027008,
+          "left": [
+            "water",
+            "wood",
+            "earth"
+          ],
+          "right": [
+            "fire",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": 0.3437803865144262
+        },
+        {
+          "phi_g_nats": 0.357995624810199,
+          "converged": true,
+          "max_gradient": 5.3014279745810305e-06,
+          "start_spread": 6.4570571112199104e-12,
+          "iterations": 212,
+          "si_gaussian_nats": 0.778159683480018,
+          "left": [
+            "water",
+            "fire",
+            "earth"
+          ],
+          "right": [
+            "wood",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.7871220086159322
+        },
+        {
+          "phi_g_nats": 0.307526365264847,
+          "converged": true,
+          "max_gradient": 2.5708170575943113e-06,
+          "start_spread": 9.201528428093297e-12,
+          "iterations": 177,
+          "si_gaussian_nats": 1.0326672308440887,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "earth"
+          ],
+          "right": [
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": 0.4259843860231191
+        },
+        {
+          "phi_g_nats": 0.27206170028966614,
+          "converged": true,
+          "max_gradient": 7.728413450972899e-06,
+          "start_spread": 6.115996598055062e-12,
+          "iterations": 209,
+          "si_gaussian_nats": 0.6441146808613629,
+          "left": [
+            "water",
+            "metal"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "earth",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": 0.1916920050026125
+        },
+        {
+          "phi_g_nats": 0.3861992465551296,
+          "converged": true,
+          "max_gradient": 4.429281519724615e-06,
+          "start_spread": 5.74473801862041e-12,
+          "iterations": 163,
+          "si_gaussian_nats": 1.2061468045747197,
+          "left": [
+            "water",
+            "wood",
+            "metal"
+          ],
+          "right": [
+            "fire",
+            "earth",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.7545887923552185
+        },
+        {
+          "phi_g_nats": 0.3534681887312656,
+          "converged": true,
+          "max_gradient": 2.0359311542841008e-06,
+          "start_spread": 4.179767643108789e-12,
+          "iterations": 190,
+          "si_gaussian_nats": 0.7510952580867434,
+          "left": [
+            "water",
+            "fire",
+            "metal"
+          ],
+          "right": [
+            "wood",
+            "earth",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": 0.2501252841664797
+        },
+        {
+          "phi_g_nats": 0.2802533862356773,
+          "converged": true,
+          "max_gradient": 1.2924128821378771e-05,
+          "start_spread": 1.3153922395758855e-11,
+          "iterations": 231,
+          "si_gaussian_nats": 0.9392070279720475,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "metal"
+          ],
+          "right": [
+            "earth",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.6184945281061912
+        },
+        {
+          "phi_g_nats": 0.31221658960520315,
+          "converged": true,
+          "max_gradient": 2.4642903243683347e-06,
+          "start_spread": 8.967937503712164e-12,
+          "iterations": 198,
+          "si_gaussian_nats": 0.7034660407001772,
+          "left": [
+            "water",
+            "earth",
+            "metal"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.1999519178219624
+        },
+        {
+          "phi_g_nats": 0.3171202539213551,
+          "converged": true,
+          "max_gradient": 2.5867235691963304e-06,
+          "start_spread": 9.261924560632906e-12,
+          "iterations": 180,
+          "si_gaussian_nats": 1.0604914221174946,
+          "left": [
+            "water",
+            "wood",
+            "earth",
+            "metal"
+          ],
+          "right": [
+            "fire",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.5318244807452933
+        },
+        {
+          "phi_g_nats": 0.3506268522952354,
+          "converged": true,
+          "max_gradient": 1.8396546579765704e-06,
+          "start_spread": 9.038103598868474e-12,
+          "iterations": 214,
+          "si_gaussian_nats": 0.7548181706323849,
+          "left": [
+            "water",
+            "fire",
+            "earth",
+            "metal"
+          ],
+          "right": [
+            "wood",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": 0.023558262665255927
+        },
+        {
+          "phi_g_nats": 0.1658984451376151,
+          "converged": true,
+          "max_gradient": 2.1093787237127622e-06,
+          "start_spread": 2.4424906541753444e-12,
+          "iterations": 229,
+          "si_gaussian_nats": 0.7308716424468873,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "earth",
+            "metal"
+          ],
+          "right": [
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.1544777032457326
+        },
+        {
+          "phi_g_nats": 0.27463140784208573,
+          "converged": true,
+          "max_gradient": 1.331604542978331e-05,
+          "start_spread": 9.36495325731812e-12,
+          "iterations": 199,
+          "si_gaussian_nats": 0.947668732694098,
+          "left": [
+            "water",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.48764354677403937
+        },
+        {
+          "phi_g_nats": 0.4088288108071074,
+          "converged": true,
+          "max_gradient": 8.21709596883224e-06,
+          "start_spread": 6.4712679659351124e-12,
+          "iterations": 184,
+          "si_gaussian_nats": 0.836751057403923,
+          "left": [
+            "water",
+            "wood",
+            "world"
+          ],
+          "right": [
+            "fire",
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.07346586100893467
+        },
+        {
+          "phi_g_nats": 0.33255988912235956,
+          "converged": true,
+          "max_gradient": 2.2490732648217945e-05,
+          "start_spread": 4.2870595962085645e-11,
+          "iterations": 177,
+          "si_gaussian_nats": 1.0434188019695476,
+          "left": [
+            "water",
+            "fire",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.46091922410514463
+        },
+        {
+          "phi_g_nats": 0.2784912706220455,
+          "converged": true,
+          "max_gradient": 1.8833245598509493e-06,
+          "start_spread": 9.623413177450857e-12,
+          "iterations": 196,
+          "si_gaussian_nats": 0.5648906156203077,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "world"
+          ],
+          "right": [
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": 0.0670609151093154
+        },
+        {
+          "phi_g_nats": 0.37511015705772977,
+          "converged": true,
+          "max_gradient": 3.92262426480568e-06,
+          "start_spread": 1.5162093802700838e-11,
+          "iterations": 187,
+          "si_gaussian_nats": 1.1013751931566174,
+          "left": [
+            "water",
+            "earth",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -1.0431386589334226
+        },
+        {
+          "phi_g_nats": 0.4016102376934878,
+          "converged": true,
+          "max_gradient": 6.400562249399567e-06,
+          "start_spread": 2.5721647034515627e-12,
+          "iterations": 162,
+          "si_gaussian_nats": 0.7808282155572095,
+          "left": [
+            "water",
+            "wood",
+            "earth",
+            "world"
+          ],
+          "right": [
+            "fire",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": 0.12688732514089443
+        },
+        {
+          "phi_g_nats": 0.39116914593729746,
+          "converged": true,
+          "max_gradient": 1.1661275081736172e-06,
+          "start_spread": 9.729994587814872e-12,
+          "iterations": 150,
+          "si_gaussian_nats": 1.1357056330133282,
+          "left": [
+            "water",
+            "fire",
+            "earth",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.8310177278260447
+        },
+        {
+          "phi_g_nats": 0.22372247199730477,
+          "converged": true,
+          "max_gradient": 9.570123885928207e-07,
+          "start_spread": 1.766053969731729e-11,
+          "iterations": 124,
+          "si_gaussian_nats": 0.44718557554213145,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "earth",
+            "world"
+          ],
+          "right": [
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": 0.4039244488441344
+        },
+        {
+          "phi_g_nats": 0.3359661386397663,
+          "converged": true,
+          "max_gradient": 1.8918529710459804e-06,
+          "start_spread": 4.2019721036012925e-12,
+          "iterations": 167,
+          "si_gaussian_nats": 1.1371113354971634,
+          "left": [
+            "water",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": 0.2766173034078761
+        },
+        {
+          "phi_g_nats": 0.32831817430297505,
+          "converged": true,
+          "max_gradient": 4.530327630682702e-06,
+          "start_spread": 1.814992600657206e-11,
+          "iterations": 236,
+          "si_gaussian_nats": 0.7505370540885878,
+          "left": [
+            "water",
+            "wood",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "fire",
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": -0.7600479045879455
+        },
+        {
+          "phi_g_nats": 0.34877525613646476,
+          "converged": true,
+          "max_gradient": 8.204624923719353e-06,
+          "start_spread": 9.15356679342949e-12,
+          "iterations": 192,
+          "si_gaussian_nats": 1.0823596794600308,
+          "left": [
+            "water",
+            "fire",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": 0.44837866824421685
+        },
+        {
+          "phi_g_nats": 0.15722503451269443,
+          "converged": true,
+          "max_gradient": 5.471012840113744e-06,
+          "start_spread": 1.2420287021086551e-11,
+          "iterations": 268,
+          "si_gaussian_nats": 0.32733029557562876,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": -0.4311680354505668
+        },
+        {
+          "phi_g_nats": 0.3272868878999713,
+          "converged": true,
+          "max_gradient": 2.153506986583702e-06,
+          "start_spread": 4.222400207254395e-12,
+          "iterations": 164,
+          "si_gaussian_nats": 1.0652834256243566,
+          "left": [
+            "water",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "fire"
+          ],
+          "validation_predictive_cut_penalty": -0.11142450714817491
+        },
+        {
+          "phi_g_nats": 0.22320345739051284,
+          "converged": true,
+          "max_gradient": 9.78557816218004e-06,
+          "start_spread": 1.248334768888526e-11,
+          "iterations": 280,
+          "si_gaussian_nats": 0.49013723264645304,
+          "left": [
+            "water",
+            "wood",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "fire"
+          ],
+          "validation_predictive_cut_penalty": -0.5887160287936392
+        },
+        {
+          "phi_g_nats": 0.3022132766672314,
+          "converged": true,
+          "max_gradient": 5.702870664236606e-06,
+          "start_spread": 4.405364961712621e-12,
+          "iterations": 207,
+          "si_gaussian_nats": 0.9541489306371207,
+          "left": [
+            "water",
+            "fire",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "wood"
+          ],
+          "validation_predictive_cut_penalty": 0.23476712819315854
+        }
+      ],
+      "meaning": "Projected Gaussian Phi_G; held-out cut score is separate; not IIT3/4 Phi."
+    },
+    "4": {
+      "lag": 4,
+      "ntrain": 126,
+      "nvalid": 63,
+      "ntest": 63,
+      "dimensions": 12,
+      "inactive_channels": [],
+      "mutual_information_gaussian_nats": 2.540436432279612,
+      "minimum_projected_phi_g": {
+        "phi_g_nats": 0.15654383671057737,
+        "converged": true,
+        "max_gradient": 4.386752016821782e-06,
+        "start_spread": 5.417888360170764e-12,
+        "iterations": 150,
+        "si_gaussian_nats": 0.8156125928206541,
+        "left": [
+          "water",
+          "wood",
+          "fire",
+          "earth",
+          "metal"
+        ],
+        "right": [
+          "world"
+        ],
+        "validation_predictive_cut_penalty": -0.1745325217868904
+      },
+      "validation_selected_partition": {
+        "phi_g_nats": 0.39543043426273705,
+        "converged": true,
+        "max_gradient": 1.335751766749061e-06,
+        "start_spread": 3.8475889141409425e-12,
+        "iterations": 106,
+        "si_gaussian_nats": 1.213856304341189,
+        "left": [
+          "water",
+          "fire",
+          "world"
+        ],
+        "right": [
+          "wood",
+          "earth",
+          "metal"
+        ],
+        "validation_predictive_cut_penalty": -0.5310887431799933
+      },
+      "heldout_predictive_cut_penalty": {
+        "mean": -1.075619255951556,
+        "ci95": [
+          -1.773538435718566,
+          -0.5538978118548376
+        ],
+        "samples": 63,
+        "bootstrap_block": 8
+      },
+      "full_vs_no_history_nll_improvement": {
+        "mean": -8.28144212897618,
+        "ci95": [
+          -22.945847012617296,
+          4.108738720612344
+        ],
+        "samples": 63,
+        "bootstrap_block": 8
+      },
+      "all_converged": true,
+      "gaussian_bounds_ok": true,
+      "partitions": [
+        {
+          "phi_g_nats": 0.2571775108333041,
+          "converged": true,
+          "max_gradient": 6.928803753062525e-06,
+          "start_spread": 6.2874150330571865e-12,
+          "iterations": 183,
+          "si_gaussian_nats": 0.454091803291218,
+          "left": [
+            "water"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.09409885361281746
+        },
+        {
+          "phi_g_nats": 0.35021599984216234,
+          "converged": true,
+          "max_gradient": 8.873996597400664e-07,
+          "start_spread": 2.2781776465308212e-12,
+          "iterations": 113,
+          "si_gaussian_nats": 1.261704245583334,
+          "left": [
+            "water",
+            "wood"
+          ],
+          "right": [
+            "fire",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": 0.05328868751926601
+        },
+        {
+          "phi_g_nats": 0.3912213052728766,
+          "converged": true,
+          "max_gradient": 3.676941164902755e-06,
+          "start_spread": 2.3745005961472998e-11,
+          "iterations": 167,
+          "si_gaussian_nats": 0.7068127748818198,
+          "left": [
+            "water",
+            "fire"
+          ],
+          "right": [
+            "wood",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.14464572936122758
+        },
+        {
+          "phi_g_nats": 0.4190482150827912,
+          "converged": true,
+          "max_gradient": 1.180902315269707e-06,
+          "start_spread": 3.991473818132363e-12,
+          "iterations": 130,
+          "si_gaussian_nats": 1.2223935154363041,
+          "left": [
+            "water",
+            "wood",
+            "fire"
+          ],
+          "right": [
+            "earth",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.3360741963790049
+        },
+        {
+          "phi_g_nats": 0.3936686102656122,
+          "converged": true,
+          "max_gradient": 6.466185577671727e-06,
+          "start_spread": 4.135802811333633e-12,
+          "iterations": 186,
+          "si_gaussian_nats": 0.7253704321219363,
+          "left": [
+            "water",
+            "earth"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.31450046461981274
+        },
+        {
+          "phi_g_nats": 0.40612379237774876,
+          "converged": true,
+          "max_gradient": 3.004010418570073e-06,
+          "start_spread": 1.9095836023552692e-12,
+          "iterations": 108,
+          "si_gaussian_nats": 1.3659422882478047,
+          "left": [
+            "water",
+            "wood",
+            "earth"
+          ],
+          "right": [
+            "fire",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.21085904012644105
+        },
+        {
+          "phi_g_nats": 0.4377315898720764,
+          "converged": true,
+          "max_gradient": 1.9816083951293558e-06,
+          "start_spread": 2.639666263348772e-12,
+          "iterations": 122,
+          "si_gaussian_nats": 0.8734637086360713,
+          "left": [
+            "water",
+            "fire",
+            "earth"
+          ],
+          "right": [
+            "wood",
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.18364470392912213
+        },
+        {
+          "phi_g_nats": 0.37166988034704396,
+          "converged": true,
+          "max_gradient": 7.759692950874768e-06,
+          "start_spread": 3.659295089164516e-13,
+          "iterations": 123,
+          "si_gaussian_nats": 1.2070474770897026,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "earth"
+          ],
+          "right": [
+            "metal",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.328039264686862
+        },
+        {
+          "phi_g_nats": 0.3451478086583739,
+          "converged": true,
+          "max_gradient": 6.371700328060955e-06,
+          "start_spread": 1.922018100231071e-12,
+          "iterations": 129,
+          "si_gaussian_nats": 0.7238085714552374,
+          "left": [
+            "water",
+            "metal"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "earth",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.17202374549391675
+        },
+        {
+          "phi_g_nats": 0.3332214105146063,
+          "converged": true,
+          "max_gradient": 2.523787111931075e-06,
+          "start_spread": 3.071320975323033e-12,
+          "iterations": 113,
+          "si_gaussian_nats": 1.2705241127524265,
+          "left": [
+            "water",
+            "wood",
+            "metal"
+          ],
+          "right": [
+            "fire",
+            "earth",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.21102787967680361
+        },
+        {
+          "phi_g_nats": 0.3978568128875919,
+          "converged": true,
+          "max_gradient": 9.838921322127102e-07,
+          "start_spread": 4.441780276920326e-12,
+          "iterations": 126,
+          "si_gaussian_nats": 0.8077923591636691,
+          "left": [
+            "water",
+            "fire",
+            "metal"
+          ],
+          "right": [
+            "wood",
+            "earth",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.033644946722594465
+        },
+        {
+          "phi_g_nats": 0.32302215072256324,
+          "converged": true,
+          "max_gradient": 1.336237731253198e-06,
+          "start_spread": 1.5258905250448151e-12,
+          "iterations": 145,
+          "si_gaussian_nats": 1.0747935920713636,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "metal"
+          ],
+          "right": [
+            "earth",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.39211760286310543
+        },
+        {
+          "phi_g_nats": 0.37598343672232915,
+          "converged": true,
+          "max_gradient": 1.1088867210244779e-06,
+          "start_spread": 4.9258375156568945e-12,
+          "iterations": 143,
+          "si_gaussian_nats": 0.7689858068980584,
+          "left": [
+            "water",
+            "earth",
+            "metal"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.20074528181893728
+        },
+        {
+          "phi_g_nats": 0.26746122299054775,
+          "converged": true,
+          "max_gradient": 1.9812189116204147e-06,
+          "start_spread": 2.163602630389505e-12,
+          "iterations": 110,
+          "si_gaussian_nats": 1.135823841047364,
+          "left": [
+            "water",
+            "wood",
+            "earth",
+            "metal"
+          ],
+          "right": [
+            "fire",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.3064812755655331
+        },
+        {
+          "phi_g_nats": 0.31986294532214643,
+          "converged": true,
+          "max_gradient": 4.7136300750398385e-06,
+          "start_spread": 3.112177182629239e-12,
+          "iterations": 147,
+          "si_gaussian_nats": 0.7356747914190742,
+          "left": [
+            "water",
+            "fire",
+            "earth",
+            "metal"
+          ],
+          "right": [
+            "wood",
+            "world"
+          ],
+          "validation_predictive_cut_penalty": 0.23052171944307315
+        },
+        {
+          "phi_g_nats": 0.15654383671057737,
+          "converged": true,
+          "max_gradient": 4.386752016821782e-06,
+          "start_spread": 5.417888360170764e-12,
+          "iterations": 150,
+          "si_gaussian_nats": 0.8156125928206541,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "earth",
+            "metal"
+          ],
+          "right": [
+            "world"
+          ],
+          "validation_predictive_cut_penalty": -0.1745325217868904
+        },
+        {
+          "phi_g_nats": 0.33468212780419204,
+          "converged": true,
+          "max_gradient": 2.991810510728802e-06,
+          "start_spread": 7.758238496080594e-12,
+          "iterations": 149,
+          "si_gaussian_nats": 1.1274717997166968,
+          "left": [
+            "water",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.3733239156403964
+        },
+        {
+          "phi_g_nats": 0.4137820916915347,
+          "converged": true,
+          "max_gradient": 1.5326650050651628e-06,
+          "start_spread": 1.1399770016851107e-11,
+          "iterations": 143,
+          "si_gaussian_nats": 0.8974393878433466,
+          "left": [
+            "water",
+            "wood",
+            "world"
+          ],
+          "right": [
+            "fire",
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": 0.09616063945803661
+        },
+        {
+          "phi_g_nats": 0.39543043426273705,
+          "converged": true,
+          "max_gradient": 1.335751766749061e-06,
+          "start_spread": 3.8475889141409425e-12,
+          "iterations": 106,
+          "si_gaussian_nats": 1.213856304341189,
+          "left": [
+            "water",
+            "fire",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.5310887431799933
+        },
+        {
+          "phi_g_nats": 0.4035327159392059,
+          "converged": true,
+          "max_gradient": 7.112659548011953e-07,
+          "start_spread": 4.999556324492005e-12,
+          "iterations": 148,
+          "si_gaussian_nats": 0.6925555488503217,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "world"
+          ],
+          "right": [
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.25043636666475433
+        },
+        {
+          "phi_g_nats": 0.41434840250518556,
+          "converged": true,
+          "max_gradient": 1.3427074518050014e-06,
+          "start_spread": 2.191669068452029e-11,
+          "iterations": 115,
+          "si_gaussian_nats": 1.2457340721745718,
+          "left": [
+            "water",
+            "earth",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.5113302374383581
+        },
+        {
+          "phi_g_nats": 0.40217167607080606,
+          "converged": true,
+          "max_gradient": 6.675955187308258e-07,
+          "start_spread": 1.241229341530925e-12,
+          "iterations": 110,
+          "si_gaussian_nats": 0.8290302599090147,
+          "left": [
+            "water",
+            "wood",
+            "earth",
+            "world"
+          ],
+          "right": [
+            "fire",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.05641791748134708
+        },
+        {
+          "phi_g_nats": 0.3724846900989922,
+          "converged": true,
+          "max_gradient": 6.497058041745411e-07,
+          "start_spread": 4.314770762903208e-12,
+          "iterations": 99,
+          "si_gaussian_nats": 1.2035099034295946,
+          "left": [
+            "water",
+            "fire",
+            "earth",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.3915351430343047
+        },
+        {
+          "phi_g_nats": 0.2987378685364135,
+          "converged": true,
+          "max_gradient": 6.683708024043072e-06,
+          "start_spread": 1.2931877790833823e-12,
+          "iterations": 93,
+          "si_gaussian_nats": 0.5187337638253529,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "earth",
+            "world"
+          ],
+          "right": [
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.15031245854486633
+        },
+        {
+          "phi_g_nats": 0.3351818278078387,
+          "converged": true,
+          "max_gradient": 6.1704519795459e-06,
+          "start_spread": 2.6210145165350696e-12,
+          "iterations": 110,
+          "si_gaussian_nats": 1.2655372281406931,
+          "left": [
+            "water",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": -0.4350870917104115
+        },
+        {
+          "phi_g_nats": 0.31168948308535604,
+          "converged": true,
+          "max_gradient": 3.7307845340732903e-06,
+          "start_spread": 3.3741898164407758e-12,
+          "iterations": 141,
+          "si_gaussian_nats": 0.7742122589558291,
+          "left": [
+            "water",
+            "wood",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "fire",
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": -0.17819635128344594
+        },
+        {
+          "phi_g_nats": 0.313284423111031,
+          "converged": true,
+          "max_gradient": 1.224153002112723e-06,
+          "start_spread": 3.142375248899043e-12,
+          "iterations": 122,
+          "si_gaussian_nats": 1.1889045619024645,
+          "left": [
+            "water",
+            "fire",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": -0.3590525129048627
+        },
+        {
+          "phi_g_nats": 0.21774026102074195,
+          "converged": true,
+          "max_gradient": 2.2616024188593007e-06,
+          "start_spread": 3.1716851367491472e-12,
+          "iterations": 194,
+          "si_gaussian_nats": 0.4050748622047604,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": -0.2850414582050195
+        },
+        {
+          "phi_g_nats": 0.3071542958507605,
+          "converged": true,
+          "max_gradient": 9.351403716050397e-07,
+          "start_spread": 3.659295089164516e-12,
+          "iterations": 129,
+          "si_gaussian_nats": 1.147908435392747,
+          "left": [
+            "water",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "wood",
+            "fire"
+          ],
+          "validation_predictive_cut_penalty": -0.3516869122941908
+        },
+        {
+          "phi_g_nats": 0.18214706290104044,
+          "converged": true,
+          "max_gradient": 3.4372147688021433e-06,
+          "start_spread": 1.7625900738948985e-11,
+          "iterations": 151,
+          "si_gaussian_nats": 0.4778593625486365,
+          "left": [
+            "water",
+            "wood",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "fire"
+          ],
+          "validation_predictive_cut_penalty": -0.12131353960246472
+        },
+        {
+          "phi_g_nats": 0.1679642268499073,
+          "converged": true,
+          "max_gradient": 3.442017653059229e-06,
+          "start_spread": 6.305178601451189e-12,
+          "iterations": 143,
+          "si_gaussian_nats": 0.9306953130625146,
+          "left": [
+            "water",
+            "fire",
+            "earth",
+            "metal",
+            "world"
+          ],
+          "right": [
+            "wood"
+          ],
+          "validation_predictive_cut_penalty": 0.047161730129615456
+        }
+      ],
+      "meaning": "Projected Gaussian Phi_G; held-out cut score is separate; not IIT3/4 Phi."
+    },
+    "body_only_lag1": {
+      "lag": 1,
+      "ntrain": 127,
+      "nvalid": 63,
+      "ntest": 65,
+      "dimensions": 10,
+      "inactive_channels": [],
+      "mutual_information_gaussian_nats": 3.417781831452782,
+      "minimum_projected_phi_g": {
+        "phi_g_nats": 0.15504440566239008,
+        "converged": true,
+        "max_gradient": 6.3705280448834265e-06,
+        "start_spread": 4.340616754916482e-11,
+        "iterations": 300,
+        "si_gaussian_nats": 0.27183317980367505,
+        "left": [
+          "water"
+        ],
+        "right": [
+          "wood",
+          "fire",
+          "earth",
+          "metal"
+        ],
+        "validation_predictive_cut_penalty": -0.20708587891667848
+      },
+      "validation_selected_partition": {
+        "phi_g_nats": 0.24733280358729104,
+        "converged": true,
+        "max_gradient": 2.805023233291415e-06,
+        "start_spread": 2.255173825460588e-11,
+        "iterations": 238,
+        "si_gaussian_nats": 0.6551232741465531,
+        "left": [
+          "water",
+          "wood",
+          "metal"
+        ],
+        "right": [
+          "fire",
+          "earth"
+        ],
+        "validation_predictive_cut_penalty": -1.3547468485104721
+      },
+      "heldout_predictive_cut_penalty": {
+        "mean": -2.5487477355887966,
+        "ci95": [
+          -3.674490515682748,
+          -1.5941217499502018
+        ],
+        "samples": 65,
+        "bootstrap_block": 8
+      },
+      "full_vs_no_history_nll_improvement": {
+        "mean": -12.39295478012705,
+        "ci95": [
+          -33.23647817721479,
+          6.040988154758486
+        ],
+        "samples": 65,
+        "bootstrap_block": 8
+      },
+      "all_converged": true,
+      "gaussian_bounds_ok": true,
+      "partitions": [
+        {
+          "phi_g_nats": 0.15504440566239008,
+          "converged": true,
+          "max_gradient": 6.3705280448834265e-06,
+          "start_spread": 4.340616754916482e-11,
+          "iterations": 300,
+          "si_gaussian_nats": 0.27183317980367505,
+          "left": [
+            "water"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.20708587891667848
+        },
+        {
+          "phi_g_nats": 0.26501038681141686,
+          "converged": true,
+          "max_gradient": 8.281150566975279e-06,
+          "start_spread": 3.163158623920026e-11,
+          "iterations": 229,
+          "si_gaussian_nats": 0.6244342691494653,
+          "left": [
+            "water",
+            "wood"
+          ],
+          "right": [
+            "fire",
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -1.2387532706095086
+        },
+        {
+          "phi_g_nats": 0.3313394198119486,
+          "converged": true,
+          "max_gradient": 9.415607184773804e-06,
+          "start_spread": 2.0394352873154276e-11,
+          "iterations": 255,
+          "si_gaussian_nats": 0.5949573686431275,
+          "left": [
+            "water",
+            "fire"
+          ],
+          "right": [
+            "wood",
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.5241755083272003
+        },
+        {
+          "phi_g_nats": 0.3654623045783518,
+          "converged": true,
+          "max_gradient": 1.5521322068972166e-06,
+          "start_spread": 3.9821479447255115e-11,
+          "iterations": 237,
+          "si_gaussian_nats": 0.5355329553017096,
+          "left": [
+            "water",
+            "wood",
+            "fire"
+          ],
+          "right": [
+            "earth",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -1.0342472162206657
+        },
+        {
+          "phi_g_nats": 0.284829316629696,
+          "converged": true,
+          "max_gradient": 3.0575410983982284e-05,
+          "start_spread": 7.398526236102043e-12,
+          "iterations": 284,
+          "si_gaussian_nats": 0.5608350223373875,
+          "left": [
+            "water",
+            "earth"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.8656979171331385
+        },
+        {
+          "phi_g_nats": 0.3185127590324095,
+          "converged": true,
+          "max_gradient": 3.7287631309774435e-06,
+          "start_spread": 7.595701845275471e-12,
+          "iterations": 233,
+          "si_gaussian_nats": 0.6964600375156209,
+          "left": [
+            "water",
+            "wood",
+            "earth"
+          ],
+          "right": [
+            "fire",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -1.0204392604345431
+        },
+        {
+          "phi_g_nats": 0.2874981732988271,
+          "converged": true,
+          "max_gradient": 5.923167821487597e-06,
+          "start_spread": 3.6481040410762944e-11,
+          "iterations": 181,
+          "si_gaussian_nats": 0.6568142087103617,
+          "left": [
+            "water",
+            "fire",
+            "earth"
+          ],
+          "right": [
+            "wood",
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -1.2643861056003667
+        },
+        {
+          "phi_g_nats": 0.2351696395949423,
+          "converged": true,
+          "max_gradient": 9.393413581152876e-06,
+          "start_spread": 2.3916868485684972e-11,
+          "iterations": 151,
+          "si_gaussian_nats": 0.3714790287310832,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "earth"
+          ],
+          "right": [
+            "metal"
+          ],
+          "validation_predictive_cut_penalty": -0.881732689261455
+        },
+        {
+          "phi_g_nats": 0.2843539548463161,
+          "converged": true,
+          "max_gradient": 6.0752172076465234e-06,
+          "start_spread": 2.8674840280018543e-11,
+          "iterations": 248,
+          "si_gaussian_nats": 0.5094508177859449,
+          "left": [
+            "water",
+            "metal"
+          ],
+          "right": [
+            "wood",
+            "fire",
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": -0.7450720893497381
+        },
+        {
+          "phi_g_nats": 0.24733280358729104,
+          "converged": true,
+          "max_gradient": 2.805023233291415e-06,
+          "start_spread": 2.255173825460588e-11,
+          "iterations": 238,
+          "si_gaussian_nats": 0.6551232741465531,
+          "left": [
+            "water",
+            "wood",
+            "metal"
+          ],
+          "right": [
+            "fire",
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": -1.3547468485104721
+        },
+        {
+          "phi_g_nats": 0.30666551209302817,
+          "converged": true,
+          "max_gradient": 9.936656215306704e-06,
+          "start_spread": 1.553601691739459e-11,
+          "iterations": 255,
+          "si_gaussian_nats": 0.6463133063154807,
+          "left": [
+            "water",
+            "fire",
+            "metal"
+          ],
+          "right": [
+            "wood",
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": -0.5992185099056822
+        },
+        {
+          "phi_g_nats": 0.17825635112930271,
+          "converged": true,
+          "max_gradient": 2.4921228493260422e-05,
+          "start_spread": 5.566214156260685e-12,
+          "iterations": 286,
+          "si_gaussian_nats": 0.3598551091799269,
+          "left": [
+            "water",
+            "wood",
+            "fire",
+            "metal"
+          ],
+          "right": [
+            "earth"
+          ],
+          "validation_predictive_cut_penalty": -0.5478853301640648
+        },
+        {
+          "phi_g_nats": 0.3547553130622738,
+          "converged": true,
+          "max_gradient": 9.2232446403585e-06,
+          "start_spread": 2.106759211528697e-12,
+          "iterations": 276,
+          "si_gaussian_nats": 0.6001657590571199,
+          "left": [
+            "water",
+            "earth",
+            "metal"
+          ],
+          "right": [
+            "wood",
+            "fire"
+          ],
+          "validation_predictive_cut_penalty": -0.9516192251828711
+        },
+        {
+          "phi_g_nats": 0.24105669897072968,
+          "converged": true,
+          "max_gradient": 3.3232749458457777e-06,
+          "start_spread": 1.516831105163874e-11,
+          "iterations": 265,
+          "si_gaussian_nats": 0.5297675789679275,
+          "left": [
+            "water",
+            "wood",
+            "earth",
+            "metal"
+          ],
+          "right": [
+            "fire"
+          ],
+          "validation_predictive_cut_penalty": -0.7575186225474172
+        },
+        {
+          "phi_g_nats": 0.19562658338506012,
+          "converged": true,
+          "max_gradient": 2.041058005954342e-05,
+          "start_spread": 1.3663736808666727e-11,
+          "iterations": 270,
+          "si_gaussian_nats": 0.4955270550558142,
+          "left": [
+            "water",
+            "fire",
+            "earth",
+            "metal"
+          ],
+          "right": [
+            "wood"
+          ],
+          "validation_predictive_cut_penalty": -0.8192434032876926
+        }
+      ],
+      "meaning": "Projected Gaussian Phi_G; held-out cut score is separate; not IIT3/4 Phi."
+    }
+  },
+  "sampling_control": {
+    "primary_phi_g_nats": 0.16842167058414415,
+    "surrogate_count": 39,
+    "block_size": 8,
+    "empirical_upper_tail_p": 0.175,
+    "surrogate_median": 0.13025195663624212,
+    "analyzer_source_sha256": "01f4c19dbd8f6c4a8ee81d79da7c70065ef42b26c21be6ac0c432e676f84d929"
+  },
+  "covariance_regularization_sensitivity": {
+    "1e-05": 0.16849133103634273,
+    "0.001": 0.1677962213511277
+  },
+  "post_primary_six_coordinate_sensitivity": {
+    "primary_phi_g_nats": 0.03234032742309645,
+    "empirical_upper_tail_p": 0.225,
+    "surrogate_median": 0.021502679413570036,
+    "status": "Post-primary exploratory dimension sensitivity; no new body execution",
+    "channels": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "analyzer_source_sha256": "b363ff2e27d2628f8cabe4781815822df4d903fa638e529d862230c2759d2697"
+  },
+  "status": {
+    "actual_online_recall_has_whole_loop_causal_effect": true,
+    "robust_projected_phi_evidence": false,
+    "exact_IIT3_or_IIT4": false,
+    "body_or_objective_changed": false,
+    "theorem_coverage_increase": 0
+  },
+  "interpretation": "Phi_G fitted minimum .16842 nats/turn; shuffled background median .13025 and tail .175, heldout density generalization fails. Retain as exploratory. Online read ablation has direct same-start effect and changes actual world from turn2. Constant water after ablation makes its projected Phi zero trivially; not independent validation.",
+  "artifacts": "E:\\cgb_closed_loop_information_20261105\\main"
+}

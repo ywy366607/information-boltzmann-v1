@@ -1,0 +1,74 @@
+{
+  "status": "complete",
+  "actual_case": 13,
+  "actual_live": {
+    "prediction": "188300.\n\nThe grass is green.\n",
+    "reference": "9346695",
+    "correct": false
+  },
+  "same_incoming_frozen_read": {
+    "condition": "current_reads",
+    "index": 13,
+    "references": [
+      "9346695"
+    ],
+    "prediction": "188300.\n\nThe grass is green.\n",
+    "official_contains": false,
+    "standalone_number": false,
+    "first_number_exact": false,
+    "first_number_prefix": false,
+    "first_number": "188300",
+    "incoming_seen": 446861,
+    "outgoing_seen": 448792,
+    "optimizer_updates": 0,
+    "question_resets": 0
+  },
+  "same_incoming_frozen_no_extra_read": {
+    "condition": "current_native_only",
+    "index": 13,
+    "references": [
+      "9346695"
+    ],
+    "prediction": "934. The number is 934. The special magic",
+    "official_contains": false,
+    "standalone_number": false,
+    "first_number_exact": false,
+    "first_number_prefix": false,
+    "first_number": "934",
+    "incoming_seen": 446861,
+    "outgoing_seen": 448792,
+    "optimizer_updates": 0,
+    "question_resets": 0
+  },
+  "pending_external_targets_suppressed_in_research_only": 11,
+  "teaching_update_is_required_for_failure": false,
+  "retained_research_updates": 0,
+  "question_state_resets": 0,
+  "new_lean_coverage": 0,
+  "raw_reports": [
+    "D:\\information-boltzmann-v1\\scratch\\marked_actual_update_timing_20261108.json",
+    "D:\\information-boltzmann-v1\\scratch\\marked_actual_native_only_20261108.json"
+  ],
+  "complete_answer_restored_by_removing_extra_read": false,
+  "correct_digit_prefix_length": {
+    "actual_and_frozen_reads": 0,
+    "frozen_native_only": 3
+  },
+  "actual_participation": {
+    "fact_first_global_token": 447056,
+    "fact_first_local_input_position": 80,
+    "fact_last_local_input_position": 86,
+    "fact_start_to_query_tokens": 1720,
+    "available_local_inputs": 128,
+    "executed_legacy_replay_inputs": 65,
+    "layer_2_slot": 28,
+    "layer_13_slot": 24,
+    "source_time": 447040,
+    "direct_fact_write_is_in_legacy_replay": false,
+    "held_later_states_can_still_contain_fact": true
+  },
+  "configured_2048_test_case_start_to_query_tokens": [
+    1066,
+    1297
+  ]
+}

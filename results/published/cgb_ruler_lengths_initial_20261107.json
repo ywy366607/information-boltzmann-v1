@@ -1,0 +1,221 @@
+{
+  "status": "complete",
+  "kind": "official_ruler_configured_subset",
+  "checkpoint": "E:\\cgb_gdn340_probe\\read_cadence_20261107\\migrated.pt",
+  "checkpoint_sha256": "273d3285d193755c4eec440a05619578160cc8be0f7d5f381f0e3221e1705206",
+  "source_updates": 491,
+  "manifest_sha256": "75303de70874b06b84645db547d852fdb72396a9a4e30eab0d2dff6c40bd0d4b",
+  "official_revision": "db43f92ff634bbce1c33d1fb15858aec4bba509a",
+  "persistent_optimizer_updates": 0,
+  "protocol": "Frozen official RULER prompts on the complete bounded-recall GDN.\n\nEach independent request restores the incoming individual, starts its native\ncache empty, and consumes its prompt once. Prompt writes are temporary; generated\ntokens advance a local native cache but never become stored training episodes.\nNo optimizer update, gold-dependent stopping, or answer-conditioned retrieval.\n",
+  "results": [
+    {
+      "task": "niah_single_1",
+      "length": 512,
+      "samples": [
+        {
+          "index": 0,
+          "prediction": ": 4697997. The special magic number for level-step-grandmother is: 4697997. The special magic number for level-step-grandmother is: 4697997. The special magic number for level-step-grandmother is: 4697997. The special magic number for level-step-grandmother is: 4697997. The special magic number for level-step-grandmother is: 4697997. The special magic number for level-step",
+          "references": [
+            "4697997"
+          ],
+          "prompt_tokens": 365,
+          "generated_tokens": 128,
+          "answer_nll": 1.9769678115844727,
+          "gold_tokens": 8,
+          "prompt_observations": 2,
+          "answer_position": 70,
+          "answer_distance_tokens": 295,
+          "seconds": 45.24100852012634
+        },
+        {
+          "index": 1,
+          "prediction": ": 3819658. The special magic number for kindhearted-minister mentioned in the provided text is: 3819658. The special magic number for kindhearted-minister mentioned in the provided text is: 3819658. The special magic number for kindhearted-minister mentioned in the provided text is: 3819658. The special magic number for kindhearted-minister mentioned in the provided text is: 3819658. The special magic number for kindhearted-minister mentioned in the provided",
+          "references": [
+            "3819658"
+          ],
+          "prompt_tokens": 362,
+          "generated_tokens": 128,
+          "answer_nll": 1.8669072389602661,
+          "gold_tokens": 8,
+          "prompt_observations": 2,
+          "answer_position": 119,
+          "answer_distance_tokens": 243,
+          "seconds": 11.618813276290894
+        },
+        {
+          "index": 2,
+          "prediction": ": 2285231. The special magic number for toothful-plasterboard is: 2285231. The special magic number for toothful-plasterboard is: 2285231. The special magic number for toothful-plasterboard is: 2285231. The special magic number for toothful-plasterboard is: 2285231. The special magic number for toothful-plasterboard is: 2285231. The special magic number for toothful-",
+          "references": [
+            "2285231"
+          ],
+          "prompt_tokens": 365,
+          "generated_tokens": 128,
+          "answer_nll": 1.865675687789917,
+          "gold_tokens": 8,
+          "prompt_observations": 2,
+          "answer_position": 70,
+          "answer_distance_tokens": 295,
+          "seconds": 11.394222497940063
+        },
+        {
+          "index": 3,
+          "prediction": "4469128. The special magic number for exclusive-briefing is 4469128. The special magic number for exclusive-briefing is 4469128. The special magic number for exclusive-briefing is 4469128. The special magic number for exclusive-briefing is 4469128. The special magic number for exclusive-briefing is 4469128. The special magic number for exclusive-briefing is 4469128. The special magic number for",
+          "references": [
+            "4469128"
+          ],
+          "prompt_tokens": 359,
+          "generated_tokens": 128,
+          "answer_nll": 1.7318426370620728,
+          "gold_tokens": 8,
+          "prompt_observations": 2,
+          "answer_position": 143,
+          "answer_distance_tokens": 216,
+          "seconds": 11.293453931808472
+        }
+      ],
+      "max_new_tokens": 128,
+      "ruler_score": 100.0
+    },
+    {
+      "task": "niah_single_1",
+      "length": 2048,
+      "samples": [
+        {
+          "index": 0,
+          "prediction": "4469128. The special magic number for exclusive-briefing is 4469128. The special magic number for exclusive-briefing is 4469128. The special magic number for exclusive-briefing is 4469128. The special magic number for exclusive-briefing is 4469128. The special magic number for exclusive-briefing is 4469128. The special magic number for exclusive-briefing is 4469128. The special magic number for",
+          "references": [
+            "4469128"
+          ],
+          "prompt_tokens": 1909,
+          "generated_tokens": 128,
+          "answer_nll": 1.865799069404602,
+          "gold_tokens": 8,
+          "prompt_observations": 14,
+          "answer_position": 843,
+          "answer_distance_tokens": 1066,
+          "seconds": 21.497032642364502
+        },
+        {
+          "index": 1,
+          "prediction": "12. The special magic number for clammy-brochure is 12. The special magic number for clammy-brochure is 12. The special magic number for clammy-brochure is 12. The special magic number for clammy-brochure is 12. The special magic number for clammy-brochure is 12. The special magic number for clammy-brochure is 12. The special magic number for clammy-brochure is 12. The special magic number for",
+          "references": [
+            "1935852"
+          ],
+          "prompt_tokens": 1918,
+          "generated_tokens": 128,
+          "answer_nll": 2.3498830795288086,
+          "gold_tokens": 8,
+          "prompt_observations": 14,
+          "answer_position": 621,
+          "answer_distance_tokens": 1297,
+          "seconds": 22.16787362098694
+        },
+        {
+          "index": 2,
+          "prediction": ": 8663008. The special magic number for merciful-love is: 8663008. The special magic number for merciful-love is: 8663008. The special magic number for merciful-love is: 8663008. The special magic number for merciful-love is: 8663008. The special magic number for merciful-love is: 8663008. The special magic number for merciful-love is: 866300",
+          "references": [
+            "8663008"
+          ],
+          "prompt_tokens": 1909,
+          "generated_tokens": 128,
+          "answer_nll": 1.9031310081481934,
+          "gold_tokens": 8,
+          "prompt_observations": 14,
+          "answer_position": 1618,
+          "answer_distance_tokens": 291,
+          "seconds": 21.36347723007202
+        },
+        {
+          "index": 3,
+          "prediction": "4709210. The special magic number for level-turnover is 4709210. The special magic number for level-turnover is 4709210. The special magic number for level-turnover is 4709210. The special magic number for level-turnover is 4709210. The special magic number for level-turnover is 4709210. The special magic number for level-turnover is 4709210. The special magic number for",
+          "references": [
+            "4709210"
+          ],
+          "prompt_tokens": 1909,
+          "generated_tokens": 128,
+          "answer_nll": 2.1991405487060547,
+          "gold_tokens": 8,
+          "prompt_observations": 14,
+          "answer_position": 893,
+          "answer_distance_tokens": 1016,
+          "seconds": 21.678690433502197
+        }
+      ],
+      "max_new_tokens": 128,
+      "ruler_score": 75.0
+    },
+    {
+      "task": "niah_single_1",
+      "length": 4096,
+      "samples": [
+        {
+          "index": 0,
+          "prediction": "10. The special magic number for clammy-brochure is 10. The special magic number for clammy-brochure is 10. The special magic number for clammy-brochure is 10. The special magic number for clammy-brochure is 10. The special magic number for clammy-brochure is 10. The special magic number for clammy-brochure is 10. The special magic number for clammy-brochure is 10. The special magic number for",
+          "references": [
+            "1935852"
+          ],
+          "prompt_tokens": 3968,
+          "generated_tokens": 128,
+          "answer_nll": 2.7325193881988525,
+          "gold_tokens": 8,
+          "prompt_observations": 31,
+          "answer_position": 1221,
+          "answer_distance_tokens": 2747,
+          "seconds": 40.271517753601074
+        },
+        {
+          "index": 1,
+          "prediction": "8663008. The special magic number for merciful-love is 8663008. The special magic number for merciful-love is 8663008. The special magic number for merciful-love is 8663008. The special magic number for merciful-love is 8663008. The special magic number for merciful-love is 8663008. The special magic number for merciful-love is 8663008. The special magic number for",
+          "references": [
+            "8663008"
+          ],
+          "prompt_tokens": 3959,
+          "generated_tokens": 128,
+          "answer_nll": 1.94002103805542,
+          "gold_tokens": 8,
+          "prompt_observations": 30,
+          "answer_position": 3193,
+          "answer_distance_tokens": 766,
+          "seconds": 38.95408082008362
+        },
+        {
+          "index": 2,
+          "prediction": "4709210. The special magic number for level-turnover is 4709210. The special magic number for level-turnover is 4709210. The special magic number for level-turnover is 4709210. The special magic number for level-turnover is 4709210. The special magic number for level-turnover is 4709210. The special magic number for level-turnover is 4709210. The special magic number for",
+          "references": [
+            "4709210"
+          ],
+          "prompt_tokens": 3959,
+          "generated_tokens": 128,
+          "answer_nll": 2.9496562480926514,
+          "gold_tokens": 8,
+          "prompt_observations": 30,
+          "answer_position": 1768,
+          "answer_distance_tokens": 2191,
+          "seconds": 38.39479923248291
+        },
+        {
+          "index": 3,
+          "prediction": "10. The special magic number for tightfisted-coverage is 10. The special magic number for tightfisted-coverage is 10. The special magic number for tightfisted-coverage is 10. The special magic number for tightfisted-coverage is 10. The special magic number for tightfisted-coverage is 10. The special magic number for tightfisted-coverage is 10. The special magic number for tightfisted-coverage is 10. The special magic number for tightfisted-coverage is",
+          "references": [
+            "7158607"
+          ],
+          "prompt_tokens": 3965,
+          "generated_tokens": 128,
+          "answer_nll": 2.4195101261138916,
+          "gold_tokens": 8,
+          "prompt_observations": 30,
+          "answer_position": 2370,
+          "answer_distance_tokens": 1595,
+          "seconds": 38.252002239227295
+        }
+      ],
+      "max_new_tokens": 128,
+      "ruler_score": 50.0
+    }
+  ],
+  "seconds": 323.1657395362854,
+  "complete_state_restored": true,
+  "source_checkpoint_unchanged": true,
+  "peak_cuda_bytes": 1273963520
+}

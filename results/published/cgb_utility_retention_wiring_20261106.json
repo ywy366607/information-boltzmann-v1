@@ -1,0 +1,500 @@
+{
+  "status": "passed",
+  "checkpoint": "E:\\cgb_gdn340_probe\\null_read_continuous_20261106\\null_last.pt",
+  "checkpoint_sha256": "a957324b6751817e64c3341a7a428a24cb15a36cac4ca0736034e73f6bd27984",
+  "source_updates": 299,
+  "dataset_revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+  "protocol": {
+    "offset": 20992,
+    "window": 128,
+    "max_retained_updates": 8,
+    "scope": "mechanism/complete-restore admission only, not language convergence or validation gain",
+    "stopping": "stop at first positive old-record removal benefit with increased retention, at most eight actual updates",
+    "comparisons": "first update against original dose-based retention; all weights/Adam/cache must be identical before admission histories diverge"
+  },
+  "executed_optimizer_updates": 5,
+  "records": [
+    {
+      "nll_sum": 420.76666259765625,
+      "target_tokens": 128,
+      "traffic": {},
+      "supervised_tokens": 128,
+      "supervised_nll_sum": 420.76666259765625,
+      "ce": 3.2872395515441895,
+      "last_target_nll": 1.5023746490478516,
+      "sigreg": 56.9815673828125,
+      "reads": {
+        "1": {
+          "ages_tokens": [
+            2368,
+            1856
+          ],
+          "weights": [
+            0.3904646635055542,
+            0.3531703054904938
+          ],
+          "slots": [
+            10,
+            4
+          ],
+          "query_position": 0,
+          "null_weight": 0.2563650608062744
+        },
+        "12": {
+          "ages_tokens": [
+            2368,
+            1088
+          ],
+          "weights": [
+            0.46571409702301025,
+            0.2619987428188324
+          ],
+          "slots": [
+            19,
+            28
+          ],
+          "query_position": 0,
+          "null_weight": 0.27228713035583496
+        }
+      },
+      "diagnostics": {},
+      "credit": {
+        "1": {
+          "records": 2,
+          "participations": 2,
+          "stale": 0,
+          "credit_sum": -0.03254707157611847,
+          "retention_utility": {
+            "records": 2,
+            "stale": 0,
+            "observations": [
+              {
+                "slot": 10,
+                "version": 92,
+                "benefit": -0.029026031494140625,
+                "preference_before": 0.0,
+                "preference_after": -0.7615912556648254
+              },
+              {
+                "slot": 4,
+                "version": 93,
+                "benefit": -0.027500152587890625,
+                "preference_before": 0.0,
+                "preference_after": -0.7615912556648254
+              }
+            ]
+          },
+          "null_bias_gradient": -0.03254705294966698,
+          "null_key_gradient_norm": 0.06827209144830704
+        },
+        "12": {
+          "records": 2,
+          "participations": 2,
+          "stale": 0,
+          "credit_sum": -0.20884470641613007,
+          "retention_utility": {
+            "records": 2,
+            "stale": 0,
+            "observations": [
+              {
+                "slot": 19,
+                "version": 92,
+                "benefit": -0.5276985168457031,
+                "preference_before": 0.0,
+                "preference_after": -0.761591374874115
+              },
+              {
+                "slot": 28,
+                "version": 93,
+                "benefit": -0.23393630981445312,
+                "preference_before": 0.0,
+                "preference_after": -0.7615913152694702
+              }
+            ]
+          },
+          "null_bias_gradient": -0.20884473621845245,
+          "null_key_gradient_norm": 0.6393116116523743
+        }
+      },
+      "updates": 300,
+      "tokens": 378368,
+      "recurrence_bytes": 25755648,
+      "experience_cpu_bytes": 79682190,
+      "utility_observations": [
+        {
+          "layer": 1,
+          "age_tokens": 2368,
+          "slot": 10,
+          "version": 92,
+          "benefit": -0.029026031494140625,
+          "preference_before": 0.0,
+          "preference_after": -0.7615912556648254
+        },
+        {
+          "layer": 1,
+          "age_tokens": 1856,
+          "slot": 4,
+          "version": 93,
+          "benefit": -0.027500152587890625,
+          "preference_before": 0.0,
+          "preference_after": -0.7615912556648254
+        },
+        {
+          "layer": 12,
+          "age_tokens": 2368,
+          "slot": 19,
+          "version": 92,
+          "benefit": -0.5276985168457031,
+          "preference_before": 0.0,
+          "preference_after": -0.761591374874115
+        },
+        {
+          "layer": 12,
+          "age_tokens": 1088,
+          "slot": 28,
+          "version": 93,
+          "benefit": -0.23393630981445312,
+          "preference_before": 0.0,
+          "preference_after": -0.7615913152694702
+        }
+      ],
+      "positive_old_retention_witnesses": []
+    },
+    {
+      "nll_sum": 434.86456298828125,
+      "target_tokens": 128,
+      "traffic": {},
+      "supervised_tokens": 128,
+      "supervised_nll_sum": 434.86456298828125,
+      "ce": 3.3973793983459473,
+      "last_target_nll": 4.2970967292785645,
+      "sigreg": 57.017555236816406,
+      "reads": {
+        "1": {
+          "ages_tokens": [
+            320,
+            1088
+          ],
+          "weights": [
+            0.3403548002243042,
+            0.33651435375213623
+          ],
+          "slots": [
+            30,
+            27
+          ],
+          "query_position": 0,
+          "null_weight": 0.32313084602355957
+        },
+        "12": {
+          "ages_tokens": [
+            1216,
+            1344
+          ],
+          "weights": [
+            0.3200766146183014,
+            0.2932685911655426
+          ],
+          "slots": [
+            28,
+            24
+          ],
+          "query_position": 0,
+          "null_weight": 0.386654794216156
+        }
+      },
+      "diagnostics": {},
+      "credit": {
+        "1": {
+          "records": 2,
+          "participations": 2,
+          "stale": 0,
+          "credit_sum": -0.05047304928302765,
+          "retention_utility": {
+            "records": 2,
+            "stale": 0,
+            "observations": [
+              {
+                "slot": 30,
+                "version": 92,
+                "benefit": -0.015163421630859375,
+                "preference_before": 0.0,
+                "preference_after": -0.7615910768508911
+              },
+              {
+                "slot": 27,
+                "version": 93,
+                "benefit": -0.025676727294921875,
+                "preference_before": 0.0,
+                "preference_after": -0.7615911960601807
+              }
+            ]
+          },
+          "null_bias_gradient": -0.05047304183244705,
+          "null_key_gradient_norm": 0.07072599232196808
+        },
+        "12": {
+          "records": 2,
+          "participations": 2,
+          "stale": 0,
+          "credit_sum": -0.21729174256324768,
+          "retention_utility": {
+            "records": 2,
+            "stale": 0,
+            "observations": [
+              {
+                "slot": 28,
+                "version": 93,
+                "benefit": -0.23198699951171875,
+                "preference_before": -0.7615913152694702,
+                "preference_after": -0.7614946365356445
+              },
+              {
+                "slot": 24,
+                "version": 92,
+                "benefit": -0.22695541381835938,
+                "preference_before": 0.0,
+                "preference_after": -0.7615913152694702
+              }
+            ]
+          },
+          "null_bias_gradient": -0.21729175746440887,
+          "null_key_gradient_norm": 0.4797878861427307
+        }
+      },
+      "updates": 301,
+      "tokens": 378496,
+      "recurrence_bytes": 25755648,
+      "experience_cpu_bytes": 79682190,
+      "utility_observations": [
+        {
+          "layer": 1,
+          "age_tokens": 320,
+          "slot": 30,
+          "version": 92,
+          "benefit": -0.015163421630859375,
+          "preference_before": 0.0,
+          "preference_after": -0.7615910768508911
+        },
+        {
+          "layer": 1,
+          "age_tokens": 1088,
+          "slot": 27,
+          "version": 93,
+          "benefit": -0.025676727294921875,
+          "preference_before": 0.0,
+          "preference_after": -0.7615911960601807
+        },
+        {
+          "layer": 12,
+          "age_tokens": 1216,
+          "slot": 28,
+          "version": 93,
+          "benefit": -0.23198699951171875,
+          "preference_before": -0.7615913152694702,
+          "preference_after": -0.7614946365356445
+        },
+        {
+          "layer": 12,
+          "age_tokens": 1344,
+          "slot": 24,
+          "version": 92,
+          "benefit": -0.22695541381835938,
+          "preference_before": 0.0,
+          "preference_after": -0.7615913152694702
+        }
+      ],
+      "positive_old_retention_witnesses": []
+    },
+    {
+      "nll_sum": 431.6005859375,
+      "target_tokens": 128,
+      "traffic": {},
+      "supervised_tokens": 128,
+      "supervised_nll_sum": 431.6005859375,
+      "ce": 3.3718795776367188,
+      "last_target_nll": 0.0007348936051130295,
+      "sigreg": 57.71112823486328,
+      "reads": {
+        "1": {
+          "ages_tokens": [
+            1856,
+            1216
+          ],
+          "weights": [
+            0.3307156562805176,
+            0.3258359432220459
+          ],
+          "slots": [
+            2,
+            27
+          ],
+          "query_position": 0,
+          "null_weight": 0.3434484004974365
+        },
+        "12": {
+          "ages_tokens": [
+            1856,
+            1344
+          ],
+          "weights": [
+            0.31157103180885315,
+            0.30780383944511414
+          ],
+          "slots": [
+            20,
+            28
+          ],
+          "query_position": 0,
+          "null_weight": 0.3806251287460327
+        }
+      },
+      "diagnostics": {},
+      "credit": {
+        "1": {
+          "records": 2,
+          "participations": 2,
+          "stale": 0,
+          "credit_sum": 0.008470425382256508,
+          "retention_utility": {
+            "records": 2,
+            "stale": 0,
+            "observations": [
+              {
+                "slot": 2,
+                "version": 93,
+                "benefit": 0.018787384033203125,
+                "preference_before": 0.0,
+                "preference_after": 0.7615911364555359
+              },
+              {
+                "slot": 27,
+                "version": 93,
+                "benefit": 0.01275634765625,
+                "preference_before": -0.7615911960601807,
+                "preference_after": -0.2625115215778351
+              }
+            ]
+          },
+          "null_bias_gradient": 0.008470424450933933,
+          "null_key_gradient_norm": 0.013688214123249054
+        },
+        "12": {
+          "records": 2,
+          "participations": 2,
+          "stale": 0,
+          "credit_sum": -0.12076164782047272,
+          "retention_utility": {
+            "records": 2,
+            "stale": 0,
+            "observations": [
+              {
+                "slot": 20,
+                "version": 92,
+                "benefit": -0.39174652099609375,
+                "preference_before": 0.0,
+                "preference_after": -0.761591374874115
+              },
+              {
+                "slot": 28,
+                "version": 93,
+                "benefit": -0.45306396484375,
+                "preference_before": -0.7614946365356445,
+                "preference_after": -0.7491782307624817
+              }
+            ]
+          },
+          "null_bias_gradient": -0.12076164036989212,
+          "null_key_gradient_norm": 0.299070805311203
+        }
+      },
+      "updates": 302,
+      "tokens": 378624,
+      "recurrence_bytes": 25755648,
+      "experience_cpu_bytes": 79682190,
+      "utility_observations": [
+        {
+          "layer": 1,
+          "age_tokens": 1856,
+          "slot": 2,
+          "version": 93,
+          "benefit": 0.018787384033203125,
+          "preference_before": 0.0,
+          "preference_after": 0.7615911364555359,
+          "survives_current_admission": true
+        },
+        {
+          "layer": 1,
+          "age_tokens": 1216,
+          "slot": 27,
+          "version": 93,
+          "benefit": 0.01275634765625,
+          "preference_before": -0.7615911960601807,
+          "preference_after": -0.2625115215778351,
+          "survives_current_admission": true
+        },
+        {
+          "layer": 12,
+          "age_tokens": 1856,
+          "slot": 20,
+          "version": 92,
+          "benefit": -0.39174652099609375,
+          "preference_before": 0.0,
+          "preference_after": -0.761591374874115,
+          "survives_current_admission": true
+        },
+        {
+          "layer": 12,
+          "age_tokens": 1344,
+          "slot": 28,
+          "version": 93,
+          "benefit": -0.45306396484375,
+          "preference_before": -0.7614946365356445,
+          "preference_after": -0.7491782307624817,
+          "survives_current_admission": true
+        }
+      ],
+      "positive_old_retention_witnesses": [
+        {
+          "layer": 1,
+          "age_tokens": 1856,
+          "slot": 2,
+          "version": 93,
+          "benefit": 0.018787384033203125,
+          "preference_before": 0.0,
+          "preference_after": 0.7615911364555359,
+          "survives_current_admission": true
+        },
+        {
+          "layer": 1,
+          "age_tokens": 1216,
+          "slot": 27,
+          "version": 93,
+          "benefit": 0.01275634765625,
+          "preference_before": -0.7615911960601807,
+          "preference_after": -0.2625115215778351,
+          "survives_current_admission": true
+        }
+      ]
+    }
+  ],
+  "migration_forward_max_difference": 0.0,
+  "first_update_weights_adam_and_cache_exact": true,
+  "next_update_restore_exact": true,
+  "retained_new_updates": 3,
+  "training_tokens": 384,
+  "extra_buffer_bytes": 1024,
+  "candidate": "E:\\cgb_gdn340_probe\\utility_retention_20261106\\candidate.pt",
+  "complete_disk_restore_exact": true,
+  "source_checkpoint_unchanged": true,
+  "positive_old_retention_witnesses": 2,
+  "seconds": 77.63418499999989,
+  "peak_cuda_allocated_bytes": 1467992064,
+  "final_witness_survival_verified_from_disk": true,
+  "source_stream_sha256": "962b54dff7fb9c8702630a7d98eb4835dd5e6c64298010fcefa2e9c5fdb57714",
+  "executed_stream_sha256": "fec87e308a3300bd893c65303433086d707e084f5da825976fc3911d2892b833",
+  "shared_regression": {
+    "files": 33,
+    "passed": 230
+  }
+}

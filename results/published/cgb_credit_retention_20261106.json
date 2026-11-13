@@ -1,0 +1,223 @@
+{
+  "kind": "read_credit_consolidation_real_text_wiring",
+  "status": "passed",
+  "checkpoint": "E:\\cgb_gdn340_probe\\eligibility_misassigned_20261106\\matched_last.pt",
+  "seed": "restored checkpoint RNG",
+  "checkpoint_sha256": "4b3d4c92476e857c461e70376ad37da91932b0946edb676d9ca8ad0ed6bc9337",
+  "source_updates": 227,
+  "layers": {
+    "1": {
+      "changed_surviving_records": 2,
+      "changed_over_128_tokens": 2,
+      "strengthened": 1,
+      "weakened": 1,
+      "max_preference_change": 0.7615895867347717,
+      "max_lifetime_multiplier_change": 1.1416778564453125,
+      "observed_multiplier_min": 0.4669228494167328,
+      "observed_multiplier_max": 2.1416807174682617,
+      "next_credit_victim": 9,
+      "next_oldest_victim": 3,
+      "victim_differs_from_oldest": true,
+      "preference": [
+        0.0,
+        0.0,
+        0.0,
+        -0.47473374009132385,
+        0.7615903615951538,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.7615912556648254,
+        0.0,
+        0.0,
+        0.0,
+        0.7615895867347717,
+        0.0,
+        -0.33692634105682373,
+        0.0,
+        -0.7615910768508911,
+        0.7615909576416016,
+        -0.7615894675254822,
+        0.0,
+        -0.7615898251533508,
+        0.18909145891666412,
+        0.3790200352668762,
+        0.0,
+        0.0,
+        0.0,
+        -0.761589527130127,
+        0.0,
+        0.0,
+        0.6916374564170837,
+        -0.7615904211997986
+      ],
+      "cpu_storage_bytes": 39840583,
+      "storage_bytes_delta": 0
+    },
+    "12": {
+      "changed_surviving_records": 2,
+      "changed_over_128_tokens": 2,
+      "strengthened": 1,
+      "weakened": 1,
+      "max_preference_change": 0.7615911960601807,
+      "max_lifetime_multiplier_change": 1.141681432723999,
+      "observed_multiplier_min": 0.46692293882369995,
+      "observed_multiplier_max": 2.141681432723999,
+      "next_credit_victim": 4,
+      "next_oldest_victim": 3,
+      "victim_differs_from_oldest": true,
+      "preference": [
+        0.0,
+        0.0,
+        0.0,
+        0.7615908980369568,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.7615911364555359,
+        0.237307608127594,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.7615912556648254,
+        0.1034298986196518,
+        0.0,
+        -0.39355331659317017,
+        0.6527423858642578,
+        0.0,
+        0.0,
+        0.0,
+        -0.7615906596183777,
+        0.0,
+        0.0,
+        0.7615911960601807,
+        0.0,
+        -0.7615910768508911
+      ],
+      "cpu_storage_bytes": 39840583,
+      "storage_bytes_delta": 0
+    }
+  },
+  "consolidation_rule": "retention",
+  "capacity": 64,
+  "real_tokens": 128,
+  "executed_updates": 2,
+  "training_data": "OWT real stream offset 14336",
+  "token_sha256": "408f77858edf7e6c501912b5afe54386b269dea3fa3153bd64f8d5ef68838b9a",
+  "source_sha256": "d2c2d5ed0a43708756f86504c10e8acf3108d89b47e337f3e258d53499705512",
+  "hypothesis": "current outcome changes both read preference and age-adjusted retention",
+  "scope": "one real update plus exact repeat; not learned long-term latch or NLL advantage",
+  "migration_forward_max_difference": 0.0,
+  "migration_only_changes_retention_policy": true,
+  "migrated_checkpoint": "E:\\cgb_gdn340_probe\\credit_retention_20261106\\migrated.pt",
+  "migrated_new_updates": 0,
+  "migration_disk_restore_exact": true,
+  "update": {
+    "nll_sum": 271.1144714355469,
+    "target_tokens": 128,
+    "traffic": {},
+    "supervised_tokens": 128,
+    "supervised_nll_sum": 271.1144714355469,
+    "ce": 2.11808180809021,
+    "last_target_nll": 4.676769733428955,
+    "sigreg": 56.58924865722656,
+    "reads": {
+      "1": {
+        "ages_tokens": [
+          2752,
+          960
+        ],
+        "weights": [
+          0.5040359497070312,
+          0.49596408009529114
+        ],
+        "slots": [
+          13,
+          27
+        ],
+        "query_position": 0
+      },
+      "12": {
+        "ages_tokens": [
+          704,
+          1728
+        ],
+        "weights": [
+          0.5293014645576477,
+          0.4706985056400299
+        ],
+        "slots": [
+          29,
+          21
+        ],
+        "query_position": 0
+      }
+    },
+    "diagnostics": {
+      "symmetric_logit_max": 0.0,
+      "old_read_cut_nll_delta": -0.0204925537109375,
+      "layer1_old_native_grad_norms": {
+        "layer1.A_log": 0.0001954783801920712,
+        "layer1.dt_bias": 0.00014372022997122258,
+        "layer1.q_proj.weight": 0.0014427315909415483,
+        "layer1.k_proj.weight": 0.002180123934522271,
+        "layer1.v_proj.weight": 0.0019398955628275871,
+        "layer1.a_proj.weight": 0.0004176278889644891,
+        "layer1.b_proj.weight": 7.544785330537707e-05,
+        "layer1.q_conv1d.weight": 0.0030325681436806917,
+        "layer1.k_conv1d.weight": 0.004438167437911034,
+        "layer1.v_conv1d.weight": 0.006420488934963942,
+        "layer1.g_proj.weight": 0.0015585648361593485,
+        "layer1.o_norm.weight": 0.002422160701826215,
+        "layer1.o_proj.weight": 0.003688899101689458
+      },
+      "layer12_old_native_grad_norms": {
+        "layer12.A_log": 0.0004085414402652532,
+        "layer12.dt_bias": 0.0002963752776850015,
+        "layer12.q_proj.weight": 0.003921454772353172,
+        "layer12.k_proj.weight": 0.004333839751780033,
+        "layer12.v_proj.weight": 0.006976764183491468,
+        "layer12.a_proj.weight": 0.0016387320356443524,
+        "layer12.b_proj.weight": 0.000734823988750577,
+        "layer12.q_conv1d.weight": 0.011518482118844986,
+        "layer12.k_conv1d.weight": 0.00952223315834999,
+        "layer12.v_conv1d.weight": 0.00965801253914833,
+        "layer12.g_proj.weight": 0.0053830682300031185,
+        "layer12.o_norm.weight": 0.004491189960390329,
+        "layer12.o_proj.weight": 0.008398108184337616
+      }
+    },
+    "credit": {
+      "1": {
+        "records": 2,
+        "participations": 2,
+        "stale": 0,
+        "credit_sum": -2.3283064365386963e-10
+      },
+      "12": {
+        "records": 2,
+        "participations": 2,
+        "stale": 0,
+        "credit_sum": 1.862645149230957e-09
+      }
+    },
+    "updates": 228,
+    "tokens": 369152,
+    "recurrence_bytes": 25755648,
+    "experience_cpu_bytes": 79681166
+  },
+  "peak_cuda_allocated_bytes": 1521495552,
+  "next_update_restore_exact": true,
+  "snapshot_file_written": true,
+  "old_individual_unchanged": true,
+  "source_checkpoint_unchanged": true,
+  "retained_new_updates": 0,
+  "seconds": 71.6906205000123
+}

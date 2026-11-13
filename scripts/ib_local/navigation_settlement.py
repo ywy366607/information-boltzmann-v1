@@ -1,7 +1,7 @@
 """Change the label contract of one continuing body, without clearing it."""
 import torch
 
-SETTLEMENT_CODES = {'witness': 0, 'continuation': 1, 'continuation_joint': 3}
+SETTLEMENT_CODES = {'witness': 0, 'continuation': 1, 'continuation_joint': 3, 'world_stream': 4}
 # 2 remains the mixed-label code used in existing snapshots.
 
 

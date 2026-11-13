@@ -1,0 +1,316 @@
+{
+  "status": "whole_model_oracle_replay_only_two_port_delivery_unproven",
+  "current_checkpoint": "D:\\information-boltzmann-v1\\scratch\\joint_next_pending_20261108\\pending_recovery.pt",
+  "current_state": {
+    "updates": 524,
+    "seen": 450757,
+    "next_case": 14,
+    "awaiting_actual_feedback": true
+  },
+  "actual_answer": {
+    "case": 14,
+    "prediction": "1983400.\n\nThe grass is green.",
+    "references": [
+      "5999140"
+    ],
+    "incoming_seen": 448826,
+    "outgoing_seen": 450757,
+    "events": 47941,
+    "pending_cpu_bytes": 506001774
+  },
+  "old_local_complete_results": {
+    "natural": {
+      "answer_nll": 2.396204287186265,
+      "text": "188300.\n\nThe grass is green.\n",
+      "first_number_exact": false
+    },
+    "correct_record_65": {
+      "answer_nll": 2.41222663782537,
+      "text": "138381.\n\nThe grass is green.\n",
+      "first_number_exact": false
+    },
+    "correct_record_complete": {
+      "answer_nll": 2.3823199570178986,
+      "text": "18830000\n\nThe sky is blue.",
+      "first_number_exact": false
+    },
+    "complete_natural": {
+      "answer_nll": 2.4336191844195127,
+      "text": "138381.\n\nThe grass is green.\n",
+      "first_number_exact": false
+    }
+  },
+  "old_local_query_results": {
+    "natural": {
+      "answer_nll": 2.397002287209034,
+      "text": "188300.\n\nThe grass is green.\n",
+      "first_number_exact": false
+    },
+    "query_complete_record": {
+      "answer_nll": 2.4850062169134617,
+      "text": "1183811.\nThe grass is green. The",
+      "first_number_exact": false
+    },
+    "query_complete_natural": {
+      "answer_nll": 2.498451916500926,
+      "text": "1183811.\nThe grass is green. The",
+      "first_number_exact": false
+    }
+  },
+  "joint_reconstruction": {
+    "pinned": {
+      "all_interference": {
+        "prediction": "1.\nThe grass is green. The sky is blue. The sun",
+        "emitted": [
+          28705,
+          28740,
+          28723,
+          13,
+          1014,
+          10109,
+          349,
+          5344,
+          28723,
+          415,
+          7212,
+          349,
+          5045,
+          28723,
+          415,
+          4376
+        ],
+        "references": [
+          "9346695"
+        ],
+        "official_contains": false,
+        "standalone_number": false,
+        "first_number_exact": false,
+        "first_number_prefix": false,
+        "first_number": "1",
+        "query_inputs": 1672,
+        "question_state_resets": 0
+      },
+      "joint_two_slices": {
+        "prediction": "1183811. The grass is green. The sky",
+        "emitted": [
+          28705,
+          28740,
+          28740,
+          28783,
+          28770,
+          28783,
+          28740,
+          28740,
+          28723,
+          415,
+          10109,
+          349,
+          5344,
+          28723,
+          415,
+          7212
+        ],
+        "references": [
+          "9346695"
+        ],
+        "official_contains": false,
+        "standalone_number": false,
+        "first_number_exact": false,
+        "first_number_prefix": false,
+        "first_number": "1183811",
+        "query_inputs": 128,
+        "question_state_resets": 0
+      }
+    },
+    "raw_reencoding": {
+      "all_interference": {
+        "prediction": "934. The number is 934. The special magic",
+        "emitted": [
+          28705,
+          28774,
+          28770,
+          28781,
+          28723,
+          415,
+          1474,
+          349,
+          28705,
+          28774,
+          28770,
+          28781,
+          28723,
+          415,
+          2841,
+          9693
+        ],
+        "references": [
+          "9346695"
+        ],
+        "official_contains": false,
+        "standalone_number": false,
+        "first_number_exact": false,
+        "first_number_prefix": false,
+        "first_number": "934",
+        "query_inputs": 1672,
+        "question_state_resets": 0
+      },
+      "joint_two_slices": {
+        "prediction": "9346695. The grass is green. The sky",
+        "emitted": [
+          28705,
+          28774,
+          28770,
+          28781,
+          28784,
+          28784,
+          28774,
+          28782,
+          28723,
+          415,
+          10109,
+          349,
+          5344,
+          28723,
+          415,
+          7212
+        ],
+        "references": [
+          "9346695"
+        ],
+        "official_contains": true,
+        "standalone_number": true,
+        "first_number_exact": true,
+        "first_number_prefix": true,
+        "first_number": "9346695",
+        "query_inputs": 128,
+        "question_state_resets": 0
+      }
+    },
+    "native_boundary_differences": {
+      "2": {
+        "recurrent_max_abs": 0.0,
+        "conv_max_abs": 0.0
+      },
+      "13": {
+        "recurrent_max_abs": 0.0,
+        "conv_max_abs": 0.0
+      }
+    },
+    "first_identity_attempt_failed": true
+  },
+  "real_archive_delivery": {
+    "case": 14,
+    "oracle_slots": {
+      "2": 6,
+      "13": 6
+    },
+    "archive_seen": 449792,
+    "natural_last_reads": {
+      "2": {
+        "slots": [
+          3,
+          15
+        ],
+        "weights": [
+          0.3922640085220337,
+          0.30255237221717834
+        ]
+      },
+      "13": {
+        "slots": [
+          14,
+          11
+        ],
+        "weights": [
+          0.3697659373283386,
+          0.36931467056274414
+        ]
+      }
+    },
+    "prediction": "5999140. The grass is green. The sky",
+    "references": [
+      "5999140"
+    ],
+    "first_number_exact": true,
+    "full_held_forward_difference": 0.0,
+    "current_observed_world_ce": {
+      "full": 0.5969241857528687,
+      "held": 0.5969241857528687
+    },
+    "old_native_credit_by_layer": {
+      "2": 0.15164151044312107,
+      "13": 0.3932167036687764
+    },
+    "actual_cache_preserved": true,
+    "sources_unchanged": true
+  },
+  "cleaned_code_delivery_correct": true,
+  "archive_admission": {
+    "status": "complete",
+    "retained_updates": 0,
+    "source_sha256": "5dedebb3d017e2f9b2f8887f7c010ac3a5d41245eb389574b646e62bbbf25ef2",
+    "source_files": {
+      "D:\\information-boltzmann-v1\\scripts\\ib_local\\probe_joint_capture.py": "6311cbd34d60341c1bbab1f8af514858dd15a3f56c9c8c1d9b5e1c37b1bdd9b3",
+      "scripts/ib_local/pretrained_gdn_experience.py": "1825b667d4284a666a917c76c8db3a23e35fe74e3721eb0c8e69b8b49e5c226c",
+      "scripts/ib_local/pretrained_gdn_learning.py": "ad9d4ae3eb8f4e688da629f09cddf8e28629369fe02c38116549fd431be606e9",
+      "scripts/ib_local/irreversible_credit_stream.py": "2121ccdbd0e93586bdfc7f0b1cf01254455229765be1319ff2aabe37fad8a3fb"
+    },
+    "capture_forward_and_state_exact": true,
+    "next_prediction_and_state_restored": true,
+    "disk_shared_archive_preserved": true,
+    "joint_boundary_bytes": 25755648,
+    "incoming_vector_bytes": 262144,
+    "joint_native_layers": 24,
+    "two_entries_one_archive": true,
+    "experience_cpu_bytes": 113183374,
+    "source_unchanged": true,
+    "source_files_unchanged": true,
+    "fixed_capacity_worst_joint_bytes": 1665138688,
+    "new_lean_coverage": 0,
+    "seconds": 48.56555509567261
+  },
+  "tests_passed": 94,
+  "new_lean_coverage": 0,
+  "new_lean_claim": false,
+  "main_joint_reader_enabled": false,
+  "distinction": "Reencoding observed input vectors with a held joint boundary is a new conditional read program; it is not the exact derivative of all originally lived memory interventions.",
+  "next_action": "Training paused by user. Lean-only derivation of bounded causal participation transport and delayed capture. Whole-model oracle replay does not establish delivery through the original two ports or cross-window learning benefit.",
+  "reports": [
+    "scratch/complete_replay_delivery_20261108.json",
+    "scratch/query_program_delivery_20261108.json",
+    "scratch/joint_reactivation_20261108.json",
+    "scratch/joint_reactivation_boundary_20261108.json",
+    "scratch/joint_native_reencoding_20261108.json",
+    "scratch/joint_capture_admission_20261108/report.json",
+    "scratch/archived_joint_query_20261108.json",
+    "scratch/archived_joint_query_clean_20261108.json"
+  ],
+  "causal_record_intervention": {
+    "expected": "4000859",
+    "prediction": "4000859. The grass is green. The sky",
+    "changed_input_positions": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "weights_query_and_joint_boundary_held": true,
+    "official_contains": true,
+    "standalone_number": true,
+    "first_number_exact": true,
+    "first_number_prefix": true,
+    "first_number": "4000859"
+  },
+  "causal_report": "scratch/archived_joint_query_causal_20261108.json",
+  "scope_correction_20261108": {
+    "oracle_success_route": "full 24-layer replay followed by direct original LM-head prediction",
+    "original_two_port_delivery_proven": false,
+    "cross_window_learning_benefit_proven": false,
+    "training_paused": true,
+    "next_action": "Lean-only bounded causal tags; do not promote replay accuracy to learning benefit",
+    "plan": "docs/information_boltzmann/CGB_BOUNDED_CAUSAL_TAGS_20261108.md"
+  }
+}

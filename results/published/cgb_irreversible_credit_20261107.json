@@ -1,0 +1,113 @@
+{
+  "status": "complete",
+  "raw_report": "E:\\cgb_gdn340_probe\\irreversible_pair_20261107\\report.json",
+  "protocol": "Two irreversible learner lives; held cuts only age>128 native replay derivatives.",
+  "arms": {
+    "held": {
+      "scores": {
+        "all": {
+          "correct": 3,
+          "cases": 16
+        },
+        "first_half": {
+          "correct": 2,
+          "cases": 8
+        },
+        "second_half": {
+          "correct": 1,
+          "cases": 8
+        },
+        "first_reference_appearance_in_life": {
+          "correct": 2,
+          "cases": 13
+        },
+        "repeated_reference_in_life": {
+          "correct": 1,
+          "cases": 3
+        },
+        "length_512": {
+          "correct": 2,
+          "cases": 8
+        },
+        "length_2048": {
+          "correct": 1,
+          "cases": 8
+        }
+      },
+      "events": 18722,
+      "phase_counts": {
+        "world": 18210,
+        "self": 256,
+        "feedback": 256
+      },
+      "exact_wrong_previous_answer_intrusions": 3,
+      "optimizer_updates": 17,
+      "contiguous_life": true,
+      "all_lived_caches_preserved": true,
+      "maximum_reexecution_ce_difference": 0.00196075439453125
+    },
+    "full": {
+      "scores": {
+        "all": {
+          "correct": 3,
+          "cases": 16
+        },
+        "first_half": {
+          "correct": 2,
+          "cases": 8
+        },
+        "second_half": {
+          "correct": 1,
+          "cases": 8
+        },
+        "first_reference_appearance_in_life": {
+          "correct": 2,
+          "cases": 13
+        },
+        "repeated_reference_in_life": {
+          "correct": 1,
+          "cases": 3
+        },
+        "length_512": {
+          "correct": 2,
+          "cases": 8
+        },
+        "length_2048": {
+          "correct": 1,
+          "cases": 8
+        }
+      },
+      "events": 18722,
+      "phase_counts": {
+        "world": 18210,
+        "self": 256,
+        "feedback": 256
+      },
+      "exact_wrong_previous_answer_intrusions": 3,
+      "optimizer_updates": 17,
+      "contiguous_life": true,
+      "all_lived_caches_preserved": true,
+      "maximum_reexecution_ce_difference": 0.0023604182060807943
+    }
+  },
+  "paired": {
+    "full_only": 0,
+    "held_only": 0,
+    "both_correct": 3,
+    "both_wrong": 13
+  },
+  "source_sha256": "273d3285d193755c4eec440a05619578160cc8be0f7d5f381f0e3221e1705206",
+  "source_files": {
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\run_irreversible_credit.py": "56133971572773ac6f5399ff7a7f067057e654f525e522473531151bfce722a3",
+    "scripts\\ib_local\\irreversible_credit_stream.py": "2f11235a5229acb7fc811c85a71aac7b00fd6d3e9b748bd8fae0973030fc1ac0",
+    "scripts\\ib_local\\pretrained_gdn_learning.py": "b819aa19246bec25f0da63aa2fd77311b32bbfc853340c47ab175638ff23f69b",
+    "scripts\\ib_local\\pretrained_gdn_experience.py": "a242953bafbda05c0c7c73064afbb988f727b89733a4dbbdda56627250a97381"
+  },
+  "source_unchanged": true,
+  "source_files_unchanged": true,
+  "task_seed": 71110,
+  "official_revision": "db43f92ff634bbce1c33d1fb15858aec4bba509a",
+  "seconds": 821.023598909378,
+  "new_lean_coverage": 0,
+  "interpretation": "Finite-budget route validation on previously examined tasks; not convergence or a new blind test."
+}

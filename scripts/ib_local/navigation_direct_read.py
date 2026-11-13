@@ -73,7 +73,7 @@ def observer_reads(engine):
     if engine.observer_mode=='full':
         yield
         return
-    if engine.settlement_kind!='continuation_joint':
+    if engine.settlement_kind not in ('continuation_joint', 'world_stream'):
         raise ValueError('omitted witness reads require actual joint-continuation settlement')
     owned='witness_nll' in vars(engine);old=engine.witness_nll
     def unscored():

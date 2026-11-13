@@ -1,0 +1,194 @@
+{
+  "status": "passed",
+  "checkpoint": "E:\\cgb_gdn340_probe\\utility_retention_pair_20261106\\retention_last.pt",
+  "checkpoint_sha256": "e80cbff33e4febbf620b8336ab3fff850fe6c7d2c5b9c3f7c7e0d3a13155a5c9",
+  "source_updates": 395,
+  "dataset_revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+  "stream_offset": 29184,
+  "real_tokens": 128,
+  "executed_optimizer_updates": 2,
+  "retained_new_updates": 0,
+  "scope": "next-update and causal-path admission; no retained training progress",
+  "migration_preserves_existing_state": true,
+  "input_ce": 3.533033847808838,
+  "output_ce": 3.612285614013672,
+  "initial_max_logit_difference": 7.78125,
+  "update": {
+    "nll_sum": 462.37255859375,
+    "target_tokens": 128,
+    "traffic": {},
+    "supervised_tokens": 128,
+    "supervised_nll_sum": 462.37255859375,
+    "ce": 3.612285614013672,
+    "last_target_nll": 6.1600141525268555,
+    "sigreg": 56.774871826171875,
+    "reads": {
+      "1": {
+        "ages_tokens": [
+          3648,
+          2752
+        ],
+        "weights": [
+          0.3652113080024719,
+          0.3649389147758484
+        ],
+        "slots": [
+          14,
+          5
+        ],
+        "query_position": 0,
+        "null_weight": 0.2698497772216797
+      },
+      "12": {
+        "ages_tokens": [
+          960,
+          1728
+        ],
+        "weights": [
+          0.3783428966999054,
+          0.34098273515701294
+        ],
+        "slots": [
+          17,
+          11
+        ],
+        "query_position": 0,
+        "null_weight": 0.2806743383407593
+      }
+    },
+    "diagnostics": {
+      "symmetric_logit_max": 0.0,
+      "old_read_cut_nll_delta": 0.06523895263671875,
+      "layer1_old_native_grad_norms": {
+        "layer1.A_log": 0.0008632353274151683,
+        "layer1.dt_bias": 0.0007240654667839408,
+        "layer1.q_proj.weight": 0.005661605391651392,
+        "layer1.k_proj.weight": 0.006088762544095516,
+        "layer1.v_proj.weight": 0.010394196957349777,
+        "layer1.a_proj.weight": 0.0019116633338853717,
+        "layer1.b_proj.weight": 0.0006069832015782595,
+        "layer1.q_conv1d.weight": 0.009347338229417801,
+        "layer1.k_conv1d.weight": 0.014610475860536098,
+        "layer1.v_conv1d.weight": 0.026556989178061485,
+        "layer1.g_proj.weight": 0.012889876030385494,
+        "layer1.o_norm.weight": 0.019242212176322937,
+        "layer1.o_proj.weight": 0.016419261693954468
+      },
+      "layer12_old_native_grad_norms": {
+        "layer12.A_log": 0.0001563977712066844,
+        "layer12.dt_bias": 0.00012931725359521806,
+        "layer12.q_proj.weight": 0.0013555306941270828,
+        "layer12.k_proj.weight": 0.0014564228476956487,
+        "layer12.v_proj.weight": 0.0042444271966814995,
+        "layer12.a_proj.weight": 0.0006213010638020933,
+        "layer12.b_proj.weight": 0.0002661826438270509,
+        "layer12.q_conv1d.weight": 0.0035404160153120756,
+        "layer12.k_conv1d.weight": 0.004012736491858959,
+        "layer12.v_conv1d.weight": 0.007194547448307276,
+        "layer12.g_proj.weight": 0.00393430981785059,
+        "layer12.o_norm.weight": 0.0029375653248280287,
+        "layer12.o_proj.weight": 0.008793297223746777
+      }
+    },
+    "credit": {
+      "1": {
+        "records": 2,
+        "participations": 2,
+        "stale": 0,
+        "credit_sum": 0.08398432284593582,
+        "retention_utility": {
+          "records": 0,
+          "stale": 0,
+          "diagnostic_only": true,
+          "observations": [
+            {
+              "slot": 14,
+              "version": 93,
+              "benefit": 0.20702743530273438,
+              "preference_before": 0.7615911364555359,
+              "preference_after": 0.7092157006263733
+            },
+            {
+              "slot": 5,
+              "version": 97,
+              "benefit": 0.10363388061523438,
+              "preference_before": 0.0,
+              "preference_after": -0.7615901231765747
+            }
+          ]
+        },
+        "null_bias_gradient": 0.08398430794477463,
+        "null_key_gradient_norm": 0.4018864333629608
+      },
+      "12": {
+        "records": 2,
+        "participations": 2,
+        "stale": 0,
+        "credit_sum": 0.03056339919567108,
+        "retention_utility": {
+          "records": 0,
+          "stale": 0,
+          "diagnostic_only": true,
+          "observations": [
+            {
+              "slot": 17,
+              "version": 94,
+              "benefit": 0.15232467651367188,
+              "preference_before": 0.0,
+              "preference_after": 0.7615911960601807
+            },
+            {
+              "slot": 11,
+              "version": 95,
+              "benefit": 0.07070159912109375,
+              "preference_before": 0.6460328698158264,
+              "preference_after": 0.5470384955406189
+            }
+          ]
+        },
+        "null_bias_gradient": 0.03056340478360653,
+        "null_key_gradient_norm": 0.13480828702449799
+      }
+    },
+    "updates": 396,
+    "tokens": 390656,
+    "recurrence_bytes": 25755648,
+    "experience_cpu_bytes": 79682190
+  },
+  "next_update_restore_exact": true,
+  "per_layer_old_native_credit": {
+    "1": {
+      "layer1.A_log": 0.0008632353274151683,
+      "layer1.dt_bias": 0.0007240654667839408,
+      "layer1.q_proj.weight": 0.005661605391651392,
+      "layer1.k_proj.weight": 0.006088762544095516,
+      "layer1.v_proj.weight": 0.010394196957349777,
+      "layer1.a_proj.weight": 0.0019116633338853717,
+      "layer1.b_proj.weight": 0.0006069832015782595,
+      "layer1.q_conv1d.weight": 0.009347338229417801,
+      "layer1.k_conv1d.weight": 0.014610475860536098,
+      "layer1.v_conv1d.weight": 0.026556989178061485,
+      "layer1.g_proj.weight": 0.012889876030385494,
+      "layer1.o_norm.weight": 0.019242212176322937,
+      "layer1.o_proj.weight": 0.016419261693954468
+    },
+    "12": {
+      "layer12.A_log": 0.0001563977712066844,
+      "layer12.dt_bias": 0.00012931725359521806,
+      "layer12.q_proj.weight": 0.0013555306941270828,
+      "layer12.k_proj.weight": 0.0014564228476956487,
+      "layer12.v_proj.weight": 0.0042444271966814995,
+      "layer12.a_proj.weight": 0.0006213010638020933,
+      "layer12.b_proj.weight": 0.0002661826438270509,
+      "layer12.q_conv1d.weight": 0.0035404160153120756,
+      "layer12.k_conv1d.weight": 0.004012736491858959,
+      "layer12.v_conv1d.weight": 0.007194547448307276,
+      "layer12.g_proj.weight": 0.00393430981785059,
+      "layer12.o_norm.weight": 0.0029375653248280287,
+      "layer12.o_proj.weight": 0.008793297223746777
+    }
+  },
+  "peak_cuda_allocated_bytes": 1495220736,
+  "legacy_default_metadata_normalized": true,
+  "source_checkpoint_unchanged": true
+}

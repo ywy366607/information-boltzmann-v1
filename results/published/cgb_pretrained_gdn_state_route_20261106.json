@@ -1,0 +1,94 @@
+{
+  "kind": "frozen_state_vs_recall_after_held_sft",
+  "status": "complete",
+  "seed": 11,
+  "old_native_credit_enabled": false,
+  "protocol": "4 warm questions then16 held train questions; freeze before interventions",
+  "task_sha256": "51e15cbbb598591fbaba9847048954dc67c8c28646bc01e1fd80705ff3b3d2f9",
+  "source_sha256": "d7844c6e85a6f4fe7e77253500d4c2875b99dfdb4ef71cd48ebe77637d452b5c",
+  "interventions": {
+    "intact": "S, convolution and external recall all retained",
+    "no_recall": "zero all recalled-value contributions throughout the example",
+    "zero_S": "clear all24 live S matrices at first answer-supervised window; retain convolution and recall",
+    "zero_S_no_recall": "same live S cut, external recall off throughout",
+    "zero_conv_no_recall": "clear convolution at answer window; S retained, recall off",
+    "zero_all_no_recall": "clear S and convolution at answer window, recall off; aligned suffix must yield zero question gap"
+  },
+  "score": "answer NLL and correct-question minus swapped-question conditioning; joint candidate matching is not free generation accuracy",
+  "reconstruction_max_abs_nll_difference": 0.003126382827758789,
+  "held_optimizer_updates": 21,
+  "frozen_checkpoint": "E:\\cgb_gdn340_probe\\instruction_data_20261106\\state_route.pt",
+  "training_updates_during_interventions": 0,
+  "raw_report": "E:\\cgb_gdn340_probe\\instruction_data_20261106\\state_route.json",
+  "raw_sha256": "9ff09cac9cdfd506638056b25e8ba17e84cbebf66cdb4a2a557f38da957d2284",
+  "groups": {
+    "short": {
+      "paragraphs": 8,
+      "summary": {
+        "intact": {
+          "mean_answer_nll": 2.5187431760132313,
+          "mean_question_swap_gap": 0.13002196326851845,
+          "matching_correct": 8,
+          "paragraphs": 8,
+          "ties": 0,
+          "mean_absolute_question_gap": 0.13002196326851845,
+          "max_absolute_question_gap": 0.3461301326751709
+        },
+        "no_recall": {
+          "mean_answer_nll": 2.703052792698145,
+          "mean_question_swap_gap": 0.12943032756447792,
+          "matching_correct": 8,
+          "paragraphs": 8,
+          "ties": 0,
+          "mean_absolute_question_gap": 0.12943032756447792,
+          "max_absolute_question_gap": 0.37480300664901733
+        },
+        "zero_S": {
+          "mean_answer_nll": 3.36335763707757,
+          "mean_question_swap_gap": -2.004951238632202e-05,
+          "matching_correct": 4,
+          "paragraphs": 8,
+          "ties": 0,
+          "mean_absolute_question_gap": 0.00036891549825668335,
+          "max_absolute_question_gap": 0.0013685226440429688
+        },
+        "zero_S_no_recall": {
+          "mean_answer_nll": 3.4699577167630196,
+          "mean_question_swap_gap": 0.00046184659004211426,
+          "matching_correct": 6,
+          "paragraphs": 8,
+          "ties": 0,
+          "mean_absolute_question_gap": 0.0007652342319488525,
+          "max_absolute_question_gap": 0.0018045902252197266
+        },
+        "zero_conv_no_recall": {
+          "mean_answer_nll": 2.70243426412344,
+          "mean_question_swap_gap": 0.1303742714226246,
+          "matching_correct": 8,
+          "paragraphs": 8,
+          "ties": 0,
+          "mean_absolute_question_gap": 0.1303742714226246,
+          "max_absolute_question_gap": 0.37561559677124023
+        },
+        "zero_all_no_recall": {
+          "mean_answer_nll": 3.470466621220112,
+          "mean_question_swap_gap": 0.0,
+          "matching_correct": 0,
+          "paragraphs": 8,
+          "ties": 8,
+          "mean_absolute_question_gap": 0.0,
+          "max_absolute_question_gap": 0.0
+        }
+      },
+      "question_distance_range_tokens": [
+        283,
+        412
+      ]
+    },
+    "long": {
+      "paragraphs": 0
+    }
+  },
+  "interpretation": "At matched question lengths and identical post-cut suffixes, carried S retains most question-dependent information even without external recall. Clearing live S nearly abolishes this signal; clearing only short convolution does not. This diagnoses forward information carriage, not the efficacy of extra old-native learning.",
+  "scope": "Frozen interventions after reconstructed held SFT; no optimizer updates during probes. Candidate matching is not free generation accuracy; long1024-2048token equal-question pairs absent in official dev."
+}

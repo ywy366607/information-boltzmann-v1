@@ -7,6 +7,7 @@ No token history, optimizer, table, or full-body snapshot is retained.
 """
 from __future__ import annotations
 
+import os
 import torch
 from torch.nn import functional as F
 
@@ -55,6 +56,10 @@ def observed_momentum(layer, x, packed_before, momentum):
     k = F.normalize(k, dim=-1)
     alpha = layer.retention(normalized)
     beta = layer.beta_proj(normalized).sigmoid()
+    if (x.is_cuda and s.dtype == torch.float32 and layer.dk == layer.dv and
+            os.environ.get('CGB_MOMENTUM_BACKEND', 'fused') != 'reference'):
+        from scripts.ib_local.bfss_momentum_fused import capture
+        return capture(k, v, alpha, beta, s, p, layer.content_budget)
     correction_sq = s.new_zeros(())
     for t in range(length):
         a = alpha[:, t, :, None, None]

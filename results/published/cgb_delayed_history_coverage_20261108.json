@@ -1,0 +1,178 @@
+{
+  "source_report": "E:\\cgb_gdn340_probe\\delayed_answer_pair_20261108\\report.json",
+  "source_status": "failed_during_eighth_case_checkpoint",
+  "arms": {
+    "held": [
+      {
+        "case": 4,
+        "references": [
+          "7753763"
+        ],
+        "new_answer_in_reported_life": true,
+        "actual_fact_token_range": [
+          429388,
+          429394
+        ],
+        "fact_distance_to_answer": 1835,
+        "actual_selected_participations": {
+          "2": {
+            "fact_precedes_held_boundary": 97,
+            "capsule_precedes_fact": 169
+          },
+          "13": {
+            "fact_precedes_held_boundary": 133,
+            "capsule_precedes_fact": 133
+          }
+        },
+        "correct": false
+      },
+      {
+        "case": 5,
+        "references": [
+          "2469918"
+        ],
+        "new_answer_in_reported_life": true,
+        "actual_fact_token_range": [
+          432355,
+          432361
+        ],
+        "fact_distance_to_answer": 812,
+        "actual_selected_participations": {
+          "2": {
+            "fact_precedes_held_boundary": 16,
+            "capsule_precedes_fact": 42
+          },
+          "13": {
+            "capsule_precedes_fact": 45,
+            "fact_precedes_held_boundary": 13
+          }
+        },
+        "correct": false
+      },
+      {
+        "case": 6,
+        "references": [
+          "9915169"
+        ],
+        "new_answer_in_reported_life": true,
+        "actual_fact_token_range": [
+          434551,
+          434557
+        ],
+        "fact_distance_to_answer": 566,
+        "actual_selected_participations": {
+          "2": {
+            "capsule_precedes_fact": 95,
+            "fact_precedes_held_boundary": 23
+          },
+          "13": {
+            "capsule_precedes_fact": 105,
+            "fact_precedes_held_boundary": 13
+          }
+        },
+        "correct": false
+      },
+      {
+        "case": 7,
+        "references": [
+          "5879073"
+        ],
+        "new_answer_in_reported_life": true,
+        "actual_fact_token_range": [
+          435400,
+          435406
+        ],
+        "fact_distance_to_answer": 1664,
+        "actual_selected_participations": {
+          "2": {
+            "capsule_precedes_fact": 96,
+            "fact_precedes_held_boundary": 76
+          },
+          "13": {
+            "fact_precedes_held_boundary": 71,
+            "capsule_precedes_fact": 101
+          }
+        },
+        "correct": false
+      },
+      {
+        "case": 8,
+        "references": [
+          "6762066"
+        ],
+        "new_answer_in_reported_life": true,
+        "actual_fact_token_range": [
+          438248,
+          438254
+        ],
+        "fact_distance_to_answer": 766,
+        "actual_selected_participations": {
+          "2": {
+            "fact_precedes_held_boundary": 30,
+            "capsule_precedes_fact": 202
+          },
+          "13": {
+            "fact_precedes_held_boundary": 38,
+            "capsule_precedes_fact": 194
+          }
+        },
+        "correct": false
+      },
+      {
+        "case": 9,
+        "references": [
+          "3632985"
+        ],
+        "new_answer_in_reported_life": true,
+        "actual_fact_token_range": [
+          439494,
+          439500
+        ],
+        "fact_distance_to_answer": 1458,
+        "actual_selected_participations": {
+          "2": {
+            "capsule_precedes_fact": 201,
+            "fact_precedes_held_boundary": 67
+          },
+          "13": {
+            "capsule_precedes_fact": 173,
+            "fact_precedes_held_boundary": 95
+          }
+        },
+        "correct": false
+      },
+      {
+        "case": 10,
+        "references": [
+          "9299460"
+        ],
+        "new_answer_in_reported_life": true,
+        "actual_fact_token_range": [
+          441561,
+          441567
+        ],
+        "fact_distance_to_answer": 1341,
+        "actual_selected_participations": {
+          "2": {
+            "capsule_precedes_fact": 53,
+            "fact_precedes_held_boundary": 19
+          },
+          "13": {
+            "capsule_precedes_fact": 55,
+            "fact_precedes_held_boundary": 17
+          }
+        },
+        "correct": false
+      }
+    ]
+  },
+  "interpretation": "Explicit local input coverage only; boundary-only memory can still contain the fact.",
+  "protocol": "Read cadence1; source index64; 65-token capsules; no GPU or learner update.",
+  "committed_next_case": 11,
+  "committed_updates": 520,
+  "committed_seen": 442940,
+  "reported_but_not_committed_case": 11,
+  "new_lean_coverage": 0,
+  "paired_conclusion": null,
+  "continuation": "Fault recovery from held_latest.pt only; do not repeat committed cases4-10."
+}

@@ -1,0 +1,436 @@
+{
+  "status": "complete",
+  "protocol": "Real-text zero-update state consistency audit, not another digit study.",
+  "persistent_optimizer_updates": 0,
+  "real_data": "existing OWT validation, first512 bytes after tokenizer offset filtering",
+  "source_script_sha256": "75611b4ea6d9bd16fbb8c5aff5427521a1fea8c4cf2dbfad1537f14fb11ea046",
+  "observed_bytes": 512,
+  "window": 128,
+  "seconds": 24.760812759399414,
+  "new_lean_coverage": 0,
+  "script_unchanged": true,
+  "raw_report": "E:\\cgb_small_gdn_20261107\\state_consistency_20261107.json",
+  "raw_sha256": "ff8a191fd9ddfb2ab40ae6a09936f1ea84f910f1ce93009de5a4ff29d8f4ffc5",
+  "input_sha256": "3025526ee4a6fa29c33d2e02c3ab667eafa1294c97e99d5f8cdde875e9e1e76f",
+  "executed_sources": {
+    "scripts/ib_local/small_gdn_stream_eval.py": "13dbfbba4951bb32a8d73a5e3e3752ab90f64cb983179c13438d2adcae8911b0",
+    "scripts/ib_local/audit_small_state_consistency.py": "75611b4ea6d9bd16fbb8c5aff5427521a1fea8c4cf2dbfad1537f14fb11ea046",
+    "scripts/ib_local/small_gdn_ruler.py": "483dc4c0cae1372ff60bcdbbe7d203288488ba18667e5abef0a919a01389d152",
+    "tests/test_small_gdn_stream_eval.py": "2cf7885332ecc176c40574d226dab55a70b1e3817c9872ef1d9d9787147fb6cc"
+  },
+  "source_archive": "E:\\cgb_small_gdn_20261107\\state_consistency_sources_20261107",
+  "affected_tests_passed": 22,
+  "records": [
+    {
+      "checkpoint": "E:\\cgb_small_gdn_20261107\\native_output_pair\\common\\last.pt.gz",
+      "source_sha256": "2cc177c231312711aea920bde83f18c2e9526e6fab7fcc0d4a3db957d8cd602d",
+      "frozen_training_inference": {
+        "logits_max_error": 0.0,
+        "recurrent_exact": true,
+        "targets_exact": true,
+        "pending_exact": true,
+        "observed_memory_table_exact": true
+      },
+      "source_state_preserved": true,
+      "modes": {
+        "training_forward": {
+          "nll": 1.4382128715515137,
+          "observations": 512,
+          "windows": [
+            {
+              "arrivals": 128,
+              "first_input": 105,
+              "last_pending": 101,
+              "incoming_state_sha256": "d81b29d0f18458e2bfb368d9d8695afdf2b79b466bf7f019a599c007d6eb7db6",
+              "outgoing_state_sha256": "0243e2a20e3ec6799a9a96dfefb4965627cf527e0a6340345a60282e82300f26"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 101,
+              "incoming_state_sha256": "0243e2a20e3ec6799a9a96dfefb4965627cf527e0a6340345a60282e82300f26",
+              "outgoing_state_sha256": "4c76058b6eae075ad62433478e9aac441cd31cad2992ad6faee962f9f197fe6f"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 110,
+              "incoming_state_sha256": "4c76058b6eae075ad62433478e9aac441cd31cad2992ad6faee962f9f197fe6f",
+              "outgoing_state_sha256": "a9457ed86f85f7677340be191dbb1a7bc7db89c060ae888b8951ddbba16aea90"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 110,
+              "last_pending": 101,
+              "incoming_state_sha256": "a9457ed86f85f7677340be191dbb1a7bc7db89c060ae888b8951ddbba16aea90",
+              "outgoing_state_sha256": "01545270f8716188e8ad135ed60d61e54847056cfebab5557ea99375d36c34ec"
+            }
+          ],
+          "final_pending": 101,
+          "observed_memory_table_sha256": "8f54090bf29089808d907bdeca63dfcc8e8539efb139d98c7af3170353f93820",
+          "all_window_boundaries_carried": true
+        },
+        "carried": {
+          "nll": 1.4382128715515137,
+          "observations": 512,
+          "windows": [
+            {
+              "arrivals": 128,
+              "first_input": 105,
+              "last_pending": 101,
+              "incoming_state_sha256": "d81b29d0f18458e2bfb368d9d8695afdf2b79b466bf7f019a599c007d6eb7db6",
+              "outgoing_state_sha256": "0243e2a20e3ec6799a9a96dfefb4965627cf527e0a6340345a60282e82300f26"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 101,
+              "incoming_state_sha256": "0243e2a20e3ec6799a9a96dfefb4965627cf527e0a6340345a60282e82300f26",
+              "outgoing_state_sha256": "4c76058b6eae075ad62433478e9aac441cd31cad2992ad6faee962f9f197fe6f"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 110,
+              "incoming_state_sha256": "4c76058b6eae075ad62433478e9aac441cd31cad2992ad6faee962f9f197fe6f",
+              "outgoing_state_sha256": "a9457ed86f85f7677340be191dbb1a7bc7db89c060ae888b8951ddbba16aea90"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 110,
+              "last_pending": 101,
+              "incoming_state_sha256": "a9457ed86f85f7677340be191dbb1a7bc7db89c060ae888b8951ddbba16aea90",
+              "outgoing_state_sha256": "01545270f8716188e8ad135ed60d61e54847056cfebab5557ea99375d36c34ec"
+            }
+          ],
+          "final_pending": 101,
+          "observed_memory_table_sha256": "8f54090bf29089808d907bdeca63dfcc8e8539efb139d98c7af3170353f93820",
+          "all_window_boundaries_carried": true
+        },
+        "reset_native": {
+          "nll": 1.447965145111084,
+          "observations": 512,
+          "windows": [
+            {
+              "arrivals": 128,
+              "first_input": 105,
+              "last_pending": 101,
+              "incoming_state_sha256": "1a7493dd5e92b5159da5e3fd64a9074573f3b89095aed09d86016cfad3056233",
+              "outgoing_state_sha256": "b6609073250deb1ab742590f93caa407327076b496d71845607cfbe910051577"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 101,
+              "incoming_state_sha256": "b6609073250deb1ab742590f93caa407327076b496d71845607cfbe910051577",
+              "outgoing_state_sha256": "1430087fe807b89ba4df9f223bcbbb4b5137e4584f312b0dfd8ed96e99b6bdc4"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 110,
+              "incoming_state_sha256": "1430087fe807b89ba4df9f223bcbbb4b5137e4584f312b0dfd8ed96e99b6bdc4",
+              "outgoing_state_sha256": "dbc6e5f295a3e65292a6e697bc42e5bfa62bed53db95b7df3c1f314b6da4ebb9"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 110,
+              "last_pending": 101,
+              "incoming_state_sha256": "dbc6e5f295a3e65292a6e697bc42e5bfa62bed53db95b7df3c1f314b6da4ebb9",
+              "outgoing_state_sha256": "b3e8ffbfa78fce3a8723b56fde65f3a44f4a6a2662e56f2f6aa3d4c5b06b0e33"
+            }
+          ],
+          "final_pending": 101,
+          "observed_memory_table_sha256": "ab8d309754763b33c8ad89e6593b0123180a33ab24b949aa182267513aedfe45",
+          "delta_nll_vs_carried": 0.009752273559570312,
+          "max_logit_change_vs_carried": 4.833234786987305,
+          "all_window_boundaries_carried": true
+        },
+        "reset_history": {
+          "nll": 1.4264576435089111,
+          "observations": 512,
+          "windows": [
+            {
+              "arrivals": 128,
+              "first_input": 105,
+              "last_pending": 101,
+              "incoming_state_sha256": "d81b29d0f18458e2bfb368d9d8695afdf2b79b466bf7f019a599c007d6eb7db6",
+              "outgoing_state_sha256": "e38fe2ac86aa8dd8c233d3c5432395616450140fe92185e3634dff91bddfa95a"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 101,
+              "incoming_state_sha256": "e38fe2ac86aa8dd8c233d3c5432395616450140fe92185e3634dff91bddfa95a",
+              "outgoing_state_sha256": "c0d8a44427f258ef4977246595b770e0d8004619eb8844b3c274d9e99724ec59"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 110,
+              "incoming_state_sha256": "c0d8a44427f258ef4977246595b770e0d8004619eb8844b3c274d9e99724ec59",
+              "outgoing_state_sha256": "525edb5a344dbe4cf7f4bc3bb221fe0f5e03d1f509054cc41e0219765e5d13bb"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 110,
+              "last_pending": 101,
+              "incoming_state_sha256": "525edb5a344dbe4cf7f4bc3bb221fe0f5e03d1f509054cc41e0219765e5d13bb",
+              "outgoing_state_sha256": "aec27f8d1ada9db73e8cc1ba1d70d88c85b064443922f498db785da38140843c"
+            }
+          ],
+          "final_pending": 101,
+          "observed_memory_table_sha256": "d3fe5feab65fa00f3126c3b484b7e02cb5d968cbf0f3acec833e64885285d0ad",
+          "delta_nll_vs_carried": -0.011755228042602539,
+          "max_logit_change_vs_carried": 4.885941028594971,
+          "all_window_boundaries_carried": true
+        },
+        "reset_both": {
+          "nll": 1.4328652620315552,
+          "observations": 512,
+          "windows": [
+            {
+              "arrivals": 128,
+              "first_input": 105,
+              "last_pending": 101,
+              "incoming_state_sha256": "1a7493dd5e92b5159da5e3fd64a9074573f3b89095aed09d86016cfad3056233",
+              "outgoing_state_sha256": "87001153b01b6f53b5ce3a862d9ef6b4017d536de5619a9bb59420459110bd52"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 101,
+              "incoming_state_sha256": "87001153b01b6f53b5ce3a862d9ef6b4017d536de5619a9bb59420459110bd52",
+              "outgoing_state_sha256": "29cfa88b312b06ead96688d0915c52d777da656cfd0df77885f5b5e05cc60d66"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 110,
+              "incoming_state_sha256": "29cfa88b312b06ead96688d0915c52d777da656cfd0df77885f5b5e05cc60d66",
+              "outgoing_state_sha256": "cc1d38e065c196c3f5cdc312953255d632dcdd695ded9c7044c3f53e4892ed50"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 110,
+              "last_pending": 101,
+              "incoming_state_sha256": "cc1d38e065c196c3f5cdc312953255d632dcdd695ded9c7044c3f53e4892ed50",
+              "outgoing_state_sha256": "1255cb73c7e6b189a6a20e716e6b6668ad0a7004b8d0b06ccce40af2709dd9e2"
+            }
+          ],
+          "final_pending": 101,
+          "observed_memory_table_sha256": "f7f4f4a92334d56d14a9b99c2ba644e8ec0372e958c3a3fb7ea658d6d66a9077",
+          "delta_nll_vs_carried": -0.005347609519958496,
+          "max_logit_change_vs_carried": 5.640133857727051,
+          "all_window_boundaries_carried": true
+        }
+      }
+    },
+    {
+      "checkpoint": "E:\\cgb_small_gdn_20261107\\counterfactual_near\\candidate\\last.pt.gz",
+      "source_sha256": "d15f0fa03f2f5f31b69e042b411954507cc4bb9d0f3f77819d96e153e785005a",
+      "frozen_training_inference": {
+        "logits_max_error": 0.0,
+        "recurrent_exact": true,
+        "targets_exact": true,
+        "pending_exact": true,
+        "observed_memory_table_exact": true
+      },
+      "source_state_preserved": true,
+      "modes": {
+        "training_forward": {
+          "nll": 2.7081332206726074,
+          "observations": 512,
+          "windows": [
+            {
+              "arrivals": 128,
+              "first_input": 10,
+              "last_pending": 101,
+              "incoming_state_sha256": "f7ff5ba0d9ca0f118a8a374dbbe7d02c8260e0f935c75a10dcc955d63b829ec0",
+              "outgoing_state_sha256": "c0cebd14787680f42cd51a3c340e1d1336fea9b43d3634d576886589f84b49ea"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 101,
+              "incoming_state_sha256": "c0cebd14787680f42cd51a3c340e1d1336fea9b43d3634d576886589f84b49ea",
+              "outgoing_state_sha256": "b22daf03041c1e7d8e5365bf55f48654d2d9ddc40cc308304e7931641d3d1323"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 110,
+              "incoming_state_sha256": "b22daf03041c1e7d8e5365bf55f48654d2d9ddc40cc308304e7931641d3d1323",
+              "outgoing_state_sha256": "86fa76afc2176021c8902621408747254b96f3954633d6f632eadcfb4ec2d047"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 110,
+              "last_pending": 101,
+              "incoming_state_sha256": "86fa76afc2176021c8902621408747254b96f3954633d6f632eadcfb4ec2d047",
+              "outgoing_state_sha256": "c12a313a40e08d6b2aad8bab672980d311083b23363829f14f40d5e64af52822"
+            }
+          ],
+          "final_pending": 101,
+          "observed_memory_table_sha256": "5004a9fb3bb1637d12c15415b61af1498871863ae6677bbe82e33991ebc3896d",
+          "all_window_boundaries_carried": true
+        },
+        "carried": {
+          "nll": 2.7081332206726074,
+          "observations": 512,
+          "windows": [
+            {
+              "arrivals": 128,
+              "first_input": 10,
+              "last_pending": 101,
+              "incoming_state_sha256": "f7ff5ba0d9ca0f118a8a374dbbe7d02c8260e0f935c75a10dcc955d63b829ec0",
+              "outgoing_state_sha256": "c0cebd14787680f42cd51a3c340e1d1336fea9b43d3634d576886589f84b49ea"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 101,
+              "incoming_state_sha256": "c0cebd14787680f42cd51a3c340e1d1336fea9b43d3634d576886589f84b49ea",
+              "outgoing_state_sha256": "b22daf03041c1e7d8e5365bf55f48654d2d9ddc40cc308304e7931641d3d1323"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 110,
+              "incoming_state_sha256": "b22daf03041c1e7d8e5365bf55f48654d2d9ddc40cc308304e7931641d3d1323",
+              "outgoing_state_sha256": "86fa76afc2176021c8902621408747254b96f3954633d6f632eadcfb4ec2d047"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 110,
+              "last_pending": 101,
+              "incoming_state_sha256": "86fa76afc2176021c8902621408747254b96f3954633d6f632eadcfb4ec2d047",
+              "outgoing_state_sha256": "c12a313a40e08d6b2aad8bab672980d311083b23363829f14f40d5e64af52822"
+            }
+          ],
+          "final_pending": 101,
+          "observed_memory_table_sha256": "5004a9fb3bb1637d12c15415b61af1498871863ae6677bbe82e33991ebc3896d",
+          "all_window_boundaries_carried": true
+        },
+        "reset_native": {
+          "nll": 2.6921186447143555,
+          "observations": 512,
+          "windows": [
+            {
+              "arrivals": 128,
+              "first_input": 10,
+              "last_pending": 101,
+              "incoming_state_sha256": "1a7493dd5e92b5159da5e3fd64a9074573f3b89095aed09d86016cfad3056233",
+              "outgoing_state_sha256": "4e4f436f929286045b72fb827feb06da99e96b0d2e589ff306cf3f7cf0217932"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 101,
+              "incoming_state_sha256": "4e4f436f929286045b72fb827feb06da99e96b0d2e589ff306cf3f7cf0217932",
+              "outgoing_state_sha256": "f53cf96ee3807bb12937fcb659233a1fa4aea8da1e4a97d92d447a191bac37f9"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 110,
+              "incoming_state_sha256": "f53cf96ee3807bb12937fcb659233a1fa4aea8da1e4a97d92d447a191bac37f9",
+              "outgoing_state_sha256": "75acf2c7c53dfa2795d6037809259f37edb651f39e9a25cbe76e4300c595215f"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 110,
+              "last_pending": 101,
+              "incoming_state_sha256": "75acf2c7c53dfa2795d6037809259f37edb651f39e9a25cbe76e4300c595215f",
+              "outgoing_state_sha256": "978efc71c493c9c02d1816920997f46878f4ce0d95b292b0ac1297d548dbd734"
+            }
+          ],
+          "final_pending": 101,
+          "observed_memory_table_sha256": "e459a021f5b379d22df10355752af2fcc6ee852740c2234c91e951a49d0abfda",
+          "delta_nll_vs_carried": -0.016014575958251953,
+          "max_logit_change_vs_carried": 12.870803833007812,
+          "all_window_boundaries_carried": true
+        },
+        "reset_history": {
+          "nll": 2.7039623260498047,
+          "observations": 512,
+          "windows": [
+            {
+              "arrivals": 128,
+              "first_input": 10,
+              "last_pending": 101,
+              "incoming_state_sha256": "f7ff5ba0d9ca0f118a8a374dbbe7d02c8260e0f935c75a10dcc955d63b829ec0",
+              "outgoing_state_sha256": "d078f95e1ed145ee54134512d4b4eb23103cec9b20ee71bbc8e6c0d703478047"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 101,
+              "incoming_state_sha256": "d078f95e1ed145ee54134512d4b4eb23103cec9b20ee71bbc8e6c0d703478047",
+              "outgoing_state_sha256": "350a0dddaacae94c0e196c668b9e78c23cbd79f581369a7925a7c00617cafeea"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 110,
+              "incoming_state_sha256": "350a0dddaacae94c0e196c668b9e78c23cbd79f581369a7925a7c00617cafeea",
+              "outgoing_state_sha256": "8978e79c56fce2e1453dc26491cf74beaa6651460c480323a1e19662108e1616"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 110,
+              "last_pending": 101,
+              "incoming_state_sha256": "8978e79c56fce2e1453dc26491cf74beaa6651460c480323a1e19662108e1616",
+              "outgoing_state_sha256": "dc67bf31dd6c8d8f8249aaf5c4c24ed5607e0746233ec56d23046e183f252f87"
+            }
+          ],
+          "final_pending": 101,
+          "observed_memory_table_sha256": "cb0f4e44571407a518ab87070aa39613a41bcbb3657b6018041661f3a268c0cf",
+          "delta_nll_vs_carried": -0.004170894622802734,
+          "max_logit_change_vs_carried": 2.3167002201080322,
+          "all_window_boundaries_carried": true
+        },
+        "reset_both": {
+          "nll": 2.6894543170928955,
+          "observations": 512,
+          "windows": [
+            {
+              "arrivals": 128,
+              "first_input": 10,
+              "last_pending": 101,
+              "incoming_state_sha256": "1a7493dd5e92b5159da5e3fd64a9074573f3b89095aed09d86016cfad3056233",
+              "outgoing_state_sha256": "78ce23ef8da21640f843651d301f68229b8f0a937fd99dabab022e96fde5fb89"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 101,
+              "incoming_state_sha256": "78ce23ef8da21640f843651d301f68229b8f0a937fd99dabab022e96fde5fb89",
+              "outgoing_state_sha256": "50febd370f2739740ecb520aff24961203c8a6a2303670e98f29d464f655d5b4"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 101,
+              "last_pending": 110,
+              "incoming_state_sha256": "50febd370f2739740ecb520aff24961203c8a6a2303670e98f29d464f655d5b4",
+              "outgoing_state_sha256": "6a5ae7707be2025d56f23e5e76faaac5769a3b47bbd78807608dc3214fe97c0f"
+            },
+            {
+              "arrivals": 128,
+              "first_input": 110,
+              "last_pending": 101,
+              "incoming_state_sha256": "6a5ae7707be2025d56f23e5e76faaac5769a3b47bbd78807608dc3214fe97c0f",
+              "outgoing_state_sha256": "51527b1ef800dbe2a5365a16d6531cd54de185c786915706428027c368fa32f7"
+            }
+          ],
+          "final_pending": 101,
+          "observed_memory_table_sha256": "1b25c7d97d19491e6104cb3e778834692fd93e450457b065a7993c25b298e2d8",
+          "delta_nll_vs_carried": -0.018678903579711914,
+          "max_logit_change_vs_carried": 13.204305648803711,
+          "all_window_boundaries_carried": true
+        }
+      }
+    }
+  ],
+  "conclusion": "Frozen real OWT continuation matches training objective forward exactly for logits,native state,pending,targets and observed memory/table on both checkpoints. No weight updates. Resets have state-dependent small mean NLL effects;do not infer copying ability or continuous capability from this512byte interface check. Stop further small-body seven-digit training. Use CarriedStream carry semantics as primary continuous evaluation;legacy request-isolated numeric scoring remains separately labeled."
+}

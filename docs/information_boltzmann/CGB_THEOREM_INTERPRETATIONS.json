@@ -8382,5 +8382,733 @@
   "CGB.Generation.LatchSlot.slot_supercritical_no_decay": {
     "source_sha256": "4d7c146b46c2965cfcd877fabe54f6859be8ae3a659bd60e1a19e58167fc9702",
     "text": "Without decay the slot latches iff `η g > 1`, for any renewal rate `ρ > 0`."
+  },
+  "CGB.BoundedCausalTags.tag_does_not_inject": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "Full/held tags have the same physical one-step forward by construction."
+  },
+  "CGB.BoundedCausalTags.coupled_tag_exact": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "Arbitrary finite causal age: one-step derivatives generate the delayed direction by forward transport, with no stored trajectory and no BPTT tape."
+  },
+  "CGB.BoundedCausalTags.delayed_loss_capture": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "A later REAL observation supplies the loss differential. Its contraction with the transported tag is exact for the declared intervention. No loss on an old answer, oracle record, or new output-injection path is introduced."
+  },
+  "CGB.BoundedCausalTags.compressed_transport_exact": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "Exact compression is permitted when the retained coordinates are closed under actual transport AND retain the participation source. This is a checked commuting condition, not the assumption that two chosen layers are enough."
+  },
+  "CGB.BoundedCausalTags.compressed_capture_exact": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "Compression must also preserve what the arriving outcome reads. A local trace can satisfy its recurrence yet still lose the delayed credit."
+  },
+  "CGB.BoundedCausalTags.credit_code_exists_iff": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "Exact credit through a finite code exists iff histories collapsed to the same code require the same credit. Whole-body snapshots are not a premise."
+  },
+  "CGB.BoundedCausalTags.local_zero_does_not_mean_no_credit": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "An old lower-layer intervention remains in the upper recurrent state after its lower-layer trace has become zero."
+  },
+  "CGB.BoundedCausalTags.lower_only_capture_impossible": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "No reader of the lower coordinate alone can recover every upper effect. This is the missing read condition in a layer-only compression."
+  },
+  "CGB.BoundedCausalTags.finite_tag_state_count": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "Count of finite-precision tag arrays: independent of lifetime. This counts K*d coordinates, not parameter sensitivities for every parameter. The actual runtime must separately account for bit width, masters and workspace."
+  },
+  "CGB.BoundedCausalTags.native_gap_transport": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "The exact homogeneous transport of an old participation direction when future keys/gates/values are held. In a stacked model, other induced changes are additional coupled sources; this lemma does not freeze them by fiat."
+  },
+  "CGB.BoundedCausalTags.retention_source": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "Retention participation is the ACTUAL old state after selective erase, not just a stored word or a scalar measure of activity."
+  },
+  "CGB.BoundedCausalTags.write_gate_source": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "The write/erase gate source contains the old prediction error. A rule that stores only the key omits a required local distinction."
+  },
+  "CGB.BoundedCausalTags.value_source": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "A value direction has a rank-one key-side source. This does not assert that retention and key/projection derivatives are all rank one."
+  },
+  "CGB.BoundedCausalTags.orthogonal_tag_holds": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "Orthogonal future writes leave an old direct-path tag unchanged when retention is one. Many steps need not destroy every old distinction."
+  },
+  "CGB.BoundedCausalTags.aligned_tag_erased": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "Conversely, a unit write along a unit key can erase its direct-path tag exactly. Unlimited causal AGE is not unlimited guaranteed retention."
+  },
+  "CGB.BoundedCausalTags.capture_decreases_of_margin": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "A capture is not a guarantee of improvement. This sufficient condition spells out what an approximate tag must beat, including omitted-path error. The smooth-loss upper bound is a substantive premise for the actual update."
+  },
+  "CGB.BoundedCausalTags.one_step_source_transport": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "The same current differential splits into a new participation source and the transported past tag. A source-free future event sets the first term to zero; it must not re-inject an isolated old participation every time."
+  },
+  "CGB.BoundedCausalTags.transport_sources_split": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "Partitioning participation sources partitions the final credit. This is the algebra required to add only OUTSIDE-window sources to a current BPTT gradient, instead of counting the inside-window participation twice. The actual scheduler must supply the declared disjoint age partition."
+  },
+  "CGB.BoundedCausalTags.capture_sources_split": {
+    "source_sha256": "c5d8dacc0beae4ccc679d0e3ffbc4c604a350facaec8a705a61b3e82a3e860c4",
+    "text": "Arrival modulation contracts the SAME source partition. This is a conditional no-double-counting identity, not a proof that an existing BPTT implementation has already used the identical masks and boundary."
+  },
+  "CGB.GDNOperatorTags.bilinear_read_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Same bilinear local law for each projection row, depthwise convolution window and query read. Frozen weights mean dw=0, not dx=0."
+  },
+  "CGB.GDNOperatorTags.square_sum_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Squared norm source; the factor two is essential for both normalizers."
+  },
+  "CGB.GDNOperatorTags.silu_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "SiLU used by the three causal convolutions, MLP and output gate."
+  },
+  "CGB.GDNOperatorTags.softplus_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Smooth branch only. Torch softplus uses a linear branch above its threshold; its boundary and finite-precision behavior are not erased here."
+  },
+  "CGB.GDNOperatorTags.beta_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "sigmoid write gate: raw projection directions still have a local path."
+  },
+  "CGB.GDNOperatorTags.log_retention_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "log retention in the installed layer: -exp(A_log)*softplus(a+dt_bias). The caller supplies a+dt_bias as z, including both parameter/input sources."
+  },
+  "CGB.GDNOperatorTags.alpha_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Delta receives alpha=exp(g), not g itself."
+  },
+  "CGB.GDNOperatorTags.smooth_normalizer_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Chunk q/k norm (d=1), RMS norm (d=feature count); n is the squared sum. This factor is sqrt(n/d+eps), NOT sqrt(n)+eps."
+  },
+  "CGB.GDNOperatorTags.recurrent_normalizer_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Fused recurrent short-input q/k norm uses sqrt(n)+eps. Nonzero norm is an explicit premise for this scalar sqrt proof."
+  },
+  "CGB.GDNOperatorTags.normalized_coordinate_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "One normalized coordinate, including the norm's response to all other coordinates. Suppressing dr is not an exact normalization direction."
+  },
+  "CGB.GDNOperatorTags.weighted_norm_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "RMS affine weight is trainable in the algebra; a frozen block still passes the incoming direction."
+  },
+  "CGB.GDNOperatorTags.shift4_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "The convolution CACHE direction must shift as well as its output. Keeping S tags but dropping these buffers omits a real temporal path."
+  },
+  "CGB.GDNOperatorTags.causal_conv4_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Four-tap convolution plus SiLU, with weight and incoming-cache sources on the same graph. The current projection enters the last tap."
+  },
+  "CGB.GDNOperatorTags.delta_next_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Joint source and transport: alpha,beta,key,value AND old S all vary. No assumption that the old effect stays in its original layer is introduced."
+  },
+  "CGB.GDNOperatorTags.query_read_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Actual query read has BOTH query credit and transported S credit; scale is the fixed head-dimension factor. Frozen query projections do not kill dq if their inputs depend on the old participation."
+  },
+  "CGB.GDNOperatorTags.swish_product_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "SwiGLU intermediate coordinate AND the swish output norm gate share the same product rule. u's source survives even if the gate weights are frozen."
+  },
+  "CGB.GDNOperatorTags.residual_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Each residual adds the incoming path instead of replacing it with an isolated local loss. Apply twice per GDN block."
+  },
+  "CGB.GDNOperatorTags.frozen_successor_carries_direction": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "The next frozen block is a map on activation AND its own recurrent cache. Its weights may be fixed while its state/activation directions pass through. This is spatial composition, not a second historical BPTT window."
+  },
+  "CGB.GDNOperatorTags.spatial_stages_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Assemble any finite number of differentiable stages, hence also 24, from LOCAL stage derivatives. It does not assume the whole-block/whole-stack derivative as a premise. Stage instantiation must cover every cache field."
+  },
+  "CGB.GDNOperatorTags.frozen_stage_transport": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "A frozen spatial stage contributes no new parameter source, but passes the old participation via its actual state/input differential."
+  },
+  "CGB.GDNOperatorTags.boundary_nll_deriv": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "The original language boundary supplies a vector innovation. Contracting it with the old participation's logit direction does not give hidden layers private vocabulary heads or substitute a scalar reward for language error."
+  },
+  "CGB.GDNOperatorTags.boundary_nll_eq_original": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "The declared real-valued boundary loss is the original negative log softmax, not a new auxiliary target for the interior layers."
+  },
+  "CGB.GDNJointStep.untouched_cache": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Structural native-cache locality: an inlet is not permission to overwrite the entire body's recurrent state with an old snapshot."
+  },
+  "CGB.GDNJointStep.read_stage_preserves_reservoir": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Reading does not itself overwrite stored continuous records. Recording and consolidation must be represented as later explicit transitions."
+  },
+  "CGB.GDNJointStep.updated_caches_deriv": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Exact cache replacement derivative, including all untouched layers."
+  },
+  "CGB.GDNJointStep.layer_step_deriv": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "A complete native block plus its actual recall increment, as a joint activation/cache/reservoir stage. Native derivatives are LOCAL to this block, and the increment derivative is separately supplied by the recall contract."
+  },
+  "CGB.GDNJointStep.hook_increment_deriv": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "The same hook computes an increment from current pre-block activation and reservoir fields; the parameter source also includes current encoder, replayed native-block and inlet-projection parameters."
+  },
+  "CGB.GDNJointStep.outside_ports_no_increment": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Formal contract for outside_ports_no_increment; see its Lean signature for premises and conclusion."
+  },
+  "CGB.GDNJointStep.port_increment_deriv": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Derivative of the original two-port schedule; no extra inlets are hidden inside the coupled directional state."
+  },
+  "CGB.GDNJointStep.hooked_step_deriv": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Formal contract for hooked_step_deriv; see its Lean signature for premises and conclusion."
+  },
+  "CGB.GDNJointStep.run_layers_deriv": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Native, hook and joint-cache derivatives assemble along the SAME forward program, including input- and output-placement variants of the old inlet."
+  },
+  "CGB.GDNJointStep.all_24_layers_deriv": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Specialization to all 24 original layers in order, without introducing new inlets or changing the original LM head."
+  },
+  "CGB.GDNJointStep.record_write_deriv": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "A record capture has its own causal source. Detaching it in runtime autograd does not prove that a historical intervention could not change the captured contents. Overwrite also replaces the previous record's direction."
+  },
+  "CGB.GDNJointStep.record_merge_deriv": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "The source/action feature tables also merge observed vectors by their fixed current count. That discrete count is held for this one event, while the old and arriving continuous fields both retain their directions."
+  },
+  "CGB.GDNJointStep.complete_tag_coordinate_count": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Finite continuous record fields also cost K times their coordinate count when K exact coupled tags are retained, independently of life duration."
+  },
+  "CGB.GDNJointStep.softmax_weight_deriv": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "All current selected logits, including a null candidate, can vary. This is the ordinary finite softmax for a fixed occupied support. Invalid slots and the clamp branch must be excluded/handled before using it."
+  },
+  "CGB.GDNJointStep.selected_read_deriv": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Fixed selected identities include the zero-valued null candidate, if present. Raw normalization, score, encoder and replay effects enter dweight or dvalue. A support-changing top-k is not assumed differentiable here."
+  },
+  "CGB.GDNJointStep.held_replay_leg_difference": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Holding old native replay derivatives does not erase current query, weight or encoder derivatives. Their common terms cancel in this difference; the removed term is the selected OLD-native value leg only."
+  },
+  "CGB.GDNJointStep.strict_support_locally_stable": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "A strict finite top-k separation persists in a neighborhood of the current point for continuous scores. Tied cutoffs do not satisfy this premise; slot ordering or discrete credit there needs its own convention."
+  },
+  "CGB.CausalTagCompression.mem_silent_iff": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Formal contract for mem_silent_iff; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CausalTagCompression.silent_is_invariant": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Invisible now is insufficient: a discardable direction must remain invisible after every allowed continuation."
+  },
+  "CGB.CausalTagCompression.silent_reads_zero": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Formal contract for silent_reads_zero; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CausalTagCompression.invariant_future": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Formal contract for invariant_future; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CausalTagCompression.silent_is_largest": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "The maximal EXACT discardable linear subspace is generated by future invisibility and transition invariance, rather than a hand-written module list."
+  },
+  "CGB.CausalTagCompression.reduced_step_exact": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Formal contract for reduced_step_exact; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CausalTagCompression.reduced_read_exact": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Formal contract for reduced_read_exact; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CausalTagCompression.reduced_source_step_exact": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "A new actual participation source is compressed by the SAME map."
+  },
+  "CGB.CausalTagCompression.exact_code_kernel_le_silent": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Any other exact linear code, even with a nonlinear decoder, can discard no direction outside the silent subspace for the SAME future-test family."
+  },
+  "CGB.CausalTagCompression.future_credit_difference_forces_distinct_codes": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Two histories with an observable future difference cannot be merged by an exact code. The relevant distinction is future CREDIT, not old bytes."
+  },
+  "CGB.CausalTagCompression.factored_capture": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Delayed modulation captures each owner's responsibility by contracting the shared effect basis once, then reading its ownership coefficients."
+  },
+  "CGB.CausalTagCompression.factor_transport": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Future native/record transport acts on the shared basis; no past trajectory or old parameter graph is needed by this algebra."
+  },
+  "CGB.CausalTagCompression.in_span_source_absorbed": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "The concrete in-span insertion rule changes ownership coefficients, not the effect basis. Repeated useful participation need not consume a new slot when its causal effect is already represented."
+  },
+  "CGB.CausalTagCompression.source_absorption_residual": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "For an arbitrary candidate source, the exact omitted component is its residual outside the present basis. This is a checkable error object, not a claim that every candidate is low rank."
+  },
+  "CGB.CausalTagCompression.silent_residual_merge_exact": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "A nonzero state residual may still be safely merged if every registered future result is blind to it. This joins future-credit sufficiency to the constructive ownership-preserving insertion rule."
+  },
+  "CGB.CausalTagCompression.basis_recompression_exact": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "The current basis can be changed only together with its ownership factor. This is the exact rule for merging dependent participation effects."
+  },
+  "CGB.CausalTagCompression.append_sources_exact": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "A finite temporary append represents transported old effects plus new participation sources. It has K+L columns, not a growing event list."
+  },
+  "CGB.CausalTagCompression.bounded_factor_step": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Fixed-capacity exact step IF the combined source/transport rank fits. No theorem here supplies that span for arbitrary GDN projections or worlds."
+  },
+  "CGB.CausalTagCompression.recompression_preserves_capture": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Observable captures do not change under an admitted basis rotation."
+  },
+  "CGB.CausalTagCompression.ownership_cannot_be_replaced_by_total": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Summing opposing effects while dropping their parameter identities destroys responsibility, even when the summed effect is exactly zero. This is a logical countermodel, not a synthetic capability experiment."
+  },
+  "CGB.CausalTagCompression.capture_error_bound": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Truncation/quantization must be judged after the REAL outcome read, not only by a small latent-space reconstruction error or by SIGReg variance."
+  },
+  "CGB.CausalTagCompression.source_capture_error": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Direct error certificate for the actual in-span insertion rule above. If the source residual is truncated, each owner's delayed credit carries its OWN coefficient in the bound. A low norm for the shared basis alone is not a uniform guarantee for arbitrary ownership weights."
+  },
+  "CGB.CausalTagCompression.positive_capture_of_error_margin": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "A positive approximate credit is directionally safe only with a margin over its certified error. Near-zero/noisy credit does not pass this gate."
+  },
+  "CGB.CausalTagCompression.negative_capture_of_error_margin": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Formal contract for negative_capture_of_error_margin; see its Lean signature for premises and conclusion."
+  },
+  "CGB.CausalTagCompression.nll_capture_error_bound": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "For the original NLL boundary, uniform logit-DIRECTION error epsilon implies credit error at most 2*epsilon. No vocabulary-sized independent reward scalars or private layer targets are required. Probabilities are those of the same held forward pass; a changed forward needs an extra error term."
+  },
+  "CGB.CausalTagCompression.bounded_error_over_lifetime": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Old age alone is not the certificate. This states the explicit contraction/defect condition that makes a fixed error budget invariant for every finite continuation of the same registered dynamics."
+  },
+  "CGB.GDNLocalSourceFactors.column_scale": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "Pull a scalar out of the actual key-column contraction."
+  },
+  "CGB.GDNLocalSourceFactors.retention_edit_exact": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "Varying retention alone changes every preserved column through the same matrix-valued source. This is exact for finite scalar edits with fixed k."
+  },
+  "CGB.GDNLocalSourceFactors.write_edit_exact": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "The write-gate source is an outer product k times the current innovation; all weights of its scalar projection row share this source, not its owners."
+  },
+  "CGB.GDNLocalSourceFactors.value_edit_exact": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "A value direction gives one outer product. Its parameter source rank and the rank of a sum over different events are separate quantities."
+  },
+  "CGB.GDNLocalSourceFactors.key_edit_with_remainder": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "A key intervention has two first-order outer products AND a quadratic remainder. The first-order tag must not be advertised as a finite-edit law."
+  },
+  "CGB.GDNLocalSourceFactors.native_direction_source_split": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "The native derivative already proved in gdn_operator_tags is here split into transported old S and four actual local sources, without dropping key, retention or old-state terms. Incoming activation effects enter dk,dv,da,db."
+  },
+  "CGB.GDNLocalSourceFactors.query_read_source": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "Query is absent from the S update; this does not erase its activation, raw-convolution-cache, downstream-layer or stored-record causal paths."
+  },
+  "CGB.GDNLocalSourceFactors.erase_injective": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "Retention can preserve all directions: away from the exact erase singularity, x -> x-beta*k*(k dot x) is injective. Thus one gate-source column in effect space does NOT imply a rank-one native S matrix."
+  },
+  "CGB.GDNLocalSourceFactors.retention_matrix_injective": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "The same injectivity holds columnwise for the whole native matrix. No rank-one compression of the retention source follows from scalar gating."
+  },
+  "CGB.GDNLocalSourceFactors.alpha_gate_deriv": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "The installed smooth softplus branch: a_proj and dt_bias share rawSlope; A_log has logSlope. The thresholded torch branch requires its own admission."
+  },
+  "CGB.GDNLocalSourceFactors.native_affine_retention": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "For fixed reached S/key/value, the native update is affine in retention. This connects the actual nonlinear gate derivative to its shared S source."
+  },
+  "CGB.GDNLocalSourceFactors.native_retention_gate_deriv": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "Original raw retention gate parameters generate one exact current native source per head. Old-state/input directions are additional transported terms."
+  },
+  "CGB.GDNLocalSourceFactors.write_gate_deriv": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "One scalar write gate has the ordinary sigmoid slope, shared by all coordinates in its projection row at the current incoming feature."
+  },
+  "CGB.GDNLocalSourceFactors.native_write_gate_deriv": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "Write projection weights share the innovation outer product after the sigmoid slope. The current input and old S are held only for this source leg."
+  },
+  "CGB.GDNLocalSourceFactors.projection_row_direction": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "Dense row ownership is finite: each incoming feature coordinate supplies its own coefficient even though the downstream effect direction is shared."
+  },
+  "CGB.GDNLocalSourceFactors.retention_projection_family_deriv": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "Combine the actual a_proj row, dt_bias and A_log interventions. This proves their local parameter source from operators instead of assuming it."
+  },
+  "CGB.GDNLocalSourceFactors.retention_owner_contraction": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "Raw retention-projection weights, dt_bias and A_log all use ONE native retention matrix source. Their distinct coefficients are not summed away."
+  },
+  "CGB.GDNLocalSourceFactors.projection_row_shared_source": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "All weights in ONE raw projection row share its propagated coordinate source. L must include the raw conv cache as well as current S and output."
+  },
+  "CGB.GDNLocalSourceFactors.projection_all_rows_factor": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "A dense projected direction is represented by finitely many raw-output sources; this is a one-event factorization, not a bound over a lifetime."
+  },
+  "CGB.GDNLocalSourceFactors.shared_source_survives_transport": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "Shared ownership survives frozen successor layers and joint record operations whenever they supply the SAME admitted linearized map."
+  },
+  "CGB.GDNLocalSourceFactors.shared_source_delayed_capture": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "The delayed third factor is contracted with the shared effect once; ownership distributes the resulting scalar to the original parameters."
+  },
+  "CGB.GDNLocalSourceFactors.visible_zero_does_not_erase_cache": {
+    "source_sha256": "d1d313a1723561f477b9a9fe9efa3cdb195cf052f5316f4d3b44ed0e559ed78a",
+    "text": "A raw projection may change persistent cache even when its immediate output differential vanishes. Observing only current S/output is insufficient whenever a future read can distinguish that cache direction."
+  },
+  "CGB.CausalTagCompression.expansion_bump": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "A scalar ownership increment and its removed residual exactly balance."
+  },
+  "CGB.CausalTagCompression.project_one_conserves": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "No orthonormal-basis premise is used for this conservation identity. One sweep need not be the least-squares projection onto the entire span."
+  },
+  "CGB.CausalTagCompression.projection_sweep_conserves": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "A bounded scan through columns preserves source = expansion + residual, even for nonorthogonal columns. Coefficients and residual are temporary."
+  },
+  "CGB.CausalTagCompression.project_source_split": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "The concrete K-projection sweep supplies the residual identity needed by the earlier absorption theorem; it is not an unspecified compression oracle."
+  },
+  "CGB.CausalTagCompression.factor_replace_column": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Replacing a single column also replaces its ownership row. The dropped object is the OLD column with its already-merged ownership, not a bare activity."
+  },
+  "CGB.CausalTagCompression.discard_identity": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "All K+1 discard candidates have an exact residual, including exchange. The residual is used in proofs/temporary computation, not saved as extra history."
+  },
+  "CGB.CausalTagCompression.owner_le_max": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Uniform ownership bound over the fixed parameter alphabet, not event IDs."
+  },
+  "CGB.CausalTagCompression.discarded_norm_le_cost": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Cost bounds the lost causal action for EVERY owner. A tiny unweighted column can still be expensive when its ownership coefficients are large."
+  },
+  "CGB.CausalTagCompression.scan_cost_le_initial": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "The finite scan never increases the selected certified discard cost."
+  },
+  "CGB.CausalTagCompression.scan_cost_le_member": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Every old-column exchange is considered, with deterministic scan order."
+  },
+  "CGB.CausalTagCompression.chosen_cost_minimal": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "The chosen truncation has the smallest bound among keeping the old basis and ALL single-column exchanges; not a global optimal-rank claim."
+  },
+  "CGB.CausalTagCompression.insert_defect_identity": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Exact accounting for the entire chosen insertion, not just an abstract low-rank existence premise. The defect is an analytical reference, not storage."
+  },
+  "CGB.CausalTagCompression.insert_radius": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Radius changes by the computed discard bound, never by unreported loss."
+  },
+  "CGB.CausalTagCompression.insert_defect_bound": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Every owner's actual insertion defect is bounded by the chosen cost."
+  },
+  "CGB.CausalTagCompression.zero_cost_insert_exact": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Zero-cost absorption or an empty old slot is lossless whichever tied candidate the fixed scan selects. This requires a zero-cost candidate; one projection sweep does not promise to find every span representation."
+  },
+  "CGB.CausalTagCompression.insert_error_certificate": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "The same concrete insertion carries a valid error radius for the unknown uncompressed participation map; it does not need that map at runtime."
+  },
+  "CGB.CausalTagCompression.transport_error_certificate": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Transport acts on the shared effects once and amplifies the LOST part by the actual joint operator bound. Native-only contraction is insufficient."
+  },
+  "CGB.CausalTagCompression.insert_list_certificate": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Process all current sources sequentially, retaining exactly K columns. The reference is for proof only; the stored code has no growing source list."
+  },
+  "CGB.CausalTagCompression.finite_step_certificate": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "A whole registered event has one joint transport and finitely many new sources. All insertion defects remain in the error ledger; no reset is used."
+  },
+  "CGB.CausalTagCompression.insertion_bill_radius": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Exact radius recurrence of the implemented finite source scan."
+  },
+  "CGB.CausalTagCompression.finite_step_closed_budget": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "When the actual chosen truncations satisfy the closed budget inequality, the same fixed-K code keeps its error budget. No small-rank premise is hidden."
+  },
+  "CGB.CausalTagCompression.matched_recent_subtraction": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Subtracting the SAME current-window participation does not enlarge total credit error. The recent scalar can come from the existing bounded graph."
+  },
+  "CGB.CausalTagCompression.mismatched_recent_subtraction": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "A mismatched current-window reference contributes an additional error; actual-history sources and a different replay-weight schedule cannot cancel."
+  },
+  "CGB.CausalTagCompression.arrived_credit_certificate": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "An arrived real boundary contracts the CURRENT error, so a stored code may keep evolving even when its bound is too large to certify useful credit."
+  },
+  "CGB.CausalTagCompression.certified_credit_alignment": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "An accepted sign agrees with the registered participation credit; uncertain credit contributes zero. This is NOT a full-parameter Adam theorem."
+  },
+  "CGB.CausalTagCompression.certified_selected_pairing": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "A negative step along certified credit has a nonpositive first-order pairing with the SELECTED source reference. Other source legs and finite-step curvature still belong in any actual parameter-update acceptance test."
+  },
+  "CGB.CausalTagCompression.field_insert_defect_bound": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "A sparse field projection can certify less loss than the full-state radius. The loss is exactly zero when the discarded direction has zero projection into this field, even if another field has a large defect."
+  },
+  "CGB.CausalTagCompression.field_insert_error_certificate": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "The finite Code insertion and a fieldwise record-gain ledger are jointly valid: they refer to exactly the same discarded effect and original owners."
+  },
+  "CGB.GDNJointStep.layer_direction_add_transport": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Existing and incoming directions share one native evaluation law; only the first receives the direct parameter source."
+  },
+  "CGB.GDNJointStep.native_partial_gain": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Local two-by-two gain from the native differential's input/cache legs. No full 24-layer Jacobian or source term is multiplied into each basis column."
+  },
+  "CGB.GDNJointStep.layer_transport_budget": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Actual inlet placement changes BOTH output and cache gain. Input recall affects cache writes; output recall changes only the outgoing activation here."
+  },
+  "CGB.GDNJointStep.hooked_direction_add_transport": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Source separation includes the replay/encoder/inlet hook, not merely native S. This is the homogeneous map required by factor transport."
+  },
+  "CGB.GDNJointStep.run_directions_add_transport": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Assemble source-free transport through the SAME 24-stage program. Subtracting the zero-initial tag isolates transported initial participation."
+  },
+  "CGB.GDNJointStep.joint_source_transport_split": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "The joint parameter source is generated once from zero initial tag; factor columns use only the homogeneous term. Applies in particular to finRange24."
+  },
+  "CGB.GDNJointStep.run_transport_operator_apply": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "This operator executes exactly the already-separated homogeneous program."
+  },
+  "CGB.GDNJointStep.transport_gain_certificate": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "A finite scalar fallback gain derived from stage composition, rather than assumed as a whole-system constant. Sparse field budgets above can be tighter; the local norms/primitive branches still need runtime admission."
+  },
+  "CGB.GDNJointStep.packed_transport_exec": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "In code coordinates the transport executes precisely the joint program."
+  },
+  "CGB.GDNJointStep.packed_transport_gain": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "A scalar fallback includes coordinate-norm conversion costs. Fieldwise budgets can avoid repeatedly multiplying this coarse whole-state bound."
+  },
+  "CGB.GDNJointStep.commit_fields_deriv": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "The same count/slot and the captured OPEN-boundary derivative are used on the side-state. Runtime detach is not a reason to erase these directions."
+  },
+  "CGB.GDNJointStep.replacement_zero_count": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Replacement n=0 releases the old address AND old capsule direction."
+  },
+  "CGB.GDNJointStep.commit_untouched_slot": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "All untouched records retain their values/directions with no global copy."
+  },
+  "CGB.GDNJointStep.open_boundary_cannot_be_replaced_by_end": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Taking the live end-boundary direction instead of the open snapshot is observably a different record whenever those two directions differ."
+  },
+  "CGB.GDNJointStep.committed_version_rejects_old": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Both merge and replacement invalidate receipts/tags bound to the old slot version. Reusing the same slot index does not preserve event identity."
+  },
+  "CGB.GDNJointStep.source_mean_error_bound": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "The source mean has a concrete gain: old n/(n+1), arriving 1/(n+1). No all-history or whole-body operator norm is a premise here."
+  },
+  "CGB.GDNJointStep.source_mean_preserves_budget": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Averaging does not amplify a common fieldwise error budget. A generic gain >1 per copied record would throw away this important structure."
+  },
+  "CGB.GDNJointStep.commit_budget_certificate": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Sparse concrete error handoff: key budgets merge, input/open-boundary budgets overwrite, and all other slots retain their own budgets."
+  },
+  "CGB.GDNJointStep.read_direction_centered": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Actual softmax score credit is centered on the read value; common value shifts cancel. The null candidate must remain in this same sum."
+  },
+  "CGB.GDNJointStep.read_direction_gain": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Concrete value/score gain for fixed selected identities. Weights are the real forward weights, NOT a renormalized history-only distribution."
+  },
+  "CGB.GDNJointStep.read_gain_from_local_bounds": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "A checkable gain row from local value and score bounds. No factor equal to the whole reservoir capacity is introduced by summing a selected read."
+  },
+  "CGB.GDNJointStep.read_record_budget_row": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Actual record-budget-to-read row: source keys determine weights, local input/open-boundary errors determine replay values, and query error is shared. The replay/encoder coefficients are local operator obligations, not a global whole-history gain assumed as one unexplained number."
+  },
+  "CGB.GDNJointStep.address_score_gain": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Inner-product address score differential, including both query and key paths and an optional additive preference direction, at positive temperature."
+  },
+  "CGB.CausalTagCompression.rounded_factor_error": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Both effect storage U and ownership storage V contribute error. Treat rounded FP32/FP16 values as exact real bit-pattern values here; obtaining their enclosures, including underflow/overflow, is a numerical obligation."
+  },
+  "CGB.CausalTagCompression.compression_plus_storage_error": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "A stored basis error is not just the loss from discarded columns. The same field projections may be applied before this formula for sparse bills."
+  },
+  "CGB.CausalTagCompression.numerical_transport_error": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "One admitted source-free step with numerical/operator drift, source roundoff and arithmetic residual. A is the actual current linearized law; roundedA may differ because its base, branch arithmetic or weights differ. Do not set operatorError=0 merely because both programs have the same name."
+  },
+  "CGB.CausalTagCompression.numerical_credit_error": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Approximation of the arrived third factor is a separate error leg from approximation of historical participation. The final arithmetic readout must also be charged. Same forward/branch admission precedes use of this theorem."
+  },
+  "CGB.CausalTagCompression.numerical_positive_capture": {
+    "source_sha256": "b0a1ce3de1194e124a9ea964e83f12f4640e5a82fa30eca75be2f8fbdacd8b80",
+    "text": "Positive capture is admitted only beyond the WHOLE numerical bill; reusing the old compression-only threshold would be unsound."
+  },
+  "CGB.GDNJointStep.cache_unpack_pack": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Formal contract for cache_unpack_pack; see its Lean signature for premises and conclusion."
+  },
+  "CGB.GDNJointStep.cache_pack_unpack": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Formal contract for cache_pack_unpack; see its Lean signature for premises and conclusion."
+  },
+  "CGB.GDNJointStep.frame_unpack_pack": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Formal contract for frame_unpack_pack; see its Lean signature for premises and conclusion."
+  },
+  "CGB.GDNJointStep.frame_pack_unpack": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Formal contract for frame_pack_unpack; see its Lean signature for premises and conclusion."
+  },
+  "CGB.GDNJointStep.fixed_pack_coordinate": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Formal contract for fixed_pack_coordinate; see its Lean signature for premises and conclusion."
+  },
+  "CGB.GDNJointStep.coordinate_projection_gain": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Formal contract for coordinate_projection_gain; see its Lean signature for premises and conclusion."
+  },
+  "CGB.GDNJointStep.field_restriction_gain": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Restriction to an actual field is an L2 contraction, so its gain does not grow merely because the record library has more slots."
+  },
+  "CGB.GDNJointStep.record_field_injective": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Formal contract for record_field_injective; see its Lean signature for premises and conclusion."
+  },
+  "CGB.GDNJointStep.pending_field_injective": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Formal contract for pending_field_injective; see its Lean signature for premises and conclusion."
+  },
+  "CGB.GDNJointStep.cache_coordinate_count": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Formal contract for cache_coordinate_count; see its Lean signature for premises and conclusion."
+  },
+  "CGB.GDNJointStep.record_coordinate_count": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Formal contract for record_coordinate_count; see its Lean signature for premises and conclusion."
+  },
+  "CGB.GDNJointStep.joint_coordinate_count": {
+    "source_sha256": "85112e9d53e729fcde74b87fb98ace766e5024cd0b2e757c09b6b692f5652f57",
+    "text": "Slot capacity is per port, not a second copy of a total-capacity option."
+  },
+  "CGB.GDNOperatorTags.torch_softplus_below": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Formal contract for torch_softplus_below; see its Lean signature for premises and conclusion."
+  },
+  "CGB.GDNOperatorTags.torch_softplus_above": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Formal contract for torch_softplus_above; see its Lean signature for premises and conclusion."
+  },
+  "CGB.GDNOperatorTags.scalar_branch_preserved": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Numerical error must fit inside the actual branch margin before the same differential is used. Equality/ties have no smooth admission here."
+  },
+  "CGB.GDNOperatorTags.normalized_coordinate_gain": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Shared scalar coordinate row for the actual normalized derivative. r is sqrt(sum+eps), sqrt(sum)+eps, or the active recall clamp denominator; the caller must use the corresponding branch's dr."
+  },
+  "CGB.GDNOperatorTags.clamped_coordinate_below": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Recall F.normalize has max(norm,eps), not either native normalizer. Strictly below eps its denominator is constant, including at a zero vector."
+  },
+  "CGB.GDNOperatorTags.recurrent_zero_remainder": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "The recurrent VECTOR map is differentiable at zero, although norm itself is not. This quadratic remainder also records its large 1/eps^2 sensitivity."
+  },
+  "CGB.GDNOperatorTags.recurrent_derivative_at_zero": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Formal contract for recurrent_derivative_at_zero; see its Lean signature for premises and conclusion."
+  },
+  "CGB.GDNOperatorTags.reciprocal_error": {
+    "source_sha256": "9b2d7f84f8b7aac7d47634321b338fe1dccc13f98cfb36743920a6a8175baff4",
+    "text": "Reciprocal error becomes unbounded near zero. A denominator floor is an explicit numerical obligation, not something fixed by U/V compression."
   }
 }

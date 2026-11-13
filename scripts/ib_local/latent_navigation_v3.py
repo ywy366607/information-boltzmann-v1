@@ -201,16 +201,23 @@ class ExperienceMemory(TransitionMemory):
             best, index = similarity.max(0)
             slot = int(index)
             hit = bool(best >= self.threshold)
+        archive = getattr(self, '_causal_archive', None)
+        # Preserve the old version before either overwrite or approximate
+        # merge. The archive is optional and does not alter legacy commits.
+        # Select the victim first, before mutating any episode field.
         if not hit:
             if self.consolidation_enabled:
                 from scripts.ib_local.experience_consolidation import replacement_slot
                 slot = replacement_slot(self)
             elif self.mode == 'fifo':
                 slot = int(self.cursor)
-                self.cursor.copy_((self.cursor + 1) % self.capacity)
             else:
                 priority = torch.where(self.occupied, self.last_touch, -1)
                 slot = int(priority.argmin())
+            if archive is not None:
+                archive.before_slot_write(slot)
+            if self.mode == 'fifo' and not self.consolidation_enabled:
+                self.cursor.copy_((self.cursor + 1) % self.capacity)
             self.evicted_total.add_(int(self.occupied[slot]))
             self.admitted_total.add_(1)
             self.count[slot] = 0
@@ -223,6 +230,8 @@ class ExperienceMemory(TransitionMemory):
             self.read_credit_second[slot] = 0
             self.read_credit_steps[slot] = 0
         else:
+            if archive is not None:
+                archive.before_slot_write(slot)
             self.merged_total.add_(1)
         # Even a merge changes the represented experience. An outstanding
         # receipt cannot silently be assigned to this new mixture.

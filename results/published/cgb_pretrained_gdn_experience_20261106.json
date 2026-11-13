@@ -1,0 +1,246 @@
+{
+  "kind": "pretrained_gdn_native_experience_credit",
+  "date": "2026-11-06",
+  "scope": "Engineering audit of current language credit to re-executed old GDN gates/projections; not navigation or capability acceptance",
+  "model_revision": "14661a98768e1f5d5493ff7b18f2d6809717a4c8",
+  "original_weights_sha256": "57845cdeb5f344785e170dc0aa41ce81f4e956113bb1ec048eac7c1f65e41551",
+  "config": {
+    "model": "E:\\cgb_gdn340_probe\\model",
+    "output": "E:\\cgb_gdn340_probe\\experience\\first.json",
+    "data": "data\\ib_owt_10000",
+    "layers": [
+      1,
+      12
+    ],
+    "steps": 8,
+    "window": 128,
+    "capacity": 16
+  },
+  "source": {
+    "split": "train",
+    "source_sha256": "9816b45ad8e775ca54b63906cd657c460c0aa542aec4196e39bdae6c4b6bfe3b",
+    "available_tokens": 31724,
+    "score_unit": "nats/token"
+  },
+  "native_trainable_parameters": 10527248,
+  "extra_trainable_parameters": 262272,
+  "weights": {
+    "language": 10.0,
+    "sigreg": 0.001
+  },
+  "real_language_audit": {
+    "updates": 8,
+    "tokens": 1024,
+    "first_update_seconds": 53.48945000000822,
+    "first_old_replay_update_seconds": 157.14678249999997,
+    "steady_steps_seconds": [
+      0.9587108999985503,
+      0.9593363000021782,
+      0.9601183999911882,
+      0.9587031999981264
+    ],
+    "prequential_nats_per_token": [
+      2.8789591789245605,
+      2.6205625534057617,
+      2.521237850189209,
+      3.0684444904327393,
+      3.0779824256896973,
+      2.8443446159362793,
+      3.500440835952759,
+      2.820713996887207
+    ],
+    "zero_inlet_logit_max": 0.0,
+    "layer_checks": {
+      "1": {
+        "old_branch_native_gradient_norms": {
+          "layer1.A_log": 4.2588289943523705e-06,
+          "layer1.dt_bias": 2.7046642117056763e-06,
+          "layer1.q_proj.weight": 2.1083367755636573e-05,
+          "layer1.k_proj.weight": 2.0488223526626825e-05,
+          "layer1.v_proj.weight": 4.6394969103857875e-05,
+          "layer1.a_proj.weight": 1.1033623195544351e-05,
+          "layer1.b_proj.weight": 3.3351980164297856e-06,
+          "layer1.q_conv1d.weight": 3.6970017390558496e-05,
+          "layer1.k_conv1d.weight": 5.606950435321778e-05,
+          "layer1.v_conv1d.weight": 0.00010677201498765498,
+          "layer1.g_proj.weight": 6.625752575928345e-05,
+          "layer1.o_norm.weight": 7.002081838436425e-05,
+          "layer1.o_proj.weight": 0.00013929606939200312
+        },
+        "selected_source_ages_tokens": [
+          832,
+          448
+        ],
+        "teaching_gradient_norms": [
+          0.000410020089475438,
+          0.00033147665089927614
+        ]
+      },
+      "12": {
+        "old_branch_native_gradient_norms": {
+          "layer12.A_log": 8.537719622836448e-06,
+          "layer12.dt_bias": 7.436189662257675e-06,
+          "layer12.q_proj.weight": 0.0007784655317664146,
+          "layer12.k_proj.weight": 0.0007439071778208017,
+          "layer12.v_proj.weight": 0.0011170790530741215,
+          "layer12.a_proj.weight": 0.00013347406638786197,
+          "layer12.b_proj.weight": 0.00015325787535402924,
+          "layer12.q_conv1d.weight": 0.0022360605653375387,
+          "layer12.k_conv1d.weight": 0.002234464278444648,
+          "layer12.v_conv1d.weight": 0.001459855237044394,
+          "layer12.g_proj.weight": 0.000895253149792552,
+          "layer12.o_norm.weight": 0.0007545842090621591,
+          "layer12.o_proj.weight": 0.0014900194946676493
+        },
+        "selected_source_ages_tokens": [
+          832,
+          320
+        ],
+        "teaching_gradient_norms": [
+          0.0018894069362431765,
+          0.0010882490314543247
+        ]
+      }
+    },
+    "native_parameter_changes": {
+      "layer1.A_log": {
+        "max_abs": 0.0005123764276504517,
+        "changed_fraction": 1.0
+      },
+      "layer1.dt_bias": {
+        "max_abs": 0.0004981756210327148,
+        "changed_fraction": 1.0
+      },
+      "layer1.q_proj.weight": {
+        "max_abs": 0.00079345703125,
+        "changed_fraction": 0.6157150268554688
+      },
+      "layer1.k_proj.weight": {
+        "max_abs": 0.00079345703125,
+        "changed_fraction": 0.6435871124267578
+      },
+      "layer1.v_proj.weight": {
+        "max_abs": 0.00079345703125,
+        "changed_fraction": 0.9645347595214844
+      },
+      "layer1.a_proj.weight": {
+        "max_abs": 0.000762939453125,
+        "changed_fraction": 0.965576171875
+      },
+      "layer1.b_proj.weight": {
+        "max_abs": 0.000762939453125,
+        "changed_fraction": 0.936767578125
+      },
+      "layer1.q_conv1d.weight": {
+        "max_abs": 0.0007736682891845703,
+        "changed_fraction": 0.9951171875
+      },
+      "layer1.k_conv1d.weight": {
+        "max_abs": 0.0007569789886474609,
+        "changed_fraction": 0.996826171875
+      },
+      "layer1.v_conv1d.weight": {
+        "max_abs": 0.0007578134536743164,
+        "changed_fraction": 0.984619140625
+      },
+      "layer1.g_proj.weight": {
+        "max_abs": 0.0007944107055664062,
+        "changed_fraction": 0.9648809432983398
+      },
+      "layer1.o_norm.weight": {
+        "max_abs": 0.00067138671875,
+        "changed_fraction": 0.94921875
+      },
+      "layer1.o_proj.weight": {
+        "max_abs": 0.0008544921875,
+        "changed_fraction": 0.9661235809326172
+      },
+      "layer12.A_log": {
+        "max_abs": 0.00021697580814361572,
+        "changed_fraction": 1.0
+      },
+      "layer12.dt_bias": {
+        "max_abs": 0.00016447901725769043,
+        "changed_fraction": 1.0
+      },
+      "layer12.q_proj.weight": {
+        "max_abs": 0.0008544921875,
+        "changed_fraction": 0.9578628540039062
+      },
+      "layer12.k_proj.weight": {
+        "max_abs": 0.000797271728515625,
+        "changed_fraction": 0.9577798843383789
+      },
+      "layer12.v_proj.weight": {
+        "max_abs": 0.00080108642578125,
+        "changed_fraction": 0.9635953903198242
+      },
+      "layer12.a_proj.weight": {
+        "max_abs": 0.00079345703125,
+        "changed_fraction": 0.93701171875
+      },
+      "layer12.b_proj.weight": {
+        "max_abs": 0.00079345703125,
+        "changed_fraction": 0.95361328125
+      },
+      "layer12.q_conv1d.weight": {
+        "max_abs": 0.000782012939453125,
+        "changed_fraction": 0.985595703125
+      },
+      "layer12.k_conv1d.weight": {
+        "max_abs": 0.0007658004760742188,
+        "changed_fraction": 0.987548828125
+      },
+      "layer12.v_conv1d.weight": {
+        "max_abs": 0.0007948875427246094,
+        "changed_fraction": 0.976806640625
+      },
+      "layer12.g_proj.weight": {
+        "max_abs": 0.00079345703125,
+        "changed_fraction": 0.9627809524536133
+      },
+      "layer12.o_norm.weight": {
+        "max_abs": 0.000732421875,
+        "changed_fraction": 0.890625
+      },
+      "layer12.o_proj.weight": {
+        "max_abs": 0.0008544921875,
+        "changed_fraction": 0.9642257690429688
+      }
+    },
+    "recurrence_bytes": 25755648,
+    "experience_cpu_bytes_after_8_steps": 18646830,
+    "experience_cpu_bytes_full_fixed_capacity": 20743982,
+    "peak_cuda_allocated_bytes": 1458202112,
+    "peak_cuda_reserved_bytes": 1637875712
+  },
+  "disk_restore": {
+    "updates": 4,
+    "tokens": 512,
+    "next_logit_max": 0.0,
+    "scope": [
+      "native_weights",
+      "fp32_masters",
+      "optimizer",
+      "experiences_and_capsules",
+      "recurrent_cache",
+      "cpu_cuda_rng"
+    ],
+    "comparison": "next forward after restoring serialized states; not a paired next optimizer-step comparison"
+  },
+  "tests": "27 passed: test_pretrained_gdn, test_pretrained_gdn_experience, test_navigation_causal_water",
+  "theorem_count_delta": 0,
+  "old_navigation_individual_unchanged": true,
+  "artifacts": {
+    "first": "E:\\cgb_gdn340_probe\\experience\\first.json",
+    "restore": "E:\\cgb_gdn340_probe\\experience\\restored.json",
+    "checkpoint": "E:\\cgb_gdn340_probe\\experience\\first.pt",
+    "parameter_changes": "E:\\cgb_gdn340_probe\\experience\\parameter_changes.json"
+  },
+  "source_files_current_sha256": {
+    "scripts/ib_local/pretrained_gdn_experience.py": "4b4b8f3e0e5ffcf5a300a6fa219aad7cabf6d470e62eefe2a6bfc12de9daebb3",
+    "scripts/ib_local/probe_pretrained_gdn_experience.py": "77cd1c06591d774516d500944834fa97ed94e722042f82596e12bbb4bd989ce7",
+    "tests/test_pretrained_gdn_experience.py": "7057e6f7353b43060198d3b424f2819ee1717d7794e652e8dfdb34cc83d10af4"
+  },
+  "source_note": "Restore-scope check was added after first run; four-step run exercised full restore; later input-length preflight tightened only"
+}

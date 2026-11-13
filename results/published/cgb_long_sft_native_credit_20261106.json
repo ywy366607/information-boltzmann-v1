@@ -1,0 +1,359 @@
+{
+  "kind": "real_long_sft_native_credit_pair",
+  "status": "complete",
+  "task_sha256": "e1bed56667b1bfb4eb0eadeb3863d0a3259abd42b966fa4a55c707ecb7a748c0",
+  "window": 128,
+  "capacity": 64,
+  "distinct_train_questions": 84,
+  "epochs": 2,
+  "arms": {
+    "full": {
+      "examples": 168,
+      "updates": 186,
+      "real_tokens": 333268,
+      "compute_padding_tokens": 11988,
+      "supervised_answer_tokens": 1886,
+      "source_age_max_tokens": 4032,
+      "question_records_retrieved": 22,
+      "question_records_present_after_update": 372,
+      "question_record_opportunities": 372,
+      "curve": [
+        {
+          "examples": 0,
+          "updates": 0,
+          "answer_nll": 2.2891883043418253,
+          "question_swap_gap": 0.016389161348342896,
+          "matching_correct": 3,
+          "admissions": {}
+        },
+        {
+          "examples": 42,
+          "updates": 46,
+          "answer_nll": 2.162727149805628,
+          "question_swap_gap": 0.006099402904510498,
+          "matching_correct": 3,
+          "admissions": {
+            "full_admissions": 1354,
+            "actual_not_oldest": 0,
+            "credit_not_oldest": 808,
+            "evicted_positive": 60,
+            "evicted_negative": 62,
+            "max_evicted_age": 4160
+          }
+        },
+        {
+          "examples": 84,
+          "updates": 93,
+          "answer_nll": 2.1973118638633786,
+          "question_swap_gap": 0.011329829692840576,
+          "matching_correct": 3,
+          "admissions": {
+            "full_admissions": 2696,
+            "actual_not_oldest": 0,
+            "credit_not_oldest": 1521,
+            "evicted_positive": 125,
+            "evicted_negative": 120,
+            "max_evicted_age": 4160
+          }
+        },
+        {
+          "examples": 126,
+          "updates": 139,
+          "answer_nll": 1.9644655535991926,
+          "question_swap_gap": 0.009106829762458801,
+          "matching_correct": 2,
+          "admissions": {
+            "full_admissions": 4050,
+            "actual_not_oldest": 0,
+            "credit_not_oldest": 2266,
+            "evicted_positive": 178,
+            "evicted_negative": 184,
+            "max_evicted_age": 4160
+          }
+        },
+        {
+          "examples": 168,
+          "updates": 186,
+          "answer_nll": 2.1022761979497466,
+          "question_swap_gap": 0.029681771993637085,
+          "matching_correct": 3,
+          "admissions": {
+            "full_admissions": 5392,
+            "actual_not_oldest": 0,
+            "credit_not_oldest": 3013,
+            "evicted_positive": 239,
+            "evicted_negative": 243,
+            "max_evicted_age": 4160
+          }
+        }
+      ],
+      "epochs": {
+        "1": {
+          "examples": 84,
+          "supervised_answer_tokens": 943,
+          "prequential_answer_nll": 2.216932885340896
+        },
+        "2": {
+          "examples": 84,
+          "supervised_answer_tokens": 943,
+          "prequential_answer_nll": 1.9275299860905235
+        }
+      },
+      "admissions": {
+        "full_admissions": 5392,
+        "actual_not_oldest": 0,
+        "credit_not_oldest": 3013,
+        "evicted_positive": 239,
+        "evicted_negative": 243,
+        "max_evicted_age": 4160
+      },
+      "checkpoint": "E:\\cgb_gdn340_probe\\qasper_sft_native_credit_20261106\\full_last.pt",
+      "checkpoint_examples": 168,
+      "episode_storage_max_bytes": 79681166
+    },
+    "held": {
+      "examples": 168,
+      "updates": 186,
+      "real_tokens": 333268,
+      "compute_padding_tokens": 11988,
+      "supervised_answer_tokens": 1886,
+      "source_age_max_tokens": 4032,
+      "question_records_retrieved": 21,
+      "question_records_present_after_update": 372,
+      "question_record_opportunities": 372,
+      "curve": [
+        {
+          "examples": 0,
+          "updates": 0,
+          "answer_nll": 2.2891883043418253,
+          "question_swap_gap": 0.016389161348342896,
+          "matching_correct": 3,
+          "admissions": {}
+        },
+        {
+          "examples": 42,
+          "updates": 46,
+          "answer_nll": 2.1598911518441106,
+          "question_swap_gap": 0.009625539183616638,
+          "matching_correct": 2,
+          "admissions": {
+            "full_admissions": 1354,
+            "actual_not_oldest": 0,
+            "credit_not_oldest": 808,
+            "evicted_positive": 60,
+            "evicted_negative": 62,
+            "max_evicted_age": 4160
+          }
+        },
+        {
+          "examples": 84,
+          "updates": 93,
+          "answer_nll": 2.1971617462043476,
+          "question_swap_gap": 0.015090018510818481,
+          "matching_correct": 3,
+          "admissions": {
+            "full_admissions": 2696,
+            "actual_not_oldest": 0,
+            "credit_not_oldest": 1525,
+            "evicted_positive": 124,
+            "evicted_negative": 121,
+            "max_evicted_age": 4160
+          }
+        },
+        {
+          "examples": 126,
+          "updates": 139,
+          "answer_nll": 1.964497403094643,
+          "question_swap_gap": 0.006336316466331482,
+          "matching_correct": 2,
+          "admissions": {
+            "full_admissions": 4050,
+            "actual_not_oldest": 0,
+            "credit_not_oldest": 2290,
+            "evicted_positive": 179,
+            "evicted_negative": 183,
+            "max_evicted_age": 4160
+          }
+        },
+        {
+          "examples": 168,
+          "updates": 186,
+          "answer_nll": 2.1073949587972542,
+          "question_swap_gap": 0.018116265535354614,
+          "matching_correct": 3,
+          "admissions": {
+            "full_admissions": 5392,
+            "actual_not_oldest": 0,
+            "credit_not_oldest": 3073,
+            "evicted_positive": 236,
+            "evicted_negative": 244,
+            "max_evicted_age": 4160
+          }
+        }
+      ],
+      "epochs": {
+        "1": {
+          "examples": 84,
+          "supervised_answer_tokens": 943,
+          "prequential_answer_nll": 2.216605298529248
+        },
+        "2": {
+          "examples": 84,
+          "supervised_answer_tokens": 943,
+          "prequential_answer_nll": 1.9357577269681565
+        }
+      },
+      "admissions": {
+        "full_admissions": 5392,
+        "actual_not_oldest": 0,
+        "credit_not_oldest": 3073,
+        "evicted_positive": 236,
+        "evicted_negative": 244,
+        "max_evicted_age": 4160
+      },
+      "checkpoint": "E:\\cgb_gdn340_probe\\qasper_sft_native_credit_20261106\\held_last.pt",
+      "checkpoint_examples": 168,
+      "episode_storage_max_bytes": 79681166
+    }
+  },
+  "credit_gate": {
+    "first_forward_full_held_exact": true,
+    "saved_reference_exact": false,
+    "saved_reference_ce_delta": 0.0015888214111328125,
+    "first_ce": 3.227421998977661,
+    "first_reads": {
+      "1": {
+        "ages_tokens": [
+          320,
+          1088
+        ],
+        "weights": [
+          0.5695995688438416,
+          0.43040043115615845
+        ],
+        "slots": [
+          23,
+          17
+        ],
+        "query_position": 117
+      },
+      "12": {
+        "ages_tokens": [
+          3136,
+          1472
+        ],
+        "weights": [
+          0.551383912563324,
+          0.4486161172389984
+        ],
+        "slots": [
+          1,
+          14
+        ],
+        "query_position": 117
+      }
+    },
+    "full_diagnostics": {
+      "symmetric_logit_max": 0.0,
+      "old_read_cut_nll_delta": 0.021127700805664062,
+      "layer1_old_native_grad_norms": {
+        "layer1.A_log": 0.00017038173973560333,
+        "layer1.dt_bias": 0.00012914807302877307,
+        "layer1.q_proj.weight": 0.00036624950007535517,
+        "layer1.k_proj.weight": 0.0004271231300663203,
+        "layer1.v_proj.weight": 0.0007117547211237252,
+        "layer1.a_proj.weight": 0.00024372398911509663,
+        "layer1.b_proj.weight": 5.158288695383817e-05,
+        "layer1.q_conv1d.weight": 0.001222149352543056,
+        "layer1.k_conv1d.weight": 0.0016399668529629707,
+        "layer1.v_conv1d.weight": 0.0015760684618726373,
+        "layer1.g_proj.weight": 0.00036236882442608476,
+        "layer1.o_norm.weight": 0.0008428210858255625,
+        "layer1.o_proj.weight": 0.0019157916540279984
+      },
+      "layer12_old_native_grad_norms": {
+        "layer12.A_log": 9.685086115496233e-05,
+        "layer12.dt_bias": 7.805640780134127e-05,
+        "layer12.q_proj.weight": 0.0015723909018561244,
+        "layer12.k_proj.weight": 0.0013434689026325941,
+        "layer12.v_proj.weight": 0.0034839315339922905,
+        "layer12.a_proj.weight": 0.00044907748815603554,
+        "layer12.b_proj.weight": 0.00046062024193815887,
+        "layer12.q_conv1d.weight": 0.00601678341627121,
+        "layer12.k_conv1d.weight": 0.004524143412709236,
+        "layer12.v_conv1d.weight": 0.004947994835674763,
+        "layer12.g_proj.weight": 0.002208427293226123,
+        "layer12.o_norm.weight": 0.0022741586435586214,
+        "layer12.o_proj.weight": 0.004450090229511261
+      }
+    },
+    "native_parameter_difference_norms": {
+      "layer1.A_log": 2.9802322387695312e-08,
+      "layer1.dt_bias": 3.003425064207477e-08,
+      "layer1.q_proj.weight": 0.00037612515734508634,
+      "layer1.k_proj.weight": 0.0003927588404621929,
+      "layer1.v_proj.weight": 0.00042417211807332933,
+      "layer1.a_proj.weight": 2.158058669010643e-05,
+      "layer1.b_proj.weight": 5.960464477539063e-08,
+      "layer1.q_conv1d.weight": 4.2624615161912516e-06,
+      "layer1.k_conv1d.weight": 4.1023413359653205e-06,
+      "layer1.v_conv1d.weight": 2.5168410502374172e-06,
+      "layer1.g_proj.weight": 0.00041855365270748734,
+      "layer1.o_norm.weight": 0.0,
+      "layer1.o_proj.weight": 0.0003715679340530187,
+      "layer12.A_log": 5.487695275974147e-08,
+      "layer12.dt_bias": 4.592846281070706e-08,
+      "layer12.q_proj.weight": 0.001043489552102983,
+      "layer12.k_proj.weight": 0.0010259790578857064,
+      "layer12.v_proj.weight": 0.0010797898285090923,
+      "layer12.a_proj.weight": 9.660098294261843e-05,
+      "layer12.b_proj.weight": 7.057972834445536e-05,
+      "layer12.q_conv1d.weight": 7.95850337453885e-06,
+      "layer12.k_conv1d.weight": 7.627298600709764e-06,
+      "layer12.v_conv1d.weight": 7.288359029189451e-06,
+      "layer12.g_proj.weight": 0.0008835498592816293,
+      "layer12.o_norm.weight": 0.0,
+      "layer12.o_proj.weight": 0.0010302222799509764
+    },
+    "fp32_master_difference_max": 4.7497451305389404e-06,
+    "discarded_probe_optimizer_updates": 2,
+    "actual_training_first_forward_exact": true
+  },
+  "answer_nll_full_minus_held": -0.00511876084750762,
+  "swap_gap_full_minus_held": 0.01156550645828247,
+  "peak_cuda_allocated_bytes": 1495740416,
+  "reference_report": "E:\\cgb_gdn340_probe\\qasper_sft_evidence_20261106\\pair.json",
+  "reference_report_sha256": "dc304434a322ab409772c032d2cdec2a6ec3ba7df2b9077fe41ad28f93607b8f",
+  "paired_curve": [
+    {
+      "examples": 0,
+      "answer_nll_full_minus_held": 0.0,
+      "swap_gap_full_minus_held": 0.0
+    },
+    {
+      "examples": 42,
+      "answer_nll_full_minus_held": 0.0028359979615175668,
+      "swap_gap_full_minus_held": -0.00352613627910614
+    },
+    {
+      "examples": 84,
+      "answer_nll_full_minus_held": 0.00015011765903105712,
+      "swap_gap_full_minus_held": -0.0037601888179779053
+    },
+    {
+      "examples": 126,
+      "answer_nll_full_minus_held": -3.184949545032012e-05,
+      "swap_gap_full_minus_held": 0.0027705132961273193
+    },
+    {
+      "examples": 168,
+      "answer_nll_full_minus_held": -0.00511876084750762,
+      "swap_gap_full_minus_held": 0.01156550645828247
+    }
+  ],
+  "mean_trained_curve_nll_full_minus_held": -0.000541123680602329,
+  "trained_curve_points_favoring_full": 2,
+  "raw_report": "E:\\cgb_gdn340_probe\\qasper_sft_native_credit_20261106\\pair.json",
+  "raw_sha256": "5ad37af6573865889eece1bec612d08383affc0afe6363bfae383a0a4f7e4676",
+  "scope": "same-seed finite-budget restricted QASPER excerpts; no official benchmark or convergence claim"
+}

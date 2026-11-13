@@ -1,0 +1,63 @@
+{
+  "scope": "Frozen current-source RULER readiness and read intervention; not training or delayed-credit efficacy",
+  "source_sha256": "514a45cbe1753c8f056ff75cae2b84121f07c2b5b2a70a6e9e24b9aa9eaca1b5",
+  "source_updates": 524,
+  "source_seen": 450757,
+  "optimizer_updates": 0,
+  "native_S_zeroed": false,
+  "precision": "same row_int8_frozen/mapped_cpu as stopped SQuAD",
+  "full_read_summary": {
+    "0": {
+      "cases": 8,
+      "exact": 0,
+      "standalone": 0,
+      "contains": 0,
+      "first_number_first_digit": 0,
+      "mean_answer_nll": 2.0339079797267914
+    }
+  },
+  "native_only_summary": {
+    "0": {
+      "cases": 8,
+      "exact": 6,
+      "standalone": 6,
+      "contains": 6,
+      "first_number_first_digit": 8,
+      "mean_answer_nll": 0.37989432737231255
+    },
+    "512": {
+      "cases": 4,
+      "exact": 0,
+      "standalone": 0,
+      "contains": 0,
+      "first_number_first_digit": 4,
+      "mean_answer_nll": 0.7714461237192154
+    },
+    "2048": {
+      "cases": 4,
+      "exact": 0,
+      "standalone": 0,
+      "contains": 0,
+      "first_number_first_digit": 1,
+      "mean_answer_nll": 1.7338250875473022
+    },
+    "8192": {
+      "cases": 4,
+      "exact": 0,
+      "standalone": 0,
+      "contains": 0,
+      "first_number_first_digit": 0,
+      "mean_answer_nll": 2.7051231265068054
+    }
+  },
+  "matched_first4_short_exact": 2,
+  "matched_first4_count": 4,
+  "full_report": "results/cgb_ruler_current_20261109/readiness_v2/report.json",
+  "full_report_sha256": "4d6b4397d5dd7eba244f8bd3eae28b5054806e998fbd58e2092394e9548b66b1",
+  "native_report": "results/cgb_ruler_current_20261109/native_only/report.json",
+  "native_report_sha256": "df28a5505c33899fcdf317f1bad07878e37c199f833566d4086d85afffaa9575",
+  "sources_unchanged": true,
+  "strict_long_credit_benefit_proven": false,
+  "body_coverage_added": 0,
+  "interpretation": "Current extra-read interface harms short extraction; insufficient adaptation remains a hypothesis. Native baseline shows an interference decline; selected smallest tested extra gap512. Shared adaptation is a separate subsequent experiment."
+}

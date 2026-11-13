@@ -222,7 +222,45 @@ class RetrievedCreditTable(ByteNgramFastTable):
                                 prior_weight=self.prior_weight))
 
     @classmethod
-    def from_state_dict(cls, state):
+    def from_state_dict(cls, state, *, take_ownership=False, storage_directory=None):
+        if storage_directory is not None and not take_ownership:
+            raise ValueError('disk-backed restore requires a private checkpoint')
+        if take_ownership:
+            # Only for a newly loaded, private checkpoint whose caller will
+            # discard the state dictionary. Reuse its CPU storage instead of
+            # allocating and copying another complete 224 MiB row array.
+            # The default remains an independent copy for reusable snapshots.
+            config = state['config']
+            if not (0 < config['gain_floor'] < 1 and config['err_floor'] > 0
+                    and config['prior_weight'] > 0):
+                raise ValueError('invalid fast-table configuration')
+            n = len(config['orders']) * config['heads'] * (1 << config['slots_log2'])
+            shapes = dict(rows=((n, 256), np.float32), count=((n,), np.float64),
+                          tag=((n,), np.uint16), err=((n,), np.float32),
+                          epoch=((n,), np.uint64), last_write=((n,), np.uint64))
+            obj = cls.__new__(cls)
+            for name, value in config.items():
+                setattr(obj, name, value)
+            obj.storage = storage_directory
+            if storage_directory is not None:
+                storage_directory.mkdir(parents=True, exist_ok=False)
+            for name, (shape, dtype) in shapes.items():
+                value = state['arrays'][name]
+                if hasattr(value, 'detach'):
+                    value = value.detach().cpu().numpy()
+                value = np.asarray(value)
+                if value.shape != shape or value.dtype != dtype or not value.flags.c_contiguous or not value.flags.writeable:
+                    raise ValueError(f'incompatible owned fast-table array: {name}')
+                if storage_directory is not None:
+                    mapped = np.lib.format.open_memmap(storage_directory / f'{name}.npy',
+                        mode='w+', dtype=dtype, shape=shape)
+                    mapped[:] = value
+                    mapped.flush()
+                    value = mapped
+                setattr(obj, name, value)
+            obj.history = np.uint64(state['history'])
+            obj.events = state['events']
+            return obj
         obj=cls(**state['config'])
         for k,v in state['arrays'].items():
             if getattr(obj,k).shape != v.shape: raise ValueError(k)

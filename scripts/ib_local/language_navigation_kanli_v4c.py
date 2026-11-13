@@ -69,6 +69,8 @@ class WitnessEngine(ImaginingEngine):
     def settlement_value(self, witness_change, continuation_progress, joint_progress=None):
         """Select the actual label before memory, TD and interoception consume it."""
         kind = getattr(self, 'settlement_kind', 'witness')
+        if kind == 'world_stream':
+            raise ValueError('world_stream settlement requires its actual source ledger')
         if kind not in SETTLEMENT_CODES:
             raise ValueError(f'unknown settlement: {kind}')
         value = witness_change if kind == 'witness' else continuation_progress
@@ -119,6 +121,9 @@ class WitnessEngine(ImaginingEngine):
 
     # ---- one cycle -----------------------------------------------------
     def step(self, directions, age_ablate=False):
+        if getattr(self, 'joint_world_cycle_schema', None) == 1:
+            from scripts.ib_local.world_learning_cycle import world_cycle_step
+            return world_cycle_step(self, directions, age_ablate)
         memory = self.model.memory
         w_pre = self.witness_nll()
         start_state = self.recurrent.clone()

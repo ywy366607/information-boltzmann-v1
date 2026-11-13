@@ -1,0 +1,460 @@
+{
+  "kind": "paired_one_update_native_old_credit",
+  "status": "passed",
+  "seed": 11,
+  "window": 128,
+  "warm_updates": 4,
+  "pairs": 8,
+  "future_tokens_per_pair": 512,
+  "capacity": 32,
+  "layers": [
+    1,
+    12
+  ],
+  "unit": "nats/token",
+  "curriculum_sha256": "962b54dff7fb9c8702630a7d98eb4835dd5e6c64298010fcefa2e9c5fdb57714",
+  "dataset_revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+  "intervention": "same recall forward; detach old response before live encoder only in held",
+  "common_trajectory": "held branch retained after each pair",
+  "primary": "full minus held next-continuation NLL; negative favors old native credit",
+  "scope": "overlapping short probes, not independent trials or convergence evidence",
+  "source_sha256": "50a42de276e147573964b18dde54ba41fbe6edaaccc1d71fadaa2ee8fd582ba5",
+  "mean_future_full_minus_held": -1.4916062355041504e-05,
+  "mean_validation_full_minus_held": 1.290440559387207e-05,
+  "future_improved_pairs": 4,
+  "validation_improved_pairs": 3,
+  "max_source_age_tokens": 1344,
+  "peak_cuda_allocated_bytes": 1537046016,
+  "peak_cuda_reserved_bytes": 1690304512,
+  "executed_optimizer_updates": 20,
+  "retained_common_updates": 12,
+  "note": "full branch optimizer steps discarded after paired observations; no live navigation state changed",
+  "raw_report": "E:\\cgb_gdn340_probe\\credit_effect_short_20261106\\result.json",
+  "raw_sha256": "7d921127bc09967e8bc38e0de5c1273de166c02246f69041948d4a2efabf3ccd",
+  "mean_future_full": 2.937359645962715,
+  "mean_future_held": 2.93737456202507,
+  "mean_validation_full": 3.4127755612134933,
+  "mean_validation_held": 3.4127626568078995,
+  "all_current_nll_differences_zero": true,
+  "lexical_byte_table_present": false,
+  "interpretation": "Native old-computation updates differ under identical recall; immediate predictive effects are tiny and mixed, with no stable benefit demonstrated in these short paired probes.",
+  "records": [
+    {
+      "pair": 1,
+      "common_updates_before": 4,
+      "current_nll_full_minus_held": 0.0,
+      "reads": {
+        "1": {
+          "ages_tokens": [
+            64,
+            192
+          ],
+          "weights": [
+            0.5697535276412964,
+            0.4302464723587036
+          ]
+        },
+        "12": {
+          "ages_tokens": [
+            448,
+            64
+          ],
+          "weights": [
+            0.6145449876785278,
+            0.38545504212379456
+          ]
+        }
+      },
+      "future_full": 2.956415057182312,
+      "future_held": 2.9563658833503723,
+      "future_full_minus_held": 4.9173831939697266e-05,
+      "validation_full": 3.4008575081825256,
+      "validation_held": 3.4009146094322205,
+      "validation_full_minus_held": -5.710124969482422e-05,
+      "diagnostics": {
+        "symmetric_logit_max": 0.0,
+        "old_read_cut_nll_delta": 0.0010089874267578125,
+        "layer1_old_native_grad_norms": {
+          "layer1.A_log": 1.6212163245654665e-05,
+          "layer1.dt_bias": 1.1835270015581045e-05,
+          "layer1.q_proj.weight": 3.6325793189462274e-05,
+          "layer1.k_proj.weight": 3.732083860086277e-05,
+          "layer1.v_proj.weight": 9.79543910943903e-05,
+          "layer1.a_proj.weight": 3.327840022393502e-05,
+          "layer1.b_proj.weight": 4.8580527618469205e-06,
+          "layer1.q_conv1d.weight": 6.558336463058367e-05,
+          "layer1.k_conv1d.weight": 0.00012210456770844758,
+          "layer1.v_conv1d.weight": 0.0002605702029541135,
+          "layer1.g_proj.weight": 0.00012911665544379503,
+          "layer1.o_norm.weight": 0.00015580265608150512,
+          "layer1.o_proj.weight": 0.00023329535906668752
+        },
+        "layer12_old_native_grad_norms": {
+          "layer12.A_log": 7.437671683874214e-06,
+          "layer12.dt_bias": 6.2035833252593875e-06,
+          "layer12.q_proj.weight": 0.00015586022345814854,
+          "layer12.k_proj.weight": 0.0001255685929208994,
+          "layer12.v_proj.weight": 0.00022576868650503457,
+          "layer12.a_proj.weight": 3.351011037011631e-05,
+          "layer12.b_proj.weight": 2.9032540624029934e-05,
+          "layer12.q_conv1d.weight": 0.00035062586539424956,
+          "layer12.k_conv1d.weight": 0.000520720612257719,
+          "layer12.v_conv1d.weight": 0.0003233694296795875,
+          "layer12.g_proj.weight": 0.0001942736707860604,
+          "layer12.o_norm.weight": 0.00013303416199050844,
+          "layer12.o_proj.weight": 0.0003067319339606911
+        }
+      },
+      "experience_cpu_bytes": 11738190,
+      "seconds": 13.346447699994314,
+      "native_difference_norms": {
+        "layer1.q_proj.weight": 0.0005582835874520242,
+        "layer1.k_proj.weight": 0.0005429501179605722,
+        "layer1.v_proj.weight": 0.0007546733249910176,
+        "layer1.a_proj.weight": 5.0121093408961315e-06,
+        "layer1.b_proj.weight": 0.0,
+        "layer12.q_proj.weight": 0.0009278634679503739,
+        "layer12.k_proj.weight": 0.0009013800299726427,
+        "layer12.v_proj.weight": 0.0009261004161089659,
+        "layer12.a_proj.weight": 0.0001239632401848212,
+        "layer12.b_proj.weight": 0.00013026407395955175
+      }
+    },
+    {
+      "pair": 2,
+      "common_updates_before": 5,
+      "current_nll_full_minus_held": 0.0,
+      "reads": {
+        "1": {
+          "ages_tokens": [
+            320,
+            576
+          ],
+          "weights": [
+            0.5330634117126465,
+            0.46693655848503113
+          ]
+        },
+        "12": {
+          "ages_tokens": [
+            192,
+            64
+          ],
+          "weights": [
+            0.5382062792778015,
+            0.4617937207221985
+          ]
+        }
+      },
+      "future_full": 2.8574416041374207,
+      "future_held": 2.8575006127357483,
+      "future_full_minus_held": -5.900859832763672e-05,
+      "validation_full": 3.422659397125244,
+      "validation_held": 3.4225701689720154,
+      "validation_full_minus_held": 8.922815322875977e-05,
+      "diagnostics": {},
+      "experience_cpu_bytes": 14150734,
+      "seconds": 8.57070909999311,
+      "native_difference_norms": {
+        "layer1.q_proj.weight": 0.0009803088614717126,
+        "layer1.k_proj.weight": 0.0008521947893314064,
+        "layer1.v_proj.weight": 0.0009406291064806283,
+        "layer1.a_proj.weight": 0.00010104521788889542,
+        "layer1.b_proj.weight": 6.499030132545158e-05,
+        "layer12.q_proj.weight": 0.0020129140466451645,
+        "layer12.k_proj.weight": 0.0019260048866271973,
+        "layer12.v_proj.weight": 0.0014891013270244002,
+        "layer12.a_proj.weight": 8.764049562159926e-05,
+        "layer12.b_proj.weight": 0.00017787561228033155
+      }
+    },
+    {
+      "pair": 3,
+      "common_updates_before": 6,
+      "current_nll_full_minus_held": 0.0,
+      "reads": {
+        "1": {
+          "ages_tokens": [
+            320,
+            704
+          ],
+          "weights": [
+            0.5723168849945068,
+            0.42768311500549316
+          ]
+        },
+        "12": {
+          "ages_tokens": [
+            64,
+            704
+          ],
+          "weights": [
+            0.559658408164978,
+            0.44034162163734436
+          ]
+        }
+      },
+      "future_full": 2.769626498222351,
+      "future_held": 2.7695497274398804,
+      "future_full_minus_held": 7.677078247070312e-05,
+      "validation_full": 3.4110031127929688,
+      "validation_held": 3.411114811897278,
+      "validation_full_minus_held": -0.00011169910430908203,
+      "diagnostics": {},
+      "experience_cpu_bytes": 16563278,
+      "seconds": 8.743838299997151,
+      "native_difference_norms": {
+        "layer1.q_proj.weight": 0.0009692606399767101,
+        "layer1.k_proj.weight": 0.0009023614111356437,
+        "layer1.v_proj.weight": 0.0009542399202473462,
+        "layer1.a_proj.weight": 0.000195735803572461,
+        "layer1.b_proj.weight": 0.00012207178224343807,
+        "layer12.q_proj.weight": 0.0007256946410052478,
+        "layer12.k_proj.weight": 0.0006903695757500827,
+        "layer12.v_proj.weight": 0.0007426782976835966,
+        "layer12.a_proj.weight": 7.634049325133674e-06,
+        "layer12.b_proj.weight": 8.534086191502865e-06
+      }
+    },
+    {
+      "pair": 4,
+      "common_updates_before": 7,
+      "current_nll_full_minus_held": 0.0,
+      "reads": {
+        "1": {
+          "ages_tokens": [
+            832,
+            448
+          ],
+          "weights": [
+            0.5565162897109985,
+            0.44348374009132385
+          ]
+        },
+        "12": {
+          "ages_tokens": [
+            832,
+            320
+          ],
+          "weights": [
+            0.6350609660148621,
+            0.3649390637874603
+          ]
+        }
+      },
+      "future_full": 2.834814727306366,
+      "future_held": 2.8349708318710327,
+      "future_full_minus_held": -0.00015610456466674805,
+      "validation_full": 3.4508345127105713,
+      "validation_held": 3.450973927974701,
+      "validation_full_minus_held": -0.00013941526412963867,
+      "diagnostics": {},
+      "experience_cpu_bytes": 18975822,
+      "seconds": 8.573210000002291,
+      "native_difference_norms": {
+        "layer1.q_proj.weight": 0.0004594841448124498,
+        "layer1.k_proj.weight": 0.0003754845238290727,
+        "layer1.v_proj.weight": 0.0005616673151962459,
+        "layer1.a_proj.weight": 1.878520561149344e-05,
+        "layer1.b_proj.weight": 9.5367431640625e-07,
+        "layer12.q_proj.weight": 0.0024513390380889177,
+        "layer12.k_proj.weight": 0.0023489445447921753,
+        "layer12.v_proj.weight": 0.0020180833525955677,
+        "layer12.a_proj.weight": 0.00010958300845231861,
+        "layer12.b_proj.weight": 0.00017896915960591286
+      }
+    },
+    {
+      "pair": 5,
+      "common_updates_before": 8,
+      "current_nll_full_minus_held": 0.0,
+      "reads": {
+        "1": {
+          "ages_tokens": [
+            960,
+            576
+          ],
+          "weights": [
+            0.6193657517433167,
+            0.38063427805900574
+          ]
+        },
+        "12": {
+          "ages_tokens": [
+            64,
+            960
+          ],
+          "weights": [
+            0.5215191841125488,
+            0.4784807860851288
+          ]
+        }
+      },
+      "future_full": 2.847841262817383,
+      "future_held": 2.847997486591339,
+      "future_full_minus_held": -0.00015622377395629883,
+      "validation_full": 3.4319050312042236,
+      "validation_held": 3.4317914843559265,
+      "validation_full_minus_held": 0.00011354684829711914,
+      "diagnostics": {},
+      "experience_cpu_bytes": 21388366,
+      "seconds": 8.572269199998118,
+      "native_difference_norms": {
+        "layer1.q_proj.weight": 0.0007446098607033491,
+        "layer1.k_proj.weight": 0.0006466681370511651,
+        "layer1.v_proj.weight": 0.0009136457229033113,
+        "layer1.a_proj.weight": 0.00010105585533892736,
+        "layer1.b_proj.weight": 3.439188003540039e-05,
+        "layer12.q_proj.weight": 0.0015207106480374932,
+        "layer12.k_proj.weight": 0.0015119099989533424,
+        "layer12.v_proj.weight": 0.0014502695994451642,
+        "layer12.a_proj.weight": 1.8299013390787877e-05,
+        "layer12.b_proj.weight": 0.00013698244583792984
+      }
+    },
+    {
+      "pair": 6,
+      "common_updates_before": 9,
+      "current_nll_full_minus_held": 0.0,
+      "reads": {
+        "1": {
+          "ages_tokens": [
+            1088,
+            832
+          ],
+          "weights": [
+            0.6041905879974365,
+            0.3958093822002411
+          ]
+        },
+        "12": {
+          "ages_tokens": [
+            1088,
+            64
+          ],
+          "weights": [
+            0.6154507994651794,
+            0.38454923033714294
+          ]
+        }
+      },
+      "future_full": 3.034014344215393,
+      "future_held": 3.033993124961853,
+      "future_full_minus_held": 2.1219253540039062e-05,
+      "validation_full": 3.4324691891670227,
+      "validation_held": 3.43244868516922,
+      "validation_full_minus_held": 2.0503997802734375e-05,
+      "diagnostics": {},
+      "experience_cpu_bytes": 23800910,
+      "seconds": 8.56660199999169,
+      "native_difference_norms": {
+        "layer1.q_proj.weight": 0.0007473527221009135,
+        "layer1.k_proj.weight": 0.0006970471004024148,
+        "layer1.v_proj.weight": 0.0008298825123347342,
+        "layer1.a_proj.weight": 9.802635759115219e-05,
+        "layer1.b_proj.weight": 4.5778888306813315e-05,
+        "layer12.q_proj.weight": 0.0017764560179784894,
+        "layer12.k_proj.weight": 0.0017398459604009986,
+        "layer12.v_proj.weight": 0.0015231134602800012,
+        "layer12.a_proj.weight": 3.938622467103414e-05,
+        "layer12.b_proj.weight": 0.0001426028466084972
+      }
+    },
+    {
+      "pair": 7,
+      "common_updates_before": 10,
+      "current_nll_full_minus_held": 0.0,
+      "reads": {
+        "1": {
+          "ages_tokens": [
+            1216,
+            832
+          ],
+          "weights": [
+            0.573187530040741,
+            0.42681246995925903
+          ]
+        },
+        "12": {
+          "ages_tokens": [
+            1216,
+            192
+          ],
+          "weights": [
+            0.6153944730758667,
+            0.3846055269241333
+          ]
+        }
+      },
+      "future_full": 3.1294400691986084,
+      "future_held": 3.129278004169464,
+      "future_full_minus_held": 0.0001620650291442871,
+      "validation_full": 3.352047026157379,
+      "validation_held": 3.3519809246063232,
+      "validation_full_minus_held": 6.61015510559082e-05,
+      "diagnostics": {},
+      "experience_cpu_bytes": 26213454,
+      "seconds": 8.554888500002562,
+      "native_difference_norms": {
+        "layer1.q_proj.weight": 0.0009710001177154481,
+        "layer1.k_proj.weight": 0.0009029445936903358,
+        "layer1.v_proj.weight": 0.001046565012075007,
+        "layer1.a_proj.weight": 3.8184207369340584e-05,
+        "layer1.b_proj.weight": 1.708648051135242e-05,
+        "layer12.q_proj.weight": 0.0012874065432697535,
+        "layer12.k_proj.weight": 0.001163724809885025,
+        "layer12.v_proj.weight": 0.0012539540184661746,
+        "layer12.a_proj.weight": 0.0001244649029104039,
+        "layer12.b_proj.weight": 4.075053220731206e-05
+      }
+    },
+    {
+      "pair": 8,
+      "common_updates_before": 11,
+      "current_nll_full_minus_held": 0.0,
+      "reads": {
+        "1": {
+          "ages_tokens": [
+            64,
+            320
+          ],
+          "weights": [
+            0.544651448726654,
+            0.45534855127334595
+          ]
+        },
+        "12": {
+          "ages_tokens": [
+            1344,
+            448
+          ],
+          "weights": [
+            0.5591169595718384,
+            0.44088301062583923
+          ]
+        }
+      },
+      "future_full": 3.069283604621887,
+      "future_held": 3.0693408250808716,
+      "future_full_minus_held": -5.7220458984375e-05,
+      "validation_full": 3.4004287123680115,
+      "validation_held": 3.4003066420555115,
+      "validation_full_minus_held": 0.0001220703125,
+      "diagnostics": {},
+      "experience_cpu_bytes": 28625998,
+      "seconds": 8.55422499999986,
+      "native_difference_norms": {
+        "layer1.q_proj.weight": 0.0005111414939165115,
+        "layer1.k_proj.weight": 0.0005922439158894122,
+        "layer1.v_proj.weight": 0.0008379651117138565,
+        "layer1.a_proj.weight": 0.00013780606968794018,
+        "layer1.b_proj.weight": 6.16785982856527e-05,
+        "layer12.q_proj.weight": 0.0013431094121187925,
+        "layer12.k_proj.weight": 0.0012896793195977807,
+        "layer12.v_proj.weight": 0.0013520453358069062,
+        "layer12.a_proj.weight": 3.2051175367087126e-05,
+        "layer12.b_proj.weight": 9.719721128931269e-05
+      }
+    }
+  ]
+}

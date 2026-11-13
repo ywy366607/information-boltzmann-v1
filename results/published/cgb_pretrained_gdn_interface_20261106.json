@@ -1,0 +1,208 @@
+{
+  "kind": "pretrained_loading_and_ports",
+  "optimizer_updates": 0,
+  "model": "E:\\cgb_gdn340_probe\\model",
+  "status": "interface_audit_complete",
+  "versions": {
+    "torch": "2.9.1+cu126",
+    "transformers": "4.57.3",
+    "tokenizers": "0.22.1",
+    "fla": "0.2.2"
+  },
+  "gpu": "NVIDIA GeForce GTX 1650",
+  "config": {
+    "_name_or_path": "/mnt/bn/ridger1/flame/configs/GatedDeltaNet/gated_deltanet_340M.json",
+    "architectures": [
+      "GatedDeltaNetForCausalLM"
+    ],
+    "attn": null,
+    "attn_mode": "chunk",
+    "bos_token_id": 1,
+    "conv_size": 4,
+    "eos_token_id": 2,
+    "expand_k": 1,
+    "expand_v": 1,
+    "fuse_cross_entropy": true,
+    "fuse_norm": true,
+    "fuse_swiglu": true,
+    "head_dim": 256,
+    "hidden_act": "swish",
+    "hidden_ratio": 4,
+    "hidden_size": 1024,
+    "initializer_range": 0.02,
+    "intermediate_size": null,
+    "max_position_embeddings": 2048,
+    "model_type": "gated_deltanet",
+    "norm_eps": 1e-06,
+    "norm_first": false,
+    "num_heads": 4,
+    "num_hidden_layers": 24,
+    "qk_activation": "silu",
+    "qk_norm": "l2",
+    "tie_word_embeddings": false,
+    "torch_dtype": "float32",
+    "transformers_version": "4.49.0",
+    "use_beta": true,
+    "use_cache": true,
+    "use_gate": true,
+    "use_output_norm": true,
+    "use_short_conv": true,
+    "vocab_size": 32000
+  },
+  "loading": {
+    "seconds": 2.4964818000007654,
+    "parameter_count": 399531200,
+    "footprint_bytes": 799062784,
+    "cuda_allocated_bytes": 822679552,
+    "strict": {
+      "missing_keys": [],
+      "unexpected_keys": [],
+      "mismatched_keys": [],
+      "error_msgs": [],
+      "ignored_legacy_zero_tensors": [
+        "model.layers.0.attn.D",
+        "model.layers.1.attn.D",
+        "model.layers.10.attn.D",
+        "model.layers.11.attn.D",
+        "model.layers.12.attn.D",
+        "model.layers.13.attn.D",
+        "model.layers.14.attn.D",
+        "model.layers.15.attn.D",
+        "model.layers.16.attn.D",
+        "model.layers.17.attn.D",
+        "model.layers.18.attn.D",
+        "model.layers.19.attn.D",
+        "model.layers.2.attn.D",
+        "model.layers.20.attn.D",
+        "model.layers.21.attn.D",
+        "model.layers.22.attn.D",
+        "model.layers.23.attn.D",
+        "model.layers.3.attn.D",
+        "model.layers.4.attn.D",
+        "model.layers.5.attn.D",
+        "model.layers.6.attn.D",
+        "model.layers.7.attn.D",
+        "model.layers.8.attn.D",
+        "model.layers.9.attn.D"
+      ]
+    }
+  },
+  "reference": {
+    "dataset": "data\\ib_owt_10000",
+    "split": "validation",
+    "source_bytes": 16376,
+    "source_sha256": "8c1333ab5d73c5f8ed64047cc85cc7bbac852d197728e52808acaab11a570108",
+    "tokens": 4028,
+    "score_unit": "nats/token",
+    "capability_evaluation": false
+  },
+  "convolution_compatibility": {
+    "patched_modules": 72,
+    "fresh_prefix_logit_max": 0.0234375,
+    "fresh_prefix_logit_rms": 0.00317947193980217
+  },
+  "split_continuation": {
+    "logit_max": 0.0234375,
+    "logit_rms": 0.003959042020142078,
+    "equal_argmax_fraction": 1.0
+  },
+  "state_sizes": [
+    {
+      "tokens_seen": 32,
+      "bytes": 25755648
+    },
+    {
+      "tokens_seen": 128,
+      "bytes": 25755648
+    },
+    {
+      "tokens_seen": 512,
+      "bytes": 25755648
+    }
+  ],
+  "stream_512_seconds": 1.6338726000103634,
+  "state_restore": {
+    "next_logit_max": 0.0
+  },
+  "generation": [
+    {
+      "prompt": "The most important thing I learned today is",
+      "continuation": "that the most important thing you can do to help your child is to be a good role model.\nI know that",
+      "new_tokens": 24,
+      "seconds": 1.4921415999997407,
+      "tokens_per_second": 16.084264388851683,
+      "interpretation": "A base-model continuation, not an instruction-following score"
+    }
+  ],
+  "recall_inlet": {
+    "parameters": 65536,
+    "zero_inlet_logit_max": 0.0,
+    "gradient_norm": 3.5715842247009277,
+    "gradient_finite": true,
+    "base_received_gradients": false,
+    "seconds": 24.30914370001119,
+    "warm_forward_backward_seconds": [
+      0.7554561999859288,
+      0.7550476999895182
+    ]
+  },
+  "peak_allocated_bytes": 1446520320,
+  "peak_reserved_bytes": 1751121920,
+  "source_manifest": {
+    "repository": "m-a-p/340M-20B-GatedDeltaNet-pure-baseline",
+    "revision": "14661a98768e1f5d5493ff7b18f2d6809717a4c8",
+    "weights": {
+      "rfilename": "model.safetensors",
+      "blobId": "433850704832d792ba6e9c225ceca40a7bb27f76",
+      "size": 1598174184,
+      "lfs": {
+        "sha256": "57845cdeb5f344785e170dc0aa41ce81f4e956113bb1ec048eac7c1f65e41551",
+        "size": 1598174184,
+        "pointerSize": 135
+      }
+    },
+    "safetensors": {
+      "parameters": {
+        "F32": 399531296
+      },
+      "total": 399531296
+    }
+  },
+  "cold_compile_probe": {
+    "recall_inlet": {
+      "parameters": 65536,
+      "zero_inlet_logit_max": 0.0,
+      "gradient_norm": 3.602459669113159,
+      "gradient_finite": true,
+      "base_received_gradients": false,
+      "seconds": 224.26514759998827
+    },
+    "peak_allocated_bytes": 1446520320,
+    "peak_reserved_bytes": 1751121920
+  },
+  "executed_repository_sha256": {
+    "scripts/ib_local/pretrained_gdn.py": "5f804ee5c41fc937b02e6bd4de5b30a1ab54ecb30fcd667814670a10532e23b9",
+    "scripts/ib_local/probe_pretrained_gdn.py": "30ee48222c4dbf9a388ac0b3220d9cd1181390cc31cc4eb320680a7cf0d9cec7",
+    "tests/test_pretrained_gdn.py": "5d3838aab17210d60724a09812495d03789cb672b4908469073bea3b650e950c"
+  },
+  "vendor_source_sha256": {
+    "fla/layers/gated_deltanet.py": "ee452dcc40d04f622609adb8adff1ca713333d169a5250c0cf0fd9a0ecea9cc8",
+    "fla/models/gated_deltanet/modeling_gated_deltanet.py": "3075b7109a55d7e17240c46f4253284423ac3cf52d5555d240dda756ff195f1e",
+    "fla/ops/gated_delta_rule/chunk.py": "4a7133c05ae0f308f7dcc67ebfc73dcae4c833a01bfde7dbcbc52219149f02a7",
+    "fla/ops/gated_delta_rule/fused_recurrent.py": "1e85210bf23fd5f53b7799f8e9ac48b0ad69cb5c5d01b83e07f8a36499b9933b",
+    "fla/modules/convolution.py": "d0b107a222cde18acc15ba3f84045da5c4c661b0d700c3c27ee0553e21eaec28"
+  },
+  "interface_tests": {
+    "command": "D:/conda_envs/vox/python.exe -m pytest tests/test_pretrained_gdn.py -q",
+    "passed": 8
+  },
+  "scope": {
+    "training_updates": 0,
+    "original_navigation_individual_replaced": false,
+    "old_feature_memories_reinterpreted": false,
+    "quantization": "none",
+    "complete_navigation_bridge": false,
+    "new_theorem_count": 0,
+    "full_backbone_training_memory_measured": false
+  }
+}

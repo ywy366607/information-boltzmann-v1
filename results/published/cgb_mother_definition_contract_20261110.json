@@ -1,0 +1,279 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-10",
+  "scope": "Selected definition-to-body frontier, not exhaustive review or satisfaction certificate",
+  "runtime": "DirectReadGainEngine from1792; real2304; blocked2257 logged, payload not loaded in this audit",
+  "inherited_basis": "results/published/cgb_generator_frontier_support_20261103.json",
+  "new_formal_body_coverage": 0,
+  "rows": [
+    {
+      "id": "D01",
+      "requirement": "有限资源与连续性",
+      "status": "structural_partial",
+      "references": [
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+          "line": 2375,
+          "declaration": "renewable_language_carrier_trajectory",
+          "sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+          "line": 2675,
+          "declaration": "renewable_open_world_trajectory",
+          "sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c"
+        }
+      ]
+    },
+    {
+      "id": "D02",
+      "requirement": "记忆保留后续需要的区别",
+      "status": "premises_open",
+      "references": [
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+          "line": 250,
+          "declaration": "history_readout_exists_iff",
+          "sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+          "line": 280,
+          "declaration": "external_causal_readout_exists_iff",
+          "sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+          "line": 304,
+          "declaration": "external_trace_requires_retrieved_distinction",
+          "sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883"
+        }
+      ]
+    },
+    {
+      "id": "D03",
+      "requirement": "有限压缩状态可递推",
+      "status": "structural_partial",
+      "references": [
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+          "line": 258,
+          "declaration": "history_transition_exists_iff",
+          "sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+          "line": 2345,
+          "declaration": "renewable_language_carrier_correct",
+          "sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c"
+        }
+      ]
+    },
+    {
+      "id": "D04",
+      "requirement": "过去参与与后来结果共同学习",
+      "status": "structural_partial",
+      "references": [
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+          "line": 107,
+          "declaration": "delayed_credit_requires_history_carrier",
+          "sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+          "line": 119,
+          "declaration": "delayed_action_credit_requires_state_separation",
+          "sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationActiveNavigation.lean",
+          "line": 137,
+          "declaration": "reactivation_exact_held",
+          "sha256": "562bf1892c02ede9662755167115a65e66ca738752a6de176fa579f30aa79f3e"
+        }
+      ]
+    },
+    {
+      "id": "D05",
+      "requirement": "行动条件世界模型",
+      "status": "premises_open",
+      "references": [
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean",
+          "line": 68,
+          "declaration": "action_condition_required",
+          "sha256": "aa7b173e798f344a828bbc06f55a61edf974f4b261e3f34df2dd5beb225cd14e"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+          "line": 1318,
+          "declaration": "action_distinction_preserved",
+          "sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/LanguageLifeKernel.lean",
+          "line": 317,
+          "declaration": "observational_record_does_not_fix_intervention",
+          "sha256": "21cbec158da49f9db4d48417d4ddb7d5f2c5ff4d215e3c90afbea92776a66883"
+        }
+      ]
+    },
+    {
+      "id": "D06",
+      "requirement": "持续开放与主动性",
+      "status": "world_contract_open",
+      "references": [
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean",
+          "line": 52,
+          "declaration": "viable_not_eventually_passive",
+          "sha256": "aa7b173e798f344a828bbc06f55a61edf974f4b261e3f34df2dd5beb225cd14e"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationActiveInference.lean",
+          "line": 92,
+          "declaration": "active_closure",
+          "sha256": "aa7b173e798f344a828bbc06f55a61edf974f4b261e3f34df2dd5beb225cd14e"
+        }
+      ]
+    },
+    {
+      "id": "D07",
+      "requirement": "完整后果结算与信用",
+      "status": "structural_partial",
+      "references": [
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationClosedLoopCredit.lean",
+          "line": 82,
+          "declaration": "objective_deriv_advantage",
+          "sha256": "78dd53b5564284e29ff132beed024ca524467d4580df31794a8d2effa6722cb7"
+        }
+      ]
+    },
+    {
+      "id": "D08",
+      "requirement": "持续更新与旧关系修正",
+      "status": "premises_open",
+      "references": [
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+          "line": 1813,
+          "declaration": "language_self_production_memory_eventually_stops",
+          "sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+          "line": 2521,
+          "declaration": "renewable_language_life_gate",
+          "sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c"
+        }
+      ]
+    },
+    {
+      "id": "D09",
+      "requirement": "局部调节与实际参与",
+      "status": "conditional_construction_in_use",
+      "references": [
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean",
+          "line": 58,
+          "declaration": "shrink_optimum",
+          "sha256": "eb10bebc737a9198af8ceb1962cdd4b033ec7268fc581167488500274bd0b735"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean",
+          "line": 72,
+          "declaration": "no_shared_shrink_for_two_snr",
+          "sha256": "eb10bebc737a9198af8ceb1962cdd4b033ec7268fc581167488500274bd0b735"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationGradientFilter.lean",
+          "line": 163,
+          "declaration": "occurrence_clock_beats_time_clock",
+          "sha256": "eb10bebc737a9198af8ceb1962cdd4b033ec7268fc581167488500274bd0b735"
+        }
+      ]
+    },
+    {
+      "id": "D10",
+      "requirement": "操作闭合与自我维护",
+      "status": "definition_bridge_open",
+      "references": [
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/OperationalLife.lean",
+          "line": 51,
+          "declaration": "SelfMaintains",
+          "sha256": "216bcc5a22b70ecffd449a9ab55fdb916b51f3138ffda971e3966b882daa9155"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+          "line": 2976,
+          "declaration": "joint_viability_policy_generation",
+          "sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+          "line": 3039,
+          "declaration": "stochastic_joint_viability_policy_generation",
+          "sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c"
+        }
+      ]
+    },
+    {
+      "id": "D11",
+      "requirement": "学得的自我模型",
+      "status": "learned_realization_open",
+      "references": [
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+          "line": 1311,
+          "declaration": "action_consequence_model_exists",
+          "sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+          "line": 2145,
+          "declaration": "language_infinite_stream_life_complete",
+          "sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c"
+        }
+      ]
+    },
+    {
+      "id": "D12",
+      "requirement": "内在目的与自身可存活区间",
+      "status": "definition_bridge_open",
+      "references": [
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+          "line": 1153,
+          "declaration": "Contract",
+          "sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c"
+        },
+        {
+          "path": "lean/CGBAxioms/CGBAxioms/GenerationSelfProduction.lean",
+          "line": 2951,
+          "declaration": "indistinguishable_joint_worlds_cannot_both_stay_viable",
+          "sha256": "e359fffbc887a52cc7065b6688bee856badbb4e808418fe8261f2c4cf3e63d0c"
+        }
+      ]
+    }
+  ],
+  "candidate_generators": [
+    "G1 context-dependent finite recurrence",
+    "G2 finite capacity exchange on used contents",
+    "G3 outcome-conditioned revision of the same relationships"
+  ],
+  "next_decision": "audit addressing and settlement contracts inherited from suffix OWT world before mechanism changes",
+  "not_claimed": [
+    "global maximum coverage",
+    "global minimum generator",
+    "full life specification",
+    "learned self-model",
+    "all histories exact credit"
+  ],
+  "counts": {
+    "definition_obligations": 12,
+    "distinct_referenced_declarations": 28
+  }
+}

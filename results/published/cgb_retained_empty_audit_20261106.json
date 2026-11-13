@@ -1,0 +1,124 @@
+{
+  "status": "complete",
+  "checkpoint": "E:\\cgb_gdn340_probe\\retention_continuous_20261106\\retention_last.pt",
+  "checkpoint_sha256": "3f9e823bb76505a6278cb2602ca6103f837a61062e4516d78bb78c17b21f99c5",
+  "source_updates": 299,
+  "dataset_revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+  "protected": {
+    "1:24:91": {
+      "step": 66,
+      "evidence": 0.5718612670898438
+    },
+    "12:24:91": {
+      "step": 70,
+      "evidence": 0.7615911960601807
+    }
+  },
+  "optimizer_updates": 0,
+  "commits": 0,
+  "protocol": {
+    "offset": 512,
+    "tokens_per_source": 512,
+    "window": 128,
+    "contexts": "latter half of the saved independent validation/A-unseen/B-unseen, not used in the prior endpoint probes",
+    "cache": "each source begins from the saved body cache; advance only the intact frozen trajectory",
+    "intervention": "zero all episodic values at both attached layers, preserve S and all model parameters",
+    "vacancy": "remove the same victim value, keep all remaining weights unchanged",
+    "scope": "read-only current usefulness/ranking; neither training benefit nor all-future usefulness"
+  },
+  "records": [
+    {
+      "source": "validation",
+      "start": 512,
+      "intact_nll": 3.8963234424591064,
+      "empty_nll": 3.878620147705078,
+      "empty_minus_intact": -0.01770329475402832
+    },
+    {
+      "source": "validation",
+      "start": 640,
+      "intact_nll": 3.593757152557373,
+      "empty_nll": 3.848433256149292,
+      "empty_minus_intact": 0.25467610359191895
+    },
+    {
+      "source": "validation",
+      "start": 768,
+      "intact_nll": 3.4984498023986816,
+      "empty_nll": 3.5482170581817627,
+      "empty_minus_intact": 0.049767255783081055
+    },
+    {
+      "source": "validation",
+      "start": 896,
+      "intact_nll": 2.5225276947021484,
+      "empty_nll": 2.5706419944763184,
+      "empty_minus_intact": 0.04811429977416992
+    },
+    {
+      "source": "a_unseen",
+      "start": 512,
+      "intact_nll": 4.016726970672607,
+      "empty_nll": 3.906719207763672,
+      "empty_minus_intact": -0.11000776290893555
+    },
+    {
+      "source": "a_unseen",
+      "start": 640,
+      "intact_nll": 4.120044708251953,
+      "empty_nll": 4.10088586807251,
+      "empty_minus_intact": -0.01915884017944336
+    },
+    {
+      "source": "a_unseen",
+      "start": 768,
+      "intact_nll": 3.732419013977051,
+      "empty_nll": 3.7548251152038574,
+      "empty_minus_intact": 0.02240610122680664
+    },
+    {
+      "source": "a_unseen",
+      "start": 896,
+      "intact_nll": 3.105058193206787,
+      "empty_nll": 3.158097267150879,
+      "empty_minus_intact": 0.0530390739440918
+    },
+    {
+      "source": "b_unseen",
+      "start": 512,
+      "intact_nll": 2.959923505783081,
+      "empty_nll": 2.9511256217956543,
+      "empty_minus_intact": -0.008797883987426758
+    },
+    {
+      "source": "b_unseen",
+      "start": 640,
+      "intact_nll": 2.3840389251708984,
+      "empty_nll": 2.340345859527588,
+      "empty_minus_intact": -0.04369306564331055
+    },
+    {
+      "source": "b_unseen",
+      "start": 768,
+      "intact_nll": 2.800473213195801,
+      "empty_nll": 2.835555076599121,
+      "empty_minus_intact": 0.03508186340332031
+    },
+    {
+      "source": "b_unseen",
+      "start": 896,
+      "intact_nll": 2.842282295227051,
+      "empty_nll": 2.9168591499328613,
+      "empty_minus_intact": 0.07457685470581055
+    }
+  ],
+  "persistent_state_unchanged": true,
+  "source_checkpoint_unchanged": true,
+  "mean_empty_minus_intact": 0.02819172541300456,
+  "empty_better": 5,
+  "by_source": {
+    "validation": 0.0837135910987854,
+    "a_unseen": -0.013430356979370117,
+    "b_unseen": 0.014291942119598389
+  }
+}

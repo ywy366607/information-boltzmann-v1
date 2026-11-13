@@ -79,7 +79,8 @@ class TurnDialogueEngine(DialogueEngine):
         if mode not in ('active', 'silence', 'sequential'):
             raise ValueError('unknown v3 action mode')
         super().__init__(model, optimizer, recurrent, table, world, pending, rng, 'active',
-                         max_utterance, response_bytes, holdout_bytes, baseline, baseline_decay)
+                         max_utterance, response_bytes, holdout_bytes, baseline, baseline_decay,
+                         capture=False)  # The V2 graph is immediately replaced by V3 below.
         self.mode = mode
         self.max_utterance = max_utterance
         self.decision = DecisionGraphV3(model, capture)

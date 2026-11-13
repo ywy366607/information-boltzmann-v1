@@ -1,0 +1,309 @@
+{
+  "status": "actual_gpu_admission_passed_with_resource_policies",
+  "admission": "results\\cgb_native_s_credit_20261108\\resource_fixed_admission5_final\\admission\\report.json",
+  "supervisor": "results\\cgb_native_s_credit_20261108\\resource_fixed_admission5_final\\supervisor.json",
+  "experiments": [
+    {
+      "path": "results\\cgb_native_s_credit_20261108\\resource_fixed_admission\\supervisor.json",
+      "exit_code": 1,
+      "supervisor_stop": "system_commit_free_below_256_MiB",
+      "min_commit_mib": 256,
+      "peaks": {
+        "process_private_bytes": 4278464512,
+        "process_rss_bytes": 2023280640,
+        "commit_bytes": 22308143104,
+        "gpu_used_bytes": 1930891264
+      },
+      "main_source_unchanged": true
+    },
+    {
+      "path": "results\\cgb_native_s_credit_20261108\\resource_fixed_admission2\\supervisor.json",
+      "exit_code": 1,
+      "supervisor_stop": null,
+      "min_commit_mib": 64,
+      "peaks": {
+        "process_private_bytes": 4925980672,
+        "process_rss_bytes": 3189346304,
+        "commit_bytes": 24109178880,
+        "gpu_used_bytes": 2004291584
+      },
+      "main_source_unchanged": true
+    },
+    {
+      "path": "results\\cgb_native_s_credit_20261108\\resource_fixed_admission3\\supervisor.json",
+      "exit_code": 1,
+      "supervisor_stop": "physical_free_below_1024_MiB",
+      "min_commit_mib": 64,
+      "peaks": {
+        "process_private_bytes": 5100785664,
+        "process_rss_bytes": 5232467968,
+        "commit_bytes": 23105835008,
+        "gpu_used_bytes": 2002194432
+      },
+      "main_source_unchanged": true
+    },
+    {
+      "path": "results\\cgb_native_s_credit_20261108\\resource_fixed_admission4_digest\\supervisor.json",
+      "exit_code": 1,
+      "supervisor_stop": null,
+      "min_commit_mib": 64,
+      "peaks": {
+        "process_private_bytes": 4941082624,
+        "process_rss_bytes": 3693207552,
+        "commit_bytes": 23014506496,
+        "gpu_used_bytes": 2004291584
+      },
+      "main_source_unchanged": true
+    },
+    {
+      "path": "results\\cgb_native_s_credit_20261108\\resource_fixed_admission5_final\\supervisor.json",
+      "exit_code": 0,
+      "supervisor_stop": null,
+      "min_commit_mib": 64,
+      "peaks": {
+        "process_private_bytes": 5016084480,
+        "process_rss_bytes": 3844833280,
+        "commit_bytes": 23103033344,
+        "gpu_used_bytes": 2002194432
+      },
+      "main_source_unchanged": true
+    },
+    {
+      "path": "results\\cgb_native_s_credit_20261108\\resource_probe1\\supervisor.json",
+      "exit_code": 1,
+      "supervisor_stop": "system_commit_free_below_512_MiB",
+      "min_commit_mib": 512,
+      "peaks": {
+        "process_private_bytes": 4921995264,
+        "process_rss_bytes": 1699946496,
+        "commit_bytes": 24638943232,
+        "gpu_used_bytes": 2264338432
+      },
+      "main_source_unchanged": true
+    },
+    {
+      "path": "results\\cgb_native_s_credit_20261108\\resource_probe2_bounded\\supervisor.json",
+      "exit_code": 1,
+      "supervisor_stop": "system_commit_free_below_512_MiB",
+      "min_commit_mib": 512,
+      "peaks": {
+        "process_private_bytes": 3881562112,
+        "process_rss_bytes": 1345667072,
+        "commit_bytes": 24318652416,
+        "gpu_used_bytes": 1538723840
+      },
+      "main_source_unchanged": true
+    },
+    {
+      "path": "results\\cgb_native_s_credit_20261108\\resource_probe3_no_benchmark\\supervisor.json",
+      "exit_code": 1,
+      "supervisor_stop": "system_commit_free_below_512_MiB",
+      "min_commit_mib": 512,
+      "peaks": {
+        "process_private_bytes": 4183252992,
+        "process_rss_bytes": 1659998208,
+        "commit_bytes": 22233124864,
+        "gpu_used_bytes": 1568083968
+      },
+      "main_source_unchanged": true
+    },
+    {
+      "path": "results\\cgb_native_s_credit_20261108\\resource_probe4_readonly\\supervisor.json",
+      "exit_code": 1,
+      "supervisor_stop": "system_commit_free_below_512_MiB",
+      "min_commit_mib": 512,
+      "peaks": {
+        "process_private_bytes": 4038955008,
+        "process_rss_bytes": 1916850176,
+        "commit_bytes": 22064435200,
+        "gpu_used_bytes": 1826033664
+      },
+      "main_source_unchanged": true
+    },
+    {
+      "path": "results\\cgb_native_s_credit_20261108\\resource_probe5_readonly\\supervisor.json",
+      "exit_code": 1,
+      "supervisor_stop": "system_commit_free_below_256_MiB",
+      "min_commit_mib": 256,
+      "peaks": {
+        "process_private_bytes": 4238086144,
+        "process_rss_bytes": 2016792576,
+        "commit_bytes": 22332346368,
+        "gpu_used_bytes": 1909919744
+      },
+      "main_source_unchanged": true
+    },
+    {
+      "path": "results\\cgb_native_s_credit_20261108\\resource_probe6_warm\\supervisor.json",
+      "exit_code": 0,
+      "supervisor_stop": null,
+      "min_commit_mib": 256,
+      "peaks": {
+        "process_private_bytes": 4516376576,
+        "process_rss_bytes": 2227662848,
+        "commit_bytes": 23006568448,
+        "gpu_used_bytes": 1951862784
+      },
+      "main_source_unchanged": true
+    }
+  ],
+  "checkpoint_comparison": {
+    "status": "entire_actual_checkpoint_equal",
+    "counts": {
+      "tensors": 57820,
+      "elements": 3936690282
+    },
+    "memory": [
+      [
+        "before",
+        {
+          "time": 1794132746.4952672,
+          "commit_bytes": 19122249728,
+          "commit_limit_bytes": 22598791168,
+          "commit_free_bytes": 3476541440,
+          "physical_free_bytes": 4262535168,
+          "process_private_bytes": 1151709184,
+          "process_rss_bytes": 521314304,
+          "process_peak_private_bytes": 1151787008,
+          "gpu_used_bytes": 168820736,
+          "gpu_free_bytes": 4126146560,
+          "gpu_total_bytes": 4294967296
+        }
+      ],
+      [
+        "readonly",
+        {
+          "time": 1794132746.6539686,
+          "commit_bytes": 19161075712,
+          "commit_limit_bytes": 22598791168,
+          "commit_free_bytes": 3437715456,
+          "physical_free_bytes": 4256178176,
+          "process_private_bytes": 1191759872,
+          "process_rss_bytes": 526934016,
+          "process_peak_private_bytes": 1191759872,
+          "gpu_used_bytes": 168820736,
+          "gpu_free_bytes": 4126146560,
+          "gpu_total_bytes": 4294967296
+        }
+      ],
+      [
+        "copy_on_write",
+        {
+          "time": 1794132746.777544,
+          "commit_bytes": 19878387712,
+          "commit_limit_bytes": 22598791168,
+          "commit_free_bytes": 2720403456,
+          "physical_free_bytes": 4267446272,
+          "process_private_bytes": 1907539968,
+          "process_rss_bytes": 529940480,
+          "process_peak_private_bytes": 1907539968,
+          "gpu_used_bytes": 168820736,
+          "gpu_free_bytes": 4126146560,
+          "gpu_total_bytes": 4294967296
+        }
+      ]
+    ],
+    "file_bytes": 711394149
+  },
+  "actual_window_checks": [
+    {
+      "updates": 525,
+      "factual": false,
+      "teaching_available": false,
+      "empty": true,
+      "old_credit_norm": 0.0,
+      "actual_extra_norm": 0.0,
+      "persistent_bytes": 4325592,
+      "estimated_temporary_bytes": 21809024,
+      "capture_bytes": null,
+      "estimated_peak_with_capture_bytes": null
+    },
+    {
+      "updates": 526,
+      "factual": true,
+      "teaching_available": true,
+      "empty": true,
+      "old_credit_norm": 0.0,
+      "actual_extra_norm": 0.0,
+      "persistent_bytes": 4325592,
+      "estimated_temporary_bytes": 21809024,
+      "capture_bytes": 11677976,
+      "estimated_peak_with_capture_bytes": 33487000
+    },
+    {
+      "updates": 527,
+      "factual": true,
+      "teaching_available": true,
+      "empty": false,
+      "old_credit_norm": 0.0017354400866780215,
+      "actual_extra_norm": 0.0017354400866780215,
+      "persistent_bytes": 4325592,
+      "estimated_temporary_bytes": 21809024,
+      "capture_bytes": 11677976,
+      "estimated_peak_with_capture_bytes": 33487000
+    }
+  ],
+  "full_continuation_digests": [
+    {
+      "sha256": "b27d95a1afb19dbb5b2814086b5aa49470390151b16294a717e3568e70807306",
+      "tensor_occurrences": 4506,
+      "unique_tensor_views": 2663,
+      "tensor_bytes_hashed": 784392710,
+      "largest_tensor_buffer_bytes": 4194304
+    },
+    {
+      "sha256": "b27d95a1afb19dbb5b2814086b5aa49470390151b16294a717e3568e70807306",
+      "tensor_occurrences": 4506,
+      "unique_tensor_views": 2663,
+      "tensor_bytes_hashed": 784392710,
+      "largest_tensor_buffer_bytes": 4194304
+    }
+  ],
+  "cpu_checks_passed": 44,
+  "production_theorem_coverage_added": 0,
+  "body_theorem_coverage_added": 0,
+  "main_life_updates": 524,
+  "main_life_seen": 450757,
+  "main_life_next_case": 14,
+  "main_life_advanced": false,
+  "main_source_sha256": "514a45cbe1753c8f056ff75cae2b84121f07c2b5b2a70a6e9e24b9aa9eaca1b5",
+  "original_11_sources_preserved": true,
+  "execution_sources": {
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\run_native_s_credit_retention.py": "79efa1e2123e82ba9513d5429dc3e6a20376524758072ad8aebbc09973689077",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\native_s_learner.py": "b2f7730f745452c5954da868c27197efe045b27ee75a84b1ad628e314ab5f48d",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\native_s_eligibility.py": "a13243a9bddf581488b3ceca86eb7c79d7228cd8fc389c4b572f04650f4a2f50",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\triton_lazy_debug_ir.py": "d7f6abbe80e6c7e5fd478ae5df18f60ec874481ec5d9972066c2d0969f57a40a",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\triton_bounded_autotune.py": "055dc2ad1753a54a8a3d6440477e0222238494e991abcf8e2c6a6bd0e6ea4eee",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\readonly_checkpoint.py": "865fce1ea123674bab29136bcd7c3866bf7bc50b888ad593e24e130ef99880b6",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\checkpoint_digest.py": "38c6509520db9d73d0da41964528a97b160f020487b1d2e3754568de69b80e22",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\bounded_causal_tag_reference.py": "80198d3824d4409a7a38e746cf9a1576c69750b4830c327be592dd05e349b0fe",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\bounded_causal_tag_blocked.py": "16fea47158405edebc849aa7baaecc61cc9d44097caa10bf8b7acc74b89757af"
+  },
+  "retention_arms_started": false,
+  "future_retention_or_relearning_benefit_demonstrated": false,
+  "resource_policies": {
+    "model": "E:\\cgb_gdn340_probe\\model",
+    "vendor": "E:\\cgb_gdn340_probe\\vendor\\flash-linear-attention-0.2.2",
+    "window": 128,
+    "phase_windows": 32,
+    "rank": 2,
+    "max_explicit_sidecar_bytes": 67108864,
+    "seed": 11,
+    "phases": [
+      "A_first",
+      "B",
+      "A_return"
+    ],
+    "checkpoint_every_formal_updates": 32,
+    "bounded_autotune": true,
+    "readonly_checkpoints": true,
+    "max_owned_archive_bytes": 6442450944,
+    "original_source_only": true,
+    "state_resets": 0,
+    "independent_evaluation": false,
+    "future": "new OWT researcher branch; inherited pending answer is archival only",
+    "scope": "conditional approximate local native-S; not full BPTT/joint credit",
+    "interpretation": "one fixed short seed/budget, not convergence or capacity evidence"
+  },
+  "interpretation": "Disposable actual-source interface/continuation acceptance only. Fixed existing Triton config without benchmarking; immutable read-only checkpoints; full before-step restart plus streaming full-state digests. Same math/source window, not a claim of bitwise equivalence to prior autotune selections. Memory protection stops are distinct from allocator/CUDA failures; all evidence retained."
+}

@@ -1,0 +1,322 @@
+{
+  "status": "repair_verified_pair_complete_no_task_credit_advantage",
+  "schema": 2,
+  "source": "E:/cgb_small_gdn_20261107/return_admission/selected/last.pt.gz",
+  "integrity": {
+    "source_unchanged": true,
+    "audit_body_unchanged": true,
+    "audit_checkpoint_unchanged": true
+  },
+  "mechanism": {
+    "record_limit_per_layer": 16,
+    "observation_length_limit": 128,
+    "partial_tails_stored": true,
+    "query": "causal native recurrent activity",
+    "candidate_selection": "all retained positions and one null; per-record prior length normalized",
+    "native_gradient": "held-boundary recomputation of GDN plus MLP; held cuts old key and value native derivatives together"
+  },
+  "audit": {
+    "neutral_max": 0.0,
+    "held_full_forward_max": 0.0,
+    "resume_next_update_exact": true,
+    "peak_cuda_bytes": 336849920,
+    "independent_cases": 8,
+    "layer_case_full_coverage": 32,
+    "layer_case_positive_digit_mass": 32,
+    "layer_case_nonzero_digit_credit": 32,
+    "digit_record_removal_nll_deltas": [
+      0.012513160705566406,
+      0.0009789466857910156,
+      0.012079238891601562,
+      0.0009098052978515625,
+      0.0008261203765869141,
+      0.004223227500915527,
+      0.015078067779541016,
+      0.0137939453125
+    ],
+    "layers": [
+      {
+        "layer": 1,
+        "position_mass": [
+          0.00012568719103001058,
+          0.00013038853649049997,
+          0.00017976737581193447,
+          0.00016943163063842803,
+          0.0001459048653487116,
+          0.0001684857124928385,
+          0.0001598684029886499,
+          0.0001636077940929681
+        ],
+        "digit_input_gradient_norm": [
+          7.624229472330165e-05,
+          4.046210779992936e-05,
+          5.8945938790325804e-05,
+          3.243105339131029e-05,
+          3.427693674758732e-05,
+          1.3443056783233589e-05,
+          9.660273283532902e-05,
+          4.8216001604271804e-05
+        ],
+        "query_cross_case_maxdiff": 0.06322719156742096
+      },
+      {
+        "layer": 2,
+        "position_mass": [
+          0.001793691422790289,
+          0.0015567030059173703,
+          0.0018425004091113806,
+          0.001601149095222354,
+          0.001695358077995479,
+          0.0019352746894583106,
+          0.0015436287503689528,
+          0.0021733948960900307
+        ],
+        "digit_input_gradient_norm": [
+          7.432727406379744e-06,
+          3.03705819507051e-06,
+          7.2387744327444255e-06,
+          3.112513206182996e-06,
+          3.506372228371081e-06,
+          1.3254540379469505e-06,
+          9.582629195014248e-06,
+          1.2282384369827716e-05
+        ],
+        "query_cross_case_maxdiff": 0.3039112091064453
+      },
+      {
+        "layer": 3,
+        "position_mass": [
+          0.0015725813573226333,
+          0.0015852681826800108,
+          0.0020410751458257437,
+          0.0017316871089860797,
+          0.0019353149691596627,
+          0.0016949466662481427,
+          0.0019693023059517145,
+          0.0019638717640191317
+        ],
+        "digit_input_gradient_norm": [
+          4.851192691049091e-06,
+          2.056978502757887e-06,
+          5.774940466793645e-06,
+          2.2555369553088923e-06,
+          2.327349212691928e-06,
+          2.965102333120722e-06,
+          4.415662664229265e-06,
+          4.255500546936503e-06
+        ],
+        "query_cross_case_maxdiff": 0.28891420364379883
+      },
+      {
+        "layer": 4,
+        "position_mass": [
+          0.0012181975180283189,
+          0.0012180655030533671,
+          0.0012551326071843505,
+          0.0013007023371756077,
+          0.0013630790635943413,
+          0.0012138221645727754,
+          0.0012155331205576658,
+          0.0013204769929870963
+        ],
+        "digit_input_gradient_norm": [
+          6.86728267853458e-06,
+          3.558356904593709e-07,
+          8.715046149507058e-06,
+          3.784321731973838e-07,
+          3.5224892983255056e-07,
+          2.7456823724241783e-06,
+          8.221470933320933e-06,
+          9.013283100723387e-06
+        ],
+        "query_cross_case_maxdiff": 0.39025211334228516
+      }
+    ]
+  },
+  "pair_report": "E:\\cgb_small_gdn_20261107\\context_pair\\report.json",
+  "raw_sha256": {
+    "E:\\cgb_small_gdn_20261107\\context_wiring\\report.json": "5dc7938271d26767c3bfa849e4c8713b5c1e03035e567dd3d66fdab04621dc8b",
+    "E:\\cgb_small_gdn_20261107\\context_responsibility.json": "5475cd28cbe68c3481852402c348f0d1cde95c1bb573d9b72333a32ee87995cc",
+    "E:\\cgb_small_gdn_20261107\\context_content_held.json": "c0423358a55efdf2fefccaa7c16fb286f3e72cc983f1327023953ac2a363e76e",
+    "E:\\cgb_small_gdn_20261107\\context_content_full.json": "fa917c6ab44bdc76706ee195eb47f27a06a90829bf120e25032f91b5e4070c53",
+    "E:\\cgb_small_gdn_20261107\\context_pair\\report.json": "33e1928d53f4d3877d1707fe380ac54325633be181e134e0085362a794396694"
+  },
+  "affected_tests": 52,
+  "lean_coverage_increment": 0,
+  "pair": {
+    "seconds": 634.3449475765228,
+    "source_unchanged": true,
+    "executed_sources_unchanged": true,
+    "peak_cuda_bytes": 380440576,
+    "arms": {
+      "held": {
+        "examples": 128,
+        "evaluations": [
+          {
+            "example": 0,
+            "short": {
+              "exact": 0,
+              "answer_nll": 3.7173139511141926,
+              "owt_nll": 1.4475217163562775
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 3.7608705438906327,
+              "owt_nll": 1.4475217163562775
+            }
+          },
+          {
+            "example": 1,
+            "short": {
+              "exact": 0,
+              "answer_nll": 3.3860974201234058,
+              "owt_nll": 1.448326975107193
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 3.522905446239747,
+              "owt_nll": 1.448326975107193
+            }
+          },
+          {
+            "example": 32,
+            "short": {
+              "exact": 0,
+              "answer_nll": 1.7550485175888753,
+              "owt_nll": 1.6150330305099487
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 1.9240136120206444,
+              "owt_nll": 1.6150330305099487
+            }
+          },
+          {
+            "example": 64,
+            "short": {
+              "exact": 0,
+              "answer_nll": 1.5133795466899755,
+              "owt_nll": 1.68367338180542
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 1.4406312075116148,
+              "owt_nll": 1.68367338180542
+            }
+          },
+          {
+            "example": 128,
+            "short": {
+              "exact": 0,
+              "answer_nll": 1.442998926492237,
+              "owt_nll": 1.8997318148612976
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 1.5758562023183913,
+              "owt_nll": 1.8997318148612976
+            }
+          }
+        ]
+      },
+      "full": {
+        "examples": 128,
+        "evaluations": [
+          {
+            "example": 0,
+            "short": {
+              "exact": 0,
+              "answer_nll": 3.7173139511141926,
+              "owt_nll": 1.4475217163562775
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 3.7608705438906327,
+              "owt_nll": 1.4475217163562775
+            }
+          },
+          {
+            "example": 1,
+            "short": {
+              "exact": 0,
+              "answer_nll": 3.3860974201234058,
+              "owt_nll": 1.448326975107193
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 3.522905446239747,
+              "owt_nll": 1.448326975107193
+            }
+          },
+          {
+            "example": 32,
+            "short": {
+              "exact": 0,
+              "answer_nll": 1.754949644266162,
+              "owt_nll": 1.615014761686325
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 1.924508683179738,
+              "owt_nll": 1.615014761686325
+            }
+          },
+          {
+            "example": 64,
+            "short": {
+              "exact": 0,
+              "answer_nll": 1.5145804654785024,
+              "owt_nll": 1.6829106211662292
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 1.4414676675041846,
+              "owt_nll": 1.6829106211662292
+            }
+          },
+          {
+            "example": 128,
+            "short": {
+              "exact": 0,
+              "answer_nll": 1.4441681469334071,
+              "owt_nll": 1.8997811079025269
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 1.577506186366918,
+              "owt_nll": 1.8997811079025269
+            }
+          }
+        ]
+      }
+    }
+  },
+  "content_interventions": {
+    "held": {
+      "status": "complete",
+      "device": "cuda",
+      "optimizer_steps": 0,
+      "seconds": 7.169784069061279,
+      "body_unchanged": true,
+      "checkpoint_unchanged": true,
+      "favorable_nll_cases": 2,
+      "favorable_contrast_cases": 1,
+      "mean_content_nll_benefit": -9.909272193908691e-06,
+      "mean_stored_value_contrast": -8.434057235717773e-06
+    },
+    "full": {
+      "status": "complete",
+      "device": "cuda",
+      "optimizer_steps": 0,
+      "seconds": 7.030481576919556,
+      "body_unchanged": true,
+      "checkpoint_unchanged": true,
+      "favorable_nll_cases": 2,
+      "favorable_contrast_cases": 1,
+      "mean_content_nll_benefit": -1.1831521987915039e-05,
+      "mean_stored_value_contrast": -1.1652708053588867e-05
+    }
+  },
+  "promoted": false,
+  "conclusion": "Whole-span storage and contextual addressing are implemented; direct digit-position derivatives exist. Neither128-example arm learned exact retrieval; holding the present fixed and substituting old content shows no reliable correct-value use. Computation gradient transport does not certify empirical responsibility."
+}

@@ -1,0 +1,274 @@
+{
+  "status": "complete",
+  "optimizer_updates": 0,
+  "episode_writes": 0,
+  "protocol": {
+    "tokens_per_source": 512,
+    "window": 128,
+    "cache": "each frozen trajectory begins from its own saved full cache; no reset or bank transplant",
+    "intervention": "null-trained body: same weights, moments, records and incoming cache; only enable flag toggled",
+    "trajectory": "all differences accumulated by the paired training histories, including recurrent state and episode contents; not weights alone",
+    "interpretation": "negative NLL differences are better; finite endpoint diagnostic, not new training"
+  },
+  "dataset_revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+  "stages": {
+    "previous": {
+      "cells": {
+        "no_null_trained_off": {
+          "validation": {
+            "nll_sum": 1720.9798583984375,
+            "tokens": 512,
+            "nats_per_token": 3.3612887859344482
+          },
+          "a_unseen": {
+            "nll_sum": 1495.4197387695312,
+            "tokens": 512,
+            "nats_per_token": 2.9207416772842407
+          },
+          "b_unseen": {
+            "nll_sum": 1480.7329711914062,
+            "tokens": 512,
+            "nats_per_token": 2.8920565843582153
+          }
+        },
+        "null_trained_off": {
+          "validation": {
+            "nll_sum": 1746.4501953125,
+            "tokens": 512,
+            "nats_per_token": 3.4110355377197266
+          },
+          "a_unseen": {
+            "nll_sum": 1546.5389099121094,
+            "tokens": 512,
+            "nats_per_token": 3.0205838084220886
+          },
+          "b_unseen": {
+            "nll_sum": 1518.818603515625,
+            "tokens": 512,
+            "nats_per_token": 2.966442584991455
+          }
+        },
+        "null_trained_on": {
+          "validation": {
+            "nll_sum": 1722.6039123535156,
+            "tokens": 512,
+            "nats_per_token": 3.36446076631546
+          },
+          "a_unseen": {
+            "nll_sum": 1509.1842346191406,
+            "tokens": 512,
+            "nats_per_token": 2.947625458240509
+          },
+          "b_unseen": {
+            "nll_sum": 1467.3404541015625,
+            "tokens": 512,
+            "nats_per_token": 2.8658993244171143
+          }
+        }
+      },
+      "sources": {
+        "no_null": {
+          "path": "E:\\cgb_gdn340_probe\\null_read_continuous_20261106\\no_null_previous.pt",
+          "sha256": "8e40942b069a756b07921d24bda53460250383bde7c5cc93773f97d11bc6a4ab",
+          "updates": 279,
+          "step": 52
+        },
+        "null": {
+          "path": "E:\\cgb_gdn340_probe\\null_read_continuous_20261106\\null_previous.pt",
+          "sha256": "370b2c8d0085c88fa87c36c1b901ee8f0c296f7394106db0f3d26af1372ac2a7",
+          "updates": 279,
+          "step": 52
+        }
+      },
+      "decomposition": {
+        "validation": {
+          "direct_null_use": -0.04657477140426636,
+          "whole_learned_trajectory": 0.04974675178527832,
+          "total": 0.003171980381011963,
+          "accounting_error": 0.0
+        },
+        "a_unseen": {
+          "direct_null_use": -0.07295835018157959,
+          "whole_learned_trajectory": 0.0998421311378479,
+          "total": 0.02688378095626831,
+          "accounting_error": 0.0
+        },
+        "b_unseen": {
+          "direct_null_use": -0.10054326057434082,
+          "whole_learned_trajectory": 0.07438600063323975,
+          "total": -0.026157259941101074,
+          "accounting_error": 0.0
+        }
+      }
+    },
+    "last": {
+      "cells": {
+        "no_null_trained_off": {
+          "validation": {
+            "nll_sum": 1729.5708618164062,
+            "tokens": 512,
+            "nats_per_token": 3.3780680894851685
+          },
+          "a_unseen": {
+            "nll_sum": 1341.9640808105469,
+            "tokens": 512,
+            "nats_per_token": 2.6210235953330994
+          },
+          "b_unseen": {
+            "nll_sum": 1460.2731628417969,
+            "tokens": 512,
+            "nats_per_token": 2.8520960211753845
+          }
+        },
+        "null_trained_off": {
+          "validation": {
+            "nll_sum": 1744.4692077636719,
+            "tokens": 512,
+            "nats_per_token": 3.4071664214134216
+          },
+          "a_unseen": {
+            "nll_sum": 1362.3220520019531,
+            "tokens": 512,
+            "nats_per_token": 2.6607852578163147
+          },
+          "b_unseen": {
+            "nll_sum": 1487.882080078125,
+            "tokens": 512,
+            "nats_per_token": 2.906019687652588
+          }
+        },
+        "null_trained_on": {
+          "validation": {
+            "nll_sum": 1729.9611206054688,
+            "tokens": 512,
+            "nats_per_token": 3.378830313682556
+          },
+          "a_unseen": {
+            "nll_sum": 1343.8135375976562,
+            "tokens": 512,
+            "nats_per_token": 2.6246358156204224
+          },
+          "b_unseen": {
+            "nll_sum": 1460.4268188476562,
+            "tokens": 512,
+            "nats_per_token": 2.8523961305618286
+          }
+        }
+      },
+      "sources": {
+        "no_null": {
+          "path": "E:\\cgb_gdn340_probe\\null_read_continuous_20261106\\no_null_last.pt",
+          "sha256": "1044a15b95d5b558910520f4261a90b32338f4c4d8817eee8dd99b7ff51121a9",
+          "updates": 299,
+          "step": 72
+        },
+        "null": {
+          "path": "E:\\cgb_gdn340_probe\\null_read_continuous_20261106\\null_last.pt",
+          "sha256": "a957324b6751817e64c3341a7a428a24cb15a36cac4ca0736034e73f6bd27984",
+          "updates": 299,
+          "step": 72
+        }
+      },
+      "decomposition": {
+        "validation": {
+          "direct_null_use": -0.02833610773086548,
+          "whole_learned_trajectory": 0.029098331928253174,
+          "total": 0.0007622241973876953,
+          "accounting_error": 0.0
+        },
+        "a_unseen": {
+          "direct_null_use": -0.036149442195892334,
+          "whole_learned_trajectory": 0.03976166248321533,
+          "total": 0.003612220287322998,
+          "accounting_error": 0.0
+        },
+        "b_unseen": {
+          "direct_null_use": -0.05362355709075928,
+          "whole_learned_trajectory": 0.05392366647720337,
+          "total": 0.0003001093864440918,
+          "accounting_error": 0.0
+        }
+      }
+    }
+  },
+  "complete_persistent_states_unchanged": true,
+  "all_source_checkpoints_unchanged": true,
+  "cross_process_baseline_recheck": {
+    "records": [
+      {
+        "arm": "no_null",
+        "step": 52,
+        "source": "validation",
+        "recomputed_minus_original": 6.496906280517578e-06
+      },
+      {
+        "arm": "no_null",
+        "step": 52,
+        "source": "a_unseen",
+        "recomputed_minus_original": 0.00010514259338378906
+      },
+      {
+        "arm": "no_null",
+        "step": 52,
+        "source": "b_unseen",
+        "recomputed_minus_original": 0.00022900104522705078
+      },
+      {
+        "arm": "null",
+        "step": 52,
+        "source": "validation",
+        "recomputed_minus_original": 0.00018960237503051758
+      },
+      {
+        "arm": "null",
+        "step": 52,
+        "source": "a_unseen",
+        "recomputed_minus_original": -1.0132789611816406e-05
+      },
+      {
+        "arm": "null",
+        "step": 52,
+        "source": "b_unseen",
+        "recomputed_minus_original": -0.00012421607971191406
+      },
+      {
+        "arm": "no_null",
+        "step": 72,
+        "source": "validation",
+        "recomputed_minus_original": -0.00020372867584228516
+      },
+      {
+        "arm": "no_null",
+        "step": 72,
+        "source": "a_unseen",
+        "recomputed_minus_original": 1.9848346710205078e-05
+      },
+      {
+        "arm": "no_null",
+        "step": 72,
+        "source": "b_unseen",
+        "recomputed_minus_original": -0.0002684593200683594
+      },
+      {
+        "arm": "null",
+        "step": 72,
+        "source": "validation",
+        "recomputed_minus_original": -0.00018799304962158203
+      },
+      {
+        "arm": "null",
+        "step": 72,
+        "source": "a_unseen",
+        "recomputed_minus_original": -6.717443466186523e-05
+      },
+      {
+        "arm": "null",
+        "step": 72,
+        "source": "b_unseen",
+        "recomputed_minus_original": -8.976459503173828e-05
+      }
+    ],
+    "maximum_absolute_difference": 0.0002684593200683594,
+    "note": "all intervention differences use newly recomputed same-process cells; historical scores are not subtraction baselines"
+  }
+}

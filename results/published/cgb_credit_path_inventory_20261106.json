@@ -1,0 +1,541 @@
+{
+  "status": "complete",
+  "checkpoint": "E:\\cgb_gdn340_probe\\eligibility_misassigned_20261106\\matched_last.pt",
+  "checkpoint_sha256": "4b3d4c92476e857c461e70376ad37da91932b0946edb676d9ca8ad0ed6bc9337",
+  "source_updates": 227,
+  "dataset_revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+  "stream_sha256": "962b54dff7fb9c8702630a7d98eb4835dd5e6c64298010fcefa2e9c5fdb57714",
+  "offset": 14336,
+  "window": 128,
+  "optimizer_updates": 0,
+  "commits": 0,
+  "full_held_current_paths_exact": true,
+  "full": {
+    "ce": 2.11808180809021,
+    "sigreg": 56.58924865722656,
+    "layers": {
+      "1": {
+        "slots": [
+          [
+            13,
+            27
+          ]
+        ],
+        "ages_tokens": [
+          [
+            2752,
+            960
+          ]
+        ],
+        "weights": [
+          [
+            0.5040359497070312,
+            0.49596408009529114
+          ]
+        ],
+        "branches": {
+          "query": {
+            "ce": {
+              "output_gradient_norm": 5.433812242058916e-05,
+              "encoder_gradient_norm": 0.00016135469120472546
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.0016856314210575742,
+              "encoder_gradient_norm": 0.005005409191810245
+            }
+          },
+          "stored_keys": {
+            "ce": {
+              "output_gradient_norm": 0.001956590640306711,
+              "encoder_gradient_norm": 0.00015313106504390522
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.06069569998462411,
+              "encoder_gradient_norm": 0.004750301359451004
+            }
+          },
+          "unused_stored_action": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "unused_stored_successor": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "old_value_0": {
+            "ce": {
+              "output_gradient_norm": 0.007017035106787221,
+              "encoder_gradient_norm": 0.022456303534880713
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.18732144210375562,
+              "encoder_gradient_norm": 0.5994764310648442
+            }
+          },
+          "old_value_1": {
+            "ce": {
+              "output_gradient_norm": 0.006904660979956743,
+              "encoder_gradient_norm": 0.021891313656246452
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.18432158898212309,
+              "encoder_gradient_norm": 0.5843938941735962
+            }
+          },
+          "sigreg_current": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.22656348025310377,
+              "encoder_gradient_norm": 2.212330368185554
+            }
+          },
+          "sigreg_history": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.07213811969628081,
+              "encoder_gradient_norm": 0.2983938839820294
+            }
+          }
+        },
+        "encoder_vjp_checks": {
+          "ce": {
+            "norm": 0.04402777586713451,
+            "weighted_norm": 0.4402777586713451,
+            "relative_error": 5.6837047781555236e-08
+          },
+          "sigreg": {
+            "norm": 2.9717180604632714,
+            "weighted_norm": 0.0029717180604632715,
+            "relative_error": 1.2730186002501604e-07
+          }
+        },
+        "ce_inlet_gradient_norm": 0.3295624097660615,
+        "ce_read_logit_gradient": [
+          [
+            -0.00023919076193124056,
+            0.00023919076193124056
+          ]
+        ]
+      },
+      "12": {
+        "slots": [
+          [
+            29,
+            21
+          ]
+        ],
+        "ages_tokens": [
+          [
+            704,
+            1728
+          ]
+        ],
+        "weights": [
+          [
+            0.5293014645576477,
+            0.4706985056400299
+          ]
+        ],
+        "branches": {
+          "query": {
+            "ce": {
+              "output_gradient_norm": 0.003029613922150527,
+              "encoder_gradient_norm": 0.034137885521324095
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "stored_keys": {
+            "ce": {
+              "output_gradient_norm": 0.007675538695993107,
+              "encoder_gradient_norm": 0.034921568192968905
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "unused_stored_action": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "unused_stored_successor": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "old_value_0": {
+            "ce": {
+              "output_gradient_norm": 0.007462859698009298,
+              "encoder_gradient_norm": 0.06114618923200983
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "old_value_1": {
+            "ce": {
+              "output_gradient_norm": 0.006636590187158263,
+              "encoder_gradient_norm": 0.047820269548580735
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "sigreg_current": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.9760106514328015,
+              "encoder_gradient_norm": 24.87205098103634
+            }
+          },
+          "sigreg_history": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.351520317614435,
+              "encoder_gradient_norm": 5.3497059397517
+            }
+          }
+        },
+        "encoder_vjp_checks": {
+          "ce": {
+            "norm": 0.10660281723201205,
+            "weighted_norm": 1.0660281723201206,
+            "relative_error": 5.157055171393057e-08
+          },
+          "sigreg": {
+            "norm": 27.30790650763416,
+            "weighted_norm": 0.02730790650763416,
+            "relative_error": 1.404339647118218e-07
+          }
+        },
+        "ce_inlet_gradient_norm": 0.6595105014422838,
+        "ce_read_logit_gradient": [
+          [
+            -0.0022745791357010603,
+            0.002274579368531704
+          ]
+        ]
+      }
+    },
+    "persistent_state_unchanged": true
+  },
+  "held": {
+    "ce": 2.11808180809021,
+    "sigreg": 56.58924865722656,
+    "layers": {
+      "1": {
+        "slots": [
+          [
+            13,
+            27
+          ]
+        ],
+        "ages_tokens": [
+          [
+            2752,
+            960
+          ]
+        ],
+        "weights": [
+          [
+            0.5040359497070312,
+            0.49596408009529114
+          ]
+        ],
+        "branches": {
+          "query": {
+            "ce": {
+              "output_gradient_norm": 5.433812242058916e-05,
+              "encoder_gradient_norm": 0.00016135469120472546
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.0016856314210575742,
+              "encoder_gradient_norm": 0.005005409191810245
+            }
+          },
+          "stored_keys": {
+            "ce": {
+              "output_gradient_norm": 0.001956590640306711,
+              "encoder_gradient_norm": 0.00015313106504390522
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.06069569998462411,
+              "encoder_gradient_norm": 0.004750301359451004
+            }
+          },
+          "unused_stored_action": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "unused_stored_successor": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "old_value_0": {
+            "ce": {
+              "output_gradient_norm": 0.007017035106787221,
+              "encoder_gradient_norm": 0.022456303534880713
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.18732144210375562,
+              "encoder_gradient_norm": 0.5994764310648442
+            }
+          },
+          "old_value_1": {
+            "ce": {
+              "output_gradient_norm": 0.006904660979956743,
+              "encoder_gradient_norm": 0.021891313656246452
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.18432158898212309,
+              "encoder_gradient_norm": 0.5843938941735962
+            }
+          },
+          "sigreg_current": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.22656348025310377,
+              "encoder_gradient_norm": 2.212330368185554
+            }
+          },
+          "sigreg_history": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.07213811969628081,
+              "encoder_gradient_norm": 0.2983938839820294
+            }
+          }
+        },
+        "encoder_vjp_checks": {
+          "ce": {
+            "norm": 0.04402777586713451,
+            "weighted_norm": 0.4402777586713451,
+            "relative_error": 5.6837047781555236e-08
+          },
+          "sigreg": {
+            "norm": 2.9717180604632714,
+            "weighted_norm": 0.0029717180604632715,
+            "relative_error": 1.2730186002501604e-07
+          }
+        },
+        "ce_inlet_gradient_norm": 0.3295624097660615,
+        "ce_read_logit_gradient": [
+          [
+            -0.00023919076193124056,
+            0.00023919076193124056
+          ]
+        ]
+      },
+      "12": {
+        "slots": [
+          [
+            29,
+            21
+          ]
+        ],
+        "ages_tokens": [
+          [
+            704,
+            1728
+          ]
+        ],
+        "weights": [
+          [
+            0.5293014645576477,
+            0.4706985056400299
+          ]
+        ],
+        "branches": {
+          "query": {
+            "ce": {
+              "output_gradient_norm": 0.003029613922150527,
+              "encoder_gradient_norm": 0.034137885521324095
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "stored_keys": {
+            "ce": {
+              "output_gradient_norm": 0.007675538695993107,
+              "encoder_gradient_norm": 0.034921568192968905
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "unused_stored_action": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "unused_stored_successor": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "old_value_0": {
+            "ce": {
+              "output_gradient_norm": 0.007462859698009298,
+              "encoder_gradient_norm": 0.06114618923200983
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "old_value_1": {
+            "ce": {
+              "output_gradient_norm": 0.006636590187158263,
+              "encoder_gradient_norm": 0.047820269548580735
+            },
+            "sigreg": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            }
+          },
+          "sigreg_current": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.9760106514328015,
+              "encoder_gradient_norm": 24.87205098103634
+            }
+          },
+          "sigreg_history": {
+            "ce": {
+              "output_gradient_norm": null,
+              "encoder_gradient_norm": null
+            },
+            "sigreg": {
+              "output_gradient_norm": 0.351520317614435,
+              "encoder_gradient_norm": 5.3497059397517
+            }
+          }
+        },
+        "encoder_vjp_checks": {
+          "ce": {
+            "norm": 0.10660281723201205,
+            "weighted_norm": 1.0660281723201206,
+            "relative_error": 5.157055171393057e-08
+          },
+          "sigreg": {
+            "norm": 27.30790650763416,
+            "weighted_norm": 0.02730790650763416,
+            "relative_error": 1.404339647118218e-07
+          }
+        },
+        "ce_inlet_gradient_norm": 0.6595105014422838,
+        "ce_read_logit_gradient": [
+          [
+            -0.0022745791357010603,
+            0.002274579368531704
+          ]
+        ]
+      }
+    },
+    "persistent_state_unchanged": true
+  },
+  "ce_native_old_route_gradient_norms": {
+    "layer1.A_log": 0.00019647738326517212,
+    "layer1.dt_bias": 0.0001444643817208901,
+    "layer1.q_proj.weight": 0.0014494701402471312,
+    "layer1.k_proj.weight": 0.00219051433458131,
+    "layer1.v_proj.weight": 0.0019491320939417568,
+    "layer1.a_proj.weight": 0.0004201036507777743,
+    "layer1.b_proj.weight": 7.607817873058688e-05,
+    "layer1.q_conv1d.weight": 0.003047515737009375,
+    "layer1.k_conv1d.weight": 0.004460755427860829,
+    "layer1.v_conv1d.weight": 0.0064532714783548115,
+    "layer1.g_proj.weight": 0.0015653796949533193,
+    "layer1.o_norm.weight": 0.0024293944047125197,
+    "layer1.o_proj.weight": 0.0037051749873058507,
+    "layer12.A_log": 0.00040862413115189296,
+    "layer12.dt_bias": 0.00029646147325265113,
+    "layer12.q_proj.weight": 0.003920722046062963,
+    "layer12.k_proj.weight": 0.004333456236485766,
+    "layer12.v_proj.weight": 0.0069757776813670755,
+    "layer12.a_proj.weight": 0.0016390526927764582,
+    "layer12.b_proj.weight": 0.000734804419340699,
+    "layer12.q_conv1d.weight": 0.011515758022670849,
+    "layer12.k_conv1d.weight": 0.009530296827337697,
+    "layer12.v_conv1d.weight": 0.009660969424077926,
+    "layer12.g_proj.weight": 0.005382182635131216,
+    "layer12.o_norm.weight": 0.004490218512295906,
+    "layer12.o_proj.weight": 0.00839672130448046
+  },
+  "source_checkpoint_unchanged": true,
+  "scope": "one trained real-text state; gradient reachability and exact decomposition, not an efficacy trial"
+}

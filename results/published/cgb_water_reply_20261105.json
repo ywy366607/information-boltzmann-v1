@@ -1,0 +1,186 @@
+{
+  "scope": "single-seed complete OWT body-world continuation, fixed 512-cycle budget per arm",
+  "source": {
+    "checkpoint": "results\\cgb_navigation_typed_wood_20261105\\last.pt.gz",
+    "sha256": "a4a682b11517e0d08233e8a5522a495cb9e107a71555e1a6b6238fde8f7cca54",
+    "cycle": 256,
+    "world_source_bytes": 40128875,
+    "world_source_sha256": "71c15501401a4e471f5de2208a90de82be1ef800931680bb0366c577cb79448b",
+    "source_raw_bounds": [
+      8000000,
+      56000000
+    ],
+    "world": "same restored OWT ReplyTopicWorld, including cursor, seen bitmap and RNG",
+    "optimizer_states": 93,
+    "pending_actor": true
+  },
+  "code_and_validation_matched": true,
+  "source_checkpoint_unchanged": true,
+  "results": {
+    "off": {
+      "path": "E:\\cgb_water_reply_20261105\\train_off_journal",
+      "summary": {
+        "phase": "train",
+        "credit": "off",
+        "cycles": 512,
+        "verified_prior_prefix_cycles": 59,
+        "optimizer_updates": 2048,
+        "external_bytes": 491520,
+        "self_bytes": 11648,
+        "validation_initial": 1.4586276896297932,
+        "validation_final": 1.4600418470799923,
+        "direct_choice_tv_max": 0.0,
+        "direct_choice_tv_sum": 0.0,
+        "preference_abs_max": 0.0,
+        "max_policy_replay_error": 2.86102294921875e-06,
+        "mean_joint_progress": 0.04116375092417002,
+        "choices": {
+          "silence": 148,
+          "generate": 287,
+          "reuse": 77
+        },
+        "seconds": 672.253707099997,
+        "peak_cuda_bytes": 207751168
+      },
+      "validation": [
+        {
+          "cycle": 128,
+          "nll": 1.4578617084771395,
+          "without_preference": 1.4578617084771395
+        },
+        {
+          "cycle": 256,
+          "nll": 1.4557280633598566,
+          "without_preference": 1.4557280633598566
+        },
+        {
+          "cycle": 384,
+          "nll": 1.4593648239970207,
+          "without_preference": 1.4593648239970207
+        },
+        {
+          "cycle": 512,
+          "nll": 1.4600418470799923,
+          "without_preference": 1.4600418470799923
+        }
+      ],
+      "validation_mean": 1.4582491107285023,
+      "new_position_response_fraction": 0.8565714518229166,
+      "record_window_events_over512": 0,
+      "oldest_read_since_last_write_bytes": 0,
+      "read_participations": 0,
+      "currently_credited_records": 0,
+      "checkpoint_sha256": "9ce74454a500954829a8f668ef841de07709c1e0550c5624b8e8cde1c7ffa931",
+      "metrics_sha256": "c921bd4902e412b135b843e37860c397437add71f28152fe08d0ea87281a06db",
+      "resume_check": {
+        "max_model_error": 0.0,
+        "same_table": true,
+        "same_world": true,
+        "same_metrics": true,
+        "restored_to_start": true
+      }
+    },
+    "adam": {
+      "path": "E:\\cgb_water_reply_20261105\\train_adam_journal",
+      "summary": {
+        "phase": "train",
+        "credit": "adam",
+        "cycles": 512,
+        "verified_prior_prefix_cycles": 0,
+        "optimizer_updates": 2048,
+        "external_bytes": 491520,
+        "self_bytes": 11616,
+        "validation_initial": 1.4586276896297932,
+        "validation_final": 1.4447620958089828,
+        "direct_choice_tv_max": 0.006280943751335144,
+        "direct_choice_tv_sum": 0.24717272160341963,
+        "preference_abs_max": 0.04142610356211662,
+        "max_policy_replay_error": 1.9073486328125e-06,
+        "mean_joint_progress": 0.03714521531946957,
+        "choices": {
+          "silence": 149,
+          "generate": 300,
+          "reuse": 63
+        },
+        "seconds": 752.6688531999971,
+        "peak_cuda_bytes": 207909376
+      },
+      "validation": [
+        {
+          "cycle": 128,
+          "nll": 1.457862576469779,
+          "without_preference": 1.457861851900816
+        },
+        {
+          "cycle": 256,
+          "nll": 1.4557367283850908,
+          "without_preference": 1.455736618489027
+        },
+        {
+          "cycle": 384,
+          "nll": 1.4593119267374277,
+          "without_preference": 1.459312243387103
+        },
+        {
+          "cycle": 512,
+          "nll": 1.4447620958089828,
+          "without_preference": 1.4447622951120138
+        }
+      ],
+      "validation_mean": 1.45441833185032,
+      "new_position_response_fraction": 0.86669921875,
+      "record_window_events_over512": 1185834,
+      "oldest_read_since_last_write_bytes": 2006496,
+      "read_participations": 7788032,
+      "currently_credited_records": 1878,
+      "checkpoint_sha256": "4d917547b308b6ee8b7c4506ce504901fdb04559da8507ed1a0d74a60ade7394",
+      "metrics_sha256": "7147118d51276132590ebd15d50fa6ae0da49c86099693004e505fca9151cbac",
+      "resume_check": {
+        "max_model_error": 0.0,
+        "same_table": true,
+        "same_world": true,
+        "same_metrics": true,
+        "restored_to_start": true
+      }
+    }
+  },
+  "trajectory_changes": {
+    "choice": {
+      "first_cycle": 286,
+      "different_cycles": 123
+    },
+    "utterance": {
+      "first_cycle": 278,
+      "different_cycles": 212
+    },
+    "world_input_position": {
+      "first_cycle": 278,
+      "different_cycles": 234
+    }
+  },
+  "final_nll_improvement": 0.015279751271009445,
+  "validation_curve_mean_improvement": 0.0038307788781821728,
+  "candidate_instantaneous_read_preference_gain": 1.993030309677124e-07,
+  "credit_state_bytes": 147456,
+  "parameter_count": 894916,
+  "tests_passed": 106,
+  "interpretation": "Budget-local improvement is retained in the learned body even when read preference is ablated at evaluation. Actual utterances and world inputs diverge. This is read-time credit, not reconstructed original-write gradients or guaranteed purposeful navigation.",
+  "primary_checkpoint": "E:\\cgb_water_reply_20261105\\train_adam_journal\\last.pt.gz",
+  "terminal_resume_audit": {
+    "max_model_error": 0.0,
+    "same_table": true,
+    "same_world": true,
+    "same_metrics": true,
+    "restored_to_start": true,
+    "path": "E:\\cgb_water_reply_20261105\\terminal_resume_audit"
+  },
+  "terminal_capacity": {
+    "occupied": 1883,
+    "capacity": 4096,
+    "evicted_total": 0,
+    "currently_credited_records": 1878
+  },
+  "preregistered_numeric_direction_passed": true,
+  "live_snapshot_integrity": true,
+  "post_run_loader": "Standalone reply snapshots now admit the original fixed4096 world schema and preserve the restored credit rule by default; verified on the actual terminal snapshot."
+}

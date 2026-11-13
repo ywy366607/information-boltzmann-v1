@@ -1,0 +1,67 @@
+{
+  "scope": "functional real delayed-feedback GPU admission; future behavioral benefit remains under study",
+  "status": "complete",
+  "task_sha256": "d88eb31d907327e4f4051053de8d987ae23faf9d0c8f81cac3a988ed55c92108",
+  "source_sha256": "514a45cbe1753c8f056ff75cae2b84121f07c2b5b2a70a6e9e24b9aa9eaca1b5",
+  "source_unchanged": true,
+  "main_life_updates": 0,
+  "state_resets": 0,
+  "source_updates": 524,
+  "end_updates": 526,
+  "actual_delays": [
+    256,
+    512
+  ],
+  "feedback_targets": [
+    6,
+    7
+  ],
+  "injected_gradient_norms": [
+    0.7808342595134112,
+    2.2330345089694545
+  ],
+  "no_nonfeedback_injection": true,
+  "placement_calibration": {
+    "bitwise_equal_logits": true,
+    "tokens": 128,
+    "reference_logits_sha256": "d122e62d6ea53fab75e85d79c994e90173db400effd5e93816e6d606f2510766",
+    "max_logit_difference": 0.0,
+    "optimizer_updates": 0
+  },
+  "prewarmed_variants": 64,
+  "peaks": {
+    "process_private_bytes": 3627958272,
+    "process_rss_bytes": 2678169600,
+    "gpu_used_bytes": 1268191232
+  },
+  "admission": {
+    "complete": true,
+    "two_actual_cases": true,
+    "actual_distances": true,
+    "feedback_windows": true,
+    "nonzero_each_feedback": true,
+    "no_extra_without_feedback": true,
+    "source_preserved": true,
+    "no_resets": true,
+    "placement_identical": true
+  },
+  "acquisition_answers": [
+    {
+      "qa_id": "56e6b94d6fe0821900b8eb56",
+      "exact_match": 0.0,
+      "token_f1": 0.0,
+      "first_answer_token_nll": 11.486085891723633
+    },
+    {
+      "qa_id": "5733ad50d058e614000b601d",
+      "exact_match": 0.0,
+      "token_f1": 0.0,
+      "first_answer_token_nll": 4.103318214416504
+    }
+  ],
+  "source_age_resolved_credit": false,
+  "behavioral_retention_benefit_proven": false,
+  "body_coverage_added": 0,
+  "production_coverage_added": 0,
+  "ongoing_study": "results/cgb_delayed_squad_20261109/continuous_sft_study/pipeline.json"
+}

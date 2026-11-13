@@ -77,6 +77,8 @@ def main():
     parser.add_argument('--settlement', choices=('witness','continuation','continuation_joint'), default='witness')
     parser.add_argument('--value-normalization', choices=('none','popart'), default='none')
     parser.add_argument('--reward-memory', choices=('td','observed'), default='td')
+    parser.add_argument('--read-credit', choices=('off','prediction'), default='prediction',
+                        help='Settle current prediction-error credit on retrieved old records')
     args=parser.parse_args();root=args.output;root.mkdir(parents=True,exist_ok=False)
     torch.set_num_threads(1);gdn_fused.enable()
     runner.LatentNavigationV3=WoodObservationBody
@@ -92,6 +94,7 @@ def main():
     configure_settlement(engine,args.settlement)
     configure_value_scale(engine,args.value_normalization)
     configure_reward_memory(engine,args.reward_memory)
+    engine.model.memory.read_credit_enabled = args.read_credit == 'prediction'
     engine.world=LearningRoomsWorld(11,switch_turn=256,routing='direct_bits')
     engine.response_bytes=engine.holdout_bytes=257
     banks=validation_banks()
@@ -104,6 +107,10 @@ def main():
         settlement=args.settlement,settlement_migration=getattr(engine,'settlement_migration',None),
         value_normalization=args.value_normalization,
         reward_memory=args.reward_memory,reward_memory_migration=getattr(engine,'reward_memory_migration',None),
+        read_credit=args.read_credit,
+        retrieval_layout='exact byte payload at model.retrieval; continuous causal state at model.memory',
+        read_credit_buffer_bytes=sum(getattr(engine.model.memory,n).numel()*getattr(engine.model.memory,n).element_size()
+            for n in ('read_credit_mean','read_credit_count','read_credit_version')),
         validation='no-write frozen-current-table/no-learning score, five independently generated 1024-byte banks, pre/post same bank',
         validation_sha256={str(k):hashlib.sha256(b''.join(x.tobytes() for x in v)).hexdigest() for k,v in banks.items()},
         sources_new={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in (
@@ -113,6 +120,13 @@ def main():
             Path('scripts/ib_local/navigation_settlement.py'),
             Path('scripts/ib_local/navigation_value_scale.py'),
             Path('scripts/ib_local/navigation_checkpoint.py'),
+            Path('scripts/ib_local/navigation_retrieval.py'),
+            Path('scripts/ib_local/navigation_read_credit.py'),
+            Path('scripts/ib_local/language_navigation_kanli_v4.py'),
+            Path('scripts/ib_local/language_navigation_kanli_v4l.py'),
+            Path('scripts/ib_local/language_navigation_v2.py'),
+            Path('scripts/ib_local/latent_navigation_v2.py'),
+            Path('scripts/ib_local/latent_navigation_v3.py'),
             Path('scripts/ib_local/language_navigation_kanli_v4b.py'),
             Path('scripts/ib_local/language_navigation_kanli_v4c.py'),
             Path('scripts/ib_local/language_navigation_kanli_v4p.py'),

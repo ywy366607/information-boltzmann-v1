@@ -18,6 +18,7 @@ import torch
 from scripts.ib_local import gdn_fused
 from scripts.ib_local.mother_reply_world import MotherReplyWorld, StrictToddlerMother
 from scripts.ib_local.mother_checkpoint import save
+from scripts.ib_local.life_card import identity_for, branch_id_for, card_config_for, export_live
 from scripts.ib_local.run_causal_water_reply import build, sha256_file
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -40,17 +41,32 @@ def internal_mode_config(config, mode, cycle, allow_change=False):
     return result
 
 
-def main():
+def continuation_parser():
+    """Shared CLI defaults; the owner uses exactly the existing restore options."""
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--checkpoint', type=Path, default=SOURCE)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--cycles', type=int, required=True)
     p.add_argument('--mode', choices=('real','blocked'), default='real')
+    p.add_argument('--device', choices=('cuda','cpu'), default='cuda',
+                   help='explicit execution backend; CPU can validate the same complete model')
+    p.add_argument('--table-storage', type=Path,
+                   help='directory for a private disk-backed fast-table workspace')
+    p.add_argument('--causal-storage', type=Path,
+                   help='enable a unified SSD episode/relation archive with a private work file')
+    p.add_argument('--causal-episode-capacity', type=int, default=65536)
+    p.add_argument('--causal-relation-capacity', type=int, default=65536)
     p.add_argument('--ambient-policy', choices=('reply','quiet'),
                    help='explicit event-boundary migration of inherited ambient navigation')
     p.add_argument('--mother-policy', choices=('legacy', 'responsive', 'responsive_v2', 'responsive_v3'),
                    help='explicit event-boundary caregiver strategy migration')
     p.add_argument('--shared-cache', type=Path, help='bounded shared actual-reply audit cache')
+    p.add_argument('--mother-context', choices=('segmented', 'dsh'),
+                   help='explicit caregiver-context migration; otherwise inherit the checkpoint')
+    p.add_argument('--mother-harness-url', help='loopback URL of the official DSH mother service')
+    p.add_argument('--mother-session', help='independent DSH branch identity; otherwise inherit it')
+    p.add_argument('--life-card', type=Path,
+                   help='explicit saved-snapshot card path under data/harness/life; DSH defaults to a branch card')
     p.add_argument('--stop-file', type=Path, help='finish the current event then stop if this file exists')
     p.add_argument('--internal-rollout', choices=('observe', 'real'),
                    help='explicit long-head migration to actual next-decision boundaries')
@@ -84,12 +100,39 @@ def main():
                    help='capture actual next boundary before both draft and shadow')
     p.add_argument('--mother-shadow', action='store_true',
                    help='use versioned mother-end evidence in the shared shadow relation')
+    p.add_argument('--question-parent-carry', action='store_true',
+                   help='carry the reactivated real mother evidence into the next fixed-size question receipt')
+    p.add_argument('--causal-program', action='store_true',
+                   help='execute the shared typed relation, posterior revision, and mother/ambient planning graph')
+    p.add_argument('--head-coupling', choices=('weighted','free'),
+                   help='learn per-layer head interaction through actual language replay')
+    p.add_argument('--joint-world-cycle', action='store_true',
+                   help='joint source-aware learning, concrete language search and internal continuation')
+    p.add_argument('--proposal-budget', type=int, default=4,
+                   help='finite concrete language proposals for an explicit joint-cycle migration')
+    p.add_argument('--validate-every', type=int, default=0,
+                   help='optional fixed independent sidecars; zero preserves legacy runner')
+    p.add_argument('--validation-bytes', type=int, default=8192)
+    p.add_argument('--mother-validation', type=Path,
+                   default=ROOT/'results/cgb_mother_continuation_20261110/validation/mother_validation.bin')
     p.add_argument('--gain-clipping', action='store_true',
                    help='bound only gain forecast innovations using prior observed scale')
-    args = p.parse_args()
-    if args.cycles < 1 or args.output.exists():
+    return p
+
+
+def prepare_continuation(args, *, provider_factory=None, resume_output=False):
+    """Restore the complete existing individual once, without running a cycle.
+
+    CLI callers retain the new-directory requirement. The persistent owner may
+    resume its own latest output, never replace an unrelated existing branch.
+    """
+    from types import SimpleNamespace
+    resuming = args.output.exists()
+    if args.cycles < 1 or (resuming and not resume_output):
         raise ValueError('positive cycles and new output directory required')
-    args.output.mkdir(parents=True)
+    if resuming and args.checkpoint.resolve() != (args.output/'last.pt.gz').resolve():
+        raise ValueError('existing output must resume its own latest checkpoint')
+    args.output.mkdir(parents=True, exist_ok=resuming)
     torch.set_num_threads(1)
     fused = gdn_fused.enable()
     source_sha = sha256_file(args.checkpoint)
@@ -102,9 +145,29 @@ def main():
         raise ValueError('cannot silently change an existing mother individual mode')
     provider_state = {k:(v.cpu().numpy() if torch.is_tensor(v) else v) for k,v in world_state.items()}
     del saved, world_state
-    engine, valid, offset, source = build(args.checkpoint)
+    table_directory = getattr(args, 'table_storage', None)
+    if table_directory is None and (config.get('causal_archive') is not None or
+                                   getattr(args, 'causal_storage', None) is not None):
+        table_directory = args.output/'fast_table_work'
+    if config.get('causal_archive') is not None:
+        engine, valid, offset, source = build(args.checkpoint, device=getattr(args, 'device', 'cuda'),
+            table_storage=table_directory, allow_external_archive=True)
+    elif table_directory is not None:
+        engine, valid, offset, source = build(args.checkpoint, device=getattr(args, 'device', 'cuda'),
+                                             table_storage=table_directory)
+    elif getattr(args, 'device', 'cuda') == 'cuda':
+        engine, valid, offset, source = build(args.checkpoint)
+    else:
+        engine, valid, offset, source = build(args.checkpoint, device='cpu')
     del valid, offset
-    if engine.__class__.__name__ not in ('DirectReadGainEngine', 'InternalRolloutEngine', 'MomentumEngine', 'MomentumWoodEngine', 'RelationWoodEngine', 'QuestionContextEngine', 'ShadowPreviewEngine', 'MotherBoundaryEngine', 'PersistentQuestionEngine'):
+    if args.question_parent_carry and config.get('question_parent_carry') is None:
+        if not (getattr(engine, 'mother_shadow_enabled', False) and
+                getattr(engine, 'joint_question_update', False)):
+            raise ValueError('question parent carry requires the existing joint mother-shadow body')
+        engine.question_parent_carry = True
+        config['question_parent_carry'] = dict(schema=1, migrated_at_cycle=start_cycle,
+            scope='retain the actual versioned parent mother observation in the next bounded receipt')
+    if engine.__class__.__name__ not in ('DirectReadGainEngine', 'InternalRolloutEngine', 'MomentumEngine', 'MomentumWoodEngine', 'RelationWoodEngine', 'QuestionContextEngine', 'ShadowPreviewEngine', 'MotherBoundaryEngine', 'PersistentQuestionEngine', 'CausalProgramEngine', 'LearnedCouplingEngine', 'JointCycleEngine', 'JointLearnedCycleEngine'):
         raise RuntimeError('expected inherited direct-read navigation individual')
     if args.internal_rollout:
         from scripts.ib_local.navigation_internal_rollout import configure_internal_rollout
@@ -261,21 +324,118 @@ def main():
             initial_scale='median absolute historical prequential innovation, last 32 unmerged records',
             scope='wood evidence gain base update only; raw gains and other channels remain unchanged',
             initial_value=float(engine.model.wood_evidence.gain_innovation_scale))
+    if args.causal_program and config.get('causal_program') is None:
+        from scripts.ib_local.navigation_causal_program import migrate_causal_program
+        migrate_causal_program(engine)
+        config['causal_program'] = dict(schema=1, migrated_at_cycle=start_cycle,
+            relation_capacity=engine.model.causal_relations.capacity,
+            evidence_budget=engine.model.causal_relations.evidence_budget,
+            roles=['condition', 'subject=continuing body', 'action', 'mother', 'decision'],
+            program=['body transition', 'mother response', 'shared evidence U', 'ambient transport', 'continuation'],
+            uncertainty='normal-inverse-gamma residual operator in current body coordinates',
+            calibration='new internal and shadow scores; previous history and pending labels retained',
+            information='conditional operator quadrature diagnostic, no extra question reward')
+    if args.head_coupling is not None:
+        if config.get('learned_head_coupling') is not None:
+            if config['learned_head_coupling']['kind'] != args.head_coupling:
+                raise ValueError('cannot reinterpret an existing learned interaction')
+        else:
+            from scripts.ib_local.navigation_learned_coupling import configure_learned_coupling
+            configure_learned_coupling(engine,args.head_coupling,calibrate=True)
+            config['learned_head_coupling']=dict(schema=1,kind=args.head_coupling,
+                migrated_at_cycle=start_cycle,
+                learning='same real response loss and policy replay, one differentiable quiet prefix',
+                retained='S/P, original weights and Adam, causal relations, world, pending credit',
+                initialization='exact reference potential' if args.head_coupling=='weighted' else
+                               'positive attention energy; initial force norm matched on inherited S',
+                charge='original Q not assumed conserved for learned potentials')
+    if (getattr(args, 'joint_world_cycle', False) and config.get('joint_world_cycle') is not None
+            and config['joint_world_cycle']['proposal_budget'] != args.proposal_budget):
+        raise ValueError('cannot silently change the saved joint proposal budget')
+    if getattr(args, 'joint_world_cycle', False) and config.get('joint_world_cycle') is None:
+        from scripts.ib_local.navigation_joint_cycle import migrate_joint_cycle
+        migrate_joint_cycle(engine, args.proposal_budget)
+        config['joint_world_cycle'] = dict(schema=1,proposal_budget=args.proposal_budget,
+            migrated_at_cycle=start_cycle,settlement='world_stream',
+            observations='same actual caregiver prefix and ambient stream, every byte learned once',
+            utility='mean source-role joint predictive improvement on still-unlearned suffixes',
+            planning='multiple concrete utterances through the same evidence U and continuation',
+            internal='input-free S/P continuation; no prescribed goal or cadence',
+            retained='all original parameters, Adam, S/P, episode evidence and actual pending credit')
+        config['common_settlement'] = 'world_stream'
     if args.shared_cache:
         args.shared_cache.parent.mkdir(parents=True, exist_ok=True)
     inherited_policy = provider_state.get('mother_ambient_policy','quiet') if is_mother else 'reply'
     inherited_mother_policy = config.get('mother_policy', 'legacy')
-    provider = StrictToddlerMother(shared_cache=args.shared_cache, policy=inherited_mother_policy)
-    engine.world = MotherReplyWorld(engine.world, provider,
-                                    ambient_policy=inherited_policy)
+    context=config.get('mother_context_harness')
+    if args.mother_context == 'dsh':
+        from scripts.ib_local.mengli_harness.mengli_world_client import (
+            DEFAULT_ENDPOINT, DEFAULT_SETTINGS, branch_for_output)
+        prior=context or {}
+        context=dict(prior) if prior.get('kind')=='dsh' else dict(
+            schema=2,kind='dsh',settings=dict(DEFAULT_SETTINGS),
+            migrated_at_cycle=start_cycle,previous_harness=prior,
+            scope='official persistent caregiver session and token-pressure memory compaction',
+            world_change='mother retains summaries plus recent raw dialogue; summaries never feed the child')
+        context['endpoint_url']=args.mother_harness_url or context.get('endpoint_url',DEFAULT_ENDPOINT)
+        context['branch_id']=args.mother_session or context.get('branch_id') or branch_for_output(args.output)
+        config['mother_context_harness']=context
+    elif args.mother_context == 'segmented':
+        if context is not None and context.get('kind')=='dsh':
+            raise ValueError('a committed DSH world cannot silently drop its caregiver memory')
+        if context is None:
+            context=config['mother_context_harness']=dict(schema=1,kind='segmented',
+                segment_turns=16,anchor_turns=4,max_context_chars=12000,
+                migrated_at_cycle=start_cycle,
+                scope='fixed leading caregiver instructions; append-only actual dialogue segments; provider KV telemetry',
+                world_change='mother sees up to four anchor turns plus sixteen appended turns, not sliding six')
+    if args.mother_harness_url or args.mother_session:
+        if context is None or context.get('kind')!='dsh':
+            raise ValueError('DSH endpoint/session options require a DSH caregiver world')
+        context=dict(context)
+        context['endpoint_url']=args.mother_harness_url or context['endpoint_url']
+        context['branch_id']=args.mother_session or context['branch_id']
+        config['mother_context_harness']=context
+    world_type=MotherReplyWorld
+    if context is not None:
+        from scripts.ib_local.mother_context_harness import ContextCachedMother,ContextMotherWorld
+        world_type=ContextMotherWorld
+        if context.get('schema')==2 and context.get('kind')=='dsh':
+            from scripts.ib_local.mengli_harness.mengli_world_client import DshMother
+            provider=DshMother(endpoint_url=context['endpoint_url'],branch_id=context['branch_id'],
+                settings=context['settings'],policy=inherited_mother_policy,
+                provenance=dict(source_checkpoint=str(args.checkpoint.resolve()),
+                                source_sha256=source_sha,cycle=start_cycle))
+        elif context.get('schema')==1 and context.get('kind')=='segmented':
+            provider=ContextCachedMother(shared_cache=args.shared_cache,policy=inherited_mother_policy,
+                **{k:context[k] for k in ('segment_turns','anchor_turns','max_context_chars')})
+        else:
+            raise ValueError('unknown mother context harness')
+    else:
+        provider = StrictToddlerMother(shared_cache=args.shared_cache, policy=inherited_mother_policy)
+    family_state = provider_state.get('mother_provider_state', {}).get('family_caregiver')
+    if provider_factory is not None or family_state is not None:
+        if provider_factory is None:
+            from scripts.ib_local.mengli_harness.family_provider import FamilyCaregiver
+            provider_factory = FamilyCaregiver
+        provider = provider_factory(provider)
+    engine.world = world_type(engine.world, provider,
+        history=provider_state.get('mother_history',6),ambient_policy=inherited_policy)
     if is_mother:
         engine.world.load_state_dict(provider_state)
+    if context is not None and context.get('kind')=='dsh':
+        provider.inherit_world_history(engine.world.transcript)
     chosen_mother_policy = args.mother_policy or inherited_mother_policy
     if chosen_mother_policy != inherited_mother_policy:
         provider.set_policy(chosen_mother_policy)
         config['mother_policy_migration'] = dict(from_policy=inherited_mother_policy,
             to_policy=chosen_mother_policy, at_cycle=start_cycle,
             scope='caregiver instructions and prompt-keyed cache; preserve transcript and individual')
+    if context is not None and context.get('kind')=='dsh':
+        context['settings']=dict(provider.settings)
+        context['cache_scope']='service-owned exact Chat Completions wire cache under data/harness'
+        config['mother_harness_origin_ref']=(None if provider.checkpoint_ref is None
+                                             else dict(provider.checkpoint_ref))
     chosen_policy = args.ambient_policy or inherited_policy
     engine.world.ambient_policy = chosen_policy
     engine.episodic_wood_mode = args.mode
@@ -286,7 +446,11 @@ def main():
                   mother_ambient_policy=chosen_policy,
                   mother_ambient_migration=dict(from_policy=inherited_policy,to_policy=chosen_policy,
                                                 at_cycle=start_cycle),
-                  mother_shared_cache=None if args.shared_cache is None else str(args.shared_cache),
+                  mother_shared_cache=('DSH service exact-wire cache under data/harness'
+                    if context is not None and context.get('kind')=='dsh' else
+                    None if args.shared_cache is None else str(args.shared_cache)),
+                  mother_legacy_cache_argument=(str(args.shared_cache) if args.shared_cache is not None
+                    and context is not None and context.get('kind')=='dsh' else None),
                   mother_origin_sha256=source_sha, mother_origin_cycle=start_cycle,
                   mother_comparison='blocked suppresses the qualified experience-to-choice contribution only',
                   mother_fused=fused)
@@ -297,18 +461,82 @@ def main():
         trainable_in_optimizer=sum(p.numel() for _,p in named if p.requires_grad and id(p) in learned),
         trainable_missing_from_optimizer=[name for name,p in named if p.requires_grad and id(p) not in learned],
         frozen=[name for name,p in named if not p.requires_grad])
-    (args.output/'config.json').write_text(json.dumps(config,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    save(engine,args.output,start_cycle,config)
+    config['life_identity'] = identity_for(config, source_sha)
+    life_branch = branch_id_for(config, args.output/'last.pt.gz')
+    life_card = None
+    if args.life_card is not None or config.get('life_card') or (context or {}).get('kind') == 'dsh':
+        life_card = config['life_card'] = card_config_for(config, life_branch, args.life_card)
+    archive_manifest = config.get('causal_archive')
+    archive_directory = getattr(args, 'causal_storage', None)
+    if archive_manifest is not None or archive_directory is not None:
+        from scripts.ib_local.causal_archive import attach_archive
+        budgets = archive_manifest['budgets'] if archive_manifest is not None else dict(
+            episodes=getattr(args, 'causal_episode_capacity', 65536),
+            relations=getattr(args, 'causal_relation_capacity', 65536), max_bytes=512*1024*1024)
+        attach_archive(engine, archive_directory or args.output/'causal_work', manifest=archive_manifest,
+                       episode_capacity=budgets['episodes'], relation_capacity=budgets['relations'],
+                       max_bytes=budgets['max_bytes'])
+    card = None
+    if not resuming:
+        save(engine,args.output,start_cycle,config)
+        (args.output/'config.json').write_text(json.dumps(config,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+        if life_card is not None:
+            card = export_live(engine, checkpoint=args.output/'last.pt.gz', config=config,
+                        cycle=start_cycle, output=life_card['path'], branch_id=life_branch)
+    return SimpleNamespace(engine=engine, config=config, cycle=start_cycle,
+        output=args.output, life_card=life_card, life_branch=life_branch,
+        life_card_data=card, source=source, source_sha=source_sha)
+
+
+def main():
+    args = continuation_parser().parse_args()
+    loaded = prepare_continuation(args)
+    engine, config, start_cycle = loaded.engine, loaded.config, loaded.cycle
+    life_card, life_branch = loaded.life_card, loaded.life_branch
+    source, source_sha = loaded.source, loaded.source_sha
+    evaluation=None
+    if args.validate_every:
+        if args.validate_every<1 or args.validation_bytes<512:
+            raise ValueError('invalid independent validation budget')
+        from scripts.ib_local.run_language_navigation_v2 import validate
+        raw=np.load(ROOT/'data/ib_owt_10000/validation.npy',mmap_mode='r')
+        token_offset=json.loads((ROOT/'data/ib_owt_10000/tokenizer.json').read_text())['offset']
+        raw=np.asarray(raw[:2*(262144+args.validation_bytes+1)])
+        owt=(raw[raw>=token_offset]-token_offset)[262144:262144+args.validation_bytes+1].astype(np.uint8)
+        mom=np.frombuffer(args.mother_validation.read_bytes(),dtype=np.uint8)[:args.validation_bytes+1]
+        if len(owt)!=args.validation_bytes+1 or len(mom)!=args.validation_bytes+1:
+            raise ValueError('fixed validation data too short')
+        def evaluation():
+            return dict(owt_nll=validate(engine.model,engine.table,owt),
+                        mother_nll=validate(engine.model,engine.table,mom),
+                        bytes_each=args.validation_bytes,
+                        scope='fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar')
+        (args.output/'initial_validation.json').write_text(json.dumps(evaluation(),indent=2),encoding='utf-8')
     start = time.perf_counter()
     completed = 0
+    actual_updates=[0]
+    original_step=engine.optimizer.step
+    def counted_step(*a,**kw):
+        result=original_step(*a,**kw)
+        actual_updates[0]+=1
+        return result
+    engine.optimizer.step=counted_step
     with (args.output/'metrics.jsonl').open('w',encoding='utf-8') as log:
         for i in range(args.cycles):
             if args.stop_file is not None and args.stop_file.exists():
                 break
+            before_updates=actual_updates[0]
             row = engine.step(torch.randn(64,32,device=engine.device))
+            row['updates']=actual_updates[0]-before_updates
+            row['cumulative_optimizer_updates']=actual_updates[0]
             cycle = start_cycle+i+1
             # Commit the exact complete individual before exposing a result.
             save(engine,args.output,cycle,config)
+            if life_card is not None:
+                export_live(engine, checkpoint=args.output/'last.pt.gz', config=config,
+                            cycle=cycle, row=row, output=life_card['path'], branch_id=life_branch)
+            if evaluation is not None and ((i+1)%args.validate_every==0 or i+1==args.cycles):
+                row['fixed_validation']=evaluation()
             row.update(cycle=cycle, mode=args.mode, elapsed_seconds=time.perf_counter()-start)
             log.write(json.dumps(row,ensure_ascii=False)+'\n')
             log.flush()

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import gzip
+from pathlib import Path
 
 from scripts.ib_local import navigation_checkpoint
 from scripts.ib_local import run_navigation_residual_wood as legacy
@@ -28,6 +29,10 @@ class ChunkedWriter:
 
 def save(engine, output, cycle, config):
     """Keep the existing atomic checkpoint and carried-state contract."""
+    archive = getattr(engine.model, '_causal_archive', None)
+    previous_archive = config.get('causal_archive')
+    if archive is not None:
+        config['causal_archive'] = archive.checkpoint(output)
     original_open = legacy.gzip.open
 
     def bounded_open(filename, mode='rb', *args, **kwargs):
@@ -39,8 +44,22 @@ def save(engine, output, cycle, config):
     try:
         legacy.gzip.open = bounded_open
         navigation_checkpoint.save(engine, output, cycle, config)
+    except BaseException:
+        if previous_archive is None:
+            config.pop('causal_archive', None)
+        else:
+            config['causal_archive'] = previous_archive
+        raise
     finally:
         legacy.gzip.open = original_open
+    # Only remove the replaced rolling snapshot in THIS output directory,
+    # after the body checkpoint commits. Ancestor/other branches stay intact.
+    if archive is not None and previous_archive is not None:
+        previous = Path(previous_archive['snapshot']).resolve()
+        current = Path(config['causal_archive']['snapshot']).resolve()
+        if (previous != current and previous.parent == Path(output).resolve()
+                and previous.name == 'causal_archive_'+previous_archive['sha256']+'.sqlite'):
+            previous.unlink(missing_ok=True)
 
 
 class _WriterContext:

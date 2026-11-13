@@ -1,0 +1,172 @@
+{
+  "status": "complete",
+  "raw_report": "E:\\cgb_small_gdn_20261107\\counterfactual_near\\report.json",
+  "raw_report_sha256": "1e96814b21af7d1632423209c6f9b3275d94220841bd71434151affbab9fee86",
+  "protocol": "Same-body near-distance paired curriculum, before any new long-credit run.\n\nUses the existing complete individual and standard answer NLL, same128-byte\nbound and production optimizer. Pairs differ only in the observed number.\nFinal windows are answer-anchored. Top1/oracle reads are frozen diagnostics.\n",
+  "source_sha256": "2cc177c231312711aea920bde83f18c2e9526e6fab7fcc0d4a3db957d8cd602d",
+  "updates": 1024,
+  "seconds": 1158.5062153339386,
+  "observed_bytes": 321496,
+  "supervised_bytes": 9216,
+  "answer_gap_bytes": [
+    17,
+    36
+  ],
+  "bptt_bytes": 128,
+  "answer_anchored": true,
+  "additional_contrastive_loss": false,
+  "standard_ruler_score": false,
+  "new_lean_coverage": 0,
+  "curve": [
+    {
+      "update": 0,
+      "exact": 0,
+      "count": 32,
+      "both_correct_pairs": 0,
+      "pairs": 16,
+      "answer_nll": 2.948758974438533,
+      "first_digit_nll": 5.701544061303139,
+      "positive_content_margins": 27,
+      "mean_content_margin": 1.3171543180942535,
+      "complete_state_unchanged": true
+    },
+    {
+      "update": 64,
+      "exact": 0,
+      "count": 32,
+      "both_correct_pairs": 0,
+      "pairs": 16,
+      "answer_nll": 1.4305449891035096,
+      "first_digit_nll": 2.3288073800504208,
+      "positive_content_margins": 16,
+      "mean_content_margin": 0.094302948564291,
+      "complete_state_unchanged": true
+    },
+    {
+      "update": 128,
+      "exact": 0,
+      "count": 32,
+      "both_correct_pairs": 0,
+      "pairs": 16,
+      "answer_nll": 1.4459072099780315,
+      "first_digit_nll": 2.299153856933117,
+      "positive_content_margins": 17,
+      "mean_content_margin": 0.06783171743154526,
+      "complete_state_unchanged": true
+    },
+    {
+      "update": 256,
+      "exact": 0,
+      "count": 32,
+      "both_correct_pairs": 0,
+      "pairs": 16,
+      "answer_nll": 1.4025175122039855,
+      "first_digit_nll": 2.2488575018942356,
+      "positive_content_margins": 18,
+      "mean_content_margin": 0.032605383545160294,
+      "complete_state_unchanged": true
+    },
+    {
+      "update": 512,
+      "exact": 0,
+      "count": 32,
+      "both_correct_pairs": 0,
+      "pairs": 16,
+      "answer_nll": 1.3978553262338522,
+      "first_digit_nll": 2.2342128306627274,
+      "positive_content_margins": 17,
+      "mean_content_margin": 0.021229129284620285,
+      "complete_state_unchanged": true
+    },
+    {
+      "update": 1024,
+      "exact": 0,
+      "count": 32,
+      "both_correct_pairs": 0,
+      "pairs": 16,
+      "answer_nll": 1.39784414246296,
+      "first_digit_nll": 2.205057345330715,
+      "positive_content_margins": 16,
+      "mean_content_margin": 0.01719960942864418,
+      "complete_state_unchanged": true
+    }
+  ],
+  "fresh": {
+    "exact": 0,
+    "count": 64,
+    "both_correct_pairs": 0,
+    "pairs": 32,
+    "answer_nll": 1.5508691803488848,
+    "first_digit_nll": 2.2264618054032326,
+    "positive_content_margins": 32,
+    "mean_content_margin": 0.021869076415896416,
+    "complete_state_unchanged": true
+  },
+  "frozen_routing": {
+    "ordinary:all": {
+      "cases": 8,
+      "mean_first_digit_nll": 2.1917114555835724,
+      "mean_correct_alternate_margin": 0.019022881984710693,
+      "first_digit_correct": 0
+    },
+    "top1:all": {
+      "cases": 8,
+      "mean_first_digit_nll": 2.2056902647018433,
+      "mean_correct_alternate_margin": 0.013888686895370483,
+      "first_digit_correct": 1
+    },
+    "first:all": {
+      "cases": 8,
+      "mean_first_digit_nll": 2.160192757844925,
+      "mean_correct_alternate_margin": 0.032422930002212524,
+      "first_digit_correct": 1
+    },
+    "wrong:all": {
+      "cases": 8,
+      "mean_first_digit_nll": 2.0971724539995193,
+      "mean_correct_alternate_margin": 0.11272066831588745,
+      "first_digit_correct": 2
+    },
+    "first:1": {
+      "cases": 8,
+      "mean_first_digit_nll": 2.175816684961319,
+      "mean_correct_alternate_margin": 0.01680237054824829,
+      "first_digit_correct": 1
+    },
+    "first:2": {
+      "cases": 8,
+      "mean_first_digit_nll": 2.1880774796009064,
+      "mean_correct_alternate_margin": 0.01786479353904724,
+      "first_digit_correct": 1
+    },
+    "first:3": {
+      "cases": 8,
+      "mean_first_digit_nll": 2.187512218952179,
+      "mean_correct_alternate_margin": 0.020841270685195923,
+      "first_digit_correct": 0
+    },
+    "first:4": {
+      "cases": 8,
+      "mean_first_digit_nll": 2.1746132224798203,
+      "mean_correct_alternate_margin": 0.032778918743133545,
+      "first_digit_correct": 1
+    }
+  },
+  "mastery_gate": {
+    "passed": false,
+    "requirement": ">=15/16 fixed and >=30/32 fresh pairs BOTH exactly correct",
+    "long_credit_pair_started": false,
+    "next_action": "fork mastered common checkpoint only if gate passes; otherwise diagnose near retrieval"
+  },
+  "checks": {
+    "source_unchanged": true,
+    "executed_sources_unchanged": true,
+    "routing_complete_state_unchanged": true
+  },
+  "admission": {
+    "evaluator_matches_existing": true,
+    "disk_next_update_exact": true,
+    "passed": true
+  },
+  "conclusion": "Near conditional extraction not learned within this budget. Top1 alone did not rescue first-digit NLL. Observed first-position intervention not reliably better than adjacent-position intervention; it is not an upper bound on alternative decoders. Long-credit pair not started. Check historical-position to current-output alignment before adding further mechanisms."
+}

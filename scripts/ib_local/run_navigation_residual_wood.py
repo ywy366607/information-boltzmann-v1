@@ -36,12 +36,16 @@ def snapshot(engine):
         numpy_rng=np.random.get_state(), python_rng=random.getstate()))
 
 
-def restore(engine, state):
+def restore(engine, state, *, take_table_ownership=False, table_storage=None):
     engine.model.load_state_dict(state['model'])
     engine.optimizer.load_state_dict(state['optimizer'])
     world = {k:(v.cpu().numpy() if torch.is_tensor(v) else v) for k,v in state['world'].items()}
     engine.world.load_state_dict(copy.deepcopy(world))
-    engine.table = type(engine.table).from_state_dict(state['table'])
+    if take_table_ownership:
+        engine.table = type(engine.table).from_state_dict(state['table'], take_ownership=True,
+                                                         storage_directory=table_storage)
+    else:
+        engine.table = type(engine.table).from_state_dict(state['table'])
     for k,v in copy.deepcopy(state['engine']).items():
         setattr(engine, k, v)
     torch.set_rng_state(state['torch_rng'])

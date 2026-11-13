@@ -9,7 +9,9 @@ import gzip
 import gc
 import hashlib
 import json
+import uuid
 import time
+from dataclasses import fields, is_dataclass, replace
 from pathlib import Path
 
 import numpy as np
@@ -27,6 +29,7 @@ from scripts.ib_local.language_navigation_kanli_v4t import TypedWoodEngine
 from scripts.ib_local.navigation_checkpoint import restore, save, snapshot
 from scripts.ib_local.navigation_settlement import configure_settlement, configure_reward_memory
 from scripts.ib_local.navigation_read_credit import configure_read_credit
+from scripts.ib_local.world_source import decoded_world_bytes
 from scripts.ib_local.run_language_navigation_v2 import validate
 
 
@@ -60,6 +63,9 @@ def to_device(value, device):
         return value.to(device)
     if isinstance(value, nn.Module):
         return value.to(device)
+    if is_dataclass(value) and not isinstance(value, type):
+        return replace(value, **{field.name: to_device(getattr(value, field.name), device)
+                                 for field in fields(value) if field.init})
     if isinstance(value, dict):
         return {k: to_device(v, device) for k, v in value.items()}
     if isinstance(value, tuple):
@@ -77,10 +83,12 @@ def sha256_file(path):
     return digest.hexdigest()
 
 
-def build(checkpoint, device='cuda'):
+def build(checkpoint, device='cuda', *, table_storage=None, allow_external_archive=False):
     with gzip.open(checkpoint, 'rb') as stream:
         state = torch.load(stream, map_location='cpu', weights_only=False)
     cfg = state['config']
+    if cfg.get('causal_archive') is not None and not allow_external_archive:
+        raise ValueError('use the mother continuation loader to restore the bound external causal archive')
     root = Path('data/ib_owt_10000')
     offset = json.loads((root/'tokenizer.json').read_text())['offset']
     if 'source_raw_bounds' in cfg:
@@ -96,7 +104,7 @@ def build(checkpoint, device='cuda'):
         raise ValueError('unknown real-language checkpoint world contract')
     train = np.load(root/'train.npy', mmap_mode='r')
     raw = np.asarray(train[bounds[0]:min(bounds[1], len(train))])
-    source = (raw[raw >= offset]-offset).astype(np.uint8)
+    source = decoded_world_bytes(raw, offset)
     del train, raw
     world = ReplyTopicWorld(source, window=window, seed=cfg['seed'])
     base = TableGDN(GatedDeltaNetLM(256, 128, 4, 4, 'decay_then_delta', 256, 4, 32.,
@@ -183,6 +191,15 @@ def build(checkpoint, device='cuda'):
         if cfg['mother_shadow']['schema'] != 1 or cfg.get('joint_question_update') is None:
             raise ValueError('invalid mother shadow schema')
         engine.mother_shadow_enabled = True
+    if cfg.get('question_parent_carry') is not None:
+        if cfg['question_parent_carry']['schema'] != 1 or not getattr(engine, 'mother_shadow_enabled', False):
+            raise ValueError('question parent carry requires mother-shadow evidence')
+        engine.question_parent_carry = True
+    if cfg.get('causal_program') is not None:
+        if cfg['causal_program']['schema'] != 1:
+            raise ValueError('unknown shared causal program schema')
+        from scripts.ib_local.navigation_causal_program import configure_causal_program
+        configure_causal_program(engine)
     if cfg.get('gain_clipping') is not None:
         if cfg['gain_clipping']['schema'] != 1:
             raise ValueError('unknown gain clipping schema')
@@ -191,13 +208,27 @@ def build(checkpoint, device='cuda'):
     if cfg.get('small_native_replay') is not None:
         from scripts.ib_local.small_gdn_experience import configure_small_replay
         configure_small_replay(engine, cfg['small_native_replay'])
+    if cfg.get('learned_head_coupling') is not None:
+        if cfg['learned_head_coupling'].get('schema') != 1:
+            raise ValueError('unknown learned head coupling schema')
+        from scripts.ib_local.navigation_learned_coupling import configure_learned_coupling
+        configure_learned_coupling(engine, cfg['learned_head_coupling']['kind'])
+    if cfg.get('joint_world_cycle') is not None:
+        spec = cfg['joint_world_cycle']
+        if spec['schema'] != 1:
+            raise ValueError('unknown joint world-cycle schema')
+        from scripts.ib_local.navigation_joint_cycle import configure_joint_cycle
+        configure_joint_cycle(engine, spec['proposal_budget'])
     state['engine'] = to_device(state['engine'], device)
-    restore(engine, state)
+    # This state came from a private torch.load and is discarded below; the
+    # table may safely own its loaded arrays, avoiding a full duplicate.
+    table_dir = None if table_storage is None else Path(table_storage) / uuid.uuid4().hex
+    restore(engine, state, take_table_ownership=True, table_storage=table_dir)
     engine.device = next(model.parameters()).device
     source_meta = dict(checkpoint=str(checkpoint), sha256=sha256_file(checkpoint),
         cycle=state['cycle'], world_source_bytes=len(source),
         topic_window=window,
-        world_source_sha256=hashlib.sha256(source.tobytes()).hexdigest(), source_raw_bounds=bounds,
+        world_source_sha256=hashlib.sha256(source).hexdigest(), source_raw_bounds=bounds,
         world='same restored OWT ReplyTopicWorld, including cursor, seen bitmap and RNG',
         optimizer_states=len(optimizer.state), pending_actor=engine.prev is not None)
     del state

@@ -1,0 +1,135 @@
+{
+  "kind": "real_squad_instruction_credit_20261106",
+  "date": "2026-11-06",
+  "source": {
+    "train": {
+      "url": "https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v1.1.json",
+      "sha256": "3527663986b8295af4f7fcdff1ba1ff3f72d07d61a20f487cb238a6ef92fd955",
+      "bytes": 30288272,
+      "version": "1.1",
+      "articles": 442
+    },
+    "dev": {
+      "url": "https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v1.1.json",
+      "sha256": "95aa6a52d5d6a735563366753ca50492a658031da74f301ac5238b03966972c9",
+      "bytes": 4854279,
+      "version": "1.1",
+      "articles": 48
+    }
+  },
+  "baseline": {
+    "early": {
+      "mean_correct_answer_nll": 2.7233244914093833,
+      "mean_question_swap_gap": 0.06868510871029007,
+      "correct_paired_assignments": 13,
+      "total_paragraphs": 16
+    },
+    "near": {
+      "mean_correct_answer_nll": 2.3033861018475386,
+      "mean_question_swap_gap": 0.6444987493063206,
+      "correct_paired_assignments": 15,
+      "total_paragraphs": 16
+    }
+  },
+  "sft_initial": {
+    "mean_answer_nll": 2.611718901179054,
+    "mean_question_swap_gap": 0.038419022478840575,
+    "paired_assignments_correct": 5,
+    "paragraphs": 8
+  },
+  "sft_arms": {
+    "full": {
+      "validation": {
+        "mean_answer_nll": 2.4084693901240826,
+        "mean_question_swap_gap": 0.03375568613409996,
+        "paired_assignments_correct": 5,
+        "paragraphs": 8
+      },
+      "question_examples": 16,
+      "actual_optimizer_updates": 17,
+      "supervised_answer_tokens": 73,
+      "real_sequence_tokens": 6734,
+      "padding_tokens": 1090,
+      "question_record_retrievals": {
+        "1": 0,
+        "12": 0
+      },
+      "max_recalled_age_tokens": 4032,
+      "training_answer_nll": [
+        1.6988123655319214,
+        1.660776972770691,
+        7.753393173217773,
+        3.5371716022491455,
+        2.6933562755584717,
+        3.1063456535339355,
+        2.681494703888893,
+        1.975754976272583,
+        6.090429782867432,
+        2.019257068634033,
+        1.1435739994049072,
+        7.517267227172852,
+        0.997121274471283,
+        1.3173978328704834,
+        1.8009082078933716,
+        2.3632917404174805
+      ],
+      "max_experience_cpu_bytes": 79681166
+    },
+    "held": {
+      "validation": {
+        "mean_answer_nll": 2.408333657478744,
+        "mean_question_swap_gap": 0.03319461067969148,
+        "paired_assignments_correct": 5,
+        "paragraphs": 8
+      },
+      "question_examples": 16,
+      "actual_optimizer_updates": 17,
+      "supervised_answer_tokens": 73,
+      "real_sequence_tokens": 6734,
+      "padding_tokens": 1090,
+      "question_record_retrievals": {
+        "1": 0,
+        "12": 0
+      },
+      "max_recalled_age_tokens": 4032,
+      "training_answer_nll": [
+        1.6988123655319214,
+        1.661063313484192,
+        7.752832889556885,
+        3.5355989933013916,
+        2.693514585494995,
+        3.106186628341675,
+        2.6816743314266205,
+        1.9760823249816895,
+        6.087604522705078,
+        2.02048397064209,
+        1.1436772346496582,
+        7.511491298675537,
+        0.9975880980491638,
+        1.3176069259643555,
+        1.801439642906189,
+        2.3615293502807617
+      ],
+      "max_experience_cpu_bytes": 79681166
+    }
+  },
+  "answer_nll_full_minus_held": 0.00013573264533839335,
+  "question_swap_gap_full_minus_held": 0.0005610754544084773,
+  "same_start_first_answer_forward_and_reads_equal": true,
+  "scope": "Frozen task-readiness and short real-data answer-only SFT route check; not converged instruction-following capability",
+  "old_navigation_unchanged": true,
+  "raw_directory": "E:\\cgb_gdn340_probe\\instruction_data_20261106",
+  "peak_cuda_allocated_bytes": 1495543808,
+  "raw_sha256": {
+    "baseline.json": "e43beb2bffb230a210c9c7164832a69ce2512cadfcda5f3e79f616f75d6a76bf",
+    "sft_pair.json": "8b9746b298b66df0af979db1e34bbb677450558bde52e1c9f7044b1f8c29a159",
+    "task.json": "51e15cbbb598591fbaba9847048954dc67c8c28646bc01e1fd80705ff3b3d2f9"
+  },
+  "source_sha256": {
+    "scripts/ib_local/pretrained_gdn_learning.py": "a40f80a7a13f0c363d0116765a1db7a396f9a3b9c4c228d581e7771c4f484e30",
+    "scripts/ib_local/pretrained_gdn_experience.py": "79987df01828f042e1a3fd3a4ba90bb7d021c5414ffd0fecfb21f18ad0615b74",
+    "scripts/ib_local/probe_pretrained_gdn_instruction.py": "4be12e9ce4c6d0520a3a5654e950474affa180c62803e3d095fb10780848a60b",
+    "scripts/ib_local/probe_pretrained_gdn_sft_credit.py": "11ecee706ef700f43203dc0fcc4f49c4f51e2d627e353d7fb4760b4f3f57a126"
+  },
+  "interpretation": "Question relocation strongly changes answer conditioning. Both short SFT arms improve answer NLL, extra old-native credit yields mixed tiny effects, and neither selects the current question-containing record during supervised updates. Aligning retrieval with the answering event is the next specific hypothesis; distant record age alone is insufficient."
+}

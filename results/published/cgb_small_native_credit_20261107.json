@@ -1,0 +1,295 @@
+{
+  "status": "complete",
+  "pair": {
+    "seconds": 669.5154514312744,
+    "source_unchanged": true,
+    "executed_sources_unchanged": true,
+    "arms": {
+      "held": {
+        "examples": 128,
+        "evaluations": [
+          {
+            "example": 0,
+            "short": {
+              "exact": 0,
+              "answer_nll": 3.7173139511141926,
+              "owt_nll": 1.4475217163562775
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 3.7608705438906327,
+              "owt_nll": 1.4475217163562775
+            }
+          },
+          {
+            "example": 1,
+            "short": {
+              "exact": 0,
+              "answer_nll": 3.309865232091397,
+              "owt_nll": 1.4488510191440582
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 3.468134107417427,
+              "owt_nll": 1.4488510191440582
+            }
+          },
+          {
+            "example": 32,
+            "short": {
+              "exact": 0,
+              "answer_nll": 1.7325633854634361,
+              "owt_nll": 1.6137636601924896
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 1.9007024944294244,
+              "owt_nll": 1.6137636601924896
+            }
+          },
+          {
+            "example": 64,
+            "short": {
+              "exact": 0,
+              "answer_nll": 1.535387824747886,
+              "owt_nll": 1.6825542747974396
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 1.466745946352603,
+              "owt_nll": 1.6825542747974396
+            }
+          },
+          {
+            "example": 128,
+            "short": {
+              "exact": 0,
+              "answer_nll": 1.4981146407471897,
+              "owt_nll": 1.9109220802783966
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 1.59021964905196,
+              "owt_nll": 1.9109220802783966
+            }
+          }
+        ]
+      },
+      "full": {
+        "examples": 128,
+        "evaluations": [
+          {
+            "example": 0,
+            "short": {
+              "exact": 0,
+              "answer_nll": 3.7173139511141926,
+              "owt_nll": 1.4475217163562775
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 3.7608705438906327,
+              "owt_nll": 1.4475217163562775
+            }
+          },
+          {
+            "example": 1,
+            "short": {
+              "exact": 0,
+              "answer_nll": 3.309865232091397,
+              "owt_nll": 1.4488510191440582
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 3.468134107417427,
+              "owt_nll": 1.4488510191440582
+            }
+          },
+          {
+            "example": 32,
+            "short": {
+              "exact": 0,
+              "answer_nll": 1.726315972249722,
+              "owt_nll": 1.615706741809845
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 1.9141871867905138,
+              "owt_nll": 1.615706741809845
+            }
+          },
+          {
+            "example": 64,
+            "short": {
+              "exact": 0,
+              "answer_nll": 1.5424224277812755,
+              "owt_nll": 1.683182269334793
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 1.4693234574733651,
+              "owt_nll": 1.683182269334793
+            }
+          },
+          {
+            "example": 128,
+            "short": {
+              "exact": 0,
+              "answer_nll": 1.47884176121579,
+              "owt_nll": 1.8995006084442139
+            },
+            "long": {
+              "exact": 0,
+              "answer_nll": 1.5825959948215313,
+              "owt_nll": 1.8995006084442139
+            }
+          }
+        ]
+      }
+    }
+  },
+  "diagnosis": {
+    "optimizer_steps": 0,
+    "train128_direct_input_coverage": {
+      "full": 20,
+      "partial": 85,
+      "absent": 23
+    },
+    "one_step_interventions": {
+      "none": {
+        "first_digit_nll": 2.134239286184311,
+        "input_number_margin_effect": 0.04255092144012451
+      },
+      "all_local": {
+        "first_digit_nll": 2.1240557432174683,
+        "input_number_margin_effect": 0.04230797290802002
+      },
+      "needle_record": {
+        "first_digit_nll": 2.134239286184311,
+        "input_number_margin_effect": 0.04255092144012451
+      }
+    },
+    "oracle_route": {
+      "first_digit_nll": 2.121941849589348,
+      "input_number_margin_effect": 0.045835524797439575
+    },
+    "per_layer": [
+      {
+        "layer": 1,
+        "first_digit_direct_record_mass": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "query_cross_case_maxdiff": 0.0,
+        "window_digit_gradient_norms": [
+          0.0,
+          0.00869883184256143,
+          0.0,
+          0.0,
+          0.021622833405523685,
+          0.023026472037562126,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "layer": 2,
+        "first_digit_direct_record_mass": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "query_cross_case_maxdiff": 0.13473951816558838,
+        "window_digit_gradient_norms": [
+          0.0,
+          0.0,
+          0.00010587338680429005,
+          0.0,
+          3.48045832197139e-05,
+          0.0005632905474416333,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "layer": 3,
+        "first_digit_direct_record_mass": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "query_cross_case_maxdiff": 0.25247621536254883,
+        "window_digit_gradient_norms": [
+          0.0,
+          6.166487603161557e-05,
+          4.1724116133344825e-05,
+          0.00017314314206547384,
+          0.00011956038776920984,
+          0.0003280072575589705,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "layer": 4,
+        "first_digit_direct_record_mass": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "query_cross_case_maxdiff": 0.5720679759979248,
+        "window_digit_gradient_norms": [
+          0.0,
+          3.313427242488635e-05,
+          0.00031733419955939387,
+          0.0002978951059568705,
+          0.00021339211204394595,
+          0.0003963076569739407,
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "interpretation": "First-step direct digit-record use is zero in these8 requests; whole-window derivatives reach some retained digit inputs. Omitted direct inputs can still affect held native boundaries. A nonzero gradient to some old record is insufficient responsibility-specific credit.",
+    "integrity": {
+      "one_step": {
+        "body_unchanged": true,
+        "checkpoint_unchanged": true
+      },
+      "window": {
+        "body_unchanged": true,
+        "checkpoint_unchanged": true
+      },
+      "oracle": {
+        "body_unchanged": true,
+        "checkpoint_unchanged": true
+      }
+    }
+  },
+  "raw": {
+    "E:\\cgb_small_gdn_20261107\\native_pair\\report.json": "8164b8a93d71bb85397d45b3e12568061370944a0f4243cdc9a0407484e92f65",
+    "E:\\cgb_small_gdn_20261107\\native_failure_audit.json": "931130cf840824fb31f506869c7a543c8b1e161f6785eaa5483e5e86741cf9f1",
+    "E:\\cgb_small_gdn_20261107\\native_failure_window.json": "e2daf1242d11e3f92ac50620f7bf222991489de9459c2acfaaac33d94c47561f",
+    "E:\\cgb_small_gdn_20261107\\native_failure_oracle.json": "4ac0391414cf1cb8cdc04594c0e1d1d8c348fb690a99635b9bba289892327053"
+  }
+}

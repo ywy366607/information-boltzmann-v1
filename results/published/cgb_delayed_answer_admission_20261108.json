@@ -1,0 +1,87 @@
+{
+  "source": "E:\\cgb_gdn340_probe\\delayed_answer_admission_20261108_v2\\full_latest.pt",
+  "source_sha256": "6ebb98f12d6a37157d4d59f4283e2d121fb37caf43825f09781831b66037a5d0",
+  "source_files": {
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\run_delayed_answer_credit.py": "0834a7fb21a2fab3952ebec0526874269e395e81979cb0d21d99d7367e7ec484",
+    "scripts\\ib_local\\delayed_prediction_credit.py": "2a697c5ce8efb61f9ab73131d26d7f392c9de01fa189ab7085a055d25adb6a86",
+    "scripts\\ib_local\\irreversible_credit_stream.py": "9f55f0dece424ab64e57769ca36390fdf26f429606c42a4ac2fb2116c7792005",
+    "scripts\\ib_local\\pretrained_gdn_learning.py": "77e466bad57ac9319267393927f45a062ac0a82e3ecdef54a1d9f74972c024fc",
+    "scripts\\ib_local\\pretrained_gdn_experience.py": "a242953bafbda05c0c7c73064afbb988f727b89733a4dbbdda56627250a97381"
+  },
+  "source_unchanged": true,
+  "source_files_unchanged": true,
+  "task_seed": 71109,
+  "official_revision": "db43f92ff634bbce1c33d1fb15858aec4bba509a",
+  "seconds": 298.3877627849579,
+  "status": "complete",
+  "admission_only": true,
+  "answer_contract": "on-policy token-position correction",
+  "new_lean_coverage": 0,
+  "arms": {
+    "full": {
+      "scores": {
+        "all": {
+          "correct": 0,
+          "count": 2
+        },
+        "first_half": {
+          "correct": 0,
+          "count": 1
+        },
+        "second_half": {
+          "correct": 0,
+          "count": 1
+        }
+      },
+      "optimizer_updates": 2,
+      "events": 26504,
+      "phase_counts": {
+        "world": 25864,
+        "self": 320,
+        "feedback": 320
+      },
+      "contiguous_life": true,
+      "live_cache_preserved": true,
+      "max_reconstruction_target_ce_error": 0.007834196090698242,
+      "max_reconstruction_logit_error": 0.015625,
+      "max_original_operator_logit_error": 0.0,
+      "max_pending_mib": 103.20033836364746,
+      "actual_late_supervised_positions": 18,
+      "feedback_delay_tokens": {
+        "min": 24,
+        "max": 32
+      },
+      "retrieved_ages_tokens": {
+        "2": {
+          "min": 75,
+          "max": 5513,
+          "over_128": 382,
+          "selected_positions": 388
+        },
+        "13": {
+          "min": 75,
+          "max": 5649,
+          "over_128": 382,
+          "selected_positions": 388
+        }
+      }
+    }
+  },
+  "interpretation": "Finite-budget route validation on previously examined official training tasks.",
+  "gradient_admission": {
+    "layers": {
+      "2": {
+        "old_native_gradient_norm": 1.40004891865367,
+        "full_native_gradient_norm": 18.100909553991666
+      },
+      "13": {
+        "old_native_gradient_norm": 5.7160668693770855,
+        "full_native_gradient_norm": 36.660290358109606
+      }
+    },
+    "full_held_ce_equal": true,
+    "full_ce": 6.529165320926243,
+    "held_ce": 6.529165320926243
+  },
+  "disk_pending_recovery_equal": true
+}

@@ -1,61 +1,41 @@
-# CGB / 梦漓：项目入口
+# CGB / 梦漓：研究入口
 
-当前平台点：[2026-11-05 可续接的同体交互闭环](CGB_MILESTONE_CLOSED_LOOP_20261105.md)。后续代理先读该页，再按任务进入定义、定理或运行代码。历史文档保留其原始证据范围和稳定链接，不再由文件名中的“当前”“下一步”决定执行顺序。
+此页只导航，不维护第二份运行状态。**当前事实看研究台账；执行顺序看总交接；具体数值回到原始记录。**旧文中的“当前”“下一步”按当时日期阅读。
 
-## 定义、方法与当前工作
+## 先读三份
 
-| 入口 | 用途 |
+1. [项目约束](../../AGENTS.md)：无限流生命体定义、持续生命史、五行分析与研究方法。
+2. [当前状态与既有成果](CGB_CURRENT_STATE_AND_RESEARCH_LEDGER.md)：已经实现、实际验证及当前未闭合处。
+3. [水—土—木总路线与执行交接](CGB_MATRIX_DYNAMICS_HANDOVER_20261110.md)：§0目标、§4继承身体、§6 A—E顺序、§7交付标准。
+
+## 当前运行与完整身体
+
+| 用途 | 入口 |
 |---|---|
-| [AGENTS.md](../../AGENTS.md) | 用户原始定义、实现主链、五系统与生成式研究方法；引用原文时沿其中来源查对 |
-| [语言生命体活规格](CGB_LANGUAGE_LIFE_MODEL_V1_20261025.md) | 整体目标、系统边界和共同状态约束 |
-| [本次里程碑](CGB_MILESTONE_CLOSED_LOOP_20261105.md) | 哪些已实现、哪些经过训练、最新零训练修复、恢复点和下一步 |
-| [五行工作规范](CGB_FIVE_PHASE_DIAGNOSTIC_RULES.md) | 同一共同运动中的功能分析与整体验收 |
-| [大小五行接口](CGB_NESTED_FIVE_PHASE_INTERFACE_20261105.md) | 25种内部作用、实际交接与脏腑经脉的候选映射；第9—10节有运行追踪和动作归属修复 |
+| 同一妈妈＋背景转移、四份草稿、真实修订 | [联合世界循环](CGB_JOINT_WORLD_CYCLE_20261113.md) |
+| 经历／原话附件／R的统一SSD档案与热工作集 | [统一因果档案](CGB_UNIFIED_CAUSAL_ARCHIVE_20261113.md) |
+| 各接口实际接到了哪里，历史对照证明了什么 | [模型总装核查](CGB_MODEL_ROUTE_AUDIT_20261113.md) |
+| 妈妈上下文、官方8900工作台与8902身体桥 | [世界harness](CGB_MOTHER_CONTEXT_HARNESS_20261111.md) |
+| 已执行的空间清理、保留检查点及不可恢复边界 | [清理记录](CGB_STORAGE_CLEANUP_20261113.md) |
 
-## 定理入口
+2026-11-13本段运行目标为3510→4022，共512轮。已完整提交至3568，共58轮；续跑中断，剩余454轮尚未运行。实时以[本段运行目录](../../results/cgb_joint_lifetime512_20261113/)和进程为准。工作台正在独立调整，身体绑定以其实际状态为准。
 
-先检索 [已证定理索引](CGB_PROVEN_INDEX.md)，再查 [主题导航](CGB_THEOREMS/README.md) 和实际 Lean 陈述、前提及依赖。分类见 [定理基座](CGB_THEOREM_BASIS_20261030.md)；分类数据和释义分别保存在 `CGB_THEOREM_CLASSES.json`、`CGB_THEOREM_INTERPRETATIONS.json`。
+## 生成机制与数学依据
 
-本平台审核库存为1807条源码定理、136个生产模块；1665条分类为 reviewed，142条仍为 draft。库存数量不作为当前身体的满足数量。最大覆盖—最小生成仍是构造目标，参见 [相容核心](CGB_THEOREM_CONSISTENT_CORE_20261103.md)。
-
-维护方式：
-
-```powershell
-# 仓库根目录；PATH 中应有匹配 lean-toolchain 的 lake/lean
-python lean/CGBAxioms/scripts/audit.py --check-index
-python scripts/incremental_sync_theorems.py --check
-```
-
-一次性释义生成脚本已移入 `scripts/archive/theorem_interpretations_20261105/`，不再作为当前维护入口。
-
-## 当前执行代码
-
-| 路径 | 职责 |
+| 问题 | 入口 |
 |---|---|
-| `scripts/ib_local/gated_deltanet.py`、`gdn_fused.py` | 现有可训练语言基底与有限窗口GPU实现 |
-| `ngram_fast_table.py` | 身体的一部分：有限字节快表 |
-| `latent_navigation_v3.py`、`language_navigation_kanli_v4.py` | 有限经历记忆、具体话语与共同接口 |
-| `language_navigation_kanli_v4p.py` 至 `v4t.py` | 当前预测、校准、结算等继承层；更早版本中的若干类仍被依赖 |
-| `navigation_settlement.py` | 结算目标、观察/估计身份，以及动作标签完整性 |
-| `navigation_checkpoint.py` | 完整持续状态的保存与恢复 |
-| `run_learning_rooms.py` | 从原实际执行入口原样提升的单个体机制运行脚本 |
-| `report_learning_rooms.py`、`compare_navigation_settlement.py` | 既有报告与同源结果比较 |
+| 原始生命定义、五系统及依赖 | [语言生命体模型](CGB_LANGUAGE_LIFE_MODEL_V1_20261025.md) |
+| 定理原陈述、条件、依赖和实现索引 | [定理索引](CGB_PROVEN_INDEX.md) |
+| 因果关系的绑定—执行—修订，各数学工具的取舍 | [统一因果学习](CGB_CAUSAL_LEARNING_UNIFICATION_20261110.md) |
+| 少量共同生成关系的最终选型 | [生成核心决定](CGB_GENERATIVE_CORE_DECISION_20261110.md) |
+| S/P动力学、运动中保持、无输入续行 | [矩阵动量](CGB_BFSS_GDN_DYNAMICS_20261110.md) |
+| R及证据U；双括号与真实修订的分工 | [水库动力学，重点§8](CGB_RESERVOIR_DYNAMICS_20261110.md) |
+| 未知项身份、问题先于草稿、内外共用U | [主动提问，重点§7—9](CGB_ACTIVE_QUESTION_RELATIONS_20261110.md) |
+| 按事件累积的实际总装、检查与失败记录 | [水—土—木联合记录](CGB_JOINT_WATER_MOMENTUM_WOOD_20261110.md) |
+| 程序、原生执行、编译权重与自编辑的研究方向 | [可执行经历](CGB_EXECUTABLE_EXPERIENCE_SELF_EDITING_20261107.md) |
 
-此表中的文件位于 `scripts/ib_local/`。用 `python -m scripts.ib_local.<模块>` 运行，避免将该目录下的文件误作标准库模块。
+## 历史与整理规则
 
-当前参数、身体、快表和经历均属于同一个体。母亲世界、3D介质、果蝇及优化器保留各自研究和证据；本次整理不删除这些路线，也不把它们强行合成当前载体。
+原入口累积了11月6—7日的大段“当前状态”，已保存为[旧入口历史](history/PROJECT_ENTRY_BEFORE_20261113.md)。原各日期文档、失败报告、定义、定理与生命史记录继续保留，不因过时而删除。
 
-## 历史文档状态
-
-以下材料原位归档，保留原链接以便定理、实验与研究树追溯。只在复现对应版本或查找推导时阅读其中的执行指令。
-
-| 历史组 | 原文入口 | 当前如何使用 |
-|---|---|---|
-| 旧柱与载体搜索 | `CGB_LANGUAGE_SYSTEM23_CONTINUOUS_20261101.md`、`CGB_LANGUAGE_BODY_SEARCH_20261102.md`、`CGB_E3_DESIGN_V1_20261102.md` | 失败与准入证据，不能替代当前运行身体 |
-| 生成与总装探索 | `CGB_DESIGN_BRIEF_20261102.md`、`CGB_CLAUDE_HANDOFF_20261103.md`、`CGB_MINIMAL_GENERATOR_20261103.md` | 保留生成目标及取舍历史；执行状态以里程碑为准 |
-| 锁存与召回实验 | `CGB_LATCH_TASKS_20261103.md`、`CGB_RETRIEVED_CREDIT_20261103.md` | 保留机制范围和净收益判断，不重新开启已关闭实验 |
-| v2/v3导航 | `CGB_NAVIGATION_V2_PREREG_20261104.md`、`CGB_NAVIGATION_V3_ASSEMBLY_20261104.md`、`CGB_NAVIGATION_V3_WORLD_20261104.md`、`CGB_NAVIGATION_V3_TURNS_20261104.md` | 历史协议与测量纠正；过期PID队列已归档 |
-| v4逐轮研究过程 | [坎离研究记录](CGB_NAVIGATION_V4_KANLI_20261104.md)、[交接过程](CGB_NAVIGATION_V4_HANDOVER_20261104.md) | 保存预登记、失败和修改原因；最新定位见交接第18节与里程碑 |
-| 见证与结算的中间方案 | `CGB_CURRENT_WITNESS_20261105.md`、`CGB_REPRESENTATIVE_WITNESS_20261105.md`、`CGB_TYPED_WOOD_20261105.md` | 查清为什么采用共同续文评分，不将早期“下一步”当待办 |
-
-原始日志、数据、完整检查点留在本地忽略目录。Git保存代码、Lean、精选报告及校验哈希；本次清理清单见 [工作区整理记录](../../results/published/cgb_workspace_cleanup_20261105.json)。
+本次清点根目录455个文件，未发现内容完全相同的文件；[清单与哈希](../../results/cgb_document_inventory_20261113/inventory.json)记录每份标题、大小与SHA。此次整理缩短入口并归档旧入口，未批量移动专题、删除研究记录或改动运行代码。

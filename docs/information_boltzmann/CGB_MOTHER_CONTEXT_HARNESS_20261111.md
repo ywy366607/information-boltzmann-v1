@@ -1,0 +1,222 @@
+# 妈妈世界上下文编排与缓存修复
+
+2026-11-11，用户反馈DeepSeek累计394846 token中命中6912，要求优化世界harness。保留真实妈妈对当前话语的应答；缓存优化不能用旧整句回复替代新互动，也不能让后两臂单独换世界。
+
+## 查明的问题
+
+1. 原MotherReplyWorld每轮滑动最近6轮对话，首个历史turn不断改变，API长前缀不能稳定追加。
+2. responsive_v3的静态指导语放在对话最后，旧请求的完整末尾不能作为下一次对话的原样前缀。原系统persona已置前，不再把“首次把system前置”当作新发现。
+3. 现有共享SQLite缓存是完全相同请求的真实回复复用，不是DeepSeek KV缓存。原delegate已有usage累计，StrictToddlerMother包装器却未持存/输出它，因此此前运行日志不能完整复原账单命中率。
+4. 底层每次requests.post新建HTTP会话；新版持有一个Session复用连接。不会打印/持存API key。
+
+DeepSeek官方依据：<https://api-docs.deepseek.com/guides/kv_cache/>。缓存匹配相同前缀，服务端异步落盘、best-effort；官方usage提供prompt_cache_hit_tokens和prompt_cache_miss_tokens。命中率以输入hit/(hit+miss)计算，输出token单列。
+
+## 新编排
+
+- 将原有静态persona及静态指导原文放在一个稳定的首部system消息；不增加填充文字、虚构设定或固定回答。
+- 每段带最近4轮真实对话作锚，随后追加16轮真实user/assistant消息；段内不滑动开头，到预算边界再换段。输入字符预算12000，按完整旧对话对释放，保持当前孩子原话完整。
+- assistant上下文保留API原始文字，包括首尾空白；给身体的仍是原协议strip后的文字。这样下次请求可保留生成前缀，不被本地清洗破坏。
+- 妈妈可见历史从滑动6轮变为最多4锚定轮+16新增轮，属于明确的世界harness迁移，记录在config的mother_context_harness；不假称与旧世界逐条等价。
+- 身体、S/P、经历、权重和Adam、动作、回应/续文长度及结算未改。原history=6的世界对话记录仍保留，provider另持有限段上下文。
+
+## 请求、缓存与事件提交
+
+`ContextCachedMother`复用既有凭据入口、模型deepseek-flash、温度0.7、禁用thinking及max_tokens=120。缓存键包含实际完整请求，包括system、上下文、模型与生成参数；本地最多16条，SQLite最多4096条，缓存保留原始API回应及其来源。
+
+先请求并暂存真实回复，世界成功交付后才commit上下文。失败不伪装沉默、不推进上下文；相同未完成事件重试复用刚才的真实回应。完整保存段上下文、换段计数、用量、本地缓存；恢复后下一请求编排一致。遇到另一条未恢复的对话支线直接拒绝拼接。并发同键共享缓存以SQLite中先提交的实际回应为准。
+
+HTTP连接复用，瞬时错误有限重试同一请求；参数/鉴权错误直接报错。记录每次输入/输出token、供应商hit/miss、API/共享/本地来源、延迟、request id及截断原因。共享命中不重复记API账单用量。
+
+## 真实API测量
+
+从3507完整检查点的实际妈妈历史起步，输入取自已记录的真实宝宝话语；只做研究侧妈妈对话，不训练/修改源个体。
+
+同6条孩子话语的交错对照（各6次真实API调用）：
+
+| 编排 | 输入hit | 输入miss | 命中率 |
+|---|---:|---:|---:|
+| 原滑动窗口 | 1280 | 1964 | 39.46% |
+| 分段追加 | 1920 | 1505 | 56.06% |
+
+未命中输入少23.37%。这是当前已预热服务状态上的小样本，不是重现用户此前完整账单。两组回复是各自真实随机采样，文字和输出长度不同，不能把延迟差全归因于KV缓存。
+
+另做20次真实分段请求，包含第17轮换段：10112 hit / 4242 miss，整体70.45%；第7—16轮78.24%，第16轮82.73%。换段第17轮发生冷启动，已经计入整体结果，没有剔除。没有为提高百分比添加无关长前缀。
+
+证据：`results/cgb_head_coupling_20261111/context_cache_audit/{requests,report}.json`、`context_cache_segment20/{requests,provider_state,report}.json`。请求记录和持存状态不含凭据。
+
+## 同体接线与接续
+
+新编排已在真实3507身体完成两轮GPU互动，usage逐次进入world.mother_harness并随整身检查点保存；已经从新存档实际续接到3510，turn_count=3、api_calls=3、累计hit896/miss620均延续。36项相关检查通过，覆盖完整前缀复用、原始assistant字符、换段、固定预算、分支隔离、磁盘状态、HTTP失败/重试及共享缓存计费。
+
+原三臂队列保留：fixed完成128轮至3635，weighted完成36轮至3543后按用户要求保存暂停，free未启动。不能把这两个长度不同且缺free的结果当完整比较。
+
+新的三臂从同一3507源统一显式迁移到此harness，在`trial_128_context_v1`各128轮，仍单GPU串行、全参学习并每轮完整保存。当前状态以新队列status、活进程和已提交metrics为准。
+
+## 连续性核对与本机 DeepSeek Harness 复用决定
+
+2026-11-11，用户追问妈妈是否持续保有上下文、是否压缩，以及是否复用本机已有harness。代码核对结论：**当前只有段内追加，没有语义记忆压缩。** 每16轮或超过12000字符时只保留最近4轮完整对话，较早文字直接离开妈妈的模型输入。身体S/P、权重、经历没有因此重置，但不能把身体持存等同于妈妈记住全部往事。SQLite精确回复缓存也不是语义记忆。
+
+已找到本机`F:/16、杂货行账册/ledger-dsh/node_modules/@deepseek-ai/`中的官方发行包，版本`0.2.2-rc.1`。本轮只读检查包的README、实际JS实现和SDK类型，没有改账册项目配置、读取密钥或调用妈妈API。
+
+可直接复用的实现：
+
+- `dsh-session` / `dsh-session-persistence-jsonl`：持久会话身份和仅追加事件日志，保留被摘要遮蔽的原始事件。
+- `dsh-token-meter` / `dsh-compaction-basic`：按实际请求token压力压缩较早的完整范围，保留近期原文，处理上下文溢出；不需要人为每16轮切段。
+- `dsh-compaction-basic/lib/index.js`：摘要调用复用原system与历史前缀，只在末尾追加摘要指令；摘要后再建立新的热前缀。
+- 压缩事务记录start/summary/end及源范围，恢复时重现已提交摘要；日志不因压缩被改写成摘要。
+
+**选择：下一次妈妈上下文升级基于官方会话与压缩组件实现，不继续自建一套摘要／恢复引擎。** 采用独立妈妈profile，不改变账册OCR配置。现成`sdk-minimal`是组装参考；它默认是编程智能体，仍带shell、图片和目录工具，不能不加区分地直接作为当前妈妈世界。
+
+必须适配的一处已从源码查明：默认摘要指令要求“AI coding assistant”、Files and Code、Errors and Fixes等工程栏目，且写英文工程交接；不能原样用于妈妈。官方`BasicCompactionEngine.summarize()`提供单一覆写接口，应在项目插件中改为保留真实共同经历、宝宝表达与已观察反应、双方约定、未回答的问题，并区分观察和猜测。保留官方token测量、完整范围选择、事务和恢复；不修改`node_modules`。
+
+接入合同：
+
+1. 同一妈妈持久session继续追加实际宝宝话语；达到显式token预算才摘要，近期原文保留。预算按实际模型容量和成本确定，不能照抄sdk-minimal的百万窗口后备值或默认65536-token压缩余量。
+2. 保留当前妈妈persona、实际应答长度及生成设置；官方默认Messages传输与现有Chat Completions不同，迁移时记录并核对模型、thinking、输出上限和温度的支持，不假称协议逐字相同。
+3. 摘要只作为妈妈内部上下文，不能变成额外喂给宝宝的训练文本、奖励或预设问题；宝宝仍只收到妈妈实际说出的话。
+4. 身体检查点绑定妈妈session及已提交事件版本；研究分支各自继承相同前缀后独立写入，恢复时不得读取未来事件。现有世界交付后提交的事件边界继续保留。
+5. 准入检查包括：跨压缩保留真实已知事项／未决问题、未编造宝宝状态、磁盘恢复后下一请求一致、失败不重复推进。分别记录正常应答与摘要费用、供应商KV命中、恢复结果。
+
+本轮尚未实现该适配器或切换后台三臂；仍在运行的比较继续使用其冻结的分段harness，避免中途改变世界。以上是已查明的缺口和下一次迁移决定，不是已具备长期妈妈记忆的报告。
+
+## 官方会话与压缩接线（2026-11-13）
+
+Gemini初版的界面与育儿摘要设计保留；正式运行已收敛为一个无工具Node服务，Python只保留世界provider适配，不维护第二套摘要引擎。旧segmented路径和所有既有检查点/日志不改写。旧`trial_128_context_v1`的三臂现均各完成128轮，属于分段世界，不是本次官方摘要接线结果。
+
+### 实现与边界
+
+- `mengli_harness/dsh_runtime.mjs`通过官方Agent生命周期挂接session、JSONL persistence、token-meter和空工具registry；不加载CLI home、shell或文件工具。运行数据在项目`data/harness/dsh/`，不复制外部凭据或改node_modules，密钥只从`DEEPSEEK_API_KEY`环境取得。
+- 官方安装版DeepSeek provider使用Messages协议，本轮不悄悄改协议：`deepseek_chat_adapter.mjs`保留原Chat Completions、`deepseek-flash`、温度0.7、正常输出120、thinking disabled与原始assistant空白。当前dsh配置明确限responsive_v3；其他旧策略仍走原segmented/legacy路径。
+- `CaregiverMemoryCompactionEngine.summarize()`是真正被调用的唯一摘要钩子。范围选择、压缩事务、缩减检查和恢复由官方父类负责；仅替换育儿摘要指令，不编造情绪/理解，不把摘要喂给宝宝。运行预算8192、headroom1024、近期保留2048、摘要512；8192是本应用预算而非供应商模型最大窗口。估计token与真实API usage分别记录。
+- `DshMother`遵守原`reply(transcript) → 世界实际交付 → commit_turn() → 整轮完成后checkpoint`。只把新增孩子话语送入已恢复妈妈会话；未交付回复保持pending并可复用，commit幂等。错误、取消、截断和仍超预算均不伪装为成功或沉默。
+- 身体快照绑定`session_id/assistant_seq/turn_end_seq/result_seq/summary_version`与累计计费；事件位置均含端点。旧快照遇后续tail使用官方fork seed建立研究分支，不截日志、不读取未来；迁移只用本检查点保存的真实历史，有raw保留raw，仅delivered的部分明确标记。无原始记录的更早经历不补造。
+- 完整wire缓存与供应商KV缓存分账，正常回应和摘要分账，实际失败请求也计调用/失败，未知用量为null。看板移除固定命中率/体征/训练状态，真实0保留；梯度不再冒充P，原始对话安全文本渲染。没有连接身体metrics源时，体征和训练状态明确未测/unknown，不宣称实时训练。
+- 旧launcher/server统一转向同一服务；setup不再生成示例会话、复制凭据或覆盖既有会话。历史演示文件不作为真实妈妈记忆导入，旧用户文件不删除。复核纠正一项早先审查：位于harness目录的JS用`../../..`定位仓库根是正确的，并非路径错误。
+
+### 启动与显式迁移
+
+```powershell
+node scripts/ib_local/mengli_harness/mengli_service.mjs --port 8900
+# 浏览器打开 http://127.0.0.1:8900
+# 已有完整身体显式选择新世界；output必须是新目录：
+python -m scripts.ib_local.run_mother_continuation --checkpoint <完整源.pt.gz> --output <新目录> --cycles <轮数> --mother-context dsh --mother-session <独立分支ID>
+```
+
+源码允许通过`--data-root`或`MENGLI_DSH_DATA_ROOT`选择项目data/harness内的存储子树；恢复已有dsh检查点时服务必须使用包含该session的同一数据根。正常续接可不再传`--mother-context`，按快照继承；另建研究臂应指定独立`--mother-session`。本轮不自动启动长期训练或重跑三臂。
+
+### 验证记录
+
+44项Python接口/旧路径回归及17项Node检查通过，包括真实官方组件的自动压力压缩、压缩后继续回应、磁盘恢复、pending复用、旧前缀fork、累计计费和安全DOM。这里的Node模型传输为离线fixture，只验证接线，不作为学习能力成绩。
+
+有限实测已完成4次普通API＋1次摘要；另一次旧前缀恢复取得完全相同的下一wire并复用真实回复，不重复计费。3507研究身体真实续接到3508，完整磁盘恢复后到3509，共8次实际优化器更新；同一妈妈session及第一轮终态事件边界准确继承。真实身体两次API合计1117输入token，其中768命中/349未命中（68.76%），56输出；这只是接线检查，不作为缓存优化因果比较或学习收益。
+
+唯一真实摘要调用成功返回288输出token，但官方拒绝提交短历史诊断的非缩减摘要：388估计封装token≥原364。原文未替换，费用独立记录，原失败报告保留。随后将摘要指令收紧为100词以内、短历史单段并略空栏目；61项离线检查再次通过，未追加付费摘要。因此**真实摘要的成功提交仍未实测通过**，不能把离线成功冒充实机通过。生产8192/retain2048不因该短段诊断放宽；诊断单独retain64仅用于触发官方手动压缩。
+
+原3507源SHA保持，两个完整研究存档均保留，未晋升或启动长训，服务和训练进程已释放。汇总`results/cgb_mother_dsh_20261113/repair_report.json`；原失败`api_audit/report.json`、普通恢复`normal_recovery/report.json`及`executed_runtime/`执行源归档均保留。最终代码相对实测归档仅进一步收紧摘要文字指令。
+
+## 梦漓开场：接续，而非重启（2026-11-13）
+
+工作台新增约6.8秒的独立视觉开场：暗场一点微光→膜状细丝聚合→原创嫩芽字标与“于流中，成其形。”→柔和显露工作台。深墨绿／浅玉／暖纸白，仅视觉艺术，不把动画当生命指标、训练进度或访问认证。
+
+- 本浏览器tab首次进入播放；刷新不强制重播。页眉“再看开场”只重播遮罩，Esc或“跳过开场”直接结束，不reload页面、不调用妈妈/模型的控制接口。
+- 原看板数据加载及2秒刷新不变；网络或会话数据失败也不会把动画卡住。退出释放焦点、inert和定时器，减少动态偏好使用短静态显影。
+- 使用本地`intro.css`、`intro.js`、`mengli-mark.svg`，不安装完整插件、没有CDN/外部字体或原片音频。分幕与清理机制改造自MIT的`dsh-startup-screen` v1.3.0，授权全文和改动说明在`web/THIRD_PARTY_NOTICES.md`；新标志为原创，不沿用Rhine标志。
+- 启动命令仍是上节的Node服务，浏览器打开`http://127.0.0.1:8900`。不需要启动训练，也不为播放动画调用DeepSeek API。
+
+开场生命周期、原看板及静态资源白名单共23项Node检查通过。实际浏览器截图和交互结果保存在`results/mengli_intro_20261113/`；预览使用独立存储与无API凭据的本地服务，不改现有妈妈会话或身体检查点。
+
+## 开场读取真实生命名片（2026-11-13）
+
+用户指出我们的个体确有持存历史与内态，开场应显现真实生命而非排除指标。本轮明确选择`body_resumed/last.pt.gz`的3509研究续接体，CPU只读导出`data/harness/life/current.json`，不挑最高轮、不拼其他分支。
+
+已核对：3509轮；字节事件时钟4,717,536（含自听）；当前保留4096/4096槽；累计`commit_episode`4789次（包括合并）；最老占用记录距末次写入4,715,584字节事件；最近一轮4次参数更新；四层P范数7.6978645/12.8686962/37.8153992/20.6005650。名称“梦漓”为配置展示身份；未记录的出生时间和终生活动秒为null，不用网页计时或文件mtime代替。
+
+- `scripts/ib_local/life_card.py`绑定checkpoint路径/SHA、cycle、稳定展示identity与独立branch_id，以及妈妈已提交ref；同cycle的metrics只提供本轮量。导出不构建身体、不执行前向、不修改输入checkpoint。
+- runner每次原有`save`成功后从现有内存与本轮row原子导出小JSON，不额外load模型。DSH默认每臂独立路径；`--life-card`显式选择当前显示文件，同分支续接继承，不让其他臂静默覆盖。
+- Node仅只读明确选定的JSON，`--life-card`默认`data/harness/life/current.json`，GET`/api/life`可核对来源；原`/api/vitals`附life字段，前端仍只有原来的两次GET/2秒，不增轮询、不触发模型API。
+- 四层P以同快照中的相对值映射四层膜的尺寸/明暗，单色且直接列出层1→4原值。字标下显示真实事件龄、记忆与存档身份；页眉保留存档轮次。它们不是心跳、健康评分或额外奖励。
+- 绑定存档后取消循环呼吸。首次读取、重复fetch、刷新、重播及换分支均不亮学习微光；仅同个体同分支出现新提交cycle且该轮updates>0才亮一次。没有卡时保留无数据的艺术开场，不补演示数字。
+
+首份真实名片导出：
+
+```powershell
+python -m scripts.ib_local.life_card --checkpoint results/cgb_mother_dsh_20261113/body_resumed/last.pt.gz --metrics results/cgb_mother_dsh_20261113/body_resumed/metrics.jsonl --output data/harness/life/current.json --name 梦漓
+```
+
+以后明确继续该显示读口时，在原续接命令中加`--life-card data/harness/life/current.json`；新检查点会保存该读口配置，同一分支以后继承。服务可直接按原命令启动，或用`--life-card <另一份已选名片>`指定其他分支。选择显示对象不推进任何生命事件。
+
+18项Python（导出与原检查点）及28项Node检查通过；真实Edge桌面/390×844手机预览核对了3509来源SHA、四层映射、存档无循环、重播/跳过/减少动态和GET-only。截图/检查记录见`results/mengli_life_intro_20261113/preview01/`。本轮无训练、无付费API，原3509检查点保持。
+
+## 三方家庭工作台与完整妈妈管理会话（2026-11-13）
+
+本节更新此前“只有无工具看板”的界面状态；原照护回复协议和3509源保留。
+
+### 三方关系与入口
+
+同一家庭绑定两个妈妈工作会话和唯一身体：
+
+- **和妈妈商量**：官方 DSH `base + web-app`、原生 chat/tool/goal/plan、JSONL、自动压缩和 Messages 适配器。管理配置为 `deepseek-official/deepseek-flash`，输出4096、上下文32768、保留6144、摘要1536；与照护回复的120/8192预算独立。`DEEPSEEK_API_KEY`仅从环境解析。
+- **和梦漓交流**：平时妈妈照护，暂停并接管后家长发话，按真实说话者记录。家长与妈妈的讨论不会自动成为孩子输入；妈妈恢复时只同步有效计划和实际人工照护记录，不伪造自己的assistant历史。
+- **育儿计划**是版本化外部照护安排，不是孩子的内在目的、奖励或官方管理任务plan。保存后在下一完整轮采用，已prepare的回复不被半途改写。
+- **记录与用量**继续区分供应商KV、完整wire回复重播、普通回复和摘要。官方管理会话自身的使用记录在原生工作区查看；未知身体指标仍未测。
+
+```powershell
+node scripts/ib_local/mengli_harness/mengli_service.mjs --port 8900 --workbench-port 8901
+```
+
+家庭入口 `http://127.0.0.1:8900`；“和妈妈商量”加载官方认证工作区，也可独立打开。管理session固定绑定、原生sidebar仍可保留其他讨论会话。运行数据分别在`data/harness/family/`、`data/harness/workbench/`和原`data/harness/dsh/`，不使用账册项目home，不复制凭据或改外部node_modules。
+
+### 身体交付与控制
+
+`FamilyRuntime`保持单owner，Python worker只有明确连接后才导入Torch并恢复身体；连接不推进轮次。首次完整工作副本写入新的`family/body-*/`目录，不覆盖源；重启从同目录最新`last.pt.gz`恢复。启动与重启默认暂停，官方goal未武装，不自行调用模型或开训练。
+
+“暂停妈妈·我来陪伴”先关闭新轮准入、暂停官方goal；在途身体轮仍完成原`world.take → 学习结算 → 完整save`，之后才确认接管。管理聊天继续可用。家长输入走`FamilyCaregiver`同一provider协议；实际回应容量以UTF-8字节计，界面区分待送达和已提交，记录原文、实际前缀及是否截断。
+
+原身体先`_utter`再摄入外界回应，所以输入送达前产生的话不被标成对新输入的回答；只有后继自主选择才受其影响，也允许沉默。S/P、pending、经历、参数与优化器不被接管操作清空。
+
+妈妈管理工具限于真实状态、版本化计划、1–8轮有限照护、控制权和官方goal/todo/plan；不自动开放shell、任意文件、外部发布或源码修改。真实家长才是human source；孩子、工具观察及自动goal轮不会取得家长授权。
+
+### 上下文和前缀
+
+`/api/mengli/context`在世界交付边界追加带来源的计划及人工照护观察，不调用模型、不生成假assistant；人工记录立即外置，照护provider保存同步版本和单条末事件，不在身体检查点中无限积压接管历史。界面仍等完整身体save后才发布，读取妈妈历史也钉在身体已保存的ref，不把世界层commit误当整轮原子提交。两会话分别使用官方压缩，执行计划和游标有独立结构化状态。固定persona与工具保持稳定；Flash保留官方in-history系统更新和addition-only工具声明。原始历史不删除，本地重播不重复工具副作用或冒充供应商命中。
+
+### 验证范围
+
+定向Node/Python检查覆盖官方工具与goal、上下文恢复、计划生效边界、暂停接管、人工交付和完整保存协议；网络与body计算使用明确fixture，不作为真实学习验收。最终44项Node、47项Python定向检查通过。真实Edge检查桌面、手机、双通道入口、接管/暂停控制和官方可用输入区，最终记录为`results/mengli_family_20261113/browser02/`。首轮看图发现外部前端旧注入的假指标/假聊天及未选workspace：通过项目owned官方`tapIndex`精确去除旧注入、注册并选择canonical workspace修复，保留外部原文件和首轮证据。认证入口token只给本地浏览器，从工具结果中剔除，不发送给模型。
+
+本次没有调用付费模型、加载或推进真实3509身体，源SHA仍为`851f47bb4a72b46c98682b6b3d2188a94239bc4923e3cab65b26b0b082f9b9f1`。真实人工/妈妈交替后的整身保存重载，以及真实摘要成功提交，仍需单独安排有限实测；不得以离线测试替代。
+
+## 改为唯一原生 Harness 入口，撤下自制前端（2026-11-13）
+
+用户否定上一版自制聊天页、外层页签和iframe的外观与操作。本节替代上节的前端入口：不再给自制页面换皮，直接在官方DSH中加入家庭原生插件。
+
+```powershell
+node scripts/ib_local/mengli_harness/mengli_service.mjs --port 8900 --bridge-port 8902
+```
+
+- **8900是官方原生工作台**，保留官方认证、侧栏、会话、消息列表、输入框、工具卡和Goal Loop。按终端给出的官方认证URL打开；已有认证cookie后可直接访问`http://127.0.0.1:8900`。
+- **8902只做内部家庭/身体桥**，不提供旧网页或开场/家庭CSS、JS。独立CLI续接若继承旧8900 endpoint，须显式`--mother-harness-url http://127.0.0.1:8902`；网页连接流程自动传入新内部地址，不改源检查点。
+- canonical会话中有原生**“对话”与“梦漓”**两个View。前者与妈妈商量、使用官方工具/goal；后者读取身体记录，家长接管后提交到`family.say`，不创建替代身体的普通DS Agent，也不把身体记录写进妈妈JSONL。
+- **照护**菜单提供连接、接管、暂停与恢复；**育儿计划**放原生右侧栏，使用官方表单样式及380px原生布局action，手机沿用官方可关闭/切换的pane。诊断折叠，不占聊天主体。
+
+`native-family-client/`只保存插件、适配器和可复现的最小官方补丁：保留官方`ChatView → ChatFlow → ChatNodeSeat`和原生SubmitMachine/InputHub。为官方模块补共享ChatView factory、按View锁定的提交sink及原生rightbar宽度action；生成的三个官方模块副本和bundle已忽略，不修改外部node_modules、不安装新前端应用或依赖。原版slot唯一声明归属保持在共享factory，避免重复声明。原生模块版本及版权见本目录NOTICE。
+
+旧DSH原文只读加载并标注**“梦漓/妈妈·已保存历史/会话原文”**，不推造送达字节或轮次；只有新`family.events`中的真实`delivered`收据称为“实际摄入”。原生按钮和Enter都锁定提交时的View；梦漓发送不进入模型命令、序列化或`/api/session/prompt`，失败留稿，切回妈妈保留原草稿。梦漓View不继承妈妈的Stop/运行/goal/plan行为。
+
+**闪烁根因与修复：**旧页面每2秒`replaceChildren()`重建全部消息并重播`fadeIn`，还可能重置滚动；该页面及定时器已停止装配。新界面使用鉴权SSE、稳定记录key和原生增量渲染，不靠隐藏动画掩盖重建。
+
+**验收：**38项Node（含11项原生模块检查）、47项Python通过。离线真实浏览器fixture完成两条家长输入（按钮、Enter及`/goal`普通文字），只到`family.say`、无模型prompt；证据`results/mengli_native_20261113/native-client-fixture05/`。最终真实3509来源只读验收`production02/`显示16条历史、11个可见消息节点跨10.5秒保持原对象，滚动253→253；妈妈未发送草稿焦点跨10.5秒保持，切View后草稿保留；计划输入区宽347px、手机宽390无横向溢出、0iframe、0旧自制聊天DOM、0 JS错误。截图已查看。
+
+本次原生迁移没有调用付费API或加载/推进真实身体，界面仍绑定3509且暂停。真实模型/身体整圈的结论不由这些UI fixture替代；不改变并行模型研究状态。
+
+## 推理等级、三方视角与梦漓身份修正（2026-11-13）
+
+用户指出推理等级被隐藏、历史来源逐条重复、梦漓被错放到用户侧，以及原生迁移丢失开场并残留鲸鱼/预览品牌。已修正：
+
+- 妈妈管理适配器由部署级`thinking:disabled/off`改为`enabled`，恢复官方 **Off/Low/High/Max** 四档，默认High；入口为模型菜单→推理等级。管理摘要单独指定off以保留纯文本摘要合同，孩子短回复仍用原Chat Completions/.7/120/thinking disabled，不更改身体世界条件。
+- **右侧只属于家长，左侧为梦漓和妈妈**。旧DSH的`user`原本是孩子话语，投影到左侧并保留原始role来源；原日志不改写。新事件按真实actor选择左右侧，前行动→后输入顺序不变，输入框明确“对梦漓说话”。
+- 删除逐条“已保存历史/会话原文”“实际摄入/轮号”等重复技术前缀，正文只保留说话者。来源、送达范围、时序与cursor仍在结构化记录和折叠运行详情中，不丢失审计信息。
+- 原生sidebar/hero/窗口名/favicon/manifest改为**梦漓 MengLi与原创嫩芽**，移除hero预览badge；妈妈模型的真实DeepSeek提供商身份保留。外部官方包仍不修改。
+- 原原创开场恢复为原生入口上的一次性可跳过overlay，不恢复自制聊天页。原生左下“开场”菜单可重播，Esc/减少动态/焦点恢复保留；首访只读一次鉴权life card，之后只接新提交事件，不增轮询、不以旧updates制造学习微光。
+
+38项Node及身份hook/语法检查通过。隔离Edge身份验收`results/mengli_native_identity/1794553906218/`；三方发送fixture `results/mengli_native_20261113/roles_fixture03/`；真实来源只读界面与四档推理菜单 `identity_production03/`，截图已查看。此处仅UI验证，不覆盖并行模型研究已完成的3510真实事件，也不据此替换当前明确绑定的3509界面存档。

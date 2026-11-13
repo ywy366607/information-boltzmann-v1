@@ -1,0 +1,32 @@
+{
+  "status": "real_interface_and_restore_passed",
+  "cpu_checks": 115,
+  "source": "results\\cgb_mother_continuation_20261110\\longrun_batched_512\\real_07_08\\last.pt.gz",
+  "source_sha256": "5cd441e6f6d3261564a769b1ca439917c896e5b50d6d49d19b826161598f3225",
+  "source_unchanged": true,
+  "start_cycle": 2304,
+  "final_cycle": 2309,
+  "selected": "results\\cgb_internal_rollout_20261110\\selected\\last.pt.gz",
+  "parameters": 895812,
+  "new_neural_parameters": 0,
+  "new_slot_bytes": 2134016,
+  "selected_repair_only_internal_calibration": true,
+  "selected_all_other_state_unchanged": true,
+  "new_decision_offset_max": 0.0,
+  "learning_benefit_demonstrated": false,
+  "readiness": "results\\cgb_internal_rollout_20261110\\readiness.json",
+  "source_hashes": {
+    "scripts/ib_local/navigation_internal_rollout.py": "b8fa6cf09383ab85d5769d35cffeb3d412cf52fb278d0dd16cfa19cc19d7b321",
+    "scripts/ib_local/latent_navigation_v3.py": "8ae816582a3612f7809a1effed0ed75bfb6c9c866658bb9a2416f26168f04f89",
+    "scripts/ib_local/language_navigation_kanli_v4l.py": "34baa59db04974ea8c6742891d2c1cb4b614b79e4cc3fb1d8db880e0df66bdcf",
+    "scripts/ib_local/run_causal_water_reply.py": "14a632c43db2b53b20d92afb6fadb7e3ebac8a0b38e5e5c27755d111aaa47b95",
+    "scripts/ib_local/run_mother_continuation.py": "11785d90108b20dd94aa929f174786eaa38b21357acdb6e5a66b1ca3188fdb39",
+    "scripts/ib_local/run_navigation_residual_wood.py": "cead3bf00897ff95430de0a5ec5c423133ed70ea364c9f333b3ff2a5cf26d33a",
+    "scripts/ib_local/language_navigation_world.py": "95c7e9dc8a9a8a15bf691754ed0400f5e446deafbddadf76936c6bb3d703bb62",
+    "scripts/ib_local/language_navigation_world_v3.py": "d936164a10860c0c8d3b839c68ac7f25d0a82a597bc4bad68fc005c493bfc2c0",
+    "scripts/ib_local/language_navigation_kanli_v4.py": "75405665603323307e8d33fe6cc20fa5f8c1e6bc5cedb3ef8f84d601c89fc93d",
+    "scripts/ib_local/mother_reply_world.py": "c30ee7ca6305c78af2fb33a892aefaff2161135bf435cace25e75cf8a31fa608",
+    "scripts/ib_local/audit_internal_rollout.py": "f33de869c7a68afb5f72052beee16ba678afe370210c643e80d279b869415e34",
+    "tests/test_navigation_internal_rollout.py": "9414c9f3ca71c1aab62c4309352f8d8b8328d8fbaf2e0f198835f0f12edc1e40"
+  }
+}

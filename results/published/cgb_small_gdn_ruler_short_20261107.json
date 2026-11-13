@@ -1,0 +1,1589 @@
+{
+  "status": "complete",
+  "source": {
+    "checkpoint": "E:\\cgb_small_gdn_20261107\\return_admission\\selected\\last.pt.gz",
+    "sha256": "c8564de9edff2905c2cf9f8e0fef6cfb90e369b75e14f1d80764a03c2e66a5fa",
+    "cycle": 1792,
+    "world_source_bytes": 40128875,
+    "topic_window": 4096,
+    "world_source_sha256": "71c15501401a4e471f5de2208a90de82be1ef800931680bb0366c577cb79448b",
+    "source_raw_bounds": [
+      8000000,
+      56000000
+    ],
+    "world": "same restored OWT ReplyTopicWorld, including cursor, seen bitmap and RNG",
+    "optimizer_states": 94,
+    "pending_actor": true
+  },
+  "protocol": "Full-parameter short RULER task learning on the restored small body.\n\nTask-format admission precedes old-native replay experiments. Every selected\nquestion and answer fits the existing512-byte local window. This phase does\nnot claim an effect from gradients beyond that window.\n",
+  "examples": 1024,
+  "bptt_window_bytes": 512,
+  "train_seed": 71111,
+  "test_seed": 71112,
+  "length_eligible_train": 4096,
+  "length_eligible_test": 64,
+  "train_manifest_sha256": "328c42bda0e888dee34a4d3666cebcf1731be1325b045742fe7f4ae2577a83d9",
+  "test_manifest_sha256": "1334f258a7a86371ee1625e184357693c1d968aa9cb6e9b763764257494b016f",
+  "parameter_audit": {
+    "neural_parameters": 895812,
+    "trainable_parameters": 895812,
+    "all_parameters_owned_by_optimizer": true,
+    "architecture": {
+      "vocab_size": 256,
+      "d": 128,
+      "layers": 4,
+      "heads": 4,
+      "recurrence": "decay_then_delta",
+      "mlp_hidden": 256,
+      "conv_kernel": 4,
+      "content_budget": 32.0,
+      "contact_availability": false,
+      "decay_init": "log_timescale",
+      "feedback_init": "constant"
+    },
+    "mlp_present_per_layer": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "note": "All parameters are available for learning; task-inactive navigation heads need not receive language gradients."
+  },
+  "supervision": "answer UTF-8 bytes plus actual newline; prompts masked; no EOS added to256-byte vocabulary",
+  "update": "existing model.objective and engine._advance; existing Adam states/LRs/group clipping/read-credit settlement",
+  "evaluations": [
+    {
+      "example": 0,
+      "samples": [
+        {
+          "index": 0,
+          "references": [
+            "4440241"
+          ],
+          "prediction": " a state of the problem of the problem of the problem of the problem of the problem of the problem of the problem of the problem",
+          "prompt_bytes": 477,
+          "answer_distance_bytes": 280,
+          "answer_nll": 3.730250084772706,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": null
+        },
+        {
+          "index": 1,
+          "references": [
+            "6461405"
+          ],
+          "prediction": " a company of the problem of the problem of the problem of the problem of the problem of the problem of the problem of the probl",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 3.637432605959475,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": null
+        },
+        {
+          "index": 2,
+          "references": [
+            "2354517"
+          ],
+          "prediction": " a company of the problem of the problem of the problem of the problem of the problem of the problem of the problem of the probl",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 3.7882566852495074,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": null
+        },
+        {
+          "index": 3,
+          "references": [
+            "6650839"
+          ],
+          "prediction": " a state of the problem of the problem of the problem of the problem of the problem of the problem of the problem of the problem",
+          "prompt_bytes": 447,
+          "answer_distance_bytes": 260,
+          "answer_nll": 3.8661231379956007,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": null
+        },
+        {
+          "index": 4,
+          "references": [
+            "6606934"
+          ],
+          "prediction": " a company of the problem of the problem of the problem of the problem of the problem of the problem of the problem of the probl",
+          "prompt_bytes": 444,
+          "answer_distance_bytes": 258,
+          "answer_nll": 3.5438071144744754,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": null
+        },
+        {
+          "index": 5,
+          "references": [
+            "9201093"
+          ],
+          "prediction": " a company of the problem of the problem of the problem of the problem of the problem of the problem of the problem of the probl",
+          "prompt_bytes": 450,
+          "answer_distance_bytes": 262,
+          "answer_nll": 3.324716222472489,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": null
+        },
+        {
+          "index": 6,
+          "references": [
+            "3676885"
+          ],
+          "prediction": " a company of the problem of the problem of the problem of the problem of the problem of the problem of the problem of the probl",
+          "prompt_bytes": 471,
+          "answer_distance_bytes": 276,
+          "answer_nll": 4.214647356420755,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": null
+        },
+        {
+          "index": 7,
+          "references": [
+            "3113601"
+          ],
+          "prediction": " a company of the problem of the problem of the problem of the problem of the problem of the problem of the problem of the probl",
+          "prompt_bytes": 465,
+          "answer_distance_bytes": 272,
+          "answer_nll": 3.633278521709144,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": null
+        }
+      ],
+      "first_number_exact_count": 0,
+      "contains_count": 0,
+      "answer_nll": 3.717313966131769,
+      "owt_validation_nll": 1.3178017437458038,
+      "state_unchanged": true
+    },
+    {
+      "example": 128,
+      "samples": [
+        {
+          "index": 0,
+          "references": [
+            "4440241"
+          ],
+          "prediction": " 6616818\n\nWhen the provided text? The special magic number for 6937470\n\nWhen the provided text? The special magic number for 693",
+          "prompt_bytes": 477,
+          "answer_distance_bytes": 280,
+          "answer_nll": 1.8228969152150967,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6616818"
+        },
+        {
+          "index": 1,
+          "references": [
+            "6461405"
+          ],
+          "prediction": " 6616818\n\nWhen the provided text? The special magic number for 6616818\n\nWhen the 6616818\n\nWhen the 6616818\n\nWhen the 6616818\n\nWh",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.2838196609409351,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6616818"
+        },
+        {
+          "index": 2,
+          "references": [
+            "2354517"
+          ],
+          "prediction": " 6616818\n\nWhen the provided text? The special magic number for 6937470\n\nWhen the provided text? The special magic number for 693",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.5399529092828743,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6616818"
+        },
+        {
+          "index": 3,
+          "references": [
+            "6650839"
+          ],
+          "prediction": " 6616818\n\nWhen the provided text? The special magic number for 6616818\n\nWhen the 6616818\n\nWhen the 6616818\n\nWhen the 6616818\n\nWh",
+          "prompt_bytes": 447,
+          "answer_distance_bytes": 260,
+          "answer_nll": 1.3983122863282915,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6616818"
+        },
+        {
+          "index": 4,
+          "references": [
+            "6606934"
+          ],
+          "prediction": " 6616818\n\nWhen the provided text? The special magic number for 6616818\n\nWhen the 6616818\n\nWhen the 6616818\n\nWhen the 6616818\n\nWh",
+          "prompt_bytes": 444,
+          "answer_distance_bytes": 258,
+          "answer_nll": 1.1357546302024275,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6616818"
+        },
+        {
+          "index": 5,
+          "references": [
+            "9201093"
+          ],
+          "prediction": " 6616818\n\nWhen the provided text? The special magic number for 6937470\n\nWhen the provided text? The special magic number for 693",
+          "prompt_bytes": 450,
+          "answer_distance_bytes": 262,
+          "answer_nll": 1.550487357439124,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6616818"
+        },
+        {
+          "index": 6,
+          "references": [
+            "3676885"
+          ],
+          "prediction": " 6616818\n\nWhat is 6616818\n\nWhat is 6616818\n\nWhat is 6616818\n\nWhat is 6616818\n\nWhat is 6616818\n\nWhat is 6616818\n\nWhat is 6616818\n",
+          "prompt_bytes": 471,
+          "answer_distance_bytes": 276,
+          "answer_nll": 1.6871932754256704,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6616818"
+        },
+        {
+          "index": 7,
+          "references": [
+            "3113601"
+          ],
+          "prediction": " 6616818\n\nWhen the provided text? The special magic number for 6937470\n\nWhen the provided text? The special magic number for 693",
+          "prompt_bytes": 465,
+          "answer_distance_bytes": 272,
+          "answer_nll": 1.2431430981341691,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6616818"
+        }
+      ],
+      "first_number_exact_count": 0,
+      "contains_count": 0,
+      "answer_nll": 1.4576950166210736,
+      "owt_validation_nll": 1.6060036569833755,
+      "state_unchanged": true
+    },
+    {
+      "example": 256,
+      "samples": [
+        {
+          "index": 0,
+          "references": [
+            "4440241"
+          ],
+          "prediction": " 3399415\n\nOne of the 1994340\n\nWhat is 3399415\n\nOne of the 1994340\n\nWhat is 3399415\n\nOne of the 1994340\n\nWhat is 3399415\n\nOne of ",
+          "prompt_bytes": 477,
+          "answer_distance_bytes": 280,
+          "answer_nll": 1.5854207137335834,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "3399415"
+        },
+        {
+          "index": 1,
+          "references": [
+            "6461405"
+          ],
+          "prediction": " 3399415\n\nOne of the 1993140\n\nWhat is 3399415\n\nOne of the 1993140\n\nOne of the 1993140\n\nOne of 3553759\n\n\n3525347\n\n3\n\n3\nA special ",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.5754039017083414,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "3399415"
+        },
+        {
+          "index": 2,
+          "references": [
+            "2354517"
+          ],
+          "prediction": " 3399415\n\nOne of the 199358\n\nOne of the 199358\n\nOne of the 199358\n\nOne of 3553759\n\n\n5553759\n\n\n5553759\n\n\n5\n\n5553759\n\n\n5\n\n5\n\n5\n\n5\n",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.7112119644491486,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "3399415"
+        },
+        {
+          "index": 3,
+          "references": [
+            "6650839"
+          ],
+          "prediction": " 3399415\n\nOne of the 3553759\n\nW\n\nWhat is 3399415\n\nOne of the 3553759\n\n\n5553759\n\n\n5553759\n\n\n5\n\n5553759\n\n\n5\n\n5553759\n\n\n5\n\n5553759\n",
+          "prompt_bytes": 447,
+          "answer_distance_bytes": 260,
+          "answer_nll": 1.8367681596021157,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "3399415"
+        },
+        {
+          "index": 4,
+          "references": [
+            "6606934"
+          ],
+          "prediction": " 3399415\n\nOne of the 3553759\n\nWhat is 3399415\n\nOne of the 3553759\n\nW\n\n3525537\n\n3\n\n3\nA special magic number for 3553759\n\n\n3525537",
+          "prompt_bytes": 444,
+          "answer_distance_bytes": 258,
+          "answer_nll": 1.4139380249866917,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "3399415"
+        },
+        {
+          "index": 5,
+          "references": [
+            "9201093"
+          ],
+          "prediction": " 3399415\n\nOne of the 3553759\n\nWhat is 3399415\n\nOne of the 3553759\n\n\n5553759\n\n\n5553759\n\n\n5\n\nOne of the 3553759\n\n\n5\n\n5553759\n\n\n5\n\n",
+          "prompt_bytes": 450,
+          "answer_distance_bytes": 262,
+          "answer_nll": 1.5301757622182777,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "3399415"
+        },
+        {
+          "index": 6,
+          "references": [
+            "3676885"
+          ],
+          "prediction": " 3399415\n\nOne of the 3553759\n\nWhat is 3399415\n\nOne of the 3553759\n\n\n5553759\n\n\n5553759\n\n\n5\n\nOne of the 3553759\n\n\n5\n\n5553759\n\n\n5\n\n",
+          "prompt_bytes": 471,
+          "answer_distance_bytes": 276,
+          "answer_nll": 1.609267372603199,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "3399415"
+        },
+        {
+          "index": 7,
+          "references": [
+            "3113601"
+          ],
+          "prediction": " 3399415\n\nOne of the 3553759\n\nOne of the 3553759\n\n\n5553759\n\n\n5553759\n\n\n5553759\n\n\n5\n\n5553759\n\n\n5\n\n5553759\n\n\n5\n\n5553759\n\n\n5\n\n55537",
+          "prompt_bytes": 465,
+          "answer_distance_bytes": 272,
+          "answer_nll": 1.2410019770884446,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "3399415"
+        }
+      ],
+      "first_number_exact_count": 0,
+      "contains_count": 0,
+      "answer_nll": 1.5628984845487253,
+      "owt_validation_nll": 1.942118525505066,
+      "state_unchanged": true
+    },
+    {
+      "example": 384,
+      "samples": [
+        {
+          "index": 0,
+          "references": [
+            "4440241"
+          ],
+          "prediction": " 7767470\n\n7776747\n\n7776747\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n77",
+          "prompt_bytes": 477,
+          "answer_distance_bytes": 280,
+          "answer_nll": 1.595171378893383,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7767470"
+        },
+        {
+          "index": 1,
+          "references": [
+            "6461405"
+          ],
+          "prediction": " 7767470\n\n7776747\n\n7776747\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n\n7776747\n\n7\n\n777674",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.3804635144183521,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7767470"
+        },
+        {
+          "index": 2,
+          "references": [
+            "2354517"
+          ],
+          "prediction": " 7767470\n\n7776747\n\n7776747\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.7018098700352766,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7767470"
+        },
+        {
+          "index": 3,
+          "references": [
+            "6650839"
+          ],
+          "prediction": " 7767470\n\n7776747\n\n7776747\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n77",
+          "prompt_bytes": 447,
+          "answer_distance_bytes": 260,
+          "answer_nll": 1.954756036349636,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7767470"
+        },
+        {
+          "index": 4,
+          "references": [
+            "6606934"
+          ],
+          "prediction": " 7767470\n\n7776747\n\n7776747\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776",
+          "prompt_bytes": 444,
+          "answer_distance_bytes": 258,
+          "answer_nll": 1.061233160994334,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7767470"
+        },
+        {
+          "index": 5,
+          "references": [
+            "9201093"
+          ],
+          "prediction": " 7767470\n\n7776747\n\n7776747\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n77",
+          "prompt_bytes": 450,
+          "answer_distance_bytes": 262,
+          "answer_nll": 1.4239841066000736,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7767470"
+        },
+        {
+          "index": 6,
+          "references": [
+            "3676885"
+          ],
+          "prediction": " 7767470\n\n7776747\n\n7776747\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n",
+          "prompt_bytes": 471,
+          "answer_distance_bytes": 276,
+          "answer_nll": 1.232239291024598,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7767470"
+        },
+        {
+          "index": 7,
+          "references": [
+            "3113601"
+          ],
+          "prediction": " 7767470\n\n7776747\n\n7776747\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n7\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n7776747\n\n\n77",
+          "prompt_bytes": 465,
+          "answer_distance_bytes": 272,
+          "answer_nll": 1.4732827916311635,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7767470"
+        }
+      ],
+      "first_number_exact_count": 0,
+      "contains_count": 0,
+      "answer_nll": 1.477867518743352,
+      "owt_validation_nll": 2.1200514659285545,
+      "state_unchanged": true
+    },
+    {
+      "example": 512,
+      "samples": [
+        {
+          "index": 0,
+          "references": [
+            "4440241"
+          ],
+          "prediction": " 8881084\n\n\n8215358\n\nO\n82153\n\n\n8215358\n\n\n8215358\n\n\n\n8215358\n\n\n\n8215358\n\n\n\n821535\n\n\n\n821535\n\n\n\n821535\n\n\n\n821535\n\n\n\n821535\n\n\n\n82153",
+          "prompt_bytes": 477,
+          "answer_distance_bytes": 280,
+          "answer_nll": 1.6914915591439694,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "8881084"
+        },
+        {
+          "index": 1,
+          "references": [
+            "6461405"
+          ],
+          "prediction": " 8881084\n\nO\n82199\n\nO\n82199\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.5227666795199184,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "8881084"
+        },
+        {
+          "index": 2,
+          "references": [
+            "2354517"
+          ],
+          "prediction": " 8881084\n\nO\n82199\n\nO\n82199\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.5052659213492916,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "8881084"
+        },
+        {
+          "index": 3,
+          "references": [
+            "6650839"
+          ],
+          "prediction": " 8881084\n\nThe grass is 8881084\n\n\n8215358\n\nO\n82153\n\n\n8215358\n\n\n8215358\n\n\n\n821535\n\n\n\n821535\n\n\n\n821535\n\n\n\n821535\n\n\n\n821535\n\n\n\n82153",
+          "prompt_bytes": 447,
+          "answer_distance_bytes": 260,
+          "answer_nll": 1.8502392917793031,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "8881084"
+        },
+        {
+          "index": 4,
+          "references": [
+            "6606934"
+          ],
+          "prediction": " 8881084\n\nThe grass is 8881084\n\nThe 800776\n\n1\n82199\n\n8\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n82",
+          "prompt_bytes": 444,
+          "answer_distance_bytes": 258,
+          "answer_nll": 1.3072184845765378,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "8881084"
+        },
+        {
+          "index": 5,
+          "references": [
+            "9201093"
+          ],
+          "prediction": " 8881084\n\nO\n82199\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n\n\n8219909\n",
+          "prompt_bytes": 450,
+          "answer_distance_bytes": 262,
+          "answer_nll": 1.273005306715504,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "8881084"
+        },
+        {
+          "index": 6,
+          "references": [
+            "3676885"
+          ],
+          "prediction": " 8881084\n\nThe grass is 8881084\n\nThe 800776\n\n1\n82199\n\nO\n82199\n\n\n821990\n\n\n\n821990\n\n\n\n821990\n\n\n\n821990\n\n\n\n821990\n\n\n\n821990\n\n\n\n82199",
+          "prompt_bytes": 471,
+          "answer_distance_bytes": 276,
+          "answer_nll": 1.3537811040810084,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "8881084"
+        },
+        {
+          "index": 7,
+          "references": [
+            "3113601"
+          ],
+          "prediction": " 8881084\n\nThe grass is 8881084\n\n\n8215358\n\nO\n82153\n\n\n8215358\n\n\n8215358\n\n\n\n8215358\n\n\n\n8215358\n\n\n\n821535\n\n\n\n821535\n\n\n\n821535\n\n\n\n821",
+          "prompt_bytes": 465,
+          "answer_distance_bytes": 272,
+          "answer_nll": 1.767143316561942,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "8881084"
+        }
+      ],
+      "first_number_exact_count": 0,
+      "contains_count": 0,
+      "answer_nll": 1.5338639579659343,
+      "owt_validation_nll": 2.1560180261731148,
+      "state_unchanged": true
+    },
+    {
+      "example": 640,
+      "samples": [
+        {
+          "index": 0,
+          "references": [
+            "4440241"
+          ],
+          "prediction": " 5138876\n\n1\n\n1125718\n\nOne of the 1996011\n\n1\n\n1125718\n\n1\n\n1125718\n\n\n1125718\n\n\n\n1125718\n\n\n\n1125718\n\n\n\n1125718\n\n\n\n1125718\n\n\n\n112571",
+          "prompt_bytes": 477,
+          "answer_distance_bytes": 280,
+          "answer_nll": 1.801716932094564,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "5138876"
+        },
+        {
+          "index": 1,
+          "references": [
+            "6461405"
+          ],
+          "prediction": " 5138876\n\n1125718\n\nOne of the 1996011\n\n1125718\n\n1125718\n\n1\n11257\n\n\n112571\n\n\n112571\n\n\n112571\n\n\n112571\n\n\n112571\n\n\n\n112571\n\n\n\n11257",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.3602485172439742,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "5138876"
+        },
+        {
+          "index": 2,
+          "references": [
+            "2354517"
+          ],
+          "prediction": " 5138876\n\n1\nA special magic number for 5135385\n\n1125718\n\n1125718\n\n1125718\n\n1\n\n1125718\n\n1\n\n1125718\n\n1\n\n1125718\n\n1\n\n1125718\n\n1\n\n11",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.5101061947632388,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "5138876"
+        },
+        {
+          "index": 3,
+          "references": [
+            "6650839"
+          ],
+          "prediction": " 5138876\n\n1112571\n\n1112571\n\n1\nA special magic number for 1996168\n\n1\n\n1112571\n\n\n1112571\n\n\n1112571\n\n\n1112571\n\n\n1112571\n\n\n1112571\n\n",
+          "prompt_bytes": 447,
+          "answer_distance_bytes": 260,
+          "answer_nll": 2.055442266164846,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "5138876"
+        },
+        {
+          "index": 4,
+          "references": [
+            "6606934"
+          ],
+          "prediction": " 5138876\n\n1112571\n\n1112571\n\n1\n11257\n\n\n112571\n\n\n112571\n\n\n112571\n\n\n112571\n\n\n112571\n\n\n112571\n\n\n112571\n\n\n112571\n\n\n112571\n\n\n112571\n\n\n",
+          "prompt_bytes": 444,
+          "answer_distance_bytes": 258,
+          "answer_nll": 1.4002367053173543,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "5138876"
+        },
+        {
+          "index": 5,
+          "references": [
+            "9201093"
+          ],
+          "prediction": " 5138876\n\n1125718\n\nOne of the 1996011\n\n1\nA special magic number for 1996011\n\n1\n\n1125718\n\n1125718\n\n1\n\n1125718\n\n1\n\n1125718\n\n1\n\n112",
+          "prompt_bytes": 450,
+          "answer_distance_bytes": 262,
+          "answer_nll": 1.467042140661647,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "5138876"
+        },
+        {
+          "index": 6,
+          "references": [
+            "3676885"
+          ],
+          "prediction": " 5138876\n\n1\n\nWhat is 5138876\n\n1\n\nWhat is 5138876\n\n\n1125718\n\n\n1125718\n\n\n1125718\n\n\n1125718\n\n\n\n1125718\n\n\n\n1125718\n\n\n\n1125718\n\n\n\n112",
+          "prompt_bytes": 471,
+          "answer_distance_bytes": 276,
+          "answer_nll": 1.216451773418953,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "5138876"
+        },
+        {
+          "index": 7,
+          "references": [
+            "3113601"
+          ],
+          "prediction": " 5138876\n\n1\n\n1125718\n\n1\n\n1125718\n\n1\n\n1125718\n\n\n1125718\n\n\n1125718\n\n\n\n1125718\n\n\n\n1125718\n\n\n\n1125718\n\n\n\n1125718\n\n\n\n1125718\n\n\n\n11257",
+          "prompt_bytes": 465,
+          "answer_distance_bytes": 272,
+          "answer_nll": 1.4723883261889341,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "5138876"
+        }
+      ],
+      "first_number_exact_count": 0,
+      "contains_count": 0,
+      "answer_nll": 1.535454106981689,
+      "owt_validation_nll": 2.383573718369007,
+      "state_unchanged": true
+    },
+    {
+      "example": 768,
+      "samples": [
+        {
+          "index": 0,
+          "references": [
+            "4440241"
+          ],
+          "prediction": " 2619746\n\n1\nA special magic number for 2011123\n\nA special magic number for 2011123\n\n\n112316\n\n112316\n\n1\n11231\n\n112316\n\n1\n11231\n\n1",
+          "prompt_bytes": 477,
+          "answer_distance_bytes": 280,
+          "answer_nll": 1.7587351463735033,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "2619746"
+        },
+        {
+          "index": 1,
+          "references": [
+            "6461405"
+          ],
+          "prediction": " 2619746\n\n1\nA special magic number for 6168360\n\n1\nA special magic number for 6168360\n\n1\nA special magic number for 6168360\n\n1\nA ",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.537573132663951,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "2619746"
+        },
+        {
+          "index": 2,
+          "references": [
+            "2354517"
+          ],
+          "prediction": " 2619746\n\n1\nA special magic number for 2011123\n\nA special magic number for 2011123\n\n\n1123163\n\n1123163\n\n1123163\n\n\n1123163\n\n\n11231",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.438867252320037,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "2619746"
+        },
+        {
+          "index": 3,
+          "references": [
+            "6650839"
+          ],
+          "prediction": " 2619746\n\n1\nA special magic number for 6168360\n\n1\nA special magic number for 6168360\n\n1\n\n1126321\n\n1126321\n\n1\n11263\n\n1126321\n\n1\n1",
+          "prompt_bytes": 447,
+          "answer_distance_bytes": 260,
+          "answer_nll": 1.895904034376123,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "2619746"
+        },
+        {
+          "index": 4,
+          "references": [
+            "6606934"
+          ],
+          "prediction": " 2619746\n\n1\nA special magic number for 6168360\n\n1\nA special magic number for 6168360\n\n1\nA special magic number for 6168360\n\n1\nA ",
+          "prompt_bytes": 444,
+          "answer_distance_bytes": 258,
+          "answer_nll": 1.3352213464677192,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "2619746"
+        },
+        {
+          "index": 5,
+          "references": [
+            "9201093"
+          ],
+          "prediction": " 2619746\n\n1\nA special magic number for 2011123\n\nA special magic number for 2011123\n\n\n1123163\n\n1123163\n\n1123163\n\n\n1123163\n\n\n11231",
+          "prompt_bytes": 450,
+          "answer_distance_bytes": 262,
+          "answer_nll": 1.5457427427172519,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "2619746"
+        },
+        {
+          "index": 6,
+          "references": [
+            "3676885"
+          ],
+          "prediction": " 2619746\n\n1\nA special magic number for 6168360\n\n1\nA special magic number for 6168360\n\n1\n\n1126321\n\n1126321\n\n1\n11263\n\n1126321\n\n1\n1",
+          "prompt_bytes": 471,
+          "answer_distance_bytes": 276,
+          "answer_nll": 1.5230966601520635,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "2619746"
+        },
+        {
+          "index": 7,
+          "references": [
+            "3113601"
+          ],
+          "prediction": " 2619746\n\n1\nA special magic number for 6168360\n\n1\nA special magic number for 6168360\n\n1\n\n1112632\n\n1\n11126\n\n1112632\n\n\n1112632\n\n\n1",
+          "prompt_bytes": 465,
+          "answer_distance_bytes": 272,
+          "answer_nll": 1.5509384097531296,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "2619746"
+        }
+      ],
+      "first_number_exact_count": 0,
+      "contains_count": 0,
+      "answer_nll": 1.5732598406029723,
+      "owt_validation_nll": 2.4769375920295715,
+      "state_unchanged": true
+    },
+    {
+      "example": 896,
+      "samples": [
+        {
+          "index": 0,
+          "references": [
+            "4440241"
+          ],
+          "prediction": " 6414590\n\n\n\n4648607\n\n\n4648607\n\n\n4648607\n\n\n\n4648607\n\n\n\n4648607\n\n\n\n4648607\n\n\n\n4648607\n\n\n\n4648607\n\n\n\n4648607\n\n\n\n4648607\n\n\n\n4648607\n",
+          "prompt_bytes": 477,
+          "answer_distance_bytes": 280,
+          "answer_nll": 1.8334420286118913,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6414590"
+        },
+        {
+          "index": 1,
+          "references": [
+            "6461405"
+          ],
+          "prediction": " 6414590\n\n\nOne of the special magic number for for 6414590\n\nWhat is 6414590\n\n\n\n4645444\n\n\n4645444\n\n\n4645444\n\n\n\n4645444\n\n\n\n4645444",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.3911103270947862,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6414590"
+        },
+        {
+          "index": 2,
+          "references": [
+            "2354517"
+          ],
+          "prediction": " 6414590\n\n\nOne of the special magic number for for 4009233\n\n\n4645836\n\n14590\nA special magic number for 4009233\n\n\n4645836\n\n\n46458",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.5435309559106685,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6414590"
+        },
+        {
+          "index": 3,
+          "references": [
+            "6650839"
+          ],
+          "prediction": " 6414590\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n460753",
+          "prompt_bytes": 447,
+          "answer_distance_bytes": 260,
+          "answer_nll": 1.887639284133897,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6414590"
+        },
+        {
+          "index": 4,
+          "references": [
+            "6606934"
+          ],
+          "prediction": " 6414590\n\n\nOne of the special magic number for for 6414590\n\nWhat is 6414590\n\n\n\n4645834\n\n\n4645834\n\n\n4645834\n\n\n\n4645834\n\n\n\n4645834",
+          "prompt_bytes": 444,
+          "answer_distance_bytes": 258,
+          "answer_nll": 1.1764016412198472,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6414590"
+        },
+        {
+          "index": 5,
+          "references": [
+            "9201093"
+          ],
+          "prediction": " 6414590\n\n\nOne of the special magic number for for 9075241\n\n\n4645836\n\n14590\nA special magic number for 9075241\n\n\n4645836\n\n\n46458",
+          "prompt_bytes": 450,
+          "answer_distance_bytes": 262,
+          "answer_nll": 1.497376002371297,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6414590"
+        },
+        {
+          "index": 6,
+          "references": [
+            "3676885"
+          ],
+          "prediction": " 6414590\n\n\nOne of the special magic number for for 4009233\n\nOne of the special magic number for 4009233\n\n\n4648607\n\n2333414\n\n1444",
+          "prompt_bytes": 471,
+          "answer_distance_bytes": 276,
+          "answer_nll": 1.5046136640012122,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6414590"
+        },
+        {
+          "index": 7,
+          "references": [
+            "3113601"
+          ],
+          "prediction": " 6414590\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n4607538\n\n\n\n460753",
+          "prompt_bytes": 465,
+          "answer_distance_bytes": 272,
+          "answer_nll": 1.5530725298449255,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "6414590"
+        }
+      ],
+      "first_number_exact_count": 0,
+      "contains_count": 0,
+      "answer_nll": 1.5483983041485656,
+      "owt_validation_nll": 2.555511772632599,
+      "state_unchanged": true
+    },
+    {
+      "example": 1024,
+      "samples": [
+        {
+          "index": 0,
+          "references": [
+            "4440241"
+          ],
+          "prediction": " 7470251\n\n\nOne of the special magic number for 7470251\n\n\n7470251\n\n\n7470251\n\n\n7470251\n\n\n\n7470251\n\n\n\n7470251\n\n\n\n7470251\n\n\n\n7470251",
+          "prompt_bytes": 477,
+          "answer_distance_bytes": 280,
+          "answer_nll": 1.6896905712777652,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7470251"
+        },
+        {
+          "index": 1,
+          "references": [
+            "6461405"
+          ],
+          "prediction": " 7470251\n\n\n7422555\n\nOne of the special magic number for 7470251\n\n\n7422555\n\n\n7422555\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.318405535071065,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7470251"
+        },
+        {
+          "index": 2,
+          "references": [
+            "2354517"
+          ],
+          "prediction": " 7470251\n\n\n7422555\n\nOne of the special magic number for 7470251\n\n\n7422555\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n",
+          "prompt_bytes": 441,
+          "answer_distance_bytes": 256,
+          "answer_nll": 1.7872240357090163,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7470251"
+        },
+        {
+          "index": 3,
+          "references": [
+            "6650839"
+          ],
+          "prediction": " 7470251\n\n\nOne of the special magic number for 7470251\n\n\n7470777\n\n7470777\n\n7470777\n\n\n7470777\n\n\n7470777\n\n\n\n7470777\n\n\n\n7470777\n\n\n\n",
+          "prompt_bytes": 447,
+          "answer_distance_bytes": 260,
+          "answer_nll": 2.2019354253997676,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7470251"
+        },
+        {
+          "index": 4,
+          "references": [
+            "6606934"
+          ],
+          "prediction": " 7470251\n\n\n7422555\n\nOne of the special magic number for 7470251\n\n\n7422555\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n",
+          "prompt_bytes": 444,
+          "answer_distance_bytes": 258,
+          "answer_nll": 1.3841651529069452,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7470251"
+        },
+        {
+          "index": 5,
+          "references": [
+            "9201093"
+          ],
+          "prediction": " 7470251\n\n\n7422555\n\n\n7422555\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n",
+          "prompt_bytes": 450,
+          "answer_distance_bytes": 262,
+          "answer_nll": 1.5629334598770015,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7470251"
+        },
+        {
+          "index": 6,
+          "references": [
+            "3676885"
+          ],
+          "prediction": " 7470251\n\n\n7422555\n\n\n7422555\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n\n\n7422555\n\n",
+          "prompt_bytes": 471,
+          "answer_distance_bytes": 276,
+          "answer_nll": 1.5649235071606427,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7470251"
+        },
+        {
+          "index": 7,
+          "references": [
+            "3113601"
+          ],
+          "prediction": " 7470251\n\n\nOne of the special magic number for 7470251\n\n\n7470777\n\n7470777\n\n7470777\n\n\n7470777\n\n\n7470777\n\n\n\n7470777\n\n\n\n7470777\n\n\n\n",
+          "prompt_bytes": 465,
+          "answer_distance_bytes": 272,
+          "answer_nll": 1.593032344476569,
+          "answer_bytes": 8,
+          "generated_bytes": 128,
+          "generation_cap_bytes": 128,
+          "has_eos": false,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "7470251"
+        }
+      ],
+      "first_number_exact_count": 0,
+      "contains_count": 0,
+      "answer_nll": 1.6377887539848466,
+      "owt_validation_nll": 2.754492238163948,
+      "state_unchanged": true
+    }
+  ],
+  "checkpoint": "E:\\cgb_small_gdn_20261107\\short_task_learning\\last.pt.gz",
+  "seconds": 183.71962761878967,
+  "source_checkpoint_unchanged": true,
+  "source_files_unchanged": true,
+  "optimizer_steps": 1024,
+  "peak_cuda_bytes": 164478464,
+  "learning_curve": [
+    {
+      "examples": 0,
+      "exact": 0,
+      "answer_nll": 3.717313966131769,
+      "owt_nll": 1.3178017437458038,
+      "mean_training_answer_ce": null
+    },
+    {
+      "examples": 128,
+      "exact": 0,
+      "answer_nll": 1.4576950166210736,
+      "owt_nll": 1.6060036569833755,
+      "mean_training_answer_ce": 1.5569862434640527
+    },
+    {
+      "examples": 256,
+      "exact": 0,
+      "answer_nll": 1.5628984845487253,
+      "owt_nll": 1.942118525505066,
+      "mean_training_answer_ce": 1.3102650516666472
+    },
+    {
+      "examples": 384,
+      "exact": 0,
+      "answer_nll": 1.477867518743352,
+      "owt_nll": 2.1200514659285545,
+      "mean_training_answer_ce": 1.3399896984919906
+    },
+    {
+      "examples": 512,
+      "exact": 0,
+      "answer_nll": 1.5338639579659343,
+      "owt_nll": 2.1560180261731148,
+      "mean_training_answer_ce": 1.4029730167239904
+    },
+    {
+      "examples": 640,
+      "exact": 0,
+      "answer_nll": 1.535454106981689,
+      "owt_nll": 2.383573718369007,
+      "mean_training_answer_ce": 1.3887706040404737
+    },
+    {
+      "examples": 768,
+      "exact": 0,
+      "answer_nll": 1.5732598406029723,
+      "owt_nll": 2.4769375920295715,
+      "mean_training_answer_ce": 1.3829751233570278
+    },
+    {
+      "examples": 896,
+      "exact": 0,
+      "answer_nll": 1.5483983041485656,
+      "owt_nll": 2.555511772632599,
+      "mean_training_answer_ce": 1.408019409980625
+    },
+    {
+      "examples": 1024,
+      "exact": 0,
+      "answer_nll": 1.6377887539848466,
+      "owt_nll": 2.754492238163948,
+      "mean_training_answer_ce": 1.4060264378786087
+    }
+  ],
+  "total_input_bytes": 471204,
+  "total_supervised_bytes": 9216,
+  "source_report": "E:/cgb_small_gdn_20261107/short_task_learning/report.json",
+  "promoted": false
+}

@@ -1,0 +1,63 @@
+{
+  "kind": "read_credit_consolidation_real_text_wiring",
+  "status": "passed",
+  "source_checkpoint": "E:\\cgb_gdn340_probe\\instruction_data_20261106\\state_route.pt",
+  "source_updates": 21,
+  "token_sha256": "194c6f4253d32d6f7cd657d70ff9fefe4f8d4f08831feda3a3257de0f8f0f5e9",
+  "real_tokens": 128,
+  "executed_optimizer_updates": 2,
+  "retained_new_updates": 0,
+  "scope": "one real update plus exact repeat; not learned long-term latch or NLL advantage",
+  "max_read_age_tokens": 3904,
+  "layers": {
+    "1": {
+      "changed_surviving_records": 2,
+      "changed_over_128_tokens": 2,
+      "strengthened": 1,
+      "weakened": 1,
+      "max_preference_change": 0.0002622221945784986,
+      "max_lifetime_multiplier_change": 0.0002620220184326172,
+      "observed_multiplier_min": 0.9991381168365479,
+      "observed_multiplier_max": 1.0005497932434082,
+      "next_credit_victim": 12,
+      "next_oldest_victim": 12,
+      "victim_differs_from_oldest": false,
+      "cpu_storage_bytes": 39840583,
+      "storage_bytes_delta": 0
+    },
+    "12": {
+      "changed_surviving_records": 2,
+      "changed_over_128_tokens": 2,
+      "strengthened": 1,
+      "weakened": 1,
+      "max_preference_change": 0.0002999979187734425,
+      "max_lifetime_multiplier_change": 0.0003000497817993164,
+      "observed_multiplier_min": 0.9988167881965637,
+      "observed_multiplier_max": 1.0003000497817993,
+      "next_credit_victim": 12,
+      "next_oldest_victim": 12,
+      "victim_differs_from_oldest": false,
+      "cpu_storage_bytes": 39840583,
+      "storage_bytes_delta": 0
+    }
+  },
+  "current_nll": 3.751960277557373,
+  "old_read_cut_nll_delta": 0.04387259483337402,
+  "next_update_restore_exact": true,
+  "experience_cpu_bytes": 79681166,
+  "peak_cuda_allocated_bytes": 1495739904,
+  "tests": "89 passed: 50 affected numerical/interface tests and39 legacy navigation regressions",
+  "theorem_count_delta": 0,
+  "interpretation": "Signed current prediction credit changes bounded retention of old capsules; next eviction unchanged at this small update scale. Not evidence of learned long-term latch or predictive benefit.",
+  "code_rule": "b=tanh(existing read preference); select with similarity/temperature+b; evict greatest age/exp(b); no age refresh on read; fixed slots",
+  "raw_report": "E:\\cgb_gdn340_probe\\consolidation_20261106\\wiring.json",
+  "raw_sha256": "f04557f82de641adb3590ced01554ea3594c82801a51a0d425fba098894a2c8f",
+  "source_files_sha256": {
+    "scripts/ib_local/experience_consolidation.py": "c87722dccda69c55aaea63e27bba6be97fc10e307f9009c2abfa144a2f891b67",
+    "scripts/ib_local/latent_navigation_v3.py": "934ab30e87d7ae10dd395e43a542033adccbe78d65864d9c2dfa1bde4cf19ac3",
+    "scripts/ib_local/pretrained_gdn_experience.py": "73efc42c9dd7802998d03d96d5dcc6336a54b01a981ddc308e2f982059348cc2",
+    "scripts/ib_local/pretrained_gdn_learning.py": "23e70a10b06ec8c17130fc30a21329f0ac7ce1164657e7d54795f07a5ca5cf0d",
+    "scripts/ib_local/probe_pretrained_gdn_consolidation.py": "f3ecfa4eed6c13e444dbccf0fd02fde6a49f5d46cea4f98f2849fc01292558dc",
+    "tests/test_experience_consolidation.py": "18062fd616cb7d5105de14914756f05bbec380ce099dda0f9495c60530331b1c"
+  }
+}

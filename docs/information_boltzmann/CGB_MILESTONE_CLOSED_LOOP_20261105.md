@@ -4,6 +4,8 @@
 
 本平台的名字与范围固定在这里。用户定义、主链及最大覆盖—最小生成目标继续沿用 [AGENTS](../../AGENTS.md)，本平台不替换完整无限流生命体的定义。
 
+**11-06更新：水木的两项本轮验收通过。** 同一个体的真实经历帮助预测（实际校准MSE .49230对打乱.51204），从第34轮改变选择与世界输入，最终独立NLL1.431168对屏蔽1.432475，四点均值也改善.00051197。各512轮、491520外界字节、2048更新，单seed11；收益小，完整曲线和此前失败见[水木报告](CGB_CAUSAL_WOOD_20261106.md)。当前继续点推进到`E:/cgb_causal_wood_20261106/direct_pair_replay_fixed/train_real_causal/last.pt.gz`，cycle1792；完整下一拍磁盘恢复通过，原768轮平台点保留。接下来可在同一身体上接妈妈世界，不再把水木局部调优作为无限前置。
+
 ## 1. 平台承诺及证据
 
 | 已有结果 | 证据范围 | 入口 |
@@ -14,6 +16,7 @@
 | 旧经历可跨窗口再次实际发用 | 第74轮话语在第496轮从原槽重说，中间216394外界字节 | [周转追踪](../../results/published/cgb_nested_phase_trace_20261105.json) |
 | 混合动作收益不能再被归给最后一种动作 | 新读口修复；46项接口测试与真实末检查点只读核对，尚未修复后整圈训练 | [修复核对](../../results/published/cgb_action_gain_read_fix_20261105.json) |
 | 共同状态可以恢复继续 | 已完成运行的完整下一拍参数误差0，策略因果回放误差最大约1.91e-6 | 同一完成结果和本地完整检查点 |
+| 读取信用可经表达和世界反馈改善后续学习 | 同源真实OWT512轮/臂，末验证1.44476对1.46004；话语与输入从278轮分岔，末偏好屏蔽保留主要收益 | [真实语言续跑](CGB_WATER_REPLY_CONTINUATION_20261105.md) |
 
 ## 2. 已完成训练的明确收益
 
@@ -44,17 +47,21 @@
 
 真实512轮末检查点：730个占用槽，原308个当前目标的收益可读槽中，36个因归属不完整或不一致被排除，272个仍可读。没有新增持久数组、神经参数或检查点字段。源检查点及相关内存张量未修改。
 
-**版本区分：**第2节是此前训练完成的观察/估计分离结果；最新动作归属修复只有接口与存档检查，尚未跑新的整圈训练。此处把二者分开，避免以后把旧成绩算给新代码。
+随后按用户决定继续分离两类水：原话载荷移到独立检索表，因果表保留连续特征和后果；本次真实读取误差可结算旧记录的读取信用，并改变以后取用。新增80KiB固定状态、不增神经参数；旧检查点无损迁移和实际接线检查见[接口规格第11节](CGB_NESTED_FIVE_PHASE_INTERFACE_20261105.md#11-两类水与当前误差对旧记录的读取信用零训练改造)。
+
+后续完整闭环尺度检查发现均值偏置不足，改为复用现有Adam设置归一化更新偏好，信用状态总计144KiB；两组512轮真实OWT顺序对照已完成，末验证改善 `.01527975` nats/字节，过程检查点均值改善 `.00383078`。[当前预登记与结果](CGB_WATER_REPLY_CONTINUATION_20261105.md)同时记录整表复制的内存中断及无损表行分支修复。上述旧80KiB和零训练读数属于先前阶段。
+
+**版本区分：**第2节是此前机制世界的观察/估计分离结果；新的真实语言对照单独报告，不能把两种世界的NLL数值横比。
 
 ## 5. 运行入口与恢复边界
 
-当前机制运行脚本从实际执行的 `scratch/run_learning_rooms_20261105.py` 原样提升为 [`scripts/ib_local/run_learning_rooms.py`](../../scripts/ib_local/run_learning_rooms.py)，SHA256为 `37e2769629bef2b168cb4843055f8a7716cc6192211d1e73ec0b7538f39b835d`。历史源与运行源码快照保留；后续运行由当次配置登记代码哈希。
+当前机制运行脚本从实际执行的 `scratch/run_learning_rooms_20261105.py` 提升为 [`scripts/ib_local/run_learning_rooms.py`](../../scripts/ib_local/run_learning_rooms.py)。原样提升时SHA256为 `37e2769629bef2b168cb4843055f8a7716cc6192211d1e73ec0b7538f39b835d`；此后增加显式读取信用配置与新源码登记。历史源及原样快照仍保留，后续运行按当次配置哈希区分。
 
 从仓库根目录、已安装依赖且本地源检查点存在时，现有接口为：
 
 ```powershell
 # 命令记录，不是本次整理自动启动的任务
-python -m scripts.ib_local.run_learning_rooms --cycles 512 --settlement continuation_joint --reward-memory observed --value-normalization none --output results/<新的目录>
+python -m scripts.ib_local.run_learning_rooms --cycles 512 --settlement continuation_joint --reward-memory observed --value-normalization none --read-credit prediction --output results/<新的目录>
 python -m scripts.ib_local.report_learning_rooms results/<新的目录>
 python -m scripts.ib_local.compare_navigation_settlement results/cgb_learning_rooms_joint_20261105 results/<新的目录>
 ```
@@ -74,8 +81,8 @@ python -m scripts.ib_local.compare_navigation_settlement results/cgb_learning_ro
 
 ## 6. 接下来的有界路线
 
-1. **固定此平台。** 当前任务只整理、测试、提交与推送，不开新训练。
-2. **单独检验动作归属修复。** 沿原同源完整起点、相同世界与预算比较；先看整圈过程与终点，再解释木火分量。保留旧控制及原执行源，不同时改世界、损失比重或模型大小。
+1. **保留已完成的候选身体。** 当前继续点为 `E:/cgb_water_reply_20261105/train_adam_journal/last.pt.gz`，真实下一拍完整恢复已通过，保留off控制与实际执行源。
+2. **后续沿同一个体继续。** 本轮同源真实语言比较已经完成，不再靠增倍率挽救初版均值尺度；以后检验更长信息流与变化后再学习，保持完整状态，不能回旧源重新出生后冒充接续。
 3. **进入更丰富的真实语言交互。** 将已具备的输入—行动因果接口带到真实文本或母亲世界，评分与保持随实际语言分布核对；母亲侧独立工作不在本次清理中删除或重写。
 4. **让调节与组织继续共同形成。** 重点仍是系统2/3结合、系统1/5底座和系统4归返；跨尺度信用、自主节律、长期自我模型按实际缺口推进，不再为每个名字添加控制器。
 

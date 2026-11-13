@@ -1,0 +1,4549 @@
+{
+  "status": "complete_bounded_route_validation",
+  "replay_schema": 3,
+  "mechanism": "Per-experience predictive likelihood; posterior responsibility; same NLL",
+  "capability_demonstrated": false,
+  "extra_old_credit_task_advantage_demonstrated": false,
+  "promoted": false,
+  "accepted_platform_unchanged": true,
+  "new_lean_theorems": 0,
+  "new_body_coverage_claims": 0,
+  "tests": {
+    "passed": 58,
+    "command": "D:/conda_envs/vox/python.exe -m pytest tests/test_predictive_responsibility.py tests/test_small_gdn_experience.py tests/test_small_gdn_ruler.py tests/test_small_gdn_ruler_routes.py tests/test_table_branch.py tests/test_language_navigation_v2.py tests/test_causal_wood.py tests/test_pretrained_gdn_experience.py -q"
+  },
+  "source_sha256": "c8564de9edff2905c2cf9f8e0fef6cfb90e369b75e14f1d80764a03c2e66a5fa",
+  "source_unchanged": true,
+  "executed_sources_unchanged": true,
+  "raw_report": "E:\\cgb_small_gdn_20261107\\responsibility_pair\\report.json",
+  "raw_report_sha256": "b0ede76308780b616667bec919bcb740fc7fb15356ebe5d94ddd1ad93b72a35e",
+  "seconds": 944.2996022701263,
+  "peak_cuda_bytes": 760273408,
+  "arms": {
+    "held": {
+      "optimizer_updates": 128,
+      "examples": 128,
+      "observed_bytes": 59034,
+      "supervised_bytes": 1152,
+      "evaluations": [
+        {
+          "example": 0,
+          "short": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "4440241"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 477,
+                "answer_distance_bytes": 280,
+                "answer_nll": 3.7302499655634165,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 1,
+                "references": [
+                  "6461405"
+                ],
+                "prediction": " a company of the problem of the",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 3.637432605959475,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 2,
+                "references": [
+                  "2354517"
+                ],
+                "prediction": " a company of the problem of the",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 3.788256744854152,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 3,
+                "references": [
+                  "6650839"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 447,
+                "answer_distance_bytes": 260,
+                "answer_nll": 3.8661231519654393,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6606934"
+                ],
+                "prediction": " a company of the problem of the",
+                "prompt_bytes": 444,
+                "answer_distance_bytes": 258,
+                "answer_nll": 3.5438071293756366,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 5,
+                "references": [
+                  "9201093"
+                ],
+                "prediction": " a company of the problem of the",
+                "prompt_bytes": 450,
+                "answer_distance_bytes": 262,
+                "answer_nll": 3.3247162513434887,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 6,
+                "references": [
+                  "3676885"
+                ],
+                "prediction": " a company of the problem of the",
+                "prompt_bytes": 471,
+                "answer_distance_bytes": 276,
+                "answer_nll": 4.21464753523469,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 7,
+                "references": [
+                  "3113601"
+                ],
+                "prediction": " a company of the problem of the",
+                "prompt_bytes": 465,
+                "answer_distance_bytes": 272,
+                "answer_nll": 3.633278432302177,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 3.7173139770748094,
+            "owt_nll": 1.447521686553955
+          },
+          "long": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "2622302"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1356,
+                "answer_distance_bytes": 356,
+                "answer_nll": 3.496095433831215,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 1,
+                "references": [
+                  "4610712"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1347,
+                "answer_distance_bytes": 350,
+                "answer_nll": 3.8597711250185966,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 2,
+                "references": [
+                  "7565577"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1350,
+                "answer_distance_bytes": 1162,
+                "answer_nll": 4.086424145847559,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 3,
+                "references": [
+                  "8855227"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 632,
+                "answer_nll": 3.505974270403385,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6556483"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1335,
+                "answer_distance_bytes": 792,
+                "answer_nll": 3.8048818074166775,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 5,
+                "references": [
+                  "1276102"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 722,
+                "answer_nll": 3.67688858974725,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 6,
+                "references": [
+                  "7246591"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1353,
+                "answer_distance_bytes": 354,
+                "answer_nll": 4.0144989509135485,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 7,
+                "references": [
+                  "7629301"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1362,
+                "answer_distance_bytes": 720,
+                "answer_nll": 3.6424298360943794,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 3.7608705199090764,
+            "owt_nll": 1.447521686553955
+          }
+        },
+        {
+          "example": 1,
+          "short": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "4440241"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 477,
+                "answer_distance_bytes": 280,
+                "answer_nll": 3.5505460342392325,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 1,
+                "references": [
+                  "6461405"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 3.4298257119953632,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 2,
+                "references": [
+                  "2354517"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 3.510270399041474,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 3,
+                "references": [
+                  "6650839"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 447,
+                "answer_distance_bytes": 260,
+                "answer_nll": 3.628181107342243,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6606934"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 444,
+                "answer_distance_bytes": 258,
+                "answer_nll": 3.3097824826836586,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 5,
+                "references": [
+                  "9201093"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 450,
+                "answer_distance_bytes": 262,
+                "answer_nll": 2.44700943864882,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 6,
+                "references": [
+                  "3676885"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 471,
+                "answer_distance_bytes": 276,
+                "answer_nll": 3.9698664927855134,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 7,
+                "references": [
+                  "3113601"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 465,
+                "answer_distance_bytes": 272,
+                "answer_nll": 3.4123883666470647,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 3.407233754172921,
+            "owt_nll": 1.4485374987125397
+          },
+          "long": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "2622302"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1356,
+                "answer_distance_bytes": 356,
+                "answer_nll": 3.315750536508858,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 1,
+                "references": [
+                  "4610712"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1347,
+                "answer_distance_bytes": 350,
+                "answer_nll": 3.6510480819270015,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 2,
+                "references": [
+                  "7565577"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1350,
+                "answer_distance_bytes": 1162,
+                "answer_nll": 3.791209055110812,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 3,
+                "references": [
+                  "8855227"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 632,
+                "answer_nll": 3.3146378127858043,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6556483"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1335,
+                "answer_distance_bytes": 792,
+                "answer_nll": 3.580672507174313,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 5,
+                "references": [
+                  "1276102"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 722,
+                "answer_nll": 3.4818783327937126,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 6,
+                "references": [
+                  "7246591"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1353,
+                "answer_distance_bytes": 354,
+                "answer_nll": 3.7956288335844874,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 7,
+                "references": [
+                  "7629301"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1362,
+                "answer_distance_bytes": 720,
+                "answer_nll": 3.420960981398821,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 3.5439732676604763,
+            "owt_nll": 1.4485374987125397
+          }
+        },
+        {
+          "example": 32,
+          "short": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "4440241"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 477,
+                "answer_distance_bytes": 280,
+                "answer_nll": 1.873776611406356,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 1,
+                "references": [
+                  "6461405"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 1.786010731710121,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 2,
+                "references": [
+                  "2354517"
+                ],
+                "prediction": " 199335\n\nThe grass is green. The",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 1.7665143525227904,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199335"
+              },
+              {
+                "index": 3,
+                "references": [
+                  "6650839"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 447,
+                "answer_distance_bytes": 260,
+                "answer_nll": 1.87767648731824,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6606934"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 444,
+                "answer_distance_bytes": 258,
+                "answer_nll": 1.7418147868011147,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 5,
+                "references": [
+                  "9201093"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 450,
+                "answer_distance_bytes": 262,
+                "answer_nll": 1.9861728455871344,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 6,
+                "references": [
+                  "3676885"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 471,
+                "answer_distance_bytes": 276,
+                "answer_nll": 1.8873778017004952,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 7,
+                "references": [
+                  "3113601"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 465,
+                "answer_distance_bytes": 272,
+                "answer_nll": 1.1106114288559183,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 1.7537443807377713,
+            "owt_nll": 1.5780859142541885
+          },
+          "long": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "2622302"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1356,
+                "answer_distance_bytes": 356,
+                "answer_nll": 2.070478410460055,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 1,
+                "references": [
+                  "4610712"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1347,
+                "answer_distance_bytes": 350,
+                "answer_nll": 1.9837605388602242,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 2,
+                "references": [
+                  "7565577"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1350,
+                "answer_distance_bytes": 1162,
+                "answer_nll": 1.7914383263560012,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 3,
+                "references": [
+                  "8855227"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 632,
+                "answer_nll": 1.8320379258366302,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6556483"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1335,
+                "answer_distance_bytes": 792,
+                "answer_nll": 1.6104787497315556,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 5,
+                "references": [
+                  "1276102"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 722,
+                "answer_nll": 1.9035486705834046,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 6,
+                "references": [
+                  "7246591"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1353,
+                "answer_distance_bytes": 354,
+                "answer_nll": 2.517937028547749,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 7,
+                "references": [
+                  "7629301"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1362,
+                "answer_distance_bytes": 720,
+                "answer_nll": 1.868870014208369,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 1.9473187080729986,
+            "owt_nll": 1.5780859142541885
+          }
+        },
+        {
+          "example": 64,
+          "short": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "4440241"
+                ],
+                "prediction": " 7396051\n\nAnd Democratic number ",
+                "prompt_bytes": 477,
+                "answer_distance_bytes": 280,
+                "answer_nll": 1.7493776729679666,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 1,
+                "references": [
+                  "6461405"
+                ],
+                "prediction": " 7396051\n\nAnd Democratic number ",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 1.3842253682087176,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 2,
+                "references": [
+                  "2354517"
+                ],
+                "prediction": " 7396051\n\nOne of the provided te",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 1.5260412443894893,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 3,
+                "references": [
+                  "6650839"
+                ],
+                "prediction": " 7396051\n\nAnd Democratic number ",
+                "prompt_bytes": 447,
+                "answer_distance_bytes": 260,
+                "answer_nll": 1.6059466947917826,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6606934"
+                ],
+                "prediction": " 7396051\n\nAnd Democratic number ",
+                "prompt_bytes": 444,
+                "answer_distance_bytes": 258,
+                "answer_nll": 1.2816096047172323,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 5,
+                "references": [
+                  "9201093"
+                ],
+                "prediction": " 7396051\n\nOne of the provided te",
+                "prompt_bytes": 450,
+                "answer_distance_bytes": 262,
+                "answer_nll": 1.5559990004985593,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 6,
+                "references": [
+                  "3676885"
+                ],
+                "prediction": " 7396051\n\nAnd Democratic number ",
+                "prompt_bytes": 471,
+                "answer_distance_bytes": 276,
+                "answer_nll": 1.6711037274217233,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 7,
+                "references": [
+                  "3113601"
+                ],
+                "prediction": " 7396051\n\nAnd Democratic number ",
+                "prompt_bytes": 465,
+                "answer_distance_bytes": 272,
+                "answer_nll": 1.4083243333152495,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 1.52282845578884,
+            "owt_nll": 1.653667412698269
+          },
+          "long": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "2622302"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1356,
+                "answer_distance_bytes": 356,
+                "answer_nll": 1.320458362082718,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 1,
+                "references": [
+                  "4610712"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1347,
+                "answer_distance_bytes": 350,
+                "answer_nll": 1.5913935412245337,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 2,
+                "references": [
+                  "7565577"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1350,
+                "answer_distance_bytes": 1162,
+                "answer_nll": 1.0942293539701495,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 3,
+                "references": [
+                  "8855227"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 632,
+                "answer_nll": 1.526667856844142,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6556483"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1335,
+                "answer_distance_bytes": 792,
+                "answer_nll": 1.3019678695418406,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 5,
+                "references": [
+                  "1276102"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 722,
+                "answer_nll": 1.7256275472173002,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 6,
+                "references": [
+                  "7246591"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1353,
+                "answer_distance_bytes": 354,
+                "answer_nll": 1.720672586117871,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 7,
+                "references": [
+                  "7629301"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1362,
+                "answer_distance_bytes": 720,
+                "answer_nll": 1.2840466538618784,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 1.4456329713575542,
+            "owt_nll": 1.653667412698269
+          }
+        },
+        {
+          "example": 128,
+          "short": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "4440241"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 477,
+                "answer_distance_bytes": 280,
+                "answer_nll": 1.772214894550416,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 1,
+                "references": [
+                  "6461405"
+                ],
+                "prediction": " 6090561\n\nOne of the 6090561\n\nOn",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 1.2256539949557919,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 2,
+                "references": [
+                  "2354517"
+                ],
+                "prediction": " 6090561\n\nOne of the 1993414\n\nTh",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 1.563806458878389,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 3,
+                "references": [
+                  "6650839"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 447,
+                "answer_distance_bytes": 260,
+                "answer_nll": 1.3855421235093672,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6606934"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 444,
+                "answer_distance_bytes": 258,
+                "answer_nll": 1.1430289421550697,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 5,
+                "references": [
+                  "9201093"
+                ],
+                "prediction": " 6090561\n\nOne of the 9187769\n\nOn",
+                "prompt_bytes": 450,
+                "answer_distance_bytes": 262,
+                "answer_nll": 1.5219776093981636,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 6,
+                "references": [
+                  "3676885"
+                ],
+                "prediction": " 6090561\n\nOne of the 1993414\n\nTh",
+                "prompt_bytes": 471,
+                "answer_distance_bytes": 276,
+                "answer_nll": 1.7092639110160235,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 7,
+                "references": [
+                  "3113601"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 465,
+                "answer_distance_bytes": 272,
+                "answer_nll": 1.2571774566167733,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 1.4473331738849993,
+            "owt_nll": 1.8527185767889023
+          },
+          "long": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "2622302"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1356,
+                "answer_distance_bytes": 356,
+                "answer_nll": 1.5305797514192818,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 1,
+                "references": [
+                  "4610712"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1347,
+                "answer_distance_bytes": 350,
+                "answer_nll": 1.6684743668920419,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 2,
+                "references": [
+                  "7565577"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1350,
+                "answer_distance_bytes": 1162,
+                "answer_nll": 1.4856702657489222,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 3,
+                "references": [
+                  "8855227"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 632,
+                "answer_nll": 1.3019721465279872,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6556483"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1335,
+                "answer_distance_bytes": 792,
+                "answer_nll": 1.4815079454019724,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 5,
+                "references": [
+                  "1276102"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 722,
+                "answer_nll": 2.0139407175811357,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 6,
+                "references": [
+                  "7246591"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1353,
+                "answer_distance_bytes": 354,
+                "answer_nll": 1.761506415939948,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 7,
+                "references": [
+                  "7629301"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1362,
+                "answer_distance_bytes": 720,
+                "answer_nll": 1.3405659113268484,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 1.5730271901047672,
+            "owt_nll": 1.8527185767889023
+          }
+        }
+      ],
+      "training_ce": [
+        3.9535369873046875,
+        3.5071191787719727,
+        3.601085662841797,
+        2.6250550746917725,
+        2.255648612976074,
+        2.5080082416534424,
+        2.752171516418457,
+        2.700465202331543,
+        2.4013168811798096,
+        2.4543521404266357,
+        2.6733736991882324,
+        2.0946247577667236,
+        1.939507007598877,
+        1.935646891593933,
+        1.901429533958435,
+        1.7687560319900513,
+        1.7794080972671509,
+        2.4709551334381104,
+        1.3939050436019897,
+        1.265743613243103,
+        1.5831645727157593,
+        2.050841808319092,
+        1.86198091506958,
+        1.789659023284912,
+        1.717835545539856,
+        1.834524393081665,
+        1.4615446329116821,
+        2.065425395965576,
+        1.502216100692749,
+        1.9382139444351196,
+        1.9324743747711182,
+        1.81523597240448,
+        1.3625210523605347,
+        1.4319260120391846,
+        1.5995787382125854,
+        1.5535223484039307,
+        1.7131870985031128,
+        1.6276471614837646,
+        1.320013165473938,
+        1.5232435464859009,
+        1.1490375995635986,
+        1.382866382598877,
+        1.2940551042556763,
+        1.5291810035705566,
+        1.1005868911743164,
+        1.5723685026168823,
+        1.355513572692871,
+        0.9304049015045166,
+        1.338134765625,
+        1.3906598091125488,
+        1.5661875009536743,
+        1.5058138370513916,
+        1.0576618909835815,
+        1.553609848022461,
+        1.5655765533447266,
+        1.4145780801773071,
+        1.2288066148757935,
+        1.644225835800171,
+        1.1890826225280762,
+        1.5409363508224487,
+        1.4334485530853271,
+        1.1397290229797363,
+        1.3810887336730957,
+        1.1746349334716797,
+        1.2335692644119263,
+        1.317896842956543,
+        1.3138508796691895,
+        1.280264973640442,
+        1.1634244918823242,
+        1.2558737993240356,
+        1.4022164344787598,
+        1.3819997310638428,
+        1.2564053535461426,
+        1.3261642456054688,
+        1.0299320220947266,
+        1.0709774494171143,
+        1.3604087829589844,
+        1.1466697454452515,
+        1.3938394784927368,
+        1.4380873441696167,
+        1.4179837703704834,
+        1.376269817352295,
+        1.6625984907150269,
+        1.6989165544509888,
+        1.244530200958252,
+        1.0280123949050903,
+        1.4172884225845337,
+        1.4215128421783447,
+        1.0910601615905762,
+        1.1294159889221191,
+        1.6064932346343994,
+        1.344549536705017,
+        1.1478391885757446,
+        1.2132877111434937,
+        1.4145053625106812,
+        1.4705615043640137,
+        1.3169589042663574,
+        1.4877755641937256,
+        1.6038812398910522,
+        1.6488757133483887,
+        2.0138044357299805,
+        1.6639418601989746,
+        1.3287683725357056,
+        1.2468626499176025,
+        1.500455617904663,
+        1.1574921607971191,
+        1.6300175189971924,
+        1.3345184326171875,
+        1.301846981048584,
+        1.2525694370269775,
+        1.476635217666626,
+        0.9345476627349854,
+        1.4170382022857666,
+        0.9138867259025574,
+        1.211795687675476,
+        1.5891894102096558,
+        1.4036184549331665,
+        1.2393159866333008,
+        1.3314207792282104,
+        1.4242769479751587,
+        1.0859732627868652,
+        1.1176189184188843,
+        1.0620687007904053,
+        1.4602625370025635,
+        1.1334481239318848,
+        1.3939409255981445,
+        1.101643443107605,
+        1.39597749710083
+      ],
+      "posterior_change_l1_first16": 0.007782721355195754,
+      "posterior_change_l1_last16": 0.004161570162978023,
+      "final_layers": [
+        {
+          "layer": 1,
+          "occupied": 16,
+          "replayed": 16,
+          "max_age_bytes": 3594,
+          "credit_window_bytes": 128,
+          "mass_older_than_window": 0.9726861119270325,
+          "null_mass": 0.026397673413157463,
+          "storage_bytes": 1430823
+        },
+        {
+          "layer": 2,
+          "occupied": 16,
+          "replayed": 16,
+          "max_age_bytes": 2801,
+          "credit_window_bytes": 128,
+          "mass_older_than_window": 0.9684318900108337,
+          "null_mass": 0.030665770173072815,
+          "storage_bytes": 1454887
+        },
+        {
+          "layer": 3,
+          "occupied": 16,
+          "replayed": 16,
+          "max_age_bytes": 2321,
+          "credit_window_bytes": 128,
+          "mass_older_than_window": 0.9854136109352112,
+          "null_mass": 0.013729214668273926,
+          "storage_bytes": 1430823
+        },
+        {
+          "layer": 4,
+          "occupied": 16,
+          "replayed": 16,
+          "max_age_bytes": 3129,
+          "credit_window_bytes": 128,
+          "mass_older_than_window": 0.9942150115966797,
+          "null_mass": 0.004881903529167175,
+          "storage_bytes": 1430823
+        }
+      ],
+      "final_old_gradients": null
+    },
+    "full": {
+      "optimizer_updates": 128,
+      "examples": 128,
+      "observed_bytes": 59034,
+      "supervised_bytes": 1152,
+      "evaluations": [
+        {
+          "example": 0,
+          "short": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "4440241"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 477,
+                "answer_distance_bytes": 280,
+                "answer_nll": 3.7302499655634165,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 1,
+                "references": [
+                  "6461405"
+                ],
+                "prediction": " a company of the problem of the",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 3.637432605959475,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 2,
+                "references": [
+                  "2354517"
+                ],
+                "prediction": " a company of the problem of the",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 3.788256744854152,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 3,
+                "references": [
+                  "6650839"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 447,
+                "answer_distance_bytes": 260,
+                "answer_nll": 3.8661231519654393,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6606934"
+                ],
+                "prediction": " a company of the problem of the",
+                "prompt_bytes": 444,
+                "answer_distance_bytes": 258,
+                "answer_nll": 3.5438071293756366,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 5,
+                "references": [
+                  "9201093"
+                ],
+                "prediction": " a company of the problem of the",
+                "prompt_bytes": 450,
+                "answer_distance_bytes": 262,
+                "answer_nll": 3.3247162513434887,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 6,
+                "references": [
+                  "3676885"
+                ],
+                "prediction": " a company of the problem of the",
+                "prompt_bytes": 471,
+                "answer_distance_bytes": 276,
+                "answer_nll": 4.21464753523469,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 7,
+                "references": [
+                  "3113601"
+                ],
+                "prediction": " a company of the problem of the",
+                "prompt_bytes": 465,
+                "answer_distance_bytes": 272,
+                "answer_nll": 3.633278432302177,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 3.7173139770748094,
+            "owt_nll": 1.447521686553955
+          },
+          "long": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "2622302"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1356,
+                "answer_distance_bytes": 356,
+                "answer_nll": 3.496095433831215,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 1,
+                "references": [
+                  "4610712"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1347,
+                "answer_distance_bytes": 350,
+                "answer_nll": 3.8597711250185966,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 2,
+                "references": [
+                  "7565577"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1350,
+                "answer_distance_bytes": 1162,
+                "answer_nll": 4.086424145847559,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 3,
+                "references": [
+                  "8855227"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 632,
+                "answer_nll": 3.505974270403385,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6556483"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1335,
+                "answer_distance_bytes": 792,
+                "answer_nll": 3.8048818074166775,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 5,
+                "references": [
+                  "1276102"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 722,
+                "answer_nll": 3.67688858974725,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 6,
+                "references": [
+                  "7246591"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1353,
+                "answer_distance_bytes": 354,
+                "answer_nll": 4.0144989509135485,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 7,
+                "references": [
+                  "7629301"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1362,
+                "answer_distance_bytes": 720,
+                "answer_nll": 3.6424298360943794,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 3.7608705199090764,
+            "owt_nll": 1.447521686553955
+          }
+        },
+        {
+          "example": 1,
+          "short": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "4440241"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 477,
+                "answer_distance_bytes": 280,
+                "answer_nll": 3.5505460342392325,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 1,
+                "references": [
+                  "6461405"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 3.4298256523907185,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 2,
+                "references": [
+                  "2354517"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 3.5102704586461186,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 3,
+                "references": [
+                  "6650839"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 447,
+                "answer_distance_bytes": 260,
+                "answer_nll": 3.6281809136271477,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6606934"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 444,
+                "answer_distance_bytes": 258,
+                "answer_nll": 3.3097825422883034,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 5,
+                "references": [
+                  "9201093"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 450,
+                "answer_distance_bytes": 262,
+                "answer_nll": 2.4470094982534647,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 6,
+                "references": [
+                  "3676885"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 471,
+                "answer_distance_bytes": 276,
+                "answer_nll": 3.9698666715994477,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 7,
+                "references": [
+                  "3113601"
+                ],
+                "prediction": " a state of the problem of the p",
+                "prompt_bytes": 465,
+                "answer_distance_bytes": 272,
+                "answer_nll": 3.4123883666470647,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 3.4072337672114372,
+            "owt_nll": 1.448537491261959
+          },
+          "long": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "2622302"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1356,
+                "answer_distance_bytes": 356,
+                "answer_nll": 3.3157505663111806,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 1,
+                "references": [
+                  "4610712"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1347,
+                "answer_distance_bytes": 350,
+                "answer_nll": 3.6510480819270015,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 2,
+                "references": [
+                  "7565577"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1350,
+                "answer_distance_bytes": 1162,
+                "answer_nll": 3.79120902530849,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 3,
+                "references": [
+                  "8855227"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 632,
+                "answer_nll": 3.314637810923159,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6556483"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1335,
+                "answer_distance_bytes": 792,
+                "answer_nll": 3.5806724904105067,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 5,
+                "references": [
+                  "1276102"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 722,
+                "answer_nll": 3.481878273189068,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 6,
+                "references": [
+                  "7246591"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1353,
+                "answer_distance_bytes": 354,
+                "answer_nll": 3.7956288335844874,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              },
+              {
+                "index": 7,
+                "references": [
+                  "7629301"
+                ],
+                "prediction": " a state of the state of the sta",
+                "prompt_bytes": 1362,
+                "answer_distance_bytes": 720,
+                "answer_nll": 3.420960981398821,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": null
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 3.5439732578815892,
+            "owt_nll": 1.448537491261959
+          }
+        },
+        {
+          "example": 32,
+          "short": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "4440241"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 477,
+                "answer_distance_bytes": 280,
+                "answer_nll": 1.8742417697794735,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 1,
+                "references": [
+                  "6461405"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 1.7861611030530185,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 2,
+                "references": [
+                  "2354517"
+                ],
+                "prediction": " 199335\n\nThe grass is green. The",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 1.7666082612704486,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199335"
+              },
+              {
+                "index": 3,
+                "references": [
+                  "6650839"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 447,
+                "answer_distance_bytes": 260,
+                "answer_nll": 1.8785229524364695,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6606934"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 444,
+                "answer_distance_bytes": 258,
+                "answer_nll": 1.743132216273807,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 5,
+                "references": [
+                  "9201093"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 450,
+                "answer_distance_bytes": 262,
+                "answer_nll": 1.986288748215884,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 6,
+                "references": [
+                  "3676885"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 471,
+                "answer_distance_bytes": 276,
+                "answer_nll": 1.8879270609468222,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 7,
+                "references": [
+                  "3113601"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 465,
+                "answer_distance_bytes": 272,
+                "answer_nll": 1.111191158532165,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 1.754259158813511,
+            "owt_nll": 1.5780143067240715
+          },
+          "long": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "2622302"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1356,
+                "answer_distance_bytes": 356,
+                "answer_nll": 2.07103486568667,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 1,
+                "references": [
+                  "4610712"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1347,
+                "answer_distance_bytes": 350,
+                "answer_nll": 1.9845333440462127,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 2,
+                "references": [
+                  "7565577"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1350,
+                "answer_distance_bytes": 1162,
+                "answer_nll": 1.7925667768577114,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 3,
+                "references": [
+                  "8855227"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 632,
+                "answer_nll": 1.8327784534776583,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6556483"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1335,
+                "answer_distance_bytes": 792,
+                "answer_nll": 1.610995814204216,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 5,
+                "references": [
+                  "1276102"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 722,
+                "answer_nll": 1.903978262329474,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 6,
+                "references": [
+                  "7246591"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1353,
+                "answer_distance_bytes": 354,
+                "answer_nll": 2.5193041402380913,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              },
+              {
+                "index": 7,
+                "references": [
+                  "7629301"
+                ],
+                "prediction": " 199333\n\nThe grass is green. The",
+                "prompt_bytes": 1362,
+                "answer_distance_bytes": 720,
+                "answer_nll": 1.8698470226954669,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "199333"
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 1.9481298349419376,
+            "owt_nll": 1.5780143067240715
+          }
+        },
+        {
+          "example": 64,
+          "short": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "4440241"
+                ],
+                "prediction": " 7396051\n\nAnd Democratic number ",
+                "prompt_bytes": 477,
+                "answer_distance_bytes": 280,
+                "answer_nll": 1.7504946619737893,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 1,
+                "references": [
+                  "6461405"
+                ],
+                "prediction": " 7396051\n\nAnd Democratic number ",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 1.383791458036285,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 2,
+                "references": [
+                  "2354517"
+                ],
+                "prediction": " 7396051\n\nOne of the provided te",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 1.5275397892692126,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 3,
+                "references": [
+                  "6650839"
+                ],
+                "prediction": " 7396051\n\nAnd Democratic number ",
+                "prompt_bytes": 447,
+                "answer_distance_bytes": 260,
+                "answer_nll": 1.6067606648430228,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6606934"
+                ],
+                "prediction": " 7396051\n\nAnd Democratic number ",
+                "prompt_bytes": 444,
+                "answer_distance_bytes": 258,
+                "answer_nll": 1.2817333416896872,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 5,
+                "references": [
+                  "9201093"
+                ],
+                "prediction": " 7396051\n\nOne of the provided te",
+                "prompt_bytes": 450,
+                "answer_distance_bytes": 262,
+                "answer_nll": 1.5570021849125624,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 6,
+                "references": [
+                  "3676885"
+                ],
+                "prediction": " 7396051\n\nAnd Democratic number ",
+                "prompt_bytes": 471,
+                "answer_distance_bytes": 276,
+                "answer_nll": 1.6709402672131546,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 7,
+                "references": [
+                  "3113601"
+                ],
+                "prediction": " 7396051\n\nAnd Democratic number ",
+                "prompt_bytes": 465,
+                "answer_distance_bytes": 272,
+                "answer_nll": 1.4094022270292044,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 1.5234580743708648,
+            "owt_nll": 1.653325118124485
+          },
+          "long": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "2622302"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1356,
+                "answer_distance_bytes": 356,
+                "answer_nll": 1.3209538626251742,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 1,
+                "references": [
+                  "4610712"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1347,
+                "answer_distance_bytes": 350,
+                "answer_nll": 1.5916923111362848,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 2,
+                "references": [
+                  "7565577"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1350,
+                "answer_distance_bytes": 1162,
+                "answer_nll": 1.094708374759648,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 3,
+                "references": [
+                  "8855227"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 632,
+                "answer_nll": 1.5280810989206657,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6556483"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1335,
+                "answer_distance_bytes": 792,
+                "answer_nll": 1.3019587893795688,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 5,
+                "references": [
+                  "1276102"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 722,
+                "answer_nll": 1.7263672153349034,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 6,
+                "references": [
+                  "7246591"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1353,
+                "answer_distance_bytes": 354,
+                "answer_nll": 1.721311576955486,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              },
+              {
+                "index": 7,
+                "references": [
+                  "7629301"
+                ],
+                "prediction": " 7396051\n\nThe grass is green. Th",
+                "prompt_bytes": 1362,
+                "answer_distance_bytes": 720,
+                "answer_nll": 1.2837614087911788,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "7396051"
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 1.4461043297378637,
+            "owt_nll": 1.653325118124485
+          }
+        },
+        {
+          "example": 128,
+          "short": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "4440241"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 477,
+                "answer_distance_bytes": 280,
+                "answer_nll": 1.772288031203061,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 1,
+                "references": [
+                  "6461405"
+                ],
+                "prediction": " 6090561\n\nOne of the 6090561\n\nOn",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 1.22618614223029,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 2,
+                "references": [
+                  "2354517"
+                ],
+                "prediction": " 6090561\n\nOne of the 1993414\n\nTh",
+                "prompt_bytes": 441,
+                "answer_distance_bytes": 256,
+                "answer_nll": 1.5647456342048827,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 3,
+                "references": [
+                  "6650839"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 447,
+                "answer_distance_bytes": 260,
+                "answer_nll": 1.3873585748369806,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6606934"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 444,
+                "answer_distance_bytes": 258,
+                "answer_nll": 1.144021336993319,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 5,
+                "references": [
+                  "9201093"
+                ],
+                "prediction": " 6090561\n\nOne of the 9187769\n\nOn",
+                "prompt_bytes": 450,
+                "answer_distance_bytes": 262,
+                "answer_nll": 1.520718030835269,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 6,
+                "references": [
+                  "3676885"
+                ],
+                "prediction": " 6090561\n\nOne of the 1993414\n\nTh",
+                "prompt_bytes": 471,
+                "answer_distance_bytes": 276,
+                "answer_nll": 1.7086889681559114,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 7,
+                "references": [
+                  "3113601"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 465,
+                "answer_distance_bytes": 272,
+                "answer_nll": 1.2581363126992073,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 1.4477678788948651,
+            "owt_nll": 1.8515081852674484
+          },
+          "long": {
+            "cases": [
+              {
+                "index": 0,
+                "references": [
+                  "2622302"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1356,
+                "answer_distance_bytes": 356,
+                "answer_nll": 1.529308104833035,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 1,
+                "references": [
+                  "4610712"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1347,
+                "answer_distance_bytes": 350,
+                "answer_nll": 1.6704913842004316,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 2,
+                "references": [
+                  "7565577"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1350,
+                "answer_distance_bytes": 1162,
+                "answer_nll": 1.48511758726454,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 3,
+                "references": [
+                  "8855227"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 632,
+                "answer_nll": 1.302559168296284,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 4,
+                "references": [
+                  "6556483"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1335,
+                "answer_distance_bytes": 792,
+                "answer_nll": 1.4825780087849125,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 5,
+                "references": [
+                  "1276102"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1365,
+                "answer_distance_bytes": 722,
+                "answer_nll": 2.012304247720749,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 6,
+                "references": [
+                  "7246591"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1353,
+                "answer_distance_bytes": 354,
+                "answer_nll": 1.7617009244240762,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              },
+              {
+                "index": 7,
+                "references": [
+                  "7629301"
+                ],
+                "prediction": " 6090561\n\nThe grass is green. Th",
+                "prompt_bytes": 1362,
+                "answer_distance_bytes": 720,
+                "answer_nll": 1.3389382517561899,
+                "answer_bytes": 8,
+                "generated_bytes": 32,
+                "generation_cap_bytes": 32,
+                "has_eos": false,
+                "official_contains": false,
+                "standalone_number": false,
+                "first_number_exact": false,
+                "first_number_prefix": false,
+                "first_number": "6090561"
+              }
+            ],
+            "exact": 0,
+            "answer_nll": 1.5728747096600273,
+            "owt_nll": 1.8515081852674484
+          }
+        }
+      ],
+      "training_ce": [
+        3.9535369873046875,
+        3.5071191787719727,
+        3.6010851860046387,
+        2.625074863433838,
+        2.255673408508301,
+        2.5080227851867676,
+        2.752175807952881,
+        2.7004504203796387,
+        2.401376485824585,
+        2.4544410705566406,
+        2.673492431640625,
+        2.094695568084717,
+        1.9396108388900757,
+        1.9357924461364746,
+        1.9015096426010132,
+        1.7689837217330933,
+        1.7790285348892212,
+        2.470928192138672,
+        1.3939372301101685,
+        1.265699863433838,
+        1.583138346672058,
+        2.0510642528533936,
+        1.8621000051498413,
+        1.7896668910980225,
+        1.717905044555664,
+        1.8347409963607788,
+        1.4618422985076904,
+        2.066164255142212,
+        1.5017107725143433,
+        1.9379801750183105,
+        1.9326250553131104,
+        1.815175175666809,
+        1.3627804517745972,
+        1.4322346448898315,
+        1.6013683080673218,
+        1.5536627769470215,
+        1.7120263576507568,
+        1.6272578239440918,
+        1.3238911628723145,
+        1.525230050086975,
+        1.1486554145812988,
+        1.3834271430969238,
+        1.2948992252349854,
+        1.5302189588546753,
+        1.1013422012329102,
+        1.5714472532272339,
+        1.3565306663513184,
+        0.93002849817276,
+        1.3406124114990234,
+        1.3925666809082031,
+        1.5670329332351685,
+        1.5063351392745972,
+        1.0569839477539062,
+        1.5540955066680908,
+        1.5647759437561035,
+        1.4144967794418335,
+        1.22853684425354,
+        1.6438266038894653,
+        1.1894001960754395,
+        1.5408446788787842,
+        1.4329754114151,
+        1.1397860050201416,
+        1.3807417154312134,
+        1.1751022338867188,
+        1.2330913543701172,
+        1.3171178102493286,
+        1.3147801160812378,
+        1.2799286842346191,
+        1.1637849807739258,
+        1.255872130393982,
+        1.4023277759552002,
+        1.3805327415466309,
+        1.2572616338729858,
+        1.3269915580749512,
+        1.0303412675857544,
+        1.0715994834899902,
+        1.3585984706878662,
+        1.1465760469436646,
+        1.393488883972168,
+        1.438855767250061,
+        1.4172449111938477,
+        1.3752797842025757,
+        1.6624679565429688,
+        1.6987428665161133,
+        1.2453924417495728,
+        1.0285872220993042,
+        1.4173341989517212,
+        1.4218652248382568,
+        1.0901929140090942,
+        1.1307839155197144,
+        1.6059532165527344,
+        1.3464446067810059,
+        1.147307276725769,
+        1.2118865251541138,
+        1.4138178825378418,
+        1.4709069728851318,
+        1.319151520729065,
+        1.4880216121673584,
+        1.6007190942764282,
+        1.6466808319091797,
+        2.013505220413208,
+        1.6641241312026978,
+        1.3290154933929443,
+        1.2464404106140137,
+        1.500980257987976,
+        1.1576247215270996,
+        1.6294814348220825,
+        1.3338427543640137,
+        1.301426649093628,
+        1.2525675296783447,
+        1.477842092514038,
+        0.9330756068229675,
+        1.4203662872314453,
+        0.9135230183601379,
+        1.2111997604370117,
+        1.5914959907531738,
+        1.403216004371643,
+        1.238071084022522,
+        1.3308954238891602,
+        1.4255523681640625,
+        1.086338996887207,
+        1.1174252033233643,
+        1.0622857809066772,
+        1.4625405073165894,
+        1.1352964639663696,
+        1.3916780948638916,
+        1.1015695333480835,
+        1.3956602811813354
+      ],
+      "posterior_change_l1_first16": 0.0077812441175213465,
+      "posterior_change_l1_last16": 0.004149166532442905,
+      "final_layers": [
+        {
+          "layer": 1,
+          "occupied": 16,
+          "replayed": 16,
+          "max_age_bytes": 3806,
+          "credit_window_bytes": 128,
+          "mass_older_than_window": 0.9738035202026367,
+          "null_mass": 0.025306474417448044,
+          "storage_bytes": 1385767
+        },
+        {
+          "layer": 2,
+          "occupied": 16,
+          "replayed": 16,
+          "max_age_bytes": 2801,
+          "credit_window_bytes": 128,
+          "mass_older_than_window": 0.9685069918632507,
+          "null_mass": 0.030590951442718506,
+          "storage_bytes": 1454887
+        },
+        {
+          "layer": 3,
+          "occupied": 16,
+          "replayed": 16,
+          "max_age_bytes": 2321,
+          "credit_window_bytes": 128,
+          "mass_older_than_window": 0.9854300618171692,
+          "null_mass": 0.013712873682379723,
+          "storage_bytes": 1430823
+        },
+        {
+          "layer": 4,
+          "occupied": 16,
+          "replayed": 16,
+          "max_age_bytes": 3129,
+          "credit_window_bytes": 128,
+          "mass_older_than_window": 0.994130551815033,
+          "null_mass": 0.004965720698237419,
+          "storage_bytes": 1430823
+        }
+      ],
+      "final_old_gradients": [
+        {
+          "layer": 1,
+          "old_native_norms": {
+            "A_log": 7.01029239280615e-06,
+            "dt_bias": 6.90834576744237e-06,
+            "norm.weight": 2.5507750251563266e-05,
+            "q_proj.weight": 0.00017732939159031957,
+            "k_proj.weight": 9.439667337574065e-05,
+            "v_proj.weight": 0.00014282278425525874,
+            "g_proj.weight": 0.0002372886665398255,
+            "o_proj.weight": 0.00048668027739040554,
+            "alpha_proj.weight": 3.396672764210962e-05,
+            "beta_proj.weight": 5.6890901760198176e-05,
+            "beta_proj.bias": 4.643358352041105e-06,
+            "mlp_norm.weight": 7.259524863911793e-05,
+            "mlp.gate.weight": 0.0005175799014978111,
+            "mlp.up.weight": 0.0004988868604414165,
+            "mlp.down.weight": 0.000801748363301158,
+            "qkv_conv.weight": 0.00011434098269091919
+          }
+        },
+        {
+          "layer": 2,
+          "old_native_norms": {
+            "A_log": 1.0642772394930944e-05,
+            "dt_bias": 1.027406869980041e-05,
+            "norm.weight": 2.070640039164573e-05,
+            "q_proj.weight": 0.00011461143003543839,
+            "k_proj.weight": 0.00013327394844964147,
+            "v_proj.weight": 0.00011138273112010211,
+            "g_proj.weight": 8.8369422883261e-05,
+            "o_proj.weight": 0.000197648536413908,
+            "alpha_proj.weight": 6.852548540337011e-05,
+            "beta_proj.weight": 5.5712491302983835e-05,
+            "beta_proj.bias": 5.5559075917699374e-06,
+            "mlp_norm.weight": 3.483366162981838e-05,
+            "mlp.gate.weight": 0.0003736835205927491,
+            "mlp.up.weight": 0.00033451453782618046,
+            "mlp.down.weight": 0.0008098038379102945,
+            "qkv_conv.weight": 0.00013259226398076862
+          }
+        },
+        {
+          "layer": 3,
+          "old_native_norms": {
+            "A_log": 3.90886179957306e-06,
+            "dt_bias": 3.895479494531173e-06,
+            "norm.weight": 2.0147124814684503e-05,
+            "q_proj.weight": 0.00012829844490624964,
+            "k_proj.weight": 0.00011296994489384815,
+            "v_proj.weight": 0.00012313522165641189,
+            "g_proj.weight": 0.00011201317829545587,
+            "o_proj.weight": 0.0003744396090041846,
+            "alpha_proj.weight": 2.44836337515153e-05,
+            "beta_proj.weight": 1.534511466161348e-05,
+            "beta_proj.bias": 1.1681195246637799e-06,
+            "mlp_norm.weight": 3.487025969661772e-05,
+            "mlp.gate.weight": 0.00024137223954312503,
+            "mlp.up.weight": 0.00020775699522346258,
+            "mlp.down.weight": 0.0003034848195966333,
+            "qkv_conv.weight": 0.00010779662261484191
+          }
+        },
+        {
+          "layer": 4,
+          "old_native_norms": {
+            "A_log": 2.00047179532703e-05,
+            "dt_bias": 1.9941513528465293e-05,
+            "norm.weight": 4.2326064431108534e-05,
+            "q_proj.weight": 0.0001764429034665227,
+            "k_proj.weight": 0.00020037141803186387,
+            "v_proj.weight": 0.0002267754462081939,
+            "g_proj.weight": 0.00027183268684893847,
+            "o_proj.weight": 0.0006528962403535843,
+            "alpha_proj.weight": 0.0001480730134062469,
+            "beta_proj.weight": 1.3588045476353727e-05,
+            "beta_proj.bias": 1.0951661124636303e-06,
+            "mlp_norm.weight": 8.098914258880541e-05,
+            "mlp.gate.weight": 0.0005954686785116792,
+            "mlp.up.weight": 0.00047880117199383676,
+            "mlp.down.weight": 0.0009910829830914736,
+            "qkv_conv.weight": 0.00018274200556334108
+          }
+        }
+      ]
+    }
+  },
+  "source_files": {
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\analyze_ruler_generation.py": "431e100f3253e0e998996f89ac05964affd9dc7719746c9f1f20946fbb2e877f",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\audit_small_native_failure.py": "5224ac262dc7a7b56d59df33ae64f04933cf04ea50f70aa48bee7433e5d55d02",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\batched.py": "934612af97de35af9796e9224448796a3bc6dca4fe0bf2176a9f3ae38209c93c",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\cbim_cuda_graph.py": "e62e79ace52b8de7ce2e59112ada2a5b4b19c0d0227634053caee1d7548265b2",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\cbim_malecns.py": "eda2be1b9728c5e40f34c9696ed161bd30473a88ba488883359f3e5737037467",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\cbim_malecns_internal_time.py": "29fbb03e6addc57408d4acd23fa38833fbcae459a3dc19ad3c2f58e220533ce6",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\cbim_malecns_v3.py": "3bbf31daa27ac45c2cf53e15baff5b3298ebae2c1a1f0645796f219c02f98eba",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\gated_deltanet.py": "3a0ab450d8e91a9c12ef161769d6a2bf7fc335257d2835ea77206dd31c96c623",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\gdn_fused.py": "ac0b215e408e30b926aa319354ae235c19201802368de3a8d06bac7441861064",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\geometric_transport.py": "7c60c8dbd9cd55e861c6ad5599004c668b7b0483e9b4ba6136bf1099599c5f71",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_action.py": "cb33ca8a1f0cf81b5ce60855a4bfef3ed607a2c63376cd2082644580f658ec00",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_kanli_v4.py": "510fe2ff4969f490462a7296aca80a6ab3eb7ee2708de3c505c30c40c2704b49",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_kanli_v4b.py": "8e37c44c5896cc47eb5e527b3d4c33587d84f058ebaf334312ff0ff53132ed76",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_kanli_v4c.py": "ef470d45215b20cfa471779c274097acbc6c5caf09ab9084b795c8f189104200",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_kanli_v4e.py": "536e0cc0974b08e0fc84ba96294d2b8c25d1883c6c4cd927d6248ea918291200",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_kanli_v4h.py": "5e2ffcf7443e7249ada0406c9e2efc1e93fb32681d33dac32f2eff14bd5561aa",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_kanli_v4i.py": "3802a1d15dd74e732881bb6e5f4d1d1375daf29f575a989d68c4337bb06ab0cf",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_kanli_v4k.py": "6cbb6341443e6577e1a082dd05d69717b799ba3c8987be5e7fc889f8897162e1",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_kanli_v4l.py": "96a5c5c33069645161b31ad450021b0c94d16c37c77b9a391e2e13d59a40f430",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_kanli_v4m.py": "3b2430df5ebe72de23756bcd0390b039538ecb3c0698b4c334a740cdf8d4eb94",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_kanli_v4p.py": "9149294a10f2e9c3ec291e8ffd19c548762e60559f7bb8a0f6a9764f94b2f791",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_kanli_v4q.py": "454b5f009c87be1ea1dcc082e7d803090dcf5e17127ab5264c36e993233d0e65",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_kanli_v4r.py": "b4b3694920c14e4f66b284a72547483d5d52c0d74ea919ca0c6c66f35db479ec",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_kanli_v4s.py": "a2eaacc9e564f2b459ceb7f8e662526cd0e8ab28875a72ecc0fa414842f2cff3",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_kanli_v4t.py": "7ae1f6ad10a73b456fe61d067b38b0c194b7d8ccd2dc704f1eca9f8379abed71",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_turns_v3.py": "d751158ecf66856944a56f1f2c23f2bf6ff2fdb802f067c69a1a25e856fd3ea9",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_v2.py": "bb45d84c92d2ef66376da35af8534feb9e480979bf71274e7924f8edb8d876a5",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_world.py": "ba6c0256fa65d2a6ac7a86dd79d4b41be3471886ad6ffc869dad1199ee5dbae8",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\language_navigation_world_v3.py": "2f3ca8a6050a757f3d88af38c32221d4b252669aee59e4b5bb61c34ceddc4cc9",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\latent_navigation.py": "55a1b8289ce554c87e43f4e4574255bda6cd5d81295990e03bd2759da3f5af93",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\latent_navigation_v2.py": "f87272000ea992fa1d4f577fefc9173f141652d66195580d6f1ae2f2b9b18761",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\latent_navigation_v3.py": "6323e5f43014716d50bccc2cb65f9bd071a82978ab8dcd505a9b0e8dcdd1f571",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\navigation_checkpoint.py": "932ae1619ac16c06beaa2727670e42a4dd109b75d652a5a408422d5a5aa7e092",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\navigation_live_witness.py": "79888ec3da665289395b0cc70308187b0a6c7ac9efb945e1c9c437e0e934cf2a",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\navigation_read_credit.py": "05e90233e94057b6b08119fd95c3a5fe38c2afb139e3d23e38529650b5e09061",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\navigation_settlement.py": "1640771aaf4476b094edda9b95a37113799ba91b7ca48a0b244d6a3811c5b6cd",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\navigation_value_scale.py": "1889be01b1f5d03a1ac0ccdcdd0dfa7c5902101925232e8b0facea6c6e9e78a1",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\ngram_fast_table.py": "7dfc49a4260f90921406efe3d8881258998420f2bbd1bfcb07bcc005369280de",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\predictive_responsibility.py": "41e29ecb4c04f8d22f1817e41eef58b1011fe18888206a98014255bf31872493",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\pretrained_gdn.py": "5f804ee5c41fc937b02e6bd4de5b30a1ab54ecb30fcd667814670a10532e23b9",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\pretrained_gdn_experience.py": "f8b0c3e251bdd9e0c88b0b1419272d97dfc1045f17f6f44f12afdb27657aea37",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\reference.py": "ba0c08a9b936c42cfd9212ec84e0f0793f28775a6d4b2cd876f0389982559370",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\retrieved_table_credit.py": "ece865bd0f20230a0baf5119f6e6df35840a8a58b53b0ce82b99a4a5c6cc5653",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\run_causal_water_reply.py": "09060d918ee32014ce22c0ad5a301c32769804710ccbe09e29127b98b202aae1",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\run_language_navigation_kanli_v4.py": "04cde29d6a523d7286117118e73d24142d17cb339c2c83713fee4d95897248a8",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\run_language_navigation_turns_v3.py": "415391c1425285752b951ed27aa224044a5ba03cc8198835de1f5c1287cdacf5",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\run_language_navigation_v2.py": "f54cf6e21c089ff900be93a50909b233e1d721557475af72c8c3af85db452f33",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\run_navigation_residual_wood.py": "cbfed991167b735613becb8fd92585a20d29309f82301ae7907aea9b01f56860",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\run_ngram_fast_table.py": "46e304ca594f4fa11e555fdff18c56cbdd3082de03d4e7859718dca7607b4356",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\schedule.py": "37587717209e4f596199735705d4ff9207473506df6db5bcb72a254db282a8a9",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\small_gdn_experience.py": "961d4a1e37d21e236846e5699a94bd67c126b772858bb01daabb4d2ade7bfdc8",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\small_gdn_ruler.py": "f7f3273dfdc4b73366fd2390a48714fcf1cf764db60003f9aadac115daa70332",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\table_branch.py": "ff9052a395497013113bb87e941b81405b303a6b9cf817268637f5cfd23bed69",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\train_cbim_malecns_internal_time.py": "28fb77c46ab882d3d007edd21d51eb2eda731f700b5d0539d5375a662992cd12",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\train_gated_deltanet.py": "ab5a72184be34eb98e72a3777101c4290c2d013937e6e4db5fa229a0425aa2cb",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\train_gdn_fast_table.py": "db7c530b21196b7107e4dc69dcd52e2abc3a2d8995cda99131790089c9cb597d",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\train_small_gdn_ruler.py": "0b2f599e0c1166762e32cef74f916d372fb787e70a31910b031fd1dd5ef64141",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\train_small_native_credit.py": "e9893980268ab8635fdbc94335d2b04184822f3b24ff92e5805d0b09fae1da0a",
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\types.py": "a86166981c9ffb17188a69192538c09c316c5308f069610b61012870f17d5288"
+  },
+  "audit": {
+    "neutral_max": 0.0,
+    "held_full_forward_max": 0.0,
+    "resume_next_update_exact": true,
+    "passed": true,
+    "responsibility": {
+      "components": 65,
+      "supervised_positions": 9,
+      "identities": [
+        null,
+        [
+          0,
+          0,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ],
+        [
+          0,
+          3,
+          2
+        ],
+        [
+          0,
+          4,
+          2
+        ],
+        [
+          0,
+          5,
+          2
+        ],
+        [
+          0,
+          6,
+          2
+        ],
+        [
+          0,
+          7,
+          1
+        ],
+        [
+          0,
+          8,
+          2
+        ],
+        [
+          0,
+          9,
+          2
+        ],
+        [
+          0,
+          10,
+          2
+        ],
+        [
+          0,
+          11,
+          2
+        ],
+        [
+          0,
+          12,
+          2
+        ],
+        [
+          0,
+          13,
+          1
+        ],
+        [
+          0,
+          14,
+          3
+        ],
+        [
+          0,
+          15,
+          1
+        ],
+        [
+          1,
+          0,
+          3
+        ],
+        [
+          1,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          1,
+          3,
+          2
+        ],
+        [
+          1,
+          4,
+          3
+        ],
+        [
+          1,
+          5,
+          2
+        ],
+        [
+          1,
+          6,
+          3
+        ],
+        [
+          1,
+          7,
+          1
+        ],
+        [
+          1,
+          8,
+          3
+        ],
+        [
+          1,
+          9,
+          1
+        ],
+        [
+          1,
+          10,
+          2
+        ],
+        [
+          1,
+          11,
+          1
+        ],
+        [
+          1,
+          12,
+          2
+        ],
+        [
+          1,
+          13,
+          1
+        ],
+        [
+          1,
+          14,
+          2
+        ],
+        [
+          1,
+          15,
+          1
+        ],
+        [
+          2,
+          0,
+          2
+        ],
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          2,
+          4,
+          3
+        ],
+        [
+          2,
+          5,
+          2
+        ],
+        [
+          2,
+          6,
+          3
+        ],
+        [
+          2,
+          7,
+          1
+        ],
+        [
+          2,
+          8,
+          2
+        ],
+        [
+          2,
+          9,
+          2
+        ],
+        [
+          2,
+          10,
+          3
+        ],
+        [
+          2,
+          11,
+          1
+        ],
+        [
+          2,
+          12,
+          2
+        ],
+        [
+          2,
+          13,
+          1
+        ],
+        [
+          2,
+          14,
+          2
+        ],
+        [
+          2,
+          15,
+          1
+        ],
+        [
+          3,
+          0,
+          3
+        ],
+        [
+          3,
+          1,
+          2
+        ],
+        [
+          3,
+          2,
+          3
+        ],
+        [
+          3,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          3,
+          5,
+          1
+        ],
+        [
+          3,
+          6,
+          2
+        ],
+        [
+          3,
+          7,
+          2
+        ],
+        [
+          3,
+          8,
+          2
+        ],
+        [
+          3,
+          9,
+          1
+        ],
+        [
+          3,
+          10,
+          3
+        ],
+        [
+          3,
+          11,
+          2
+        ],
+        [
+          3,
+          12,
+          2
+        ],
+        [
+          3,
+          13,
+          1
+        ],
+        [
+          3,
+          14,
+          2
+        ],
+        [
+          3,
+          15,
+          1
+        ]
+      ],
+      "prior_mass": [
+        0.021841030567884445,
+        0.008573164232075214,
+        0.008640027604997158,
+        0.01647210493683815,
+        0.008411876857280731,
+        0.019760658964514732,
+        0.008585137315094471,
+        0.00853978656232357,
+        0.02521495893597603,
+        0.008492650464177132,
+        0.025116557255387306,
+        0.01687152124941349,
+        0.022533215582370758,
+        0.008110461756587029,
+        0.01960889808833599,
+        0.008034431375563145,
+        0.023436589166522026,
+        0.01686158776283264,
+        0.008171859197318554,
+        0.0171564519405365,
+        0.023574084043502808,
+        0.008241762407124043,
+        0.008008022792637348,
+        0.007649613078683615,
+        0.019748596474528313,
+        0.017950203269720078,
+        0.016044531017541885,
+        0.01649298518896103,
+        0.02036469429731369,
+        0.007692858576774597,
+        0.015954315662384033,
+        0.022453274577856064,
+        0.01881859265267849,
+        0.009474501945078373,
+        0.02016974240541458,
+        0.019112713634967804,
+        0.010312104597687721,
+        0.026525046676397324,
+        0.0220311488956213,
+        0.00970731396228075,
+        0.01562024187296629,
+        0.009705421514809132,
+        0.009975514374673367,
+        0.010312778875231743,
+        0.016653774306178093,
+        0.009392764419317245,
+        0.01704675331711769,
+        0.023965144529938698,
+        0.01751825213432312,
+        0.01802510768175125,
+        0.011156084015965462,
+        0.022917071357369423,
+        0.016626395285129547,
+        0.018369371071457863,
+        0.01319179404526949,
+        0.010922222398221493,
+        0.019442202523350716,
+        0.017111845314502716,
+        0.014689226634800434,
+        0.011636908166110516,
+        0.01158841885626316,
+        0.021147076040506363,
+        0.014990612864494324,
+        0.011246376670897007,
+        0.015989581122994423
+      ],
+      "posterior_mass": [
+        0.02179061993956566,
+        0.0084913969039917,
+        0.008558833040297031,
+        0.01636279560625553,
+        0.008336611092090607,
+        0.019659046083688736,
+        0.008505160920321941,
+        0.0084650544449687,
+        0.02510453201830387,
+        0.008412857539951801,
+        0.025003155693411827,
+        0.01676260121166706,
+        0.022425174713134766,
+        0.008038926869630814,
+        0.019489729776978493,
+        0.007959173060953617,
+        0.023318488150835037,
+        0.01681159995496273,
+        0.008137245662510395,
+        0.01711432635784149,
+        0.023508291691541672,
+        0.008206461556255817,
+        0.007986019365489483,
+        0.007627964019775391,
+        0.019712362438440323,
+        0.017891936004161835,
+        0.016006460413336754,
+        0.016444649547338486,
+        0.020323539152741432,
+        0.007671718951314688,
+        0.01591568998992443,
+        0.02239307388663292,
+        0.0187801755964756,
+        0.009469481185078621,
+        0.020173899829387665,
+        0.01912076771259308,
+        0.010305465199053288,
+        0.02654186822474003,
+        0.02203904651105404,
+        0.009699146263301373,
+        0.01563073880970478,
+        0.009699495509266853,
+        0.009969049133360386,
+        0.0103037403896451,
+        0.01666717231273651,
+        0.009382781572639942,
+        0.01704949326813221,
+        0.023975767195224762,
+        0.017523927614092827,
+        0.01819143071770668,
+        0.011253652162849903,
+        0.023097774013876915,
+        0.016780946403741837,
+        0.018520690500736237,
+        0.013303465209901333,
+        0.01102274376899004,
+        0.019632283598184586,
+        0.017264096066355705,
+        0.014826161786913872,
+        0.011742454022169113,
+        0.011694798246026039,
+        0.021306898444890976,
+        0.015124973841011524,
+        0.011349834501743317,
+        0.016120294108986855
+      ],
+      "responsibility_shift": [
+        -5.040948963142e-05,
+        -8.176732808351517e-05,
+        -8.119461563182995e-05,
+        -0.0001093089158530347,
+        -7.52651467337273e-05,
+        -0.00010161309182876721,
+        -7.99764457042329e-05,
+        -7.473170262528583e-05,
+        -0.00011042691767215729,
+        -7.979111251188442e-05,
+        -0.00011340239143464714,
+        -0.0001089178622351028,
+        -0.00010804159683175385,
+        -7.15349888196215e-05,
+        -0.00011916748189833015,
+        -7.525836554123089e-05,
+        -0.00011810236173914745,
+        -4.9987393140327185e-05,
+        -3.4613483876455575e-05,
+        -4.2124342144234106e-05,
+        -6.579297041753307e-05,
+        -3.53010073013138e-05,
+        -2.2003581761964597e-05,
+        -2.1649577320204116e-05,
+        -3.6234865547157824e-05,
+        -5.826933556818403e-05,
+        -3.806946551776491e-05,
+        -4.8332640290027484e-05,
+        -4.115535193705e-05,
+        -2.1140402168384753e-05,
+        -3.862650191877037e-05,
+        -6.020110595272854e-05,
+        -3.841633224510588e-05,
+        -5.020915068598697e-06,
+        4.158458978054114e-06,
+        8.055216312641278e-06,
+        -6.639398634433746e-06,
+        1.6821031749714166e-05,
+        7.898856893007178e-06,
+        -8.166663974407129e-06,
+        1.0497144103283063e-05,
+        -5.926057383476291e-06,
+        -6.4644136728020385e-06,
+        -9.039520591613837e-06,
+        1.3399145245784894e-05,
+        -9.981657058233395e-06,
+        2.738502416832489e-06,
+        1.0622561603668146e-05,
+        5.675272859662073e-06,
+        0.00016632303595542908,
+        9.756856161402538e-05,
+        0.0001806986256269738,
+        0.00015454967797268182,
+        0.00015131995314732194,
+        0.000111672306957189,
+        0.00010052158177131787,
+        0.00019008159870281816,
+        0.000152251057443209,
+        0.00013693587970919907,
+        0.00010554451000643894,
+        0.00010637928789947182,
+        0.00015982343757059425,
+        0.00013436035078484565,
+        0.00010345783084630966,
+        0.00013071081775706261
+      ],
+      "posterior_null": 0.02179061993956566,
+      "posterior_change_l1": 0.007931171916425228,
+      "predictive_probability_sum_error": 2.384185791015625e-07,
+      "prior_gradient_max_error": 1.1364136298652738e-09
+    },
+    "layers": [
+      {
+        "layer": 1,
+        "occupied": 16,
+        "replayed": 16,
+        "max_age_bytes": 2837,
+        "credit_window_bytes": 128,
+        "mass_older_than_window": 0.9687488079071045,
+        "null_mass": 0.030357157811522484,
+        "storage_bytes": 1423143
+      },
+      {
+        "layer": 2,
+        "occupied": 16,
+        "replayed": 16,
+        "max_age_bytes": 2837,
+        "credit_window_bytes": 128,
+        "mass_older_than_window": 0.9733914732933044,
+        "null_mass": 0.02559344843029976,
+        "storage_bytes": 1370407
+      },
+      {
+        "layer": 3,
+        "occupied": 16,
+        "replayed": 16,
+        "max_age_bytes": 2837,
+        "credit_window_bytes": 128,
+        "mass_older_than_window": 0.9855714440345764,
+        "null_mass": 0.013461309485137463,
+        "storage_bytes": 1370407
+      },
+      {
+        "layer": 4,
+        "occupied": 16,
+        "replayed": 16,
+        "max_age_bytes": 3093,
+        "credit_window_bytes": 128,
+        "mass_older_than_window": 0.9926068186759949,
+        "null_mass": 0.006242603063583374,
+        "storage_bytes": 1403687
+      }
+    ],
+    "old_gradients": [
+      {
+        "layer": 1,
+        "old_native_norms": {
+          "A_log": 2.0988356482121162e-05,
+          "dt_bias": 2.027270784310531e-05,
+          "norm.weight": 5.817716009914875e-05,
+          "q_proj.weight": 0.0004524058604147285,
+          "k_proj.weight": 0.00036072349757887423,
+          "v_proj.weight": 0.0003834672970697284,
+          "g_proj.weight": 0.0005664637428708375,
+          "o_proj.weight": 0.0009382503922097385,
+          "alpha_proj.weight": 0.00014093970821704715,
+          "beta_proj.weight": 8.955241355579346e-05,
+          "beta_proj.bias": 8.16324791230727e-06,
+          "mlp_norm.weight": 0.00017500331159681082,
+          "mlp.gate.weight": 0.0013151206076145172,
+          "mlp.up.weight": 0.0011577497934922576,
+          "mlp.down.weight": 0.0017689031083136797,
+          "qkv_conv.weight": 0.00025797702255658805
+        }
+      },
+      {
+        "layer": 2,
+        "old_native_norms": {
+          "A_log": 1.2489527762227226e-05,
+          "dt_bias": 1.2180205885670148e-05,
+          "norm.weight": 4.4572807382792234e-05,
+          "q_proj.weight": 0.00028801726875826716,
+          "k_proj.weight": 0.00024028823827393353,
+          "v_proj.weight": 0.0002958513214252889,
+          "g_proj.weight": 0.00017475378990639,
+          "o_proj.weight": 0.0006769523024559021,
+          "alpha_proj.weight": 9.138115274254233e-05,
+          "beta_proj.weight": 6.520175520563498e-05,
+          "beta_proj.bias": 7.403377367154462e-06,
+          "mlp_norm.weight": 0.00013587926514446735,
+          "mlp.gate.weight": 0.0008180153090506792,
+          "mlp.up.weight": 0.0007764045149087906,
+          "mlp.down.weight": 0.001225508050993085,
+          "qkv_conv.weight": 0.00023208158381748945
+        }
+      },
+      {
+        "layer": 3,
+        "old_native_norms": {
+          "A_log": 1.6404148482251912e-05,
+          "dt_bias": 1.5905143300187774e-05,
+          "norm.weight": 7.902625657152385e-05,
+          "q_proj.weight": 0.00033009020262397826,
+          "k_proj.weight": 0.0003686320560518652,
+          "v_proj.weight": 0.0004935977049171925,
+          "g_proj.weight": 0.00041140237590298057,
+          "o_proj.weight": 0.0010939834173768759,
+          "alpha_proj.weight": 0.00013393825793173164,
+          "beta_proj.weight": 6.187731196405366e-05,
+          "beta_proj.bias": 5.7832967286231e-06,
+          "mlp_norm.weight": 0.00014880260278005153,
+          "mlp.gate.weight": 0.0010203988058492541,
+          "mlp.up.weight": 0.0007529761642217636,
+          "mlp.down.weight": 0.0007540174410678446,
+          "qkv_conv.weight": 0.00035356153966858983
+        }
+      },
+      {
+        "layer": 4,
+        "old_native_norms": {
+          "A_log": 5.7153891248162836e-05,
+          "dt_bias": 5.673322448274121e-05,
+          "norm.weight": 0.0001009367115329951,
+          "q_proj.weight": 0.0004189118917565793,
+          "k_proj.weight": 0.00045439990935847163,
+          "v_proj.weight": 0.0008014357299543917,
+          "g_proj.weight": 0.0005346034886315465,
+          "o_proj.weight": 0.0014299883041530848,
+          "alpha_proj.weight": 0.00039182277396321297,
+          "beta_proj.weight": 7.251711213029921e-05,
+          "beta_proj.bias": 6.440032393584261e-06,
+          "mlp_norm.weight": 0.0003447962226346135,
+          "mlp.gate.weight": 0.0019299100385978818,
+          "mlp.up.weight": 0.0016847227234393358,
+          "mlp.down.weight": 0.0015606757951900363,
+          "qkv_conv.weight": 0.000429290346801281
+        }
+      }
+    ]
+  },
+  "content_interventions": {
+    "calibration": {
+      "status": "complete",
+      "optimizer_updates": 0,
+      "source_sha256": "79b6cbcdbfacdbdb481baf8f675871c9bee721683d563f4decad02b9e0ffe863",
+      "seconds": 100.37851142883301,
+      "body_unchanged": true,
+      "checkpoint_unchanged": true,
+      "favorable_nll_cases": 7,
+      "favorable_contrast_cases": 0,
+      "mean_content_nll_benefit": 3.769993782043457e-06,
+      "mean_stored_value_contrast": -9.745359420776367e-06,
+      "path": "E:\\cgb_small_gdn_20261107\\responsibility_content_calibration.json",
+      "sha256": "429718d3e6b3db9c8c1cabac68935f50bbd1e253aa227f64a154c096fb5daf4c",
+      "component_content_contrast_by_layer": [
+        {
+          "layer": 1,
+          "mean": -7.260811941356415e-06,
+          "max_abs": 1.5873197412474838e-05,
+          "favorable": 1,
+          "cases": 8
+        },
+        {
+          "layer": 2,
+          "mean": -3.470410647343769e-05,
+          "max_abs": 0.00014369964092164622,
+          "favorable": 2,
+          "cases": 8
+        },
+        {
+          "layer": 3,
+          "mean": -0.00012182805534599606,
+          "max_abs": 0.00030312209061822415,
+          "favorable": 1,
+          "cases": 8
+        },
+        {
+          "layer": 4,
+          "mean": -0.0003550746498310331,
+          "max_abs": 0.000840595585139603,
+          "favorable": 0,
+          "cases": 8
+        }
+      ],
+      "null_component_contrast_max_abs": 1.8240801162860976e-06
+    },
+    "held": {
+      "status": "complete",
+      "optimizer_updates": 0,
+      "source_sha256": "eebb827c7c77ebe6dc6a6749b30c467971537dd87a616bdad53f515857ee186a",
+      "seconds": 96.44615697860718,
+      "body_unchanged": true,
+      "checkpoint_unchanged": true,
+      "favorable_nll_cases": 2,
+      "favorable_contrast_cases": 1,
+      "mean_content_nll_benefit": -3.7848949432373047e-06,
+      "mean_stored_value_contrast": -1.4603137969970703e-06,
+      "path": "E:\\cgb_small_gdn_20261107\\responsibility_content_held.json",
+      "sha256": "61e1712d968c7ed9ed683f7f6f9dc3c9ee45dcffaea0b0f2f2241391ea6cabd7",
+      "component_content_contrast_by_layer": [
+        {
+          "layer": 1,
+          "mean": -2.0415490413761006e-05,
+          "max_abs": 0.0001054087988077157,
+          "favorable": 1,
+          "cases": 8
+        },
+        {
+          "layer": 2,
+          "mean": -1.5150098023775094e-05,
+          "max_abs": 6.202092985230223e-05,
+          "favorable": 0,
+          "cases": 8
+        },
+        {
+          "layer": 3,
+          "mean": -7.082257098112166e-06,
+          "max_abs": 0.0007138233180219444,
+          "favorable": 3,
+          "cases": 8
+        },
+        {
+          "layer": 4,
+          "mean": -2.7822596159521318e-05,
+          "max_abs": 0.002011794246419285,
+          "favorable": 1,
+          "cases": 8
+        }
+      ],
+      "null_component_contrast_max_abs": 4.82677781299401e-07
+    },
+    "full": {
+      "status": "complete",
+      "optimizer_updates": 0,
+      "source_sha256": "42500023840fc37be90df1e5c51a49132b83207199b2e6acb00934b083865161",
+      "seconds": 91.6307864189148,
+      "body_unchanged": true,
+      "checkpoint_unchanged": true,
+      "favorable_nll_cases": 2,
+      "favorable_contrast_cases": 1,
+      "mean_content_nll_benefit": -3.680586814880371e-06,
+      "mean_stored_value_contrast": -1.4901161193847656e-06,
+      "path": "E:\\cgb_small_gdn_20261107\\responsibility_content_full.json",
+      "sha256": "cf445ef56a691353a7aab8d7369429d6c96f887e7490f20ad76e16db972bd6d2",
+      "component_content_contrast_by_layer": [
+        {
+          "layer": 1,
+          "mean": -2.018216347243751e-05,
+          "max_abs": 0.00010711659561923881,
+          "favorable": 1,
+          "cases": 8
+        },
+        {
+          "layer": 2,
+          "mean": -1.601463920841706e-05,
+          "max_abs": 6.329374525382292e-05,
+          "favorable": 0,
+          "cases": 8
+        },
+        {
+          "layer": 3,
+          "mean": 7.451295533811297e-06,
+          "max_abs": 0.0007386811325451603,
+          "favorable": 3,
+          "cases": 8
+        },
+        {
+          "layer": 4,
+          "mean": -4.056701829868725e-05,
+          "max_abs": 0.0020199645490599494,
+          "favorable": 1,
+          "cases": 8
+        }
+      ],
+      "null_component_contrast_max_abs": 2.8744191293839094e-07
+    }
+  }
+}

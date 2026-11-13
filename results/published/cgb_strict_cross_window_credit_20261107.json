@@ -1,0 +1,311 @@
+{
+  "status": "complete",
+  "retained_diagnostic_updates": 0,
+  "new_lean_coverage": 0,
+  "body_changed": false,
+  "finding": "Window-exceeding native gradients depend on current results and change actual Adam updates. Neither paired task training nor discarded shadow steps establish useful selective historical credit. Layer2 attends to digit positions, but its historical content has weak and mostly wrong-direction conditional delivery to the answer.",
+  "held": {
+    "status": "complete",
+    "source_sha256": "3632f488d966efc916223dee075ac9268575e8055bafd42ac2c653f85c7fe776",
+    "retained_optimizer_updates": 0,
+    "executed_script_sha256": "0fec710f6421623e2913066ef35df8569eb7d1ac61f0340d86da1cb754a305b2",
+    "protocol": "Isolate >128-byte native credit with fixed-forward, discarded Adam probes.\n\nNo retained training and no language-retention objective. Compare the exact\nfirst-digit boundary teaching signal, strict old native VJPs, and content use\nafter shadow steps. A wrong-receiver control permutes equal-shape old traces\nwithout changing any forward response. All parameters/Adam/memories restore.\n",
+    "device": "cpu",
+    "new_lean_coverage": 0,
+    "shadow_objective": "10*CE on the current first answer digit, using source Adam and production group clipping; no auxiliary loss or memory preference commits. Not a full production next-update replay.",
+    "seconds": 184.1654989719391,
+    "complete_state_unchanged": true,
+    "checkpoint_unchanged": true,
+    "executed_script_unchanged": true,
+    "matched_beats_cut_content_cases": 4,
+    "matched_beats_wrong_content_cases": 2,
+    "raw_source": {
+      "path": "E:\\cgb_small_gdn_20261107\\credit_outside128_held1024_routing2.json",
+      "sha256": "427c5efb7f7ba1adaaa2b382a1b7bdf3f91a4b8de2dccb70cf21abec3ca0d0dd"
+    },
+    "mean_metrics": {
+      "matched_vs_cut_parameter_update_difference": 0.00013627797423928598,
+      "matched_vs_wrong_parameter_update_difference": 5.84233933083416e-05,
+      "matched_vs_wrong_native_cosine": 0.9486250967872866,
+      "same_participation_alternative_result_long_cosine": -0.16186104832590675,
+      "matched_minus_cut_content_contrast": -4.172325134277344e-07,
+      "matched_minus_wrong_content_contrast": -2.384185791015625e-07
+    },
+    "layers": [
+      {
+        "layer": 1,
+        "mean_long_to_full_gradient_norm_ratio": 0.009910706827474693,
+        "mean_inlet_gain": -0.0286581851541996,
+        "mean_direct_value_mass": 0.0011065227781159592,
+        "mean_uniform_direct_mass": 0.003791540905782447,
+        "mean_null_mass": 0.008806787431240082,
+        "mean_direct_teaching_squared_fraction": 0.0006449380411510717
+      },
+      {
+        "layer": 2,
+        "mean_long_to_full_gradient_norm_ratio": 0.012232456764828885,
+        "mean_inlet_gain": -0.03367127850651741,
+        "mean_direct_value_mass": 0.15878795625758357,
+        "mean_uniform_direct_mass": 0.003558325904246099,
+        "mean_null_mass": 0.03885771334171295,
+        "mean_direct_teaching_squared_fraction": 0.30106529348180167
+      },
+      {
+        "layer": 3,
+        "mean_long_to_full_gradient_norm_ratio": 0.0041138223775002555,
+        "mean_inlet_gain": -0.030471574515104294,
+        "mean_direct_value_mass": 0.021110429308464518,
+        "mean_uniform_direct_mass": 0.003558325904246099,
+        "mean_null_mass": 0.0473875030875206,
+        "mean_direct_teaching_squared_fraction": 0.21848329839972094
+      },
+      {
+        "layer": 4,
+        "mean_long_to_full_gradient_norm_ratio": 0.007286527226090661,
+        "mean_inlet_gain": 0.024389168247580528,
+        "mean_direct_value_mass": 0.005128657591058072,
+        "mean_uniform_direct_mass": 0.003558325904246099,
+        "mean_null_mass": 0.027855053544044495,
+        "mean_direct_teaching_squared_fraction": 0.010273005012775402
+      }
+    ],
+    "cases": [
+      {
+        "case": 3072,
+        "answer_distance_bytes": 264,
+        "strict_receipts": 56,
+        "reassigned_receipts": 50,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 4.927178988250222e-09,
+        "matched_minus_cut_content_contrast": -7.152557373046875e-07,
+        "matched_minus_wrong_content_contrast": 0.0
+      },
+      {
+        "case": 3073,
+        "answer_distance_bytes": 258,
+        "strict_receipts": 56,
+        "reassigned_receipts": 50,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 5.086058770550354e-09,
+        "matched_minus_cut_content_contrast": 2.384185791015625e-07,
+        "matched_minus_wrong_content_contrast": -4.76837158203125e-07
+      },
+      {
+        "case": 3074,
+        "answer_distance_bytes": 262,
+        "strict_receipts": 56,
+        "reassigned_receipts": 50,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 5.742360847550229e-09,
+        "matched_minus_cut_content_contrast": -1.6689300537109375e-06,
+        "matched_minus_wrong_content_contrast": -7.152557373046875e-07
+      },
+      {
+        "case": 3075,
+        "answer_distance_bytes": 276,
+        "strict_receipts": 56,
+        "reassigned_receipts": 50,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 4.917118392218125e-09,
+        "matched_minus_cut_content_contrast": -7.152557373046875e-07,
+        "matched_minus_wrong_content_contrast": -2.384185791015625e-07
+      },
+      {
+        "case": 3076,
+        "answer_distance_bytes": 266,
+        "strict_receipts": 56,
+        "reassigned_receipts": 50,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 5.990109957996062e-09,
+        "matched_minus_cut_content_contrast": 2.384185791015625e-07,
+        "matched_minus_wrong_content_contrast": -2.384185791015625e-07
+      },
+      {
+        "case": 3077,
+        "answer_distance_bytes": 266,
+        "strict_receipts": 56,
+        "reassigned_receipts": 50,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 5.888953642684597e-09,
+        "matched_minus_cut_content_contrast": -2.86102294921875e-06,
+        "matched_minus_wrong_content_contrast": -1.430511474609375e-06
+      },
+      {
+        "case": 3078,
+        "answer_distance_bytes": 266,
+        "strict_receipts": 56,
+        "reassigned_receipts": 50,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 7.502810895245889e-09,
+        "matched_minus_cut_content_contrast": 1.1920928955078125e-06,
+        "matched_minus_wrong_content_contrast": 9.5367431640625e-07
+      },
+      {
+        "case": 3079,
+        "answer_distance_bytes": 258,
+        "strict_receipts": 56,
+        "reassigned_receipts": 50,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 5.000031481821437e-09,
+        "matched_minus_cut_content_contrast": 9.5367431640625e-07,
+        "matched_minus_wrong_content_contrast": 2.384185791015625e-07
+      }
+    ]
+  },
+  "full": {
+    "status": "complete",
+    "source_sha256": "7381e1c0645759bbf80de794ef78315b3d3bbef7df2c22fe3a44cc8fde918482",
+    "retained_optimizer_updates": 0,
+    "executed_script_sha256": "d86c9867debbb2d6e392e129c1d64760aa950bdff77763215e8d7819513cfaee",
+    "protocol": "Isolate >128-byte native credit with fixed-forward, discarded Adam probes.\n\nNo retained training and no language-retention objective. Compare the exact\nfirst-digit boundary teaching signal, strict old native VJPs, and content use\nafter shadow steps. A wrong-receiver control permutes equal-shape old traces\nwithout changing any forward response. All parameters/Adam/memories restore.\n",
+    "device": "cpu",
+    "new_lean_coverage": 0,
+    "shadow_objective": "10*CE on the current first answer digit, using source Adam and production group clipping; no auxiliary loss or memory preference commits. Not a full production next-update replay.",
+    "seconds": 194.00420451164246,
+    "complete_state_unchanged": true,
+    "checkpoint_unchanged": true,
+    "executed_script_unchanged": true,
+    "matched_beats_cut_content_cases": 5,
+    "matched_beats_wrong_content_cases": 5,
+    "raw_source": {
+      "path": "E:\\cgb_small_gdn_20261107\\credit_outside128_full1024_routing.json",
+      "sha256": "e4155730b59de0b88e78c0c55464bc59a9d4b00ad3fa2cc1975796bc2afd112b"
+    },
+    "mean_metrics": {
+      "matched_vs_cut_parameter_update_difference": 0.00015810076128042525,
+      "matched_vs_wrong_parameter_update_difference": 8.299079343146805e-05,
+      "matched_vs_wrong_native_cosine": 0.8832311950080177,
+      "same_participation_alternative_result_long_cosine": -0.1601016032119593,
+      "matched_minus_cut_content_contrast": 5.662441253662109e-07,
+      "matched_minus_wrong_content_contrast": 7.748603820800781e-07
+    },
+    "layers": [
+      {
+        "layer": 1,
+        "mean_long_to_full_gradient_norm_ratio": 0.008142151091193168,
+        "mean_inlet_gain": -0.0233809445053339,
+        "mean_direct_value_mass": 0.001169330573162597,
+        "mean_uniform_direct_mass": 0.003668347411012128,
+        "mean_null_mass": 0.0069298818707466125,
+        "mean_direct_teaching_squared_fraction": 0.0007424177583618675,
+        "mean_stored_value_contrast": -5.960464477539063e-08,
+        "favorable_content_cases": 4
+      },
+      {
+        "layer": 2,
+        "mean_long_to_full_gradient_norm_ratio": 0.017485189906123563,
+        "mean_inlet_gain": -0.03596574068069458,
+        "mean_direct_value_mass": 0.18113040691059723,
+        "mean_uniform_direct_mass": 0.003558325904246099,
+        "mean_null_mass": 0.02466890960931778,
+        "mean_direct_teaching_squared_fraction": 0.27840376305294195,
+        "mean_stored_value_contrast": -0.00018873810768127441,
+        "favorable_content_cases": 1
+      },
+      {
+        "layer": 3,
+        "mean_long_to_full_gradient_norm_ratio": 0.004742566408266644,
+        "mean_inlet_gain": -0.03360481187701225,
+        "mean_direct_value_mass": 0.010093765530655219,
+        "mean_uniform_direct_mass": 0.003558325904246099,
+        "mean_null_mass": 0.029449336230754852,
+        "mean_direct_teaching_squared_fraction": 0.05747550521756421,
+        "mean_stored_value_contrast": -5.5730342864990234e-06,
+        "favorable_content_cases": 2
+      },
+      {
+        "layer": 4,
+        "mean_long_to_full_gradient_norm_ratio": 0.0096238923033847,
+        "mean_inlet_gain": 0.025070779025554657,
+        "mean_direct_value_mass": 0.008749358051147738,
+        "mean_uniform_direct_mass": 0.003558325904246099,
+        "mean_null_mass": 0.008168257772922516,
+        "mean_direct_teaching_squared_fraction": 0.015211384982024269,
+        "mean_stored_value_contrast": 1.2814998626708984e-06,
+        "favorable_content_cases": 1
+      }
+    ],
+    "cases": [
+      {
+        "case": 3072,
+        "answer_distance_bytes": 264,
+        "strict_receipts": 56,
+        "reassigned_receipts": 51,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 5.217299509308195e-09,
+        "matched_minus_cut_content_contrast": -4.76837158203125e-07,
+        "matched_minus_wrong_content_contrast": 0.0
+      },
+      {
+        "case": 3073,
+        "answer_distance_bytes": 258,
+        "strict_receipts": 56,
+        "reassigned_receipts": 51,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 5.295322806979567e-09,
+        "matched_minus_cut_content_contrast": 1.1920928955078125e-06,
+        "matched_minus_wrong_content_contrast": 7.152557373046875e-07
+      },
+      {
+        "case": 3074,
+        "answer_distance_bytes": 262,
+        "strict_receipts": 56,
+        "reassigned_receipts": 51,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 5.43311493420222e-09,
+        "matched_minus_cut_content_contrast": 4.76837158203125e-07,
+        "matched_minus_wrong_content_contrast": 9.5367431640625e-07
+      },
+      {
+        "case": 3075,
+        "answer_distance_bytes": 276,
+        "strict_receipts": 56,
+        "reassigned_receipts": 51,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 5.547852336604751e-09,
+        "matched_minus_cut_content_contrast": -2.384185791015625e-07,
+        "matched_minus_wrong_content_contrast": -2.384185791015625e-07
+      },
+      {
+        "case": 3076,
+        "answer_distance_bytes": 266,
+        "strict_receipts": 56,
+        "reassigned_receipts": 51,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 5.937187769311498e-09,
+        "matched_minus_cut_content_contrast": 2.1457672119140625e-06,
+        "matched_minus_wrong_content_contrast": 2.6226043701171875e-06
+      },
+      {
+        "case": 3077,
+        "answer_distance_bytes": 266,
+        "strict_receipts": 56,
+        "reassigned_receipts": 51,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 5.376312745105632e-09,
+        "matched_minus_cut_content_contrast": 1.430511474609375e-06,
+        "matched_minus_wrong_content_contrast": 4.76837158203125e-07
+      },
+      {
+        "case": 3078,
+        "answer_distance_bytes": 266,
+        "strict_receipts": 56,
+        "reassigned_receipts": 51,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 7.05026181464517e-09,
+        "matched_minus_cut_content_contrast": 1.430511474609375e-06,
+        "matched_minus_wrong_content_contrast": 1.6689300537109375e-06
+      },
+      {
+        "case": 3079,
+        "answer_distance_bytes": 258,
+        "strict_receipts": 56,
+        "reassigned_receipts": 51,
+        "same_forward_max": 0.0,
+        "cut_vjp_identity_relative_error": 5.532091554144892e-09,
+        "matched_minus_cut_content_contrast": -1.430511474609375e-06,
+        "matched_minus_wrong_content_contrast": 0.0
+      }
+    ]
+  }
+}

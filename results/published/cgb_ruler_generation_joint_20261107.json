@@ -1,0 +1,704 @@
+{
+  "scope": "derived rollout diagnosis, not a new official RULER metric or credit success claim",
+  "source_status": "failed",
+  "source_report": "E:\\cgb_gdn340_probe\\ruler_20261107\\learning_pair_joint\\report.json",
+  "source_report_sha256": "43cd3fcd5250ecd4cf24c509645e1b595d04c6352dac4ddc2ba38b595ee08754",
+  "initial": [
+    {
+      "length": 512,
+      "samples": 4,
+      "official_score": 100.0,
+      "answer_nll": 0.28702497482299805,
+      "counts": {
+        "official_contains": 4,
+        "standalone_number": 4,
+        "first_number_exact": 4,
+        "first_number_prefix": 4,
+        "hit_generation_cap": 4
+      },
+      "cases": [
+        {
+          "index": 0,
+          "gold": [
+            "2622302"
+          ],
+          "prediction_prefix": ": 2622302. The special magic number for watchful-kamikaze is: 2622302. The special magic number for ",
+          "generated_tokens": 128,
+          "hit_generation_cap": true,
+          "answer_distance_tokens": 97,
+          "official_contains": true,
+          "standalone_number": true,
+          "first_number_exact": true,
+          "first_number_prefix": true,
+          "first_number": "2622302"
+        },
+        {
+          "index": 1,
+          "gold": [
+            "4610712"
+          ],
+          "prediction_prefix": ": 4610712. The special magic number for clever-farming mentioned in the provided text is: 4610712. T",
+          "generated_tokens": 128,
+          "hit_generation_cap": true,
+          "answer_distance_tokens": 93,
+          "official_contains": true,
+          "standalone_number": true,
+          "first_number_exact": true,
+          "first_number_prefix": true,
+          "first_number": "4610712"
+        },
+        {
+          "index": 2,
+          "gold": [
+            "7565577"
+          ],
+          "prediction_prefix": ": 7565577. The special magic number for billowy-suspect is: 7565577. The special magic number for bi",
+          "generated_tokens": 128,
+          "hit_generation_cap": true,
+          "answer_distance_tokens": 320,
+          "official_contains": true,
+          "standalone_number": true,
+          "first_number_exact": true,
+          "first_number_prefix": true,
+          "first_number": "7565577"
+        },
+        {
+          "index": 3,
+          "gold": [
+            "8855227"
+          ],
+          "prediction_prefix": ": 8855227. The special magic number for perfect-prostacyclin is: 8855227. The special magic number f",
+          "generated_tokens": 128,
+          "hit_generation_cap": true,
+          "answer_distance_tokens": 172,
+          "official_contains": true,
+          "standalone_number": true,
+          "first_number_exact": true,
+          "first_number_prefix": true,
+          "first_number": "8855227"
+        }
+      ]
+    },
+    {
+      "length": 2048,
+      "samples": 4,
+      "official_score": 100.0,
+      "answer_nll": 0.42566029727458954,
+      "counts": {
+        "official_contains": 4,
+        "standalone_number": 4,
+        "first_number_exact": 4,
+        "first_number_prefix": 4,
+        "hit_generation_cap": 4
+      },
+      "cases": [
+        {
+          "index": 0,
+          "gold": [
+            "6556483"
+          ],
+          "prediction_prefix": "6556483. The special magic number for ruddy-walk is 6556483. The special magic number for ruddy-walk",
+          "generated_tokens": 128,
+          "hit_generation_cap": true,
+          "answer_distance_tokens": 918,
+          "official_contains": true,
+          "standalone_number": true,
+          "first_number_exact": true,
+          "first_number_prefix": true,
+          "first_number": "6556483"
+        },
+        {
+          "index": 1,
+          "gold": [
+            "1276102"
+          ],
+          "prediction_prefix": "1276102. The special magic number for combative-girlfriend is 1276102. The special magic number for ",
+          "generated_tokens": 128,
+          "hit_generation_cap": true,
+          "answer_distance_tokens": 868,
+          "official_contains": true,
+          "standalone_number": true,
+          "first_number_exact": true,
+          "first_number_prefix": true,
+          "first_number": "1276102"
+        },
+        {
+          "index": 2,
+          "gold": [
+            "7246591"
+          ],
+          "prediction_prefix": "7246591. The special magic number for elderly-figurine is 7246591. The special magic number for elde",
+          "generated_tokens": 128,
+          "hit_generation_cap": true,
+          "answer_distance_tokens": 1118,
+          "official_contains": true,
+          "standalone_number": true,
+          "first_number_exact": true,
+          "first_number_prefix": true,
+          "first_number": "7246591"
+        },
+        {
+          "index": 3,
+          "gold": [
+            "4687362"
+          ],
+          "prediction_prefix": "4687362. The special magic number for lazy-packet is 4687362. The special magic number for lazy-pack",
+          "generated_tokens": 128,
+          "hit_generation_cap": true,
+          "answer_distance_tokens": 889,
+          "official_contains": true,
+          "standalone_number": true,
+          "first_number_exact": true,
+          "first_number_prefix": true,
+          "first_number": "4687362"
+        }
+      ]
+    },
+    {
+      "length": 4096,
+      "samples": 4,
+      "official_score": 75.0,
+      "answer_nll": 0.5183303356170654,
+      "counts": {
+        "official_contains": 3,
+        "standalone_number": 3,
+        "first_number_exact": 3,
+        "first_number_prefix": 3,
+        "hit_generation_cap": 4
+      },
+      "cases": [
+        {
+          "index": 0,
+          "gold": [
+            "1276102"
+          ],
+          "prediction_prefix": "1276. The special magic number for combative-girlfriend is 1276. The special magic number for combat",
+          "generated_tokens": 128,
+          "hit_generation_cap": true,
+          "answer_distance_tokens": 1918,
+          "official_contains": false,
+          "standalone_number": false,
+          "first_number_exact": false,
+          "first_number_prefix": false,
+          "first_number": "1276"
+        },
+        {
+          "index": 1,
+          "gold": [
+            "7246591"
+          ],
+          "prediction_prefix": ": 7246591. The special magic number for elderly-figurine is: 7246591. The special magic number for e",
+          "generated_tokens": 128,
+          "hit_generation_cap": true,
+          "answer_distance_tokens": 193,
+          "official_contains": true,
+          "standalone_number": true,
+          "first_number_exact": true,
+          "first_number_prefix": true,
+          "first_number": "7246591"
+        },
+        {
+          "index": 2,
+          "gold": [
+            "7629301"
+          ],
+          "prediction_prefix": "7629301. The special magic number for supreme-trailpatrol is 7629301. The special magic number for s",
+          "generated_tokens": 128,
+          "hit_generation_cap": true,
+          "answer_distance_tokens": 1597,
+          "official_contains": true,
+          "standalone_number": true,
+          "first_number_exact": true,
+          "first_number_prefix": true,
+          "first_number": "7629301"
+        },
+        {
+          "index": 3,
+          "gold": [
+            "8976732"
+          ],
+          "prediction_prefix": "8976732. The special magic number for hospitable-keyboard is 8976732. The special magic number for h",
+          "generated_tokens": 128,
+          "hit_generation_cap": true,
+          "answer_distance_tokens": 3543,
+          "official_contains": true,
+          "standalone_number": true,
+          "first_number_exact": true,
+          "first_number_prefix": true,
+          "first_number": "8976732"
+        }
+      ]
+    }
+  ],
+  "arms": {
+    "held": {
+      "training_examples": 64,
+      "evaluations": [
+        {
+          "example": 32,
+          "results": [
+            {
+              "length": 512,
+              "samples": 4,
+              "official_score": 0.0,
+              "answer_nll": 0.8285908252000809,
+              "counts": {
+                "official_contains": 0,
+                "standalone_number": 0,
+                "first_number_exact": 0,
+                "first_number_prefix": 0,
+                "hit_generation_cap": 4
+              },
+              "cases": [
+                {
+                  "index": 0,
+                  "gold": [
+                    "2622302"
+                  ],
+                  "prediction_prefix": "262330oa? There and back again. There and back again. There and back again. There and back again. Th",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 97,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": "262330"
+                },
+                {
+                  "index": 1,
+                  "gold": [
+                    "4610712"
+                  ],
+                  "prediction_prefix": "461072oa? There and back again again?. There and back again?. There and back again?. There and back ",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 93,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": "461072"
+                },
+                {
+                  "index": 2,
+                  "gold": [
+                    "7565577"
+                  ],
+                  "prediction_prefix": "756577 rounded to 12 points, 12 points, 75657 rounded to 12 points, 75657 rounded to 12 points, 7565",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 320,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": "756577"
+                },
+                {
+                  "index": 3,
+                  "gold": [
+                    "8855227"
+                  ],
+                  "prediction_prefix": "8852227mania? There and back again. There and back again. There and back again. There and back again",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 172,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": "8852227"
+                }
+              ]
+            },
+            {
+              "length": 2048,
+              "samples": 4,
+              "official_score": 0.0,
+              "answer_nll": 0.9596428126096725,
+              "counts": {
+                "official_contains": 0,
+                "standalone_number": 0,
+                "first_number_exact": 0,
+                "first_number_prefix": 0,
+                "hit_generation_cap": 4
+              },
+              "cases": [
+                {
+                  "index": 0,
+                  "gold": [
+                    "6556483"
+                  ],
+                  "prediction_prefix": "green. The sky is blue. The sky is blue. The sky is blue. The sky is blue. The sky is blue. The sky ",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 918,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": null
+                },
+                {
+                  "index": 1,
+                  "gold": [
+                    "1276102"
+                  ],
+                  "prediction_prefix": "green. The sky is blue. The sky is blue. The sky is blue. The sky is blue. The sky is blue. The sky ",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 868,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": null
+                },
+                {
+                  "index": 2,
+                  "gold": [
+                    "7246591"
+                  ],
+                  "prediction_prefix": "green. The sky is blue. The sky is blue. The sky is blue. The sky is blue. The sky is blue. The sky ",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 1118,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": null
+                },
+                {
+                  "index": 3,
+                  "gold": [
+                    "4687362"
+                  ],
+                  "prediction_prefix": "green. The sky is blue. The sky is blue. The sky is blue. There and back again again again. There an",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 889,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": null
+                }
+              ]
+            },
+            {
+              "length": 4096,
+              "samples": 4,
+              "official_score": 0.0,
+              "answer_nll": 1.2739353626966476,
+              "counts": {
+                "official_contains": 0,
+                "standalone_number": 0,
+                "first_number_exact": 0,
+                "first_number_prefix": 0,
+                "hit_generation_cap": 4
+              },
+              "cases": [
+                {
+                  "index": 0,
+                  "gold": [
+                    "1276102"
+                  ],
+                  "prediction_prefix": "green. The sky is blue. The sky is blue. The sky is blue. The sky is blue. The sky is blue. The sky ",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 1918,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": null
+                },
+                {
+                  "index": 1,
+                  "gold": [
+                    "7246591"
+                  ],
+                  "prediction_prefix": "green and back again?ships and back againshipships?ships and back againshipships?ships and back agai",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 193,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": null
+                },
+                {
+                  "index": 2,
+                  "gold": [
+                    "7629301"
+                  ],
+                  "prediction_prefix": "green. The sky is blue. The sky is blue. The sky is blue. The sky is blue. The sky is blue. The sky ",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 1597,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": null
+                },
+                {
+                  "index": 3,
+                  "gold": [
+                    "8976732"
+                  ],
+                  "prediction_prefix": "green. The sky is blue. The sky is blue. The sky is blue. The sky is blue. The sky is blue. The sky ",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 3543,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "example": 64,
+          "results": [
+            {
+              "length": 512,
+              "samples": 4,
+              "official_score": 25.0,
+              "answer_nll": 0.5052312593907118,
+              "counts": {
+                "official_contains": 1,
+                "standalone_number": 1,
+                "first_number_exact": 1,
+                "first_number_prefix": 1,
+                "hit_generation_cap": 4
+              },
+              "cases": [
+                {
+                  "index": 0,
+                  "gold": [
+                    "2622302"
+                  ],
+                  "prediction_prefix": "2623022 Authored by admin on 2623022 Authored by admin on 2623022 Authored by admin on 2623022 Autho",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 97,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": "2623022"
+                },
+                {
+                  "index": 1,
+                  "gold": [
+                    "4610712"
+                  ],
+                  "prediction_prefix": "4610712tainment-farming-number-4610712</ref>\nThe grass is green. The sky is blue. The sun is yellow.",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 93,
+                  "official_contains": true,
+                  "standalone_number": true,
+                  "first_number_exact": true,
+                  "first_number_prefix": true,
+                  "first_number": "4610712"
+                },
+                {
+                  "index": 2,
+                  "gold": [
+                    "7565577"
+                  ],
+                  "prediction_prefix": "7565777ioned755757ioned755757ioned757577ioned757577 guessed to be 7565757ioned75757 guessed to be 75",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 320,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": "7565777"
+                },
+                {
+                  "index": 3,
+                  "gold": [
+                    "8855227"
+                  ],
+                  "prediction_prefix": "8552227tainment-prostacycl-8552277tainmentformation you can look it up in the bookstores or go to th",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 172,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": "8552227"
+                }
+              ]
+            },
+            {
+              "length": 2048,
+              "samples": 4,
+              "official_score": 50.0,
+              "answer_nll": 0.34250425547361374,
+              "counts": {
+                "official_contains": 2,
+                "standalone_number": 2,
+                "first_number_exact": 2,
+                "first_number_prefix": 2,
+                "hit_generation_cap": 4
+              },
+              "cases": [
+                {
+                  "index": 0,
+                  "gold": [
+                    "6556483"
+                  ],
+                  "prediction_prefix": "6564833tainment-the-sun-is-yellow-180000000000000000000000000000000000000000000000000000000000000000",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 918,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": "6564833"
+                },
+                {
+                  "index": 1,
+                  "gold": [
+                    "1276102"
+                  ],
+                  "prediction_prefix": "1276102 (@1276102)--(N/A)1276102 (@1276102)-- is a magical number for those of you have to prove it!",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 868,
+                  "official_contains": true,
+                  "standalone_number": true,
+                  "first_number_exact": true,
+                  "first_number_prefix": true,
+                  "first_number": "1276102"
+                },
+                {
+                  "index": 2,
+                  "gold": [
+                    "7246591"
+                  ],
+                  "prediction_prefix": "7465911tainment-the-sun-is-yellow-180000000000000000000000000000000000000000000000000000000000000000",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 1118,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": "7465911"
+                },
+                {
+                  "index": 3,
+                  "gold": [
+                    "4687362"
+                  ],
+                  "prediction_prefix": "4687362tainment-4873620tainment-4873620tainment-4873620_N\n\n\nbulk_text_(text_n): 4873620_n\nbulk_text_",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 889,
+                  "official_contains": true,
+                  "standalone_number": true,
+                  "first_number_exact": true,
+                  "first_number_prefix": true,
+                  "first_number": "4687362"
+                }
+              ]
+            },
+            {
+              "length": 4096,
+              "samples": 4,
+              "official_score": 75.0,
+              "answer_nll": 0.1570167380850762,
+              "counts": {
+                "official_contains": 3,
+                "standalone_number": 3,
+                "first_number_exact": 3,
+                "first_number_prefix": 3,
+                "hit_generation_cap": 4
+              },
+              "cases": [
+                {
+                  "index": 0,
+                  "gold": [
+                    "1276102"
+                  ],
+                  "prediction_prefix": "1276102 (@snowden-website) is the number of pages in the 1276102 (@snowden-website) before the 12761",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 1918,
+                  "official_contains": true,
+                  "standalone_number": true,
+                  "first_number_exact": true,
+                  "first_number_prefix": true,
+                  "first_number": "1276102"
+                },
+                {
+                  "index": 1,
+                  "gold": [
+                    "7246591"
+                  ],
+                  "prediction_prefix": "7465911tainment-the number is 7465911tainment-the-number-7465911-text-green-and-back-again-again-aga",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 193,
+                  "official_contains": false,
+                  "standalone_number": false,
+                  "first_number_exact": false,
+                  "first_number_prefix": false,
+                  "first_number": "7465911"
+                },
+                {
+                  "index": 2,
+                  "gold": [
+                    "7629301"
+                  ],
+                  "prediction_prefix": "7629301tainment-the-sun-turkey-176300000000000000000000000000000000000000000000000000000000000000000",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 1597,
+                  "official_contains": true,
+                  "standalone_number": true,
+                  "first_number_exact": true,
+                  "first_number_prefix": true,
+                  "first_number": "7629301"
+                },
+                {
+                  "index": 3,
+                  "gold": [
+                    "8976732"
+                  ],
+                  "prediction_prefix": "8976732auc000000auc0000000auc0000000auc0000000auc0000000auc0000000auc0000000auc0000000auc0000000auc0",
+                  "generated_tokens": 128,
+                  "hit_generation_cap": true,
+                  "answer_distance_tokens": 3543,
+                  "official_contains": true,
+                  "standalone_number": true,
+                  "first_number_exact": true,
+                  "first_number_prefix": true,
+                  "first_number": "8976732"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "full": {
+      "training_examples": 0,
+      "evaluations": []
+    }
+  }
+}

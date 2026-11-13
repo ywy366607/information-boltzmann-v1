@@ -58,7 +58,7 @@ class DecisionGraph:
 class DialogueEngine:
     def __init__(self, model, optimizer, recurrent, table, world, pending, rng,
                  mode='active', utterance_bytes=32, response_bytes=480,
-                 holdout_bytes=480, baseline=0., baseline_decay=.95):
+                 holdout_bytes=480, baseline=0., baseline_decay=.95, capture=True):
         if mode not in ('active', 'random', 'silence'):
             raise ValueError('unknown action policy')
         if min(response_bytes, holdout_bytes) < 1 or utterance_bytes < 1:
@@ -76,7 +76,7 @@ class DialogueEngine:
         other = [p for n, p in named if n.removeprefix('base.') not in LEXICAL]
         adapter = [p for n,p in model.named_parameters() if not n.startswith('body.')]
         self.groups = (lexical, other, adapter)
-        self.decision = DecisionGraph(model)
+        self.decision = DecisionGraph(model, capture=capture)
 
     def _inputs(self, raw, probs):
         ids = torch.as_tensor(raw[:-1].astype(np.int64), device=self.device)[None]

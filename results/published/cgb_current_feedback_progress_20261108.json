@@ -1,0 +1,218 @@
+{
+  "status": "oracle_delivery_passed_natural_address_missing",
+  "current_checkpoint": "D:\\information-boltzmann-v1\\scratch\\joint_next_pending_20261108\\pending_recovery.pt",
+  "current_state": {
+    "updates": 524,
+    "seen": 450757,
+    "next_case": 14,
+    "awaiting_actual_feedback": true
+  },
+  "actual_transitions": [
+    {
+      "case": 11,
+      "phase": "answer_and_self_hearing",
+      "start_seen": 442940,
+      "end_seen": 444868,
+      "updates": 0
+    },
+    {
+      "case": 11,
+      "phase": "identified_external_correction",
+      "start_seen": 444868,
+      "end_seen": 444900,
+      "updates": 0,
+      "external_targets": 32
+    },
+    {
+      "case": 12,
+      "phase": "next_fact_and_answer",
+      "start_seen": 444900,
+      "end_seen": 446828,
+      "updates": 1
+    },
+    {
+      "case": 12,
+      "phase": "identified_external_correction_and_world_boundary",
+      "start_seen": 446828,
+      "end_seen": 446861,
+      "updates": 1,
+      "external_targets": 32,
+      "world_marker": 2,
+      "state_resets": 0
+    },
+    {
+      "case": 13,
+      "phase": "next_fact_answer_and_self_hearing",
+      "start_seen": 446861,
+      "end_seen": 448792,
+      "updates": 1,
+      "prediction": "188300.\n\nThe grass is green.\n",
+      "references": [
+        "9346695"
+      ],
+      "correct": false,
+      "state_resets": 0
+    },
+    {
+      "case": 13,
+      "phase": "identified_external_correction_and_document_boundary",
+      "start_seen": 448792,
+      "end_seen": 448826,
+      "updates": 0,
+      "external_targets": 33,
+      "state_resets": 0
+    },
+    {
+      "case": 14,
+      "phase": "actual_fact_answer_self_hearing_and_joint_archiving",
+      "start_seen": 448826,
+      "end_seen": 450757,
+      "updates": 1,
+      "prediction": "1983400.\n\nThe grass is green.",
+      "references": [
+        "5999140"
+      ],
+      "correct": false,
+      "joint_windows": 15,
+      "state_resets": 0
+    }
+  ],
+  "current_external_ce_window": {
+    "updates": 521,
+    "ce": 2.3739633560180664,
+    "external_teaching_tokens": 32,
+    "live_cache_preserved": true,
+    "reexecution_ce_difference": 0.0010515480244066566
+  },
+  "query_state_probe": {
+    "natural": {
+      "answer_nll": 2.0273606795817614,
+      "prediction": "1183811.\n\nThe correct answer is ",
+      "correct": false
+    },
+    "native_query_state": {
+      "answer_nll": 2.2187591698020697,
+      "prediction": "1183811.\n\n\n\n\nThe grass",
+      "correct": false
+    }
+  },
+  "query_probe_preserved_source": true,
+  "query_probe_preserved_actual_cache": true,
+  "old_answer_positional_labels_used_in_current_learning": false,
+  "all_source_files_unchanged": true,
+  "new_lean_coverage": 0,
+  "tests_passed": 108,
+  "next_action": "Natural address selection over coherent archived programs. Oracle slot6 is absent from both actual last reads. Do not add more delivery projections or amplify credit. Future held/full learning benefit and real-OWT interference remain unverified.",
+  "marked_external_ce_windows": [
+    {
+      "updates": 522,
+      "ce": 1.954728603363037,
+      "external_teaching_tokens": 21,
+      "live_cache_preserved": true,
+      "reexecution_ce_difference": -0.0002334503723042669
+    },
+    {
+      "updates": 523,
+      "ce": 1.6552062034606934,
+      "external_teaching_tokens": 11,
+      "live_cache_preserved": true,
+      "reexecution_ce_difference": 0.0003801177848468118
+    }
+  ],
+  "current_short_readiness": "results/published/cgb_continuous_readiness_20261108.json",
+  "focused_tests_this_continuation": 46,
+  "current_reports": [
+    "D:\\information-boltzmann-v1\\scratch\\marked_feedback_20261108\\report.json",
+    "D:\\information-boltzmann-v1\\scratch\\marked_next_pending_20261108\\report.json"
+  ],
+  "actual_case_read_diagnosis": {
+    "status": "complete",
+    "actual_case": 13,
+    "actual_live": {
+      "prediction": "188300.\n\nThe grass is green.\n",
+      "reference": "9346695",
+      "correct": false
+    },
+    "same_incoming_frozen_read": {
+      "condition": "current_reads",
+      "index": 13,
+      "references": [
+        "9346695"
+      ],
+      "prediction": "188300.\n\nThe grass is green.\n",
+      "official_contains": false,
+      "standalone_number": false,
+      "first_number_exact": false,
+      "first_number_prefix": false,
+      "first_number": "188300",
+      "incoming_seen": 446861,
+      "outgoing_seen": 448792,
+      "optimizer_updates": 0,
+      "question_resets": 0
+    },
+    "same_incoming_frozen_no_extra_read": {
+      "condition": "current_native_only",
+      "index": 13,
+      "references": [
+        "9346695"
+      ],
+      "prediction": "934. The number is 934. The special magic",
+      "official_contains": false,
+      "standalone_number": false,
+      "first_number_exact": false,
+      "first_number_prefix": false,
+      "first_number": "934",
+      "incoming_seen": 446861,
+      "outgoing_seen": 448792,
+      "optimizer_updates": 0,
+      "question_resets": 0
+    },
+    "pending_external_targets_suppressed_in_research_only": 11,
+    "teaching_update_is_required_for_failure": false,
+    "retained_research_updates": 0,
+    "question_state_resets": 0,
+    "new_lean_coverage": 0,
+    "raw_reports": [
+      "D:\\information-boltzmann-v1\\scratch\\marked_actual_update_timing_20261108.json",
+      "D:\\information-boltzmann-v1\\scratch\\marked_actual_native_only_20261108.json"
+    ],
+    "complete_answer_restored_by_removing_extra_read": false,
+    "correct_digit_prefix_length": {
+      "actual_and_frozen_reads": 0,
+      "frozen_native_only": 3
+    },
+    "actual_participation": {
+      "fact_first_global_token": 447056,
+      "fact_first_local_input_position": 80,
+      "fact_last_local_input_position": 86,
+      "fact_start_to_query_tokens": 1720,
+      "available_local_inputs": 128,
+      "executed_legacy_replay_inputs": 65,
+      "layer_2_slot": 28,
+      "layer_13_slot": 24,
+      "source_time": 447040,
+      "direct_fact_write_is_in_legacy_replay": false,
+      "held_later_states_can_still_contain_fact": true
+    },
+    "configured_2048_test_case_start_to_query_tokens": [
+      1066,
+      1297
+    ]
+  },
+  "long_readiness_summary": {
+    "current_reads": {
+      "correct": 0,
+      "count": 2
+    },
+    "current_native_only": {
+      "correct": 2,
+      "count": 2
+    },
+    "current_reads_marker": {
+      "correct": 2,
+      "count": 2
+    }
+  },
+  "joint_delivery": "results/published/cgb_joint_reactivation_20261108.json",
+  "tests_passed_this_continuation": 94
+}

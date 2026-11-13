@@ -1,0 +1,46 @@
+{
+  "source_checkpoint": "results\\cgb_observed_gain_joint_20261105\\last.pt.gz",
+  "checkpoint_sha256": "87dbd48961e8f949637f4d9be96adcb3f87283daf273caca48db84cf2a278163",
+  "scope": "CPU stored-witness forward/backward on a migrated copy; no world or optimizer steps",
+  "cycle": 512,
+  "migrated_tensor_max_error": 0.0,
+  "restored_optimizer_states": 93,
+  "pending_actor_preserved": true,
+  "causal_state_has_byte_payload": false,
+  "neutral_prediction_max_error": 0.0,
+  "actual_loss": 4.8613762855529785,
+  "read_credit": {
+    "records": 16,
+    "participations": 1792,
+    "stale": 0,
+    "credit_sum": -2.0372681319713593e-10
+  },
+  "credited_records_since_last_write": {
+    "min": 546,
+    "max": 273784,
+    "over_128_bytes": 16,
+    "over_512_bytes": 16
+  },
+  "next_prediction_max_change": 7.62939453125e-06,
+  "next_choice_logit_max_change": 1.7881393432617188e-06,
+  "parameters_unchanged": true,
+  "measured_gains_unchanged": true,
+  "retrieved_words_unchanged": true,
+  "checkpoint_file_unchanged": true,
+  "parameter_count": 894916,
+  "occupied": 730,
+  "capacity": 4096,
+  "persistent_credit_bytes": 81920,
+  "exact_payload_bytes": 163840,
+  "sources": {
+    "D:\\information-boltzmann-v1\\scripts\\ib_local\\audit_navigation_causal_water.py": "39210fd7feb090b11d1d13b9e78fcd5f47677c45fac9a0297d2bf65221435035",
+    "scripts\\ib_local\\navigation_read_credit.py": "d8f30f2297e56db28974c3cc79bd4e3aa7b891ed2826d86daa90e229e5254d38",
+    "scripts\\ib_local\\navigation_retrieval.py": "4d4037c9135bff714599c631c22fb99590c855d93862035e57a12e9f2767ffae",
+    "scripts\\ib_local\\latent_navigation_v3.py": "d12715f8ace2717aaa6652977cc0a943258428c2a258c49322e7151d8caee868",
+    "scripts\\ib_local\\language_navigation_kanli_v4.py": "510fe2ff4969f490462a7296aca80a6ab3eb7ee2708de3c505c30c40c2704b49",
+    "scripts\\ib_local\\language_navigation_kanli_v4l.py": "96a5c5c33069645161b31ad450021b0c94d16c37c77b9a391e2e13d59a40f430",
+    "scripts\\ib_local\\language_navigation_v2.py": "b12947f6d08a6373e6251048db2c3647d78506c8a2d29e01273d61b0319927a1"
+  },
+  "world_steps": 0,
+  "optimizer_steps": 0
+}

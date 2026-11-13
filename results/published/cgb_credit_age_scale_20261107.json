@@ -1,0 +1,171 @@
+{
+  "scope": "read-only existing selection ages and existing gradient balance;not causal hit probability or Levy fit",
+  "source": "E:\\cgb_gdn340_probe\\credit_continuous_20261107\\report.json",
+  "optimizer_updates": 0,
+  "layers": {
+    "held": {
+      "1": {
+        "human_layer": 2,
+        "queries": 12288,
+        "selected_events": 24576,
+        "unique_replayed_per_window_minmax": [
+          19,
+          30
+        ],
+        "mean_null_mass": 0.31685760493079823,
+        "any_selected_over128_query_fraction": 1.0,
+        "age_quantiles": {
+          "0": 64.0,
+          "0.5": 2146.0,
+          "0.9": 3901.0,
+          "0.99": 4787.0,
+          "1": 7570.0
+        },
+        "age_mass": {
+          "128": {
+            "selection_fraction": 0.9847412109375,
+            "attention_mass_per_query": 0.6720408461375579
+          },
+          "512": {
+            "selection_fraction": 0.893798828125,
+            "attention_mass_per_query": 0.6087891482062938
+          },
+          "2048": {
+            "selection_fraction": 0.5247395833333334,
+            "attention_mass_per_query": 0.35693299719635735
+          },
+          "4096": {
+            "selection_fraction": 0.07059733072916667,
+            "attention_mass_per_query": 0.0480903891317818
+          },
+          "8192": {
+            "selection_fraction": 0.0,
+            "attention_mass_per_query": 0.0
+          }
+        }
+      },
+      "12": {
+        "human_layer": 13,
+        "queries": 12288,
+        "selected_events": 24576,
+        "unique_replayed_per_window_minmax": [
+          20,
+          31
+        ],
+        "mean_null_mass": 0.31682987914731103,
+        "any_selected_over128_query_fraction": 1.0,
+        "age_quantiles": {
+          "0": 64.0,
+          "0.5": 2168.5,
+          "0.9": 4396.5,
+          "0.99": 5884.25,
+          "1": 6946.0
+        },
+        "age_mass": {
+          "128": {
+            "selection_fraction": 0.9829508463541666,
+            "attention_mass_per_query": 0.670649168350792
+          },
+          "512": {
+            "selection_fraction": 0.8882242838541666,
+            "attention_mass_per_query": 0.6044203320185867
+          },
+          "2048": {
+            "selection_fraction": 0.5276285807291666,
+            "attention_mass_per_query": 0.35859202675843943
+          },
+          "4096": {
+            "selection_fraction": 0.13362630208333334,
+            "attention_mass_per_query": 0.0921325622415073
+          },
+          "8192": {
+            "selection_fraction": 0.0,
+            "attention_mass_per_query": 0.0
+          }
+        }
+      }
+    },
+    "full": {
+      "1": {
+        "human_layer": 2,
+        "queries": 12288,
+        "selected_events": 24576,
+        "unique_replayed_per_window_minmax": [
+          19,
+          30
+        ],
+        "mean_null_mass": 0.31657773970315856,
+        "any_selected_over128_query_fraction": 1.0,
+        "age_quantiles": {
+          "0": 64.0,
+          "0.5": 2124.5,
+          "0.9": 3900.0,
+          "0.99": 4793.5,
+          "1": 7570.0
+        },
+        "age_mass": {
+          "128": {
+            "selection_fraction": 0.984130859375,
+            "attention_mass_per_query": 0.6719157764531095
+          },
+          "512": {
+            "selection_fraction": 0.8926595052083334,
+            "attention_mass_per_query": 0.6083149435517043
+          },
+          "2048": {
+            "selection_fraction": 0.5193277994791666,
+            "attention_mass_per_query": 0.3535761071237478
+          },
+          "4096": {
+            "selection_fraction": 0.06986490885416667,
+            "attention_mass_per_query": 0.04760941683101313
+          },
+          "8192": {
+            "selection_fraction": 0.0,
+            "attention_mass_per_query": 0.0
+          }
+        }
+      },
+      "12": {
+        "human_layer": 13,
+        "queries": 12288,
+        "selected_events": 24576,
+        "unique_replayed_per_window_minmax": [
+          18,
+          31
+        ],
+        "mean_null_mass": 0.31614820410807926,
+        "any_selected_over128_query_fraction": 1.0,
+        "age_quantiles": {
+          "0": 64.0,
+          "0.5": 2179.0,
+          "0.9": 4376.5,
+          "0.99": 5894.25,
+          "1": 6905.0
+        },
+        "age_mass": {
+          "128": {
+            "selection_fraction": 0.9832763671875,
+            "attention_mass_per_query": 0.6715070520288767
+          },
+          "512": {
+            "selection_fraction": 0.8905436197916666,
+            "attention_mass_per_query": 0.6064239373572491
+          },
+          "2048": {
+            "selection_fraction": 0.5300699869791666,
+            "attention_mass_per_query": 0.36035671852247714
+          },
+          "4096": {
+            "selection_fraction": 0.13387044270833334,
+            "attention_mass_per_query": 0.09209380163520109
+          },
+          "8192": {
+            "selection_fraction": 0.0,
+            "attention_mass_per_query": 0.0
+          }
+        }
+      }
+    }
+  }
+}

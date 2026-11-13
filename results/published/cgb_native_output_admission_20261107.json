@@ -1,0 +1,136 @@
+{
+  "status": "admission_complete_training_running",
+  "new_lean_coverage": 0,
+  "promoted": false,
+  "source_sha256": "c8564de9edff2905c2cf9f8e0fef6cfb90e369b75e14f1d80764a03c2e66a5fa",
+  "neural_parameters": 1027664,
+  "added_output_parameters": 65536,
+  "transformation": "g*r + W*r; W initially0; current gradient available when g0; same held old-native credit path",
+  "tests": {
+    "affected_tests_passed": 43,
+    "new_numeric_contracts": [
+      "neutral live migration arbitrary gain",
+      "matrix gradient and finite difference at zero gain",
+      "held old participation cut with current output learning",
+      "Adam parameter order and next-update strict restore"
+    ]
+  },
+  "numerical": {
+    "neutral_max": 0.0,
+    "held_full_forward_max": 0.0,
+    "resume_next_update_exact": true,
+    "passed": true
+  },
+  "calibrated_old_gradients": [
+    {
+      "layer": 1,
+      "old_native_norms": {
+        "A_log": 0.00017134856898337603,
+        "dt_bias": 0.00016459761536680162,
+        "norm.weight": 0.0006312574842013419,
+        "q_proj.weight": 0.004439341835677624,
+        "k_proj.weight": 0.0033845126163214445,
+        "v_proj.weight": 0.004610724281519651,
+        "g_proj.weight": 0.006212540436536074,
+        "o_proj.weight": 0.009589544497430325,
+        "alpha_proj.weight": 0.0014545571757480502,
+        "beta_proj.weight": 0.0011783078080043197,
+        "beta_proj.bias": 0.00012396255624480546,
+        "mlp_norm.weight": 0.0018031059298664331,
+        "mlp.gate.weight": 0.011564524844288826,
+        "mlp.up.weight": 0.011405178345739841,
+        "mlp.down.weight": 0.013704383745789528,
+        "qkv_conv.weight": 0.002521186601370573
+      }
+    },
+    {
+      "layer": 2,
+      "old_native_norms": {
+        "A_log": 9.588514512870461e-05,
+        "dt_bias": 9.232543379766867e-05,
+        "norm.weight": 0.0002497137465979904,
+        "q_proj.weight": 0.0016143504763022065,
+        "k_proj.weight": 0.0015391820343211293,
+        "v_proj.weight": 0.0015113299014046788,
+        "g_proj.weight": 0.0010636175284162164,
+        "o_proj.weight": 0.0037827694322913885,
+        "alpha_proj.weight": 0.0005967065808363259,
+        "beta_proj.weight": 0.0005665012868121266,
+        "beta_proj.bias": 5.488571696332656e-05,
+        "mlp_norm.weight": 0.0011148450430482626,
+        "mlp.gate.weight": 0.007208753377199173,
+        "mlp.up.weight": 0.006611300632357597,
+        "mlp.down.weight": 0.008461741730570793,
+        "qkv_conv.weight": 0.0012940594460815191
+      }
+    },
+    {
+      "layer": 3,
+      "old_native_norms": {
+        "A_log": 0.00011924307909794152,
+        "dt_bias": 0.00011687039659591392,
+        "norm.weight": 0.0003071808023378253,
+        "q_proj.weight": 0.0015939505537971854,
+        "k_proj.weight": 0.0015396872768178582,
+        "v_proj.weight": 0.0018842219142243266,
+        "g_proj.weight": 0.0024532706011086702,
+        "o_proj.weight": 0.004447912331670523,
+        "alpha_proj.weight": 0.0008228534716181457,
+        "beta_proj.weight": 0.0002939313417300582,
+        "beta_proj.bias": 2.750107341853436e-05,
+        "mlp_norm.weight": 0.0007049728301353753,
+        "mlp.gate.weight": 0.004869457799941301,
+        "mlp.up.weight": 0.0039292508736252785,
+        "mlp.down.weight": 0.0043834601528942585,
+        "qkv_conv.weight": 0.0015148770762607455
+      }
+    },
+    {
+      "layer": 4,
+      "old_native_norms": {
+        "A_log": 0.0003394366358406842,
+        "dt_bias": 0.0003367998288013041,
+        "norm.weight": 0.0012634112499654293,
+        "q_proj.weight": 0.008135591633617878,
+        "k_proj.weight": 0.008374175056815147,
+        "v_proj.weight": 0.00885583646595478,
+        "g_proj.weight": 0.0075965626165270805,
+        "o_proj.weight": 0.01389685645699501,
+        "alpha_proj.weight": 0.0031552717555314302,
+        "beta_proj.weight": 0.0014606291661038995,
+        "beta_proj.bias": 0.0001287172781303525,
+        "mlp_norm.weight": 0.001868250546976924,
+        "mlp.gate.weight": 0.012160058133304119,
+        "mlp.up.weight": 0.010622353293001652,
+        "mlp.down.weight": 0.010603879578411579,
+        "qkv_conv.weight": 0.0064226360991597176
+      }
+    }
+  ],
+  "calibrated_output_gradient_norms": [
+    0.253191202878952,
+    0.532235860824585,
+    0.5771884918212891,
+    0.7540889382362366
+  ],
+  "training_plan": {
+    "updates_per_arm": 1024,
+    "training_indices": [
+      0,
+      1023
+    ],
+    "primary_test_indices": [
+      3328,
+      3343
+    ],
+    "test_count": 16,
+    "bptt_bytes": 128,
+    "capacity_per_layer": 16,
+    "maximum_record_bytes": 128,
+    "arm_difference": "held cuts ALL old native derivatives,including some recent records; strict-outside128 diagnosis is a separate protocol; both arms learn output W and Q/K",
+    "language_preservation_is_acceptance_goal": false
+  },
+  "live_report": "E:\\cgb_small_gdn_20261107\\native_output_pair\\report.json",
+  "runner_log": "E:\\cgb_small_gdn_20261107\\native_output_runner.log",
+  "reference": "E:\\cgb_small_gdn_20261107\\native_output_scalar_reference.json"
+}

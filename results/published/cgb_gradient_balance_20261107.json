@@ -1,0 +1,3519 @@
+{
+  "status": "complete",
+  "checkpoint": "E:\\cgb_gdn340_probe\\read_cadence_20261107\\migrated.pt",
+  "checkpoint_sha256": "273d3285d193755c4eec440a05619578160cc8be0f7d5f381f0e3221e1705206",
+  "source_updates": 491,
+  "dataset_revision": "433fe0f44ed7894fea29c08b3202aa348ccc6369",
+  "window": 128,
+  "persistent_updates": 0,
+  "experience_commits": 0,
+  "shadow_optimizer_steps": 12,
+  "cases": [
+    {
+      "sample": "stream_41472",
+      "cadence": "single",
+      "forward_max_difference": 0.0,
+      "full": {
+        "ce": 3.5693416595458984,
+        "sigreg": 56.89306640625,
+        "by_layer": {
+          "1": {
+            "query_count": 1,
+            "unique_replays": 2,
+            "oldest_age_tokens": 2624
+          },
+          "12": {
+            "query_count": 1,
+            "unique_replays": 2,
+            "oldest_age_tokens": 2240
+          }
+        },
+        "fp16_gradient_additivity_relative_error": 0.000707407426164966
+      },
+      "held": {
+        "ce": 3.5693416595458984,
+        "sigreg": 56.89306640625,
+        "by_layer": {
+          "1": {
+            "query_count": 1,
+            "unique_replays": 2,
+            "oldest_age_tokens": 2624
+          },
+          "12": {
+            "query_count": 1,
+            "unique_replays": 2,
+            "oldest_age_tokens": 2240
+          }
+        },
+        "fp16_gradient_additivity_relative_error": 0.0007067234389064207
+      },
+      "clip": {
+        "full_norm": 9.033380508422852,
+        "held_norm": 9.02347183227539,
+        "full_coefficient": 0.11070051664125843,
+        "held_coefficient": 0.11082207688631524
+      },
+      "by_layer": {
+        "2": {
+          "all": {
+            "parameters": [
+              "layer1.A_log",
+              "layer1.dt_bias",
+              "layer1.q_proj.weight",
+              "layer1.k_proj.weight",
+              "layer1.v_proj.weight",
+              "layer1.a_proj.weight",
+              "layer1.b_proj.weight",
+              "layer1.q_conv1d.weight",
+              "layer1.k_conv1d.weight",
+              "layer1.v_conv1d.weight",
+              "layer1.g_proj.weight",
+              "layer1.o_norm.weight",
+              "layer1.o_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 5.360327815437009,
+              "old_norm": 0.11341580352656576,
+              "old_to_current": 0.02115837079962606,
+              "cosine": 0.032259833600928635,
+              "combined_norm": 5.365184237256122,
+              "combined_to_sum": 0.9801672512882492,
+              "old_orthogonal_norm": 0.11335677242867144,
+              "ce": {
+                "current_norm": 5.360954065781491,
+                "old_norm": 0.11342154066537351,
+                "old_to_current": 0.021156969314349,
+                "cosine": 0.032286573818463865,
+                "combined_norm": 5.365813684171665,
+                "combined_to_sum": 0.9801690767898075,
+                "old_orthogonal_norm": 0.11336240864843855
+              },
+              "weighted_sigreg_full_norm": 0.0009085746507236384,
+              "weighted_sigreg_held_norm": 0.0009050759355344057,
+              "weighted_sigreg_old_norm": 3.663604914421742e-05,
+              "sigreg_to_ce_full": 0.00016932653726009822
+            },
+            "adam_update": {
+              "current_norm": 0.06955008458590466,
+              "old_norm": 0.0009048720451294061,
+              "old_to_current": 0.013010365846669173,
+              "cosine": 0.13947458327421258,
+              "combined_norm": 0.06968205239433188,
+              "combined_to_sum": 0.9890298103403881,
+              "old_orthogonal_norm": 0.0008960275102899015,
+              "full_master_step_norm": 0.06968205239433188,
+              "full_fp16_visible_step_norm": 0.0787209923506297,
+              "held_fp16_visible_step_norm": 0.07859974267550188,
+              "fp16_full_minus_held_norm": 0.004249212106046469,
+              "fp16_different_coordinates": 74002,
+              "coordinates": 5263624
+            }
+          },
+          "forget": {
+            "parameters": [
+              "layer1.A_log",
+              "layer1.dt_bias",
+              "layer1.a_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.2571850368578966,
+              "old_norm": 0.012732223359183812,
+              "old_to_current": 0.04950608135969743,
+              "cosine": -0.27602030374450665,
+              "combined_norm": 0.25396569673128316,
+              "combined_to_sum": 0.9409020250391981,
+              "old_orthogonal_norm": 0.012237599461130675,
+              "ce": {
+                "current_norm": 0.25716471658621765,
+                "old_norm": 0.012725442227121036,
+                "old_to_current": 0.04948362433247982,
+                "cosine": -0.27575416028245225,
+                "combined_norm": 0.2539503853043297,
+                "combined_to_sum": 0.9409397749844104,
+                "old_orthogonal_norm": 0.012232053864034817
+              },
+              "weighted_sigreg_full_norm": 7.107465345264802e-05,
+              "weighted_sigreg_held_norm": 6.8136485393354e-05,
+              "weighted_sigreg_old_norm": 4.554879557748505e-06,
+              "sigreg_to_ce_full": 0.00027987613945721485
+            },
+            "adam_update": {
+              "current_norm": 0.0016074580266237975,
+              "old_norm": 1.7837322664205063e-05,
+              "old_to_current": 0.011096602442347711,
+              "cosine": 0.3139699939020075,
+              "combined_norm": 0.0016131473094997597,
+              "combined_to_sum": 0.9925256416973294,
+              "old_orthogonal_norm": 1.6935341091711838e-05,
+              "full_master_step_norm": 0.0016131473094997597,
+              "full_fp16_visible_step_norm": 0.0020898097455521246,
+              "held_fp16_visible_step_norm": 0.002078875781346639,
+              "fp16_full_minus_held_norm": 0.00019905559794021583,
+              "fp16_different_coordinates": 83,
+              "coordinates": 4104
+            }
+          },
+          "write": {
+            "parameters": [
+              "layer1.b_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.07361435217777522,
+              "old_norm": 0.001174098495912815,
+              "old_to_current": 0.015949315061245424,
+              "cosine": 0.07740169944238509,
+              "combined_norm": 0.07371452427456326,
+              "combined_to_sum": 0.9856404780490714,
+              "old_orthogonal_norm": 0.0011705761868372304,
+              "ce": {
+                "current_norm": 0.07358887256651513,
+                "old_norm": 0.001173551434133645,
+                "old_to_current": 0.01594740336690036,
+                "cosine": 0.07767406015721712,
+                "combined_norm": 0.07368931607118306,
+                "combined_to_sum": 0.9856464267469927,
+                "old_orthogonal_norm": 0.0011700059080326914
+              },
+              "weighted_sigreg_full_norm": 1.629432267256905e-05,
+              "weighted_sigreg_held_norm": 1.6282326395608516e-05,
+              "weighted_sigreg_old_norm": 8.429369702178807e-08,
+              "sigreg_to_ce_full": 0.00022112191483537335
+            },
+            "adam_update": {
+              "current_norm": 0.002117011061341237,
+              "old_norm": 6.807593127253532e-06,
+              "old_to_current": 0.003215662521357147,
+              "cosine": 0.07148490319863209,
+              "combined_norm": 0.002117508588475086,
+              "combined_to_sum": 0.997028905466986,
+              "old_orthogonal_norm": 6.790177137935246e-06,
+              "full_master_step_norm": 0.002117508588475086,
+              "full_fp16_visible_step_norm": 0.002794557164004274,
+              "held_fp16_visible_step_norm": 0.0027905677574243787,
+              "fp16_full_minus_held_norm": 0.00014727228239739615,
+              "fp16_different_coordinates": 20,
+              "coordinates": 4096
+            }
+          },
+          "q_proj": {
+            "parameters": [
+              "layer1.q_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.3801269981486791,
+              "old_norm": 0.010694584549490543,
+              "old_to_current": 0.02813424092888969,
+              "cosine": -0.09520687270684751,
+              "combined_norm": 0.37925824948155357,
+              "combined_to_sum": 0.9704127567961198,
+              "old_orthogonal_norm": 0.010646004490939826,
+              "ce": {
+                "current_norm": 0.38013193558561315,
+                "old_norm": 0.010696178564854893,
+                "old_to_current": 0.028138068821754923,
+                "cosine": -0.09531177138447887,
+                "combined_norm": 0.3792619532288353,
+                "combined_to_sum": 0.9704060160902863,
+                "old_orthogonal_norm": 0.01064748389484687
+              },
+              "weighted_sigreg_full_norm": 6.89707904048964e-05,
+              "weighted_sigreg_held_norm": 6.857948903894168e-05,
+              "weighted_sigreg_old_norm": 3.2690308572774143e-06,
+              "sigreg_to_ce_full": 0.0001818552845011624
+            },
+            "adam_update": {
+              "current_norm": 0.04086063136899212,
+              "old_norm": 0.0004739885830199506,
+              "old_to_current": 0.011600128709211429,
+              "cosine": 0.1519164215723446,
+              "combined_norm": 0.040935318923441606,
+              "combined_to_sum": 0.9903397919459754,
+              "old_orthogonal_norm": 0.0004684871602036248,
+              "full_master_step_norm": 0.040935318923441606,
+              "full_fp16_visible_step_norm": 0.04320075920538437,
+              "held_fp16_visible_step_norm": 0.043130396141911824,
+              "fp16_full_minus_held_norm": 0.0018188122126739452,
+              "fp16_different_coordinates": 18763,
+              "coordinates": 1048576
+            }
+          },
+          "k_proj": {
+            "parameters": [
+              "layer1.k_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.5189442747324695,
+              "old_norm": 0.009280426286112052,
+              "old_to_current": 0.017883280995625927,
+              "cosine": 0.10336732248493201,
+              "combined_norm": 0.5199855052015512,
+              "combined_to_sum": 0.9844021004675801,
+              "old_orthogonal_norm": 0.00923071337133594,
+              "ce": {
+                "current_norm": 0.5188423371787383,
+                "old_norm": 0.009284021242167087,
+                "old_to_current": 0.017893723346961165,
+                "cosine": 0.1036059450853477,
+                "combined_norm": 0.5198862296900668,
+                "combined_to_sum": 0.9843974295176697,
+                "old_orthogonal_norm": 0.009234058570585587
+              },
+              "weighted_sigreg_full_norm": 8.64381618180504e-05,
+              "weighted_sigreg_held_norm": 8.62329052440178e-05,
+              "weighted_sigreg_old_norm": 2.6171801567197024e-06,
+              "sigreg_to_ce_full": 0.00016626361092422282
+            },
+            "adam_update": {
+              "current_norm": 0.041636261338952256,
+              "old_norm": 0.0006206806606921245,
+              "old_to_current": 0.01490721406610672,
+              "cosine": 0.14854704257772117,
+              "combined_norm": 0.041732975599475586,
+              "combined_to_sum": 0.9876004657371278,
+              "old_orthogonal_norm": 0.0006137944212558624,
+              "full_master_step_norm": 0.041732975599475586,
+              "full_fp16_visible_step_norm": 0.043877494859819205,
+              "held_fp16_visible_step_norm": 0.04378281627581201,
+              "fp16_full_minus_held_norm": 0.0022012340706667652,
+              "fp16_different_coordinates": 26305,
+              "coordinates": 1048576
+            }
+          },
+          "v_proj": {
+            "parameters": [
+              "layer1.v_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.0470103081568742,
+              "old_norm": 0.027902242021767207,
+              "old_to_current": 0.02664944347194201,
+              "cosine": 0.022156841096358754,
+              "combined_norm": 1.0479998556910957,
+              "combined_to_sum": 0.9749628986254992,
+              "old_orthogonal_norm": 0.027895392218422285,
+              "ce": {
+                "current_norm": 1.0469284314762708,
+                "old_norm": 0.02790028305196383,
+                "old_to_current": 0.026649656474246018,
+                "cosine": 0.022177859486127938,
+                "combined_norm": 1.0479184983660284,
+                "combined_to_sum": 0.9749632515409511,
+                "old_orthogonal_norm": 0.027893420726981175
+              },
+              "weighted_sigreg_full_norm": 0.0002096655123038044,
+              "weighted_sigreg_held_norm": 0.0002090319595900958,
+              "weighted_sigreg_old_norm": 9.258119151033912e-06,
+              "sigreg_to_ce_full": 0.00020007807155873888
+            },
+            "adam_update": {
+              "current_norm": 0.022092140708810215,
+              "old_norm": 0.0002593428306400243,
+              "old_to_current": 0.01173914443413806,
+              "cosine": 0.11663167495377279,
+              "combined_norm": 0.02212388771834857,
+              "combined_to_sum": 0.9898174176805775,
+              "old_orthogonal_norm": 0.00025757287741669493,
+              "full_master_step_norm": 0.02212388771834857,
+              "full_fp16_visible_step_norm": 0.028546324547671205,
+              "held_fp16_visible_step_norm": 0.028514918065123258,
+              "fp16_full_minus_held_norm": 0.00182226800583533,
+              "fp16_different_coordinates": 9168,
+              "coordinates": 1048576
+            }
+          }
+        },
+        "13": {
+          "all": {
+            "parameters": [
+              "layer12.A_log",
+              "layer12.dt_bias",
+              "layer12.q_proj.weight",
+              "layer12.k_proj.weight",
+              "layer12.v_proj.weight",
+              "layer12.a_proj.weight",
+              "layer12.b_proj.weight",
+              "layer12.q_conv1d.weight",
+              "layer12.k_conv1d.weight",
+              "layer12.v_conv1d.weight",
+              "layer12.g_proj.weight",
+              "layer12.o_norm.weight",
+              "layer12.o_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 7.258783388767604,
+              "old_norm": 0.15164700320020164,
+              "old_to_current": 0.02089151791398865,
+              "cosine": 0.04716220035383905,
+              "combined_norm": 7.267514212464835,
+              "combined_to_sum": 0.9807141863638746,
+              "old_orthogonal_norm": 0.15147825713547247,
+              "ce": {
+                "current_norm": 7.258783388767604,
+                "old_norm": 0.15164700320020164,
+                "old_to_current": 0.02089151791398865,
+                "cosine": 0.04716220035383905,
+                "combined_norm": 7.267514212464835,
+                "combined_to_sum": 0.9807141863638746,
+                "old_orthogonal_norm": 0.15147825713547247
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.052595208576347724,
+              "old_norm": 0.0004528587246667157,
+              "old_to_current": 0.008610265781327618,
+              "cosine": -0.02438444019399949,
+              "combined_norm": 0.0525861147006704,
+              "combined_to_sum": 0.9912918109207872,
+              "old_orthogonal_norm": 0.0004527240695392557,
+              "full_master_step_norm": 0.0525861147006704,
+              "full_fp16_visible_step_norm": 0.06643063004050395,
+              "held_fp16_visible_step_norm": 0.0664324560297987,
+              "fp16_full_minus_held_norm": 0.004423698255243857,
+              "fp16_different_coordinates": 61747,
+              "coordinates": 5263624
+            }
+          },
+          "forget": {
+            "parameters": [
+              "layer12.A_log",
+              "layer12.dt_bias",
+              "layer12.a_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.381271548567209,
+              "old_norm": 0.010939146791650464,
+              "old_to_current": 0.02869122239191198,
+              "cosine": 0.03497981403478982,
+              "combined_norm": 0.38181074536649096,
+              "combined_to_sum": 0.9734837674866237,
+              "old_orthogonal_norm": 0.010932452242146753,
+              "ce": {
+                "current_norm": 0.381271548567209,
+                "old_norm": 0.010939146791650464,
+                "old_to_current": 0.02869122239191198,
+                "cosine": 0.03497981403478982,
+                "combined_norm": 0.38181074536649096,
+                "combined_to_sum": 0.9734837674866237,
+                "old_orthogonal_norm": 0.010932452242146753
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.0022500107423956833,
+              "old_norm": 1.554313336132372e-05,
+              "old_to_current": 0.006908026290031966,
+              "cosine": 0.30844818902414317,
+              "combined_norm": 0.002254853468390114,
+              "combined_to_sum": 0.995276913305221,
+              "old_orthogonal_norm": 1.4785267965274854e-05,
+              "full_master_step_norm": 0.002254853468390114,
+              "full_fp16_visible_step_norm": 0.0029621915980510187,
+              "held_fp16_visible_step_norm": 0.0029582861362747914,
+              "fp16_full_minus_held_norm": 0.0001589899007138821,
+              "fp16_different_coordinates": 56,
+              "coordinates": 4104
+            }
+          },
+          "write": {
+            "parameters": [
+              "layer12.b_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.253223154451792,
+              "old_norm": 0.002706528845399779,
+              "old_to_current": 0.010688315021030358,
+              "cosine": 0.02236827477928448,
+              "combined_norm": 0.25329814784431326,
+              "combined_to_sum": 0.9897177403614308,
+              "old_orthogonal_norm": 0.002705851668746847,
+              "ce": {
+                "current_norm": 0.253223154451792,
+                "old_norm": 0.002706528845399779,
+                "old_to_current": 0.010688315021030358,
+                "cosine": 0.02236827477928448,
+                "combined_norm": 0.25329814784431326,
+                "combined_to_sum": 0.9897177403614308,
+                "old_orthogonal_norm": 0.002705851668746847
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.0019325070304422412,
+              "old_norm": 7.422408784276506e-06,
+              "old_to_current": 0.003840818515717347,
+              "cosine": -0.0893799872250309,
+              "combined_norm": 0.0019318577606339692,
+              "combined_to_sum": 0.9958391895966242,
+              "old_orthogonal_norm": 7.392701330431993e-06,
+              "full_master_step_norm": 0.0019318577606339692,
+              "full_fp16_visible_step_norm": 0.002478963102270327,
+              "held_fp16_visible_step_norm": 0.002479933669546589,
+              "fp16_full_minus_held_norm": 8.357308783066187e-05,
+              "fp16_different_coordinates": 33,
+              "coordinates": 4096
+            }
+          },
+          "q_proj": {
+            "parameters": [
+              "layer12.q_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.1839596729214923,
+              "old_norm": 0.025237073483634024,
+              "old_to_current": 0.021315821865249863,
+              "cosine": 0.007369214905933763,
+              "combined_norm": 1.1844145374439596,
+              "combined_to_sum": 0.9795052301994338,
+              "old_orthogonal_norm": 0.02523638822054973,
+              "ce": {
+                "current_norm": 1.1839596729214923,
+                "old_norm": 0.025237073483634024,
+                "old_to_current": 0.021315821865249863,
+                "cosine": 0.007369214905933763,
+                "combined_norm": 1.1844145374439596,
+                "combined_to_sum": 0.9795052301994338,
+                "old_orthogonal_norm": 0.02523638822054973
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.025455217537762764,
+              "old_norm": 0.00021640676355410315,
+              "old_to_current": 0.008501469815886042,
+              "cosine": -0.015317568625145377,
+              "combined_norm": 0.02545282248742155,
+              "combined_to_sum": 0.9914769002799682,
+              "old_orthogonal_norm": 0.0002163813745316042,
+              "full_master_step_norm": 0.02545282248742155,
+              "full_fp16_visible_step_norm": 0.031320829721744804,
+              "held_fp16_visible_step_norm": 0.031319450881175596,
+              "fp16_full_minus_held_norm": 0.002078609119625112,
+              "fp16_different_coordinates": 14345,
+              "coordinates": 1048576
+            }
+          },
+          "k_proj": {
+            "parameters": [
+              "layer12.k_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.2250408662553018,
+              "old_norm": 0.021671898564806554,
+              "old_to_current": 0.017690755599895285,
+              "cosine": 0.029957659754810503,
+              "combined_norm": 1.225881513314948,
+              "combined_to_sum": 0.9832910578178238,
+              "old_orthogonal_norm": 0.021662171535933732,
+              "ce": {
+                "current_norm": 1.2250408662553018,
+                "old_norm": 0.021671898564806554,
+                "old_to_current": 0.017690755599895285,
+                "cosine": 0.029957659754810503,
+                "combined_norm": 1.225881513314948,
+                "combined_to_sum": 0.9832910578178238,
+                "old_orthogonal_norm": 0.021662171535933732
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.025217657725918816,
+              "old_norm": 0.00024347805848443468,
+              "old_to_current": 0.009655062382506163,
+              "cosine": -0.01592138700460527,
+              "combined_norm": 0.025214956470768282,
+              "combined_to_sum": 0.9903311731369906,
+              "old_orthogonal_norm": 0.00024344719683332467,
+              "full_master_step_norm": 0.025214956470768282,
+              "full_fp16_visible_step_norm": 0.031133805797551962,
+              "held_fp16_visible_step_norm": 0.031127492637402877,
+              "fp16_full_minus_held_norm": 0.0021705396671867034,
+              "fp16_different_coordinates": 15163,
+              "coordinates": 1048576
+            }
+          },
+          "v_proj": {
+            "parameters": [
+              "layer12.v_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 2.621860651675148,
+              "old_norm": 0.039909598242629823,
+              "old_to_current": 0.01522186093953199,
+              "cosine": -0.0023102359574541246,
+              "combined_norm": 2.622072191729679,
+              "combined_to_sum": 0.9850858434572537,
+              "old_orthogonal_norm": 0.03990949173992982,
+              "ce": {
+                "current_norm": 2.621860651675148,
+                "old_norm": 0.039909598242629823,
+                "old_to_current": 0.01522186093953199,
+                "cosine": -0.0023102359574541246,
+                "combined_norm": 2.622072191729679,
+                "combined_to_sum": 0.9850858434572537,
+                "old_orthogonal_norm": 0.03990949173992982
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.02269917103031618,
+              "old_norm": 0.0001954312868151496,
+              "old_to_current": 0.008609622199600979,
+              "cosine": -0.035562087519481166,
+              "combined_norm": 0.0226930615583823,
+              "combined_to_sum": 0.9911970185829249,
+              "old_orthogonal_norm": 0.00019530767045181316,
+              "full_master_step_norm": 0.0226930615583823,
+              "full_fp16_visible_step_norm": 0.028987371903476306,
+              "held_fp16_visible_step_norm": 0.028992853096798703,
+              "fp16_full_minus_held_norm": 0.0019175588800324243,
+              "fp16_different_coordinates": 10781,
+              "coordinates": 1048576
+            }
+          }
+        }
+      }
+    },
+    {
+      "sample": "stream_41472",
+      "cadence": "positionwise",
+      "forward_max_difference": 0.0,
+      "full": {
+        "ce": 3.5792088508605957,
+        "sigreg": 56.89277648925781,
+        "by_layer": {
+          "1": {
+            "query_count": 128,
+            "unique_replays": 24,
+            "oldest_age_tokens": 6976
+          },
+          "12": {
+            "query_count": 128,
+            "unique_replays": 27,
+            "oldest_age_tokens": 5952
+          }
+        },
+        "fp16_gradient_additivity_relative_error": 0.0005590315979351892
+      },
+      "held": {
+        "ce": 3.5792088508605957,
+        "sigreg": 56.89277648925781,
+        "by_layer": {
+          "1": {
+            "query_count": 128,
+            "unique_replays": 24,
+            "oldest_age_tokens": 6976
+          },
+          "12": {
+            "query_count": 128,
+            "unique_replays": 27,
+            "oldest_age_tokens": 5952
+          }
+        },
+        "fp16_gradient_additivity_relative_error": 0.0005808509496282735
+      },
+      "clip": {
+        "full_norm": 17.766328811645508,
+        "held_norm": 17.05545997619629,
+        "full_coefficient": 0.05628624542050987,
+        "held_coefficient": 0.058632246961584034
+      },
+      "by_layer": {
+        "2": {
+          "all": {
+            "parameters": [
+              "layer1.A_log",
+              "layer1.dt_bias",
+              "layer1.q_proj.weight",
+              "layer1.k_proj.weight",
+              "layer1.v_proj.weight",
+              "layer1.a_proj.weight",
+              "layer1.b_proj.weight",
+              "layer1.q_conv1d.weight",
+              "layer1.k_conv1d.weight",
+              "layer1.v_conv1d.weight",
+              "layer1.g_proj.weight",
+              "layer1.o_norm.weight",
+              "layer1.o_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 15.083056691499545,
+              "old_norm": 1.2836041291176514,
+              "old_to_current": 0.08510238709379515,
+              "cosine": 0.5863947899217422,
+              "combined_norm": 15.869853032339144,
+              "combined_to_sum": 0.9696451344765318,
+              "old_orthogonal_norm": 1.03975194948305,
+              "ce": {
+                "current_norm": 15.087771749995925,
+                "old_norm": 1.2834106616431558,
+                "old_to_current": 0.08506296906589288,
+                "cosine": 0.586549378070838,
+                "combined_norm": 15.874623061924199,
+                "combined_to_sum": 0.9696686936087248,
+                "old_orthogonal_norm": 1.0394515809780789
+              },
+              "weighted_sigreg_full_norm": 0.0009583821876976441,
+              "weighted_sigreg_held_norm": 0.0010468938041180435,
+              "weighted_sigreg_old_norm": 0.0002856973159586922,
+              "sigreg_to_ce_full": 6.0371964988343886e-05
+            },
+            "adam_update": {
+              "current_norm": 0.07045761528835055,
+              "old_norm": 0.002172899734129606,
+              "old_to_current": 0.030839813769411986,
+              "cosine": -0.3360573922288065,
+              "combined_norm": 0.06975742300322557,
+              "combined_to_sum": 0.9604423565168809,
+              "old_orthogonal_norm": 0.0020465271657129757,
+              "full_master_step_norm": 0.06975742300322557,
+              "full_fp16_visible_step_norm": 0.07860429414262116,
+              "held_fp16_visible_step_norm": 0.07923246360310793,
+              "fp16_full_minus_held_norm": 0.007839703724743026,
+              "fp16_different_coordinates": 248940,
+              "coordinates": 5263624
+            }
+          },
+          "forget": {
+            "parameters": [
+              "layer1.A_log",
+              "layer1.dt_bias",
+              "layer1.a_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.9507133446162317,
+              "old_norm": 0.11940285232550132,
+              "old_to_current": 0.12559290663338685,
+              "cosine": 0.931136888456041,
+              "combined_norm": 1.0627860957833957,
+              "combined_to_sum": 0.9931501820276285,
+              "old_orthogonal_norm": 0.043542619503423814,
+              "ce": {
+                "current_norm": 0.9507172249550101,
+                "old_norm": 0.11937503873225146,
+                "old_to_current": 0.12556313864819324,
+                "cosine": 0.9311915072364593,
+                "combined_norm": 1.062769513525618,
+                "combined_to_sum": 0.9931568983253731,
+                "old_orthogonal_norm": 0.043515824777976345
+              },
+              "weighted_sigreg_full_norm": 7.312187385059947e-05,
+              "weighted_sigreg_held_norm": 7.548466806325292e-05,
+              "weighted_sigreg_old_norm": 2.07065657959306e-05,
+              "sigreg_to_ce_full": 6.88031345649217e-05
+            },
+            "adam_update": {
+              "current_norm": 0.0014739914782110285,
+              "old_norm": 3.69613602866948e-05,
+              "old_to_current": 0.02507569469231566,
+              "cosine": -0.08256943989853743,
+              "combined_norm": 0.0014714007384992371,
+              "combined_to_sum": 0.9738230744264584,
+              "old_orthogonal_norm": 3.683514883817722e-05,
+              "full_master_step_norm": 0.0014714007384992371,
+              "full_fp16_visible_step_norm": 0.0019263783440925822,
+              "held_fp16_visible_step_norm": 0.0019334180896965923,
+              "fp16_full_minus_held_norm": 0.0003030523249794162,
+              "fp16_different_coordinates": 165,
+              "coordinates": 4104
+            }
+          },
+          "write": {
+            "parameters": [
+              "layer1.b_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.09787355465049677,
+              "old_norm": 0.012580790474671488,
+              "old_to_current": 0.1285412644876042,
+              "cosine": 0.5197409609768298,
+              "combined_norm": 0.10496404535363742,
+              "combined_to_sum": 0.9502934921635797,
+              "old_orthogonal_norm": 0.010748070037681886,
+              "ce": {
+                "current_norm": 0.09782963527315146,
+                "old_norm": 0.012575062699502596,
+                "old_to_current": 0.12854042299546137,
+                "cosine": 0.5196709204293054,
+                "combined_norm": 0.10491607318444655,
+                "combined_to_sum": 0.9502863112802775,
+                "old_orthogonal_norm": 0.010743712439336722
+              },
+              "weighted_sigreg_full_norm": 1.736266012167887e-05,
+              "weighted_sigreg_held_norm": 1.7001957195440845e-05,
+              "weighted_sigreg_old_norm": 2.856673471050682e-06,
+              "sigreg_to_ce_full": 0.00016549094523538483
+            },
+            "adam_update": {
+              "current_norm": 0.002085728659743119,
+              "old_norm": 3.152814655482061e-05,
+              "old_to_current": 0.015116130474375154,
+              "cosine": -0.55600100310929,
+              "combined_norm": 0.002068364994270039,
+              "combined_to_sum": 0.9769079443351095,
+              "old_orthogonal_norm": 2.6205615912260545e-05,
+              "full_master_step_norm": 0.002068364994270039,
+              "full_fp16_visible_step_norm": 0.0027788519239505633,
+              "held_fp16_visible_step_norm": 0.0028038651105246146,
+              "fp16_full_minus_held_norm": 0.0003824529605188598,
+              "fp16_different_coordinates": 104,
+              "coordinates": 4096
+            }
+          },
+          "q_proj": {
+            "parameters": [
+              "layer1.q_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.1636346648866993,
+              "old_norm": 0.07761259394183061,
+              "old_to_current": 0.06669842028931613,
+              "cosine": 0.7356532471649924,
+              "combined_norm": 1.2218621104987633,
+              "combined_to_sum": 0.9843825247613742,
+              "old_orthogonal_norm": 0.05257153660205638,
+              "ce": {
+                "current_norm": 1.163606445017567,
+                "old_norm": 0.07761660235991161,
+                "old_to_current": 0.0667034826871725,
+                "cosine": 0.7356320472263908,
+                "combined_norm": 1.2218354126157578,
+                "combined_to_sum": 0.9843802169137256,
+                "old_orthogonal_norm": 0.05257603876096259
+              },
+              "weighted_sigreg_full_norm": 0.00010487711215986884,
+              "weighted_sigreg_held_norm": 0.000113807511066208,
+              "weighted_sigreg_old_norm": 1.6540047282953995e-05,
+              "sigreg_to_ce_full": 8.583571164903742e-05
+            },
+            "adam_update": {
+              "current_norm": 0.043085806005199186,
+              "old_norm": 0.0014487626013781041,
+              "old_to_current": 0.03362505510987264,
+              "cosine": -0.39858156508653253,
+              "combined_norm": 0.04252911695800851,
+              "combined_to_sum": 0.9549686521882554,
+              "old_orthogonal_norm": 0.0013287078299883451,
+              "full_master_step_norm": 0.04252911695800851,
+              "full_fp16_visible_step_norm": 0.044685774824874784,
+              "held_fp16_visible_step_norm": 0.04520936703427005,
+              "fp16_full_minus_held_norm": 0.004300073327228119,
+              "fp16_different_coordinates": 88671,
+              "coordinates": 1048576
+            }
+          },
+          "k_proj": {
+            "parameters": [
+              "layer1.k_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.6315922022810487,
+              "old_norm": 0.11155353420922198,
+              "old_to_current": 0.06837096552267441,
+              "cosine": 0.8041171195207663,
+              "combined_norm": 1.7225712817920191,
+              "combined_to_sum": 0.9881969394368154,
+              "old_orthogonal_norm": 0.0663153305500934,
+              "ce": {
+                "current_norm": 1.6316304150914296,
+                "old_norm": 0.11154845605298219,
+                "old_to_current": 0.06836625195340668,
+                "cosine": 0.8041657030896693,
+                "combined_norm": 1.722610402858722,
+                "combined_to_sum": 0.9882005979844245,
+                "old_orthogonal_norm": 0.06630498047079486
+              },
+              "weighted_sigreg_full_norm": 9.481504772053406e-05,
+              "weighted_sigreg_held_norm": 9.316467197902634e-05,
+              "weighted_sigreg_old_norm": 1.3201049631469544e-05,
+              "sigreg_to_ce_full": 5.5041492587752716e-05
+            },
+            "adam_update": {
+              "current_norm": 0.04280702017007604,
+              "old_norm": 0.001478164006071551,
+              "old_to_current": 0.03453087835123015,
+              "cosine": -0.380084709066591,
+              "combined_norm": 0.04226731147496457,
+              "combined_to_sum": 0.9544345871260966,
+              "old_orthogonal_norm": 0.001367230283607144,
+              "full_master_step_norm": 0.04226731147496457,
+              "full_fp16_visible_step_norm": 0.044329177316174494,
+              "held_fp16_visible_step_norm": 0.04485389900161197,
+              "fp16_full_minus_held_norm": 0.00432369615952571,
+              "fp16_different_coordinates": 92759,
+              "coordinates": 1048576
+            }
+          },
+          "v_proj": {
+            "parameters": [
+              "layer1.v_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.416052945524417,
+              "old_norm": 0.1505076794755144,
+              "old_to_current": 0.10628675993451348,
+              "cosine": 0.42694877913472545,
+              "combined_norm": 1.4865554133017713,
+              "combined_to_sum": 0.9489293868227003,
+              "old_orthogonal_norm": 0.13610045372268842,
+              "ce": {
+                "current_norm": 1.4161019384005158,
+                "old_norm": 0.1504950238930338,
+                "old_to_current": 0.106274145816803,
+                "cosine": 0.42701987593665985,
+                "combined_norm": 1.4866079644300372,
+                "combined_to_sum": 0.9489409211247251,
+                "old_orthogonal_norm": 0.13608395726048256
+              },
+              "weighted_sigreg_full_norm": 0.00023003312073886987,
+              "weighted_sigreg_held_norm": 0.00023098284150698046,
+              "weighted_sigreg_old_norm": 3.5313224400230696e-05,
+              "sigreg_to_ce_full": 0.0001547369086153552
+            },
+            "adam_update": {
+              "current_norm": 0.020820474604251134,
+              "old_norm": 0.0003696581933671079,
+              "old_to_current": 0.01775455172821233,
+              "cosine": -0.12482251346745112,
+              "combined_norm": 0.020777570291182455,
+              "combined_to_sum": 0.9805304426179831,
+              "old_orthogonal_norm": 0.0003667671286948714,
+              "full_master_step_norm": 0.020777570291182455,
+              "full_fp16_visible_step_norm": 0.027387686052034836,
+              "held_fp16_visible_step_norm": 0.027422052431944184,
+              "fp16_full_minus_held_norm": 0.00285155247246789,
+              "fp16_different_coordinates": 21562,
+              "coordinates": 1048576
+            }
+          }
+        },
+        "13": {
+          "all": {
+            "parameters": [
+              "layer12.A_log",
+              "layer12.dt_bias",
+              "layer12.q_proj.weight",
+              "layer12.k_proj.weight",
+              "layer12.v_proj.weight",
+              "layer12.a_proj.weight",
+              "layer12.b_proj.weight",
+              "layer12.q_conv1d.weight",
+              "layer12.k_conv1d.weight",
+              "layer12.v_conv1d.weight",
+              "layer12.g_proj.weight",
+              "layer12.o_norm.weight",
+              "layer12.o_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 7.961793250846664,
+              "old_norm": 0.26818966578321995,
+              "old_to_current": 0.03368458051265027,
+              "cosine": 0.07683023092478466,
+              "combined_norm": 7.986875743589415,
+              "combined_to_sum": 0.9704607925067215,
+              "old_orthogonal_norm": 0.2673969479262527,
+              "ce": {
+                "current_norm": 7.961793250846664,
+                "old_norm": 0.26818966578321995,
+                "old_to_current": 0.03368458051265027,
+                "cosine": 0.07683023092478466,
+                "combined_norm": 7.986875743589415,
+                "combined_to_sum": 0.9704607925067215,
+                "old_orthogonal_norm": 0.2673969479262527
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.04889042802105138,
+              "old_norm": 0.0006569059414141975,
+              "old_to_current": 0.013436289433411077,
+              "cosine": -0.2290940619141449,
+              "combined_norm": 0.04874412906846753,
+              "combined_to_sum": 0.9837891400048585,
+              "old_orthogonal_norm": 0.000639435061163421,
+              "full_master_step_norm": 0.04874412906846753,
+              "full_fp16_visible_step_norm": 0.06310435872974872,
+              "held_fp16_visible_step_norm": 0.06323233998830399,
+              "fp16_full_minus_held_norm": 0.006336378637168295,
+              "fp16_different_coordinates": 115812,
+              "coordinates": 5263624
+            }
+          },
+          "forget": {
+            "parameters": [
+              "layer12.A_log",
+              "layer12.dt_bias",
+              "layer12.a_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.4266737383960812,
+              "old_norm": 0.017851690050732137,
+              "old_to_current": 0.04183920509811273,
+              "cosine": 0.20943426873531884,
+              "combined_norm": 0.4307663166684168,
+              "combined_to_sum": 0.9690476384523798,
+              "old_orthogonal_norm": 0.01745578826195053,
+              "ce": {
+                "current_norm": 0.4266737383960812,
+                "old_norm": 0.017851690050732137,
+                "old_to_current": 0.04183920509811273,
+                "cosine": 0.20943426873531884,
+                "combined_norm": 0.4307663166684168,
+                "combined_to_sum": 0.9690476384523798,
+                "old_orthogonal_norm": 0.01745578826195053
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.0021735756319495843,
+              "old_norm": 1.8218215950382607e-05,
+              "old_to_current": 0.008381680251927473,
+              "cosine": 0.006432372204171798,
+              "combined_norm": 0.002173769159310411,
+              "combined_to_sum": 0.9917762847054135,
+              "old_orthogonal_norm": 1.8217839053386996e-05,
+              "full_master_step_norm": 0.002173769159310411,
+              "full_fp16_visible_step_norm": 0.002879987664183424,
+              "held_fp16_visible_step_norm": 0.0028742533130876125,
+              "fp16_full_minus_held_norm": 0.0002524550935619397,
+              "fp16_different_coordinates": 83,
+              "coordinates": 4104
+            }
+          },
+          "write": {
+            "parameters": [
+              "layer12.b_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.24709611013773478,
+              "old_norm": 0.007968769439749303,
+              "old_to_current": 0.03224967578529424,
+              "cosine": -0.0005451377090020851,
+              "combined_norm": 0.24722023000285825,
+              "combined_to_sum": 0.9692444934495862,
+              "old_orthogonal_norm": 0.007968768255689202,
+              "ce": {
+                "current_norm": 0.24709611013773478,
+                "old_norm": 0.007968769439749303,
+                "old_to_current": 0.03224967578529424,
+                "cosine": -0.0005451377090020851,
+                "combined_norm": 0.24722023000285825,
+                "combined_to_sum": 0.9692444934495862,
+                "old_orthogonal_norm": 0.007968768255689202
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.0018764085964378785,
+              "old_norm": 1.3757021840512384e-05,
+              "old_to_current": 0.007331570462120206,
+              "cosine": -0.12592306321493688,
+              "combined_norm": 0.0018747259459445586,
+              "combined_to_sum": 0.9918315769874732,
+              "old_orthogonal_norm": 1.3647516089153436e-05,
+              "full_master_step_norm": 0.0018747259459445586,
+              "full_fp16_visible_step_norm": 0.002435255079661459,
+              "held_fp16_visible_step_norm": 0.002430618611010808,
+              "fp16_full_minus_held_norm": 0.00015814128852760707,
+              "fp16_different_coordinates": 67,
+              "coordinates": 4096
+            }
+          },
+          "q_proj": {
+            "parameters": [
+              "layer12.q_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.2686929545345915,
+              "old_norm": 0.03186679022109247,
+              "old_to_current": 0.02511781129326324,
+              "cosine": -0.015321868344681447,
+              "combined_norm": 1.2686049047264885,
+              "combined_to_sum": 0.9754299330284143,
+              "old_orthogonal_norm": 0.03186304948328337,
+              "ce": {
+                "current_norm": 1.2686929545345915,
+                "old_norm": 0.03186679022109247,
+                "old_to_current": 0.02511781129326324,
+                "cosine": -0.015321868344681447,
+                "combined_norm": 1.2686049047264885,
+                "combined_to_sum": 0.9754299330284143,
+                "old_orthogonal_norm": 0.03186304948328337
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.0234401803184908,
+              "old_norm": 0.0003036237027183718,
+              "old_to_current": 0.012953129992726978,
+              "cosine": -0.25616439611561964,
+              "combined_norm": 0.023364246180892195,
+              "combined_to_sum": 0.9840144468856827,
+              "old_orthogonal_norm": 0.0002934927605923929,
+              "full_master_step_norm": 0.023364246180892195,
+              "full_fp16_visible_step_norm": 0.029515323910154177,
+              "held_fp16_visible_step_norm": 0.029583241337804368,
+              "fp16_full_minus_held_norm": 0.0028802070171862395,
+              "fp16_different_coordinates": 24553,
+              "coordinates": 1048576
+            }
+          },
+          "k_proj": {
+            "parameters": [
+              "layer12.k_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.319628914061022,
+              "old_norm": 0.030214835987822018,
+              "old_to_current": 0.02289646404824442,
+              "cosine": 0.024736040169870552,
+              "combined_norm": 1.3207217633896782,
+              "combined_to_sum": 0.9784256610010513,
+              "old_orthogonal_norm": 0.030205590772106165,
+              "ce": {
+                "current_norm": 1.319628914061022,
+                "old_norm": 0.030214835987822018,
+                "old_to_current": 0.02289646404824442,
+                "cosine": 0.024736040169870552,
+                "combined_norm": 1.3207217633896782,
+                "combined_to_sum": 0.9784256610010513,
+                "old_orthogonal_norm": 0.030205590772106165
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.02342975913015042,
+              "old_norm": 0.0002932884760714433,
+              "old_to_current": 0.012517775980634265,
+              "cosine": -0.24578379959643737,
+              "combined_norm": 0.023359403601079517,
+              "combined_to_sum": 0.9846712778569406,
+              "old_orthogonal_norm": 0.00028429175649081486,
+              "full_master_step_norm": 0.023359403601079517,
+              "full_fp16_visible_step_norm": 0.02952254532344966,
+              "held_fp16_visible_step_norm": 0.029588228793807295,
+              "fp16_full_minus_held_norm": 0.002920998890299939,
+              "fp16_different_coordinates": 24194,
+              "coordinates": 1048576
+            }
+          },
+          "v_proj": {
+            "parameters": [
+              "layer12.v_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 2.7804275845615636,
+              "old_norm": 0.08081022297542571,
+              "old_to_current": 0.029063955279442538,
+              "cosine": 0.011858459394168111,
+              "combined_norm": 2.78255938441957,
+              "combined_to_sum": 0.972501962993021,
+              "old_orthogonal_norm": 0.08080454088527562,
+              "ce": {
+                "current_norm": 2.7804275845615636,
+                "old_norm": 0.08081022297542571,
+                "old_to_current": 0.029063955279442538,
+                "cosine": 0.011858459394168111,
+                "combined_norm": 2.78255938441957,
+                "combined_to_sum": 0.972501962993021,
+                "old_orthogonal_norm": 0.08080454088527562
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.02114914194133944,
+              "old_norm": 0.0002847865545861858,
+              "old_to_current": 0.013465631625911223,
+              "cosine": -0.22362390772968402,
+              "combined_norm": 0.021087283811586043,
+              "combined_to_sum": 0.9838272911843727,
+              "old_orthogonal_norm": 0.00027757448005455665,
+              "full_master_step_norm": 0.021087283811586043,
+              "full_fp16_visible_step_norm": 0.02756033440994065,
+              "held_fp16_visible_step_norm": 0.027611850536712338,
+              "fp16_full_minus_held_norm": 0.002794941049156989,
+              "fp16_different_coordinates": 21871,
+              "coordinates": 1048576
+            }
+          }
+        }
+      }
+    },
+    {
+      "sample": "validation_0",
+      "cadence": "single",
+      "forward_max_difference": 0.0,
+      "full": {
+        "ce": 3.488253593444824,
+        "sigreg": 56.199790954589844,
+        "by_layer": {
+          "1": {
+            "query_count": 1,
+            "unique_replays": 2,
+            "oldest_age_tokens": 2112
+          },
+          "12": {
+            "query_count": 1,
+            "unique_replays": 2,
+            "oldest_age_tokens": 4800
+          }
+        },
+        "fp16_gradient_additivity_relative_error": 0.0005647302775049322
+      },
+      "held": {
+        "ce": 3.488253593444824,
+        "sigreg": 56.199790954589844,
+        "by_layer": {
+          "1": {
+            "query_count": 1,
+            "unique_replays": 2,
+            "oldest_age_tokens": 2112
+          },
+          "12": {
+            "query_count": 1,
+            "unique_replays": 2,
+            "oldest_age_tokens": 4800
+          }
+        },
+        "fp16_gradient_additivity_relative_error": 0.0005366400207089038
+      },
+      "clip": {
+        "full_norm": 26.147632598876953,
+        "held_norm": 24.05537223815918,
+        "full_coefficient": 0.03824437864399898,
+        "held_coefficient": 0.04157075386440873
+      },
+      "by_layer": {
+        "2": {
+          "all": {
+            "parameters": [
+              "layer1.A_log",
+              "layer1.dt_bias",
+              "layer1.q_proj.weight",
+              "layer1.k_proj.weight",
+              "layer1.v_proj.weight",
+              "layer1.a_proj.weight",
+              "layer1.b_proj.weight",
+              "layer1.q_conv1d.weight",
+              "layer1.k_conv1d.weight",
+              "layer1.v_conv1d.weight",
+              "layer1.g_proj.weight",
+              "layer1.o_norm.weight",
+              "layer1.o_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 21.570470386654662,
+              "old_norm": 5.572181865902253,
+              "old_to_current": 0.2583245411907976,
+              "cosine": 0.31909753535135155,
+              "combined_norm": 23.93829556247293,
+              "combined_to_sum": 0.8819438623658407,
+              "old_orthogonal_norm": 5.280878676894303,
+              "ce": {
+                "current_norm": 21.569233723840412,
+                "old_norm": 5.57162842631649,
+                "old_to_current": 0.25831369336770577,
+                "cosine": 0.3187057175593007,
+                "combined_norm": 23.9348341897886,
+                "combined_to_sum": 0.8818744982148708,
+                "old_orthogonal_norm": 5.281088704116963
+              },
+              "weighted_sigreg_full_norm": 0.000988556214887092,
+              "weighted_sigreg_held_norm": 0.000980015388323791,
+              "weighted_sigreg_old_norm": 0.00010328073488539468,
+              "sigreg_to_ce_full": 4.130198718104524e-05
+            },
+            "adam_update": {
+              "current_norm": 0.07817707678362794,
+              "old_norm": 0.007005342272185473,
+              "old_to_current": 0.08960864949676081,
+              "cosine": -0.028221415385145023,
+              "combined_norm": 0.07829315955569081,
+              "combined_to_sum": 0.919123457909682,
+              "old_orthogonal_norm": 0.007002552020077974,
+              "full_master_step_norm": 0.07829315955569079,
+              "full_fp16_visible_step_norm": 0.08638481570217835,
+              "held_fp16_visible_step_norm": 0.0862952955292678,
+              "fp16_full_minus_held_norm": 0.014282397322201372,
+              "fp16_different_coordinates": 561001,
+              "coordinates": 5263624
+            }
+          },
+          "forget": {
+            "parameters": [
+              "layer1.A_log",
+              "layer1.dt_bias",
+              "layer1.a_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.3868366412117642,
+              "old_norm": 0.45992269067221814,
+              "old_to_current": 1.1889325924026022,
+              "cosine": -0.3234849989864134,
+              "combined_norm": 0.49605023399704445,
+              "combined_to_sum": 0.585821986624424,
+              "old_orthogonal_norm": 0.4351941647082334,
+              "ce": {
+                "current_norm": 0.3869099057202136,
+                "old_norm": 0.45989818366429114,
+                "old_to_current": 1.1886441180879395,
+                "cosine": -0.32446152263554157,
+                "combined_norm": 0.49571845869259845,
+                "combined_to_sum": 0.5853964610244893,
+                "old_orthogonal_norm": 0.4350171839269712
+              },
+              "weighted_sigreg_full_norm": 6.149626543421422e-05,
+              "weighted_sigreg_held_norm": 6.108843080377817e-05,
+              "weighted_sigreg_old_norm": 9.01889374494109e-06,
+              "sigreg_to_ce_full": 0.00012405482256279843
+            },
+            "adam_update": {
+              "current_norm": 0.0015265628788431118,
+              "old_norm": 0.00013713759893436717,
+              "old_to_current": 0.08983422879920631,
+              "cosine": 0.3714543678994999,
+              "combined_norm": 0.0015826333339450714,
+              "combined_to_sum": 0.9512729935975589,
+              "old_orthogonal_norm": 0.0001273255699047605,
+              "full_master_step_norm": 0.0015826333339450714,
+              "full_fp16_visible_step_norm": 0.0020720807675598365,
+              "held_fp16_visible_step_norm": 0.002014020243533093,
+              "fp16_full_minus_held_norm": 0.0005263237919203403,
+              "fp16_different_coordinates": 353,
+              "coordinates": 4104
+            }
+          },
+          "write": {
+            "parameters": [
+              "layer1.b_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.43869843379450335,
+              "old_norm": 0.051249285441058265,
+              "old_to_current": 0.11682121816068446,
+              "cosine": 0.4270433259695713,
+              "combined_norm": 0.46290951519555623,
+              "combined_to_sum": 0.9448141036717314,
+              "old_orthogonal_norm": 0.04634120102275675,
+              "ce": {
+                "current_norm": 0.43867668187096004,
+                "old_norm": 0.05124750108579626,
+                "old_to_current": 0.11682294319184051,
+                "cosine": 0.4270334581018477,
+                "combined_norm": 0.46288647359744217,
+                "combined_to_sum": 0.9448124622137694,
+                "old_orthogonal_norm": 0.0463398263795278
+              },
+              "weighted_sigreg_full_norm": 2.1090107803386524e-05,
+              "weighted_sigreg_held_norm": 2.0981258285109864e-05,
+              "weighted_sigreg_old_norm": 9.019819468511079e-07,
+              "sigreg_to_ce_full": 4.5562160500131464e-05
+            },
+            "adam_update": {
+              "current_norm": 0.0030631334435583567,
+              "old_norm": 8.2160711061152e-05,
+              "old_to_current": 0.026822439366437852,
+              "cosine": -0.25776638700915755,
+              "combined_norm": 0.0030429908221089367,
+              "combined_to_sum": 0.9674741606090105,
+              "old_orthogonal_norm": 7.938427638358796e-05,
+              "full_master_step_norm": 0.0030429908221089367,
+              "full_fp16_visible_step_norm": 0.003582563393528385,
+              "held_fp16_visible_step_norm": 0.0036126471597267224,
+              "fp16_full_minus_held_norm": 0.0005245176668773483,
+              "fp16_different_coordinates": 211,
+              "coordinates": 4096
+            }
+          },
+          "q_proj": {
+            "parameters": [
+              "layer1.q_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.7491249461122484,
+              "old_norm": 0.3759781063752319,
+              "old_to_current": 0.2149521148908843,
+              "cosine": 0.6749395888612861,
+              "combined_norm": 2.022009466280626,
+              "combined_to_sum": 0.9514877238135905,
+              "old_orthogonal_norm": 0.2774240900393054,
+              "ce": {
+                "current_norm": 1.749243007148899,
+                "old_norm": 0.375984585221655,
+                "old_to_current": 0.21494131100428088,
+                "cosine": 0.6749009098095468,
+                "combined_norm": 2.022118818025447,
+                "combined_to_sum": 0.9514834200745078,
+                "old_orthogonal_norm": 0.27744217227883233
+              },
+              "weighted_sigreg_full_norm": 8.732920580214245e-05,
+              "weighted_sigreg_held_norm": 8.678890670943098e-05,
+              "weighted_sigreg_old_norm": 7.135151506254873e-06,
+              "sigreg_to_ce_full": 4.31869804205756e-05
+            },
+            "adam_update": {
+              "current_norm": 0.047859368859239734,
+              "old_norm": 0.0048110308238224365,
+              "old_to_current": 0.10052432655291103,
+              "cosine": -0.01729223478000758,
+              "combined_norm": 0.048017726214630525,
+              "combined_to_sum": 0.9116643599359687,
+              "old_orthogonal_norm": 0.004810311469495884,
+              "full_master_step_norm": 0.0480177262146305,
+              "full_fp16_visible_step_norm": 0.04996064159091255,
+              "held_fp16_visible_step_norm": 0.04980666879797277,
+              "fp16_full_minus_held_norm": 0.008225634358817692,
+              "fp16_different_coordinates": 200710,
+              "coordinates": 1048576
+            }
+          },
+          "k_proj": {
+            "parameters": [
+              "layer1.k_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 2.620796188189842,
+              "old_norm": 0.6045364562938188,
+              "old_to_current": 0.2306690077687293,
+              "cosine": 0.7138787209154057,
+              "combined_norm": 3.0815789027402216,
+              "combined_to_sum": 0.9554297935782521,
+              "old_orthogonal_norm": 0.4233383553035866,
+              "ce": {
+                "current_norm": 2.6206293572791917,
+                "old_norm": 0.6045827702452312,
+                "old_to_current": 0.23070136513807715,
+                "cosine": 0.7138321902541961,
+                "combined_norm": 3.0814269337874385,
+                "combined_to_sum": 0.9554183762023276,
+                "old_orthogonal_norm": 0.4233994639982476
+              },
+              "weighted_sigreg_full_norm": 9.952869182464854e-05,
+              "weighted_sigreg_held_norm": 9.861090859515887e-05,
+              "weighted_sigreg_old_norm": 1.1746501345390203e-05,
+              "sigreg_to_ce_full": 3.2299546269726404e-05
+            },
+            "adam_update": {
+              "current_norm": 0.048638577396097706,
+              "old_norm": 0.004632477167664931,
+              "old_to_current": 0.0952428589746664,
+              "cosine": -0.0005665908554182183,
+              "combined_norm": 0.048856071583878766,
+              "combined_to_sum": 0.9171222905940529,
+              "old_orthogonal_norm": 0.004632476424093922,
+              "full_master_step_norm": 0.048856071583878766,
+              "full_fp16_visible_step_norm": 0.05067603294204814,
+              "held_fp16_visible_step_norm": 0.05047253326830495,
+              "fp16_full_minus_held_norm": 0.007976183022116293,
+              "fp16_different_coordinates": 199962,
+              "coordinates": 1048576
+            }
+          },
+          "v_proj": {
+            "parameters": [
+              "layer1.v_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 2.9774394159704904,
+              "old_norm": 0.6682783422481943,
+              "old_to_current": 0.22444733507041664,
+              "cosine": 0.5352997572579572,
+              "combined_norm": 3.3825989510885823,
+              "combined_to_sum": 0.9278279821478381,
+              "old_orthogonal_norm": 0.5644694301584913,
+              "ce": {
+                "current_norm": 2.976852764998128,
+                "old_norm": 0.6682962928483808,
+                "old_to_current": 0.2244975971624183,
+                "cosine": 0.5352285893187175,
+                "combined_norm": 3.3819906687619037,
+                "combined_to_sum": 0.9278058633794046,
+                "old_orthogonal_norm": 0.5645147312225957
+              },
+              "weighted_sigreg_full_norm": 0.0002824211730861643,
+              "weighted_sigreg_held_norm": 0.00028023543214493213,
+              "weighted_sigreg_old_norm": 1.066007034358183e-05,
+              "sigreg_to_ce_full": 8.350737797557392e-05
+            },
+            "adam_update": {
+              "current_norm": 0.02180957202591068,
+              "old_norm": 0.0012473932074758742,
+              "old_to_current": 0.05719475861304932,
+              "cosine": -0.11294284024587657,
+              "combined_norm": 0.021704105061710634,
+              "combined_to_sum": 0.941325315019473,
+              "old_orthogonal_norm": 0.0012394117457392361,
+              "full_master_step_norm": 0.021704105061710634,
+              "full_fp16_visible_step_norm": 0.02818805989560734,
+              "held_fp16_visible_step_norm": 0.028280904958417466,
+              "fp16_full_minus_held_norm": 0.004929656778091883,
+              "fp16_different_coordinates": 51239,
+              "coordinates": 1048576
+            }
+          }
+        },
+        "13": {
+          "all": {
+            "parameters": [
+              "layer12.A_log",
+              "layer12.dt_bias",
+              "layer12.q_proj.weight",
+              "layer12.k_proj.weight",
+              "layer12.v_proj.weight",
+              "layer12.a_proj.weight",
+              "layer12.b_proj.weight",
+              "layer12.q_conv1d.weight",
+              "layer12.k_conv1d.weight",
+              "layer12.v_conv1d.weight",
+              "layer12.g_proj.weight",
+              "layer12.o_norm.weight",
+              "layer12.o_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 10.64780418196978,
+              "old_norm": 0.9483062969847862,
+              "old_to_current": 0.08906120743566823,
+              "cosine": -0.17916990206582653,
+              "combined_norm": 10.519350058196942,
+              "combined_to_sum": 0.9071446910831175,
+              "old_orthogonal_norm": 0.9329609438047268,
+              "ce": {
+                "current_norm": 10.64780418196978,
+                "old_norm": 0.9483062969847862,
+                "old_to_current": 0.08906120743566823,
+                "cosine": -0.17916990206582653,
+                "combined_norm": 10.519350058196942,
+                "combined_to_sum": 0.9071446910831175,
+                "old_orthogonal_norm": 0.9329609438047268
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.0489640147552911,
+              "old_norm": 0.001228765781904828,
+              "old_to_current": 0.025095282485430716,
+              "cosine": -0.2278478661467371,
+              "combined_norm": 0.04869874262425393,
+              "combined_to_sum": 0.9702340078204111,
+              "old_orthogonal_norm": 0.0011964452413681403,
+              "full_master_step_norm": 0.04869874262425393,
+              "full_fp16_visible_step_norm": 0.06306245904467869,
+              "held_fp16_visible_step_norm": 0.06329779007127644,
+              "fp16_full_minus_held_norm": 0.008555444260751346,
+              "fp16_different_coordinates": 191296,
+              "coordinates": 5263624
+            }
+          },
+          "forget": {
+            "parameters": [
+              "layer12.A_log",
+              "layer12.dt_bias",
+              "layer12.a_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.5493065789720667,
+              "old_norm": 0.04111880240365974,
+              "old_to_current": 0.07485583456984357,
+              "cosine": -0.2515753621160438,
+              "combined_norm": 0.5404293611608901,
+              "combined_to_sum": 0.9153220342622423,
+              "old_orthogonal_norm": 0.03979632764717935,
+              "ce": {
+                "current_norm": 0.5493065789720667,
+                "old_norm": 0.04111880240365974,
+                "old_to_current": 0.07485583456984357,
+                "cosine": -0.2515753621160438,
+                "combined_norm": 0.5404293611608901,
+                "combined_to_sum": 0.9153220342622423,
+                "old_orthogonal_norm": 0.03979632764717935
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.0022634217371185314,
+              "old_norm": 3.102808622418434e-05,
+              "old_to_current": 0.013708486454532735,
+              "cosine": -0.40470697007474804,
+              "combined_norm": 0.002251043280051615,
+              "combined_to_sum": 0.9810819383150149,
+              "old_orthogonal_norm": 2.837352259317282e-05,
+              "full_master_step_norm": 0.002251043280051615,
+              "full_fp16_visible_step_norm": 0.002925149080528958,
+              "held_fp16_visible_step_norm": 0.002944585908453987,
+              "fp16_full_minus_held_norm": 0.0003434526388927221,
+              "fp16_different_coordinates": 110,
+              "coordinates": 4104
+            }
+          },
+          "write": {
+            "parameters": [
+              "layer12.b_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.33603463778737785,
+              "old_norm": 0.023368231634708865,
+              "old_to_current": 0.0695411395342371,
+              "cosine": 0.02743105716229626,
+              "combined_norm": 0.337485049638382,
+              "combined_to_sum": 0.9390160133697648,
+              "old_orthogonal_norm": 0.02335943811656124,
+              "ce": {
+                "current_norm": 0.33603463778737785,
+                "old_norm": 0.023368231634708865,
+                "old_to_current": 0.0695411395342371,
+                "cosine": 0.02743105716229626,
+                "combined_norm": 0.337485049638382,
+                "combined_to_sum": 0.9390160133697648,
+                "old_orthogonal_norm": 0.02335943811656124
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.001837717055145799,
+              "old_norm": 4.0272831703426897e-05,
+              "old_to_current": 0.02191459865416103,
+              "cosine": -0.017266614340428223,
+              "combined_norm": 0.0018374629435953804,
+              "combined_to_sum": 0.9784200418023342,
+              "old_orthogonal_norm": 4.0266827866015565e-05,
+              "full_master_step_norm": 0.0018374629435953804,
+              "full_fp16_visible_step_norm": 0.002391161978545144,
+              "held_fp16_visible_step_norm": 0.0023908310593516225,
+              "fp16_full_minus_held_norm": 0.000255301792598714,
+              "fp16_different_coordinates": 124,
+              "coordinates": 4096
+            }
+          },
+          "q_proj": {
+            "parameters": [
+              "layer12.q_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.8994135139371262,
+              "old_norm": 0.12327093943427836,
+              "old_to_current": 0.06489947477459025,
+              "cosine": -0.14723079879339218,
+              "combined_norm": 1.885211248185922,
+              "combined_to_sum": 0.9320342800102397,
+              "old_orthogonal_norm": 0.12192755301863517,
+              "ce": {
+                "current_norm": 1.8994135139371262,
+                "old_norm": 0.12327093943427836,
+                "old_to_current": 0.06489947477459025,
+                "cosine": -0.14723079879339218,
+                "combined_norm": 1.885211248185922,
+                "combined_to_sum": 0.9320342800102397,
+                "old_orthogonal_norm": 0.12192755301863517
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.023394063980269903,
+              "old_norm": 0.0006001109852860351,
+              "old_to_current": 0.025652275970184445,
+              "cosine": -0.23554113124384143,
+              "combined_norm": 0.0232600262776709,
+              "combined_to_sum": 0.9694030451582969,
+              "old_orthogonal_norm": 0.0005832264913808805,
+              "full_master_step_norm": 0.0232600262776709,
+              "full_fp16_visible_step_norm": 0.0294217000887126,
+              "held_fp16_visible_step_norm": 0.029540472405729115,
+              "fp16_full_minus_held_norm": 0.0040421147344973304,
+              "fp16_different_coordinates": 43293,
+              "coordinates": 1048576
+            }
+          },
+          "k_proj": {
+            "parameters": [
+              "layer12.k_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.580505116828484,
+              "old_norm": 0.13735897109254175,
+              "old_to_current": 0.08690827358292438,
+              "cosine": -0.0676010504752535,
+              "combined_norm": 1.5771848340292498,
+              "combined_to_sum": 0.918108041910331,
+              "old_orthogonal_norm": 0.13704475317509612,
+              "ce": {
+                "current_norm": 1.580505116828484,
+                "old_norm": 0.13735897109254175,
+                "old_to_current": 0.08690827358292438,
+                "cosine": -0.0676010504752535,
+                "combined_norm": 1.5771848340292498,
+                "combined_to_sum": 0.918108041910331,
+                "old_orthogonal_norm": 0.13704475317509612
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.023257032393598918,
+              "old_norm": 0.0005570196893862447,
+              "old_to_current": 0.023950591802054434,
+              "cosine": -0.18574082573987408,
+              "combined_norm": 0.02316003931811987,
+              "combined_to_sum": 0.972536687054087,
+              "old_orthogonal_norm": 0.000547326862463937,
+              "full_master_step_norm": 0.02316003931811987,
+              "full_fp16_visible_step_norm": 0.029338710910952734,
+              "held_fp16_visible_step_norm": 0.029426130944052754,
+              "fp16_full_minus_held_norm": 0.0038654227452244584,
+              "fp16_different_coordinates": 41006,
+              "coordinates": 1048576
+            }
+          },
+          "v_proj": {
+            "parameters": [
+              "layer12.v_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 3.346433166024305,
+              "old_norm": 0.24149196351805766,
+              "old_to_current": 0.07216398820388206,
+              "cosine": 0.00542643216063373,
+              "combined_norm": 3.356442149247255,
+              "combined_to_sum": 0.935482772929369,
+              "old_orthogonal_norm": 0.2414884079856613,
+              "ce": {
+                "current_norm": 3.346433166024305,
+                "old_norm": 0.24149196351805766,
+                "old_to_current": 0.07216398820388206,
+                "cosine": 0.00542643216063373,
+                "combined_norm": 3.356442149247255,
+                "combined_to_sum": 0.935482772929369,
+                "old_orthogonal_norm": 0.2414884079856613
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.021104256212159892,
+              "old_norm": 0.0005375616567257349,
+              "old_to_current": 0.02547171771047783,
+              "cosine": -0.20520263295083188,
+              "combined_norm": 0.021000538592241116,
+              "combined_to_sum": 0.9703685115303333,
+              "old_orthogonal_norm": 0.0005261220813135703,
+              "full_master_step_norm": 0.021000538592241116,
+              "full_fp16_visible_step_norm": 0.027482863170900214,
+              "held_fp16_visible_step_norm": 0.02757741883422239,
+              "fp16_full_minus_held_norm": 0.0036302108236429625,
+              "fp16_different_coordinates": 34481,
+              "coordinates": 1048576
+            }
+          }
+        }
+      }
+    },
+    {
+      "sample": "validation_0",
+      "cadence": "positionwise",
+      "forward_max_difference": 0.0,
+      "full": {
+        "ce": 3.467254400253296,
+        "sigreg": 56.20280456542969,
+        "by_layer": {
+          "1": {
+            "query_count": 128,
+            "unique_replays": 26,
+            "oldest_age_tokens": 6976
+          },
+          "12": {
+            "query_count": 128,
+            "unique_replays": 28,
+            "oldest_age_tokens": 5952
+          }
+        },
+        "fp16_gradient_additivity_relative_error": 0.0006601389815290284
+      },
+      "held": {
+        "ce": 3.467254400253296,
+        "sigreg": 56.20280456542969,
+        "by_layer": {
+          "1": {
+            "query_count": 128,
+            "unique_replays": 26,
+            "oldest_age_tokens": 6976
+          },
+          "12": {
+            "query_count": 128,
+            "unique_replays": 28,
+            "oldest_age_tokens": 5952
+          }
+        },
+        "fp16_gradient_additivity_relative_error": 0.0006433792713193432
+      },
+      "clip": {
+        "full_norm": 11.771468162536621,
+        "held_norm": 11.095726013183594,
+        "full_coefficient": 0.08495116337581358,
+        "held_coefficient": 0.09012478396519953
+      },
+      "by_layer": {
+        "2": {
+          "all": {
+            "parameters": [
+              "layer1.A_log",
+              "layer1.dt_bias",
+              "layer1.q_proj.weight",
+              "layer1.k_proj.weight",
+              "layer1.v_proj.weight",
+              "layer1.a_proj.weight",
+              "layer1.b_proj.weight",
+              "layer1.q_conv1d.weight",
+              "layer1.k_conv1d.weight",
+              "layer1.v_conv1d.weight",
+              "layer1.g_proj.weight",
+              "layer1.o_norm.weight",
+              "layer1.o_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 7.315026878080335,
+              "old_norm": 2.4076745707030103,
+              "old_to_current": 0.32914090554030206,
+              "cosine": 0.2681455486983377,
+              "combined_norm": 8.291669517180114,
+              "combined_to_sum": 0.852815399182878,
+              "old_orthogonal_norm": 2.319501704543678,
+              "ce": {
+                "current_norm": 7.316453500880911,
+                "old_norm": 2.4079569983058655,
+                "old_to_current": 0.329115328624168,
+                "cosine": 0.26843158086691676,
+                "combined_norm": 8.293795618745255,
+                "combined_to_sum": 0.8528841536912537,
+                "old_orthogonal_norm": 2.3195819723232507
+              },
+              "weighted_sigreg_full_norm": 0.0009578744614193184,
+              "weighted_sigreg_held_norm": 0.0009636411490879704,
+              "weighted_sigreg_old_norm": 2.8106899978897685e-05,
+              "sigreg_to_ce_full": 0.00011549289438172006
+            },
+            "adam_update": {
+              "current_norm": 0.06588576288354603,
+              "old_norm": 0.004346011703636255,
+              "old_to_current": 0.06596283496508781,
+              "cosine": -0.25497875192317715,
+              "combined_norm": 0.06491379041138207,
+              "combined_to_sum": 0.9242795129831337,
+              "old_orthogonal_norm": 0.004202361484932296,
+              "full_master_step_norm": 0.06491379041138207,
+              "full_fp16_visible_step_norm": 0.07463868342252696,
+              "held_fp16_visible_step_norm": 0.0755285916342705,
+              "fp16_full_minus_held_norm": 0.01214291295952909,
+              "fp16_different_coordinates": 450364,
+              "coordinates": 5263624
+            }
+          },
+          "forget": {
+            "parameters": [
+              "layer1.A_log",
+              "layer1.dt_bias",
+              "layer1.a_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.3497258253754788,
+              "old_norm": 0.20369903593712388,
+              "old_to_current": 0.5824535140303835,
+              "cosine": 0.14313691847025317,
+              "combined_norm": 0.4291797504771102,
+              "combined_to_sum": 0.7754977784322694,
+              "old_orthogonal_norm": 0.20160152580202506,
+              "ce": {
+                "current_norm": 0.3499424486716886,
+                "old_norm": 0.20363155913093703,
+                "old_to_current": 0.5819001378766183,
+                "cosine": 0.14352651882908285,
+                "combined_norm": 0.4293957796900905,
+                "combined_to_sum": 0.7756790847072965,
+                "old_orthogonal_norm": 0.2015232539635561
+              },
+              "weighted_sigreg_full_norm": 6.180510911732963e-05,
+              "weighted_sigreg_held_norm": 6.174079289806066e-05,
+              "weighted_sigreg_old_norm": 1.1459290110829584e-06,
+              "sigreg_to_ce_full": 0.00014393506420099533
+            },
+            "adam_update": {
+              "current_norm": 0.0015243528826468955,
+              "old_norm": 0.00012156911042363103,
+              "old_to_current": 0.07975129106098956,
+              "cosine": -0.2807704918243966,
+              "combined_norm": 0.0014947806621246164,
+              "combined_to_sum": 0.908172239278515,
+              "old_orthogonal_norm": 0.00011667898537571605,
+              "full_master_step_norm": 0.0014947806621246164,
+              "full_fp16_visible_step_norm": 0.0019422026194680314,
+              "held_fp16_visible_step_norm": 0.001973238458617205,
+              "fp16_full_minus_held_norm": 0.00044786535945303394,
+              "fp16_different_coordinates": 333,
+              "coordinates": 4104
+            }
+          },
+          "write": {
+            "parameters": [
+              "layer1.b_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.09029385150042935,
+              "old_norm": 0.025836010818201437,
+              "old_to_current": 0.28613255929257364,
+              "cosine": 0.3699950601125886,
+              "combined_norm": 0.1026973825850037,
+              "combined_to_sum": 0.8843322512794187,
+              "old_orthogonal_norm": 0.024002525276480207,
+              "ce": {
+                "current_norm": 0.09031306806687363,
+                "old_norm": 0.025833721850898293,
+                "old_to_current": 0.2860463319856362,
+                "cosine": 0.3699645149773302,
+                "combined_norm": 0.10271405283433803,
+                "combined_to_sum": 0.8843468933326197,
+                "old_orthogonal_norm": 0.024000712996803713
+              },
+              "weighted_sigreg_full_norm": 2.133588202549275e-05,
+              "weighted_sigreg_held_norm": 2.133788009465879e-05,
+              "weighted_sigreg_old_norm": 3.03925246810483e-07,
+              "sigreg_to_ce_full": 0.00020772115827134429
+            },
+            "adam_update": {
+              "current_norm": 0.0020565711191900386,
+              "old_norm": 0.00010561670780916103,
+              "old_to_current": 0.05135572838869642,
+              "cosine": -0.6932963013724232,
+              "combined_norm": 0.0019848073648224026,
+              "combined_to_sum": 0.9179625100271817,
+              "old_orthogonal_norm": 7.611296011423167e-05,
+              "full_master_step_norm": 0.0019848073648224026,
+              "full_fp16_visible_step_norm": 0.0027023310106791946,
+              "held_fp16_visible_step_norm": 0.002776642474025661,
+              "fp16_full_minus_held_norm": 0.0005845664510777905,
+              "fp16_different_coordinates": 243,
+              "coordinates": 4096
+            }
+          },
+          "q_proj": {
+            "parameters": [
+              "layer1.q_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.6653732767744396,
+              "old_norm": 0.13345481756807265,
+              "old_to_current": 0.20057135179072363,
+              "cosine": 0.5401004209269024,
+              "combined_norm": 0.745956212383667,
+              "combined_to_sum": 0.9338131916825456,
+              "old_orthogonal_norm": 0.11231565179441597,
+              "ce": {
+                "current_norm": 0.6654830904794997,
+                "old_norm": 0.13344525940488236,
+                "old_to_current": 0.20052389206272878,
+                "cosine": 0.5404770641050507,
+                "combined_norm": 0.7461032915052389,
+                "combined_to_sum": 0.933880105285051,
+                "old_orthogonal_norm": 0.11227533640641063
+              },
+              "weighted_sigreg_full_norm": 9.493800053179883e-05,
+              "weighted_sigreg_held_norm": 9.552828440862505e-05,
+              "weighted_sigreg_old_norm": 1.984037992607741e-06,
+              "sigreg_to_ce_full": 0.00012724511687954695
+            },
+            "adam_update": {
+              "current_norm": 0.03687696498117594,
+              "old_norm": 0.0026425960226993013,
+              "old_to_current": 0.07165980237387296,
+              "cosine": -0.2430073810920948,
+              "combined_norm": 0.036325353044027224,
+              "combined_to_sum": 0.9191740019699409,
+              "old_orthogonal_norm": 0.002563382725072933,
+              "full_master_step_norm": 0.036325353044027224,
+              "full_fp16_visible_step_norm": 0.03881949409736209,
+              "held_fp16_visible_step_norm": 0.039337253093283876,
+              "fp16_full_minus_held_norm": 0.006068951702552016,
+              "fp16_different_coordinates": 139137,
+              "coordinates": 1048576
+            }
+          },
+          "k_proj": {
+            "parameters": [
+              "layer1.k_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.9339761282070806,
+              "old_norm": 0.14083105478440683,
+              "old_to_current": 0.15078656780527677,
+              "cosine": 0.7328458427600303,
+              "combined_norm": 1.0416003978585142,
+              "combined_to_sum": 0.9691044257440208,
+              "old_orthogonal_norm": 0.09582070564702982,
+              "ce": {
+                "current_norm": 0.934286646665765,
+                "old_norm": 0.14081555903965456,
+                "old_to_current": 0.15071986690828776,
+                "cosine": 0.7329263513799947,
+                "combined_norm": 1.0419074884426058,
+                "combined_to_sum": 0.9691241287696611,
+                "old_orthogonal_norm": 0.09579795015815974
+              },
+              "weighted_sigreg_full_norm": 9.694013375896265e-05,
+              "weighted_sigreg_held_norm": 9.671400510991505e-05,
+              "weighted_sigreg_old_norm": 1.933249800232274e-06,
+              "sigreg_to_ce_full": 9.304101835745915e-05
+            },
+            "adam_update": {
+              "current_norm": 0.037970860074563635,
+              "old_norm": 0.0029269597165391356,
+              "old_to_current": 0.077084367085482,
+              "cosine": -0.2618639650382999,
+              "combined_norm": 0.03731148102693681,
+              "combined_to_sum": 0.912309781243005,
+              "old_orthogonal_norm": 0.0028248228549025223,
+              "full_master_step_norm": 0.03731148102693681,
+              "full_fp16_visible_step_norm": 0.0396450024543965,
+              "held_fp16_visible_step_norm": 0.040282219809792186,
+              "fp16_full_minus_held_norm": 0.006229889410804856,
+              "fp16_different_coordinates": 147568,
+              "coordinates": 1048576
+            }
+          },
+          "v_proj": {
+            "parameters": [
+              "layer1.v_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.5452576896368428,
+              "old_norm": 0.2941192341494306,
+              "old_to_current": 0.19033669019861194,
+              "cosine": 0.24973895283339573,
+              "combined_norm": 1.6435739012105275,
+              "combined_to_sum": 0.8935492665784377,
+              "old_orthogonal_norm": 0.2847995371263127,
+              "ce": {
+                "current_norm": 1.545322377501566,
+                "old_norm": 0.29414041913364236,
+                "old_to_current": 0.1903424317256056,
+                "cosine": 0.24976684138490968,
+                "combined_norm": 1.6436540882505135,
+                "combined_to_sum": 0.8935511450718802,
+                "old_orthogonal_norm": 0.2848179350147532
+              },
+              "weighted_sigreg_full_norm": 0.0002798975795356727,
+              "weighted_sigreg_held_norm": 0.00028016522112043845,
+              "weighted_sigreg_old_norm": 4.339283638763737e-06,
+              "sigreg_to_ce_full": 0.00017028983259707184
+            },
+            "adam_update": {
+              "current_norm": 0.023082894430201593,
+              "old_norm": 0.0010177525546026043,
+              "old_to_current": 0.04409120171996194,
+              "cosine": -0.3388313175245936,
+              "combined_norm": 0.022758201327138235,
+              "combined_to_sum": 0.9442983560353218,
+              "old_orthogonal_norm": 0.0009575495788292262,
+              "full_master_step_norm": 0.022758201327138235,
+              "full_fp16_visible_step_norm": 0.029210270721094007,
+              "held_fp16_visible_step_norm": 0.02949903507492461,
+              "fp16_full_minus_held_norm": 0.004972332988707844,
+              "fp16_different_coordinates": 53411,
+              "coordinates": 1048576
+            }
+          }
+        },
+        "13": {
+          "all": {
+            "parameters": [
+              "layer12.A_log",
+              "layer12.dt_bias",
+              "layer12.q_proj.weight",
+              "layer12.k_proj.weight",
+              "layer12.v_proj.weight",
+              "layer12.a_proj.weight",
+              "layer12.b_proj.weight",
+              "layer12.q_conv1d.weight",
+              "layer12.k_conv1d.weight",
+              "layer12.v_conv1d.weight",
+              "layer12.g_proj.weight",
+              "layer12.o_norm.weight",
+              "layer12.o_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 8.342992035713817,
+              "old_norm": 0.2425083773490102,
+              "old_to_current": 0.029067314976558224,
+              "cosine": 0.03740466106247713,
+              "combined_norm": 8.355578019651587,
+              "combined_to_sum": 0.9732196864073976,
+              "old_orthogonal_norm": 0.24233867018198968,
+              "ce": {
+                "current_norm": 8.342992035713817,
+                "old_norm": 0.2425083773490102,
+                "old_to_current": 0.029067314976558224,
+                "cosine": 0.03740466106247713,
+                "combined_norm": 8.355578019651587,
+                "combined_to_sum": 0.9732196864073976,
+                "old_orthogonal_norm": 0.24233867018198968
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.052051879679348434,
+              "old_norm": 0.0013918534959506737,
+              "old_to_current": 0.026739735520115927,
+              "cosine": -0.39559752400433357,
+              "combined_norm": 0.05151712791012837,
+              "combined_to_sum": 0.9639507730709728,
+              "old_orthogonal_norm": 0.001278311621237671,
+              "full_master_step_norm": 0.05151712791012837,
+              "full_fp16_visible_step_norm": 0.06558158879990617,
+              "held_fp16_visible_step_norm": 0.06604787367266472,
+              "fp16_full_minus_held_norm": 0.00941264572458152,
+              "fp16_different_coordinates": 225004,
+              "coordinates": 5263624
+            }
+          },
+          "forget": {
+            "parameters": [
+              "layer12.A_log",
+              "layer12.dt_bias",
+              "layer12.a_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.40331420897826975,
+              "old_norm": 0.013218044724531176,
+              "old_to_current": 0.03277356569711967,
+              "cosine": -0.16162082557321933,
+              "combined_norm": 0.40138990827529025,
+              "combined_to_sum": 0.9636466437042955,
+              "old_orthogonal_norm": 0.013044266187317676,
+              "ce": {
+                "current_norm": 0.40331420897826975,
+                "old_norm": 0.013218044724531176,
+                "old_to_current": 0.03277356569711967,
+                "cosine": -0.16162082557321933,
+                "combined_norm": 0.40138990827529025,
+                "combined_to_sum": 0.9636466437042955,
+                "old_orthogonal_norm": 0.013044266187317676
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.002309324731121075,
+              "old_norm": 3.103551779789534e-05,
+              "old_to_current": 0.013439217698426053,
+              "cosine": -0.33792475894478935,
+              "combined_norm": 0.0022990226284933515,
+              "combined_to_sum": 0.9823370694982908,
+              "old_orthogonal_norm": 2.9209795371915842e-05,
+              "full_master_step_norm": 0.0022990226284933515,
+              "full_fp16_visible_step_norm": 0.0029585572274251856,
+              "held_fp16_visible_step_norm": 0.002963791862568647,
+              "fp16_full_minus_held_norm": 0.00023465325676032066,
+              "fp16_different_coordinates": 122,
+              "coordinates": 4104
+            }
+          },
+          "write": {
+            "parameters": [
+              "layer12.b_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.2806643529504539,
+              "old_norm": 0.011415651819971555,
+              "old_to_current": 0.04067367907597007,
+              "cosine": 0.05034830196882871,
+              "combined_norm": 0.28147011328457194,
+              "combined_to_sum": 0.9636747079137004,
+              "old_orthogonal_norm": 0.011401173576822412,
+              "ce": {
+                "current_norm": 0.2806643529504539,
+                "old_norm": 0.011415651819971555,
+                "old_to_current": 0.04067367907597007,
+                "cosine": 0.05034830196882871,
+                "combined_norm": 0.28147011328457194,
+                "combined_to_sum": 0.9636747079137004,
+                "old_orthogonal_norm": 0.011401173576822412
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.001896404552697712,
+              "old_norm": 3.3360066756690574e-05,
+              "old_to_current": 0.01759121845032197,
+              "cosine": -0.18297027509680672,
+              "combined_norm": 0.001890585145346254,
+              "combined_to_sum": 0.9796972782518805,
+              "old_orthogonal_norm": 3.279689698092272e-05,
+              "full_master_step_norm": 0.001890585145346254,
+              "full_fp16_visible_step_norm": 0.0024412487102484274,
+              "held_fp16_visible_step_norm": 0.002447205307732032,
+              "fp16_full_minus_held_norm": 0.0002265147936757798,
+              "fp16_different_coordinates": 146,
+              "coordinates": 4096
+            }
+          },
+          "q_proj": {
+            "parameters": [
+              "layer12.q_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.4651635677996326,
+              "old_norm": 0.02999621394442347,
+              "old_to_current": 0.02047294554932967,
+              "cosine": 0.06435222684571408,
+              "combined_norm": 1.4673992407000445,
+              "combined_to_sum": 0.981433060611335,
+              "old_orthogonal_norm": 0.029934039210923916,
+              "ce": {
+                "current_norm": 1.4651635677996326,
+                "old_norm": 0.02999621394442347,
+                "old_to_current": 0.02047294554932967,
+                "cosine": 0.06435222684571408,
+                "combined_norm": 1.4673992407000445,
+                "combined_to_sum": 0.981433060611335,
+                "old_orthogonal_norm": 0.029934039210923916
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.025033527032711177,
+              "old_norm": 0.0006603352199881641,
+              "old_to_current": 0.0263780337115624,
+              "cosine": -0.4199861420916768,
+              "combined_norm": 0.024763447660002814,
+              "combined_to_sum": 0.9637884494146542,
+              "old_orthogonal_norm": 0.0005992743640128819,
+              "full_master_step_norm": 0.024763447660002814,
+              "full_fp16_visible_step_norm": 0.030765957764720082,
+              "held_fp16_visible_step_norm": 0.031003989055570218,
+              "fp16_full_minus_held_norm": 0.004370402598729821,
+              "fp16_different_coordinates": 49010,
+              "coordinates": 1048576
+            }
+          },
+          "k_proj": {
+            "parameters": [
+              "layer12.k_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.4451719743028058,
+              "old_norm": 0.030184582859736752,
+              "old_to_current": 0.020886498905639723,
+              "cosine": 0.0034558913118586903,
+              "combined_norm": 1.4455914531894511,
+              "combined_to_sum": 0.9798251454344457,
+              "old_orthogonal_norm": 0.030184402609173572,
+              "ce": {
+                "current_norm": 1.4451719743028058,
+                "old_norm": 0.030184582859736752,
+                "old_to_current": 0.020886498905639723,
+                "cosine": 0.0034558913118586903,
+                "combined_norm": 1.4455914531894511,
+                "combined_to_sum": 0.9798251454344457,
+                "old_orthogonal_norm": 0.030184402609173572
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.024899171787820685,
+              "old_norm": 0.0006313391404449204,
+              "old_to_current": 0.025355828933785542,
+              "cosine": -0.39963282723462223,
+              "combined_norm": 0.024653661619301766,
+              "combined_to_sum": 0.9656548468055509,
+              "old_orthogonal_norm": 0.0005787329951999097,
+              "full_master_step_norm": 0.024653661619301766,
+              "full_fp16_visible_step_norm": 0.030647769821431456,
+              "held_fp16_visible_step_norm": 0.030857114389337973,
+              "fp16_full_minus_held_norm": 0.004281125985185689,
+              "fp16_different_coordinates": 47810,
+              "coordinates": 1048576
+            }
+          },
+          "v_proj": {
+            "parameters": [
+              "layer12.v_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 2.6868503872367038,
+              "old_norm": 0.0849200703462312,
+              "old_to_current": 0.03160580535098845,
+              "cosine": -0.003807997075746297,
+              "combined_norm": 2.6878688024555992,
+              "combined_to_sum": 0.9697299410570598,
+              "old_orthogonal_norm": 0.08491945463774926,
+              "ce": {
+                "current_norm": 2.6868503872367038,
+                "old_norm": 0.0849200703462312,
+                "old_to_current": 0.03160580535098845,
+                "cosine": -0.003807997075746297,
+                "combined_norm": 2.6878688024555992,
+                "combined_to_sum": 0.9697299410570598,
+                "old_orthogonal_norm": 0.08491945463774926
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.022320473814586874,
+              "old_norm": 0.0005963165988775599,
+              "old_to_current": 0.026716126361433022,
+              "cosine": -0.37234759608811985,
+              "combined_norm": 0.022105365873001184,
+              "combined_to_sum": 0.9645925748840243,
+              "old_orthogonal_norm": 0.0005534374703540258,
+              "full_master_step_norm": 0.022105365873001184,
+              "full_fp16_visible_step_norm": 0.028503791301018697,
+              "held_fp16_visible_step_norm": 0.028704306424743004,
+              "fp16_full_minus_held_norm": 0.004141690870061843,
+              "fp16_different_coordinates": 41858,
+              "coordinates": 1048576
+            }
+          }
+        }
+      }
+    },
+    {
+      "sample": "a_unseen_0",
+      "cadence": "single",
+      "forward_max_difference": 0.0,
+      "full": {
+        "ce": 3.3590941429138184,
+        "sigreg": 56.285499572753906,
+        "by_layer": {
+          "1": {
+            "query_count": 1,
+            "unique_replays": 2,
+            "oldest_age_tokens": 3648
+          },
+          "12": {
+            "query_count": 1,
+            "unique_replays": 2,
+            "oldest_age_tokens": 2240
+          }
+        },
+        "fp16_gradient_additivity_relative_error": 0.000757778999395731
+      },
+      "held": {
+        "ce": 3.3590941429138184,
+        "sigreg": 56.285499572753906,
+        "by_layer": {
+          "1": {
+            "query_count": 1,
+            "unique_replays": 2,
+            "oldest_age_tokens": 3648
+          },
+          "12": {
+            "query_count": 1,
+            "unique_replays": 2,
+            "oldest_age_tokens": 2240
+          }
+        },
+        "fp16_gradient_additivity_relative_error": 0.0007508194406758473
+      },
+      "clip": {
+        "full_norm": 21.23981475830078,
+        "held_norm": 21.16099739074707,
+        "full_coefficient": 0.047081387681490956,
+        "held_coefficient": 0.04725674949426126
+      },
+      "by_layer": {
+        "2": {
+          "all": {
+            "parameters": [
+              "layer1.A_log",
+              "layer1.dt_bias",
+              "layer1.q_proj.weight",
+              "layer1.k_proj.weight",
+              "layer1.v_proj.weight",
+              "layer1.a_proj.weight",
+              "layer1.b_proj.weight",
+              "layer1.q_conv1d.weight",
+              "layer1.k_conv1d.weight",
+              "layer1.v_conv1d.weight",
+              "layer1.g_proj.weight",
+              "layer1.o_norm.weight",
+              "layer1.o_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 19.5616706668726,
+              "old_norm": 0.2528596561827063,
+              "old_to_current": 0.012926281220495158,
+              "cosine": 0.012549305371522561,
+              "combined_norm": 19.566477556828133,
+              "combined_to_sum": 0.9874812694430333,
+              "old_orthogonal_norm": 0.25283974458899694,
+              "ce": {
+                "current_norm": 19.564778180653292,
+                "old_norm": 0.2549560475271354,
+                "old_to_current": 0.013031379409108236,
+                "cosine": 0.012543241926596253,
+                "combined_norm": 19.56963676725755,
+                "combined_to_sum": 0.9873813917965015,
+                "old_orthogonal_norm": 0.25493599024872354
+              },
+              "weighted_sigreg_full_norm": 0.0011963734357184448,
+              "weighted_sigreg_held_norm": 0.0011954722064686331,
+              "weighted_sigreg_old_norm": 2.2231832281017814e-05,
+              "sigreg_to_ce_full": 6.113416666578744e-05
+            },
+            "adam_update": {
+              "current_norm": 0.07098580084086249,
+              "old_norm": 0.0005045309278394336,
+              "old_to_current": 0.007107490820178278,
+              "cosine": -0.10597192011974906,
+              "combined_norm": 0.07093410888307121,
+              "combined_to_sum": 0.9922196068773285,
+              "old_orthogonal_norm": 0.0005016899760823341,
+              "full_master_step_norm": 0.07093410888307121,
+              "full_fp16_visible_step_norm": 0.0797607021788264,
+              "held_fp16_visible_step_norm": 0.07980570624496716,
+              "fp16_full_minus_held_norm": 0.0035464468096960545,
+              "fp16_different_coordinates": 58976,
+              "coordinates": 5263624
+            }
+          },
+          "forget": {
+            "parameters": [
+              "layer1.A_log",
+              "layer1.dt_bias",
+              "layer1.a_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.3724296752007736,
+              "old_norm": 0.0146513023334873,
+              "old_to_current": 0.010675448511665235,
+              "cosine": 0.02503119143344833,
+              "combined_norm": 1.3728745472636026,
+              "combined_to_sum": 0.9897580382827307,
+              "old_orthogonal_norm": 0.014646711650304966,
+              "ce": {
+                "current_norm": 1.3719999469880333,
+                "old_norm": 0.014767450433767105,
+                "old_to_current": 0.010763448253905733,
+                "cosine": 0.02500230370065093,
+                "combined_norm": 1.3724485682670884,
+                "combined_to_sum": 0.98967467133902,
+                "old_orthogonal_norm": 0.01476283403341446
+              },
+              "weighted_sigreg_full_norm": 7.646319731398697e-05,
+              "weighted_sigreg_held_norm": 7.64566965612524e-05,
+              "weighted_sigreg_old_norm": 1.1561400952346164e-06,
+              "sigreg_to_ce_full": 5.5712978308930466e-05
+            },
+            "adam_update": {
+              "current_norm": 0.0017749677923684344,
+              "old_norm": 1.2920301358193694e-05,
+              "old_to_current": 0.00727917510038503,
+              "cosine": -0.12928872562122748,
+              "combined_norm": 0.0017733436245493085,
+              "combined_to_sum": 0.9918650002601653,
+              "old_orthogonal_norm": 1.2811861158000501e-05,
+              "full_master_step_norm": 0.0017733436245493085,
+              "full_fp16_visible_step_norm": 0.002220710860826755,
+              "held_fp16_visible_step_norm": 0.0022207105742349386,
+              "fp16_full_minus_held_norm": 0.00014001384978923537,
+              "fp16_different_coordinates": 51,
+              "coordinates": 4104
+            }
+          },
+          "write": {
+            "parameters": [
+              "layer1.b_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.10155832237852043,
+              "old_norm": 0.004778736304066104,
+              "old_to_current": 0.04705410834037966,
+              "cosine": -0.08267723095563179,
+              "combined_norm": 0.10127526482039084,
+              "combined_to_sum": 0.9523985906239422,
+              "old_orthogonal_norm": 0.0047623757132328245,
+              "ce": {
+                "current_norm": 0.10160221892892106,
+                "old_norm": 0.004819429897282793,
+                "old_to_current": 0.04743429767665185,
+                "cosine": -0.08295526560188618,
+                "combined_norm": 0.10131632273951648,
+                "combined_to_sum": 0.9520273727855426,
+                "old_orthogonal_norm": 0.004802818633251375
+              },
+              "weighted_sigreg_full_norm": 1.7499318716573203e-05,
+              "weighted_sigreg_held_norm": 1.749657773037006e-05,
+              "weighted_sigreg_old_norm": 3.998401124775034e-07,
+              "sigreg_to_ce_full": 0.00017271963927830092
+            },
+            "adam_update": {
+              "current_norm": 0.002279392793902596,
+              "old_norm": 9.861913764953595e-06,
+              "old_to_current": 0.004326553015054859,
+              "cosine": -0.11547926467700857,
+              "combined_norm": 0.002278275007324588,
+              "combined_to_sum": 0.9952038100844844,
+              "old_orthogonal_norm": 9.795936486278197e-06,
+              "full_master_step_norm": 0.002278275007324588,
+              "full_fp16_visible_step_norm": 0.002953472427900961,
+              "held_fp16_visible_step_norm": 0.0029644480102047647,
+              "fp16_full_minus_held_norm": 0.00025528302653197505,
+              "fp16_different_coordinates": 28,
+              "coordinates": 4096
+            }
+          },
+          "q_proj": {
+            "parameters": [
+              "layer1.q_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.6424613695686547,
+              "old_norm": 0.02762433882861077,
+              "old_to_current": 0.016818866696308058,
+              "cosine": 0.0004979069818915959,
+              "combined_norm": 1.6427074105275075,
+              "combined_to_sum": 0.9836066510047365,
+              "old_orthogonal_norm": 0.027624335404416816,
+              "ce": {
+                "current_norm": 1.642540150752837,
+                "old_norm": 0.027868364311253353,
+                "old_to_current": 0.016966625929040607,
+                "cosine": 0.0005335091716447002,
+                "combined_norm": 1.6427914156186436,
+                "combined_to_sum": 0.9834668590369421,
+                "old_orthogonal_norm": 0.02786836034513843
+              },
+              "weighted_sigreg_full_norm": 0.00010410201621599918,
+              "weighted_sigreg_held_norm": 0.00010392812925074044,
+              "weighted_sigreg_old_norm": 1.8410021318770052e-06,
+              "sigreg_to_ce_full": 6.336897991203367e-05
+            },
+            "adam_update": {
+              "current_norm": 0.04242101715348344,
+              "old_norm": 0.00033238330025632594,
+              "old_to_current": 0.007835344896463238,
+              "cosine": -0.10093161283990715,
+              "combined_norm": 0.04238875907485131,
+              "combined_to_sum": 0.991471055517958,
+              "old_orthogonal_norm": 0.00033068594036392377,
+              "full_master_step_norm": 0.04238875907485131,
+              "full_fp16_visible_step_norm": 0.04454725406814531,
+              "held_fp16_visible_step_norm": 0.04457504355375518,
+              "fp16_full_minus_held_norm": 0.0018981907980864614,
+              "fp16_different_coordinates": 20747,
+              "coordinates": 1048576
+            }
+          },
+          "k_proj": {
+            "parameters": [
+              "layer1.k_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 2.389993790706918,
+              "old_norm": 0.02812208329153232,
+              "old_to_current": 0.011766592616633662,
+              "cosine": 0.01670044682292121,
+              "combined_norm": 2.3906288082507143,
+              "combined_to_sum": 0.9886328583161379,
+              "old_orthogonal_norm": 0.028118161324296485,
+              "ce": {
+                "current_norm": 2.3896592183205088,
+                "old_norm": 0.02835944622833798,
+                "old_to_current": 0.011867569237872109,
+                "cosine": 0.01670239742156899,
+                "combined_norm": 2.3903010817055255,
+                "combined_to_sum": 0.9885370682825178,
+                "old_orthogonal_norm": 0.028355490233931455
+              },
+              "weighted_sigreg_full_norm": 0.0001231684807662623,
+              "weighted_sigreg_held_norm": 0.00012309554067434415,
+              "weighted_sigreg_old_norm": 1.9515401773148657e-06,
+              "sigreg_to_ce_full": 5.152843786456359e-05
+            },
+            "adam_update": {
+              "current_norm": 0.04319305592648249,
+              "old_norm": 0.00030571802170274926,
+              "old_to_current": 0.007077943783905961,
+              "cosine": -0.1065348114968008,
+              "combined_norm": 0.04316155675653889,
+              "combined_to_sum": 0.9922476621513969,
+              "old_orthogonal_norm": 0.0003039781722100702,
+              "full_master_step_norm": 0.04316155675653889,
+              "full_fp16_visible_step_norm": 0.04517032793156288,
+              "held_fp16_visible_step_norm": 0.045197838998694624,
+              "fp16_full_minus_held_norm": 0.0019206979146442623,
+              "fp16_different_coordinates": 20699,
+              "coordinates": 1048576
+            }
+          },
+          "v_proj": {
+            "parameters": [
+              "layer1.v_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.8000887699335544,
+              "old_norm": 0.05554823810363387,
+              "old_to_current": 0.030858610437130993,
+              "cosine": 0.033831654981264246,
+              "combined_norm": 1.8028230528315374,
+              "combined_to_sum": 0.9715386387656091,
+              "old_orthogonal_norm": 0.05551643927635488,
+              "ce": {
+                "current_norm": 1.8008222813485981,
+                "old_norm": 0.05598587934209509,
+                "old_to_current": 0.03108906410252123,
+                "cosine": 0.033788744354750724,
+                "combined_norm": 1.803582133401953,
+                "combined_to_sum": 0.9713346653598608,
+                "old_orthogonal_norm": 0.05595391125693355
+              },
+              "weighted_sigreg_full_norm": 0.00030301299036080835,
+              "weighted_sigreg_held_norm": 0.0003029218411414877,
+              "weighted_sigreg_old_norm": 5.009627673494982e-06,
+              "sigreg_to_ce_full": 0.00016800620540039345
+            },
+            "adam_update": {
+              "current_norm": 0.02138901767901601,
+              "old_norm": 0.0001782125007704384,
+              "old_to_current": 0.008331962853314027,
+              "cosine": -0.11832432649713742,
+              "combined_norm": 0.021368663550201113,
+              "combined_to_sum": 0.9907931325473848,
+              "old_orthogonal_norm": 0.00017696055823376064,
+              "full_master_step_norm": 0.021368663550201113,
+              "full_fp16_visible_step_norm": 0.027939908910299474,
+              "held_fp16_visible_step_norm": 0.027954066295879425,
+              "fp16_full_minus_held_norm": 0.0013034377217751262,
+              "fp16_different_coordinates": 5290,
+              "coordinates": 1048576
+            }
+          }
+        },
+        "13": {
+          "all": {
+            "parameters": [
+              "layer12.A_log",
+              "layer12.dt_bias",
+              "layer12.q_proj.weight",
+              "layer12.k_proj.weight",
+              "layer12.v_proj.weight",
+              "layer12.a_proj.weight",
+              "layer12.b_proj.weight",
+              "layer12.q_conv1d.weight",
+              "layer12.k_conv1d.weight",
+              "layer12.v_conv1d.weight",
+              "layer12.g_proj.weight",
+              "layer12.o_norm.weight",
+              "layer12.o_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 8.070242557783814,
+              "old_norm": 0.8107574749070099,
+              "old_to_current": 0.10046259069685926,
+              "cosine": 0.1907788607025719,
+              "combined_norm": 8.263333371718357,
+              "combined_to_sum": 0.9304507759600443,
+              "old_orthogonal_norm": 0.7958663252455691,
+              "ce": {
+                "current_norm": 8.070242557783814,
+                "old_norm": 0.8107574749070099,
+                "old_to_current": 0.10046259069685926,
+                "cosine": 0.1907788607025719,
+                "combined_norm": 8.263333371718357,
+                "combined_to_sum": 0.9304507759600443,
+                "old_orthogonal_norm": 0.7958663252455691
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.04824592682480529,
+              "old_norm": 0.0007687124883623063,
+              "old_to_current": 0.01593321009571897,
+              "cosine": 0.015440123461107767,
+              "combined_norm": 0.048263916515370646,
+              "combined_to_sum": 0.9846837024954854,
+              "old_orthogonal_norm": 0.0007686208533665054,
+              "full_master_step_norm": 0.048263916515370646,
+              "full_fp16_visible_step_norm": 0.0626869752744208,
+              "held_fp16_visible_step_norm": 0.0626729127349682,
+              "fp16_full_minus_held_norm": 0.005929835690483198,
+              "fp16_different_coordinates": 99154,
+              "coordinates": 5263624
+            }
+          },
+          "forget": {
+            "parameters": [
+              "layer12.A_log",
+              "layer12.dt_bias",
+              "layer12.a_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.4967866628275684,
+              "old_norm": 0.04067408479422467,
+              "old_to_current": 0.08187434936904173,
+              "cosine": 0.5854112232057629,
+              "combined_norm": 0.5216410732525739,
+              "combined_to_sum": 0.9705658981809936,
+              "old_orthogonal_norm": 0.032975965831897026,
+              "ce": {
+                "current_norm": 0.4967866628275684,
+                "old_norm": 0.04067408479422467,
+                "old_to_current": 0.08187434936904173,
+                "cosine": 0.5854112232057629,
+                "combined_norm": 0.5216410732525739,
+                "combined_to_sum": 0.9705658981809936,
+                "old_orthogonal_norm": 0.032975965831897026
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.0021800570575415427,
+              "old_norm": 2.0947180778912783e-05,
+              "old_to_current": 0.009608547036165644,
+              "cosine": -0.19900822931472972,
+              "combined_norm": 0.0021759852295684837,
+              "combined_to_sum": 0.9886329120515172,
+              "old_orthogonal_norm": 2.0528191471337348e-05,
+              "full_master_step_norm": 0.0021759852295684837,
+              "full_fp16_visible_step_norm": 0.002866144984214883,
+              "held_fp16_visible_step_norm": 0.002869701425491126,
+              "fp16_full_minus_held_norm": 0.00019784055530787658,
+              "fp16_different_coordinates": 85,
+              "coordinates": 4104
+            }
+          },
+          "write": {
+            "parameters": [
+              "layer12.b_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.2691415152115184,
+              "old_norm": 0.011998026195186428,
+              "old_to_current": 0.04457887585925633,
+              "cosine": -0.033187014573935796,
+              "combined_norm": 0.269010734026894,
+              "combined_to_sum": 0.9568584080377903,
+              "old_orthogonal_norm": 0.011991417194267696,
+              "ce": {
+                "current_norm": 0.2691415152115184,
+                "old_norm": 0.011998026195186428,
+                "old_to_current": 0.04457887585925633,
+                "cosine": -0.033187014573935796,
+                "combined_norm": 0.269010734026894,
+                "combined_to_sum": 0.9568584080377903,
+                "old_orthogonal_norm": 0.011991417194267696
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.0018201566629791142,
+              "old_norm": 1.2410571263523002e-05,
+              "old_to_current": 0.0068184082809719165,
+              "cosine": 0.17206599170016088,
+              "combined_norm": 0.0018223331091629874,
+              "combined_to_sum": 0.994415416314109,
+              "old_orthogonal_norm": 1.222547286732308e-05,
+              "full_master_step_norm": 0.0018223331091629874,
+              "full_fp16_visible_step_norm": 0.0023952059385559965,
+              "held_fp16_visible_step_norm": 0.002396018226196908,
+              "fp16_full_minus_held_norm": 0.00019969997861639076,
+              "fp16_different_coordinates": 52,
+              "coordinates": 4096
+            }
+          },
+          "q_proj": {
+            "parameters": [
+              "layer12.q_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.3266006752923707,
+              "old_norm": 0.10240097346696217,
+              "old_to_current": 0.0771905030459855,
+              "cosine": 0.3000110916731704,
+              "combined_norm": 1.360832629269819,
+              "combined_to_sum": 0.9522960525981907,
+              "old_orthogonal_norm": 0.09768394565414837,
+              "ce": {
+                "current_norm": 1.3266006752923707,
+                "old_norm": 0.10240097346696217,
+                "old_to_current": 0.0771905030459855,
+                "cosine": 0.3000110916731704,
+                "combined_norm": 1.360832629269819,
+                "combined_to_sum": 0.9522960525981907,
+                "old_orthogonal_norm": 0.09768394565414837
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.023140313173839855,
+              "old_norm": 0.00026007627574161545,
+              "old_to_current": 0.011239099219954893,
+              "cosine": 0.02250273436834088,
+              "combined_norm": 0.023147625957232285,
+              "combined_to_sum": 0.9891983211265013,
+              "old_orthogonal_norm": 0.0002600104195945983,
+              "full_master_step_norm": 0.023147625957232285,
+              "full_fp16_visible_step_norm": 0.02933045277854597,
+              "held_fp16_visible_step_norm": 0.029327904344984595,
+              "fp16_full_minus_held_norm": 0.002406514892530678,
+              "fp16_different_coordinates": 18395,
+              "coordinates": 1048576
+            }
+          },
+          "k_proj": {
+            "parameters": [
+              "layer12.k_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.324186502202644,
+              "old_norm": 0.09777595562471415,
+              "old_to_current": 0.07383850799118871,
+              "cosine": 0.13561967840116365,
+              "combined_norm": 1.3409505458013127,
+              "combined_to_sum": 0.9430280936180094,
+              "old_orthogonal_norm": 0.09687260079309984,
+              "ce": {
+                "current_norm": 1.324186502202644,
+                "old_norm": 0.09777595562471415,
+                "old_to_current": 0.07383850799118871,
+                "cosine": 0.13561967840116365,
+                "combined_norm": 1.3409505458013127,
+                "combined_to_sum": 0.9430280936180094,
+                "old_orthogonal_norm": 0.09687260079309984
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.023187835270587556,
+              "old_norm": 0.00027832329940738644,
+              "old_to_current": 0.012002987607921454,
+              "cosine": 0.021877605009545834,
+              "combined_norm": 0.023195593375514013,
+              "combined_to_sum": 0.9884699835435832,
+              "old_orthogonal_norm": 0.0002782566845506061,
+              "full_master_step_norm": 0.023195593375514013,
+              "full_fp16_visible_step_norm": 0.029360626123572684,
+              "held_fp16_visible_step_norm": 0.029351708702739916,
+              "fp16_full_minus_held_norm": 0.002549467562563794,
+              "fp16_different_coordinates": 19695,
+              "coordinates": 1048576
+            }
+          },
+          "v_proj": {
+            "parameters": [
+              "layer12.v_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 2.4694962567311496,
+              "old_norm": 0.2210291249040923,
+              "old_to_current": 0.08950372947585132,
+              "cosine": 0.009299825230754708,
+              "combined_norm": 2.481414494672867,
+              "combined_to_sum": 0.922278790458657,
+              "old_orthogonal_norm": 0.22101956665216302,
+              "ce": {
+                "current_norm": 2.4694962567311496,
+                "old_norm": 0.2210291249040923,
+                "old_to_current": 0.08950372947585132,
+                "cosine": 0.009299825230754708,
+                "combined_norm": 2.481414494672867,
+                "combined_to_sum": 0.922278790458657,
+                "old_orthogonal_norm": 0.22101956665216302
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.02078502138015907,
+              "old_norm": 0.0003793508663323022,
+              "old_to_current": 0.01825116555782917,
+              "cosine": 0.011285865765670653,
+              "combined_norm": 0.020792763039105395,
+              "combined_to_sum": 0.9824417562185156,
+              "old_orthogonal_norm": 0.0003793267064577332,
+              "full_master_step_norm": 0.020792763039105395,
+              "full_fp16_visible_step_norm": 0.027292246993109264,
+              "held_fp16_visible_step_norm": 0.027286035816711487,
+              "fp16_full_minus_held_norm": 0.0026608978040717365,
+              "fp16_different_coordinates": 19458,
+              "coordinates": 1048576
+            }
+          }
+        }
+      }
+    },
+    {
+      "sample": "a_unseen_0",
+      "cadence": "positionwise",
+      "forward_max_difference": 0.0,
+      "full": {
+        "ce": 3.3518757820129395,
+        "sigreg": 56.276588439941406,
+        "by_layer": {
+          "1": {
+            "query_count": 128,
+            "unique_replays": 28,
+            "oldest_age_tokens": 6976
+          },
+          "12": {
+            "query_count": 128,
+            "unique_replays": 26,
+            "oldest_age_tokens": 5952
+          }
+        },
+        "fp16_gradient_additivity_relative_error": 0.0014026284491433806
+      },
+      "held": {
+        "ce": 3.3518757820129395,
+        "sigreg": 56.276588439941406,
+        "by_layer": {
+          "1": {
+            "query_count": 128,
+            "unique_replays": 28,
+            "oldest_age_tokens": 6976
+          },
+          "12": {
+            "query_count": 128,
+            "unique_replays": 26,
+            "oldest_age_tokens": 5952
+          }
+        },
+        "fp16_gradient_additivity_relative_error": 0.001453598877079513
+      },
+      "clip": {
+        "full_norm": 10.220235824584961,
+        "held_norm": 10.231660842895508,
+        "full_coefficient": 0.09784509079031146,
+        "held_coefficient": 0.09773583366560962
+      },
+      "by_layer": {
+        "2": {
+          "all": {
+            "parameters": [
+              "layer1.A_log",
+              "layer1.dt_bias",
+              "layer1.q_proj.weight",
+              "layer1.k_proj.weight",
+              "layer1.v_proj.weight",
+              "layer1.a_proj.weight",
+              "layer1.b_proj.weight",
+              "layer1.q_conv1d.weight",
+              "layer1.k_conv1d.weight",
+              "layer1.v_conv1d.weight",
+              "layer1.g_proj.weight",
+              "layer1.o_norm.weight",
+              "layer1.o_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 6.5783925220867445,
+              "old_norm": 0.6583894930849503,
+              "old_to_current": 0.10008364366742004,
+              "cosine": -0.17734012952252678,
+              "combined_norm": 6.494039839704581,
+              "combined_to_sum": 0.897365683544153,
+              "old_orthogonal_norm": 0.6479537707410303,
+              "ce": {
+                "current_norm": 6.573410846329096,
+                "old_norm": 0.6580797783198449,
+                "old_to_current": 0.1001123760105985,
+                "cosine": -0.17627043877060347,
+                "combined_norm": 6.489820312208257,
+                "combined_to_sum": 0.8974388060585105,
+                "old_orthogonal_norm": 0.6477754178870482
+              },
+              "weighted_sigreg_full_norm": 0.001123888519347907,
+              "weighted_sigreg_held_norm": 0.0012056731551175382,
+              "weighted_sigreg_old_norm": 0.0002774517485400293,
+              "sigreg_to_ce_full": 0.00017317713977900375
+            },
+            "adam_update": {
+              "current_norm": 0.0719942345978772,
+              "old_norm": 0.0017813014734101235,
+              "old_to_current": 0.024742279480566162,
+              "cosine": -0.17953739497520166,
+              "combined_norm": 0.07169584273421606,
+              "combined_to_sum": 0.971810528966381,
+              "old_orthogonal_norm": 0.0017523573717680978,
+              "full_master_step_norm": 0.07169584273421606,
+              "full_fp16_visible_step_norm": 0.08077053845448605,
+              "held_fp16_visible_step_norm": 0.08103169252647927,
+              "fp16_full_minus_held_norm": 0.0070490539510080115,
+              "fp16_different_coordinates": 199280,
+              "coordinates": 5263624
+            }
+          },
+          "forget": {
+            "parameters": [
+              "layer1.A_log",
+              "layer1.dt_bias",
+              "layer1.a_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.4425037938655341,
+              "old_norm": 0.05998176988488115,
+              "old_to_current": 0.13555086016529863,
+              "cosine": -0.5585657311762294,
+              "combined_norm": 0.4120149723808417,
+              "combined_to_sum": 0.819953849630374,
+              "old_orthogonal_norm": 0.04975249448144318,
+              "ce": {
+                "current_norm": 0.4419047967708341,
+                "old_norm": 0.05996563625886543,
+                "old_to_current": 0.13569808858617755,
+                "cosine": -0.5569571353266756,
+                "combined_norm": 0.4115312852321712,
+                "combined_to_sum": 0.8199950787055384,
+                "old_orthogonal_norm": 0.04980393382607996
+              },
+              "weighted_sigreg_full_norm": 6.726253178219762e-05,
+              "weighted_sigreg_held_norm": 7.453983337931601e-05,
+              "weighted_sigreg_old_norm": 2.0469427815922394e-05,
+              "sigreg_to_ce_full": 0.0001634445161180164
+            },
+            "adam_update": {
+              "current_norm": 0.0016966899490358067,
+              "old_norm": 4.363985869043368e-05,
+              "old_to_current": 0.025720585375797914,
+              "cosine": -0.34380103146410934,
+              "combined_norm": 0.0016821857471714266,
+              "combined_to_sum": 0.9665902058927672,
+              "old_orthogonal_norm": 4.097968279337104e-05,
+              "full_master_step_norm": 0.0016821857471714266,
+              "full_fp16_visible_step_norm": 0.0021497760577277466,
+              "held_fp16_visible_step_norm": 0.0021600666395240756,
+              "fp16_full_minus_held_norm": 0.00023241273669639858,
+              "fp16_different_coordinates": 166,
+              "coordinates": 4104
+            }
+          },
+          "write": {
+            "parameters": [
+              "layer1.b_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.07284822316626904,
+              "old_norm": 0.007836780944084623,
+              "old_to_current": 0.10757683033940205,
+              "cosine": 0.027634503202110725,
+              "combined_norm": 0.07348354635429209,
+              "combined_to_sum": 0.9107460198401668,
+              "old_orthogonal_norm": 0.00783378803191322,
+              "ce": {
+                "current_norm": 0.07284464676033953,
+                "old_norm": 0.007835016646224118,
+                "old_to_current": 0.10755789196152592,
+                "cosine": 0.02767129078176074,
+                "combined_norm": 0.07348003959068496,
+                "combined_to_sum": 0.9107628426807125,
+                "old_orthogonal_norm": 0.007832016434368724
+              },
+              "weighted_sigreg_full_norm": 1.853589456063876e-05,
+              "weighted_sigreg_held_norm": 1.8593401197308597e-05,
+              "weighted_sigreg_old_norm": 2.5435195318879926e-06,
+              "sigreg_to_ce_full": 0.0002522575472725868
+            },
+            "adam_update": {
+              "current_norm": 0.002275365750204753,
+              "old_norm": 3.832157010254705e-05,
+              "old_to_current": 0.016841938531903546,
+              "cosine": -0.6118477256251618,
+              "combined_norm": 0.002252122775384655,
+              "combined_to_sum": 0.9733911560208282,
+              "old_orthogonal_norm": 3.031142595647249e-05,
+              "full_master_step_norm": 0.002252122775384655,
+              "full_fp16_visible_step_norm": 0.00292740796089492,
+              "held_fp16_visible_step_norm": 0.0029343125763719577,
+              "fp16_full_minus_held_norm": 0.00034320490067662275,
+              "fp16_different_coordinates": 108,
+              "coordinates": 4096
+            }
+          },
+          "q_proj": {
+            "parameters": [
+              "layer1.q_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.5892861628328787,
+              "old_norm": 0.03839438618914341,
+              "old_to_current": 0.06515406030335051,
+              "cosine": -0.44700704981791034,
+              "combined_norm": 0.5731535490699176,
+              "combined_to_sum": 0.9131293776156325,
+              "old_orthogonal_norm": 0.03434494694224415,
+              "ce": {
+                "current_norm": 0.5887961006872515,
+                "old_norm": 0.03838073186646974,
+                "old_to_current": 0.06518509857940835,
+                "cosine": -0.4463816503673752,
+                "combined_norm": 0.5726944071951244,
+                "combined_to_sum": 0.9131306793703511,
+                "old_orthogonal_norm": 0.0343447169694516
+              },
+              "weighted_sigreg_full_norm": 0.00012029208224229077,
+              "weighted_sigreg_held_norm": 0.0001292787646319305,
+              "weighted_sigreg_old_norm": 1.4365090369344995e-05,
+              "sigreg_to_ce_full": 0.00021004584771735984
+            },
+            "adam_update": {
+              "current_norm": 0.040372435615352885,
+              "old_norm": 0.0011717949747173477,
+              "old_to_current": 0.02902462922677214,
+              "cosine": -0.2452291942197297,
+              "combined_norm": 0.040101171417115375,
+              "combined_to_sum": 0.9652645108006942,
+              "old_orthogonal_norm": 0.0011360143699250319,
+              "full_master_step_norm": 0.040101171417115375,
+              "full_fp16_visible_step_norm": 0.04239836088291521,
+              "held_fp16_visible_step_norm": 0.04265160190106542,
+              "fp16_full_minus_held_norm": 0.0039359832113163755,
+              "fp16_different_coordinates": 70819,
+              "coordinates": 1048576
+            }
+          },
+          "k_proj": {
+            "parameters": [
+              "layer1.k_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.7346092812102559,
+              "old_norm": 0.05340932414257764,
+              "old_to_current": 0.07270439607649214,
+              "cosine": -0.6101677875220829,
+              "combined_norm": 0.7032947488054967,
+              "combined_to_sum": 0.892484954071101,
+              "old_orthogonal_norm": 0.04231472382354375,
+              "ce": {
+                "current_norm": 0.7332922682340377,
+                "old_norm": 0.05338156923992435,
+                "old_to_current": 0.07279712544696718,
+                "cosine": -0.6094869768348662,
+                "combined_norm": 0.7020336674375975,
+                "combined_to_sum": 0.8924075442649179,
+                "old_orthogonal_norm": 0.042320698858040004
+              },
+              "weighted_sigreg_full_norm": 0.00011490127610534515,
+              "weighted_sigreg_held_norm": 0.00011839443600882776,
+              "weighted_sigreg_old_norm": 1.0347716538704001e-05,
+              "sigreg_to_ce_full": 0.00016366918202759628
+            },
+            "adam_update": {
+              "current_norm": 0.0420598339940171,
+              "old_norm": 0.0012062833369286296,
+              "old_to_current": 0.028680173514242117,
+              "cosine": -0.2327098080955922,
+              "combined_norm": 0.04179558816017468,
+              "combined_to_sum": 0.9660119913344001,
+              "old_orthogonal_norm": 0.0011731662965896084,
+              "full_master_step_norm": 0.04179558816017468,
+              "full_fp16_visible_step_norm": 0.043927327171401125,
+              "held_fp16_visible_step_norm": 0.04417111679340093,
+              "fp16_full_minus_held_norm": 0.00392368423036195,
+              "fp16_different_coordinates": 74635,
+              "coordinates": 1048576
+            }
+          },
+          "v_proj": {
+            "parameters": [
+              "layer1.v_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.5430916439931637,
+              "old_norm": 0.08196148860461024,
+              "old_to_current": 0.05311511401391099,
+              "cosine": -0.0021464133243647783,
+              "combined_norm": 1.545091122244779,
+              "combined_to_sum": 0.9507942178941746,
+              "old_orthogonal_norm": 0.08196129980240899,
+              "ce": {
+                "current_norm": 1.5433329513490344,
+                "old_norm": 0.08194877222974974,
+                "old_to_current": 0.05309856966257213,
+                "cosine": -0.002127317367412053,
+                "combined_norm": 1.5453330056311398,
+                "combined_to_sum": 0.9508093170631357,
+                "old_orthogonal_norm": 0.0819485868008086
+              },
+              "weighted_sigreg_full_norm": 0.0003051017786989498,
+              "weighted_sigreg_held_norm": 0.00030554964124386894,
+              "weighted_sigreg_old_norm": 3.323278336934775e-05,
+              "sigreg_to_ce_full": 0.00019743432489124964
+            },
+            "adam_update": {
+              "current_norm": 0.024550521341242505,
+              "old_norm": 0.0003370219396261064,
+              "old_to_current": 0.013727689727710267,
+              "cosine": -0.010414429759408093,
+              "combined_norm": 0.024549324687070228,
+              "combined_to_sum": 0.9864101253393549,
+              "old_orthogonal_norm": 0.00033700366237220846,
+              "full_master_step_norm": 0.024549324687070228,
+              "full_fp16_visible_step_norm": 0.030693929774753142,
+              "held_fp16_visible_step_norm": 0.030691794135753698,
+              "fp16_full_minus_held_norm": 0.0025477607214472423,
+              "fp16_different_coordinates": 16912,
+              "coordinates": 1048576
+            }
+          }
+        },
+        "13": {
+          "all": {
+            "parameters": [
+              "layer12.A_log",
+              "layer12.dt_bias",
+              "layer12.q_proj.weight",
+              "layer12.k_proj.weight",
+              "layer12.v_proj.weight",
+              "layer12.a_proj.weight",
+              "layer12.b_proj.weight",
+              "layer12.q_conv1d.weight",
+              "layer12.k_conv1d.weight",
+              "layer12.v_conv1d.weight",
+              "layer12.g_proj.weight",
+              "layer12.o_norm.weight",
+              "layer12.o_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 7.836557533518794,
+              "old_norm": 0.386764147303301,
+              "old_to_current": 0.0493538324256563,
+              "cosine": 0.11868472628461449,
+              "combined_norm": 7.891809896028659,
+              "combined_to_sum": 0.9596863897995666,
+              "old_orthogonal_norm": 0.38403049424413593,
+              "ce": {
+                "current_norm": 7.836557533518794,
+                "old_norm": 0.386764147303301,
+                "old_to_current": 0.0493538324256563,
+                "cosine": 0.11868472628461449,
+                "combined_norm": 7.891809896028659,
+                "combined_to_sum": 0.9596863897995666,
+                "old_orthogonal_norm": 0.38403049424413593
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.052057147826387117,
+              "old_norm": 0.000985709208172883,
+              "old_to_current": 0.018935136659047603,
+              "cosine": 0.019474157267305812,
+              "combined_norm": 0.05208566813916131,
+              "combined_to_sum": 0.9819544242351984,
+              "old_orthogonal_norm": 0.0009855222788876326,
+              "full_master_step_norm": 0.05208566813916131,
+              "full_fp16_visible_step_norm": 0.06605976290891113,
+              "held_fp16_visible_step_norm": 0.0660414763719187,
+              "fp16_full_minus_held_norm": 0.0068376095724477235,
+              "fp16_different_coordinates": 127684,
+              "coordinates": 5263624
+            }
+          },
+          "forget": {
+            "parameters": [
+              "layer12.A_log",
+              "layer12.dt_bias",
+              "layer12.a_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.460291875637969,
+              "old_norm": 0.019566186960972336,
+              "old_to_current": 0.042508217060866896,
+              "cosine": 0.573671049788962,
+              "combined_norm": 0.4717887126796796,
+              "combined_to_sum": 0.9831838817596237,
+              "old_orthogonal_norm": 0.016026385647531158,
+              "ce": {
+                "current_norm": 0.460291875637969,
+                "old_norm": 0.019566186960972336,
+                "old_to_current": 0.042508217060866896,
+                "cosine": 0.573671049788962,
+                "combined_norm": 0.4717887126796796,
+                "combined_to_sum": 0.9831838817596237,
+                "old_orthogonal_norm": 0.016026385647531158
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.0021898845451101697,
+              "old_norm": 2.1398350391885094e-05,
+              "old_to_current": 0.009771451394396948,
+              "cosine": 0.05400135764349663,
+              "combined_norm": 0.002191144269226905,
+              "combined_to_sum": 0.9908927861215254,
+              "old_orthogonal_norm": 2.136712724878709e-05,
+              "full_master_step_norm": 0.002191144269226905,
+              "full_fp16_visible_step_norm": 0.002870919182125,
+              "held_fp16_visible_step_norm": 0.0028690728981141246,
+              "fp16_full_minus_held_norm": 0.0002061803307083535,
+              "fp16_different_coordinates": 75,
+              "coordinates": 4104
+            }
+          },
+          "write": {
+            "parameters": [
+              "layer12.b_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 0.2827993013112831,
+              "old_norm": 0.010666981237861832,
+              "old_to_current": 0.0377192630547572,
+              "cosine": -0.0427241367650699,
+              "combined_norm": 0.2825446244061203,
+              "combined_to_sum": 0.9627839421682264,
+              "old_orthogonal_norm": 0.01065724129409163,
+              "ce": {
+                "current_norm": 0.2827993013112831,
+                "old_norm": 0.010666981237861832,
+                "old_to_current": 0.0377192630547572,
+                "cosine": -0.0427241367650699,
+                "combined_norm": 0.2825446244061203,
+                "combined_to_sum": 0.9627839421682264,
+                "old_orthogonal_norm": 0.01065724129409163
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.00183398433303718,
+              "old_norm": 2.042097344164979e-05,
+              "old_to_current": 0.011134758936479859,
+              "cosine": 0.30799134834963376,
+              "combined_norm": 0.0018403763683234613,
+              "combined_to_sum": 0.992434804782776,
+              "old_orthogonal_norm": 1.9428292721557193e-05,
+              "full_master_step_norm": 0.0018403763683234613,
+              "full_fp16_visible_step_norm": 0.0023965541089210115,
+              "held_fp16_visible_step_norm": 0.0023915697092944314,
+              "fp16_full_minus_held_norm": 0.00016851650921556735,
+              "fp16_different_coordinates": 83,
+              "coordinates": 4096
+            }
+          },
+          "q_proj": {
+            "parameters": [
+              "layer12.q_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.3249134431286536,
+              "old_norm": 0.04082200968338002,
+              "old_to_current": 0.03081107667455078,
+              "cosine": 0.13650072673993877,
+              "combined_norm": 1.331100117833953,
+              "combined_to_sum": 0.9746397921304841,
+              "old_orthogonal_norm": 0.040439914477708915,
+              "ce": {
+                "current_norm": 1.3249134431286536,
+                "old_norm": 0.04082200968338002,
+                "old_to_current": 0.03081107667455078,
+                "cosine": 0.13650072673993877,
+                "combined_norm": 1.331100117833953,
+                "combined_to_sum": 0.9746397921304841,
+                "old_orthogonal_norm": 0.040439914477708915
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.0252862784489523,
+              "old_norm": 0.0003212636228542981,
+              "old_to_current": 0.012705057547430796,
+              "cosine": 0.05962660049388762,
+              "combined_norm": 0.02530746626623128,
+              "combined_to_sum": 0.9882817411864884,
+              "old_orthogonal_norm": 0.0003206920150011665,
+              "full_master_step_norm": 0.02530746626623128,
+              "full_fp16_visible_step_norm": 0.031219565516870353,
+              "held_fp16_visible_step_norm": 0.031206770074112832,
+              "fp16_full_minus_held_norm": 0.0028390783039302266,
+              "fp16_different_coordinates": 24083,
+              "coordinates": 1048576
+            }
+          },
+          "k_proj": {
+            "parameters": [
+              "layer12.k_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 1.3048231232997243,
+              "old_norm": 0.040064484029782084,
+              "old_to_current": 0.030704915719507123,
+              "cosine": 0.0904039557261489,
+              "combined_norm": 1.309053342286402,
+              "combined_to_sum": 0.9733551972314927,
+              "old_orthogonal_norm": 0.03990042712373538,
+              "ce": {
+                "current_norm": 1.3048231232997243,
+                "old_norm": 0.040064484029782084,
+                "old_to_current": 0.030704915719507123,
+                "cosine": 0.0904039557261489,
+                "combined_norm": 1.309053342286402,
+                "combined_to_sum": 0.9733551972314927,
+                "old_orthogonal_norm": 0.03990042712373538
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.02528932442534352,
+              "old_norm": 0.0003072311843450133,
+              "old_to_current": 0.012148651311425453,
+              "cosine": 0.049220116709971895,
+              "combined_norm": 0.025306306900260395,
+              "combined_to_sum": 0.9886606341160107,
+              "old_orthogonal_norm": 0.0003068588064869025,
+              "full_master_step_norm": 0.025306306900260395,
+              "full_fp16_visible_step_norm": 0.03124601756336817,
+              "held_fp16_visible_step_norm": 0.031227496909886545,
+              "fp16_full_minus_held_norm": 0.002885156149526946,
+              "fp16_different_coordinates": 24054,
+              "coordinates": 1048576
+            }
+          },
+          "v_proj": {
+            "parameters": [
+              "layer12.v_proj.weight"
+            ],
+            "gradient": {
+              "current_norm": 2.42280386134621,
+              "old_norm": 0.12457692785382926,
+              "old_to_current": 0.05141849484448534,
+              "cosine": 0.016801441006841847,
+              "combined_norm": 2.428093936998835,
+              "combined_to_sum": 0.9531727440565868,
+              "old_orthogonal_norm": 0.12455934330070241,
+              "ce": {
+                "current_norm": 2.42280386134621,
+                "old_norm": 0.12457692785382926,
+                "old_to_current": 0.05141849484448534,
+                "cosine": 0.016801441006841847,
+                "combined_norm": 2.428093936998835,
+                "combined_to_sum": 0.9531727440565868,
+                "old_orthogonal_norm": 0.12455934330070241
+              },
+              "weighted_sigreg_full_norm": 0.0,
+              "weighted_sigreg_held_norm": 0.0,
+              "weighted_sigreg_old_norm": 0.0,
+              "sigreg_to_ce_full": 0.0
+            },
+            "adam_update": {
+              "current_norm": 0.022207696383372038,
+              "old_norm": 0.00045986935381620004,
+              "old_to_current": 0.020707656745547285,
+              "cosine": 0.0034520309075175898,
+              "combined_norm": 0.022214044367684732,
+              "combined_to_sum": 0.9799924978816996,
+              "old_orthogonal_norm": 0.000459866613787462,
+              "full_master_step_norm": 0.022214044367684732,
+              "full_fp16_visible_step_norm": 0.028564012078354843,
+              "held_fp16_visible_step_norm": 0.02856230094395314,
+              "fp16_full_minus_held_norm": 0.003091915642729035,
+              "fp16_different_coordinates": 25346,
+              "coordinates": 1048576
+            }
+          }
+        }
+      }
+    }
+  ],
+  "protocol": "three real windows at the same complete incoming state; legacy and positionwise reads; same forward full/held; CE10 SIGReg.001; actual Adam/native clipping with restored moments; old=current total gradient minus old-response-detached gradient; frozen diagnostic, not convergence",
+  "trainable_native_layers": [
+    2,
+    13
+  ],
+  "persistent_state_unchanged": true,
+  "source_checkpoint_unchanged": true,
+  "peak_cuda_allocated_bytes": 1486026240
+}
