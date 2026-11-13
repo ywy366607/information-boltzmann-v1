@@ -1,0 +1,31 @@
+{
+  "committed_cycles": 3,
+  "first_cycle": 3885,
+  "last_cycle": 3887,
+  "updates": 18,
+  "correct_unit_max_error": 0.0,
+  "critic_rms": [
+    146.65280927274034,
+    145.18011428075587,
+    143.7209829047195
+  ],
+  "next_cycles": 193,
+  "target_cycle": 4080,
+  "scope": "real repaired events and resource-boundary stop, not convergence or architecture-benefit evidence",
+  "guard": {
+    "status": "waiting_resources",
+    "pid": 21796,
+    "resources": {
+      "available_commit_mib": 2776.73828125,
+      "available_physical_mib": 3044.37890625,
+      "system_disk_free_mib": 344.58203125
+    },
+    "minimum_start_commit_mib": 3328,
+    "minimum_system_disk_mib": 512,
+    "automatic_resume": true,
+    "scope": "runtime protection, not a learned objective"
+  },
+  "checkpoint": "results/cgb_generative_joint_20261113/unit_repair_learning_3884/last.pt.gz",
+  "code_migration": "360f0e1; full CUDA restore verified 37ddb8b",
+  "cache_policy": "project compiler cache copied to D; C originals retained; removal blocked by automatic approval"
+}

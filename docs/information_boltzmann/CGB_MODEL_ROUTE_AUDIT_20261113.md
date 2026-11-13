@@ -2,6 +2,10 @@
 
 ## 3884轮整圈核查：金的TD单位错误压弱木火（2026-11-13）
 
+**用户“继续”后的真实学习：**已从修复3884继续3轮到3887，实际18次优化器更新。三轮TD目标逐行符合`g+.8V/100`，误差0；继承的critic RMS148.139依次146.653、145.180、143.721，保存的参数/Adam/资格均连续。草稿最高概率约.25003–.25009，尚无内容导航提升的证据。3887完整保存后因系统提交余量极低按边界STOP退出，`completed.json status=stopped`，不是又一次未保存闪退。
+
+剩193轮交给轻量、无Torch的后台守护器，等待C盘≥512MiB和系统提交余量≥3328MiB，再串行启动同一GPU身体。当前C盘约5MiB、提交余量约2637MiB，正在等待。守护器会在运行余量<96MiB时请求保存后停止，不结束其他进程、不改分页文件、不改脑内机制。状态`results/cgb_generative_joint_20261113/guarded_from_3887/status.json`；真实3轮在`unit_repair_learning_3884/`。C盘项目编译缓存的删除迁移被自动审批拒绝，已选择仅复制1013目录、175731628字节至D盘scratch并重定向未来编译缓存，保留C原件。`_heapmin`只读恢复后的实测未释放明显内存，未加入运行时。现行3轮及未来193轮不是同预算原身体控制，不把修复前后曲线直接写成架构因果收益。
+
 **后续实机完成：**已从原3884实际完整CUDA身体显式迁移`--repair-gain-units`，结果`unit_repair_migrated_3884/migration.json passed=true`：原model、每个engine字段、Adam状态/参数组、快表、世界及所有RNG逐值保持，总953352参数全部可训练且在optimizer，只新增单位schema。随后独立CUDA进程重建并重新保存，`unit_repair_restore_3884/restore_audit.json`全部逻辑值一致。修复续接源为`results/cgb_generative_joint_20261113/unit_repair_migrated_3884/last.pt.gz`及同目录manifest档案；仍3884轮、0新增世界事件/优化器更新，尚未重启训练。下文“完整迁移尚未运行”为此实机核对前的历史状态。
 
 本次按用户要求继续检查完整大环，实际读取3569–3884的316轮、1896次优化器更新、303360外部字节，以及3884完整检查点和绑定SSD档案。没有重新训练、调用妈妈或构造合成能力任务。完整观察报告`results/cgb_generative_joint_20261113/big_loop_audit_corrected_labels/report.json`；检查点元数据`big_loop_audit/checkpoint_inspection.json`；前一份审计里将next_boundary日志误名为raw的字段以corrected_labels报告为准：生产CausalProgram会覆盖next_latent，两个MSE字段实际测同一交付程序。
