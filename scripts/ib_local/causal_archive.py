@@ -76,6 +76,9 @@ class CausalArchive:
                 ordinal INTEGER NOT NULL, episode_id INTEGER NOT NULL REFERENCES episodes(id),
                 PRIMARY KEY (relation_id,ordinal));
             CREATE INDEX IF NOT EXISTS evidence_episode ON evidence(episode_id);
+            CREATE TABLE IF NOT EXISTS relation_program (
+                relation_id INTEGER PRIMARY KEY REFERENCES relations(id) ON DELETE CASCADE,
+                payload TEXT NOT NULL);
         ''')
         self.fields = columns(engine)
         schema = {k: dict(shape=list(v.shape[1:]), dtype=v.detach().cpu().numpy().dtype.str)
@@ -198,8 +201,14 @@ class CausalArchive:
                             (rid, int(bank.generation[i]), version,
                              bank.condition[i].detach().cpu().numpy().tobytes(), int(bank.last_use[i])))
                     else:
-                        self.db.execute('UPDATE relations SET version=?,touched=? WHERE id=?',
-                                        (version, int(bank.last_use[i]), rid))
+                        self.db.execute('UPDATE relations SET version=?,condition=?,touched=? WHERE id=?',
+                            (version, bank.condition[i].detach().cpu().numpy().tobytes(), int(bank.last_use[i]), rid))
+                    if hasattr(bank, 'program_owner'):
+                        from scripts.ib_local.generative_relations import EXTRA_FIELDS
+                        payload = {name: getattr(bank, name)[i].detach().cpu().tolist()
+                                   for name in EXTRA_FIELDS}
+                        self.db.execute('INSERT OR REPLACE INTO relation_program VALUES (?,?)',
+                                        (rid, json.dumps(payload)))
                     # If a physical slot disappeared without a logical revision,
                     # keep the disk edge. Physical eviction is not a refutation.
                     if old is None or old[0] != version:
@@ -226,7 +235,10 @@ class CausalArchive:
         model = self.engine.model
         query = F.normalize(model.encoder(source), dim=-1)
         best = None
-        cursor = self.db.execute('SELECT id,condition FROM relations ORDER BY id')
+        scoped = hasattr(model.causal_relations, 'scope_axes')
+        cursor = self.db.execute('''SELECT r.id,r.condition,p.payload FROM relations r
+            LEFT JOIN relation_program p ON p.relation_id=r.id ORDER BY r.id'''
+            if scoped else 'SELECT id,condition FROM relations ORDER BY id')
         while True:
             rows = cursor.fetchmany(chunk_size)
             if not rows:
@@ -234,6 +246,24 @@ class CausalArchive:
             x = np.stack([np.frombuffer(r[1], dtype=self.schema['source']['dtype']) for r in rows])
             keys = torch.as_tensor(x, device=source.device, dtype=source.dtype)
             scores = (query @ F.normalize(model.encoder(keys), dim=-1).T)[0]
+            if scoped:
+                raw_source = source[0].detach().cpu().numpy()
+                for j, row in enumerate(rows):
+                    if row[2] is None:
+                        continue
+                    metadata = json.loads(row[2])
+                    valid = np.asarray(metadata['scope_valid'], dtype=bool)
+                    if not valid.any():
+                        continue
+                    axes = np.asarray(metadata['scope_axes'], dtype=raw_source.dtype)[valid]
+                    bounds = np.asarray(metadata['scope_bounds'], dtype=raw_source.dtype)[valid]
+                    signs = np.asarray(metadata['scope_signs'], dtype=raw_source.dtype)[valid]
+                    projection = axes @ raw_source
+                    tolerance = np.finfo(raw_source.dtype).eps*(1+abs(projection)+abs(bounds))*8
+                    if (signs*(projection-bounds) > tolerance).any():
+                        scores[j] = -torch.inf
+            if not bool(torch.isfinite(scores).any()):
+                continue
             value, at = scores.max(0)
             item = (float(value), rows[int(at)][0])
             if best is None or item[0] > best[0]:
@@ -315,6 +345,17 @@ class CausalArchive:
         bank.condition[index].copy_(torch.as_tensor(np.frombuffer(row[2], dtype=self.schema['source']['dtype']).copy(),
                                                     device=bank.condition.device, dtype=bank.condition.dtype))
         bank.identity[index], bank.generation[index], bank.version[index] = rid, row[0], row[1]
+        if hasattr(bank, 'program_owner'):
+            from scripts.ib_local.generative_relations import EXTRA_FIELDS
+            metadata = self.db.execute('SELECT payload FROM relation_program WHERE relation_id=?', (rid,)).fetchone()
+            if metadata is not None:
+                for name, value in json.loads(metadata[0]).items():
+                    field = getattr(bank, name)
+                    field[index].copy_(torch.as_tensor(value, device=field.device, dtype=field.dtype))
+            else:
+                for name in EXTRA_FIELDS:
+                    getattr(bank, name)[index].zero_()
+                bank.state(index)
         bank.valid[index].zero_()
         for ordinal, eid, _ in edges:
             slot = chosen[eid]

@@ -219,6 +219,11 @@ def build(checkpoint, device='cuda', *, table_storage=None, allow_external_archi
             raise ValueError('unknown joint world-cycle schema')
         from scripts.ib_local.navigation_joint_cycle import configure_joint_cycle
         configure_joint_cycle(engine, spec['proposal_budget'])
+    if cfg.get('generative_relations') is not None:
+        if cfg['generative_relations']['schema'] != 1:
+            raise ValueError('unknown generative relation schema')
+        from scripts.ib_local.navigation_generative_cycle import configure_generative_cycle
+        configure_generative_cycle(engine)
     state['engine'] = to_device(state['engine'], device)
     # This state came from a private torch.load and is discarded below; the
     # table may safely own its loaded arrays, avoiding a full duplicate.

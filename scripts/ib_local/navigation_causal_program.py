@@ -141,8 +141,9 @@ class CausalProgramEngine(PersistentQuestionEngine):
             requested = mechanism(self.model, state, source[None],
                 self._program_question_action.detach()[None], ridge=self.relation_ridge)
             question = self.model.question_reactivation(requested['mean']-requested['base'])
-            program_loss = program_loss + F.mse_loss(question,
-                self.model.encoder(target[None])-dist['base'])
+            if self._program_question_roles['open'] == [Port.MOTHER.value]:
+                program_loss = program_loss + F.mse_loss(question,
+                    self.model.encoder(target[None])-dist['base'])
             examples += 1
         # Reactivate a bounded set of OLD real observations. Leave each own
         # observation out of its predictor; never self-score fitted labels.
@@ -198,7 +199,7 @@ class CausalProgramEngine(PersistentQuestionEngine):
                 target[None], Port.MOTHER, observed=True, slot=slot, stamp=int(m.last_write[slot]))
             # The functional U is also executed on the real observation. Its
             # surviving evidence reference is then committed to the bank.
-            updated = revise(state, observed)
+            updated = revise(state, observed, model=self.model)
             committed = self.model.causal_relations.commit(self.model, state, observed)
         else:
             updated = state

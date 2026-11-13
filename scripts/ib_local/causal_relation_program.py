@@ -112,9 +112,12 @@ class RelationState:
     valid: torch.Tensor
     extra: tuple[Evidence, ...] = ()
     release: int = -1
+    program_weights: torch.Tensor | None = None
+    revision_plan: dict | None = None
+    scope: dict | None = None
 
 
-def revise(state: RelationState, evidence: Evidence) -> RelationState:
+def revise(state: RelationState, evidence: Evidence, *, model=None) -> RelationState:
     """The same U for an observed or hypothetical labelled transition.
 
     This functional update changes no live bank. Committing references is a
@@ -137,7 +140,11 @@ def revise(state: RelationState, evidence: Evidence) -> RelationState:
         if state.release < 0 or not bool(valid[state.release]):
             raise ValueError('a full relation requires an evidence-supported release choice')
         valid[state.release] = False
-    return replace(state, valid=valid, extra=state.extra + (evidence,))
+    updated = replace(state, valid=valid, extra=state.extra + (evidence,))
+    if model is not None and state.program_weights is not None:
+        from scripts.ib_local.generative_relations import organize
+        updated = organize(model, updated, evidence)
+    return updated
 
 
 def roles(source, action):
@@ -244,13 +251,27 @@ class RelationBank(nn.Module):
     def bind(self, model, source):
         m, enc = model.memory, model.encoder
         live = self.identity > 0
+        if hasattr(self, 'applicable'):
+            live = live & self.applicable(source)
         score = (F.normalize(enc(source), dim=-1) @ F.normalize(enc(self.condition), dim=-1).T)[0]
         score.masked_fill_(~live, -2)
         value, index = score.max(0)
         i = int(index)
         if not bool(live.any()) or float(value) < m.threshold:
-            free = torch.nonzero(~live).flatten()
-            i = int(free[0]) if len(free) else int(self.last_use.argmin())
+            free = torch.nonzero(self.identity == 0).flatten()
+            if hasattr(self, 'applicable'):
+                archive = getattr(model, '_causal_archive', None)
+                protected = getattr(self, '_protected_identities', set())
+                if archive is not None:
+                    protected = protected | archive._protected()[1]
+                candidates = [j for j in range(self.capacity) if int(self.identity[j]) not in protected]
+                if not len(free) and not candidates:
+                    raise RuntimeError('all relation slots are pinned by unfinished causal events')
+                i = int(free[0]) if len(free) else min(candidates, key=lambda j: int(self.last_use[j]))
+                if archive is not None and int(self.identity[i]) > 0:
+                    archive.sync()
+            else:
+                i = int(free[0]) if len(free) else int(self.last_use.argmin())
             if int(self.next_identity) == torch.iinfo(torch.long).max:
                 raise OverflowError('relation identity exhausted')
             self.condition[i].copy_(source[0])
@@ -384,7 +405,7 @@ def mechanism(model, state, source, action, *, kind=Port.MOTHER, mother=None,
     return result
 
 
-def compose(model, state, source, action, *, ridge, reward_valid, momentum=None,
+def _compose_fixed(model, state, source, action, *, ridge, reward_valid, momentum=None,
             mother=None):
     """Mother effect -> actual ambient transport -> next action/value.
 
@@ -426,6 +447,15 @@ def compose(model, state, source, action, *, ridge, reward_valid, momentum=None,
                 value=value, continuation=packet)
 
 
+def compose(model, state, source, action, *, ridge, reward_valid, momentum=None, mother=None):
+    path = _compose_fixed(model, state, source, action, ridge=ridge,
+        reward_valid=reward_valid, momentum=momentum, mother=mother)
+    if state.program_weights is not None:
+        from scripts.ib_local.generative_relations import execute_programs
+        path = execute_programs(model, state, path, reward_valid=reward_valid)
+    return path
+
+
 @torch.no_grad()
 def imagine(model, state, source, actions, *, ridge, reward_valid, momentum=None):
     """Execute the same graph after the same U under finite response hypotheses.
@@ -448,9 +478,10 @@ def imagine(model, state, source, actions, *, ridge, reward_valid, momentum=None
             y = hypotheses[b:b+1, h] + dist['noise'].sqrt()*bank.observation_directions[h, -1]
             evidence = Evidence(source[b:b+1], actions[b:b+1], y, Port.MOTHER,
                                 observed=False, encoded=True)
-            updated = revise(state, evidence)
+            updated = revise(state, evidence, model=model)
             path = compose(model, updated, source[b:b+1], actions[b:b+1], ridge=ridge,
-                           reward_valid=reward_valid, momentum=(None if momentum is None else momentum[b:b+1]))
+                           reward_valid=reward_valid, momentum=(None if momentum is None else momentum[b:b+1]),
+                           mother=(y if state.program_weights is not None else None))
             futures.append(path['value'][0])
             state_shifts.append((path['decision']['mean'][0]-current['decision']['mean'][b]).norm())
             posterior_log = hypothesis_evidence(hypotheses[b:b+1], dist['noise'], y)

@@ -1,0 +1,249 @@
+{
+  "scope": "real CUDA whole-body migration and restore admission; not a learning-benefit comparison",
+  "source_cycle": 3568,
+  "source_sha256": "da06a97ad86d771c49491c07d628c4e8310fe54b2ec56d2781c94f9486163780",
+  "admitted_cycle": 3570,
+  "planned_real_events": 512,
+  "planned_end_cycle": 4080,
+  "tests_passed": 46,
+  "inherited_preserved": {
+    "model": true,
+    "engine": true,
+    "optimizer_state": true,
+    "whole": true,
+    "optimizer_groups": true
+  },
+  "parameters": {
+    "total": 953352,
+    "trainable": 953352,
+    "trainable_in_optimizer": 953352,
+    "trainable_missing_from_optimizer": [],
+    "frozen": []
+  },
+  "optimizer_steps": 12,
+  "event_checks": [
+    {
+      "real_relation_commit": true,
+      "learning_updated": true,
+      "same_update": true,
+      "binding_replay": true,
+      "previous_program_settled": true
+    },
+    {
+      "real_relation_commit": true,
+      "learning_updated": true,
+      "same_update": true,
+      "binding_replay": true,
+      "previous_program_settled": true
+    }
+  ],
+  "restore_passed": true,
+  "restore_equal": {
+    "model": true,
+    "optimizer": true,
+    "engine": true,
+    "table": true,
+    "world": true,
+    "torch_rng": true,
+    "cuda_rng": true,
+    "numpy_rng": true,
+    "python_rng": true,
+    "cycle": true,
+    "engine_fields": true
+  },
+  "executing_source_sha256": {
+    "scripts/ib_local/generative_relations.py": "dda15cff6e75e34e5e256dd313825649468b0568adcf941c5c8e8d256c1fb542",
+    "scripts/ib_local/navigation_generative_cycle.py": "26d03ca5b0b0d6bd102ab78ebdf72eef43147810906ba51f24db0d6eba3ba851",
+    "scripts/ib_local/causal_relation_program.py": "0b1e873a72205836252fdbcaac73ffb682c82c2fc743d64bd4381eb4b538d295",
+    "scripts/ib_local/navigation_causal_program.py": "66510324eb50a3f14eaecfa3edc8253a3414e3ff096e0303d690536d564680d5",
+    "scripts/ib_local/navigation_joint_cycle.py": "a9aec38f90b26f83707b06e86d617107284cd2c1f0e5ca1cc3757febb81a54a8",
+    "scripts/ib_local/causal_archive.py": "371b10b808367c3dd3ee6ebae777d6b37ea6cb7e8cb1c69e8af5a8e819417c0b",
+    "scripts/ib_local/run_causal_water_reply.py": "247d4855074ea5ce6d6eed8892fc415811c133df57133d8c7796bfa6148011fa",
+    "scripts/ib_local/run_mother_continuation.py": "b4fa02fa8eb63576139e835de223f97c70ce1da15a1c3bc3c3a774c29796f2a9",
+    "scripts/ib_local/admit_generative_cycle.py": "76b57ad3c5ac4532aa8a77facc8fecde6b53e28bcffabbd0e52af3ac3db17889",
+    "scripts/ib_local/audit_joint_restore.py": "59bdad1846b602e267000ad5fd0d807ebfa3a4d6e5b8835d4d06b95af08ab094",
+    "scripts/ib_local/navigation_checkpoint.py": "36e388d83513dc9c64636e3e03e38c87da2f18b371ea79b673f42cc85116b082",
+    "scripts/ib_local/mother_checkpoint.py": "9acd4d0f3c06559d932ca62cedd782b81b9ce5da353ed85dfb6a0085b17196dd",
+    "scripts/ib_local/world_learning_cycle.py": "40220048b4075f71642ab9f6f7e8bb0357e2f10e3a5ea0bc5ceac5f01af7863c",
+    "scripts/run_generative_joint_study.py": "b51be695dca4bbb28ee577656d440fd66a431a1a24e244d5b5c7efdb248dc5c7"
+  },
+  "admitted_events": [
+    {
+      "cycle": 3569,
+      "choice": "silence",
+      "updates": 6,
+      "generative": {
+        "schema": 1,
+        "query_role": "action",
+        "query_probabilities": [
+          0.33333003520965576,
+          0.33333003520965576,
+          0.3333399295806885
+        ],
+        "programs": [
+          [
+            "mother_response",
+            "ambient_transport",
+            "existing_continuation"
+          ],
+          [
+            "body_transition",
+            "existing_continuation"
+          ]
+        ],
+        "program_weights": [
+          0.5,
+          0.5
+        ],
+        "program_evidence_updated": false,
+        "internal_admission": [
+          {
+            "selected": "internal",
+            "probability": [
+              0.49999991059303284,
+              0.5000000596046448
+            ]
+          },
+          {
+            "selected": "internal",
+            "probability": [
+              0.49999991059303284,
+              0.5000000596046448
+            ]
+          },
+          {
+            "selected": "internal",
+            "probability": [
+              0.4999999403953552,
+              0.5000000596046448
+            ]
+          },
+          {
+            "selected": "internal",
+            "probability": [
+              0.49999991059303284,
+              0.5000000596046448
+            ]
+          }
+        ],
+        "internal_budget_hit": true,
+        "reorganizations": [
+          0,
+          1
+        ],
+        "same_U": true,
+        "observed_response_bound": true,
+        "binding_policy_in_delayed_actor": true,
+        "binding_replay_error": 0.0
+      },
+      "real_commit": true,
+      "source_learning": {
+        "schema": 1,
+        "readings": [
+          {
+            "source": "mother",
+            "bytes": 33,
+            "pre": 1.1706016063690186,
+            "post": 1.1701736450195312
+          },
+          {
+            "source": "ambient",
+            "bytes": 448,
+            "pre": 1.3848906755447388,
+            "post": 1.3603278398513794
+          }
+        ],
+        "settlement": 0.01249539852142334,
+        "source_roles": [
+          "mother",
+          "mother",
+          "ambient",
+          "ambient"
+        ],
+        "training_pieces": 4,
+        "external_bytes_once": 960,
+        "counterfactual_scope": "same actual future suffix before/after prefix learning",
+        "meaning": "equal-role mean predictive gain; actual stream and observations retained"
+      }
+    },
+    {
+      "cycle": 3570,
+      "choice": "generate",
+      "updates": 6,
+      "generative": {
+        "schema": 1,
+        "query_role": "action",
+        "query_probabilities": [
+          0.33331936597824097,
+          0.33331936597824097,
+          0.33336126804351807
+        ],
+        "programs": [
+          [
+            "mother_response",
+            "ambient_transport",
+            "existing_continuation"
+          ],
+          [
+            "body_transition",
+            "existing_continuation"
+          ]
+        ],
+        "program_weights": [
+          0.5,
+          0.5
+        ],
+        "program_evidence_updated": true,
+        "internal_admission": [
+          {
+            "selected": "external",
+            "probability": [
+              0.5,
+              0.5
+            ]
+          }
+        ],
+        "internal_budget_hit": false,
+        "reorganizations": [
+          0,
+          2
+        ],
+        "same_U": true,
+        "observed_response_bound": true,
+        "binding_policy_in_delayed_actor": true,
+        "binding_replay_error": 0.0
+      },
+      "real_commit": true,
+      "source_learning": {
+        "schema": 1,
+        "readings": [
+          {
+            "source": "mother",
+            "bytes": 51,
+            "pre": 0.8998517990112305,
+            "post": 0.8965862989425659
+          },
+          {
+            "source": "ambient",
+            "bytes": 430,
+            "pre": 1.4173115491867065,
+            "post": 1.4101629257202148
+          }
+        ],
+        "settlement": 0.005207061767578125,
+        "source_roles": [
+          "mother",
+          "mother",
+          "ambient",
+          "ambient"
+        ],
+        "training_pieces": 4,
+        "external_bytes_once": 960,
+        "counterfactual_scope": "same actual future suffix before/after prefix learning",
+        "meaning": "equal-role mean predictive gain; actual stream and observations retained"
+      }
+    }
+  ],
+  "current_state": "continuous joint learning started; read pipeline and committed metrics for live progress",
+  "formal_coverage_added": 0
+}

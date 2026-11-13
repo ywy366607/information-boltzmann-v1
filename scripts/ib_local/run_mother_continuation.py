@@ -56,6 +56,8 @@ def continuation_parser():
                    help='enable a unified SSD episode/relation archive with a private work file')
     p.add_argument('--causal-episode-capacity', type=int, default=65536)
     p.add_argument('--causal-relation-capacity', type=int, default=65536)
+    p.add_argument('--generative-relations', action='store_true',
+                   help='explicit whole-loop typed binding/program/evidence/internal-work migration')
     p.add_argument('--ambient-policy', choices=('reply','quiet'),
                    help='explicit event-boundary migration of inherited ambient navigation')
     p.add_argument('--mother-policy', choices=('legacy', 'responsive', 'responsive_v2', 'responsive_v3'),
@@ -167,7 +169,7 @@ def prepare_continuation(args, *, provider_factory=None, resume_output=False):
         engine.question_parent_carry = True
         config['question_parent_carry'] = dict(schema=1, migrated_at_cycle=start_cycle,
             scope='retain the actual versioned parent mother observation in the next bounded receipt')
-    if engine.__class__.__name__ not in ('DirectReadGainEngine', 'InternalRolloutEngine', 'MomentumEngine', 'MomentumWoodEngine', 'RelationWoodEngine', 'QuestionContextEngine', 'ShadowPreviewEngine', 'MotherBoundaryEngine', 'PersistentQuestionEngine', 'CausalProgramEngine', 'LearnedCouplingEngine', 'JointCycleEngine', 'JointLearnedCycleEngine'):
+    if engine.__class__.__name__ not in ('DirectReadGainEngine', 'InternalRolloutEngine', 'MomentumEngine', 'MomentumWoodEngine', 'RelationWoodEngine', 'QuestionContextEngine', 'ShadowPreviewEngine', 'MotherBoundaryEngine', 'PersistentQuestionEngine', 'CausalProgramEngine', 'LearnedCouplingEngine', 'JointCycleEngine', 'JointLearnedCycleEngine', 'GenerativeCycleEngine', 'GenerativeLearnedCycleEngine'):
         raise RuntimeError('expected inherited direct-read navigation individual')
     if args.internal_rollout:
         from scripts.ib_local.navigation_internal_rollout import configure_internal_rollout
@@ -363,6 +365,15 @@ def prepare_continuation(args, *, provider_factory=None, resume_output=False):
             internal='input-free S/P continuation; no prescribed goal or cadence',
             retained='all original parameters, Adam, S/P, episode evidence and actual pending credit')
         config['common_settlement'] = 'world_stream'
+    if getattr(args, 'generative_relations', False) and config.get('generative_relations') is None:
+        from scripts.ib_local.navigation_generative_cycle import configure_generative_cycle
+        configure_generative_cycle(engine)
+        config['generative_relations'] = dict(schema=1, migrated_at_cycle=start_cycle,
+            grammar='shared response/transport/body-transition/continuation programs',
+            binding='condition, action or response open role; same learned selector for internal work',
+            revision='same finite evidence U, functional scope sharing/refutation',
+            actor='all binding and internal choices join the original delayed policy trace',
+            preserved='original parameters, Adam, S/P, world, facts and pending credit')
     if args.shared_cache:
         args.shared_cache.parent.mkdir(parents=True, exist_ok=True)
     inherited_policy = provider_state.get('mother_ambient_policy','quiet') if is_mother else 'reply'
