@@ -162,6 +162,10 @@ def main():
                         help='Fraction of calm reading pieces drawn from --chinese-corpus when provided')
     parser.add_argument('--chinese-val-file', type=Path, default=None,
                         help='Optional held-out Chinese validation.bin for tracking 8192B Chinese NLL flux')
+    parser.add_argument('--dialogue-demo-corpus', type=Path, default=None,
+                        help='Optional JSONL multi-role observational dialogue & tool-demo corpus (source headers masked)')
+    parser.add_argument('--dialogue-demo-ratio', type=float, default=0.12,
+                        help='Fraction of calm pieces drawn from --dialogue-demo-corpus when provided')
 
     # Champion H-Net + ALIF + PSB + RLP defaults.
     parser.add_argument('--piece-bytes', type=int, default=1600)
@@ -291,6 +295,8 @@ def main():
         inbox_path=args.inbox_file,
         sidecar_corpus=args.chinese_corpus,
         sidecar_mix_ratio=(args.chinese_mix_ratio if args.chinese_corpus is not None else 0.0),
+        dialogue_demo_corpus=args.dialogue_demo_corpus,
+        dialogue_demo_ratio=(args.dialogue_demo_ratio if args.dialogue_demo_corpus is not None else 0.0),
         user_plan_text=args.care_plan,
         respond_on_child_speech=(not args.book_floor_default),
     )
@@ -318,6 +324,8 @@ def main():
         mirror_ratio=float(args.mirror_ratio),
         chinese_corpus=(None if args.chinese_corpus is None else str(args.chinese_corpus.resolve())),
         chinese_mix_ratio=float(port.sidecar_mix_ratio),
+        dialogue_demo_corpus=(None if args.dialogue_demo_corpus is None else str(args.dialogue_demo_corpus.resolve())),
+        dialogue_demo_ratio=float(port.dialogue_demo_ratio),
         restored_prior_port_state=restored_prior,
     )
 

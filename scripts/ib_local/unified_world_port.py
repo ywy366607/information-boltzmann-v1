@@ -243,6 +243,145 @@ class SidecarCorpusStream:
         return self.take_ambient(response_bytes, holdout_bytes)
 
 
+class ObservationalDialogueStream:
+    """Multi-role observational dialogue & tool-demonstration stream over the single UTF-8 Membrane.
+
+    Feeds natural multi-turn interactions (Mom & Dad chatting, sharing joint attention,
+    asking concise questions, guessing & gently correcting, and demonstrating tool calls)
+    into calm sensory reading with exact per-turn `envelope_mask_spans`:
+      - Every speaker/tool header (`妈妈：`, `爸爸：`, `[工具:calc] `, `[在场] ...\\n`, `书页：`)
+        enters the 32-layer GDN state in full while being masked out of BOTH neural LM loss
+        and Fast Table writes.
+      - Every spoken body byte and turn-ending newline is learned normally (loss mask = 1),
+        providing clean conversational & tool-syntax priors WITHOUT locking MengLi into a
+        passive `assistant` role.
+    """
+
+    def __init__(self, path: str | Path, *, cursor: int = 0):
+        self.path = Path(path).resolve()
+        if not self.path.exists():
+            raise FileNotFoundError(f'observational dialogue corpus not found: {self.path}')
+        scenes: list[dict] = []
+        for raw_line in self.path.read_text(encoding='utf-8').splitlines():
+            line = raw_line.strip()
+            if not line:
+                continue
+            obj = json.loads(line)
+            turns = obj.get('turns')
+            if isinstance(turns, list) and turns:
+                scenes.append(obj)
+        if not scenes:
+            raise ValueError(f'observational dialogue corpus has no valid scenes: {self.path}')
+        self.scenes = scenes
+        self.cursor = int(cursor) % len(self.scenes)
+
+    @staticmethod
+    def _format_header(speaker: str) -> str:
+        s = str(speaker).strip()
+        if not s:
+            return ''
+        if s.startswith('工具:') or s.startswith('tool:'):
+            return f'[{s}] '
+        return f'{s}：'
+
+    @staticmethod
+    def _speaker_object_id(turn: dict) -> str | None:
+        oid = turn.get('id')
+        if isinstance(oid, str) and oid.strip():
+            return oid.strip()
+        sp = str(turn.get('speaker', '')).strip()
+        if sp in ('妈妈', 'Mom', 'Mother', 'mother'):
+            return 'mother'
+        if sp in ('爸爸', 'Dad', 'Father', 'parent'):
+            return 'parent'
+        if sp.startswith('工具:'):
+            return 'tool:' + sp.split(':', 1)[1].strip()
+        if sp.startswith('tool:'):
+            return sp
+        return None
+
+    def _encode_scene(self, scene: dict) -> tuple[bytes, list[tuple[int, int]], list[tuple[str, bytes]]]:
+        buf = bytearray()
+        spans: list[tuple[int, int]] = []
+        observed: list[tuple[str, bytes]] = []
+        roster = scene.get('roster')
+        if isinstance(roster, str) and roster.strip():
+            start = len(buf)
+            buf.extend((roster.strip() + '\n').encode('utf-8'))
+            spans.append((start, len(buf)))
+        for turn in scene.get('turns', []):
+            text = str(turn.get('text', '')).strip()
+            if not text:
+                continue
+            header = self._format_header(turn.get('speaker', ''))
+            if header:
+                hs = len(buf)
+                buf.extend(header.encode('utf-8'))
+                spans.append((hs, len(buf)))
+            body_b = (text + '\n').encode('utf-8')
+            buf.extend(body_b)
+            oid = self._speaker_object_id(turn)
+            if oid is not None:
+                observed.append((oid, body_b))
+        return bytes(buf), spans, observed
+
+    @staticmethod
+    def _truncate_utf8_safe(data: bytes, max_len: int) -> bytes:
+        if len(data) <= max_len:
+            return data
+        cut = max_len
+        while cut > 0 and (data[cut] & 0xC0) == 0x80:
+            cut -= 1
+        return data[:cut]
+
+    def take_ambient(self, response_bytes: int, holdout_bytes: int) -> tuple[np.ndarray, np.ndarray, dict]:
+        if response_bytes < 1 or holdout_bytes < 1:
+            raise ValueError('positive response and holdout lengths required')
+        total = int(response_bytes + holdout_bytes)
+        buf = bytearray()
+        spans: list[tuple[int, int]] = []
+        observed: list[tuple[str, bytes]] = []
+        scene_names: list[str] = []
+        start_cursor = int(self.cursor)
+
+        # Pack consecutive scenes cleanly until we reach `total` bytes.
+        guard = 0
+        while len(buf) < total and guard < len(self.scenes) * 4 + 4:
+            guard += 1
+            sc = self.scenes[self.cursor]
+            self.cursor = (self.cursor + 1) % len(self.scenes)
+            sc_bytes, sc_spans, sc_obs = self._encode_scene(sc)
+            if not sc_bytes:
+                continue
+            offset = len(buf)
+            scene_names.append(str(sc.get('scene', 'dialogue')))
+            for s, e in sc_spans:
+                spans.append((offset + s, offset + e))
+            buf.extend(sc_bytes)
+            observed.extend(sc_obs)
+
+        raw = self._truncate_utf8_safe(bytes(buf), total)
+        if len(raw) < total:
+            pad = b'\n' * (total - len(raw))
+            raw = raw + pad
+        # Clip mask spans cleanly to exact delivered length.
+        clipped_spans = [(s, min(e, total)) for s, e in spans if s < total and min(e, total) > s]
+        arr = np.frombuffer(raw, dtype=np.uint8).copy()
+        resp = arr[:response_bytes]
+        cont = arr[response_bytes:total]
+        info = dict(
+            source='observational_dialogue',
+            dialogue_corpus=self.path.name,
+            dialogue_start_cursor=start_cursor,
+            dialogue_cursor=int(self.cursor),
+            dialogue_scenes=scene_names,
+            envelope_mask_spans=clipped_spans,
+            observed_speakers=observed,
+            navigation_response_bytes=int(len(resp)),
+        )
+        return resp, cont, info
+
+
 class UnifiedWorldPort:
     """Unified world-side multiplexer over a single UTF-8 body boundary."""
 
@@ -260,6 +399,8 @@ class UnifiedWorldPort:
         inbox_path: str | Path | None = None,
         sidecar_corpus: str | Path | None = None,
         sidecar_mix_ratio: float = 0.0,
+        dialogue_demo_corpus: str | Path | None = None,
+        dialogue_demo_ratio: float = 0.0,
         initial_stage: str = STAGE_INFANT,
         user_plan_text: str | None = None,
         respond_on_child_speech: bool = True,
@@ -274,6 +415,8 @@ class UnifiedWorldPort:
             raise ValueError('mirror_ratio must lie in [0, 1]')
         if not (0.0 <= float(sidecar_mix_ratio) <= 1.0):
             raise ValueError('sidecar_mix_ratio must lie in [0, 1]')
+        if not (0.0 <= float(dialogue_demo_ratio) <= 1.0):
+            raise ValueError('dialogue_demo_ratio must lie in [0, 1]')
 
         self.base = base
         self.caregiver = caregiver
@@ -287,6 +430,11 @@ class UnifiedWorldPort:
         self.inbox_offset = 0
         self.sidecar_mix_ratio = float(sidecar_mix_ratio) if sidecar_corpus is not None else 0.0
         self.sidecar = None if sidecar_corpus is None else SidecarCorpusStream(sidecar_corpus)
+        self.dialogue_demo_ratio = float(dialogue_demo_ratio) if dialogue_demo_corpus is not None else 0.0
+        self.dialogue_demo = (
+            None if dialogue_demo_corpus is None else ObservationalDialogueStream(dialogue_demo_corpus)
+        )
+        self.dialogue_reads = 0
 
         # Open Yoneda / Presence Roster & Membrane protocol settings:
         #   - Any external object (person, tool, book) can join/leave dynamically.
@@ -602,6 +750,13 @@ class UnifiedWorldPort:
         r = self.sidecar_mix_ratio
         return math.floor((k + 1) * r + 1e-12) > math.floor(k * r + 1e-12)
 
+    def _use_dialogue_demo_now(self) -> bool:
+        if self.dialogue_demo is None or self.dialogue_demo_ratio <= 0.0:
+            return False
+        k = self.ambient_reads
+        r = self.dialogue_demo_ratio
+        return math.floor((k + 1) * r + 1e-12) > math.floor(k * r + 1e-12)
+
     def _next_perspective_mode(self) -> str:
         """Deterministic Bresenham alternation between `mirror_visible` and `book_only`."""
         k = self.mother_turns
@@ -610,7 +765,22 @@ class UnifiedWorldPort:
         return 'mirror_visible' if visible else 'book_only'
 
     def take_ambient(self, response_bytes: int, holdout_bytes: int):
-        """High-throughput calm reading: ZERO caregiver API calls, updates shared book page."""
+        """High-throughput calm sensory reading: ZERO caregiver API calls."""
+        if self._use_dialogue_demo_now():
+            resp, cont, info = self.dialogue_demo.take_ambient(response_bytes, holdout_bytes)
+            self.dialogue_reads += 1
+            self.ambient_reads += 1
+            self.consecutive_social_turns = 0
+            observed_speakers = info.pop('observed_speakers', ())
+            for oid, body_b in observed_speakers:
+                self._observe_gaze_object(oid, body_b[:256], fuse_body_state=False)
+            return resp, cont, dict(
+                info,
+                channel='observational_dialogue',
+                source='observational_dialogue',
+                mother_bytes=0,
+                mixed_world_event='observational_dialogue',
+            )
         prev_src = self.last_book_source
         if self._use_sidecar_now():
             resp, cont, info = self.sidecar.take_ambient(response_bytes, holdout_bytes)
@@ -1456,6 +1626,7 @@ class UnifiedWorldPort:
                 shared_page_hex=bytes(self.shared_page_bytes).hex(),
                 ambient_reads=int(self.ambient_reads),
                 sidecar_reads=int(self.sidecar_reads),
+                dialogue_reads=int(self.dialogue_reads),
                 spike_turns=int(self.spike_turns),
                 spikes_since_mother=int(self.spikes_since_mother),
                 quiet_spikes_since_mother=int(self.quiet_spikes_since_mother),
@@ -1478,6 +1649,7 @@ class UnifiedWorldPort:
                 recent_metal_g=list(self.recent_metal_g),
                 inbox_offset=int(self.inbox_offset),
                 sidecar_cursor=(None if self.sidecar is None else int(self.sidecar.cursor)),
+                dialogue_cursor=(None if self.dialogue_demo is None else int(self.dialogue_demo.cursor)),
                 care_plan_tracker=self.care_plan_tracker.state_dict(),
                 pending_tool_notes=list(self._pending_tool_notes),
                 gaze_dynamic_state=(gp.export_dynamic_state() if gp is not None else None),
@@ -1507,6 +1679,7 @@ class UnifiedWorldPort:
             self.shared_page_bytes = bytearray(bytes.fromhex(uwp.get('shared_page_hex', '')))
             self.ambient_reads = int(uwp.get('ambient_reads', 0))
             self.sidecar_reads = int(uwp.get('sidecar_reads', 0))
+            self.dialogue_reads = int(uwp.get('dialogue_reads', 0))
             self.spike_turns = int(uwp.get('spike_turns', 0))
             self.spikes_since_mother = int(uwp.get('spikes_since_mother', self.mother_max_gap))
             self.quiet_spikes_since_mother = int(uwp.get('quiet_spikes_since_mother', 0))
@@ -1530,6 +1703,8 @@ class UnifiedWorldPort:
             self.inbox_offset = int(uwp.get('inbox_offset', 0))
             if self.sidecar is not None and uwp.get('sidecar_cursor') is not None:
                 self.sidecar.cursor = int(uwp['sidecar_cursor']) % len(self.sidecar.data)
+            if self.dialogue_demo is not None and uwp.get('dialogue_cursor') is not None:
+                self.dialogue_demo.cursor = int(uwp['dialogue_cursor']) % len(self.dialogue_demo.scenes)
             if isinstance(uwp.get('care_plan_tracker'), dict):
                 self.care_plan_tracker.load_state_dict(uwp['care_plan_tracker'])
             self._pending_tool_notes = list(uwp.get('pending_tool_notes', []))

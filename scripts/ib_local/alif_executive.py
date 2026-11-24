@@ -425,6 +425,83 @@ def hippocampal_anchor_loss(engine, features: torch.Tensor) -> tuple[torch.Tenso
     return total, info
 
 
+def _merge_mask_spans(raw_spans, total_len: int) -> list[tuple[int, int]]:
+    if not isinstance(raw_spans, (list, tuple)) or not raw_spans or total_len <= 0:
+        return []
+    clipped = []
+    for item in raw_spans:
+        if not isinstance(item, (list, tuple)) or len(item) != 2:
+            continue
+        s = max(0, min(total_len, int(item[0])))
+        e = max(0, min(total_len, int(item[1])))
+        if e > s:
+            clipped.append((s, e))
+    if not clipped:
+        return []
+    clipped.sort()
+    merged: list[tuple[int, int]] = [clipped[0]]
+    for s, e in clipped[1:]:
+        ps, pe = merged[-1]
+        if s <= pe:
+            merged[-1] = (ps, max(pe, e))
+        else:
+            merged.append((s, e))
+    return merged
+
+
+def _span_masked_table_probs(table, pending: int, chunk: np.ndarray, spans: list[tuple[int, int]]) -> np.ndarray:
+    """Compute Fast Table probs across arbitrary masked/unmasked spans.
+
+    Masked spans (identity cards, speaker/tool headers) are strictly READ-ONLY
+    (`frozen_table_logp`), while unmasked spoken/storybook spans update the table
+    via `run_credit` as usual.
+    """
+    from scripts.ib_local.navigation_live_witness import frozen_table_logp
+
+    n = int(len(chunk))
+    if not spans:
+        _, probs, _ = table.run_credit(
+            np.concatenate((np.array([pending], np.uint8), chunk)),
+            max_window=n,
+        )
+        return probs
+
+    parts: list[np.ndarray] = []
+    cursor = 0
+    prev_byte = int(pending)
+
+    def _emit_unmasked(s: int, e: int) -> None:
+        nonlocal prev_byte
+        if e <= s:
+            return
+        seg = chunk[s:e]
+        _, p, _ = table.run_credit(
+            np.concatenate((np.array([prev_byte], np.uint8), seg)),
+            max_window=int(len(seg)),
+        )
+        parts.append(p)
+        prev_byte = int(seg[-1])
+
+    def _emit_masked(s: int, e: int) -> None:
+        nonlocal prev_byte
+        if e <= s:
+            return
+        seg = chunk[s:e]
+        seq = np.concatenate((np.array([prev_byte], np.uint8), seg[:-1]))
+        p = np.exp(frozen_table_logp(table, seq)).astype(np.float32, copy=False)
+        parts.append(p)
+        prev_byte = int(seg[-1])
+
+    for s, e in spans:
+        if s > cursor:
+            _emit_unmasked(cursor, s)
+        _emit_masked(s, e)
+        cursor = e
+    if cursor < n:
+        _emit_unmasked(cursor, n)
+    return np.concatenate(parts, axis=0)
+
+
 def calm_sensory_piece(engine, directions) -> dict:
     """Execute one 480B continuous subcortical sensory + full language learning piece.
 
@@ -469,12 +546,17 @@ def calm_sensory_piece(engine, directions) -> dict:
         resp, cont, info = engine.world.take(b'', half, piece_bytes - half)
     chunk = np.concatenate((resp, cont)).astype(np.uint8, copy=False)
     pending = int(engine.pending)
-    _, chunk_probs, _ = engine.table.run_credit(
-        np.concatenate((np.array([pending], np.uint8), chunk)),
-        max_window=len(chunk),
-    )
+    env_spans = _merge_mask_spans(info.get('envelope_mask_spans'), len(chunk))
+    chunk_probs = _span_masked_table_probs(engine.table, pending, chunk, env_spans)
     raw = np.concatenate((np.array([pending], np.uint8), chunk))
     ids, target, logp = engine._inputs(raw, chunk_probs)
+    score_mask = None
+    if env_spans:
+        m = torch.ones_like(target, dtype=torch.float32)
+        for s, e in env_spans:
+            m[:, s:e] = 0.0
+        if float(m.sum().item()) > 0.0:
+            score_mask = m
 
     # Pure world input: clear question context just like heldout pieces in world_cycle_step.
     old_q = getattr(engine.model, '_question_context', None)
@@ -482,9 +564,14 @@ def calm_sensory_piece(engine, directions) -> dict:
     anchor_diag = dict(hippocampal_anchor_loss=0.0, wood_replay_samples=0,
                        internal_transition_samples=0, causal_program_replay=0)
     try:
-        loss, next_state, features, diag = engine.model.objective(
-            ids, target, engine.recurrent, logp, directions
-        )
+        if score_mask is not None:
+            loss, next_state, features, diag = engine.model.objective(
+                ids, target, engine.recurrent, logp, directions, score_mask=score_mask
+            )
+        else:
+            loss, next_state, features, diag = engine.model.objective(
+                ids, target, engine.recurrent, logp, directions
+            )
         ce = F.cross_entropy(diag['logits'][0].detach(), target[0], reduction='none').cpu().numpy()
         anchor_scale = float(st.get('hippocampal_anchor_scale', 0.5))
         if anchor_scale > 0.0:
@@ -541,7 +628,11 @@ def calm_sensory_piece(engine, directions) -> dict:
         )
 
     engine.pending = int(chunk[-1])
-    piece_nll = float(ce.mean())
+    if score_mask is not None:
+        mask_np = score_mask[0].detach().cpu().numpy().astype(np.float64)
+        piece_nll = float((ce.astype(np.float64) * mask_np).sum() / max(float(mask_np.sum()), 1.0))
+    else:
+        piece_nll = float(ce.mean())
     burst_nll, burst_bytes = _peak_window_slice(ce, chunk, int(st['burst_window']))
     short_loss = float(diag['latent'])
     p_rms = _momentum_rms(engine)
