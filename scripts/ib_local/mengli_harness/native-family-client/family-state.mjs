@@ -152,22 +152,32 @@ export function projectUmweltTrajectory(events) {
     const u = event.umwelt ?? {};
     const ch = u.channel ?? (event.observation?.kind === 'natural_text_reply' ? 'storybook_spike_fallback' : 'dsh_mother');
     const spoke = Boolean(event.utterance?.spoke ?? event.utterance?.text);
-    const isSocial = ch !== 'storybook_spike_fallback' && ch !== 'book_navigation';
+    const mode = u.interaction_mode ?? null;
+    const isSocial = ch !== 'storybook_spike_fallback' && ch !== 'book_navigation' && ch !== 'read_aloud_solo';
     let route = '静读停顿 · 书页';
-    if (ch === 'live_participant') route = `${u.speaker || '爸爸'} → 梦漓`;
+    if (ch === 'inner_monologue' || mode === 'inner_monologue') route = '梦漓自言自语（out ∅ · in ∅）';
+    else if (ch === 'self_evolution' || mode === 'quiet_self_evolution') route = '梦漓内部自我演化（out ∅ · in ∅）';
+    else if (ch === 'read_aloud_solo' || mode === 'read_aloud_solo') route = '梦漓自读出声 · 书页';
+    else if (ch === 'mother_quiet_presence') route = '妈妈安静陪伴（未打断）';
+    else if (ch === 'live_participant') route = `${u.speaker || '爸爸'} → 梦漓`;
     else if (ch === 'reply_to_parent') route = `梦漓指向 → ${u.speaker || '爸爸'}`;
     else if (ch === 'call_parent') route = `梦漓呼唤 → ${u.speaker || '爸爸'}`;
     else if (ch === 'tool' || ch === 'dynamic_object') route = `梦漓指向 → ${u.speaker || '工具'}`;
     else if (ch === 'book_addressed') route = '梦漓 @书页 → 书页检索';
     else if (ch === 'book_navigation') route = u.routing_reason === 'gaze_book_search' ? '梦漓指向书页 · 检索' : '梦漓 → 书页（自主检索）';
     else if (ch === 'dsh_mother') {
-      if (u.routing_reason === 'gaze_mother_speak') route = '梦漓指向妈妈 · 开口';
+      if (u.mother_out === 'parent') route = '妈妈对爸爸说（梦漓旁听）';
+      else if (mode === 'face_to_face_chat') route = '梦漓与妈妈 · 面对面聊天';
+      else if (mode === 'co_reading_talk') route = '梦漓与妈妈 · 共读对话';
+      else if (mode === 'self_talk_observing_mother') route = '梦漓看着妈妈 · 自言自语';
+      else if (u.routing_reason === 'gaze_mother_speak') route = '梦漓指向妈妈 · 开口';
       else if (u.routing_reason === 'gaze_mother_look') route = '梦漓抬头看妈妈';
       else if (u.routing_reason === 'vocal_call_mother' || u.routing_reason === 'explicit_mother') route = '梦漓呼唤 → 妈妈';
       else if (u.trigger_kind === 'mother_proactive') route = '妈妈共读开口 → 梦漓';
       else if (u.trigger_kind === 'child_replied') route = '梦漓回应 → 妈妈';
       else if (spoke) route = '梦漓开口 → 妈妈';
       else route = '妈妈伴读 → 梦漓';
+      if (u.mother_out === 'book') route += ' · 妈妈翻书';
     } else if (spoke) {
       route = '梦漓 → 书页（自主检索）';
     }
