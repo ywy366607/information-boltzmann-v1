@@ -140,7 +140,7 @@ def _select_and_condition_target(engine, utterance: bytes, record: dict) -> dict
         except Exception:
             causal_values = None
 
-    gaze_dec = gp.select_target(
+    gaze_dec = gp.select_interaction(
         engine,
         candidates=candidates,
         utterance_bytes=utterance,
@@ -151,11 +151,13 @@ def _select_and_condition_target(engine, utterance: bytes, record: dict) -> dict
         awaiting_from=meta.get('awaiting_from'),
     )
     chosen_id = gaze_dec['target_id']
+    chosen_send = gaze_dec.get('send_target', chosen_id)
+    chosen_obs = gaze_dec.get('observe_target', chosen_id)
 
-    # Propagate chosen target condition into `_internal_action[selected]` and mother forecast
+    # Propagate chosen `(out, in)` condition into `_internal_action[selected]` and mother forecast
     # BEFORE `causal_use_value.begin()` freezes the pre-world expectation.
     if torch.is_tensor(base_actions) and selected < len(base_actions):
-        delta = gp.target_offset(chosen_id, like=base_actions[selected])
+        delta = gp.target_offset(chosen_send, observe_id=chosen_obs, like=base_actions[selected])
         if float(delta.abs().max().item()) > 0.0:
             engine._internal_action = base_actions.clone()
             engine._internal_action[selected] = base_actions[selected] + delta
@@ -171,6 +173,213 @@ def _select_and_condition_target(engine, utterance: bytes, record: dict) -> dict
                 except Exception:
                     pass
     return gaze_dec
+
+
+def _complete_self_evolution_beat(
+    *,
+    engine,
+    utterance: bytes,
+    record: dict,
+    probabilities: torch.Tensor,
+    value_now: float,
+    witness_pre: float,
+    info: dict,
+    option,
+) -> dict:
+    """Execute a genuine zero-external-pull internal self-evolution / self-talk beat (`in == 'none'`).
+
+    Preserves continuous biological self-evolution without pulling Mother or advancing the book:
+      1. If MengLi spoke (`u != b''`, e.g. pure self-talk / inner monologue), her 32-layer GDN
+         hears her own bytes under `no_grad()` (zero LM cross-entropy self-training, zero Fast Table writes).
+      2. Hamiltonian BFSS `(S, P)` quiet physics evolves her recurrent state and momenta.
+      3. Hippocampal replay (`hippocampal_anchor_loss`) consolidates real historical memory slots,
+         and any pending delayed actor TD credit settles honestly on the same optimizer step.
+      4. Endogenous consolidation gain `witness_pre - witness_post` provides truthful credit to
+         `GazeObjectPointer` without fabricating external boundary targets.
+    """
+    from scripts.ib_local import bounded_reading_option
+    from scripts.ib_local.alif_executive import _step_quiet_physics, hippocampal_anchor_loss
+
+    own = len(utterance)
+    pending = int(engine.pending)
+    utterance_probs = np.asarray(record['probs'], np.float32).reshape(-1, 256)
+
+    # 1. Self-hearing (only when MengLi actually vocalized `u != b''`): updates GDN recurrent state
+    #    without ever training LM cross-entropy on her own output.
+    feat_for_anchor = None
+    if own > 0:
+        raw_self = np.concatenate((np.array([pending], np.uint8), np.frombuffer(utterance, np.uint8)))
+        ids_s, target_s, logp_s = engine._inputs(raw_self, utterance_probs)
+        with torch.no_grad():
+            _, next_state, _, h_self, _ = engine.model.predict_observed(ids_s, engine.recurrent, logp_s)
+        engine.recurrent = next_state.detach()
+        engine.pending = int(utterance[-1])
+        feat_for_anchor = h_self.detach()
+    else:
+        raw_dummy = np.array([pending, pending], np.uint8)
+        prob_dummy = np.full((1, 256), 1.0 / 256.0, dtype=np.float32)
+        _, target_s, _ = engine._inputs(raw_dummy, prob_dummy)
+        base_src = getattr(engine, '_internal_source', None)
+        if torch.is_tensor(base_src):
+            feat_for_anchor = base_src.detach().reshape(1, -1)
+        else:
+            feat_for_anchor = torch.zeros(1, engine.model.encoder.in_features, device=engine.device)
+
+    # 2. Continuous Hamiltonian BFSS `(S, P)` self-evolution.
+    bfss_change = _step_quiet_physics(engine)
+
+    # 3. Policy replay & delayed actor TD settlement (keeps autonomous_cycle boundary credit conserved).
+    actor, actor_norm, policy_error, td = None, 0.0, 0.0, None
+    delayed, advantage = None, 0.0
+    if engine.mode != 'silence':
+        actor, replay = engine._policy_grad(target_s, own, record)
+        from scripts.ib_local.navigation_direct_read import replay_error
+        policy_error = replay_error(replay, record)
+        if policy_error > 1e-3:
+            raise RuntimeError(f'sampled self-evolution policy replay differs: {policy_error}')
+        actor_norm = float(torch.stack([g.norm() for g in actor if g is not None]).norm())
+
+    if engine.prev is not None:
+        same = engine.prev.get('settlement_kind', 'witness') == engine.settlement_kind
+        td = engine._settle_previous(td_gain_target(engine, engine.prev['g'], value_now, same))
+        if not same:
+            td['objective_boundary'] = True
+        delayed, advantage = td.pop('actor'), td['advantage']
+
+    # 4. Hippocampal internal consolidation + delayed actor step.
+    anchor_loss, anchor_diag = hippocampal_anchor_loss(engine, feat_for_anchor)
+    has_anchor = (
+        anchor_diag['wood_replay_samples']
+        + anchor_diag['internal_transition_samples']
+        + anchor_diag['causal_program_replay']
+    ) > 0 and anchor_loss.requires_grad
+    updates_done = 0
+    norms: list[float] = []
+    if has_anchor or delayed is not None:
+        engine.optimizer.zero_grad(set_to_none=True)
+        if has_anchor:
+            (float(getattr(engine, 'outcome_weight', 0.1)) * anchor_loss).backward()
+        if delayed is not None:
+            for p, g in zip(engine.params, delayed):
+                if g is not None:
+                    term = (-float(advantage)) * g.to(p.device, dtype=p.dtype)
+                    p.grad = term if p.grad is None else (p.grad + term)
+            engine.delayed_applied += 1
+        grad_sq = 0.0
+        for group in engine.groups:
+            live = [p for p in group if p.grad is not None]
+            if live:
+                gn = float(torch.nn.utils.clip_grad_norm_(live, 1.0, foreach=True))
+                grad_sq += gn * gn
+        engine.optimizer.step()
+        norms.append(float(grad_sq ** 0.5))
+        updates_done = 1
+
+    # 5. Honest endogenous witness gain (`witness_pre - witness_post`) & gaze credit context.
+    witness_post = engine.witness_nll()
+    g = float(witness_pre - witness_post)
+    option_receipt = bounded_reading_option.finish(engine, option)
+    from scripts.ib_local import gaze_pointer as _gp
+    if _gp.enabled(engine):
+        engine._gaze_boundary_context = dict(
+            model=engine.model,
+            source=feat_for_anchor[0].detach().clone(),
+            raw_action=feat_for_anchor[-1].detach().clone(),
+            actual_target_id=info.get('send_target_id') or info.get('target_object_id'),
+            actual_observe_id='none',
+            boundary_target=None,
+            evidence_available=True,
+        )
+
+    engine.prev = dict(
+        g=g,
+        slot=None,
+        actor=actor,
+        inputs=record['critic_inputs'][record['choice']].detach(),
+        value=float(record['values'][record['choice']]),
+        choice=record['choice'],
+        settlement_kind=engine.settlement_kind,
+    )
+    try:
+        utterance.decode('utf-8')
+        utf8 = True
+    except UnicodeDecodeError:
+        utf8 = False
+
+    return dict(
+        mode=engine.mode,
+        choice=('silence', 'generate', 'reuse')[record['choice']],
+        choice_probability=probabilities.tolist(),
+        reused_slot=record['reused_slot'],
+        utterance_hex=utterance.hex(),
+        utf8_valid=utf8,
+        spoke=bool(own),
+        truncated=record['truncated'],
+        external_bytes=0,
+        self_bytes=own,
+        world=info,
+        response_nll=0.0,
+        mother_response_nll=None,
+        ambient_response_nll=None,
+        heldout_pre_nll=None,
+        heldout_post_nll=None,
+        progress=None,
+        fresh=True,
+        joint_pre_nll=None,
+        joint_post_nll=None,
+        joint_progress=None,
+        witness_pre=witness_pre,
+        witness_post=witness_post,
+        witness_g=g,
+        settlement_kind=engine.settlement_kind,
+        settlement=g,
+        metal_g=g,
+        usable_signal=g,
+        evidence_available=True,
+        target_object_id=info.get('target_object_id'),
+        send_target_id=info.get('send_target_id'),
+        observe_target_id='none',
+        interaction_mode=info.get('interaction_mode'),
+        witnesses=len(engine.w_ids),
+        witness_admitted=engine.w_admitted,
+        admitted=False,
+        td_previous=td,
+        value_now=value_now,
+        delayed_actor_applied=engine.delayed_applied,
+        actor_norm=actor_norm,
+        policy_replay_max_error=policy_error,
+        short_loss=0.0,
+        long_loss=0.0,
+        episode_slot=None,
+        episode_merged=False,
+        age_component_ablation=None,
+        gradient_norms=norms,
+        updates=updates_done,
+        read_credit=dict(response=None, heldout=None),
+        habit_logits=record['habit_logits'],
+        imagination_offset=record['offset'],
+        imagined_value=record['values'],
+        precision=engine.precision(),
+        critic_rms=None if engine.critic_error is None else float(np.sqrt(engine.critic_error)),
+        interoception=engine.intero_raw.tolist(),
+        causal_use=None,
+        self_evolution=dict(
+            bfss_state_change=float(bfss_change),
+            self_heard_bytes=int(own),
+            **anchor_diag,
+        ),
+        **({'bounded_reading_option': option_receipt} if option_receipt is not None else {}),
+        world_learning=dict(
+            schema=1,
+            readings=[],
+            settlement=0.0,
+            source_roles=['self_evolution'],
+            training_pieces=0,
+            external_bytes_once=0,
+            counterfactual_scope='zero-external-pull internal consolidation',
+            meaning='endogenous BFSS + hippocampal replay without pulling external streams',
+        ),
+    )
 
 
 def world_cycle_step(engine, directions, age_ablate=False):
@@ -197,6 +406,17 @@ def world_cycle_step(engine, directions, age_ablate=False):
         )
     else:
         response, heldout, info = engine.world.take(utterance, engine.response_bytes, engine.holdout_bytes)
+    if info.get('self_evolution_beat'):
+        return _complete_self_evolution_beat(
+            engine=engine,
+            utterance=utterance,
+            record=record,
+            probabilities=probabilities,
+            value_now=value_now,
+            witness_pre=witness_pre,
+            info=info,
+            option=option,
+        )
     external, pieces = observed_pieces(response, heldout, info)
     root_piece_count = len(pieces)
     block_end, block_info, block_error_start = len(external), info, 0
@@ -323,10 +543,13 @@ def world_cycle_step(engine, directions, age_ablate=False):
             if getattr(engine,'variable_expression_schema',None)==1:
                 source=engine._expression_decision_source.reshape(-1)
             raw_action_for_gaze = action.detach().clone()
-            actual_target_id = info.get('target_object_id')
+            actual_target_id = info.get('send_target_id') or info.get('target_object_id')
+            actual_observe_id = info.get('observe_target_id')
             from scripts.ib_local import gaze_pointer as _gp
-            if _gp.enabled(engine) and actual_target_id is not None:
-                action = engine.model.gaze_pointer.condition_action(action, actual_target_id)
+            if _gp.enabled(engine) and (actual_target_id is not None or actual_observe_id is not None):
+                action = engine.model.gaze_pointer.condition_action(
+                    action, actual_target_id, observe_id=actual_observe_id,
+                )
             engine._capture_mother_response_boundary(all_features, own, len(external), info)
             outcome_loss, outcome_diag = engine._outcome_loss(source, action, long)
             loss = loss+engine.outcome_weight*outcome_loss
@@ -426,7 +649,8 @@ def world_cycle_step(engine, directions, age_ablate=False):
             model=engine.model,
             source=source.detach().clone(),
             raw_action=raw_action_for_gaze,
-            actual_target_id=info.get('target_object_id'),
+            actual_target_id=info.get('send_target_id') or info.get('target_object_id'),
+            actual_observe_id=info.get('observe_target_id'),
             boundary_target=(
                 None if getattr(engine, '_mother_boundary_target', None) is None
                 else engine._mother_boundary_target.detach().clone()
@@ -471,6 +695,9 @@ def world_cycle_step(engine, directions, age_ablate=False):
         settlement_kind=engine.settlement_kind, settlement=g, metal_g=g, usable_signal=g,
         evidence_available=evidence_available,
         target_object_id=info.get('target_object_id'),
+        send_target_id=info.get('send_target_id'),
+        observe_target_id=info.get('observe_target_id'),
+        interaction_mode=info.get('interaction_mode'),
         witnesses=len(engine.w_ids),witness_admitted=engine.w_admitted,admitted=False,
         td_previous=td,value_now=value_now,delayed_actor_applied=engine.delayed_applied,
         actor_norm=actor_norm,policy_replay_max_error=policy_error,

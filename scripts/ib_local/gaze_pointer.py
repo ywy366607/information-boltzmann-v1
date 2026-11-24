@@ -116,6 +116,64 @@ def read_body_state(engine, *, d_model: int, device: torch.device) -> torch.Tens
     return torch.zeros(d_model, device=device, dtype=torch.float32)
 
 
+def classify_interaction_mode(spoke: bool, send_target: str, observe_target: str) -> str:
+    """Derive human-readable telemetry label purely from orthogonal `(spoke, out, in)`."""
+    out_t = str(send_target or 'none')
+    in_t = str(observe_target or 'none')
+    if not spoke:
+        if in_t == 'none':
+            return 'quiet_self_evolution'
+        if in_t == 'book':
+            return 'quiet_reading'
+        if in_t == 'mother':
+            return 'look_at_mother'
+        return f'observe_{in_t}'
+    if out_t == 'none':
+        if in_t == 'none':
+            return 'inner_monologue'
+        if in_t == 'book':
+            return 'read_aloud_solo'
+        return f'self_talk_observing_{in_t}'
+    if out_t == 'book' and in_t == 'book':
+        return 'book_search'
+    if out_t == 'book' and in_t == 'mother':
+        return 'read_aloud_to_mother'
+    if out_t == 'mother' and in_t == 'mother':
+        return 'face_to_face_chat'
+    if out_t == 'mother' and in_t == 'book':
+        return 'co_reading_talk'
+    if in_t == 'none':
+        return f'call_{out_t}_and_pause'
+    return f'send_{out_t}_observe_{in_t}'
+
+
+class _DualChannelHead(nn.Module):
+    """Companion O(1) observation-pointer (`in`) + null-channel (`∅`) head.
+
+    Kept outside `GazeObjectPointer`'s `nn.Module` child tree and serialized bit-exactly
+    inside `export_dynamic_state()` so existing schema-2 checkpoints load with `strict=True`.
+    """
+
+    def __init__(self, d_model: int, d_gaze: int, device: torch.device):
+        super().__init__()
+        self.q_in_state = nn.Linear(d_model, d_gaze, bias=False, device=device, dtype=torch.float32)
+        self.q_in_utt = nn.Linear(d_model, d_gaze, bias=False, device=device, dtype=torch.float32)
+        self.q_in_ctx = nn.Linear(4, d_gaze, bias=True, device=device, dtype=torch.float32)
+        self.k_in_proj = nn.Linear(d_model, d_gaze, bias=False, device=device, dtype=torch.float32)
+        self.recency_in = nn.Parameter(torch.zeros(2, device=device, dtype=torch.float32))
+        self.observe_to_action = nn.Linear(d_model, d_model, bias=False, device=device, dtype=torch.float32)
+        # Mild negative initial bias on `∅` (~15% initial self-talk / self-evolution curiosity, learned freely from metal_g).
+        self.out_null_logit = nn.Parameter(torch.tensor(-0.7, device=device, dtype=torch.float32))
+        self.in_null_logit = nn.Parameter(torch.tensor(-0.9, device=device, dtype=torch.float32))
+
+        nn.init.zeros_(self.q_in_state.weight)
+        nn.init.zeros_(self.q_in_utt.weight)
+        nn.init.zeros_(self.q_in_ctx.weight)
+        nn.init.zeros_(self.q_in_ctx.bias)
+        nn.init.orthogonal_(self.k_in_proj.weight)
+        nn.init.zeros_(self.observe_to_action.weight)
+
+
 class GazeObjectPointer(nn.Module):
     """Constant-parameter O(1) dynamic cross-attention pointer + target-action conditioning."""
 
@@ -164,12 +222,17 @@ class GazeObjectPointer(nn.Module):
         self.register_buffer('boundary_steps', torch.tensor(0, device=dev, dtype=torch.long))
 
         self._opt = torch.optim.Adam(self.parameters(), lr=self.lr)
+        # Companion `(out, in)` dual-channel head kept outside `state_dict()` for strict=True compatibility.
+        dual = _DualChannelHead(self.d_model, self.d_gaze, dev)
+        self.__dict__['_dual_channel'] = dual
+        self._dual_opt = torch.optim.Adam(dual.parameters(), lr=self.lr)
         self.fingerprints: dict[str, torch.Tensor] = {}
         self.fp_center: torch.Tensor | None = None
         self.fp_center_ema: float = 0.05
         self.max_rel_delta_norm: float = 0.45
         self.target_counts: dict[str, int] = {}
         self.target_g_ema: dict[str, float] = {}
+        self.interaction_mode_counts: dict[str, int] = {}
         self.last_decision: dict | None = None
         self._pending: dict | None = None
 
@@ -214,16 +277,33 @@ class GazeObjectPointer(nn.Module):
             return torch.zeros_like(raw)
         return diff / dn
 
-    def _compute_delta(self, obj_id: str, act_scale: torch.Tensor | float) -> torch.Tensor:
-        """Differentiable scale-matched bounded target offset `delta(k_rel_i; ||a||)`."""
-        k_rel = self.relative_fingerprint(obj_id)
-        raw_v = self.target_to_action(k_rel)
+    def _dual(self) -> _DualChannelHead:
+        dual: _DualChannelHead = self.__dict__['_dual_channel']
+        if dual.out_null_logit.device != self.device:
+            dual.to(self.device)
+        return dual
+
+    def _compute_delta(
+        self,
+        obj_id: str | None,
+        act_scale: torch.Tensor | float,
+        *,
+        observe_id: str | None = None,
+    ) -> torch.Tensor:
+        """Differentiable scale-matched bounded residual `delta_out(k_rel_out) + delta_in(k_rel_in)`."""
+        raw_v = torch.zeros(self.d_model, device=self.device, dtype=torch.float32)
+        if obj_id is not None and str(obj_id) != 'none' and str(obj_id) in self.fingerprints:
+            raw_v = raw_v + self.target_to_action(self.relative_fingerprint(str(obj_id)))
+        if observe_id is not None and str(observe_id) != 'none' and str(observe_id) in self.fingerprints:
+            raw_v = raw_v + self._dual().observe_to_action(self.relative_fingerprint(str(observe_id)))
         v_norm = raw_v.norm(dim=-1, keepdim=True)
         bounded = raw_v / (1.0 + v_norm / self.max_rel_delta_norm)
         return bounded * act_scale
 
     def ensure_object(self, engine, obj_id: str, intro_bytes: bytes) -> torch.Tensor:
         key = str(obj_id)
+        if key == 'none':
+            return torch.zeros(self.d_model, device=self.device, dtype=torch.float32)
         if key not in self.fingerprints:
             vec = encode_sensory_bytes(engine, intro_bytes, d_model=self.d_model, device=self.device)
             if float(vec.norm()) < 1e-5:
@@ -235,11 +315,19 @@ class GazeObjectPointer(nn.Module):
         return self.fingerprints[key]
 
     @torch.no_grad()
-    def target_offset(self, obj_id: str | None, *, like: torch.Tensor | None = None) -> torch.Tensor:
-        """Return detached scale-matched target-conditioning residual delta(k_rel_i) in body action space."""
+    def target_offset(
+        self,
+        obj_id: str | None,
+        *,
+        observe_id: str | None = None,
+        like: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        """Return detached scale-matched residual `delta_out + delta_in` in body action space."""
         dev = like.device if like is not None else self.device
         dt = like.dtype if like is not None else torch.float32
-        if obj_id is None or str(obj_id) not in self.fingerprints:
+        has_out = (obj_id is not None and str(obj_id) != 'none' and str(obj_id) in self.fingerprints)
+        has_in = (observe_id is not None and str(observe_id) != 'none' and str(observe_id) in self.fingerprints)
+        if not has_out and not has_in:
             if like is not None and like.ndim >= 2:
                 return torch.zeros_like(like)
             return torch.zeros(self.d_model, device=dev, dtype=dt)
@@ -247,17 +335,21 @@ class GazeObjectPointer(nn.Module):
             act_scale = like.detach().to(device=self.device, dtype=torch.float32).norm(dim=-1, keepdim=True).clamp_min(1.0)
         else:
             act_scale = 1.0
-        delta = self._compute_delta(str(obj_id), act_scale)
+        delta = self._compute_delta(obj_id, act_scale, observe_id=observe_id)
         return delta.to(device=dev, dtype=dt).detach()
 
     @torch.no_grad()
-    def condition_action(self, action: torch.Tensor, obj_id: str | None) -> torch.Tensor:
-        """Form target-conditioned action a_tilde(target, u) = a(u) + delta(k_rel_target; ||a||)."""
-        if obj_id is None or str(obj_id) not in self.fingerprints:
-            return action
+    def condition_action(
+        self,
+        action: torch.Tensor,
+        obj_id: str | None,
+        *,
+        observe_id: str | None = None,
+    ) -> torch.Tensor:
+        """Form target-conditioned action a_tilde(out, in, u) = a(u) + delta_out + delta_in."""
         if action.shape[-1] != self.d_model:
             return action
-        delta = self.target_offset(obj_id, like=action)
+        delta = self.target_offset(obj_id, observe_id=observe_id, like=action)
         return action + delta
 
     @torch.no_grad()
@@ -298,6 +390,179 @@ class GazeObjectPointer(nn.Module):
         scores = torch.matmul(k, q) / math.sqrt(float(self.d_gaze))
         scores = scores + torch.matmul(recency, self.recency_weight)
         return scores
+
+    def _compute_observe_logits(
+        self,
+        h: torch.Tensor,
+        u: torch.Tensor,
+        ctx: torch.Tensor,
+        keys: torch.Tensor,
+        recency: torch.Tensor,
+    ) -> torch.Tensor:
+        dual = self._dual()
+        q = dual.q_in_state(h) + dual.q_in_utt(u) + dual.q_in_ctx(ctx)  # [d_g]
+        k = dual.k_in_proj(keys)                                        # [M, d_g]
+        scores = torch.matmul(k, q) / math.sqrt(float(self.d_gaze))
+        scores = scores + torch.matmul(recency, dual.recency_in)
+        return scores
+
+    @torch.no_grad()
+    def select_interaction(
+        self,
+        engine,
+        *,
+        candidates: list[tuple[str, bytes]],
+        utterance_bytes: bytes,
+        causal_values: dict[str, float] | None = None,
+        stumble_ratio: float = 1.0,
+        nll_norm: float = 0.0,
+        last_speaker: str | None = None,
+        awaiting_from: str | None = None,
+        allow_null_out: bool = True,
+        allow_null_in: bool = True,
+        rng: np.random.Generator | None = None,
+    ) -> dict:
+        """Factorized O(1) `(out, in)` interaction selection over `(O ∪ {∅})²`.
+
+        Orthogonal separation:
+          - `utterance_bytes` decides whether MengLi speaks and what she says.
+          - `send_target` (`out`) selects who receives her speech (`'none'` = pure self-talk / monologue).
+          - `observe_target` (`in`) selects who she actively observes (`'none'` = no external pull / quiet self-evolution).
+        """
+        if not candidates:
+            raise ValueError('gaze_pointer requires at least one in-scene candidate object')
+        ids = [cid for cid, _ in candidates]
+        for cid, intro in candidates:
+            self.ensure_object(engine, cid, intro)
+
+        dev = self.device
+        dual = self._dual()
+        spoke = bool(utterance_bytes)
+        h = read_body_state(engine, d_model=self.d_model, device=dev)
+        u = encode_sensory_bytes(engine, utterance_bytes, d_model=self.d_model, device=dev)
+        has_speech = 1.0 if spoke else 0.0
+        stumble_c = max(-1.0, min(3.0, float(stumble_ratio) - 1.0))
+        nll_c = max(-2.0, min(4.0, float(nll_norm)))
+        awaiting_flag = 1.0 if awaiting_from is not None else 0.0
+        ctx = torch.tensor([stumble_c, has_speech, nll_c, awaiting_flag], device=dev, dtype=torch.float32)
+
+        keys = torch.stack([self.relative_fingerprint(cid) for cid in ids], dim=0)  # [M, d_model]
+        rec_rows = [
+            [1.0 if (last_speaker is not None and cid == last_speaker) else 0.0,
+             1.0 if (awaiting_from is not None and cid == awaiting_from) else 0.0]
+            for cid in ids
+        ]
+        recency = torch.tensor(rec_rows, device=dev, dtype=torch.float32)  # [M, 2]
+
+        causal_prior_obj = torch.zeros(len(ids), device=dev, dtype=torch.float32)
+        causal_map = None
+        if causal_values:
+            raw_vals = [float(causal_values.get(cid, 0.0)) for cid in ids]
+            if all(math.isfinite(v) for v in raw_vals):
+                mean_v = sum(raw_vals) / float(len(raw_vals))
+                centered = [max(-2.0, min(2.0, (v - mean_v) * self.causal_prior_scale)) for v in raw_vals]
+                causal_prior_obj = torch.tensor(centered, device=dev, dtype=torch.float32)
+                causal_map = {cid: round(raw_vals[i], 5) for i, cid in enumerate(ids)}
+
+        # 1) OUT channel (`send_target`): active whenever MengLi speaks; `'none'` when silent.
+        out_ids = list(ids) + (['none'] if allow_null_out else [])
+        out_sampled = False
+        out_idx = None
+        out_causal_prior = None
+        if not spoke:
+            send_target = 'none'
+            send_probs_map = {'none': 1.0}
+            send_habit_map = {'none': 0.0}
+            out_entropy = 0.0
+        else:
+            out_obj_logits = self._compute_habit_logits(h, u, ctx, keys, recency)
+            if allow_null_out:
+                out_habit = torch.cat((out_obj_logits, dual.out_null_logit.reshape(1)), dim=0)
+                out_causal_prior = torch.cat((causal_prior_obj, torch.zeros(1, device=dev, dtype=torch.float32)), dim=0)
+            else:
+                out_habit = out_obj_logits
+                out_causal_prior = causal_prior_obj
+            out_total = out_habit + out_causal_prior
+            out_probs_t = F.softmax(out_total, dim=-1)
+            out_probs_np = out_probs_t.detach().cpu().numpy().astype(np.float64)
+            out_probs_np = out_probs_np / max(float(out_probs_np.sum()), 1e-12)
+            out_idx = int(rng.choice(len(out_ids), p=out_probs_np)) if rng is not None else int(torch.multinomial(out_probs_t.clamp_min(1e-8), 1).item())
+            send_target = out_ids[out_idx]
+            out_sampled = (len(out_ids) > 1)
+            out_entropy = float((-(out_probs_t * F.log_softmax(out_total, dim=-1)).sum()).item())
+            send_probs_map = {cid: round(float(out_probs_np[i]), 4) for i, cid in enumerate(out_ids)}
+            send_habit_map = {cid: round(float(out_habit[i].item()), 4) for i, cid in enumerate(out_ids)}
+
+        # 2) IN channel (`observe_target`): always selects who MengLi actively observes (`O ∪ {∅}`).
+        in_ids = list(ids) + (['none'] if allow_null_in else [])
+        in_obj_logits = self._compute_observe_logits(h, u, ctx, keys, recency)
+        if allow_null_in:
+            in_habit = torch.cat((in_obj_logits, dual.in_null_logit.reshape(1)), dim=0)
+            in_causal_prior = torch.cat((causal_prior_obj, torch.zeros(1, device=dev, dtype=torch.float32)), dim=0)
+        else:
+            in_habit = in_obj_logits
+            in_causal_prior = causal_prior_obj
+        in_total = in_habit + in_causal_prior
+        in_probs_t = F.softmax(in_total, dim=-1)
+        in_probs_np = in_probs_t.detach().cpu().numpy().astype(np.float64)
+        in_probs_np = in_probs_np / max(float(in_probs_np.sum()), 1e-12)
+        in_idx = int(rng.choice(len(in_ids), p=in_probs_np)) if rng is not None else int(torch.multinomial(in_probs_t.clamp_min(1e-8), 1).item())
+        observe_target = in_ids[in_idx]
+        in_sampled = (len(in_ids) > 1)
+        in_entropy = float((-(in_probs_t * F.log_softmax(in_total, dim=-1)).sum()).item())
+        in_probs_map = {cid: round(float(in_probs_np[i]), 4) for i, cid in enumerate(in_ids)}
+        in_habit_map = {cid: round(float(in_habit[i].item()), 4) for i, cid in enumerate(in_ids)}
+
+        # Primary legacy `target_id` for backwards-compatible telemetry & Wood consumers.
+        primary_id = observe_target if observe_target != 'none' else (send_target if send_target != 'none' else 'none')
+        mode_tag = classify_interaction_mode(spoke, send_target, observe_target)
+
+        self._pending = dict(
+            dual_channel=True,
+            target_id=primary_id,
+            send_target=send_target,
+            observe_target=observe_target,
+            interaction_mode=mode_tag,
+            spoke=spoke,
+            ids=list(ids),
+            out_ids=list(out_ids),
+            in_ids=list(in_ids),
+            out_idx=out_idx,
+            in_idx=in_idx,
+            out_sampled=out_sampled,
+            in_sampled=in_sampled,
+            allow_null_out=bool(allow_null_out),
+            allow_null_in=bool(allow_null_in),
+            h=h.detach(),
+            u=u.detach(),
+            ctx=ctx.detach(),
+            keys=keys.detach(),
+            recency=recency.detach(),
+            out_causal_prior=(None if out_causal_prior is None else out_causal_prior.detach()),
+            in_causal_prior=in_causal_prior.detach(),
+            probs=in_probs_map,
+            send_probs=send_probs_map,
+            observe_probs=in_probs_map,
+            entropy=0.5 * (out_entropy + in_entropy) if out_sampled else in_entropy,
+        )
+        dec = dict(
+            target_id=primary_id,
+            send_target=send_target,
+            observe_target=observe_target,
+            interaction_mode=mode_tag,
+            probs=in_probs_map,
+            send_probs=send_probs_map,
+            observe_probs=in_probs_map,
+            habit_logits=in_habit_map,
+            send_habit_logits=send_habit_map,
+            causal_values=causal_map,
+            entropy=round(float(self._pending['entropy']), 4),
+            num_candidates=len(ids),
+            sampled=bool(out_sampled or in_sampled),
+            dual_channel=True,
+        )
+        self.last_decision = dec
+        return dec
 
     @torch.no_grad()
     def select_target(
@@ -455,19 +720,50 @@ class GazeObjectPointer(nn.Module):
 
         with torch.enable_grad():
             if pending is not None and g_valid:
-                chosen_idx = int(pending['chosen_idx'])
                 steps = int(self.step_count.item())
                 base_g = float(self.baseline_g.item()) if steps > 0 else g_val
                 gaze_adv = max(-0.25, min(0.25, g_val - base_g))
-                habit_logits = self._compute_habit_logits(
-                    pending['h'], pending['u'], pending['ctx'], pending['keys'], pending['recency'],
-                )
-                logits = habit_logits + pending['causal_prior']
-                log_probs = F.log_softmax(logits, dim=-1)
-                probs = log_probs.exp()
-                entropy = -(probs * log_probs).sum()
-                entropy_val = float(entropy.item())
-                total_loss = total_loss - (gaze_adv * log_probs[chosen_idx]) - (self.entropy_coef * entropy)
+                if pending.get('dual_channel'):
+                    dual = self._dual()
+                    ent_terms = []
+                    if pending.get('out_sampled') and pending.get('out_idx') is not None:
+                        o_obj = self._compute_habit_logits(
+                            pending['h'], pending['u'], pending['ctx'], pending['keys'], pending['recency'],
+                        )
+                        o_h = (
+                            torch.cat((o_obj, dual.out_null_logit.reshape(1)), dim=0)
+                            if pending.get('allow_null_out') else o_obj
+                        )
+                        o_logits = o_h + pending['out_causal_prior']
+                        o_lp = F.log_softmax(o_logits, dim=-1)
+                        o_ent = -(o_lp.exp() * o_lp).sum()
+                        total_loss = total_loss - (gaze_adv * o_lp[int(pending['out_idx'])]) - (self.entropy_coef * o_ent)
+                        ent_terms.append(float(o_ent.item()))
+                    if pending.get('in_sampled') and pending.get('in_idx') is not None:
+                        i_obj = self._compute_observe_logits(
+                            pending['h'], pending['u'], pending['ctx'], pending['keys'], pending['recency'],
+                        )
+                        i_h = (
+                            torch.cat((i_obj, dual.in_null_logit.reshape(1)), dim=0)
+                            if pending.get('allow_null_in') else i_obj
+                        )
+                        i_logits = i_h + pending['in_causal_prior']
+                        i_lp = F.log_softmax(i_logits, dim=-1)
+                        i_ent = -(i_lp.exp() * i_lp).sum()
+                        total_loss = total_loss - (gaze_adv * i_lp[int(pending['in_idx'])]) - (self.entropy_coef * i_ent)
+                        ent_terms.append(float(i_ent.item()))
+                    entropy_val = (sum(ent_terms) / len(ent_terms)) if ent_terms else 0.0
+                else:
+                    chosen_idx = int(pending['chosen_idx'])
+                    habit_logits = self._compute_habit_logits(
+                        pending['h'], pending['u'], pending['ctx'], pending['keys'], pending['recency'],
+                    )
+                    logits = habit_logits + pending['causal_prior']
+                    log_probs = F.log_softmax(logits, dim=-1)
+                    probs = log_probs.exp()
+                    entropy = -(probs * log_probs).sum()
+                    entropy_val = float(entropy.item())
+                    total_loss = total_loss - (gaze_adv * log_probs[chosen_idx]) - (self.entropy_coef * entropy)
 
             if has_boundary:
                 model = boundary_context['model']
@@ -475,9 +771,10 @@ class GazeObjectPointer(nn.Module):
                 raw_act = boundary_context['raw_action'].detach().to(device=dev, dtype=torch.float32).reshape(1, -1)
                 tgt_feat = boundary_context['boundary_target'].detach().to(device=dev, dtype=torch.float32).reshape(1, -1)
                 tid = str(boundary_context['actual_target_id'])
+                obs_tid = boundary_context.get('actual_observe_id')
                 if raw_act.shape[-1] == self.d_model and hasattr(model, 'encoder'):
                     act_scale = raw_act.detach().norm(dim=-1, keepdim=True).clamp_min(1.0)
-                    cond_act = raw_act + self._compute_delta(tid, act_scale)
+                    cond_act = raw_act + self._compute_delta(tid, act_scale, observe_id=obs_tid)
                     enc_w = model.encoder.weight
                     enc_dev, enc_dt = enc_w.device, enc_w.dtype
                     src_m = src.to(device=enc_dev, dtype=enc_dt)
@@ -509,17 +806,30 @@ class GazeObjectPointer(nn.Module):
                     total_loss = total_loss + self.boundary_loss_weight * b_mse
 
             if total_loss.requires_grad:
-                # Use `autograd.grad` restricted strictly to GazeObjectPointer params so
-                # frozen body modules (`encoder`, `long_predictor`, `mother_from_boundary`)
-                # never accumulate `.grad` buffers.
-                params = [p for p in self.parameters() if p.requires_grad]
-                grads = torch.autograd.grad(total_loss, params, allow_unused=True)
+                # Restrict autograd strictly to GazeObjectPointer + companion `_dual_channel` params
+                # so frozen body modules (`encoder`, `long_predictor`, `mother_from_boundary`) never get `.grad`.
+                main_params = [p for p in self.parameters() if p.requires_grad]
+                dual_params = [p for p in self._dual().parameters() if p.requires_grad]
+                all_params = main_params + dual_params
+                grads = torch.autograd.grad(total_loss, all_params, allow_unused=True)
                 self._opt.zero_grad(set_to_none=True)
-                for p, g in zip(params, grads):
+                self._dual_opt.zero_grad(set_to_none=True)
+                main_has_grad = False
+                dual_has_grad = False
+                for p, g in zip(main_params, grads[:len(main_params)]):
                     if g is not None:
                         p.grad = g.detach()
-                torch.nn.utils.clip_grad_norm_(params, 1.0)
-                self._opt.step()
+                        main_has_grad = True
+                for p, g in zip(dual_params, grads[len(main_params):]):
+                    if g is not None:
+                        p.grad = g.detach()
+                        dual_has_grad = True
+                if main_has_grad:
+                    torch.nn.utils.clip_grad_norm_(main_params, 1.0)
+                    self._opt.step()
+                if dual_has_grad:
+                    torch.nn.utils.clip_grad_norm_(dual_params, 1.0)
+                    self._dual_opt.step()
 
         with torch.no_grad():
             if pending is not None and g_valid and entropy_val is not None:
@@ -535,11 +845,17 @@ class GazeObjectPointer(nn.Module):
                 self.target_counts[target_id] = int(self.target_counts.get(target_id, 0)) + 1
                 prev_ema = self.target_g_ema.get(target_id)
                 self.target_g_ema[target_id] = g_val if prev_ema is None else (0.8 * prev_ema + 0.2 * g_val)
+                mode_tag = pending.get('interaction_mode')
+                if isinstance(mode_tag, str) and mode_tag:
+                    self.interaction_mode_counts[mode_tag] = int(self.interaction_mode_counts.get(mode_tag, 0)) + 1
             if boundary_mse_val is not None:
                 self.boundary_steps.add_(1)
 
         return dict(
             target_id=target_id,
+            send_target=(pending.get('send_target') if pending is not None else None),
+            observe_target=(pending.get('observe_target') if pending is not None else None),
+            interaction_mode=(pending.get('interaction_mode') if pending is not None else None),
             metal_g=(None if g_val is None else round(g_val, 6)),
             evidence_available=bool(g_valid),
             advantage=(None if gaze_adv is None else round(gaze_adv, 6)),
@@ -550,8 +866,8 @@ class GazeObjectPointer(nn.Module):
             probs=(dict(pending['probs']) if pending is not None else None),
         )
 
-    def _export_optimizer_state(self) -> dict:
-        raw = self._opt.state_dict()
+    def _export_opt(self, opt: torch.optim.Optimizer) -> dict:
+        raw = opt.state_dict()
         enc_state = {}
         for pid, st in raw.get('state', {}).items():
             enc_st = {}
@@ -563,7 +879,7 @@ class GazeObjectPointer(nn.Module):
             enc_state[str(pid)] = enc_st
         return dict(state=enc_state, param_groups=copy.deepcopy(raw.get('param_groups', [])))
 
-    def _load_optimizer_state(self, payload: dict | None) -> None:
+    def _load_opt(self, opt: torch.optim.Optimizer, payload: dict | None) -> None:
         if not isinstance(payload, dict) or 'state' not in payload:
             return
         dec_state = {}
@@ -571,37 +887,61 @@ class GazeObjectPointer(nn.Module):
             dec_st = {}
             for k, v in st.items():
                 if isinstance(v, dict) and v.get('__tensor__'):
-                    # Adam's `step` scalar tensor stays on CPU or same device as params.
                     target_dev = torch.device('cpu') if k == 'step' else self.device
                     dec_st[k] = _b64_to_tensor(v, device=target_dev)
                 else:
                     dec_st[k] = v
             dec_state[int(pid_str)] = dec_st
         restored = dict(state=dec_state, param_groups=copy.deepcopy(payload.get('param_groups', [])))
-        self._opt.load_state_dict(restored)
+        opt.load_state_dict(restored)
+
+    def _export_optimizer_state(self) -> dict:
+        return self._export_opt(self._opt)
+
+    def _load_optimizer_state(self, payload: dict | None) -> None:
+        self._load_opt(self._opt, payload)
 
     def export_dynamic_state(self) -> dict:
-        """Export exact dynamic object fingerprints, global center, stats & bit-exact Adam state."""
+        """Export exact fingerprints, global center, dual-channel head weights & bit-exact Adam state."""
+        dual = self._dual()
+        dual_weights = {k: _tensor_to_b64(v) for k, v in dual.state_dict().items()}
         return dict(
             schema=2,
             centered_target_v1=True,
+            dual_channel_v1=True,
             fingerprints={k: v.detach().cpu().float().tolist() for k, v in self.fingerprints.items()},
+            fingerprints_b64={k: _tensor_to_b64(v.detach().cpu().float()) for k, v in self.fingerprints.items()},
             fp_center=(None if self.fp_center is None else self.fp_center.detach().cpu().float().tolist()),
+            fp_center_b64=(None if self.fp_center is None else _tensor_to_b64(self.fp_center.detach().cpu().float())),
             target_counts=dict(self.target_counts),
             target_g_ema={k: float(v) for k, v in self.target_g_ema.items()},
+            interaction_mode_counts=dict(self.interaction_mode_counts),
             optimizer_state_b64=self._export_optimizer_state(),
+            dual_weights_b64=dual_weights,
+            dual_optimizer_state_b64=self._export_opt(self._dual_opt),
         )
 
     def load_dynamic_state(self, state: dict | None) -> None:
         if not isinstance(state, dict) or state.get('schema') not in (1, 2):
             return
         self.fingerprints = {}
-        for k, vals in (state.get('fingerprints') or {}).items():
-            t = torch.tensor(vals, device=self.device, dtype=torch.float32)
-            if t.numel() == self.d_model:
-                self.fingerprints[str(k)] = F.normalize(t, dim=-1, eps=1e-6).detach()
+        fp_b64 = state.get('fingerprints_b64')
+        if isinstance(fp_b64, dict) and fp_b64:
+            for k, payload in fp_b64.items():
+                t = _b64_to_tensor(payload, device=self.device).float()
+                if t.numel() == self.d_model:
+                    self.fingerprints[str(k)] = t.detach()
+        else:
+            for k, vals in (state.get('fingerprints') or {}).items():
+                t = torch.tensor(vals, device=self.device, dtype=torch.float32)
+                if t.numel() == self.d_model:
+                    self.fingerprints[str(k)] = F.normalize(t, dim=-1, eps=1e-6).detach()
+        center_b64 = state.get('fp_center_b64')
         center_vals = state.get('fp_center')
-        if center_vals is not None:
+        if isinstance(center_b64, dict) and center_b64.get('b64'):
+            ct = _b64_to_tensor(center_b64, device=self.device).float()
+            self.fp_center = ct.detach() if ct.numel() == self.d_model else None
+        elif center_vals is not None:
             ct = torch.tensor(center_vals, device=self.device, dtype=torch.float32)
             self.fp_center = ct.detach() if ct.numel() == self.d_model else None
         else:
@@ -609,12 +949,16 @@ class GazeObjectPointer(nn.Module):
             self._refresh_fp_center(snap=True)
         self.target_counts = {str(k): int(v) for k, v in (state.get('target_counts') or {}).items()}
         self.target_g_ema = {str(k): float(v) for k, v in (state.get('target_g_ema') or {}).items()}
+        self.interaction_mode_counts = {str(k): int(v) for k, v in (state.get('interaction_mode_counts') or {}).items()}
         if state.get('schema') == 2 and state.get('optimizer_state_b64') is not None:
             self._load_optimizer_state(state['optimizer_state_b64'])
+        if state.get('dual_channel_v1') and isinstance(state.get('dual_weights_b64'), dict):
+            dual = self._dual()
+            restored_w = {k: _b64_to_tensor(v, device=self.device) for k, v in state['dual_weights_b64'].items()}
+            dual.load_state_dict(restored_w, strict=False)
+            if state.get('dual_optimizer_state_b64') is not None:
+                self._load_opt(self._dual_opt, state['dual_optimizer_state_b64'])
         if not state.get('centered_target_v1'):
-            # Clean migration from pre-centering checkpoints: zero-reset ONLY `target_to_action`
-            # and its Adam slot (preserving habit weights, fingerprints & stats) so the new
-            # centered + scale-matched Wood predictor starts cleanly with zero stale bias.
             with torch.no_grad():
                 self.target_to_action.weight.zero_()
             self._opt.state.pop(self.target_to_action.weight, None)
@@ -665,6 +1009,7 @@ class GazeObjectPointer(nn.Module):
             known_objects=sorted(self.fingerprints.keys()),
             target_counts=dict(self.target_counts),
             target_g_ema={k: round(float(v), 6) for k, v in self.target_g_ema.items()},
+            interaction_mode_counts=dict(self.interaction_mode_counts),
             last_decision=copy.deepcopy(self.last_decision),
         )
 

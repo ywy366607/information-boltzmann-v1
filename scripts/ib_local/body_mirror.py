@@ -374,14 +374,20 @@ def format_caregiver_turn(
     trigger_kind: str = 'child_spoke',
     extra_note: str | None = None,
     opening_cue: str | None = None,
+    send_target: str | None = None,
+    observe_target: str | None = None,
+    include_book_excerpt: bool = True,
+    allow_mother_directives: bool = False,
+    has_parent: bool = False,
 ) -> str:
     """Format the tail-only ``user/message`` packet for the existing DSH Mother.
 
-    Distinguishes three social triggers cleanly:
-      - ``child_spoke``: Child explicitly called/addressed Mother -> respond first.
-      - ``child_replied``: Child responded on Mother's active social floor.
-      - ``mother_proactive``: Child paused quietly while reading -> Mother may
-        gently comment, explain a stumble, or ask a warm simple question.
+    Supports orthogonal `(u, out, in)` interaction semantics:
+      - `(spoke, mother, mother)` + `include_book_excerpt=False`: pure face-to-face chat
+        without forcing a storybook page into Mother's prompt.
+      - `(spoke, mother, book)` + `include_book_excerpt=True`: shared co-reading over the page.
+      - `(spoke, none, mother)`: MengLi murmured to herself while looking at Mother.
+      - `(silent, none, mother)`: MengLi quietly looked up at Mother without speaking.
 
     Never mutates ``system_prompt`` or earlier turns, keeping DeepSeek server-side
     prefix KV cache hits intact.
@@ -391,19 +397,38 @@ def format_caregiver_turn(
     if trigger_kind not in ('child_spoke', 'child_replied', 'mother_proactive'):
         raise ValueError(f'unknown trigger_kind: {trigger_kind}')
 
-    trigger_label = {
-        'child_spoke': '[情境: 孩子刚向你开口，顺着她的字词或眼前的故事画面自然搭话，每次换不同的生活口吻]',
-        'child_replied': '[情境: 孩子回应了你上一轮的话，顺着你们的对话自然接下去]',
-        'mother_proactive': '[情境: 孩子安静读书时停顿下来，你可以轻声聊聊眼前故事里有趣的细节或卡顿处，也可以抛一个不强求回答的小好奇]',
-    }[trigger_kind]
+    if send_target == 'mother' and observe_target == 'mother' and not include_book_excerpt:
+        if trigger_kind == 'child_replied':
+            trigger_label = '[情境: 孩子正看着你接续刚才的聊天，这是面对面的日常对话，顺着她的话自然聊下去即可，不必硬提书页]'
+        else:
+            trigger_label = '[情境: 孩子把注意力从书页移开，直接看着你说话，这是你们面对面的日常聊天，顺着她的话自然聊下去即可]'
+    elif send_target == 'none' and observe_target == 'mother':
+        if snapshot.utterance_kind == 'silent':
+            trigger_label = '[情境: 孩子安静抬头看着你，没有开口；你可以温柔闲聊两句、关心她，也可以用「@翻书:关键词」带她看一页书，或回复「@安静陪伴」静静陪着她]'
+        else:
+            trigger_label = '[情境: 孩子一边看着你一边小声自言自语；你可以轻声温和搭一句，也可以回复「@安静陪伴」先不打断她]'
+    elif send_target == 'mother' and observe_target == 'book':
+        trigger_label = '[情境: 孩子一边看着眼前书页一边向你开口，你们正在共读，顺着她的话或眼前书页自然接下去]'
+    else:
+        trigger_label = {
+            'child_spoke': '[情境: 孩子刚向你开口，按她的实际表达自然搭话，每次换不同的生活口吻]',
+            'child_replied': '[情境: 孩子回应了你上一轮的话，顺着你们的对话自然接下去]',
+            'mother_proactive': '[情境: 孩子安静读书时停顿下来，你可以轻声聊两句日常或眼前有趣的地方，也可以抛一个不强求回答的小好奇]',
+        }[trigger_kind]
 
     lines = [trigger_label]
-    if perspective_mode == 'mirror_visible':
-        lines.append('[视角: 可见共读书页与孩子此刻状态]')
+    if include_book_excerpt:
+        if perspective_mode == 'mirror_visible':
+            lines.append('[视角: 可见共读书页与孩子此刻状态]')
+        else:
+            lines.append('[视角: 仅见共读书页，看不到孩子内部状态]')
     else:
-        lines.append('[视角: 仅见共读书页，看不到孩子内部状态]')
+        if perspective_mode == 'mirror_visible':
+            lines.append('[视角: 面对面聊天（当前未看书页），可见孩子此刻状态]')
+        else:
+            lines.append('[视角: 面对面聊天（当前未看书页），看不到孩子内部状态]')
 
-    if snapshot.book_excerpt:
+    if include_book_excerpt and snapshot.book_excerpt:
         lines.append(f'[共读书页] {snapshot.book_excerpt}')
 
     if perspective_mode == 'mirror_visible':
@@ -430,6 +455,15 @@ def format_caregiver_turn(
         cjk_chars = sum(len(m) for m in _CJK_RUN_RE.findall(snapshot.utterance_text))
         if en_chars >= 6 and en_chars > cjk_chars * 3:
             lines.append('[语言跟随] 孩子本轮主要在说英文，请用温柔、简单、自然的英文回应。')
+
+    if allow_mother_directives:
+        dir_cue = (
+            '[行动指向] 默认直接对梦漓说话；如需主动翻书找某段故事，行首写「@翻书:关键词」空格后再接口语；'
+            '若此刻安静陪着更好、不想打断，只回复「@安静陪伴」'
+        )
+        if has_parent:
+            dir_cue += '；若要转头对爸爸说，行首写「@对爸爸」空格后再接口语'
+        lines.append(dir_cue)
 
     if opening_cue:
         lines.append(f'[起句节奏] {opening_cue.strip()}')

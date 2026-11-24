@@ -58,12 +58,63 @@ _INLINE_STAGE_RE = re.compile(
 )
 
 
+_MOTHER_QUIET_RE = re.compile(
+    r'^\s*@?(?:安静陪伴|静静陪着|保持安静|quiet|silent)\s*[。！!,.，]*\s*$',
+    re.IGNORECASE,
+)
+_MOTHER_BOOK_RE = re.compile(
+    r'^\s*@(?:翻书|找书|书页|book)\s*[:：]\s*([^\s\n，。！？!?]{1,48})(?:[\s，,]+(.*))?$',
+    re.IGNORECASE | re.DOTALL,
+)
+_MOTHER_PARENT_RE = re.compile(
+    r'^\s*@(?:对爸爸|爸爸|dad|parent)\s*[:：]?\s*(.*)$',
+    re.IGNORECASE | re.DOTALL,
+)
+_MOTHER_MENGLI_RE = re.compile(
+    r'^\s*@(?:对梦漓|梦漓|mengli)\s*[:：]?\s*(.*)$',
+    re.IGNORECASE | re.DOTALL,
+)
+
+
 def _strip_stage_directions(text: str) -> str:
     """Remove theatrical stage directions like `（轻声笑）`, `(smiles)`, `*chuckles*` before delivery."""
     cleaned = _LEADING_STAGE_RE.sub('', text)
     cleaned = _INLINE_STAGE_RE.sub('', cleaned)
     cleaned = re.sub(r'\s{2,}', ' ', cleaned).strip()
     return cleaned or text.strip()
+
+
+def parse_mother_direction(raw_reply: str) -> tuple[str, str, str]:
+    """Parse & strip Mother's optional leading action directive before MengLi's UTF-8 Membrane sees it.
+
+    Returns ``(mother_out, book_query, clean_spoken_text)`` where ``mother_out`` is one of:
+      - ``'none'``:   ``@安静陪伴`` — Mother chooses non-interrupting silent presence (0 spoken bytes).
+      - ``'book'``:   ``@翻书:<关键词> [口语]`` — Mother flips the active storybook before optional speech.
+      - ``'parent'``: ``@对爸爸 [口语]`` — Mother addresses Dad (when present); MengLi overhears.
+      - ``'mengli'``: default or ``@对梦漓 [口语]`` — Mother speaks directly to MengLi.
+    """
+    text = (raw_reply or '').strip()
+    if not text:
+        return 'mengli', '', ''
+    if _MOTHER_QUIET_RE.match(text):
+        return 'none', '', ''
+    m_book = _MOTHER_BOOK_RE.match(text)
+    if m_book:
+        query = m_book.group(1).strip()
+        rest = (m_book.group(2) or '').strip()
+        clean = _strip_stage_directions(rest) if rest else ''
+        return 'book', query, clean
+    m_parent = _MOTHER_PARENT_RE.match(text)
+    if m_parent:
+        rest = (m_parent.group(1) or '').strip()
+        clean = _strip_stage_directions(rest) if rest else ''
+        return 'parent', '', clean
+    m_mengli = _MOTHER_MENGLI_RE.match(text)
+    if m_mengli:
+        rest = (m_mengli.group(1) or '').strip()
+        clean = _strip_stage_directions(rest) if rest else ''
+        return 'mengli', '', clean
+    return 'mengli', '', _strip_stage_directions(text)
 
 
 def _terms(text: str) -> set[str]:
@@ -609,6 +660,10 @@ class UnifiedWorldPort:
         self.parent_turns = 0
         self.tool_turns = 0
         self.ambient_fallback_turns = 0
+        self.self_evolution_turns = 0
+        self.inner_monologue_turns = 0
+        self.mother_quiet_turns = 0
+        self.mother_book_turns = 0
         self.recent_metal_g: list[float] = []
         self.mirror_g: list[float] = []
         self.book_only_g: list[float] = []
@@ -961,6 +1016,10 @@ class UnifiedWorldPort:
                 channel=str(out.get('channel') or ''),
                 speaker_id=str(speaker_id),
                 addressee_id=str(addressee_id),
+                send_target_id=out.get('send_target_id'),
+                observe_target_id=out.get('observe_target_id'),
+                interaction_mode=out.get('interaction_mode'),
+                mother_out=out.get('mother_out'),
                 is_action_consequence=bool(is_action_consequence),
                 source_transitions=norm_trans,
                 child_text=str(out.get('child_text') or '')[:96],
@@ -1355,28 +1414,37 @@ class UnifiedWorldPort:
         if explicit_target is not None:
             self.explicit_addressed_turns += 1
 
-        # Pre-linguistic Biological Gaze Pointer (`GazeObjectPointer`):
-        # When attached and no explicit `@` / vocal override / forced turn is active,
-        # MengLi's OWN O(1) cross-attention pointer steers her action toward an in-scene object!
+        # Pre-linguistic Biological Dual-Channel Pointer (`GazeObjectPointer`):
+        # Orthogonal `(u, out, in)` factorization over `(O ∪ {'none'})²`:
+        #   - `send_target` (`out`): who receives MengLi's utterance `u` (`'none'` = pure self-talk).
+        #   - `observe_target` (`in`): who MengLi pulls sensory observation from (`'none'` = self-evolution).
         gaze_decision = None
         gaze_target = None
+        send_target: str | None = None
+        observe_target: str | None = None
+        interaction_mode: str | None = None
         gp = self._gaze_pointer()
+        valid_dual_ids = set(self.presence_roster.keys()) | {'none'}
         if (
-            gp is not None
-            and explicit_target is None
+            explicit_target is None
             and not self._tool_demo_queue
             and not self._force_next_mother
             and self._match_registered_tool(child_clean) is None
         ):
-            if isinstance(planned_target, dict) and planned_target.get('target_id') in self.presence_roster:
-                gaze_decision = planned_target
-                gaze_target = str(planned_target['target_id'])
-            else:
+            if isinstance(planned_target, dict):
+                p_send = planned_target.get('send_target', planned_target.get('target_id'))
+                p_obs = planned_target.get('observe_target', planned_target.get('target_id'))
+                if p_send in valid_dual_ids and p_obs in valid_dual_ids:
+                    gaze_decision = planned_target
+                    send_target = str(p_send)
+                    observe_target = str(p_obs)
+                    gaze_target = str(planned_target.get('target_id') or (observe_target if observe_target != 'none' else send_target))
+            elif gp is not None:
                 alif_st = getattr(self._engine_ref, 'alif_executive_state', None) or {}
                 nll_ema = float(alif_st.get('nll_ema', 0.0) or 0.0)
                 nll_last = float(alif_st.get('last_piece_nll', 0.0) or 0.0)
                 nll_norm = (nll_last - nll_ema) if (nll_ema > 0.0 and nll_last > 0.0) else 0.0
-                gaze_decision = gp.select_target(
+                gaze_decision = gp.select_interaction(
                     self._engine_ref,
                     candidates=self._gaze_candidates(child_vocal=child_vocal),
                     utterance_bytes=utterance_bytes,
@@ -1385,7 +1453,57 @@ class UnifiedWorldPort:
                     last_speaker=self.active_interlocutor,
                     awaiting_from=self.awaiting_reply_from,
                 )
-                gaze_target = gaze_decision['target_id']
+                send_target = str(gaze_decision['send_target'])
+                observe_target = str(gaze_decision['observe_target'])
+                gaze_target = str(gaze_decision['target_id'])
+
+        if send_target is not None and observe_target is not None:
+            from scripts.ib_local.gaze_pointer import classify_interaction_mode
+            interaction_mode = classify_interaction_mode(child_vocal, send_target, observe_target)
+
+        # Priority 2.0: Pure self-evolution / inner monologue (`in == 'none'`).
+        # Zero Mother API call, zero storybook cursor advance; body runs self-hearing + BFSS + hippocampal replay.
+        if observe_target == 'none' and explicit_target is None:
+            if send_target == 'mother' and child_clean:
+                self._pending_tool_notes.append(f'孩子刚刚自顾自朝你这边念了一句：「{child_clean[:96]}」')
+                del self._pending_tool_notes[:-3]
+            elif send_target == 'parent' and child_clean:
+                p_label = str((self.presence_roster.get('parent') or {}).get('label') or '爸爸')
+                self._pending_tool_notes.append(f'孩子刚刚自顾自朝{p_label}那边念了一句：「{child_clean[:96]}」')
+                del self._pending_tool_notes[:-3]
+            self.self_evolution_turns += 1
+            if child_vocal:
+                self.inner_monologue_turns += 1
+            self.spikes_since_mother += 1
+            self.awaiting_reply_from = None
+            self.consecutive_social_turns = 0
+            empty_buf = np.empty(0, dtype=np.uint8)
+            return empty_buf, empty_buf.copy(), self._finalize_membrane_event(
+                dict(
+                    channel=('inner_monologue' if child_vocal else 'self_evolution'),
+                    source='self_evolution',
+                    speaker='mengli',
+                    target_object_id=send_target,
+                    send_target_id=send_target,
+                    observe_target_id='none',
+                    interaction_mode=interaction_mode,
+                    self_evolution_beat=True,
+                    navigation_response_bytes=0,
+                    envelope_prefix_bytes=0,
+                    gaze_decision=gaze_decision,
+                    routing_reason=(f'dual_{interaction_mode}' if interaction_mode else 'dual_self_evolution'),
+                    active_floor=self.active_floor,
+                    mother_bytes=0,
+                    mother_reply='',
+                    child_text=child_display,
+                    holdout_position_fresh=True,
+                    match=0,
+                ),
+                speaker_id='mengli',
+                addressee_id=str(send_target),
+                is_action_consequence=True,
+                source_transitions=[],
+            )
 
         # Priority 2A: Explicit book navigation (`@书页 ...`) — MengLi chooses to read/search the book.
         if explicit_target == 'book':
@@ -1433,7 +1551,12 @@ class UnifiedWorldPort:
         # Priority 2B: Tool demonstration, `@工具:name`, legacy `[tool:name arg]`, dynamic object, OR Gaze -> tool/object.
         tool_hit = None
         tool_obj_id = None
-        eff_tool_target = explicit_target if explicit_target is not None else gaze_target
+        dual_tool_target = None
+        if send_target is not None and (send_target.startswith('tool:') or send_target in self._dynamic_objects):
+            dual_tool_target = send_target
+        elif observe_target is not None and (observe_target.startswith('tool:') or observe_target in self._dynamic_objects):
+            dual_tool_target = observe_target
+        eff_tool_target = explicit_target if explicit_target is not None else (dual_tool_target or gaze_target)
         eff_tool_payload = explicit_payload if explicit_target is not None else child_clean
         tool_from_demo = False
         if self._tool_demo_queue:
@@ -1517,7 +1640,7 @@ class UnifiedWorldPort:
         # Priority 2C: Parent/Guest Social Floor reply, explicit/vocal call to Dad, OR Gaze -> `parent`.
         # Keeps Dad's turn clean (ZERO hidden book jump!) and notifies Mother what MengLi said to Dad.
         vocal_parent_call = (explicit_target is None and _is_vocal_parent_call(child_clean))
-        gaze_to_parent = (gaze_target == 'parent')
+        gaze_to_parent = (send_target == 'parent' or observe_target == 'parent' or gaze_target == 'parent')
         on_parent_floor = (
             self.active_floor == 'parent'
             and self.awaiting_reply_from not in (None, 'mother')
@@ -1574,13 +1697,24 @@ class UnifiedWorldPort:
                 )],
             )
 
-        # Priority 3: Mother routing — either via MengLi's GazeObjectPointer (`gaze_target == 'mother'`)
-        # or fallback presence/floor rules when GazeObjectPointer is disabled.
-        if gaze_target is not None:
-            if gaze_target == 'mother' and self.caregiver is not None and self.mother_present:
-                if child_vocal:
+        # Priority 3: Mother routing — via MengLi's orthogonal dual-channel `(out, in)` pointer
+        # (`observe_target == 'mother'`, or `send_target == 'mother'` while observing `'book'`),
+        # or fallback presence/floor rules when dual pointer is disabled.
+        if send_target is not None and observe_target is not None:
+            mother_engaged = (
+                self.caregiver is not None
+                and self.mother_present
+                and (
+                    observe_target == 'mother'
+                    or (send_target == 'mother' and observe_target == 'book')
+                )
+            )
+            if mother_engaged:
+                if child_vocal and send_target == 'mother':
                     trig = 'child_replied' if self.awaiting_reply_from == 'mother' else 'child_spoke'
                     trigger_pair = (trig, 'gaze_mother_speak')
+                elif child_vocal:
+                    trigger_pair = ('child_spoke', f'dual_{interaction_mode or "monologue_watching_mother"}')
                 else:
                     trigger_pair = ('mother_proactive', 'gaze_mother_look')
             else:
@@ -1596,21 +1730,37 @@ class UnifiedWorldPort:
             trigger_kind, routing_reason = trigger_pair
             self._force_next_mother = False
             perspective_mode = self._next_perspective_mode()
+            # Determine honestly whether Mother and MengLi are currently looking at the book together:
+            #   - `(spoke/silent, mother/none, mother)` -> pure face-to-face chat (`include_book_excerpt=False`)!
+            #   - `(spoke/silent, mother, book)` or legacy mode -> shared co-reading (`include_book_excerpt=True`).
+            include_book_excerpt = (
+                observe_target != 'mother'
+                if observe_target is not None
+                else True
+            )
             snapshot: BodyMirrorSnapshot = capture_body_mirror(
                 self._engine_ref,
                 utterance_bytes=utterance_bytes,
-                recent_book_bytes=bytes(self.shared_page_bytes),
+                recent_book_bytes=(bytes(self.shared_page_bytes) if include_book_excerpt else b''),
                 recent_metal_g=self.recent_metal_g,
             )
             extra_note = '；'.join(self._pending_tool_notes) if self._pending_tool_notes else None
             # Dynamic anti-cliché opening rotator (KV-cache-safe tail cue):
-            # breaks long-context self-imitation ("我听着呢。" / "I hear you, honey —" / name-lock).
-            style_rot = (
-                '直接从眼前故事里的画面、声音或动作切入，像指着绘本随口聊起来。',
-                '先用一个轻巧的生活小比方或感叹开场，把刚才的词和故事自然连起来。',
-                '像日常聊天一样轻声抛一个不强求回答的小好奇，再顺口讲一两句。',
-                '按眼前真实情况自然回应：听得懂就接着聊，没听清就如实轻轻问一句，不要替孩子硬补没说过的词。',
-            )
+            # matches whether this turn is co-reading or pure face-to-face chat.
+            if include_book_excerpt:
+                style_rot = (
+                    '直接从眼前书页里的画面、声音或动作切入，像指着绘本随口聊起来。',
+                    '先用一个轻巧的生活小比方或感叹开场，把刚才的词和书页自然连起来。',
+                    '像日常聊天一样轻声抛一个不强求回答的小好奇，再顺口讲一两句。',
+                    '按眼前真实情况自然回应：听得懂就接着聊，没听清就如实轻轻问一句，不要替孩子硬补没说过的词。',
+                )
+            else:
+                style_rot = (
+                    '顺着孩子此刻的话或神情自然接话，像日常面对面轻声聊天。',
+                    '聊一点轻松的日常小事、感受或好奇，不用硬往书页上扯。',
+                    '像平时陪伴一样温柔抛一个不强求回答的小问题，或分享一句心里话。',
+                    '按眼前真实情况自然回应：听得懂就接着聊，没听清就如实轻轻问一句，不要替孩子硬补没说过的词。',
+                )
             cue_parts = []
             if self.mother_turns > 0 and self.turns_since_name_call < 3:
                 cue_parts.append('本轮略去称呼')
@@ -1635,6 +1785,11 @@ class UnifiedWorldPort:
                 trigger_kind=trigger_kind,
                 extra_note=extra_note,
                 opening_cue=opening_cue,
+                send_target=send_target,
+                observe_target=observe_target,
+                include_book_excerpt=include_book_excerpt,
+                allow_mother_directives=True,
+                has_parent=('parent' in self.presence_roster),
             )
             plan = self.care_plan_tracker.current_plan()
             turn = self.mother_transcript[-2 * self.history:] + [('child', packet)]
@@ -1646,35 +1801,143 @@ class UnifiedWorldPort:
                     cycle=cycle_num,
                     response_bytes=response_bytes,
                 )
-            reply = self.caregiver.reply(turn)
-            if not isinstance(reply, str) or not reply.strip():
+            raw_reply = self.caregiver.reply(turn)
+            if not isinstance(raw_reply, str) or not raw_reply.strip():
                 raise RuntimeError('mother returned no usable reply; world not advanced')
-            reply = _strip_stage_directions(reply.strip())
 
-            # Track name-opening & cliché-opening cadence so Mother varies openings naturally.
-            if _NAME_OPENING_RE.search(reply[:14]):
-                self.turns_since_name_call = 0
-            elif ('梦漓' in reply) or ('mengli' in reply.lower()):
-                self.turns_since_name_call = min(self.turns_since_name_call, 1)
-            else:
-                self.turns_since_name_call += 1
-            first_clause = re.split(r'[。！？!?\n—–-]', reply, maxsplit=1)[0].strip()[:14]
-            if first_clause:
-                self.recent_mother_openings.append(first_clause)
-                del self.recent_mother_openings[:-6]
+            # Symmetric Mother directionality: parse & strip `@安静陪伴` / `@翻书:<kw>` / `@对爸爸` / `@对梦漓`
+            # BEFORE a single byte reaches MengLi's UTF-8 Membrane.
+            mother_out, mother_book_query, reply = parse_mother_direction(raw_reply)
+            if mother_out == 'parent' and 'parent' not in self.presence_roster:
+                mother_out = 'mengli'
+            if mother_out in ('mengli', 'parent') and not reply:
+                mother_out = 'none'
 
-            # Strict Yoneda hygiene: talking to Mother NEVER triggers a hidden book jump!
-            ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
-            response, said_len, env_prefix_len, env_mask_spans = self._pack_prefix_bytes(
-                reply, ambient, response_bytes, source_label='妈妈',
+            eff_send_id = send_target or ('mother' if child_vocal else 'none')
+            eff_obs_id = observe_target or 'mother'
+            mother_action_caused = (
+                trigger_kind in ('child_spoke', 'child_replied')
+                or eff_send_id == 'mother'
+                or eff_obs_id == 'mother'
             )
-            self._record_shared_page(heldout)
-            self._observe_gaze_object('mother', f'妈妈：{reply}'.encode('utf-8'))
 
+            # Case M1: Mother actively chooses `@安静陪伴` (`mother_out == 'none'`, 0 spoken Mother bytes).
+            if mother_out == 'none':
+                self._pending_commit = dict(
+                    kind='mother',
+                    turn=turn,
+                    reply='@安静陪伴',
+                    utterance_kind=snapshot.utterance_kind,
+                    perspective_mode=perspective_mode,
+                    stumble_excerpt=(snapshot.stumble_excerpt if perspective_mode == 'mirror_visible' else ''),
+                )
+                self._pending_tool_notes.clear()
+                self.spikes_since_mother = 0
+                self.quiet_spikes_since_mother = 0
+                self.mother_turns += 1
+                self.mother_quiet_turns += 1
+                self.active_floor = 'book'
+                self.awaiting_reply_from = None
+                self.consecutive_social_turns = 0
+                if perspective_mode == 'mirror_visible':
+                    self.mirror_visible_turns += 1
+                else:
+                    self.book_only_turns += 1
+                telemetry = getattr(self.caregiver, 'last_telemetry', None) or {}
+                if self.auto_commit:
+                    self.commit_pending_turn()
+                    telemetry = getattr(self.caregiver, 'last_telemetry', None) or telemetry
+                api_usage = telemetry.get('api_usage') or {}
+                ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
+                self._record_shared_page(ambient)
+                self._record_shared_page(heldout)
+                return ambient, heldout, self._finalize_membrane_event(
+                    dict(
+                        {k: v for k, v in info.items() if k != 'text_reply'},
+                        channel='mother_quiet_presence',
+                        source=info.get('source', 'text'),
+                        speaker='book',
+                        target_object_id=eff_send_id,
+                        send_target_id=eff_send_id,
+                        observe_target_id=eff_obs_id,
+                        interaction_mode=interaction_mode,
+                        mother_out='none',
+                        trigger_kind=trigger_kind,
+                        routing_reason=f'{routing_reason}:mother_quiet',
+                        gaze_decision=gaze_decision,
+                        active_floor=self.active_floor,
+                        explicit_target=explicit_target,
+                        perspective_mode=perspective_mode,
+                        care_stage=self.care_plan_tracker.stage,
+                        care_plan_version=int(plan['version']),
+                        utterance_kind=snapshot.utterance_kind,
+                        book_excerpt=snapshot.book_excerpt,
+                        mirror_excerpt=snapshot.stumble_excerpt if perspective_mode == 'mirror_visible' else '',
+                        mirror_trigger_cause=snapshot.trigger_cause if perspective_mode == 'mirror_visible' else '',
+                        mother_bytes=0,
+                        envelope_prefix_bytes=0,
+                        mother_reply='',
+                        child_text=child_display,
+                        caregiver_prompt_tokens=api_usage.get('prompt_tokens'),
+                        caregiver_cache_hit_tokens=api_usage.get('cache_hit_tokens'),
+                        caregiver_cache_miss_tokens=api_usage.get('cache_miss_tokens'),
+                        caregiver_source=telemetry.get('source'),
+                        ambient_match=int(info.get('match', 0)),
+                        match=0,
+                    ),
+                    speaker_id='book',
+                    addressee_id='mengli',
+                    is_action_consequence=False,
+                    source_transitions=[dict(
+                        offset=0, speaker_id='book', addressee_id='mengli', mask_start=0, mask_end=0,
+                    )],
+                )
+
+            # Track name-opening & cliché-opening cadence when Mother speaks aloud.
+            if reply:
+                if _NAME_OPENING_RE.search(reply[:14]):
+                    self.turns_since_name_call = 0
+                elif ('梦漓' in reply) or ('mengli' in reply.lower()):
+                    self.turns_since_name_call = min(self.turns_since_name_call, 1)
+                else:
+                    self.turns_since_name_call += 1
+                first_clause = re.split(r'[。！？!?\n—–-]', reply, maxsplit=1)[0].strip()[:14]
+                if first_clause:
+                    self.recent_mother_openings.append(first_clause)
+                    del self.recent_mother_openings[:-6]
+
+            # Case M2: Mother actively flips the storybook (`@翻书:<关键词>` -> HybridBookIndex!).
+            if mother_out == 'book' and mother_book_query:
+                ambient, heldout, info = self._navigate_book(
+                    mother_book_query.encode('utf-8'), mother_book_query, response_bytes, holdout_bytes,
+                )
+                self.mother_book_turns += 1
+                self.book_navigation_turns += 1
+            else:
+                # Talking to Mother NEVER triggers a hidden book jump unless Mother explicitly chose `@翻书:...`.
+                ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
+
+            if reply:
+                response, said_len, env_prefix_len, env_mask_spans = self._pack_prefix_bytes(
+                    reply, ambient, response_bytes, source_label='妈妈',
+                )
+                self._observe_gaze_object('mother', f'妈妈：{reply}'.encode('utf-8'))
+            else:
+                # Pure `@翻书:<kw>` without spoken text: deliver newly turned page cleanly!
+                response, said_len, env_prefix_len, env_mask_spans = ambient, 0, 0, []
+            self._record_shared_page(heldout)
+            if mother_out == 'book':
+                self._record_shared_page(ambient)
+                self._observe_gaze_object('book', bytes(ambient[:256]))
+
+            transcript_reply = (
+                f'@翻书:{mother_book_query} {reply}'.strip() if mother_out == 'book'
+                else (f'@对爸爸 {reply}'.strip() if mother_out == 'parent' else reply)
+            )
             self._pending_commit = dict(
                 kind='mother',
                 turn=turn,
-                reply=reply,
+                reply=transcript_reply,
                 utterance_kind=snapshot.utterance_kind,
                 perspective_mode=perspective_mode,
                 stumble_excerpt=(snapshot.stumble_excerpt if perspective_mode == 'mirror_visible' else ''),
@@ -1686,11 +1949,9 @@ class UnifiedWorldPort:
             self.active_interlocutor = 'mother'
             self.consecutive_social_turns += 1
             allow_immediate_followup = (self.consecutive_social_turns < self.max_consecutive_social_turns)
-            asked_question = reply.endswith(('?', '？'))
+            asked_question = bool(reply and reply.endswith(('?', '？')))
             if trigger_kind == 'mother_proactive':
                 self.mother_proactive_turns += 1
-                # With GazePointer active, only force an immediate 0-calm-piece reply beat
-                # when Mother actually asked a question; plain warm comments let MengLi keep reading!
                 keep_open = allow_immediate_followup and (asked_question or self._gaze_pointer() is None)
                 self.active_floor = 'mother' if keep_open else 'book'
                 self.awaiting_reply_from = 'mother' if keep_open else None
@@ -1713,20 +1974,31 @@ class UnifiedWorldPort:
                 telemetry = getattr(self.caregiver, 'last_telemetry', None) or telemetry
 
             api_usage = telemetry.get('api_usage') or {}
-            mother_trans = self._build_pack_transitions(
-                'mother', 'mengli', said_len, env_prefix_len, env_mask_spans, response_bytes + holdout_bytes,
-            )
-            mother_action_caused = (
-                trigger_kind in ('child_spoke', 'child_replied')
-                or gaze_target == 'mother'
-            )
+            event_addressee = 'parent' if mother_out == 'parent' else 'mengli'
+            event_speaker = 'mother' if reply else 'book'
+            if reply:
+                mother_trans = self._build_pack_transitions(
+                    'mother', event_addressee, said_len, env_prefix_len, env_mask_spans, response_bytes + holdout_bytes,
+                )
+            else:
+                mother_trans = [dict(
+                    offset=0, speaker_id='book', addressee_id='mengli', mask_start=0, mask_end=0,
+                )]
+            if mother_out == 'parent':
+                mother_action_caused = False
             return response, heldout, self._finalize_membrane_event(
                 dict(
                     {k: v for k, v in info.items() if k != 'text_reply'},
                     channel='dsh_mother',
                     source='mother',
-                    speaker='mother',
+                    speaker=event_speaker,
                     target_object_id='mother',
+                    send_target_id=eff_send_id,
+                    observe_target_id=eff_obs_id,
+                    interaction_mode=interaction_mode,
+                    mother_out=mother_out,
+                    mother_book_query=(mother_book_query if mother_out == 'book' else ''),
+                    include_book_excerpt=bool(include_book_excerpt),
                     trigger_kind=trigger_kind,
                     routing_reason=routing_reason,
                     gaze_decision=gaze_decision,
@@ -1749,26 +2021,34 @@ class UnifiedWorldPort:
                     caregiver_cache_miss_tokens=api_usage.get('cache_miss_tokens'),
                     caregiver_source=telemetry.get('source'),
                     ambient_match=int(info.get('match', 0)),
-                    match=len(_terms(child_clean) & _terms(reply)) if child_clean else 0,
+                    match=len(_terms(child_clean) & _terms(reply)) if (child_clean and reply) else 0,
                 ),
-                speaker_id='mother',
-                addressee_id='mengli',
+                speaker_id=event_speaker,
+                addressee_id=event_addressee,
                 is_action_consequence=mother_action_caused,
                 source_transitions=mother_trans,
             )
 
-        # Priority 4: Book Floor (`book_navigation` = Search Engine when MengLi emits words, quiet continuation when silent).
-        is_navigation = bool(child_clean)
+        # Priority 4: Book Floor (`observe_target == 'book'` or legacy fallback).
+        # Under orthogonal `(u, out, in)`:
+        #   - `out == 'book'` + speech -> `book_search` (semantic HybridBookIndex lookup & page flip!)
+        #   - `out == 'none'` + speech -> `read_aloud_solo` (self-talk while reading calmly; ZERO jump!)
+        #   - silent                   -> `quiet_reading` (calm sequential reading).
+        is_navigation = bool(child_clean) and (send_target is None or send_target == 'book')
         if is_navigation:
             resp, cont, info = self._navigate_book(utterance_bytes, child_clean, response_bytes, holdout_bytes)
             self.book_navigation_turns += 1
             channel = 'book_navigation'
-            routing_reason = 'gaze_book_search' if gaze_target == 'book' else 'book_floor_navigation'
+            routing_reason = 'gaze_book_search' if (send_target == 'book' or gaze_target == 'book') else 'book_floor_navigation'
         else:
             resp, cont, info = self._take_passive_ambient(response_bytes, holdout_bytes)
             self.quiet_spikes_since_mother += 1
-            channel = 'storybook_spike_fallback'
-            routing_reason = 'gaze_book_read' if gaze_target == 'book' else 'quiet_book_continue'
+            is_read_aloud = bool(child_vocal and send_target == 'none')
+            channel = ('read_aloud_solo' if is_read_aloud else 'storybook_spike_fallback')
+            routing_reason = (
+                'dual_read_aloud_solo' if is_read_aloud
+                else ('gaze_book_read' if (observe_target == 'book' or gaze_target == 'book') else 'quiet_book_continue')
+            )
         self._record_shared_page(resp)
         self._record_shared_page(cont)
         self._observe_gaze_object('book', bytes(resp[:256]))
@@ -1784,7 +2064,7 @@ class UnifiedWorldPort:
             env_prefix_len = min(int(len(tag)), response_bytes)
             resp = np.concatenate((tag, resp[:max(0, response_bytes - len(tag))]))
         gaze_chose_book = (
-            gaze_target == 'book'
+            (observe_target == 'book' or gaze_target == 'book')
             and isinstance(gaze_decision, dict)
             and bool(gaze_decision.get('sampled', False))
         )
@@ -1796,6 +2076,9 @@ class UnifiedWorldPort:
                 source=info.get('source', 'text'),
                 speaker='book',
                 target_object_id='book',
+                send_target_id=(send_target if send_target is not None else ('book' if is_navigation else 'none')),
+                observe_target_id=(observe_target if observe_target is not None else 'book'),
+                interaction_mode=interaction_mode,
                 navigation_response_bytes=int(len(resp)),
                 envelope_prefix_bytes=env_prefix_len,
                 routing_reason=routing_reason,
@@ -1969,6 +2252,10 @@ class UnifiedWorldPort:
             parent_turns=int(self.parent_turns),
             tool_turns=int(self.tool_turns),
             ambient_fallback_turns=int(self.ambient_fallback_turns),
+            self_evolution_turns=int(self.self_evolution_turns),
+            inner_monologue_turns=int(self.inner_monologue_turns),
+            mother_quiet_turns=int(self.mother_quiet_turns),
+            mother_book_turns=int(self.mother_book_turns),
             mother_present=bool(self.mother_present),
             active_floor=self.active_floor,
             last_book_source=self.last_book_source,
@@ -2022,6 +2309,10 @@ class UnifiedWorldPort:
                 parent_turns=int(self.parent_turns),
                 tool_turns=int(self.tool_turns),
                 ambient_fallback_turns=int(self.ambient_fallback_turns),
+                self_evolution_turns=int(self.self_evolution_turns),
+                inner_monologue_turns=int(self.inner_monologue_turns),
+                mother_quiet_turns=int(self.mother_quiet_turns),
+                mother_book_turns=int(self.mother_book_turns),
                 recent_metal_g=list(self.recent_metal_g),
                 inbox_offset=int(self.inbox_offset),
                 sidecar_cursor=(None if self.sidecar is None else int(self.sidecar.cursor)),
@@ -2076,6 +2367,10 @@ class UnifiedWorldPort:
             self.parent_turns = int(uwp.get('parent_turns', 0))
             self.tool_turns = int(uwp.get('tool_turns', 0))
             self.ambient_fallback_turns = int(uwp.get('ambient_fallback_turns', 0))
+            self.self_evolution_turns = int(uwp.get('self_evolution_turns', 0))
+            self.inner_monologue_turns = int(uwp.get('inner_monologue_turns', 0))
+            self.mother_quiet_turns = int(uwp.get('mother_quiet_turns', 0))
+            self.mother_book_turns = int(uwp.get('mother_book_turns', 0))
             self.recent_metal_g = [float(x) for x in uwp.get('recent_metal_g', [])]
             self.inbox_offset = int(uwp.get('inbox_offset', 0))
             if self.sidecar is not None and uwp.get('sidecar_cursor') is not None:

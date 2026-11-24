@@ -142,8 +142,9 @@ export class TrainingObserver {
         const w = row.world ?? {};
         const src = w.source ?? 'text';
         const isBook = src === 'text' || src === 'chinese_storybook' || src === 'matched' || src === 'topic';
-        const ch = w.channel ?? (isBook ? 'storybook_spike_fallback' : 'dsh_mother');
-        const actor = src === 'parent' ? 'parent' : (src === 'tool' || src === 'object') ? 'tool' : isBook ? 'world' : 'mother';
+        const isSelf = src === 'self_evolution' || Boolean(w.self_evolution_beat);
+        const ch = w.channel ?? (isSelf ? 'self_evolution' : isBook ? 'storybook_spike_fallback' : 'dsh_mother');
+        const actor = src === 'parent' ? 'parent' : (src === 'tool' || src === 'object') ? 'tool' : isSelf ? 'mengli' : isBook ? 'world' : 'mother';
         const bookExcerpt = w.book_excerpt || (w.text_reply ?? '') || '';
         const cacheHit = typeof w.caregiver_cache_hit_tokens === 'number' ? w.caregiver_cache_hit_tokens : null;
         const cacheMiss = typeof w.caregiver_cache_miss_tokens === 'number' ? w.caregiver_cache_miss_tokens : null;
@@ -153,8 +154,8 @@ export class TrainingObserver {
           utterance: { text: w.child_text ?? '', spoke: Boolean(row.spoke), timing: 'before_caregiver_input' },
           // Full provider text is NOT a receipt of all bytes ingested (ambient fills the remaining input).
           observation: {
-            text: isBook ? (w.text_reply ?? '') : (w.mother_reply ?? w.text_reply ?? ''),
-            kind: isBook ? 'natural_text_reply' : 'recorded_mother_reply',
+            text: isSelf ? '' : isBook ? (w.text_reply ?? '') : (w.mother_reply ?? w.text_reply ?? ''),
+            kind: isSelf ? 'self_evolution_beat' : isBook ? 'natural_text_reply' : 'recorded_mother_reply',
             mother_bytes: w.mother_bytes ?? null, external_bytes: row.external_bytes ?? null,
           },
           umwelt: {
@@ -166,6 +167,10 @@ export class TrainingObserver {
             active_floor: w.active_floor ?? null,
             explicit_target: w.explicit_target ?? null,
             target_object_id: w.target_object_id ?? null,
+            send_target_id: w.send_target_id ?? row.send_target_id ?? null,
+            observe_target_id: w.observe_target_id ?? row.observe_target_id ?? null,
+            interaction_mode: w.interaction_mode ?? row.interaction_mode ?? null,
+            mother_out: w.mother_out ?? null,
             gaze_target: w.gaze_target ?? w.gaze_decision?.target_id ?? null,
             gaze_probs: w.gaze_probs ?? w.gaze_decision?.probs ?? null,
             evidence_available: row.evidence_available ?? null,
