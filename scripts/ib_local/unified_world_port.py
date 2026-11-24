@@ -243,24 +243,24 @@ class SidecarCorpusStream:
         return self.take_ambient(response_bytes, holdout_bytes)
 
 
-class ObservationalDialogueStream:
-    """Multi-role observational dialogue & tool-demonstration stream over the single UTF-8 Membrane.
+class MultiSourceEventStream:
+    """Unified multi-source event stream over the single UTF-8 Membrane.
 
-    Feeds natural multi-turn interactions (Mom & Dad chatting, sharing joint attention,
-    asking concise questions, guessing & gently correcting, and demonstrating tool calls)
-    into calm sensory reading with exact per-turn `envelope_mask_spans`:
-      - Every speaker/tool header (`妈妈：`, `爸爸：`, `[工具:calc] `, `[在场] ...\\n`, `书页：`)
-        enters the 32-layer GDN state in full while being masked out of BOTH neural LM loss
+    Reads structured JSONL multi-speaker records (e.g., large-scale offline bilingual
+    natural dialogues) and emits exact byte-level `source_transitions` and
+    `envelope_mask_spans`:
+      - Every speaker/source header (`妈妈：`, `爸爸：`, `[在场] ...\\n`, etc.) enters
+        the 32-layer GDN state in full while being masked out of BOTH neural LM loss
         and Fast Table writes.
-      - Every spoken body byte and turn-ending newline is learned normally (loss mask = 1),
-        providing clean conversational & tool-syntax priors WITHOUT locking MengLi into a
-        passive `assistant` role.
+      - Every spoken body byte and turn-ending newline is learned normally (`score_mask=1`).
+      - Strictly marked `is_action_consequence=False` so observational streams are NEVER
+        conflated with the consequences of MengLi's own actions.
     """
 
     def __init__(self, path: str | Path, *, cursor: int = 0):
         self.path = Path(path).resolve()
         if not self.path.exists():
-            raise FileNotFoundError(f'observational dialogue corpus not found: {self.path}')
+            raise FileNotFoundError(f'multi-source event corpus not found: {self.path}')
         scenes: list[dict] = []
         for raw_line in self.path.read_text(encoding='utf-8').splitlines():
             line = raw_line.strip()
@@ -271,7 +271,7 @@ class ObservationalDialogueStream:
             if isinstance(turns, list) and turns:
                 scenes.append(obj)
         if not scenes:
-            raise ValueError(f'observational dialogue corpus has no valid scenes: {self.path}')
+            raise ValueError(f'multi-source event corpus has no valid scenes: {self.path}')
         self.scenes = scenes
         self.cursor = int(cursor) % len(self.scenes)
 
@@ -285,8 +285,8 @@ class ObservationalDialogueStream:
         return f'{s}：'
 
     @staticmethod
-    def _speaker_object_id(turn: dict) -> str | None:
-        oid = turn.get('id')
+    def _speaker_object_id(turn: dict) -> str:
+        oid = turn.get('id') or turn.get('speaker_id')
         if isinstance(oid, str) and oid.strip():
             return oid.strip()
         sp = str(turn.get('speaker', '')).strip()
@@ -298,32 +298,68 @@ class ObservationalDialogueStream:
             return 'tool:' + sp.split(':', 1)[1].strip()
         if sp.startswith('tool:'):
             return sp
-        return None
+        return sp or 'unknown'
 
-    def _encode_scene(self, scene: dict) -> tuple[bytes, list[tuple[int, int]], list[tuple[str, bytes]]]:
+    @staticmethod
+    def _infer_addressee_id(turn: dict, participants: list[str], speaker_id: str) -> str:
+        explicit = turn.get('addressee_id') or turn.get('addressee')
+        if isinstance(explicit, str) and explicit.strip():
+            return explicit.strip()
+        others = [p for p in participants if p != speaker_id]
+        if len(others) == 1:
+            return others[0]
+        return 'all' if others else 'observer'
+
+    def _encode_scene(self, scene: dict) -> tuple[bytes, list[tuple[int, int]], list[dict], list[tuple[str, bytes]]]:
         buf = bytearray()
         spans: list[tuple[int, int]] = []
+        transitions: list[dict] = []
         observed: list[tuple[str, bytes]] = []
+        turns = scene.get('turns', [])
+        participants: list[str] = []
+        for t in turns:
+            oid = self._speaker_object_id(t)
+            if oid not in participants:
+                participants.append(oid)
+
         roster = scene.get('roster')
         if isinstance(roster, str) and roster.strip():
             start = len(buf)
             buf.extend((roster.strip() + '\n').encode('utf-8'))
             spans.append((start, len(buf)))
-        for turn in scene.get('turns', []):
+            transitions.append(dict(
+                offset=start,
+                speaker_id='umwelt',
+                addressee_id='mengli',
+                mask_start=start,
+                mask_end=len(buf),
+            ))
+        for turn in turns:
             text = str(turn.get('text', '')).strip()
             if not text:
                 continue
+            oid = self._speaker_object_id(turn)
+            addr = self._infer_addressee_id(turn, participants, oid)
             header = self._format_header(turn.get('speaker', ''))
+            hs = len(buf)
             if header:
-                hs = len(buf)
                 buf.extend(header.encode('utf-8'))
-                spans.append((hs, len(buf)))
+                he = len(buf)
+                spans.append((hs, he))
+            else:
+                he = hs
+            transitions.append(dict(
+                offset=hs,
+                speaker_id=oid,
+                addressee_id=addr,
+                mask_start=hs,
+                mask_end=he,
+            ))
             body_b = (text + '\n').encode('utf-8')
             buf.extend(body_b)
-            oid = self._speaker_object_id(turn)
-            if oid is not None:
+            if oid != 'unknown':
                 observed.append((oid, body_b))
-        return bytes(buf), spans, observed
+        return bytes(buf), spans, transitions, observed
 
     @staticmethod
     def _truncate_utf8_safe(data: bytes, max_len: int) -> bytes:
@@ -340,32 +376,57 @@ class ObservationalDialogueStream:
         total = int(response_bytes + holdout_bytes)
         buf = bytearray()
         spans: list[tuple[int, int]] = []
+        transitions: list[dict] = []
         observed: list[tuple[str, bytes]] = []
         scene_names: list[str] = []
         start_cursor = int(self.cursor)
 
-        # Pack consecutive scenes cleanly until we reach `total` bytes.
         guard = 0
         while len(buf) < total and guard < len(self.scenes) * 4 + 4:
             guard += 1
             sc = self.scenes[self.cursor]
             self.cursor = (self.cursor + 1) % len(self.scenes)
-            sc_bytes, sc_spans, sc_obs = self._encode_scene(sc)
+            sc_bytes, sc_spans, sc_trans, sc_obs = self._encode_scene(sc)
             if not sc_bytes:
                 continue
             offset = len(buf)
             scene_names.append(str(sc.get('scene', 'dialogue')))
             for s, e in sc_spans:
                 spans.append((offset + s, offset + e))
+            for tr in sc_trans:
+                transitions.append(dict(
+                    offset=offset + int(tr['offset']),
+                    speaker_id=tr['speaker_id'],
+                    addressee_id=tr['addressee_id'],
+                    mask_start=offset + int(tr['mask_start']),
+                    mask_end=offset + int(tr['mask_end']),
+                ))
             buf.extend(sc_bytes)
             observed.extend(sc_obs)
 
         raw = self._truncate_utf8_safe(bytes(buf), total)
         if len(raw) < total:
-            pad = b'\n' * (total - len(raw))
-            raw = raw + pad
-        # Clip mask spans cleanly to exact delivered length.
+            raw = raw + (b'\n' * (total - len(raw)))
         clipped_spans = [(s, min(e, total)) for s, e in spans if s < total and min(e, total) > s]
+        clipped_trans = [
+            dict(
+                offset=int(tr['offset']),
+                speaker_id=str(tr['speaker_id']),
+                addressee_id=str(tr['addressee_id']),
+                mask_start=int(tr['mask_start']),
+                mask_end=min(int(tr['mask_end']), total),
+            )
+            for tr in transitions
+            if int(tr['offset']) < total
+        ]
+        primary_speaker = next(
+            (t['speaker_id'] for t in clipped_trans if t['speaker_id'] != 'umwelt'),
+            'multi',
+        )
+        primary_addressee = next(
+            (t['addressee_id'] for t in clipped_trans if t['speaker_id'] != 'umwelt'),
+            'observer',
+        )
         arr = np.frombuffer(raw, dtype=np.uint8).copy()
         resp = arr[:response_bytes]
         cont = arr[response_bytes:total]
@@ -375,11 +436,18 @@ class ObservationalDialogueStream:
             dialogue_start_cursor=start_cursor,
             dialogue_cursor=int(self.cursor),
             dialogue_scenes=scene_names,
+            speaker_id=primary_speaker,
+            addressee_id=primary_addressee,
+            is_action_consequence=False,
+            source_transitions=clipped_trans,
             envelope_mask_spans=clipped_spans,
             observed_speakers=observed,
             navigation_response_bytes=int(len(resp)),
         )
         return resp, cont, info
+
+
+ObservationalDialogueStream = MultiSourceEventStream
 
 
 class UnifiedWorldPort:
@@ -432,9 +500,11 @@ class UnifiedWorldPort:
         self.sidecar = None if sidecar_corpus is None else SidecarCorpusStream(sidecar_corpus)
         self.dialogue_demo_ratio = float(dialogue_demo_ratio) if dialogue_demo_corpus is not None else 0.0
         self.dialogue_demo = (
-            None if dialogue_demo_corpus is None else ObservationalDialogueStream(dialogue_demo_corpus)
+            None if dialogue_demo_corpus is None else MultiSourceEventStream(dialogue_demo_corpus)
         )
         self.dialogue_reads = 0
+        self.event_ledger: list[dict] = []
+        self.event_ledger_cap: int = 64
 
         # Open Yoneda / Presence Roster & Membrane protocol settings:
         #   - Any external object (person, tool, book) can join/leave dynamically.
@@ -764,6 +834,92 @@ class UnifiedWorldPort:
         visible = math.floor((k + 1) * r + 1e-12) > math.floor(k * r + 1e-12)
         return 'mirror_visible' if visible else 'book_only'
 
+    @staticmethod
+    def _build_pack_transitions(
+        primary_speaker_id: str,
+        addressee_id: str,
+        said_len: int,
+        env_prefix_len: int,
+        env_mask_spans: list[tuple[int, int]],
+        total_len: int,
+    ) -> list[dict]:
+        """Construct exact byte-offset source transitions for a packed speaker/tool + book-resume chunk."""
+        transitions: list[dict] = [
+            dict(
+                offset=0,
+                speaker_id=str(primary_speaker_id),
+                addressee_id=str(addressee_id),
+                mask_start=0,
+                mask_end=int(env_prefix_len),
+            )
+        ]
+        if int(said_len) < int(total_len):
+            book_mask_end = int(said_len)
+            for s, e in env_mask_spans:
+                if int(s) == int(said_len):
+                    book_mask_end = int(e)
+                    break
+            transitions.append(dict(
+                offset=int(said_len),
+                speaker_id='book',
+                addressee_id='mengli',
+                mask_start=int(said_len),
+                mask_end=book_mask_end,
+            ))
+        return transitions
+
+    def _finalize_membrane_event(
+        self,
+        info: dict,
+        *,
+        speaker_id: str,
+        addressee_id: str,
+        is_action_consequence: bool,
+        source_transitions: list[dict],
+        record_ledger: bool = True,
+    ) -> dict:
+        """Attach the canonical 5-part Membrane event contract & persist a compact ledger entry."""
+        out = dict(info)
+        norm_trans = [
+            dict(
+                offset=int(tr['offset']),
+                speaker_id=str(tr['speaker_id']),
+                addressee_id=str(tr['addressee_id']),
+                mask_start=int(tr.get('mask_start', tr['offset'])),
+                mask_end=int(tr.get('mask_end', tr['offset'])),
+            )
+            for tr in source_transitions
+        ]
+        out['event_schema'] = 1
+        out['speaker_id'] = str(speaker_id)
+        out['addressee_id'] = str(addressee_id)
+        out['is_action_consequence'] = bool(is_action_consequence)
+        out['source_transitions'] = norm_trans
+        if not out.get('envelope_mask_spans'):
+            derived_spans = [
+                (int(tr['mask_start']), int(tr['mask_end']))
+                for tr in norm_trans
+                if int(tr['mask_end']) > int(tr['mask_start'])
+            ]
+            if derived_spans:
+                out['envelope_mask_spans'] = derived_spans
+        if record_ledger:
+            entry = dict(
+                event_schema=1,
+                cycle=int(self._cycle_hint or self.spike_turns),
+                channel=str(out.get('channel') or ''),
+                speaker_id=str(speaker_id),
+                addressee_id=str(addressee_id),
+                is_action_consequence=bool(is_action_consequence),
+                source_transitions=norm_trans,
+                child_text=str(out.get('child_text') or '')[:96],
+                reply_excerpt=str(out.get('mother_reply') or '')[:120],
+            )
+            self.event_ledger.append(entry)
+            if len(self.event_ledger) > self.event_ledger_cap:
+                del self.event_ledger[:-self.event_ledger_cap]
+        return out
+
     def take_ambient(self, response_bytes: int, holdout_bytes: int):
         """High-throughput calm sensory reading: ZERO caregiver API calls."""
         if self._use_dialogue_demo_now():
@@ -774,12 +930,19 @@ class UnifiedWorldPort:
             observed_speakers = info.pop('observed_speakers', ())
             for oid, body_b in observed_speakers:
                 self._observe_gaze_object(oid, body_b[:256], fuse_body_state=False)
-            return resp, cont, dict(
+            raw_info = dict(
                 info,
                 channel='observational_dialogue',
                 source='observational_dialogue',
                 mother_bytes=0,
                 mixed_world_event='observational_dialogue',
+            )
+            return resp, cont, self._finalize_membrane_event(
+                raw_info,
+                speaker_id=str(info.get('speaker_id') or 'multi'),
+                addressee_id=str(info.get('addressee_id') or 'observer'),
+                is_action_consequence=False,
+                source_transitions=list(info.get('source_transitions') or []),
             )
         prev_src = self.last_book_source
         if self._use_sidecar_now():
@@ -796,12 +959,20 @@ class UnifiedWorldPort:
         self._record_shared_page(resp)
         self._record_shared_page(cont)
         self._observe_gaze_object('book', bytes(resp[:256]), fuse_body_state=False)
-        return resp, cont, dict(
+        raw_info = dict(
             info,
             channel='storybook_ambient',
             source=info.get('source', 'text'),
             mother_bytes=0,
             mixed_world_event='ambient_read',
+        )
+        return resp, cont, self._finalize_membrane_event(
+            raw_info,
+            speaker_id='book',
+            addressee_id='mengli',
+            is_action_consequence=False,
+            source_transitions=[dict(offset=0, speaker_id='book', addressee_id='mengli', mask_start=0, mask_end=0)],
+            record_ledger=False,
         )
 
     def _take_passive_ambient(self, response_bytes: int, holdout_bytes: int):
@@ -1011,23 +1182,32 @@ class UnifiedWorldPort:
                 if self.auto_commit:
                     self.commit_pending_turn()
             self.parent_turns += 1
-            return response, heldout, dict(
-                {k: v for k, v in info.items() if k != 'text_reply'},
-                channel='live_participant',
-                source='parent',
-                speaker=speaker,
-                target_object_id='parent',
-                participant_role=role,
-                routing_reason='live_participant',
-                active_floor=self.active_floor,
-                book_excerpt=clean_utf8_excerpt(bytes(self.shared_page_bytes), max_chars=220),
-                mother_bytes=said_len,
-                envelope_prefix_bytes=env_prefix_len,
-                envelope_mask_spans=env_mask_spans,
-                mother_reply=delivered_text,
-                child_text=child_clean,
-                ambient_match=int(info.get('match', 0)),
-                match=len(_terms(child_clean) & _terms(raw_text)) if child_clean else 0,
+            part_trans = self._build_pack_transitions(
+                'parent', 'mengli', said_len, env_prefix_len, env_mask_spans, response_bytes + holdout_bytes,
+            )
+            return response, heldout, self._finalize_membrane_event(
+                dict(
+                    {k: v for k, v in info.items() if k != 'text_reply'},
+                    channel='live_participant',
+                    source='parent',
+                    speaker=speaker,
+                    target_object_id='parent',
+                    participant_role=role,
+                    routing_reason='live_participant',
+                    active_floor=self.active_floor,
+                    book_excerpt=clean_utf8_excerpt(bytes(self.shared_page_bytes), max_chars=220),
+                    mother_bytes=said_len,
+                    envelope_prefix_bytes=env_prefix_len,
+                    envelope_mask_spans=env_mask_spans,
+                    mother_reply=delivered_text,
+                    child_text=child_clean,
+                    ambient_match=int(info.get('match', 0)),
+                    match=len(_terms(child_clean) & _terms(raw_text)) if child_clean else 0,
+                ),
+                speaker_id='parent',
+                addressee_id='mengli',
+                is_action_consequence=False,
+                source_transitions=part_trans,
             )
 
         # Parse optional explicit Yoneda target (`@书页`, `@妈妈`, `@工具:calc`, `@dynamic_obj`).
@@ -1088,19 +1268,28 @@ class UnifiedWorldPort:
                 self._roster_dirty_notice = None
                 env_prefix_len = min(int(len(tag)), response_bytes)
                 resp = np.concatenate((tag, resp[:max(0, response_bytes - len(tag))]))
-            return resp, cont, dict(
-                info,
-                channel='book_addressed',
-                source=info.get('source', 'text'),
-                speaker='book',
-                target_object_id='book',
-                navigation_response_bytes=int(len(resp)),
-                envelope_prefix_bytes=env_prefix_len,
-                explicit_target='book',
-                routing_reason='explicit_book',
-                active_floor=self.active_floor,
-                mother_bytes=0,
-                child_text=child_clean,
+            return resp, cont, self._finalize_membrane_event(
+                dict(
+                    info,
+                    channel='book_addressed',
+                    source=info.get('source', 'text'),
+                    speaker='book',
+                    target_object_id='book',
+                    navigation_response_bytes=int(len(resp)),
+                    envelope_prefix_bytes=env_prefix_len,
+                    explicit_target='book',
+                    routing_reason='explicit_book',
+                    active_floor=self.active_floor,
+                    mother_bytes=0,
+                    child_text=child_clean,
+                ),
+                speaker_id='book',
+                addressee_id='mengli',
+                is_action_consequence=True,
+                source_transitions=[dict(
+                    offset=0, speaker_id='book', addressee_id='mengli',
+                    mask_start=0, mask_end=env_prefix_len,
+                )],
             )
 
         # Priority 2B: Tool demonstration, `@工具:name`, legacy `[tool:name arg]`, dynamic object, OR Gaze -> tool/object.
@@ -1108,10 +1297,12 @@ class UnifiedWorldPort:
         tool_obj_id = None
         eff_tool_target = explicit_target if explicit_target is not None else gaze_target
         eff_tool_payload = explicit_payload if explicit_target is not None else child_clean
+        tool_from_demo = False
         if self._tool_demo_queue:
             demo = self._tool_demo_queue.popleft()
             tool_hit = ('tool', demo['tool_name'], demo['output'])
             tool_obj_id = f'tool:{demo["tool_name"]}'
+            tool_from_demo = True
         elif eff_tool_target is not None and eff_tool_target.startswith('tool:'):
             tname = eff_tool_target.split(':', 1)[1]
             fn = self._registered_tools.get(tname)
@@ -1155,24 +1346,34 @@ class UnifiedWorldPort:
             self.active_floor = 'book'
             self.awaiting_reply_from = None
             via_gaze = (explicit_target is None and gaze_target == tool_obj_id)
-            return response, heldout, dict(
-                {k: v for k, v in info.items() if k != 'text_reply'},
-                channel=('tool' if obj_kind == 'tool' else 'dynamic_object'),
-                source=('tool' if obj_kind == 'tool' else 'object'),
-                speaker=src_label,
-                target_object_id=(tool_obj_id or src_label),
-                tool_name=obj_name,
-                explicit_target=explicit_target,
-                gaze_decision=gaze_decision,
-                routing_reason=(('gaze_tool' if obj_kind == 'tool' else 'gaze_object') if via_gaze else ('explicit_tool' if obj_kind == 'tool' else 'explicit_object')),
-                active_floor=self.active_floor,
-                mother_bytes=said_len,
-                envelope_prefix_bytes=env_prefix_len,
-                envelope_mask_spans=env_mask_spans,
-                mother_reply=delivered_text,
-                child_text=child_clean,
-                ambient_match=int(info.get('match', 0)),
-                match=len(_terms(child_clean) & _terms(obj_out)) if child_clean else 0,
+            t_id = str(tool_obj_id or src_label)
+            tool_trans = self._build_pack_transitions(
+                t_id, 'mengli', said_len, env_prefix_len, env_mask_spans, response_bytes + holdout_bytes,
+            )
+            return response, heldout, self._finalize_membrane_event(
+                dict(
+                    {k: v for k, v in info.items() if k != 'text_reply'},
+                    channel=('tool' if obj_kind == 'tool' else 'dynamic_object'),
+                    source=('tool' if obj_kind == 'tool' else 'object'),
+                    speaker=src_label,
+                    target_object_id=t_id,
+                    tool_name=obj_name,
+                    explicit_target=explicit_target,
+                    gaze_decision=gaze_decision,
+                    routing_reason=(('gaze_tool' if obj_kind == 'tool' else 'gaze_object') if via_gaze else ('explicit_tool' if obj_kind == 'tool' else 'explicit_object')),
+                    active_floor=self.active_floor,
+                    mother_bytes=said_len,
+                    envelope_prefix_bytes=env_prefix_len,
+                    envelope_mask_spans=env_mask_spans,
+                    mother_reply=delivered_text,
+                    child_text=child_clean,
+                    ambient_match=int(info.get('match', 0)),
+                    match=len(_terms(child_clean) & _terms(obj_out)) if child_clean else 0,
+                ),
+                speaker_id=t_id,
+                addressee_id='mengli',
+                is_action_consequence=(not tool_from_demo),
+                source_transitions=tool_trans,
             )
 
         # Priority 2C: Parent/Guest Social Floor reply, explicit/vocal call to Dad, OR Gaze -> `parent`.
@@ -1209,21 +1410,30 @@ class UnifiedWorldPort:
                 else 'social_floor_reply' if on_parent_floor
                 else ('explicit_parent' if explicit_target == 'parent' else 'vocal_call_parent')
             )
-            return ambient, heldout, dict(
-                {k: v for k, v in info.items() if k != 'text_reply'},
-                channel=ch_name,
-                source='parent_reply',
-                speaker=parent_label,
-                target_object_id='parent',
-                navigation_response_bytes=int(len(ambient)),
-                envelope_prefix_bytes=env_prefix_len,
-                explicit_target=explicit_target,
-                gaze_decision=gaze_decision,
-                routing_reason=r_reason,
-                active_floor=self.active_floor,
-                mother_bytes=0,
-                mother_reply='',
-                child_text=child_clean,
+            return ambient, heldout, self._finalize_membrane_event(
+                dict(
+                    {k: v for k, v in info.items() if k != 'text_reply'},
+                    channel=ch_name,
+                    source='parent_reply',
+                    speaker=parent_label,
+                    target_object_id='parent',
+                    navigation_response_bytes=int(len(ambient)),
+                    envelope_prefix_bytes=env_prefix_len,
+                    explicit_target=explicit_target,
+                    gaze_decision=gaze_decision,
+                    routing_reason=r_reason,
+                    active_floor=self.active_floor,
+                    mother_bytes=0,
+                    mother_reply='',
+                    child_text=child_clean,
+                ),
+                speaker_id='book',
+                addressee_id='mengli',
+                is_action_consequence=True,
+                source_transitions=[dict(
+                    offset=0, speaker_id='book', addressee_id='mengli',
+                    mask_start=0, mask_end=env_prefix_len,
+                )],
             )
 
         # Priority 3: Mother routing — either via MengLi's GazeObjectPointer (`gaze_target == 'mother'`)
@@ -1261,7 +1471,7 @@ class UnifiedWorldPort:
                 '直接从眼前故事里的画面、声音或动作切入，像指着绘本随口聊起来。',
                 '先用一个轻巧的生活小比方或感叹开场，把刚才的词和故事自然连起来。',
                 '像日常聊天一样轻声抛一个不强求回答的小好奇，再顺口讲一两句。',
-                '直接接住刚才冒出的字词或卡顿点，换个自然轻快的开头，别用套话垫句。',
+                '按眼前真实情况自然回应：听得懂就接着聊，没听清就如实轻轻问一句，不要替孩子硬补没说过的词。',
             )
             cue_parts = []
             if self.mother_turns > 0 and self.turns_since_name_call < 3:
@@ -1365,35 +1575,48 @@ class UnifiedWorldPort:
                 telemetry = getattr(self.caregiver, 'last_telemetry', None) or telemetry
 
             api_usage = telemetry.get('api_usage') or {}
-            return response, heldout, dict(
-                {k: v for k, v in info.items() if k != 'text_reply'},
-                channel='dsh_mother',
-                source='mother',
-                speaker='mother',
-                target_object_id='mother',
-                trigger_kind=trigger_kind,
-                routing_reason=routing_reason,
-                gaze_decision=gaze_decision,
-                active_floor=self.active_floor,
-                explicit_target=explicit_target,
-                perspective_mode=perspective_mode,
-                care_stage=self.care_plan_tracker.stage,
-                care_plan_version=int(plan['version']),
-                utterance_kind=snapshot.utterance_kind,
-                book_excerpt=snapshot.book_excerpt,
-                mirror_excerpt=snapshot.stumble_excerpt if perspective_mode == 'mirror_visible' else '',
-                mirror_trigger_cause=snapshot.trigger_cause if perspective_mode == 'mirror_visible' else '',
-                mother_bytes=said_len,
-                envelope_prefix_bytes=env_prefix_len,
-                envelope_mask_spans=env_mask_spans,
-                mother_reply=reply,
-                child_text=child_display,
-                caregiver_prompt_tokens=api_usage.get('prompt_tokens'),
-                caregiver_cache_hit_tokens=api_usage.get('cache_hit_tokens'),
-                caregiver_cache_miss_tokens=api_usage.get('cache_miss_tokens'),
-                caregiver_source=telemetry.get('source'),
-                ambient_match=int(info.get('match', 0)),
-                match=len(_terms(child_clean) & _terms(reply)) if child_clean else 0,
+            mother_trans = self._build_pack_transitions(
+                'mother', 'mengli', said_len, env_prefix_len, env_mask_spans, response_bytes + holdout_bytes,
+            )
+            mother_action_caused = (
+                trigger_kind in ('child_spoke', 'child_replied')
+                or gaze_target == 'mother'
+            )
+            return response, heldout, self._finalize_membrane_event(
+                dict(
+                    {k: v for k, v in info.items() if k != 'text_reply'},
+                    channel='dsh_mother',
+                    source='mother',
+                    speaker='mother',
+                    target_object_id='mother',
+                    trigger_kind=trigger_kind,
+                    routing_reason=routing_reason,
+                    gaze_decision=gaze_decision,
+                    active_floor=self.active_floor,
+                    explicit_target=explicit_target,
+                    perspective_mode=perspective_mode,
+                    care_stage=self.care_plan_tracker.stage,
+                    care_plan_version=int(plan['version']),
+                    utterance_kind=snapshot.utterance_kind,
+                    book_excerpt=snapshot.book_excerpt,
+                    mirror_excerpt=snapshot.stumble_excerpt if perspective_mode == 'mirror_visible' else '',
+                    mirror_trigger_cause=snapshot.trigger_cause if perspective_mode == 'mirror_visible' else '',
+                    mother_bytes=said_len,
+                    envelope_prefix_bytes=env_prefix_len,
+                    envelope_mask_spans=env_mask_spans,
+                    mother_reply=reply,
+                    child_text=child_display,
+                    caregiver_prompt_tokens=api_usage.get('prompt_tokens'),
+                    caregiver_cache_hit_tokens=api_usage.get('cache_hit_tokens'),
+                    caregiver_cache_miss_tokens=api_usage.get('cache_miss_tokens'),
+                    caregiver_source=telemetry.get('source'),
+                    ambient_match=int(info.get('match', 0)),
+                    match=len(_terms(child_clean) & _terms(reply)) if child_clean else 0,
+                ),
+                speaker_id='mother',
+                addressee_id='mengli',
+                is_action_consequence=mother_action_caused,
+                source_transitions=mother_trans,
             )
 
         # Priority 4: Book Floor (`book_navigation` = Search Engine when MengLi emits words, quiet continuation when silent).
@@ -1422,19 +1645,29 @@ class UnifiedWorldPort:
             self._roster_dirty_notice = None
             env_prefix_len = min(int(len(tag)), response_bytes)
             resp = np.concatenate((tag, resp[:max(0, response_bytes - len(tag))]))
-        return resp, cont, dict(
-            info,
-            channel=channel,
-            source=info.get('source', 'text'),
-            speaker='book',
-            target_object_id='book',
-            navigation_response_bytes=int(len(resp)),
-            envelope_prefix_bytes=env_prefix_len,
-            routing_reason=routing_reason,
-            gaze_decision=gaze_decision,
-            active_floor=self.active_floor,
-            mother_bytes=0,
-            child_text=child_clean,
+        book_action_caused = bool(is_navigation or gaze_target == 'book')
+        return resp, cont, self._finalize_membrane_event(
+            dict(
+                info,
+                channel=channel,
+                source=info.get('source', 'text'),
+                speaker='book',
+                target_object_id='book',
+                navigation_response_bytes=int(len(resp)),
+                envelope_prefix_bytes=env_prefix_len,
+                routing_reason=routing_reason,
+                gaze_decision=gaze_decision,
+                active_floor=self.active_floor,
+                mother_bytes=0,
+                child_text=child_clean,
+            ),
+            speaker_id='book',
+            addressee_id='mengli',
+            is_action_consequence=book_action_caused,
+            source_transitions=[dict(
+                offset=0, speaker_id='book', addressee_id='mengli',
+                mask_start=0, mask_end=env_prefix_len,
+            )],
         )
 
     def commit_pending_turn(
@@ -1652,6 +1885,7 @@ class UnifiedWorldPort:
                 dialogue_cursor=(None if self.dialogue_demo is None else int(self.dialogue_demo.cursor)),
                 care_plan_tracker=self.care_plan_tracker.state_dict(),
                 pending_tool_notes=list(self._pending_tool_notes),
+                event_ledger=copy.deepcopy(self.event_ledger),
                 gaze_dynamic_state=(gp.export_dynamic_state() if gp is not None else None),
             ),
         )
@@ -1708,6 +1942,11 @@ class UnifiedWorldPort:
             if isinstance(uwp.get('care_plan_tracker'), dict):
                 self.care_plan_tracker.load_state_dict(uwp['care_plan_tracker'])
             self._pending_tool_notes = list(uwp.get('pending_tool_notes', []))
+            raw_ledger = uwp.get('event_ledger')
+            self.event_ledger = (
+                copy.deepcopy(raw_ledger[-self.event_ledger_cap:])
+                if isinstance(raw_ledger, list) else []
+            )
             gaze_state = uwp.get('gaze_dynamic_state')
             if isinstance(gaze_state, dict):
                 gp = self._gaze_pointer()
