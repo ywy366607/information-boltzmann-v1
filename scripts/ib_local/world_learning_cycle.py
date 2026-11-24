@@ -125,15 +125,15 @@ def _select_and_condition_target(engine, utterance: bytes, record: dict) -> dict
 
             model = engine.model
             ridge = effective_ridge(model, engine.relation_ridge)
-            src_row = base_src.reshape(1, -1)
             raw_act = base_actions[selected:selected + 1]
             facts = use_queries(engine, state)
             # Single vectorized batched evaluation across all M in-scene candidates (O(1) calls!).
             m_cands = len(candidates)
+            src_rows = base_src.reshape(1, -1).expand(m_cands, -1)
             cond_acts = torch.cat([gp.condition_action(raw_act, cid) for cid, _ in candidates], dim=0)
-            dist = mechanism(model, state, src_row, cond_acts, ridge=ridge)
+            dist = mechanism(model, state, src_rows, cond_acts, ridge=ridge)
             if getattr(engine, 'causal_use_arm', None) == 'C2' and facts:
-                vals = finite_expected(engine, state, src_row, cond_acts, dist, facts)
+                vals = finite_expected(engine, state, src_rows, cond_acts, dist, facts)
                 causal_values = {cid: float(vals[i].item()) * 10.0 for i, (cid, _) in enumerate(candidates)}
             else:
                 causal_values = {cid: 0.0 for cid, _ in candidates}

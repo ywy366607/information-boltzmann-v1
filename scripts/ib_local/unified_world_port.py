@@ -94,6 +94,31 @@ class SidecarCorpusStream:
                 break
         return p
 
+    @staticmethod
+    def _incomplete_utf8_tail_len(arr: np.ndarray) -> int:
+        """Return number of trailing bytes (0..3) forming an incomplete UTF-8 sequence."""
+        n = len(arr)
+        if n == 0:
+            return 0
+        k = 0
+        while k < 3 and k < n and 0x80 <= int(arr[n - 1 - k]) < 0xC0:
+            k += 1
+        if k == n:
+            return k
+        lead = int(arr[n - 1 - k])
+        if lead < 0x80:
+            return 0 if k == 0 else k
+        if (lead & 0xE0) == 0xC0:
+            expected = 2
+        elif (lead & 0xF0) == 0xE0:
+            expected = 3
+        elif (lead & 0xF8) == 0xF0:
+            expected = 4
+        else:
+            return k + 1
+        actual = k + 1
+        return actual if actual < expected else 0
+
     def _slice_from(self, start: int, response_bytes: int, holdout_bytes: int) -> tuple[np.ndarray, np.ndarray, int, int, int]:
         total = int(response_bytes) + int(holdout_bytes)
         n = len(self.data)
@@ -103,7 +128,7 @@ class SidecarCorpusStream:
             prior_resp = int(self.seen[start:start + response_bytes].sum())
             prior_hold = int(self.seen[start + response_bytes:start + total].sum())
             self.seen[start:start + total] = True
-            next_cursor = self._align_utf8_start(start + total)
+            raw_end = start + total
         else:
             part1 = self.data[start:]
             rem = total - len(part1)
@@ -114,7 +139,15 @@ class SidecarCorpusStream:
             prior_hold = int(seen_wrap[response_bytes:].sum())
             self.seen[start:] = True
             self.seen[:rem] = True
-            next_cursor = self._align_utf8_start(rem)
+            raw_end = rem
+        # Never end a Chinese chunk mid-UTF-8 character (which forces engine.pending to be a cut lead byte
+        # and forces MengLi's next utterance to begin with broken continuation bytes ``).
+        tail = self._incomplete_utf8_tail_len(buf)
+        if 0 < tail < holdout_bytes:
+            buf[-tail:] = ord('\n')
+            next_cursor = (raw_end - tail) % n
+        else:
+            next_cursor = self._align_utf8_start(raw_end)
         self.cursor = next_cursor
         return buf[:response_bytes], buf[response_bytes:], start, prior_resp, prior_hold
 
@@ -561,6 +594,7 @@ class UnifiedWorldPort:
 
     def take_ambient(self, response_bytes: int, holdout_bytes: int):
         """High-throughput calm reading: ZERO caregiver API calls, updates shared book page."""
+        prev_src = self.last_book_source
         if self._use_sidecar_now():
             resp, cont, info = self.sidecar.take_ambient(response_bytes, holdout_bytes)
             self.sidecar_reads += 1
@@ -568,6 +602,8 @@ class UnifiedWorldPort:
         else:
             resp, cont, info = self.base.take(b'', response_bytes, holdout_bytes)
             self.last_book_source = 'text'
+        if self.last_book_source != prev_src:
+            self.shared_page_bytes.clear()
         self.ambient_reads += 1
         self.consecutive_social_turns = 0
         self._record_shared_page(resp)
@@ -589,15 +625,20 @@ class UnifiedWorldPort:
 
     def _navigate_book(self, query_bytes: bytes, query_clean: str, response_bytes: int, holdout_bytes: int):
         """Navigate the active storybook (Chinese TinyStories or English FineWeb) strictly as `Hom(MengLi, Book)`."""
+        prev_src = self.last_book_source
         if self.sidecar is not None:
             has_cjk = _has_cjk(query_clean)
             en_chars = sum(1 for ch in query_clean if 'a' <= ch.lower() <= 'z')
             if has_cjk or (self.last_book_source == 'chinese_storybook' and en_chars < 4):
                 resp, cont, info = self.sidecar.take(query_bytes, response_bytes, holdout_bytes)
                 self.last_book_source = 'chinese_storybook'
+                if self.last_book_source != prev_src:
+                    self.shared_page_bytes.clear()
                 return resp, cont, info
         resp, cont, info = self.base.take(query_bytes, response_bytes, holdout_bytes)
         self.last_book_source = 'text'
+        if self.last_book_source != prev_src:
+            self.shared_page_bytes.clear()
         return resp, cont, info
 
     def _match_registered_tool(self, child_text: str) -> tuple[str, str] | None:
@@ -625,16 +666,19 @@ class UnifiedWorldPort:
             prefix_lines.append(self._roster_dirty_notice)
             self._roster_dirty_notice = None
         if self.envelope_tags and source_label:
-            body = f'[来自:{source_label}] {body}'
+            # Natural Chinese dialogue prefix for people (`妈妈：`/`爸爸：`), compact bracket for tools/objects.
+            # Never emit `[来自:书页]` markup on ambient book continuation (prevents FastTable bracket echoing).
+            if source_label.startswith('工具:') or source_label.startswith('tool:'):
+                body = f'[{source_label}] {body}'
+            elif source_label in ('妈妈', '爸爸'):
+                body = f'{source_label}：{body}'
+            else:
+                body = f'[{source_label}] {body}'
         prefix_lines.append(body)
         full = '\n'.join(prefix_lines) + '\n'
         said = np.frombuffer(full.encode('utf-8')[:response_bytes], dtype=np.uint8)
         rem = response_bytes - len(said)
-        if rem > 0 and self.envelope_tags:
-            book_tag = np.frombuffer('[来自:书页] '.encode('utf-8'), dtype=np.uint8)
-            tail = np.concatenate((book_tag, ambient))[:rem]
-        else:
-            tail = ambient[:rem]
+        tail = ambient[:rem] if rem > 0 else np.empty((0,), dtype=np.uint8)
         response = np.concatenate((said, tail))
         return response, int(len(said))
 
@@ -832,8 +876,9 @@ class UnifiedWorldPort:
             self.spikes_since_mother += 1
             self.book_navigation_turns += 1
             self.ambient_fallback_turns += 1
-            if self.envelope_tags:
-                tag = np.frombuffer('[来自:书页] '.encode('utf-8'), dtype=np.uint8)
+            if self.envelope_tags and self._roster_dirty_notice:
+                tag = np.frombuffer((self._roster_dirty_notice + '\n').encode('utf-8'), dtype=np.uint8)
+                self._roster_dirty_notice = None
                 resp = np.concatenate((tag, resp[:max(0, response_bytes - len(tag))]))
             return resp, cont, dict(
                 info,
@@ -941,8 +986,9 @@ class UnifiedWorldPort:
             self.active_floor = 'book'
             self.awaiting_reply_from = None
             self.spikes_since_mother += 1
-            if self.envelope_tags:
-                tag = np.frombuffer('[来自:书页] '.encode('utf-8'), dtype=np.uint8)
+            if self.envelope_tags and self._roster_dirty_notice:
+                tag = np.frombuffer((self._roster_dirty_notice + '\n').encode('utf-8'), dtype=np.uint8)
+                self._roster_dirty_notice = None
                 ambient = np.concatenate((tag, ambient[:max(0, response_bytes - len(tag))]))
             ch_name = 'reply_to_parent' if (on_parent_floor or self.active_interlocutor == 'parent') else 'call_parent'
             r_reason = (
@@ -1036,7 +1082,7 @@ class UnifiedWorldPort:
                 reply, ambient, response_bytes, source_label='妈妈',
             )
             self._record_shared_page(heldout)
-            self._observe_gaze_object('mother', f'[来自:妈妈] {reply}'.encode('utf-8'))
+            self._observe_gaze_object('mother', f'妈妈：{reply}'.encode('utf-8'))
 
             self._pending_commit = dict(
                 kind='mother',
@@ -1129,12 +1175,9 @@ class UnifiedWorldPort:
         self.awaiting_reply_from = None
         self.consecutive_social_turns = 0
         self.ambient_fallback_turns += 1
-        if self.envelope_tags:
-            prefix = ''
-            if self._roster_dirty_notice:
-                prefix = self._roster_dirty_notice + '\n'
-                self._roster_dirty_notice = None
-            tag = np.frombuffer((prefix + '[来自:书页] ').encode('utf-8'), dtype=np.uint8)
+        if self.envelope_tags and self._roster_dirty_notice:
+            tag = np.frombuffer((self._roster_dirty_notice + '\n').encode('utf-8'), dtype=np.uint8)
+            self._roster_dirty_notice = None
             resp = np.concatenate((tag, resp[:max(0, response_bytes - len(tag))]))
         return resp, cont, dict(
             info,

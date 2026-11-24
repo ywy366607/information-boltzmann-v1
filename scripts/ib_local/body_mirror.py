@@ -97,9 +97,11 @@ def classify_utterance(raw: bytes | str) -> dict:
     # Count 2 CJK chars ≈ 1 recognizable lexical unit alongside >=3-letter ASCII words.
     word_units = len(ascii_words) + (cjk_chars // 2)
 
+    has_markup = ('[' in text) or (']' in text)
     if not text:
         kind = 'babble'
-    elif valid_ratio >= 0.90 and (word_units >= 3 or (cjk_chars >= 4 and len(text) >= 4)):
+    elif (valid_ratio >= 0.95 and not has_markup
+          and (word_units >= 4 or (cjk_chars >= 6 and len(text) >= 6))):
         kind = 'coherent'
     elif valid_ratio >= 0.72 and (word_units >= 1 or cjk_chars >= 2):
         kind = 'fragments'

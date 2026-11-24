@@ -225,7 +225,7 @@ def test_priority_preemption_and_parent_observation_sync(tmp_path: Path):
     resp, cont, info = port.take(b'apple', 256, 256)
     assert info['channel'] == 'live_participant'
     assert info['speaker'] == '爸爸'
-    assert '[来自:爸爸] 梦漓，你看苹果为什么会掉下来？' in bytes(resp[:info['mother_bytes']]).decode('utf-8')
+    assert '爸爸：梦漓，你看苹果为什么会掉下来？' in bytes(resp[:info['mother_bytes']]).decode('utf-8')
     port.commit_pending_turn(metal_g=0.01)
     assert len(transport.parent_observations) == 1
     assert transport.parent_observations[0]['caregiver'] == 'parent'
@@ -234,7 +234,7 @@ def test_priority_preemption_and_parent_observation_sync(tmp_path: Path):
     port.set_cycle_hint(11)
     resp2, cont2, info2 = port.take(b'please [tool:calc 2+3]', 256, 256)
     assert info2['channel'] == 'tool'
-    assert '[来自:工具:calc] 2+3=5' in bytes(resp2[:info2['mother_bytes']]).decode('utf-8')
+    assert '[工具:calc] 2+3=5' in bytes(resp2[:info2['mother_bytes']]).decode('utf-8')
     port.commit_pending_turn(metal_g=0.02)
 
     # 3. Next spike with vocal call to Mother routes to existing DSH Mother, carrying the tool note!
@@ -243,7 +243,8 @@ def test_priority_preemption_and_parent_observation_sync(tmp_path: Path):
     assert info3['channel'] == 'dsh_mother'
     assert info3['routing_reason'] == 'vocal_call_mother'
     assert 'calc' in transport.prepared_packets[-1]
-    assert '[来自:书页]' in bytes(resp3[info3['mother_bytes']:]).decode('utf-8', 'ignore')
+    assert '妈妈：' in bytes(resp3[:info3['mother_bytes']]).decode('utf-8', 'ignore')
+    assert '[来自:书页]' not in bytes(resp3).decode('utf-8', 'ignore')
     port.commit_pending_turn(metal_g=0.03)
     assert port.mother_turns == 1
 
@@ -435,17 +436,17 @@ def test_yoneda_bidirectional_mother_proactive_and_dynamic_objects(tmp_path: Pat
     resp1, _, info1 = port.take('妈妈你看'.encode('utf-8'), 256, 256)
     assert info1['channel'] == 'dsh_mother'
     assert info1['routing_reason'] == 'vocal_call_mother'
-    assert '[来自:妈妈]' in bytes(resp1[:info1['mother_bytes']]).decode('utf-8')
+    assert '妈妈：' in bytes(resp1[:info1['mother_bytes']]).decode('utf-8')
 
-    # 5. Explicit addressing `@书页` navigates book directly (Mother stays out of the way).
+    # 5. Explicit addressing `@书页` navigates book directly (Mother stays out of the way, zero markup tag).
     resp3, _, info3 = port.take('@书页 gravity'.encode('utf-8'), 256, 256)
     assert info3['channel'] == 'book_addressed'
-    assert '[来自:书页]' in bytes(resp3).decode('utf-8', 'ignore')
+    assert '[来自:书页]' not in bytes(resp3).decode('utf-8', 'ignore')
 
     # 6. Explicit addressing `@天气 北京` invokes dynamic black-box object through same Membrane.
     resp4, _, info4 = port.take('@天气 北京'.encode('utf-8'), 256, 256)
     assert info4['channel'] == 'dynamic_object'
-    assert '[来自:天气] 今天晴，22度 (北京)' in bytes(resp4[:info4['mother_bytes']]).decode('utf-8')
+    assert '[天气] 今天晴，22度 (北京)' in bytes(resp4[:info4['mother_bytes']]).decode('utf-8')
 
     # 7. Quiet pauses on Book Floor hit mother_max_gap=2 -> Mother initiates co-reading (`mother_proactive`),
     #    opening Social Floor -> then MengLi replies `看到` -> routed as `child_replied`!
@@ -638,6 +639,40 @@ def test_interaction_logic_stumble_alignment_babble_and_silent_cooldown():
     assert info['channel'] == 'dsh_mother'
     assert info['routing_reason'] == 'gaze_mother_speak'
     assert info['child_text'] == '[咿呀声]'
+
+
+def test_utf8_tail_alignment_bilingual_page_reset_and_strict_coherent(tmp_path: Path):
+    """Verify:
+    1. SidecarCorpusStream never slices a 3-byte Chinese character in half at chunk end (engine.pending is valid UTF-8).
+    2. Switching between English and Chinese resets `shared_page_bytes` (zero cross-language gluing).
+    3. `classify_utterance` does not mark short 4-char garbled CJK or bracket markup as `coherent`.
+    """
+    from scripts.ib_local.body_mirror import classify_utterance
+    from scripts.ib_local.unified_world_port import SidecarCorpusStream
+
+    cn_file = tmp_path / 'cn_tail.txt'
+    # Pure 3-byte Chinese chars; 640+640 = 1280 bytes is NOT divisible by 3 (1280 % 3 == 2 -> would slice char!).
+    cn_file.write_text('小鸭子在池塘里快乐地游来游去。' * 200, encoding='utf-8')
+    stream = SidecarCorpusStream(cn_file)
+    for _ in range(5):
+        resp, cont, _ = stream.take_ambient(640, 640)
+        full = bytes(np.concatenate((resp, cont)))
+        # Must decode strictly with ZERO UnicodeDecodeError!
+        decoded = full.decode('utf-8')
+        assert '\ufffd' not in decoded
+
+    base = FakeBaseWorld('English story about castles and rolling boulders. ' * 200)
+    port = UnifiedWorldPort(base, sidecar_corpus=cn_file, sidecar_mix_ratio=0.5)
+    port.take_ambient(256, 256)  # English
+    assert 'English' in bytes(port.shared_page_bytes).decode('utf-8', 'ignore')
+    port.take_ambient(256, 256)  # Chinese -> must clear old English bytes!
+    page_txt = bytes(port.shared_page_bytes).decode('utf-8')
+    assert '小鸭子' in page_txt and 'English' not in page_txt
+
+    assert classify_utterance('莉莉讶偼'.encode('utf-8'))['kind'] == 'fragments'
+    assert classify_utterance('[来自:书页] 汤姆'.encode('utf-8'))['kind'] == 'fragments'
+    assert classify_utterance('自行车非常兴奋'.encode('utf-8'))['kind'] == 'coherent'
+
 
 
 
