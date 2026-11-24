@@ -687,15 +687,18 @@ def step_body(engine, *, directions=None) -> tuple[list[dict], dict]:
         raise RuntimeError('alif_executive is not configured on this engine')
     st = engine.alif_executive_state
     if not bool(st['pending_spike']):
+        if int(st['piece_bytes']) > 640 and torch.cuda.is_available():
+            if torch.cuda.memory_reserved() > int(2.15 * (1024 ** 3)):
+                torch.cuda.empty_cache()
         if directions is None:
             directions = torch.randn(engine.model.encoder.out_features, 32, device=engine.device)
         row = calm_sensory_piece(engine, directions)
         return [], row
 
     # Release cached large-chunk allocator blocks before an executive spike so
-    # 1024-1280B calm allocations never collide with spike graphs on 4 GiB GPUs.
+    # 1024-1600B calm allocations never collide with spike graphs on 4 GiB GPUs.
     if int(st['piece_bytes']) > 640 and torch.cuda.is_available():
-        if torch.cuda.memory_reserved() > int(2.75 * (1024 ** 3)):
+        if torch.cuda.memory_reserved() > int(2.15 * (1024 ** 3)):
             torch.cuda.empty_cache()
 
     # Full unmodified executive spike through the existing autonomous_cycle / persistent_rhythm loop.

@@ -18,6 +18,7 @@ const ALLOWED_PROFILES = Object.freeze({
   65536: { headroom_tokens: 2048, retain_tokens: [null, 6144, 8192, 10485, 12288], summary_tokens: [512, 1024, 1536] },
   131072: { headroom_tokens: 4096, retain_tokens: [null, 16384, 20971, 24576], summary_tokens: [1024, 1536, 2048] },
   262144: { headroom_tokens: 4096, retain_tokens: [null, 24576, 32768, 41943], summary_tokens: [1024, 1536, 2048] },
+  524288: { headroom_tokens: 4096, retain_tokens: [null, 49152, 65536, 83886], summary_tokens: [1024, 1536, 2048] },
 });
 const packageRoot = process.env.MENGLI_DSH_PACKAGE_ROOT || 'F:/16、杂货行账册/ledger-dsh/node_modules/@deepseek-ai';
 const load = name => import(pathToFileURL(path.join(packageRoot, name, 'lib/index.js')).href);
@@ -246,13 +247,18 @@ class DshRuntime {
       requireValue(typeof checkpoint_ref.session_id === 'string', 'INVALID_CHECKPOINT', 'Missing session identity');
       config = readJson(this.configFile(checkpoint_ref.session_id));
       requireValue(config, 'UNKNOWN_SESSION', 'Session does not belong to this harness data root', 404);
-      requireValue(same(config.settings, resolved), 'SETTINGS_MISMATCH', 'Restore settings differ from the stored session');
+      const windowUpgradeOnly = (
+        config.owner_branch !== branch_id &&
+        resolved.context_tokens > config.settings.context_tokens &&
+        same({ ...config.settings, context_tokens: resolved.context_tokens }, resolved)
+      );
+      requireValue(same(config.settings, resolved) || windowUpgradeOnly, 'SETTINGS_MISMATCH', 'Restore settings differ from the stored session');
       const events = await this.events(checkpoint_ref.session_id);
       const prefix = validateRef(checkpoint_ref, events);
       const anotherBranch = config.owner_branch !== branch_id;
       const hasTail = events.slice(prefix.length).some(event => event.type !== 'session/end-seed');
-      if (hasTail || anotherBranch) {
-        config = { ...config, owner_branch: branch_id };
+      if (hasTail || anotherBranch || windowUpgradeOnly) {
+        config = { ...config, owner_branch: branch_id, settings: resolved };
         agent = await this.createSession(config, prefix, checkpoint_ref.session_id);
       } else agent = await this.attach(checkpoint_ref.session_id, config);
     } else {

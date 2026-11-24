@@ -140,9 +140,10 @@ export class TrainingObserver {
       const events = rows.slice(-64).map(row => {
         const w = row.world ?? {};
         const src = w.source ?? 'text';
-        const ch = w.channel ?? (src === 'text' ? 'storybook_spike_fallback' : 'dsh_mother');
-        const actor = src === 'parent' ? 'parent' : (src === 'tool' || src === 'object') ? 'tool' : src === 'text' ? 'world' : 'mother';
-        const bookExcerpt = w.book_excerpt || (src === 'text' ? (w.text_reply ?? '') : (w.text_reply ?? '')) || '';
+        const isBook = src === 'text' || src === 'chinese_storybook' || src === 'matched' || src === 'topic';
+        const ch = w.channel ?? (isBook ? 'storybook_spike_fallback' : 'dsh_mother');
+        const actor = src === 'parent' ? 'parent' : (src === 'tool' || src === 'object') ? 'tool' : isBook ? 'world' : 'mother';
+        const bookExcerpt = w.book_excerpt || (w.text_reply ?? '') || '';
         const cacheHit = typeof w.caregiver_cache_hit_tokens === 'number' ? w.caregiver_cache_hit_tokens : null;
         const cacheMiss = typeof w.caregiver_cache_miss_tokens === 'number' ? w.caregiver_cache_miss_tokens : null;
         return {
@@ -151,8 +152,8 @@ export class TrainingObserver {
           utterance: { text: w.child_text ?? '', spoke: Boolean(row.spoke), timing: 'before_caregiver_input' },
           // Full provider text is NOT a receipt of all bytes ingested (ambient fills the remaining input).
           observation: {
-            text: src === 'text' ? (w.text_reply ?? '') : (w.mother_reply ?? w.text_reply ?? ''),
-            kind: src === 'text' ? 'natural_text_reply' : 'recorded_mother_reply',
+            text: isBook ? (w.text_reply ?? '') : (w.mother_reply ?? w.text_reply ?? ''),
+            kind: isBook ? 'natural_text_reply' : 'recorded_mother_reply',
             mother_bytes: w.mother_bytes ?? null, external_bytes: row.external_bytes ?? null,
           },
           umwelt: {
@@ -163,6 +164,10 @@ export class TrainingObserver {
             routing_reason: w.routing_reason ?? null,
             active_floor: w.active_floor ?? null,
             explicit_target: w.explicit_target ?? null,
+            target_object_id: w.target_object_id ?? null,
+            gaze_target: w.gaze_target ?? null,
+            gaze_probs: w.gaze_probs ?? null,
+            evidence_available: row.evidence_available ?? null,
             perspective_mode: w.perspective_mode ?? null,
             care_stage: w.care_stage ?? null,
             care_plan_version: w.care_plan_version ?? null,

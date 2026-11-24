@@ -22,6 +22,8 @@ import shutil
 import sys
 import time
 
+os.environ.setdefault('PYTORCH_CUDA_ALLOC_CONF', 'max_split_size_mb:128')
+
 import numpy as np
 import torch
 
@@ -93,9 +95,9 @@ def main():
                         help='Disable biological O(1) GazeObjectPointer (fall back to host presence/floor routing)')
     parser.add_argument('--care-plan', type=str, default=None,
                         help='Optional explicit user parenting plan overriding adaptive stage plans')
-    parser.add_argument('--context-tokens', type=int, default=262144,
-                        choices=[8192, 32768, 65536, 131072, 262144],
-                        help='DSH Mother context window budget (default 262144 -> compacts at ~210K via official DSH 0.80/0.16 policy)')
+    parser.add_argument('--context-tokens', type=int, default=524288,
+                        choices=[8192, 32768, 65536, 131072, 262144, 524288],
+                        help='DSH Mother context window budget (default 524288 -> compacts at ~419K via official DSH 0.80/0.16 policy)')
     parser.add_argument('--fresh-mother-session', action='store_true',
                         help='Start a fresh Mother session at --context-tokens & --mother-policy instead of inheriting a legacy 8K session ref')
     parser.add_argument('--mother-policy', type=str, default='umwelt_mother_v1',
@@ -116,6 +118,8 @@ def main():
 
     # Champion H-Net + ALIF + PSB + RLP defaults.
     parser.add_argument('--piece-bytes', type=int, default=1600)
+    parser.add_argument('--gpu-act-mb', type=int, default=1024,
+                        help='Tiered GPU activation budget in MiB (1024 MiB leaves safe WDDM headroom on 4 GiB GPUs)')
     parser.add_argument('--calm-lr-scale', type=float, default=-1.0)
     parser.add_argument('--extra-hippocampal-steps', type=int, default=-1)
     parser.add_argument('--hnet-target-ratio', type=float, default=4.0)
@@ -156,7 +160,7 @@ def main():
     from scripts.ib_local import root_latent_planning as rlp
     from scripts.ib_local.mengli_harness.family_provider import FamilyCaregiver
     from scripts.ib_local.mengli_harness.mengli_world_client import (
-        DEFAULT_SETTINGS, SETTINGS_32K, SETTINGS_64K, SETTINGS_128K, SETTINGS_256K,
+        DEFAULT_SETTINGS, SETTINGS_32K, SETTINGS_64K, SETTINGS_128K, SETTINGS_256K, SETTINGS_512K,
         DshMother, branch_for_output,
     )
     from scripts.ib_local.mother_checkpoint import save as save_ckpt
@@ -193,13 +197,21 @@ def main():
         65536: SETTINGS_64K,
         131072: SETTINGS_128K,
         262144: SETTINGS_256K,
+        524288: SETTINGS_512K,
     }
     chosen_settings = dict(settings_map[int(args.context_tokens)])
     saved_dsh_policy = (retained.get('mother_provider_state') or {}).get('policy')
     chosen_policy = args.mother_policy
-    # If resuming an older session without --fresh-mother-session, match its stored DSH settings & policy.
+    # If resuming an older session without --fresh-mother-session, match its stored DSH settings & policy,
+    # while permitting a clean upward context_tokens expansion (e.g. 256K -> 512K) on the new branch.
     if not args.fresh_mother_session and isinstance(saved_dsh_settings, dict):
-        chosen_settings = dict(saved_dsh_settings)
+        merged_settings = dict(saved_dsh_settings)
+        req_ctx = int(args.context_tokens)
+        if (req_ctx > int(saved_dsh_settings.get('context_tokens', 0))
+                and {k: v for k, v in saved_dsh_settings.items() if k != 'context_tokens'}
+                == {k: v for k, v in chosen_settings.items() if k != 'context_tokens'}):
+            merged_settings['context_tokens'] = req_ctx
+        chosen_settings = merged_settings
         if isinstance(saved_dsh_policy, str) and saved_dsh_policy:
             chosen_policy = saved_dsh_policy
 
@@ -260,10 +272,10 @@ def main():
         restored_prior_port_state=restored_prior,
     )
 
-    # Activation storage hooks identical to champion runner.
+    # Activation storage hooks identical to champion runner (configurable GPU budget for 4 GiB WDDM headroom).
     activation_options = dict(
         mode='tiered',
-        gpu_budget_bytes=1536 * 1024 * 1024,
+        gpu_budget_bytes=int(args.gpu_act_mb) * 1024 * 1024,
         host_budget_bytes=1024 * 1024 * 1024,
     )
     world_act_dir = temp_dir / 'world'
@@ -321,12 +333,18 @@ def main():
             )
             cn_segs = segments(cn_spec)
         facts_payload = torch.load(FRESH_FACTS, map_location=engine.device, weights_only=False)
-        with torch.no_grad():
-            fresh_res = score(engine, fresh_segs)
-            classic_res = score(engine, classic_segs)
-            if cn_segs is not None:
-                cn_res = score(engine, cn_segs)
-            facts_res = eval_facts(engine, facts_payload)
+        try:
+            with torch.no_grad():
+                fresh_res = score(engine, fresh_segs)
+                classic_res = score(engine, classic_segs)
+                if cn_segs is not None:
+                    cn_res = score(engine, cn_segs)
+                facts_res = eval_facts(engine, facts_payload)
+        finally:
+            del facts_payload
+            if torch.cuda.is_available():
+                gc.collect()
+                torch.cuda.empty_cache()
         if hnet is not None and saved_hnet is not None:
             hnet.calls.fill_(saved_hnet[0])
             hnet.last_boundary_rate.fill_(saved_hnet[1])

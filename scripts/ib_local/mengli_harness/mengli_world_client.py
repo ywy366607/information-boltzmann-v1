@@ -34,6 +34,9 @@ SETTINGS_128K = dict(model='deepseek-flash', temperature=.7, max_tokens=120,
 SETTINGS_256K = dict(model='deepseek-flash', temperature=.7, max_tokens=120,
                      context_tokens=262144, headroom_tokens=4096,
                      retain_tokens=None, summary_tokens=2048)
+SETTINGS_512K = dict(model='deepseek-flash', temperature=.7, max_tokens=120,
+                     context_tokens=524288, headroom_tokens=4096,
+                     retain_tokens=None, summary_tokens=2048)
 
 
 def fingerprint(value):
@@ -258,7 +261,16 @@ class DshMother:
                 last = self._migration[-1]
                 self.last_pair = [['child', last['input']], ['mother', last['delivered']]]
         else:
-            if saved.get('schema') != 1 or saved['settings'] != self.settings:
+            if saved.get('schema') != 1:
+                raise ValueError('incompatible saved DSH caregiver settings')
+            saved_s = saved.get('settings')
+            window_upgrade_only = (
+                isinstance(saved_s, dict)
+                and int(self.settings.get('context_tokens', 0)) > int(saved_s.get('context_tokens', 0))
+                and {k: v for k, v in saved_s.items() if k != 'context_tokens'}
+                    == {k: v for k, v in self.settings.items() if k != 'context_tokens'}
+            )
+            if saved_s != self.settings and not window_upgrade_only:
                 raise ValueError('incompatible saved DSH caregiver settings')
             if state.get('policy') != self.policy:
                 raise ValueError('caregiver policy differs from saved DSH world')
