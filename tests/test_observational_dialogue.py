@@ -149,7 +149,9 @@ def test_unified_membrane_event_contract_and_roundtrip_across_all_paths(tmp_path
         assert info['is_action_consequence'] is False
         assert info['source_transitions']
     assert channels.count('observational_dialogue') == 1
-    assert 'mother' in ptr.fingerprints and 'parent' in ptr.fingerprints and 'book' in ptr.fingerprints
+    assert 'mother' in ptr.fingerprints and 'book' in ptr.fingerprints
+    # Non-room offline speaker IDs (`parent` before joining room) never bloat the live gaze roster.
+    assert 'parent' not in ptr.fingerprints
     # Shared storybook page stays strictly on storybook text.
     assert '妈妈：' not in bytes(port.shared_page_bytes).decode('utf-8', 'ignore')
 

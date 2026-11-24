@@ -929,7 +929,10 @@ class UnifiedWorldPort:
             self.consecutive_social_turns = 0
             observed_speakers = info.pop('observed_speakers', ())
             for oid, body_b in observed_speakers:
-                self._observe_gaze_object(oid, body_b[:256], fuse_body_state=False)
+                # Only update live GazeObjectPointer fingerprints for actual in-room objects;
+                # offline multi-speaker corpora must NEVER bloat or pollute the room gaze roster.
+                if oid in self.presence_roster:
+                    self._observe_gaze_object(oid, body_b[:256], fuse_body_state=False)
             raw_info = dict(
                 info,
                 channel='observational_dialogue',
