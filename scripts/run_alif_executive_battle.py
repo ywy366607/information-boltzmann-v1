@@ -165,7 +165,8 @@ def evaluate_checkpoint(ckpt: Path, work: Path) -> dict:
 
     fresh_segs = segments(FRESH_TEXT_SPEC)
     classic_segs = segments(CLASSIC_TEXT_SPEC)
-    facts_payload = torch.load(FRESH_FACTS, map_location=engine.device, weights_only=False)
+    facts_path = FRESH_FACTS if FRESH_FACTS.exists() else (Path(__file__).resolve().parents[1] / 'data/eval/locked_eval_facts_64.pt')
+    facts_payload = torch.load(facts_path, map_location=engine.device, weights_only=False)
     with torch.no_grad():
         fresh_res = score(engine, fresh_segs)
         classic_res = score(engine, classic_segs)

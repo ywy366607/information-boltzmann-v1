@@ -508,6 +508,19 @@ class DshRuntime {
         content: (event.data.message ?? event.data).content.filter(block => block.type === 'text').map(block => block.text).join(''),
       })), telemetry: state.last_telemetry };
   }); }
+  inspectSession(checkpoint_ref, branch_id = null) { return this.run(async () => {
+    if (!checkpoint_ref?.session_id) return { branch_id, checkpoint_ref: null, summary_version: 0, summary: null, turns: [] };
+    const allEvents = await this.events(checkpoint_ref.session_id);
+    const events = checkpoint_ref.turn_end_seq != null ? validateRef(checkpoint_ref, allEvents) : allEvents;
+    const summary = events.findLast(event => event.type === 'user/message' && event.surfaceOp?.op === 'replace' && event.sourceEventSeqs?.some(seq => events[seq]?.type === 'compaction/summary'));
+    return { branch_id, checkpoint_ref, summary_version: checkpoint_ref.summary_version ?? 0,
+      summary: summary ? summary.data.content.filter(block => block.type === 'text').map(block => block.text).join('') : null,
+      turns: events.filter(event => ['user/message', 'assistant/message'].includes(event.type) &&
+        event.data.source?.kind !== 'caregiver-context').map(event => ({
+        role: event.type === 'user/message' ? 'user' : 'assistant',
+        content: (event.data.message ?? event.data).content.filter(block => block.type === 'text').map(block => block.text).join(''),
+      })) };
+  }); }
   async close() {
     await this.serial;
     for (const handle of this.handles.values()) await handle.dispose();

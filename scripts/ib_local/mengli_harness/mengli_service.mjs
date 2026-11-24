@@ -39,9 +39,40 @@ export function createMengliServer(runtime, { lifeCardPath = null, family = null
   }
   let cachedHistory;
   const sourceHistory = async () => {
-    // Research events already carry the recorded reply beside its real action;
-    // do not prepend an unrelated old caregiver branch to the live view.
-    if (family?.observer?.bound) return { turns: [], branch_id: family.inspect().branch_id };
+    // Unified Mother memory: when observing a live Umwelt run, read the EXACT live
+    // DSH caregiver session for the bound branch (falling back to the card's session_id
+    // or live observer events) so the Mother in "和妈妈商量" and the Mother accompanying
+    // MengLi are always ONE single Mother with full shared conversation history.
+    if (family?.observer?.bound) {
+      const snap = family.inspect();
+      const bId = snap.branch_id;
+      const bodyRef = readLife().card?.mother?.checkpoint_ref ?? null;
+      try {
+        if (bId && fs.existsSync(runtime.branchFile(bId))) {
+          const liveState = await runtime.inspect(bId);
+          if (liveState?.turns?.length) return liveState;
+        }
+        if (activeBranch && fs.existsSync(runtime.branchFile(activeBranch))) {
+          const activeState = await runtime.inspect(activeBranch);
+          if (activeState?.turns?.length) return activeState;
+        }
+        if (bodyRef?.session_id) {
+          const bySession = await runtime.inspectSession(bodyRef, bId);
+          if (bySession?.turns?.length) return bySession;
+        }
+      } catch { /* Fall back cleanly to observer events below if session JSONL is mid-write. */ }
+      const obsTurns = [];
+      for (const ev of snap.events ?? []) {
+        if (ev.actor !== 'mother' && ev.actor !== 'parent') continue;
+        const child = ev.utterance?.text ? ev.utterance.text : (ev.utterance?.spoke ? '[咿呀声]' : '[安静未开口]');
+        const reply = ev.observation?.text ?? '';
+        if (reply) {
+          obsTurns.push({ role: 'user', actor: 'mengli', content: `[cycle ${ev.cycle}] ${child}` });
+          obsTurns.push({ role: 'assistant', actor: ev.actor, content: reply });
+        }
+      }
+      return { turns: obsTurns, branch_id: bId, checkpoint_ref: bodyRef };
+    }
     const ref = family?.state.source_mother_checkpoint_ref;
     const key = JSON.stringify(ref ?? null);
     if (cachedHistory?.key !== key) {
