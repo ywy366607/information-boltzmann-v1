@@ -154,8 +154,7 @@ class ScopedDecisionGraph(DecisionGraphV3):
                 # Synchronous completion of this tiny upload makes host-buffer
                 # reuse safe even in audit loops without per-byte CPU readback.
                 self._input_device.copy_(self._input_host, non_blocking=False)
-                self.graph.replay()
-                self.state.copy_(self.next_state)
+                self._replay_captured()
                 return self.logits[0,0].clone(), self.h[0].clone()
             self.budget.zero_() if remaining is None else self.budget.fill_(float(remaining))
             # The captured kernels already reference the scoped buffers. Do

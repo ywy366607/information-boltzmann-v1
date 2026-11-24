@@ -80,10 +80,126 @@ class TableGDN(nn.Module):
         loss = F.cross_entropy(logits.reshape(-1, self.base.vocab_size), targets.reshape(-1))
         return loss, next_state, diagnostics
 
+    def _run_layer_slice(self, start, end, h, state, table_logp, field, incoming,
+                         field_keys, field_bias, diagnostics, skip_diagnostics):
+        base = self.base
+        states = []
+        for index in range(start, end):
+            layer = base.layers[index]
+            if self.use_table and index == self.inject_layer:
+                f = table_logp - table_logp.mean(-1, keepdim=True)
+                key = self.key_norm(self.table_key(f))
+                gate = torch.sigmoid((self.query_norm(h) * key).sum(-1, keepdim=True)
+                                     / math.sqrt(base.d))
+                h = h + gate * self.table_value(f)
+                if not skip_diagnostics:
+                    diagnostics["table_gate_mean"] = gate.detach().mean()
+            packed = state[index]
+            if field is not None:
+                h, incoming, work_diag = field.exchange(layer, h, incoming,
+                    packed[:, layer.state_size:], field_keys, field_bias)
+                packed = packed[:, :layer.state_size]
+            h, next_state, layer_diag = layer(h, packed)
+            if field is not None:
+                next_state = torch.cat((next_state, incoming[:, -1].flatten(1)), -1)
+                layer_diag.update(work_diag)
+            states.append(next_state)
+            if not skip_diagnostics:
+                for key_name, value in layer_diag.items():
+                    diagnostics[f"l{index}_{key_name}"] = value
+        return h, states, incoming
+
+    def predict_hnet_enc(self, ids, state, table_logp, prev_k, has_prev):
+        """H-Net §2.4 stage 1: outer encoder [0..enc_layers) + causal 1-byte router."""
+        base = self.base
+        hnet = self.hnet_chunker
+        skip_diagnostics = getattr(self, '_decode_no_diagnostics', False) and not torch.is_grad_enabled()
+        h = base.source.embedding(ids)
+        field = getattr(self, 'coevolution', None)
+        incoming = field_keys = field_bias = None
+        if field is not None:
+            incoming, field_keys, field_bias = field.prepare(self._coev_owner(), *ids.shape)
+        if getattr(base, "self_oracle", False):
+            from scripts.ib_local.self_state import marker_letter_mask
+            mask = marker_letter_mask(ids)
+            for layer in base.layers:
+                layer.write_mask = mask
+        diag = {}
+        h_enc, enc_states, inc_enc = self._run_layer_slice(
+            0, hnet.enc_layers, h, state, table_logp, field, incoming,
+            field_keys, field_bias, diag, skip_diagnostics)
+        p_t, b_t, k_t = hnet.route_step(h_enc, prev_k, has_prev)
+        return h_enc, p_t, b_t, k_t, torch.stack(enc_states, 0), inc_enc, field_keys, field_bias
+
+    def predict_hnet_core(self, h_enc, p_t, state, prev_z_bar, inc_enc, field_keys, field_bias):
+        """H-Net §2.4 stage 2 (boundary-only): 24 deep core layers + EMA dechunk update."""
+        base = self.base
+        hnet = self.hnet_chunker
+        core_start = hnet.enc_layers
+        core_end = base.num_layers - hnet.dec_layers
+        skip_diagnostics = getattr(self, '_decode_no_diagnostics', False) and not torch.is_grad_enabled()
+        field = getattr(self, 'coevolution', None)
+        diag = {}
+        z_t, core_states, inc_core = self._run_layer_slice(
+            core_start, core_end, h_enc, state, None, field, inc_enc,
+            field_keys, field_bias, diag, skip_diagnostics)
+        z_bar = hnet.dechunk_update(z_t, p_t, prev_z_bar)
+        return z_bar, torch.stack(core_states, 0), inc_core
+
+    def predict_hnet_dec(self, h_enc, z_bar, state, table_logp, inc_bar, field_keys, field_bias, *, decode=True):
+        """H-Net §2.4 stage 3: skip residual + outer decoder [core_end..num_layers) + logits."""
+        base = self.base
+        hnet = self.hnet_chunker
+        core_end = base.num_layers - hnet.dec_layers
+        skip_diagnostics = getattr(self, '_decode_no_diagnostics', False) and not torch.is_grad_enabled()
+        field = getattr(self, 'coevolution', None)
+        diag = {}
+        h = hnet.combine_skip(z_bar, h_enc)
+        h, dec_states, _ = self._run_layer_slice(
+            core_end, base.num_layers, h, state, table_logp, field, inc_bar,
+            field_keys, field_bias, diag, skip_diagnostics)
+        dec_stack = torch.stack(dec_states, 0)
+        if not decode:
+            return None, dec_stack, diag
+        h = base.final_norm(h)
+        logits = base.decoder(h)
+        if self.use_table:
+            weight = F.softplus(self.mix(h))
+            logits = logits + weight * table_logp
+            if not skip_diagnostics:
+                diag["table_weight_mean"] = weight.detach().mean()
+        return logits, dec_stack, diag
+
     def predict(self, ids, state, table_logp, *, decode=True):
         if not decode and torch.is_grad_enabled():
             raise ValueError('state-only execution is for known no-gradient payloads')
         base = self.base
+        hnet = getattr(self, 'hnet_chunker', None)
+        hnet_active = (hnet is not None and hnet.active_for(ids.shape[1]))
+        step_st = getattr(self, '_hnet_step_state', None)
+        if hnet_active and step_st is not None and ids.shape[1] == 1:
+            hnet._pending_ratio_loss = None
+            core_start = hnet.enc_layers
+            core_end = base.num_layers - hnet.dec_layers
+            h_enc, p_t, b_t, k_t, enc_st, inc_enc, f_keys, f_bias = self.predict_hnet_enc(
+                ids, state, table_logp, step_st.prev_k, step_st.has_prev)
+            step_st.prev_k = k_t
+            step_st.has_prev = True
+            step_st.steps += 1
+            if bool(b_t[0].item()):
+                step_st.boundaries += 1
+                z_bar, core_st, inc_core = self.predict_hnet_core(
+                    h_enc, p_t, state, step_st.prev_z_bar, inc_enc, f_keys, f_bias)
+                step_st.prev_z_bar = z_bar
+                step_st.prev_inc = inc_core
+            else:
+                core_st = state[core_start:core_end]
+                z_bar = step_st.prev_z_bar
+                inc_core = step_st.prev_inc
+            logits, dec_st, diagnostics = self.predict_hnet_dec(
+                h_enc, z_bar, state, table_logp, inc_core, f_keys, f_bias, decode=decode)
+            next_state = torch.cat((enc_st, core_st, dec_st), dim=0)
+            return logits, next_state, diagnostics
         skip_diagnostics = getattr(self, '_decode_no_diagnostics', False) and not torch.is_grad_enabled()
         h = base.source.embedding(ids)
         diagnostics, states = {}, []
@@ -95,8 +211,6 @@ class TableGDN(nn.Module):
             mask = marker_letter_mask(ids)
             for layer in base.layers:
                 layer.write_mask = mask
-        hnet = getattr(self, 'hnet_chunker', None)
-        hnet_active = (hnet is not None and hnet.active_for(ids.shape[1]))
         hnet_pack = None
         core_start = hnet.enc_layers if hnet_active else -1
         core_end = (base.num_layers - hnet.dec_layers) if hnet_active else -1

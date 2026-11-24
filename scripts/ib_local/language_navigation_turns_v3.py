@@ -44,7 +44,16 @@ class DecisionGraphV3:
             self.table = torch.full((1, 1, 256), -5.54517744448, device=device)
         else:
             self.ids, self.table = packed
-        if self.capture:
+        hnet = getattr(getattr(model, 'body', None), 'hnet_chunker', None)
+        self._hnet_section24 = (hnet is not None and hnet.target_ratio > 1.0)
+        self._hnet_step_state = None
+        self._hnet_graphs = False
+        self._hnet_step_idx = 0
+        self._hnet_total_steps = 0
+        self._hnet_boundaries = 0
+        if self.capture and self._hnet_section24:
+            self._capture_hnet_graphs(model, hnet, device)
+        elif self.capture:
             stream = torch.cuda.Stream()
             stream.wait_stream(torch.cuda.current_stream())
             with torch.cuda.stream(stream), torch.no_grad():
@@ -60,9 +69,106 @@ class DecisionGraphV3:
                     self.handover_logit = handover_logits(
                         model, self.h, self._capture_handover_budget).reshape(())
 
+    def _capture_hnet_graphs(self, model, hnet, device):
+        """Capture 3 static CUDA graphs for H-Net §2.4 (enc / conditional 24-layer core / dec)."""
+        core_start = hnet.enc_layers
+        core_end = model.base.num_layers - hnet.dec_layers
+        dt = model.base.source.embedding.weight.dtype
+        d = model.base.d
+        self._hnet_prev_k = torch.zeros((1, d), device=device, dtype=dt)
+        self._hnet_has_prev = torch.zeros((1,), device=device, dtype=dt)
+        self._hnet_x_enc = torch.zeros((1, 1, d), device=device, dtype=dt)
+        self._hnet_p = torch.ones((1,), device=device, dtype=dt)
+        self._hnet_b = torch.ones((1,), device=device, dtype=torch.bool)
+        self._hnet_z_bar = torch.zeros((1, 1, d), device=device, dtype=dt)
+        field = getattr(model.body, 'coevolution', None)
+        if field is not None:
+            self._hnet_inc_enc = torch.zeros((1, 1, field.slots, field.rank), device=device, dtype=dt)
+            self._hnet_inc_bar = torch.zeros((1, 1, field.slots, field.rank), device=device, dtype=dt)
+            self._hnet_f_keys = torch.zeros((field.slots, field.rank), device=device, dtype=dt)
+            self._hnet_f_bias = torch.zeros((field.slots,), device=device, dtype=dt)
+        else:
+            self._hnet_inc_enc = None
+            self._hnet_inc_bar = None
+            self._hnet_f_keys = None
+            self._hnet_f_bias = None
+
+        stream = torch.cuda.Stream()
+        stream.wait_stream(torch.cuda.current_stream())
+        with torch.cuda.stream(stream), torch.no_grad():
+            for _ in range(3):
+                h_enc, p_t, b_t, k_t, enc_st, inc_enc, f_keys, f_bias = model.body.predict_hnet_enc(
+                    self.ids, self.state, self.table, self._hnet_prev_k, self._hnet_has_prev)
+                z_bar, core_st, inc_core = model.body.predict_hnet_core(
+                    h_enc, p_t, self.state, self._hnet_z_bar, inc_enc, f_keys, f_bias)
+                model.predict_observed_hnet_dec(
+                    h_enc, z_bar, self.state, self.table, inc_core, f_keys, f_bias)
+        torch.cuda.current_stream().wait_stream(stream)
+
+        self._graph_enc = torch.cuda.CUDAGraph()
+        with torch.cuda.graph(self._graph_enc), torch.no_grad():
+            h_enc, p_t, b_t, k_t, enc_st, inc_enc, f_keys, f_bias = model.body.predict_hnet_enc(
+                self.ids, self.state, self.table, self._hnet_prev_k, self._hnet_has_prev)
+            self._hnet_x_enc.copy_(h_enc)
+            self._hnet_p.copy_(p_t)
+            self._hnet_b.copy_(b_t)
+            self._hnet_prev_k.copy_(k_t)
+            self._hnet_has_prev.fill_(1.0)
+            self.state[:core_start].copy_(enc_st)
+            if self._hnet_inc_enc is not None:
+                self._hnet_inc_enc.copy_(inc_enc)
+                self._hnet_f_keys.copy_(f_keys)
+                self._hnet_f_bias.copy_(f_bias)
+
+        self._graph_core = torch.cuda.CUDAGraph()
+        with torch.cuda.graph(self._graph_core), torch.no_grad():
+            z_bar, core_st, inc_core = model.body.predict_hnet_core(
+                self._hnet_x_enc, self._hnet_p, self.state, self._hnet_z_bar,
+                self._hnet_inc_enc, self._hnet_f_keys, self._hnet_f_bias)
+            self._hnet_z_bar.copy_(z_bar)
+            if self._hnet_inc_bar is not None and inc_core is not None:
+                self._hnet_inc_bar.copy_(inc_core)
+            self.state[core_start:core_end].copy_(core_st)
+
+        self._graph_dec = torch.cuda.CUDAGraph()
+        with torch.cuda.graph(self._graph_dec), torch.no_grad():
+            self.logits, dec_st, _, self.h, self.read = model.predict_observed_hnet_dec(
+                self._hnet_x_enc, self._hnet_z_bar, self.state, self.table,
+                self._hnet_inc_bar, self._hnet_f_keys, self._hnet_f_bias)
+            self.state[core_end:].copy_(dec_st)
+            if hasattr(self, '_capture_handover_budget'):
+                from scripts.ib_local.variable_expression import handover_logits
+                self.handover_logit = handover_logits(
+                    model, self.h, self._capture_handover_budget).reshape(())
+
+        self._hnet_graphs = True
+
+    def _replay_captured(self):
+        if self._hnet_graphs:
+            self._graph_enc.replay()
+            if self._hnet_step_idx == 0 or bool(self._hnet_b[0].item()):
+                self._graph_core.replay()
+                self._hnet_boundaries += 1
+            self._graph_dec.replay()
+            self._hnet_step_idx += 1
+            self._hnet_total_steps += 1
+        else:
+            self.graph.replay()
+            self.state.copy_(self.next_state)
+
     @torch.no_grad()
     def start(self, state):
         self.state.copy_(state)
+        self._hnet_step_idx = 0
+        if self._hnet_graphs:
+            self._hnet_has_prev.zero_()
+            self._hnet_prev_k.zero_()
+            self._hnet_z_bar.zero_()
+            if self._hnet_inc_bar is not None:
+                self._hnet_inc_bar.zero_()
+        elif self._hnet_section24:
+            from scripts.ib_local.hnet_chunking import HNetStepState
+            self._hnet_step_state = HNetStepState()
 
     @torch.no_grad()
     def step(self, byte, probability):
@@ -70,8 +176,16 @@ class DecisionGraphV3:
         self.table.copy_(torch.as_tensor(np.log(np.maximum(probability, FLOOR)),
                                          device=self.table.device)[None, None])
         if self.capture:
-            self.graph.replay()
-            logits, state, h = self.logits, self.next_state, self.h
+            self._replay_captured()
+            return self.logits[0, 0].clone(), self.h[0].clone()
+        if self._hnet_section24:
+            from scripts.ib_local.hnet_chunking import HNetStepState, hnet_step_scope
+            if self._hnet_step_state is None:
+                self._hnet_step_state = HNetStepState()
+            with hnet_step_scope(self.model, self._hnet_step_state):
+                logits, state, _, h, self.read = self.model.predict_observed(self.ids, self.state, self.table)
+            self._hnet_total_steps = self._hnet_step_state.steps
+            self._hnet_boundaries = self._hnet_step_state.boundaries
         else:
             logits, state, _, h, self.read = self.model.predict_observed(self.ids, self.state, self.table)
         self.state.copy_(state)

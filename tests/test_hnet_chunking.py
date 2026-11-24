@@ -91,3 +91,48 @@ def test_end_to_end_gradients_and_bypass(device):
     with hnet_bypass(holder):
         assert not chunker.active_for(40)
     assert chunker.active_for(40)
+
+
+@pytest.mark.parametrize('device', ['cpu'] + (['cuda'] if torch.cuda.is_available() else []))
+def test_hnet_section24_single_step_matches_batched_exact(device):
+    """H-Net §2.4: 1-byte stateful chunked decoding must match full-sequence chunked forward bit-for-bit."""
+    from scripts.ib_local.gated_deltanet import GatedDeltaNetLM
+    from scripts.ib_local.hnet_chunking import HNetStepState, hnet_step_scope
+    from scripts.ib_local.train_gdn_fast_table import TableGDN
+
+    torch.manual_seed(7)
+    base = GatedDeltaNetLM(vocab_size=256, d=32, layers=6, heads=2)
+    body = TableGDN(base, use_table=True, inject_layer=1).to(device)
+    body.eval()
+    chunker = HNetDynamicChunker(
+        32, enc_layers=2, dec_layers=2, target_ratio=3.0, min_seq_len=1,
+        router_scale=6.0, router_thresh_init=0.50, device=device,
+    )
+    chunker.calibrated.fill_(True)
+    with torch.no_grad():
+        torch.nn.init.normal_(chunker.residual_proj.weight, std=0.05)
+    body.hnet_chunker = chunker
+
+    T = 24
+    ids = torch.randint(0, 256, (1, T), device=device)
+    logp = torch.log_softmax(torch.randn(1, T, 256, device=device), dim=-1)
+    s0 = body.initial_state(1, device=device)
+
+    with torch.no_grad():
+        logits_batch, state_batch, _ = body.predict(ids, s0, logp)
+
+        # Step-by-step H-Net §2.4 execution (1 byte at a time, skipping deep core on non-boundaries).
+        st = s0.clone()
+        step_state = HNetStepState()
+        step_logits = []
+        for t in range(T):
+            with hnet_step_scope(body, step_state):
+                lg, st, _ = body.predict(ids[:, t:t + 1], st, logp[:, t:t + 1])
+            step_logits.append(lg)
+        logits_step = torch.cat(step_logits, dim=1)
+
+    assert step_state.steps == T
+    assert 1 <= step_state.boundaries < T  # Deep core was actually skipped on non-boundary bytes!
+    assert (logits_step - logits_batch).abs().max().item() < 1e-4
+    assert (st - state_batch).abs().max().item() < 1e-4
+

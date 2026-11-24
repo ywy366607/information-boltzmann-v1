@@ -247,12 +247,13 @@ def proposal_scores_batched(engine, proposals):
     logp = torch.as_tensor(np.log(np.maximum(np.asarray(prob_rows, dtype=np.float32), 1e-6)), device=engine.device)
     remaining = (1 - torch.arange(seq_len, device=engine.device, dtype=logp.dtype)[None] / engine.max_utterance).expand(b, -1)
     start = bridge_state(engine.model, engine.recurrent.detach()).expand(-1, b, -1).contiguous()
-    from scripts.ib_local.hnet_chunking import hnet_bypass
-    with (hnet_bypass(engine.model),
-          proposal_batch_scope(engine.model, b, seq_len),
+    with (proposal_batch_scope(engine.model, b, seq_len),
           budget_scope(engine.model, remaining),
           read_route_scope_batched(engine, receipts, target_length=seq_len)):
         out = engine.model.predict_observed(ids, start, logp)
+    hnet = getattr(getattr(engine.model, 'body', None), 'hnet_chunker', None)
+    if hnet is not None:
+        hnet._pending_ratio_loss = None
     logits_all = out[0]
     h_all = out[3].reshape(b, seq_len, -1)
     valid_terms = {}
@@ -290,9 +291,11 @@ def proposal_score(engine,proposal):
     probs=[*proposal['probs'],receipt['final_probability']]
     logp=torch.as_tensor(np.log(np.maximum(np.stack(probs),1e-6)),device=engine.device)[None]
     remaining=1-torch.arange(n+1,device=engine.device,dtype=logp.dtype)[None]/engine.max_utterance
-    from scripts.ib_local.hnet_chunking import hnet_bypass
-    with hnet_bypass(engine.model), budget_scope(engine.model,remaining), read_route_scope(engine,receipt):
+    with budget_scope(engine.model,remaining), read_route_scope(engine,receipt):
         out=engine.model.predict_observed(ids,bridge_state(engine.model,engine.recurrent.detach()),logp)
+    hnet = getattr(getattr(engine.model, 'body', None), 'hnet_chunker', None)
+    if hnet is not None:
+        hnet._pending_ratio_loss = None
     byte_terms=out[0][0,:n].log_softmax(-1).gather(1,ids[0,1:,None]).flatten()
     error=float((byte_terms.detach()-byte_terms.new_tensor(proposal['logp'])).abs().max())
     # Floating GEMM near a discrete retrieval tie must follow the actual path.
@@ -302,8 +305,12 @@ def proposal_score(engine,proposal):
         # saved tensors coexist with the fallback's much larger graph.
         del out, byte_terms
         state=bridge_state(engine.model,engine.recurrent.detach());features=[];predictions=[]
+        from scripts.ib_local.hnet_chunking import HNetStepState, hnet_step_scope
+        step_st = HNetStepState()
         for i in range(n+1):
-            with budget_scope(engine.model,1-i/engine.max_utterance), read_route_scope(engine,receipt,i,1):
+            with (hnet_step_scope(engine.model, step_st),
+                  budget_scope(engine.model,1-i/engine.max_utterance),
+                  read_route_scope(engine,receipt,i,1)):
                 item=engine.model.predict_observed(ids[:,i:i+1],state,logp[:,i:i+1])
             state=item[1];features.append(item[3]);predictions.append(item[0])
         out=(torch.cat(predictions,1),state,None,torch.cat(features))

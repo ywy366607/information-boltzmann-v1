@@ -36,7 +36,7 @@ from scripts.ib_local.causal_workspace_scan import causal_scan
 
 @contextmanager
 def hnet_bypass(model):
-    """Temporarily bypass H-Net chunking (e.g. during 1-byte utterance replay audit)."""
+    """Temporarily bypass H-Net chunking (e.g. for ablation/diagnostics)."""
     hnet = getattr(model, 'hnet_chunker', None)
     if hnet is None and hasattr(model, 'body'):
         hnet = getattr(model.body, 'hnet_chunker', None)
@@ -51,6 +51,47 @@ def hnet_bypass(model):
         hnet._bypass = prev
 
 
+class HNetStepState:
+    """Ephemeral H-Net §2.4 single-step autoregressive router + EMA dechunker state.
+
+    Zero learnable parameters; carries only `prev_k` (router previous key),
+    `prev_z_bar` (EMA dechunker last output), and optional `prev_inc`
+    (PastPresentField workspace held between chunk boundaries).
+    """
+
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.has_prev: bool = False
+        self.prev_k: torch.Tensor | None = None
+        self.prev_z_bar: torch.Tensor | None = None
+        self.prev_inc: torch.Tensor | None = None
+        self.steps: int = 0
+        self.boundaries: int = 0
+
+
+@contextmanager
+def hnet_step_scope(model, step_state: HNetStepState | None = None):
+    """Enable H-Net §2.4 stateful 1-byte chunked decoding on `model.body`."""
+    body = getattr(model, 'body', model)
+    hnet = getattr(body, 'hnet_chunker', None)
+    if hnet is None:
+        yield step_state
+        return
+    st = HNetStepState() if step_state is None else step_state
+    prev = getattr(body, '_hnet_step_state', None)
+    body._hnet_step_state = st
+    try:
+        yield st
+    finally:
+        if prev is None:
+            if '_hnet_step_state' in vars(body):
+                delattr(body, '_hnet_step_state')
+        else:
+            body._hnet_step_state = prev
+
+
 class HNetDynamicChunker(nn.Module):
     """End-to-end differentiable dynamic chunking router + Triton EMA dechunker."""
 
@@ -62,7 +103,7 @@ class HNetDynamicChunker(nn.Module):
         dec_layers: int = 4,
         target_ratio: float = 4.0,
         ratio_loss_weight: float = 0.03,
-        min_seq_len: int = 32,
+        min_seq_len: int = 1,
         router_scale: float = 6.0,
         router_thresh_init: float = 0.25,
         device=None,
@@ -131,9 +172,9 @@ class HNetDynamicChunker(nn.Module):
         p = torch.cat((p0, p_rest), dim=1)            # [B, T] in (0, 1], p[:, 0] == 1
         b = (p >= 0.5).to(x.dtype)
         b[:, 0] = 1.0                                 # Guarantee M >= 1 per sequence (Theorem 4)
-        # Strictly causal VRAM safety cap (zero future leakage; inactive in normal operation
-        # where F ~= 1/N <= 0.35): prevents an adversarial passage from pushing M > 0.5*T.
-        if self.target_ratio >= 2.5 and T >= self.min_seq_len:
+        # Strictly causal VRAM safety cap (zero future leakage; inactive on short utterances T < 128
+        # so single-step §2.4 decode and utterance replay match identically).
+        if self.target_ratio >= 2.5 and T >= 128:
             m_cap = max(2, int(math.ceil(0.5 * T)))
             b = b * (b.cumsum(dim=1) <= m_cap).to(b.dtype)
 
@@ -143,15 +184,64 @@ class HNetDynamicChunker(nn.Module):
         G_rate = p.mean()
         ratio_loss = (N / (N - 1.0)) * ((N - 1.0) * F_rate * G_rate + (1.0 - F_rate) * (1.0 - G_rate))
 
-        with torch.no_grad():
-            fr = float(F_rate)
-            self.calls.add_(1)
-            self.last_boundary_rate.fill_(fr)
-            self.last_compression_ratio.fill_(1.0 / max(fr, 1e-4))
-            self.last_ratio_loss.fill_(float(ratio_loss))
-            self.mean_boundary_rate_ema.mul_(0.95).add_(0.05 * fr)
+        if T >= 32:
+            with torch.no_grad():
+                fr = float(F_rate)
+                self.calls.add_(1)
+                self.last_boundary_rate.fill_(fr)
+                self.last_compression_ratio.fill_(1.0 / max(fr, 1e-4))
+                self.last_ratio_loss.fill_(float(ratio_loss))
+                self.mean_boundary_rate_ema.mul_(0.95).add_(0.05 * fr)
 
         return p, b, ratio_loss
+
+    def route_step(
+        self,
+        x_t: torch.Tensor,
+        prev_k: torch.Tensor | None,
+        has_prev: bool | torch.Tensor,
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """Single-byte causal router step (H-Net §2.4), bit-exact with `route()`.
+
+        Supports both Python `bool` `has_prev` (eager mode) and 0-D / [1] CUDA
+        tensor `has_prev` (static CUDA Graph capture without host branching).
+        """
+        x0 = x_t[:, 0]  # [B, D]
+        q_t = F.normalize(self.q_proj(x0), dim=-1, eps=1e-6)
+        k_t = F.normalize(self.k_proj(x0), dim=-1, eps=1e-6)
+        if torch.is_tensor(has_prev):
+            cos_sim = (q_t * prev_k).sum(dim=-1)
+            dissim = 0.5 * (1.0 - cos_sim)
+            p_cand = torch.sigmoid(self.router_scale * (dissim - self.router_thresh))
+            ones = torch.ones_like(p_cand)
+            p_t = torch.where(has_prev > 0.5, p_cand, ones)
+            b_t = p_t >= 0.5
+            return p_t, b_t, k_t
+        if not has_prev or prev_k is None:
+            p_t = torch.ones((x0.shape[0],), device=x0.device, dtype=x0.dtype)
+            b_t = torch.ones((x0.shape[0],), device=x0.device, dtype=torch.bool)
+            return p_t, b_t, k_t
+        cos_sim = (q_t * prev_k).sum(dim=-1)
+        dissim = 0.5 * (1.0 - cos_sim)
+        p_t = torch.sigmoid(self.router_scale * (dissim - self.router_thresh))
+        b_t = p_t >= 0.5
+        return p_t, b_t, k_t
+
+    def dechunk_update(
+        self,
+        z_t: torch.Tensor,
+        p_t: torch.Tensor,
+        prev_z_bar: torch.Tensor | None,
+    ) -> torch.Tensor:
+        """Single-step EMA dechunker update: z_bar = p_t * z_t + (1 - p_t) * prev_z_bar."""
+        p_w = p_t.reshape(-1, 1, 1)
+        if prev_z_bar is None:
+            return p_w * z_t
+        return p_w * z_t + (1.0 - p_w) * prev_z_bar
+
+    def combine_skip(self, z_bar: torch.Tensor, x_t: torch.Tensor) -> torch.Tensor:
+        """Combine EMA-smoothed deep-core state with trained skip residual W_res x_t."""
+        return z_bar + self.residual_proj(x_t)
 
     def chunk(
         self,
@@ -290,7 +380,7 @@ def configure(
     dec_layers: int = 4,
     target_ratio: float = 4.0,
     ratio_loss_weight: float = 0.03,
-    min_seq_len: int = 32,
+    min_seq_len: int = 1,
     router_scale: float = 6.0,
     router_thresh_init: float = 0.25,
     lr: float | None = None,
@@ -328,6 +418,24 @@ def configure(
         chunker.ratio_loss_weight = float(ratio_loss_weight)
         chunker.min_seq_len = int(min_seq_len)
         chunker.router_scale = float(router_scale)
+
+    # Rebuild engine.decision so H-Net §2.4 3-stage CUDA graphs (enc / conditional core / dec)
+    # are active whenever configure() runs after load_strict_engine().
+    dec = getattr(engine, 'decision', None)
+    if dec is not None and not getattr(dec, '_hnet_section24', False):
+        from scripts.ib_local.scoped_decision_graph import ScopedDecisionGraph
+        from scripts.ib_local.language_navigation_turns_v3 import DecisionGraphV3
+        if isinstance(dec, ScopedDecisionGraph):
+            engine.decision = ScopedDecisionGraph(
+                engine.model,
+                capture=dec.capture,
+                optimize=dec.optimize,
+                pack_inputs=(dec._input_host is not None),
+                capture_handover=hasattr(dec, '_capture_handover_budget'),
+                fused_step=bool(dec.step_bundles),
+            )
+        elif isinstance(dec, DecisionGraphV3):
+            engine.decision = DecisionGraphV3(engine.model, capture=dec.capture)
 
     if config is not None:
         config['hnet_chunking'] = dict(

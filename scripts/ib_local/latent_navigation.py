@@ -241,6 +241,47 @@ class LatentNavigationBody(nn.Module):
             logits = self.phase_boltzmann.modulate_language_logits(logits, table_logp)
         return logits, next_state, diagnostics, h, reads[0]
 
+    def predict_observed_hnet_dec(self, h_enc, z_bar, state, table_logp, inc_bar, field_keys, field_bias, *, decode=True):
+        """H-Net §2.4 stage 3 with experience memory read hook, question conditioning & PSB modulation."""
+        features, reads = [], []
+
+        def inject(module, args):
+            hidden = args[0]
+            from scripts.ib_local.question_language_port import condition_hidden
+            original = hidden
+            projected = self.feature_read(hidden) if hasattr(self, 'feature_read') else hidden
+            feature = condition_hidden(self, projected)
+            if hasattr(self, 'expression_budget_to_hidden'):
+                from scripts.ib_local.variable_expression import condition_budget
+                feature = condition_budget(self, feature)
+            h = feature[0]
+            read = self.memory.read(h, self.encoder)
+            residual = self.to_hidden(read.value) * self.read_gain.tanh()
+            features.append(h)
+            reads.append(read)
+            residual = residual[None]
+            if hasattr(self, 'feature_read'):
+                delta = feature - projected + residual
+                hidden = original + self.feature_write(delta)
+            else:
+                hidden = feature + residual
+            return (hidden, *args[1:])
+
+        layer = getattr(self, 'experience_layer', self.body.inject_layer)
+        handle = self.base.layers[layer].register_forward_pre_hook(inject)
+        try:
+            logits, dec_state, diagnostics = self.body.predict_hnet_dec(
+                h_enc, z_bar, state, table_logp, inc_bar, field_keys, field_bias, decode=decode)
+        finally:
+            handle.remove()
+        h = features[0]
+        if decode and hasattr(self, 'question_to_hidden'):
+            from scripts.ib_local.question_language_port import condition_logits
+            logits = condition_logits(self, logits)
+        if decode and hasattr(self, 'phase_boltzmann'):
+            logits = self.phase_boltzmann.modulate_language_logits(logits, table_logp)
+        return logits, dec_state, diagnostics, h, reads[0]
+
     def predict(self, ids, state, table_logp):
         logits, next_state, diagnostics, _, _ = self.predict_observed(ids, state, table_logp)
         return logits, next_state, diagnostics
