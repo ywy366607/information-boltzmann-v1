@@ -429,3 +429,25 @@ def test_gaze_pointer_dual_channel_selection_training_and_checkpoint_roundtrip()
     for (n1, p1), (n2, p2) in zip(gp._dual().named_parameters(), engine2.model.gaze_pointer._dual().named_parameters()):
         assert n1 == n2
         assert float((p1 - p2).abs().max().item()) < 1e-6
+
+    # Verify closed-loop boundary supervision STILL trains `observe_to_action` when `out == 'none'` & `in == 'mother'`!
+    before_obs_w = gp._dual().observe_to_action.weight.detach().clone()
+    d_silent = gp.select_interaction(
+        engine, candidates=candidates, utterance_bytes=b'',
+        causal_values=dict(book=0.1, mother=0.9),
+        observe_causal_values=dict(book=0.2, mother=0.8),
+    )
+    assert d_silent['send_target'] == 'none'
+    b_obs_only = dict(
+        model=engine.model,
+        source=engine._internal_source[0],
+        raw_action=engine._internal_action[0],
+        actual_target_id='none',
+        actual_observe_id='mother',
+        boundary_target=torch.randn(16),
+        evidence_available=True,
+    )
+    r_obs = gp.settle_credit(0.06, evidence_available=True, boundary_context=b_obs_only)
+    assert r_obs is not None
+    assert r_obs['boundary_mse'] is not None
+    assert float((gp._dual().observe_to_action.weight.detach() - before_obs_w).abs().max().item()) > 0.0

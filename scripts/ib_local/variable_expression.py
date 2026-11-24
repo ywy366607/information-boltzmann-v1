@@ -298,7 +298,13 @@ def proposal_score(engine,proposal):
         hnet._pending_ratio_loss = None
     byte_terms=out[0][0,:n].log_softmax(-1).gather(1,ids[0,1:,None]).flatten()
     error=float((byte_terms.detach()-byte_terms.new_tensor(proposal['logp'])).abs().max())
-    # Floating GEMM near a discrete retrieval tie must follow the actual path.
+    stops=receipt['stops']
+    if stops and error<=1e-3:
+        index=torch.arange(1,len(stops)+1,device=engine.device)
+        logits=handover_logits(engine.model,out[3][index],remaining[0,index,None])
+        expected=logits.new_tensor([s['logit'] for s in stops])
+        error=max(error,float((logits.detach()-expected).abs().max()))
+    # Floating GEMM near a discrete retrieval tie or H-Net boundary must follow the exact 1-byte path.
     if error>1e-3:
         # The rejected batched graph is not part of the actual score. Drop
         # both owners before building the exact one-byte graph; otherwise its
@@ -318,7 +324,6 @@ def proposal_score(engine,proposal):
         error=float((byte_terms.detach()-byte_terms.new_tensor(proposal['logp'])).abs().max())
         engine._batched_replay_fallbacks=getattr(engine,'_batched_replay_fallbacks',0)+1
     else:engine._batched_replay_hits=getattr(engine,'_batched_replay_hits',0)+1
-    stops=receipt['stops']
     if stops:
         index=torch.arange(1,len(stops)+1,device=engine.device)
         logits=handover_logits(engine.model,out[3][index],remaining[0,index,None])

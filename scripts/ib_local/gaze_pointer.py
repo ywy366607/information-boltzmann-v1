@@ -414,6 +414,7 @@ class GazeObjectPointer(nn.Module):
         candidates: list[tuple[str, bytes]],
         utterance_bytes: bytes,
         causal_values: dict[str, float] | None = None,
+        observe_causal_values: dict[str, float] | None = None,
         stumble_ratio: float = 1.0,
         nll_norm: float = 0.0,
         last_speaker: str | None = None,
@@ -464,6 +465,14 @@ class GazeObjectPointer(nn.Module):
                 causal_prior_obj = torch.tensor(centered, device=dev, dtype=torch.float32)
                 causal_map = {cid: round(raw_vals[i], 5) for i, cid in enumerate(ids)}
 
+        obs_prior_obj = causal_prior_obj
+        if observe_causal_values:
+            raw_obs = [float(observe_causal_values.get(cid, 0.0)) for cid in ids]
+            if all(math.isfinite(v) for v in raw_obs):
+                mean_o = sum(raw_obs) / float(len(raw_obs))
+                centered_o = [max(-2.0, min(2.0, (v - mean_o) * self.causal_prior_scale)) for v in raw_obs]
+                obs_prior_obj = torch.tensor(centered_o, device=dev, dtype=torch.float32)
+
         # 1) OUT channel (`send_target`): active whenever MengLi speaks; `'none'` when silent.
         out_ids = list(ids) + (['none'] if allow_null_out else [])
         out_sampled = False
@@ -498,10 +507,10 @@ class GazeObjectPointer(nn.Module):
         in_obj_logits = self._compute_observe_logits(h, u, ctx, keys, recency)
         if allow_null_in:
             in_habit = torch.cat((in_obj_logits, dual.in_null_logit.reshape(1)), dim=0)
-            in_causal_prior = torch.cat((causal_prior_obj, torch.zeros(1, device=dev, dtype=torch.float32)), dim=0)
+            in_causal_prior = torch.cat((obs_prior_obj, torch.zeros(1, device=dev, dtype=torch.float32)), dim=0)
         else:
             in_habit = in_obj_logits
-            in_causal_prior = causal_prior_obj
+            in_causal_prior = obs_prior_obj
         in_total = in_habit + in_causal_prior
         in_probs_t = F.softmax(in_total, dim=-1)
         in_probs_np = in_probs_t.detach().cpu().numpy().astype(np.float64)
@@ -572,6 +581,7 @@ class GazeObjectPointer(nn.Module):
         candidates: list[tuple[str, bytes]],
         utterance_bytes: bytes,
         causal_values: dict[str, float] | None = None,
+        observe_causal_values: dict[str, float] | None = None,
         stumble_ratio: float = 1.0,
         nll_norm: float = 0.0,
         last_speaker: str | None = None,
@@ -692,14 +702,16 @@ class GazeObjectPointer(nn.Module):
             and math.isfinite(metal_g)
         )
 
-        # Check if we have a target-conditioned boundary supervision signal for `target_to_action`.
+        # Check if we have a target-conditioned boundary supervision signal for `target_to_action` / `observe_to_action`.
         has_boundary = (
             isinstance(boundary_context, dict)
             and boundary_context.get('boundary_target') is not None
             and boundary_context.get('source') is not None
             and boundary_context.get('raw_action') is not None
-            and boundary_context.get('actual_target_id') is not None
-            and str(boundary_context['actual_target_id']) in self.fingerprints
+            and (
+                str(boundary_context.get('actual_target_id') or '') in self.fingerprints
+                or str(boundary_context.get('actual_observe_id') or '') in self.fingerprints
+            )
             and boundary_context.get('model') is not None
         )
 
