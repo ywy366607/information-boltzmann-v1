@@ -714,8 +714,9 @@ def test_loss_masked_identity_card_separates_identical_hello_without_table_echo(
     seq = np.frombuffer('妈妈：你好'.encode('utf-8'), dtype=np.uint8)
     mask_len = len('妈妈：'.encode('utf-8'))
     before_p = float(np.exp(frozen_table_logp(table, np.concatenate((np.array([10], np.uint8), seq[:mask_len])))[-1, seq[mask_len - 1]]))
-    # Simulate world_learning_cycle read-only head + credit-only tail
-    _ = np.exp(frozen_table_logp(table, np.concatenate((np.array([10], np.uint8), seq[:mask_len]))))
+    # Simulate world_learning_cycle read-only head + credit-only tail (exact shape == (mask_len, 256)!)
+    head_probs = np.exp(frozen_table_logp(table, np.concatenate((np.array([10], np.uint8), seq[:mask_len - 1]))))
+    assert head_probs.shape == (mask_len, 256)
     table.run(np.concatenate((seq[mask_len - 1:mask_len], seq[mask_len:])))
     after_p = float(np.exp(frozen_table_logp(table, np.concatenate((np.array([10], np.uint8), seq[:mask_len])))[-1, seq[mask_len - 1]]))
     # Masked prefix receives ZERO Fast-Table counts (prob does not rise; compare unmasked table which memorizes it!)

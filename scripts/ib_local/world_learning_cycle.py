@@ -224,7 +224,9 @@ def world_cycle_step(engine, directions, age_ablate=False):
         if masked_in_piece > 0:
             # Identity-card / speaker-header prefix bytes are READ-ONLY for the Fast Table
             # (GDN still sees them in full, while Fast Table never memorizes role prefixes).
-            head_seq = np.concatenate((np.array([action_tail], np.uint8), chunk[:masked_in_piece]))
+            # `frozen_table_logp(table, seq)` returns 1 row per byte in `seq` (predicting the next byte),
+            # so `[action_tail, *chunk[:masked_in_piece - 1]]` yields exact shape `(masked_in_piece, 256)`.
+            head_seq = np.concatenate((np.array([action_tail], np.uint8), chunk[:masked_in_piece - 1]))
             head_probs = np.exp(frozen_table_logp(engine.table, head_seq)).astype(np.float32, copy=False)
             if masked_in_piece < len(chunk):
                 _, tail_probs, _ = engine.table.run_credit(
