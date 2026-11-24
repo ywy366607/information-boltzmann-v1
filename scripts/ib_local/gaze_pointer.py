@@ -165,6 +165,9 @@ class GazeObjectPointer(nn.Module):
 
         self._opt = torch.optim.Adam(self.parameters(), lr=self.lr)
         self.fingerprints: dict[str, torch.Tensor] = {}
+        self.fp_center: torch.Tensor | None = None
+        self.fp_center_ema: float = 0.05
+        self.max_rel_delta_norm: float = 0.45
         self.target_counts: dict[str, int] = {}
         self.target_g_ema: dict[str, float] = {}
         self.last_decision: dict | None = None
@@ -173,6 +176,51 @@ class GazeObjectPointer(nn.Module):
     @property
     def device(self) -> torch.device:
         return self.recency_weight.device
+
+    @torch.no_grad()
+    def _refresh_fp_center(self, *, snap: bool = False) -> None:
+        """Track smooth unweighted centroid across known objects to strip shared cone anisotropy."""
+        if len(self.fingerprints) < 2:
+            return
+        centroid = torch.stack(
+            [v.to(device=self.device, dtype=torch.float32) for v in self.fingerprints.values()],
+            dim=0,
+        ).mean(dim=0)
+        if self.fp_center is None or snap:
+            self.fp_center = centroid.detach()
+        else:
+            a = self.fp_center_ema
+            self.fp_center = ((1.0 - a) * self.fp_center.to(self.device) + a * centroid).detach()
+
+    def relative_fingerprint(self, obj_id: str) -> torch.Tensor:
+        """Return unit-normalized global-mean-centered object fingerprint `k_rel_i`.
+
+        Strips the shared byte/body common component (`cos ~ 0.995`) without batch-only
+        collapse: persists `fp_center` across turns so a lone in-scene object retains its
+        exact coordinate when another object leaves.
+        """
+        key = str(obj_id)
+        if key not in self.fingerprints:
+            return torch.zeros(self.d_model, device=self.device, dtype=torch.float32)
+        raw = self.fingerprints[key].to(device=self.device, dtype=torch.float32)
+        if self.fp_center is None:
+            if len(self.fingerprints) >= 2:
+                self._refresh_fp_center(snap=True)
+            else:
+                return torch.zeros_like(raw)
+        diff = raw - self.fp_center.to(device=self.device, dtype=torch.float32)
+        dn = float(diff.norm().item())
+        if dn < 1e-4:
+            return torch.zeros_like(raw)
+        return diff / dn
+
+    def _compute_delta(self, obj_id: str, act_scale: torch.Tensor | float) -> torch.Tensor:
+        """Differentiable scale-matched bounded target offset `delta(k_rel_i; ||a||)`."""
+        k_rel = self.relative_fingerprint(obj_id)
+        raw_v = self.target_to_action(k_rel)
+        v_norm = raw_v.norm(dim=-1, keepdim=True)
+        bounded = raw_v / (1.0 + v_norm / self.max_rel_delta_norm)
+        return bounded * act_scale
 
     def ensure_object(self, engine, obj_id: str, intro_bytes: bytes) -> torch.Tensor:
         key = str(obj_id)
@@ -183,22 +231,28 @@ class GazeObjectPointer(nn.Module):
                 g.manual_seed(abs(hash(key)) % (2 ** 31 - 1) + 1)
                 vec = F.normalize(torch.randn(self.d_model, generator=g), dim=-1).to(self.device)
             self.fingerprints[key] = vec.detach()
+            self._refresh_fp_center()
         return self.fingerprints[key]
 
     @torch.no_grad()
     def target_offset(self, obj_id: str | None, *, like: torch.Tensor | None = None) -> torch.Tensor:
-        """Return detached target-conditioning residual delta(k_i) in body action feature space."""
+        """Return detached scale-matched target-conditioning residual delta(k_rel_i) in body action space."""
         dev = like.device if like is not None else self.device
         dt = like.dtype if like is not None else torch.float32
         if obj_id is None or str(obj_id) not in self.fingerprints:
+            if like is not None and like.ndim >= 2:
+                return torch.zeros_like(like)
             return torch.zeros(self.d_model, device=dev, dtype=dt)
-        fp = self.fingerprints[str(obj_id)].to(device=self.device, dtype=torch.float32)
-        delta = self.target_to_action(fp)
+        if like is not None:
+            act_scale = like.detach().to(device=self.device, dtype=torch.float32).norm(dim=-1, keepdim=True).clamp_min(1.0)
+        else:
+            act_scale = 1.0
+        delta = self._compute_delta(str(obj_id), act_scale)
         return delta.to(device=dev, dtype=dt).detach()
 
     @torch.no_grad()
     def condition_action(self, action: torch.Tensor, obj_id: str | None) -> torch.Tensor:
-        """Form target-conditioned action a_tilde(target, u) = a(u) + delta(k_target)."""
+        """Form target-conditioned action a_tilde(target, u) = a(u) + delta(k_rel_target; ||a||)."""
         if obj_id is None or str(obj_id) not in self.fingerprints:
             return action
         if action.shape[-1] != self.d_model:
@@ -229,6 +283,7 @@ class GazeObjectPointer(nn.Module):
         else:
             a = self.fp_ema
             self.fingerprints[key] = F.normalize((1.0 - a) * prev.to(self.device) + a * obs, dim=-1, eps=1e-6).detach()
+        self._refresh_fp_center()
 
     def _compute_habit_logits(
         self,
@@ -289,7 +344,7 @@ class GazeObjectPointer(nn.Module):
         awaiting_flag = 1.0 if awaiting_from is not None else 0.0
         ctx = torch.tensor([stumble_c, has_speech, nll_c, awaiting_flag], device=dev, dtype=torch.float32)
 
-        key_list = [self.fingerprints[cid].to(dev) for cid in ids]
+        key_list = [self.relative_fingerprint(cid) for cid in ids]
         keys = torch.stack(key_list, dim=0)  # [M, d_model]
 
         rec_rows = []
@@ -420,34 +475,50 @@ class GazeObjectPointer(nn.Module):
                 raw_act = boundary_context['raw_action'].detach().to(device=dev, dtype=torch.float32).reshape(1, -1)
                 tgt_feat = boundary_context['boundary_target'].detach().to(device=dev, dtype=torch.float32).reshape(1, -1)
                 tid = str(boundary_context['actual_target_id'])
-                fp = self.fingerprints[tid].to(device=dev, dtype=torch.float32)
                 if raw_act.shape[-1] == self.d_model and hasattr(model, 'encoder'):
-                    cond_act = raw_act + self.target_to_action(fp).reshape(1, -1)
-                    enc_w = model.encoder.weight.detach().to(device=dev, dtype=torch.float32)
-                    enc_b = None if model.encoder.bias is None else model.encoder.bias.detach().to(device=dev, dtype=torch.float32)
-                    enc_tgt = F.linear(tgt_feat, enc_w, enc_b)
-                    # Route through existing frozen transition + mother_from_boundary weights if present.
-                    if hasattr(model, 'internal_transition'):
-                        z_s = F.linear(src, enc_w, enc_b)
-                        z_a = F.linear(cond_act, enc_w, enc_b)
-                        tr_w = model.internal_transition.weight.detach().to(device=dev, dtype=torch.float32)
-                        tr_b = None if model.internal_transition.bias is None else model.internal_transition.bias.detach().to(device=dev, dtype=torch.float32)
-                        base_pred = z_s + F.linear(torch.cat((z_s, z_a - z_s), -1), tr_w, tr_b)
+                    act_scale = raw_act.detach().norm(dim=-1, keepdim=True).clamp_min(1.0)
+                    cond_act = raw_act + self._compute_delta(tid, act_scale)
+                    enc_w = model.encoder.weight
+                    enc_dev, enc_dt = enc_w.device, enc_w.dtype
+                    src_m = src.to(device=enc_dev, dtype=enc_dt)
+                    cond_m = cond_act.to(device=enc_dev, dtype=enc_dt)
+                    tgt_m = tgt_feat.to(device=enc_dev, dtype=enc_dt)
+                    enc_tgt = model.encoder(tgt_m).detach()
+                    # Match Wood's actual causal prior (`causal_relation_program.py`):
+                    # `long_predictor(cat(z_s, z_a)) + mother_from_boundary(...)`.
+                    if hasattr(model, 'long_predictor'):
+                        z_s = model.encoder(src_m).detach()
+                        z_a = model.encoder(cond_m)
+                        base_pred = model.long_predictor(torch.cat((z_s, z_a), -1))
                         if hasattr(model, 'mother_from_boundary'):
-                            mb_w = model.mother_from_boundary.weight.detach().to(device=dev, dtype=torch.float32)
-                            pred = base_pred + F.linear(base_pred, mb_w)
+                            pred = base_pred + model.mother_from_boundary(base_pred)
+                        else:
+                            pred = base_pred
+                    elif hasattr(model, 'internal_transition'):
+                        z_s = model.encoder(src_m).detach()
+                        z_a = model.encoder(cond_m)
+                        base_pred = z_s + model.internal_transition(torch.cat((z_s, z_a - z_s), -1))
+                        if hasattr(model, 'mother_from_boundary'):
+                            pred = base_pred + model.mother_from_boundary(base_pred)
                         else:
                             pred = base_pred
                     else:
-                        pred = F.linear(cond_act, enc_w, enc_b)
-                    b_mse = F.mse_loss(pred, enc_tgt)
+                        pred = model.encoder(cond_m)
+                    b_mse = F.mse_loss(pred.float(), enc_tgt.float()).to(device=dev, dtype=torch.float32)
                     boundary_mse_val = float(b_mse.item())
                     total_loss = total_loss + self.boundary_loss_weight * b_mse
 
             if total_loss.requires_grad:
+                # Use `autograd.grad` restricted strictly to GazeObjectPointer params so
+                # frozen body modules (`encoder`, `long_predictor`, `mother_from_boundary`)
+                # never accumulate `.grad` buffers.
+                params = [p for p in self.parameters() if p.requires_grad]
+                grads = torch.autograd.grad(total_loss, params, allow_unused=True)
                 self._opt.zero_grad(set_to_none=True)
-                total_loss.backward()
-                torch.nn.utils.clip_grad_norm_(self.parameters(), 1.0)
+                for p, g in zip(params, grads):
+                    if g is not None:
+                        p.grad = g.detach()
+                torch.nn.utils.clip_grad_norm_(params, 1.0)
                 self._opt.step()
 
         with torch.no_grad():
@@ -510,10 +581,12 @@ class GazeObjectPointer(nn.Module):
         self._opt.load_state_dict(restored)
 
     def export_dynamic_state(self) -> dict:
-        """Export exact dynamic object fingerprints, empirical stats & bit-exact Adam optimizer state."""
+        """Export exact dynamic object fingerprints, global center, stats & bit-exact Adam state."""
         return dict(
             schema=2,
+            centered_target_v1=True,
             fingerprints={k: v.detach().cpu().float().tolist() for k, v in self.fingerprints.items()},
+            fp_center=(None if self.fp_center is None else self.fp_center.detach().cpu().float().tolist()),
             target_counts=dict(self.target_counts),
             target_g_ema={k: float(v) for k, v in self.target_g_ema.items()},
             optimizer_state_b64=self._export_optimizer_state(),
@@ -527,21 +600,66 @@ class GazeObjectPointer(nn.Module):
             t = torch.tensor(vals, device=self.device, dtype=torch.float32)
             if t.numel() == self.d_model:
                 self.fingerprints[str(k)] = F.normalize(t, dim=-1, eps=1e-6).detach()
+        center_vals = state.get('fp_center')
+        if center_vals is not None:
+            ct = torch.tensor(center_vals, device=self.device, dtype=torch.float32)
+            self.fp_center = ct.detach() if ct.numel() == self.d_model else None
+        else:
+            self.fp_center = None
+            self._refresh_fp_center(snap=True)
         self.target_counts = {str(k): int(v) for k, v in (state.get('target_counts') or {}).items()}
         self.target_g_ema = {str(k): float(v) for k, v in (state.get('target_g_ema') or {}).items()}
         if state.get('schema') == 2 and state.get('optimizer_state_b64') is not None:
             self._load_optimizer_state(state['optimizer_state_b64'])
+        if not state.get('centered_target_v1'):
+            # Clean migration from pre-centering checkpoints: zero-reset ONLY `target_to_action`
+            # and its Adam slot (preserving habit weights, fingerprints & stats) so the new
+            # centered + scale-matched Wood predictor starts cleanly with zero stale bias.
+            with torch.no_grad():
+                self.target_to_action.weight.zero_()
+            self._opt.state.pop(self.target_to_action.weight, None)
         self._pending = None
 
+    def _supply_metrics(self) -> dict:
+        """SADL-inspired upstream separation telemetry (raw cone vs centered relative keys)."""
+        keys = sorted(self.fingerprints.keys())
+        if len(keys) < 2:
+            return dict(raw_fp_max_cos=None, rel_fp_max_cos=None, delta_unit_sep=None)
+        raw_max = -1.0
+        rel_max = -1.0
+        d_sep_max = 0.0
+        with torch.no_grad():
+            raws = [self.fingerprints[k].to(self.device) for k in keys]
+            rels = [self.relative_fingerprint(k) for k in keys]
+            deltas = [self._compute_delta(k, 1.0) for k in keys]
+            for i in range(len(keys)):
+                for j in range(i + 1, len(keys)):
+                    rc = float(F.cosine_similarity(raws[i][None], raws[j][None]).item())
+                    raw_max = max(raw_max, rc)
+                    if float(rels[i].norm()) > 1e-4 and float(rels[j].norm()) > 1e-4:
+                        kc = float(F.cosine_similarity(rels[i][None], rels[j][None]).item())
+                        rel_max = max(rel_max, kc)
+                    d_sep_max = max(d_sep_max, float((deltas[i] - deltas[j]).norm().item()))
+        return dict(
+            raw_fp_max_cos=round(raw_max, 5),
+            rel_fp_max_cos=round(rel_max, 5),
+            delta_unit_sep=round(d_sep_max, 5),
+        )
+
     def diagnostics(self) -> dict:
+        supply = self._supply_metrics()
         return dict(
             schema=2,
+            centered_target_v1=True,
             d_model=self.d_model,
             d_gaze=self.d_gaze,
             param_count=sum(p.numel() for p in self.parameters()),
             step_count=int(self.step_count.item()),
             boundary_steps=int(self.boundary_steps.item()),
             target_to_action_norm=round(float(self.target_to_action.weight.detach().norm().item()), 6),
+            raw_fp_max_cos=supply['raw_fp_max_cos'],
+            rel_fp_max_cos=supply['rel_fp_max_cos'],
+            delta_unit_sep=supply['delta_unit_sep'],
             baseline_g=round(float(self.baseline_g.item()), 6),
             mean_entropy=round(float(self.mean_entropy.item()), 4),
             known_objects=sorted(self.fingerprints.keys()),

@@ -465,6 +465,9 @@ def main():
                 branch_id=branch_id,
                 committed_sha=ckpt_sha,
             )
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
         return ckpt_sha
 
     if args.bind_dashboard:

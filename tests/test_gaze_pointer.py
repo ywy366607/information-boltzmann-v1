@@ -279,3 +279,86 @@ def test_external_interrupt_does_not_corrupt_alif_rhythm_phi():
     assert float(rhythm.eligibility.abs().max().item()) == 0.0
     assert float(rhythm.pending_eligibility.abs().max().item()) == 0.0
 
+
+def test_centered_relative_fingerprints_break_anisotropy_cone_and_match_wood_scale():
+    """Verify global centering expands cos=0.995 cone to -1.0, preserves solo continuity,
+    trains cleanly through frozen long_predictor + mother_from_boundary with zero model grad
+    leakage, scales delta with ||a||, and migrates legacy schema-2 checkpoints safely.
+    """
+    torch.manual_seed(19)
+    d = 32
+    d_lat = 16
+    eng = _make_gaze_engine(d_model=d)
+    eng.model.encoder = nn.Linear(d, d_lat)
+    eng.model.long_predictor = nn.Sequential(nn.Linear(2 * d_lat, d_lat), nn.GELU(), nn.Linear(d_lat, d_lat))
+    eng.model.mother_from_boundary = nn.Linear(d_lat, d_lat, bias=False)
+    ptr = gp_mod.configure(eng, {}, d_gaze=16, lr=0.015, boundary_loss_weight=0.5)
+
+    # Construct an extreme anisotropic cone: cos(book, mother) = 0.995 (matching real cycle 3860!).
+    shared = torch.nn.functional.normalize(torch.ones(d), dim=-1)
+    orth = torch.nn.functional.normalize(
+        torch.tensor([1.0 if i % 2 == 0 else -1.0 for i in range(d)]), dim=-1
+    )
+    k_book = torch.nn.functional.normalize(shared + 0.05 * orth, dim=-1)
+    k_mother = torch.nn.functional.normalize(shared - 0.05 * orth, dim=-1)
+    raw_cos = float(torch.nn.functional.cosine_similarity(k_book[None], k_mother[None]).item())
+    assert raw_cos > 0.994 and raw_cos < 0.996
+
+    ptr.fingerprints['book'] = k_book.clone()
+    ptr.fingerprints['mother'] = k_mother.clone()
+    ptr._refresh_fp_center(snap=True)
+
+    rel_b = ptr.relative_fingerprint('book')
+    rel_m = ptr.relative_fingerprint('mother')
+    rel_cos = float(torch.nn.functional.cosine_similarity(rel_b[None], rel_m[None]).item())
+    assert rel_cos < -0.999
+
+    # Solo continuity: even when only `book` is passed as candidate, `k_rel(book)` stays identical!
+    rel_b_before = rel_b.clone()
+    ptr.select_target(eng, candidates=[('book', b'book')], utterance_bytes=b'hi')
+    assert torch.allclose(ptr.relative_fingerprint('book'), rel_b_before, atol=1e-6)
+
+    # Real body-scale action ||a|| ~ 58.0: train 20 steps through frozen Wood prior.
+    src = torch.randn(d) * (58.0 / (d ** 0.5))
+    raw_act = torch.randn(d) * (58.0 / (d ** 0.5))
+    act_norm = float(raw_act.norm().item())
+    tgt_book = torch.randn(d) * 10.0 + 4.0
+    tgt_mother = torch.randn(d) * 10.0 - 4.0
+    for step in range(20):
+        tid = 'book' if step % 2 == 0 else 'mother'
+        b_ctx = dict(
+            model=eng.model, source=src, raw_action=raw_act,
+            actual_target_id=tid, boundary_target=(tgt_book if tid == 'book' else tgt_mother),
+        )
+        ptr.settle_credit(None, evidence_available=False, boundary_context=b_ctx)
+
+    # Zero gradient leakage onto frozen body modules!
+    for mod in (eng.model.encoder, eng.model.long_predictor, eng.model.mother_from_boundary):
+        for p in mod.parameters():
+            assert p.grad is None
+
+    # Action separation is real body-scale (> 5% of ||a||) yet smoothly bounded (< 0.9 * ||a||).
+    a_book = ptr.condition_action(raw_act, 'book')
+    a_mother = ptr.condition_action(raw_act, 'mother')
+    sep = float((a_book - a_mother).norm().item())
+    assert sep > 0.05 * act_norm
+    assert float((a_book - raw_act).norm().item()) < 0.45 * act_norm + 1e-3
+    assert float((a_mother - raw_act).norm().item()) < 0.45 * act_norm + 1e-3
+
+    diag = ptr.diagnostics()
+    assert diag['raw_fp_max_cos'] > 0.994
+    assert diag['rel_fp_max_cos'] < -0.999
+    assert diag['delta_unit_sep'] > 0.05
+
+    # Legacy schema-2 checkpoint migration: zero-resets ONLY target_to_action, keeps q_state & initializes fp_center.
+    legacy_dyn = ptr.export_dynamic_state()
+    legacy_dyn.pop('centered_target_v1', None)
+    legacy_dyn.pop('fp_center', None)
+    with torch.no_grad():
+        ptr.q_state.weight.fill_(0.123)
+    ptr.load_dynamic_state(legacy_dyn)
+    assert ptr.fp_center is not None
+    assert float(ptr.target_to_action.weight.abs().max().item()) == 0.0
+    assert abs(float(ptr.q_state.weight.mean().item()) - 0.123) < 1e-6
+
+
