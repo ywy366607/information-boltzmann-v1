@@ -51,6 +51,19 @@ _CJK_RUN_RE = re.compile(r'[\u4e00-\u9fff]+')
 _VOCAL_MOTHER_RE = re.compile(r'(妈妈|妈咪|^\s*(?:mama|mommy|mom)\b)', re.IGNORECASE)
 _VOCAL_PARENT_RE = re.compile(r'(爸爸|爹地|^\s*(?:papa|daddy|dad)\b)', re.IGNORECASE)
 _NAME_OPENING_RE = re.compile(r'^\s*(?:小?梦漓|meng\s*li)\b|^\s*小?梦漓', re.IGNORECASE)
+_LEADING_STAGE_RE = re.compile(r'^\s*(?:[（(][^（）()]{1,24}[）)]|\*[^*\n]{1,30}\*)\s*')
+_INLINE_STAGE_RE = re.compile(
+    r'[（(][^（）()]{0,12}(?:笑|微笑|轻声|柔声|点头|眨眼|摸|抱|拍|叹|顿|看|指|摇|低声|温声|smile|laugh|chuckl|nod|gently|softly|whisper|hug|pat|warm)[^（）()]{0,12}[）)]|\*[^*\n]{1,30}\*',
+    re.IGNORECASE,
+)
+
+
+def _strip_stage_directions(text: str) -> str:
+    """Remove theatrical stage directions like `（轻声笑）`, `(smiles)`, `*chuckles*` before delivery."""
+    cleaned = _LEADING_STAGE_RE.sub('', text)
+    cleaned = _INLINE_STAGE_RE.sub('', cleaned)
+    cleaned = re.sub(r'\s{2,}', ' ', cleaned).strip()
+    return cleaned or text.strip()
 
 
 def _terms(text: str) -> set[str]:
@@ -1096,6 +1109,7 @@ class UnifiedWorldPort:
                 cue_parts.append(f'最近几轮刚用过“{"/".join(stale[:2])}”，本轮换全新的自然起句，直接说内容')
             if cue_parts or self.mother_turns > 0:
                 cue_parts.append(style_rot[self.mother_turns % len(style_rot)])
+                cue_parts.append('只说出口的纯口语，不写任何括号或星号舞台动作描写')
             opening_cue = '；'.join(cue_parts) if cue_parts else None
             packet = format_caregiver_turn(
                 snapshot,
@@ -1117,7 +1131,7 @@ class UnifiedWorldPort:
             reply = self.caregiver.reply(turn)
             if not isinstance(reply, str) or not reply.strip():
                 raise RuntimeError('mother returned no usable reply; world not advanced')
-            reply = reply.strip()
+            reply = _strip_stage_directions(reply.strip())
 
             # Track name-opening & cliché-opening cadence so Mother varies openings naturally.
             if _NAME_OPENING_RE.search(reply[:14]):

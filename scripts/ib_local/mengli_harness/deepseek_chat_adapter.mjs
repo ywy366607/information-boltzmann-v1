@@ -90,10 +90,9 @@ export class DeepSeekChatAdapter extends LlmAdapter {
       throw new LlmError(`Request exceeds the ${contextBudget}-token heuristic run budget after compaction`, 'CONTEXT_BUDGET');
     }
     const body = {
-      model: options.model, messages, temperature: options.temperature ?? 0.7,
+      model: options.model, messages, temperature: options.temperature ?? 1.0,
       max_tokens: maxTokens, stream: false,
       thinking: { type: enableThinking ? 'enabled' : 'disabled' },
-      ...(isConversation && !enableThinking ? { frequency_penalty: 0.4, presence_penalty: 0.3 } : {}),
     };
     const url = 'https://api.deepseek.com/chat/completions';
     const key = createHash('sha256').update(JSON.stringify({ namespace: 'mengli-chat-wire-v1', transport: url, body })).digest('hex');

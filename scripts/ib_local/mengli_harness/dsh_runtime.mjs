@@ -44,14 +44,14 @@ function settingsOf(settings = {}) {
   const valid = Boolean(
     profile &&
     resolved.model === DEFAULT_SETTINGS.model &&
-    resolved.temperature === DEFAULT_SETTINGS.temperature &&
+    [0.7, 1.0, 1.3].includes(resolved.temperature) &&
     [120, 180, 240].includes(resolved.max_tokens) &&
     resolved.headroom_tokens === profile.headroom_tokens &&
     profile.retain_tokens.includes(resolved.retain_tokens) &&
     profile.summary_tokens.includes(resolved.summary_tokens)
   );
   requireValue(valid, 'INVALID_SETTINGS',
-    'Supported caregiver profiles: deepseek-flash temp 0.7, context 8192/32768/65536 with matching headroom/retain/summary budgets');
+    'Supported caregiver profiles: deepseek-flash temp 0.7/1.0/1.3, context 8192..524288 with matching headroom/retain/summary budgets');
   return resolved;
 }
 function boundaryOf(ref) { return ref.result_seq ?? ref.turn_end_seq; }

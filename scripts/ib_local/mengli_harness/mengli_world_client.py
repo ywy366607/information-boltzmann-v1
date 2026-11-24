@@ -34,7 +34,7 @@ SETTINGS_128K = dict(model='deepseek-flash', temperature=.7, max_tokens=120,
 SETTINGS_256K = dict(model='deepseek-flash', temperature=.7, max_tokens=120,
                      context_tokens=262144, headroom_tokens=4096,
                      retain_tokens=None, summary_tokens=2048)
-SETTINGS_512K = dict(model='deepseek-flash', temperature=.7, max_tokens=120,
+SETTINGS_512K = dict(model='deepseek-flash', temperature=1.0, max_tokens=120,
                      context_tokens=524288, headroom_tokens=4096,
                      retain_tokens=None, summary_tokens=2048)
 
@@ -93,7 +93,12 @@ class DshMother:
             raise ValueError('an independent caregiver branch identity is required')
         self.policy = policy
         self.settings = dict(DEFAULT_SETTINGS, **(settings or {}))
-        self.settings['temperature'] = .7 if policy in ('responsive_v3', 'umwelt_mother_v1') else 0.
+        if policy == 'umwelt_mother_v1':
+            self.settings['temperature'] = 1.0
+        elif policy == 'responsive_v3':
+            self.settings['temperature'] = .7
+        else:
+            self.settings['temperature'] = 0.
         self.provenance = copy.deepcopy(provenance or {})
         self.checkpoint_ref = None
         self.turn_count = 0
@@ -163,7 +168,12 @@ class DshMother:
         if self.checkpoint_ref is not None:
             raise ValueError('changing a committed DSH persona requires a new explicit migration')
         self.policy = policy
-        self.settings['temperature'] = .7 if policy in ('responsive_v3', 'umwelt_mother_v1') else 0.
+        if policy == 'umwelt_mother_v1':
+            self.settings['temperature'] = 1.0
+        elif policy == 'responsive_v3':
+            self.settings['temperature'] = .7
+        else:
+            self.settings['temperature'] = 0.
 
     def reply(self, transcript):
         turns = [[str(who), str(text)] for who, text in transcript]

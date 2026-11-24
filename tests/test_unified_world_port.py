@@ -733,6 +733,13 @@ def test_loss_masked_identity_card_separates_identical_hello_without_table_echo(
     unmasked_p = float(np.exp(frozen_table_logp(unmasked, np.concatenate((np.array([10], np.uint8), seq[:mask_len])))[-1, seq[mask_len - 1]]))
     assert unmasked_p > 3.0 * after_p
 
+    # Verify theatrical stage directions are cleanly stripped before delivery.
+    from scripts.ib_local.unified_world_port import _strip_stage_directions
+    assert _strip_stage_directions('（轻声笑）ed di，你像在敲小鼓点呢。') == 'ed di，你像在敲小鼓点呢。'
+    assert _strip_stage_directions('*smiles warmly* Look at that little boat!') == 'Look at that little boat!'
+    assert _strip_stage_directions('慢一点没关系（摸摸头），咱们一起看。') == '慢一点没关系，咱们一起看。'
+
+
 
 
 
