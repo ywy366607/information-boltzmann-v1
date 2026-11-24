@@ -700,6 +700,7 @@ def main():
                     sub_events=len(sub_events),
                 )
                 ev_f.write(json.dumps(rec, ensure_ascii=False) + '\n')
+                ev_f.flush()
 
                 cur_life = _life_elapsed()
                 if cur_life >= next_eval_at:

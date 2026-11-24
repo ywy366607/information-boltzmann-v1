@@ -261,19 +261,38 @@ class MultiSourceEventStream:
         self.path = Path(path).resolve()
         if not self.path.exists():
             raise FileNotFoundError(f'multi-source event corpus not found: {self.path}')
-        scenes: list[dict] = []
-        for raw_line in self.path.read_text(encoding='utf-8').splitlines():
-            line = raw_line.strip()
-            if not line:
-                continue
-            obj = json.loads(line)
-            turns = obj.get('turns')
-            if isinstance(turns, list) and turns:
-                scenes.append(obj)
-        if not scenes:
+        # Store only lightweight byte offsets (~128 KB for 16k scenes instead of ~300 MB of Python dicts).
+        offsets: list[int] = []
+        with self.path.open('rb') as f:
+            while True:
+                pos = f.tell()
+                raw_line = f.readline()
+                if not raw_line:
+                    break
+                if raw_line.strip():
+                    offsets.append(pos)
+        if not offsets:
             raise ValueError(f'multi-source event corpus has no valid scenes: {self.path}')
-        self.scenes = scenes
-        self.cursor = int(cursor) % len(self.scenes)
+        self._offsets = offsets
+        self.scene_count = len(offsets)
+        self.cursor = int(cursor) % self.scene_count
+
+    @property
+    def scenes(self) -> list[int]:
+        """Lightweight length-compatible view (`len(stream.scenes)` without holding parsed dicts in RAM)."""
+        return self._offsets
+
+    def _read_scene(self, index: int) -> dict | None:
+        pos = self._offsets[int(index) % self.scene_count]
+        with self.path.open('rb') as f:
+            f.seek(pos)
+            raw_line = f.readline()
+        line = raw_line.decode('utf-8', errors='replace').strip()
+        if not line:
+            return None
+        obj = json.loads(line)
+        turns = obj.get('turns')
+        return obj if isinstance(turns, list) and turns else None
 
     @staticmethod
     def _format_header(speaker: str) -> str:
@@ -382,10 +401,12 @@ class MultiSourceEventStream:
         start_cursor = int(self.cursor)
 
         guard = 0
-        while len(buf) < total and guard < len(self.scenes) * 4 + 4:
+        while len(buf) < total and guard < self.scene_count * 4 + 4:
             guard += 1
-            sc = self.scenes[self.cursor]
-            self.cursor = (self.cursor + 1) % len(self.scenes)
+            sc = self._read_scene(self.cursor)
+            self.cursor = (self.cursor + 1) % self.scene_count
+            if sc is None:
+                continue
             sc_bytes, sc_spans, sc_trans, sc_obs = self._encode_scene(sc)
             if not sc_bytes:
                 continue
@@ -1648,7 +1669,12 @@ class UnifiedWorldPort:
             self._roster_dirty_notice = None
             env_prefix_len = min(int(len(tag)), response_bytes)
             resp = np.concatenate((tag, resp[:max(0, response_bytes - len(tag))]))
-        book_action_caused = bool(is_navigation or gaze_target == 'book')
+        gaze_chose_book = (
+            gaze_target == 'book'
+            and isinstance(gaze_decision, dict)
+            and bool(gaze_decision.get('sampled', False))
+        )
+        book_action_caused = bool(is_navigation or gaze_chose_book)
         return resp, cont, self._finalize_membrane_event(
             dict(
                 info,
