@@ -4,7 +4,7 @@ import { pathToFileURL } from 'node:url';
 
 const packageRoot = process.env.MENGLI_DSH_PACKAGE_ROOT || 'F:/16、杂货行账册/ledger-dsh/node_modules/@deepseek-ai';
 const { defineTool } = await import(pathToFileURL(path.join(packageRoot, 'dsh-tools/lib/index.js')).href);
-const { CommandDefinitionId } = await import(pathToFileURL(path.join(packageRoot, 'dsh-commands/lib/brand.js')).href);
+const { CommandDefinitionId } = await import(pathToFileURL(path.join(packageRoot, 'dsh-commands/lib/types/brand.js')).href);
 
 export const name = 'mengli-family';
 export const inject = ['tools', 'agents', 'goals', 'sessions', 'connection', 'webServer', 'commands'];
