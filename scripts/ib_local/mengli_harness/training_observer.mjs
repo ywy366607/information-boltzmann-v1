@@ -103,11 +103,16 @@ export class TrainingObserver {
           card.branch_id !== binding.branch_id || path.resolve(card.source?.checkpoint ?? '') !== checkpoint ||
           !Number.isSafeInteger(card.source?.cycle) || card.age?.cycles !== card.source.cycle ||
           !/^[0-9a-f]{64}$/.test(card.source?.sha256 ?? '')) throw new Error('Life card does not match selected body');
+      const guardFile = boundedPath(binding.guard_status, roots), guard = json(guardFile);
+      const inboxFile = binding.inbox_file ? boundedPath(binding.inbox_file, roots) : null;
+      const ownerAlive = alive(guard.pid), workerAlive = alive(guard.child_pid);
+      const status = guard.status === 'running' && (!ownerAlive || !workerAlive) ? 'interrupted' : guard.status;
+      const liveStreaming = status === 'running';
       const merged = new Map(); let limited = false;
       const files = binding.segments.map(segment => path.join(boundedPath(segment, roots), 'metrics.jsonl'));
       for (const file of files) {
         const log = this.readRows(file); limited ||= log.limited;
-        for (const row of log.rows) if (row.cycle <= card.source.cycle) merged.set(row.cycle, row);
+        for (const row of log.rows) if (liveStreaming || row.cycle <= card.source.cycle) merged.set(row.cycle, row);
       }
       const all = [...merged.values()].sort((a, b) => a.cycle - b.cycle);
       limited ||= all.length > 128;
@@ -120,7 +125,7 @@ export class TrainingObserver {
       limited ||= start > 0;
       const rows = recent.slice(start), last = rows.at(-1), cycle = last?.cycle ?? null;
       card = familyLife({ card, state: 'saved' }, checkpoint,
-        { row: rows.find(row => row.cycle === card.source.cycle) }).card;
+        { row: rows.find(row => row.cycle === card.source.cycle) ?? last }).card;
       const topoFile = boundedPath(path.join(body, 'reservoir-topology.json'), roots);
       let topology;
       if (fs.existsSync(topoFile) && last?.cycle === card.source.cycle) {
@@ -133,10 +138,6 @@ export class TrainingObserver {
         if (topology && row === last) view.phases.topology = topology;
         return view;
       };
-      const guardFile = boundedPath(binding.guard_status, roots), guard = json(guardFile);
-      const inboxFile = binding.inbox_file ? boundedPath(binding.inbox_file, roots) : null;
-      const ownerAlive = alive(guard.pid), workerAlive = alive(guard.child_pid);
-      const status = guard.status === 'running' && (!ownerAlive || !workerAlive) ? 'interrupted' : guard.status;
       const events = rows.slice(-64).map(row => {
         const w = row.world ?? {};
         const src = w.source ?? 'text';
@@ -165,8 +166,8 @@ export class TrainingObserver {
             active_floor: w.active_floor ?? null,
             explicit_target: w.explicit_target ?? null,
             target_object_id: w.target_object_id ?? null,
-            gaze_target: w.gaze_target ?? null,
-            gaze_probs: w.gaze_probs ?? null,
+            gaze_target: w.gaze_target ?? w.gaze_decision?.target_id ?? null,
+            gaze_probs: w.gaze_probs ?? w.gaze_decision?.probs ?? null,
             evidence_available: row.evidence_available ?? null,
             perspective_mode: w.perspective_mode ?? null,
             care_stage: w.care_stage ?? null,
