@@ -1,13 +1,11 @@
-import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const packageRoot = process.env.MENGLI_DSH_PACKAGE_ROOT || 'F:/16、杂货行账册/ledger-dsh/node_modules/@deepseek-ai';
 const { defineTool } = await import(pathToFileURL(path.join(packageRoot, 'dsh-tools/lib/index.js')).href);
-const { CommandDefinitionId } = await import(pathToFileURL(path.join(packageRoot, 'dsh-commands/lib/types/brand.js')).href);
 
 export const name = 'mengli-family';
-export const inject = ['tools', 'agents', 'goals', 'sessions', 'connection', 'webServer', 'commands'];
+export const inject = ['tools', 'agents', 'goals', 'sessions', 'connection', 'webServer'];
 
 /** Remove only the retired inline MengLi dashboard previously injected into this installed index. */
 export function cleanOfficialIndex(html) {
@@ -137,39 +135,6 @@ export async function apply(ctx, config) {
     return { resumed };
   };
   ctx.provide('mengliFamily', { pauseCare, resumeCare });
-
-  // Register `/clear` slash command so parents can cleanly reset the workbench chat context in-place.
-  ctx.effect(function* () {
-    yield ctx.commands.register({
-      definitionId: CommandDefinitionId('mengli-family/command-clear'),
-      name: 'clear',
-      description: '清空当前工作台对话上下文（不影响梦漓本体与照护记忆）',
-      handler: async invocation => {
-        const session = invocation.agent.session;
-        const events = session.snapshotEvents();
-        const lastReplace = events.findLastIndex(ev => ev.surfaceOp?.op === 'replace');
-        const active = lastReplace >= 0 ? events.slice(lastReplace) : events;
-        const clearable = active.filter(ev =>
-          ['user/message', 'assistant/message', 'tool/result', 'tool/call'].includes(ev.type),
-        );
-        if (!clearable.length) {
-          return { kind: 'success', text: '当前对话上下文已是空的。' };
-        }
-        const startSeq = clearable[0].seq;
-        const endSeq = clearable[clearable.length - 1].seq;
-        session.append('user/message', {
-          id: randomUUID(),
-          role: 'user',
-          content: [{ type: 'text', text: '[家长执行了 /clear：工作台会话上下文已清空，请从这里开始新的对话；如需了解梦漓最新状态与聊天记录，随时调用 family_state / family_history。]' }],
-          source: { kind: 'system' },
-        }, {
-          surfaceOp: { op: 'replace', startSeq, endSeq },
-        });
-        await ctx.sessions.flush(session);
-        return { kind: 'success', text: `已清空 ${clearable.length} 条工作台上下文记录（梦漓与妈妈的共享照护记忆保留完整）。` };
-      },
-    });
-  }, 'mengli-command-clear');
 
   const parameters = {
     family_state: { after: { type: 'integer', description: 'Optional new workbench-event cursor. Inherited care dialogue is separate and remains available in recent_care_history/family_history even at cursor 0.' } },
