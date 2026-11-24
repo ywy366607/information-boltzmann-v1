@@ -225,7 +225,8 @@ def test_priority_preemption_and_parent_observation_sync(tmp_path: Path):
     resp, cont, info = port.take(b'apple', 256, 256)
     assert info['channel'] == 'live_participant'
     assert info['speaker'] == '爸爸'
-    assert '爸爸：梦漓，你看苹果为什么会掉下来？' in bytes(resp[:info['mother_bytes']]).decode('utf-8')
+    assert '梦漓，你看苹果为什么会掉下来？' in bytes(resp[:info['mother_bytes']]).decode('utf-8')
+    assert '[来自:' not in bytes(resp[:info['mother_bytes']]).decode('utf-8')
     port.commit_pending_turn(metal_g=0.01)
     assert len(transport.parent_observations) == 1
     assert transport.parent_observations[0]['caregiver'] == 'parent'
@@ -243,7 +244,7 @@ def test_priority_preemption_and_parent_observation_sync(tmp_path: Path):
     assert info3['channel'] == 'dsh_mother'
     assert info3['routing_reason'] == 'vocal_call_mother'
     assert 'calc' in transport.prepared_packets[-1]
-    assert '妈妈：' in bytes(resp3[:info3['mother_bytes']]).decode('utf-8', 'ignore')
+    assert '妈妈：' not in bytes(resp3[:info3['mother_bytes']]).decode('utf-8', 'ignore')
     assert '[来自:书页]' not in bytes(resp3).decode('utf-8', 'ignore')
     port.commit_pending_turn(metal_g=0.03)
     assert port.mother_turns == 1
@@ -432,11 +433,12 @@ def test_yoneda_bidirectional_mother_proactive_and_dynamic_objects(tmp_path: Pat
     assert '[起句节奏]' in transport.prepared_packets[-1]
     assert port.turns_since_name_call >= 1
 
-    # 4. Vocal call (`妈妈你看`) always routes to Mother (`vocal_call_mother`).
+    # 4. Vocal call (`妈妈你看`) always routes to Mother (`vocal_call_mother`, pure natural language, zero prefix).
     resp1, _, info1 = port.take('妈妈你看'.encode('utf-8'), 256, 256)
     assert info1['channel'] == 'dsh_mother'
     assert info1['routing_reason'] == 'vocal_call_mother'
-    assert '妈妈：' in bytes(resp1[:info1['mother_bytes']]).decode('utf-8')
+    assert '[来自:' not in bytes(resp1[:info1['mother_bytes']]).decode('utf-8')
+    assert '妈妈：' not in bytes(resp1[:info1['mother_bytes']]).decode('utf-8')
 
     # 5. Explicit addressing `@书页` navigates book directly (Mother stays out of the way, zero markup tag).
     resp3, _, info3 = port.take('@书页 gravity'.encode('utf-8'), 256, 256)

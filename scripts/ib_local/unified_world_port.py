@@ -666,13 +666,10 @@ class UnifiedWorldPort:
             prefix_lines.append(self._roster_dirty_notice)
             self._roster_dirty_notice = None
         if self.envelope_tags and source_label:
-            # Natural Chinese dialogue prefix for people (`妈妈：`/`爸爸：`), compact bracket for tools/objects.
-            # Never emit `[来自:书页]` markup on ambient book continuation (prevents FastTable bracket echoing).
-            if source_label.startswith('工具:') or source_label.startswith('tool:'):
-                body = f'[{source_label}] {body}'
-            elif source_label in ('妈妈', '爸爸'):
-                body = f'{source_label}：{body}'
-            else:
+            # Human speakers (妈妈 / 爸爸) and storybook pages flow as pure, prefix-free natural language
+            # (empirical probe on cycle 3787 proved 86.7%-90.0% internal separability without prefixes,
+            # while prefixes slightly hurt separation and risk echoing). Keep compact tags for tools/objects only.
+            if source_label not in ('妈妈', '爸爸', '书页'):
                 body = f'[{source_label}] {body}'
         prefix_lines.append(body)
         full = '\n'.join(prefix_lines) + '\n'
@@ -1082,7 +1079,7 @@ class UnifiedWorldPort:
                 reply, ambient, response_bytes, source_label='妈妈',
             )
             self._record_shared_page(heldout)
-            self._observe_gaze_object('mother', f'妈妈：{reply}'.encode('utf-8'))
+            self._observe_gaze_object('mother', reply.encode('utf-8'))
 
             self._pending_commit = dict(
                 kind='mother',
