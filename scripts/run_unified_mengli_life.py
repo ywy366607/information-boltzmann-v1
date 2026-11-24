@@ -47,6 +47,45 @@ DEFAULT_CHAMPION = Path('D:/mengli-alif-hnet-1600b-flux-30min-20261124/body/last
 DEFAULT_HARNESS_URL = 'http://127.0.0.1:8902'
 
 
+def _load_or_lock_eval_facts(engine, work_dir: Path):
+    """Load the locked 64-fact anchor, or deterministically lock one from the body's relation bank."""
+    candidates = [
+        FRESH_FACTS,
+        (PROJECT / 'data/eval/locked_eval_facts_64.pt').resolve(),
+        (work_dir / 'locked_eval_facts_64.pt').resolve(),
+    ]
+    for path in candidates:
+        if path.exists():
+            return torch.load(path, map_location=engine.device, weights_only=False)
+
+    from dataclasses import replace as _dc_replace
+    from scripts.ib_local.causal_use_value import queries as _use_queries
+
+    bank = engine.model.causal_relations
+    all_indices = sorted(
+        (i for i in range(bank.capacity) if int(bank.identity[i]) > 0),
+        key=lambda i: int(bank.identity[i]),
+    )
+    fresh = []
+    with torch.no_grad():
+        for i in all_indices:
+            st = bank.state(i)
+            facts = tuple(_use_queries(engine, st))
+            if not facts:
+                continue
+            st = _dc_replace(st, constraints=facts, evidence_bound=True, extra=(), organization=None, variable_uses=())
+            for f in facts:
+                fresh.append((st, f))
+                if len(fresh) == 64:
+                    break
+            if len(fresh) == 64:
+                break
+    save_path = (PROJECT / 'data/eval/locked_eval_facts_64.pt').resolve()
+    save_path.parent.mkdir(parents=True, exist_ok=True)
+    torch.save(fresh, save_path)
+    return torch.load(save_path, map_location=engine.device, weights_only=False)
+
+
 def _restore_unified_state_if_present(port, base_world, *, skip_dsh_session: bool = False) -> bool:
     """Restore any inherited DSH/unified state carried inside `base_world.retained`.
 
@@ -344,7 +383,7 @@ def main():
                 total_scored_bytes=8192,
             )
             cn_segs = segments(cn_spec)
-        facts_payload = torch.load(FRESH_FACTS, map_location=engine.device, weights_only=False)
+        facts_payload = _load_or_lock_eval_facts(engine, work)
         try:
             with torch.no_grad():
                 fresh_res = score(engine, fresh_segs)
