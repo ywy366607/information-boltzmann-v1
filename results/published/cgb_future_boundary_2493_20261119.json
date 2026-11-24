@@ -1,0 +1,1043 @@
+{
+  "valid": false,
+  "checks": {
+    "same_choice": true,
+    "same_utterance": true,
+    "same_current_unknown": true,
+    "same_archived_source": false,
+    "same_archived_action": false,
+    "source_unchanged": true,
+    "sql_read_only": true,
+    "cpu_rng": true,
+    "gpu_rng": true,
+    "bank_unchanged": true
+  },
+  "source_cycle": 2493,
+  "source_sha256": "7cccc744d4549eca2662727cba6b4c900609393243b9fb557dee6a2f17498107",
+  "reference": "D:\\information-boltzmann-v1\\scratch\\cgb_self_execution_loop_2493_20261119\\native",
+  "source_episode": 2495,
+  "original_integrated_value": 0.018606513738632202,
+  "actual_next_policy_value": 0.05691247689016521,
+  "actual_next_unknown": "unknown:1352",
+  "cases": [
+    {
+      "case": "mean_response_predicted_boundary",
+      "value": -0.0464642234146595,
+      "seconds": 3.2266896000000997,
+      "raw_MSE": 7.368941307067871,
+      "latent_MSE": 0.8207879066467285,
+      "details": [
+        {
+          "dynamics": {
+            "raw_support": 7,
+            "latent_residual": 5.960464477539062e-07,
+            "raw_displacement": 26.532169342041016
+          },
+          "address": {
+            "matched": true,
+            "relation": 237,
+            "generation": 5,
+            "similarity": 0.7743133902549744
+          },
+          "question_probability": [
+            0.13808313012123108,
+            0.07622236013412476,
+            0.3013821840286255,
+            0.48431238532066345
+          ],
+          "question_values": [
+            -0.03134588152170181,
+            -0.03155256062746048,
+            -0.03202619403600693,
+            -0.062106095254421234
+          ],
+          "cases": [
+            {
+              "role": "mother",
+              "identity": "pending:71f6183f2df649038503a9c31c6885ddcfd01f7d79aedc290c3f281ac028cd2f",
+              "scope": [
+                "shadow:carried:237:14:mother",
+                "episode:104",
+                "episode:1133",
+                "episode:203",
+                "episode:2216",
+                "episode:2345",
+                "episode:2389",
+                "episode:283"
+              ],
+              "programs": [
+                1324,
+                951,
+                1293,
+                1512
+              ],
+              "program_stamps": [
+                1532560,
+                1102715,
+                1500460,
+                1747034
+              ],
+              "proposal_probability": [
+                0.31428074836730957,
+                0.3680016100406647,
+                0.15246960520744324,
+                0.1652480512857437
+              ],
+              "actor_values": [
+                -0.03136470913887024,
+                -0.03230750188231468,
+                -0.029395373538136482,
+                -0.030968254432082176
+              ],
+              "intention_source_shift": 1.3028666973114014,
+              "word_execution": "native_anchor"
+            },
+            {
+              "role": "action",
+              "identity": "pending:5d6037e7d2e8c35656ca3357d6d40e36f5b572eec9886803a4eaa7cd31a32a78",
+              "scope": [
+                "shadow:carried:237:14:mother",
+                "episode:104",
+                "episode:1133",
+                "episode:203",
+                "episode:2216",
+                "episode:2345",
+                "episode:2389",
+                "episode:283"
+              ],
+              "programs": [
+                951,
+                1324,
+                1080,
+                1293
+              ],
+              "program_stamps": [
+                1102715,
+                1532560,
+                1251887,
+                1500460
+              ],
+              "proposal_probability": [
+                0.29887810349464417,
+                0.2589997947216034,
+                0.2965625524520874,
+                0.14555948972702026
+              ],
+              "actor_values": [
+                -0.032828934490680695,
+                -0.03190818056464195,
+                -0.030877752229571342,
+                -0.029673876240849495
+              ],
+              "intention_source_shift": 0.6836130619049072,
+              "word_execution": "native_anchor"
+            },
+            {
+              "role": "condition",
+              "identity": "pending:0776bfddbb98e4fcb197b257a5148c706db0f691658eeab7b2fa11a462ad63e2",
+              "scope": [
+                "shadow:carried:237:14:mother",
+                "episode:104",
+                "episode:1133",
+                "episode:203",
+                "episode:2216",
+                "episode:2345",
+                "episode:2389",
+                "episode:283"
+              ],
+              "programs": [
+                163,
+                951,
+                1180,
+                1080
+              ],
+              "program_stamps": [
+                212915,
+                1102715,
+                1372792,
+                1251887
+              ],
+              "proposal_probability": [
+                0.21295364201068878,
+                0.2977481782436371,
+                0.18875566124916077,
+                0.30054256319999695
+              ],
+              "actor_values": [
+                -0.031147100031375885,
+                -0.03402483090758324,
+                -0.030859816819429398,
+                -0.03140157461166382
+              ],
+              "intention_source_shift": 1.5360383987426758,
+              "word_execution": "native_anchor"
+            },
+            {
+              "role": "condition",
+              "identity": "unknown:758",
+              "scope": [
+                "episode:104",
+                "episode:1066",
+                "episode:109",
+                "episode:203",
+                "episode:263",
+                "episode:267",
+                "episode:283",
+                "episode:837"
+              ],
+              "programs": [
+                1061,
+                212,
+                302,
+                163
+              ],
+              "program_stamps": [
+                1228305,
+                272410,
+                345570,
+                212915
+              ],
+              "proposal_probability": [
+                0.09115954488515854,
+                0.37121742963790894,
+                0.366893470287323,
+                0.17072956264019012
+              ],
+              "actor_values": [
+                -0.05969161540269852,
+                -0.06190881133079529,
+                -0.0634128749370575,
+                -0.061015985906124115
+              ],
+              "intention_source_shift": 4.8279829025268555,
+              "word_execution": "native_anchor"
+            }
+          ],
+          "model": "raw boundary posterior + native typed questions + transported observed word programs",
+          "terminal": "one explicit Q/program/actor step; original learned terminal value; current intero persistence",
+          "word_endpoint_model": "observed action displacement transported to predicted raw boundary",
+          "reuse_model": "highest native reuse weight; transported endpoint"
+        }
+      ]
+    },
+    {
+      "case": "actual_response_predicted_boundary",
+      "value": 0.2937113046646118,
+      "seconds": 3.1819403000008606,
+      "raw_MSE": 7.045646667480469,
+      "latent_MSE": 0.7439638376235962,
+      "details": [
+        {
+          "dynamics": {
+            "raw_support": 7,
+            "latent_residual": 1.1920928955078125e-06,
+            "raw_displacement": 22.692110061645508
+          },
+          "address": {
+            "matched": true,
+            "relation": 237,
+            "generation": 5,
+            "similarity": 0.7762013077735901
+          },
+          "question_probability": [
+            0.3441341817378998,
+            0.19184032082557678,
+            0.4582596719264984,
+            0.005765854846686125
+          ],
+          "question_values": [
+            0.2977736294269562,
+            0.2922237515449524,
+            0.2932995557785034,
+            0.13347072899341583
+          ],
+          "cases": [
+            {
+              "role": "mother",
+              "identity": "pending:1ee86243658af415b3b596da76e10019ffffbe90e24f5d1f6fd0eeee8f01ad38",
+              "scope": [
+                "shadow:carried:237:14:mother",
+                "episode:104",
+                "episode:1133",
+                "episode:203",
+                "episode:2216",
+                "episode:2345",
+                "episode:2389",
+                "episode:283"
+              ],
+              "programs": [
+                1857,
+                1819,
+                1416,
+                1559
+              ],
+              "program_stamps": [
+                2145137,
+                2102052,
+                1641416,
+                1812639
+              ],
+              "proposal_probability": [
+                0.3629896342754364,
+                0.36175334453582764,
+                0.20263664424419403,
+                0.07262039929628372
+              ],
+              "actor_values": [
+                0.30982664227485657,
+                0.2891328036785126,
+                0.29357436299324036,
+                0.2922881841659546
+              ],
+              "intention_source_shift": 1.2168595790863037,
+              "word_execution": "native_anchor"
+            },
+            {
+              "role": "action",
+              "identity": "pending:0f29119de4574673b5689719272cb9077d55e26a3853120ea5bdd1743fdcbe2b",
+              "scope": [
+                "shadow:carried:237:14:mother",
+                "episode:104",
+                "episode:1133",
+                "episode:203",
+                "episode:2216",
+                "episode:2345",
+                "episode:2389",
+                "episode:283"
+              ],
+              "programs": [
+                1416,
+                1559,
+                1529,
+                1541
+              ],
+              "program_stamps": [
+                1641416,
+                1812639,
+                1772727,
+                1787997
+              ],
+              "proposal_probability": [
+                0.2810409963130951,
+                0.11199727654457092,
+                0.17843742668628693,
+                0.42852428555488586
+              ],
+              "actor_values": [
+                0.2933271825313568,
+                0.2920193672180176,
+                0.29118871688842773,
+                0.291984498500824
+              ],
+              "intention_source_shift": 0.7393037676811218,
+              "word_execution": "native_anchor"
+            },
+            {
+              "role": "condition",
+              "identity": "pending:ca0487caea7cc920432a154b2e1dceec3432ee59f5bddf5b07d61019e9a74fc1",
+              "scope": [
+                "shadow:carried:237:14:mother",
+                "episode:104",
+                "episode:1133",
+                "episode:203",
+                "episode:2216",
+                "episode:2345",
+                "episode:2389",
+                "episode:283"
+              ],
+              "programs": [
+                1041,
+                1416,
+                1559,
+                1541
+              ],
+              "program_stamps": [
+                1205514,
+                1641416,
+                1812639,
+                1787997
+              ],
+              "proposal_probability": [
+                0.2576857805252075,
+                0.2630600929260254,
+                0.13031768798828125,
+                0.34893640875816345
+              ],
+              "actor_values": [
+                0.29522016644477844,
+                0.29357022047042847,
+                0.2924248278141022,
+                0.292003870010376
+              ],
+              "intention_source_shift": 1.7454196214675903,
+              "word_execution": "native_anchor"
+            },
+            {
+              "role": "condition",
+              "identity": "unknown:1313",
+              "scope": [
+                "episode:1133",
+                "episode:1321",
+                "episode:1566",
+                "episode:1616",
+                "episode:1897",
+                "episode:203",
+                "episode:267",
+                "episode:283"
+              ],
+              "programs": [
+                1041,
+                496,
+                321,
+                529
+              ],
+              "program_stamps": [
+                1205514,
+                466585,
+                384423,
+                526793
+              ],
+              "proposal_probability": [
+                0.03868171572685242,
+                0.922075629234314,
+                0.01685473509132862,
+                0.02238796092569828
+              ],
+              "actor_values": [
+                -0.01878627948462963,
+                0.1466861069202423,
+                -0.026218485087156296,
+                -0.02753089740872383
+              ],
+              "intention_source_shift": 5.065496444702148,
+              "word_execution": "native_anchor"
+            }
+          ],
+          "model": "raw boundary posterior + native typed questions + transported observed word programs",
+          "terminal": "one explicit Q/program/actor step; original learned terminal value; current intero persistence",
+          "word_endpoint_model": "observed action displacement transported to predicted raw boundary",
+          "reuse_model": "highest native reuse weight; transported endpoint"
+        }
+      ]
+    },
+    {
+      "case": "actual_response_actual_latent",
+      "value": 0.06918536871671677,
+      "seconds": 3.2068139000002702,
+      "raw_MSE": 7.045646667480469,
+      "latent_MSE": 0.7439638376235962,
+      "details": [
+        {
+          "dynamics": {
+            "actual_boundary_substitution": true,
+            "latent_residual": 0.0
+          },
+          "address": {
+            "matched": true,
+            "relation": 285,
+            "generation": 6,
+            "similarity": 0.9191770553588867
+          },
+          "question_probability": [
+            0.0005529565969482064,
+            0.0003911200910806656,
+            0.0185037050396204,
+            0.9805522561073303
+          ],
+          "question_values": [
+            -0.041825324296951294,
+            -0.04042477160692215,
+            -0.046389319002628326,
+            0.0714726597070694
+          ],
+          "cases": [
+            {
+              "role": "mother",
+              "identity": "pending:91da11cf28738f2282c1cf51e528511f8360a847f13414d6100c6b13e672b5af",
+              "scope": [
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:2066",
+                "episode:2345",
+                "episode:2440",
+                "episode:267",
+                "episode:283"
+              ],
+              "programs": [
+                1851,
+                1820,
+                2038,
+                2206
+              ],
+              "program_stamps": [
+                2138008,
+                2103140,
+                2352077,
+                2544807
+              ],
+              "proposal_probability": [
+                0.1426955908536911,
+                0.18635468184947968,
+                0.32187169790267944,
+                0.3490779995918274
+              ],
+              "actor_values": [
+                -0.04091983661055565,
+                -0.04588376358151436,
+                -0.04151633754372597,
+                -0.040313784033060074
+              ],
+              "intention_source_shift": 1.3295867443084717,
+              "word_execution": "native_anchor"
+            },
+            {
+              "role": "action",
+              "identity": "pending:db7f4ceec917da77ea47c78c8f283f2cf4c43e7058d50b3ec18e8740394c815a",
+              "scope": [
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:2066",
+                "episode:2345",
+                "episode:2440",
+                "episode:267",
+                "episode:283"
+              ],
+              "programs": [
+                1851,
+                1820,
+                2038,
+                2206
+              ],
+              "program_stamps": [
+                2138008,
+                2103140,
+                2352077,
+                2544807
+              ],
+              "proposal_probability": [
+                0.14431451261043549,
+                0.1710314303636551,
+                0.32589367032051086,
+                0.35876041650772095
+              ],
+              "actor_values": [
+                -0.039558496326208115,
+                -0.04434869810938835,
+                -0.04039270803332329,
+                -0.038931719958782196
+              ],
+              "intention_source_shift": 0.8592499494552612,
+              "word_execution": "native_anchor"
+            },
+            {
+              "role": "condition",
+              "identity": "pending:2ca7753ceb28c16bc2af5d66ddfd209f5ca76ded1dd3964940b872bc38dbab5c",
+              "scope": [
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:2066",
+                "episode:2345",
+                "episode:2440",
+                "episode:267",
+                "episode:283"
+              ],
+              "programs": [
+                1851,
+                1820,
+                2038,
+                2096
+              ],
+              "program_stamps": [
+                2138008,
+                2103140,
+                2352077,
+                2423177
+              ],
+              "proposal_probability": [
+                0.184305801987648,
+                0.20454715192317963,
+                0.40425440669059753,
+                0.20689260959625244
+              ],
+              "actor_values": [
+                -0.04417920485138893,
+                -0.04891493543982506,
+                -0.04502837359905243,
+                -0.04852038249373436
+              ],
+              "intention_source_shift": 0.9725513458251953,
+              "word_execution": "native_anchor"
+            },
+            {
+              "role": "condition",
+              "identity": "unknown:1352",
+              "scope": [
+                "episode:1368",
+                "episode:1673",
+                "episode:1911",
+                "episode:203",
+                "episode:2460",
+                "episode:263",
+                "episode:267",
+                "episode:283"
+              ],
+              "programs": [
+                1206,
+                2096,
+                877,
+                2038
+              ],
+              "program_stamps": [
+                1402930,
+                2423177,
+                1015721,
+                2352077
+              ],
+              "proposal_probability": [
+                0.13300469517707825,
+                0.0565580315887928,
+                0.0483078807592392,
+                0.7621293663978577
+              ],
+              "actor_values": [
+                0.06790325045585632,
+                0.06746762245893478,
+                0.06725925207138062,
+                0.07265986502170563
+              ],
+              "intention_source_shift": 6.192615032196045,
+              "word_execution": "native_anchor"
+            }
+          ],
+          "model": "raw boundary posterior + native typed questions + transported observed word programs",
+          "terminal": "one explicit Q/program/actor step; original learned terminal value; current intero persistence",
+          "word_endpoint_model": "observed action displacement transported to predicted raw boundary",
+          "reuse_model": "highest native reuse weight; transported endpoint"
+        }
+      ]
+    },
+    {
+      "case": "actual_response_actual_raw",
+      "value": 0.06209780275821686,
+      "seconds": 3.311162300000433,
+      "raw_MSE": 7.045646667480469,
+      "latent_MSE": 0.7439638376235962,
+      "details": [
+        {
+          "dynamics": {
+            "actual_boundary_substitution": true,
+            "latent_residual": 0.0
+          },
+          "address": {
+            "matched": true,
+            "relation": 285,
+            "generation": 6,
+            "similarity": 0.9191771149635315
+          },
+          "question_probability": [
+            0.0009184346999973059,
+            0.0006440504221245646,
+            0.036835927516222,
+            0.9616016745567322
+          ],
+          "question_values": [
+            -0.05457725748419762,
+            -0.05378487706184387,
+            -0.05886287987232208,
+            0.06692046672105789
+          ],
+          "cases": [
+            {
+              "role": "mother",
+              "identity": "pending:28a003893ec5bfc90244c5fd63e5847fbe7101fbc135a1e71018d2b6f9a4cd02",
+              "scope": [
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:2066",
+                "episode:2345",
+                "episode:2440",
+                "episode:267",
+                "episode:283"
+              ],
+              "programs": [
+                1851,
+                1820,
+                2038,
+                2206
+              ],
+              "program_stamps": [
+                2138008,
+                2103140,
+                2352077,
+                2544807
+              ],
+              "proposal_probability": [
+                0.12062428891658783,
+                0.19903084635734558,
+                0.26008620858192444,
+                0.4202587306499481
+              ],
+              "actor_values": [
+                -0.05444047972559929,
+                -0.05716284364461899,
+                -0.05518835783004761,
+                -0.05301380902528763
+              ],
+              "intention_source_shift": 1.169569730758667,
+              "word_execution": "native_anchor"
+            },
+            {
+              "role": "action",
+              "identity": "pending:b964a2915fa6dd22ae808f8ed7d723b641ff3cc6596918f3b1e4edc6a75d3ef1",
+              "scope": [
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:2066",
+                "episode:2345",
+                "episode:2440",
+                "episode:267",
+                "episode:283"
+              ],
+              "programs": [
+                1851,
+                1820,
+                2038,
+                2206
+              ],
+              "program_stamps": [
+                2138008,
+                2103140,
+                2352077,
+                2544807
+              ],
+              "proposal_probability": [
+                0.12262492626905441,
+                0.18444876372814178,
+                0.2654714584350586,
+                0.4274548292160034
+              ],
+              "actor_values": [
+                -0.05366433039307594,
+                -0.056333500891923904,
+                -0.05454251915216446,
+                -0.052249182015657425
+              ],
+              "intention_source_shift": 0.7179276943206787,
+              "word_execution": "native_anchor"
+            },
+            {
+              "role": "condition",
+              "identity": "pending:678c97589d99970dff88649d02c2ae46b3ec20b8caef81101f8c5ceb0a8aadde",
+              "scope": [
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:2066",
+                "episode:2345",
+                "episode:2440",
+                "episode:267",
+                "episode:283"
+              ],
+              "programs": [
+                1851,
+                1820,
+                2038,
+                2096
+              ],
+              "program_stamps": [
+                2138008,
+                2103140,
+                2352077,
+                2423177
+              ],
+              "proposal_probability": [
+                0.16638974845409393,
+                0.2366723120212555,
+                0.3471165895462036,
+                0.24982136487960815
+              ],
+              "actor_values": [
+                -0.05720296874642372,
+                -0.05997567996382713,
+                -0.0581246092915535,
+                -0.05994001775979996
+              ],
+              "intention_source_shift": 1.0024282932281494,
+              "word_execution": "native_anchor"
+            },
+            {
+              "role": "condition",
+              "identity": "unknown:1352",
+              "scope": [
+                "episode:1368",
+                "episode:1673",
+                "episode:1911",
+                "episode:203",
+                "episode:2460",
+                "episode:263",
+                "episode:267",
+                "episode:283"
+              ],
+              "programs": [
+                1206,
+                2096,
+                877,
+                2038
+              ],
+              "program_stamps": [
+                1402930,
+                2423177,
+                1015721,
+                2352077
+              ],
+              "proposal_probability": [
+                0.1280081421136856,
+                0.046873290091753006,
+                0.04699617996811867,
+                0.7781224250793457
+              ],
+              "actor_values": [
+                0.06165771186351776,
+                0.06125832349061966,
+                0.06099160760641098,
+                0.06848540157079697
+              ],
+              "intention_source_shift": 6.376041412353516,
+              "word_execution": "native_anchor"
+            }
+          ],
+          "model": "raw boundary posterior + native typed questions + transported observed word programs",
+          "terminal": "one explicit Q/program/actor step; original learned terminal value; current intero persistence",
+          "word_endpoint_model": "observed action displacement transported to predicted raw boundary",
+          "reuse_model": "highest native reuse weight; transported endpoint"
+        }
+      ]
+    },
+    {
+      "case": "actual_response_actual_raw_identified",
+      "value": 0.06209780275821686,
+      "seconds": 1.033959299998969,
+      "raw_MSE": 7.045646667480469,
+      "latent_MSE": 0.7439638376235962,
+      "details": [
+        {
+          "dynamics": {
+            "actual_boundary_substitution": true,
+            "latent_residual": 0.0
+          },
+          "address": {
+            "matched": true,
+            "relation": 285,
+            "generation": 6,
+            "similarity": 0.9191771149635315
+          },
+          "question_probability": [
+            0.0009184346999973059,
+            0.0006440504221245646,
+            0.036835927516222,
+            0.9616016745567322
+          ],
+          "question_values": [
+            -0.05457725748419762,
+            -0.05378487706184387,
+            -0.05886287987232208,
+            0.06692046672105789
+          ],
+          "cases": [
+            {
+              "role": "mother",
+              "identity": "pending:28a003893ec5bfc90244c5fd63e5847fbe7101fbc135a1e71018d2b6f9a4cd02",
+              "scope": [
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:2066",
+                "episode:2345",
+                "episode:2440",
+                "episode:267",
+                "episode:283"
+              ],
+              "programs": [
+                1851,
+                1820,
+                2038,
+                2206
+              ],
+              "program_stamps": [
+                2138008,
+                2103140,
+                2352077,
+                2544807
+              ],
+              "proposal_probability": [
+                0.12062428891658783,
+                0.19903084635734558,
+                0.26008620858192444,
+                0.4202587306499481
+              ],
+              "actor_values": [
+                -0.05444047972559929,
+                -0.05716284364461899,
+                -0.05518835783004761,
+                -0.05301380902528763
+              ],
+              "intention_source_shift": 1.169569730758667,
+              "word_execution": "native_anchor"
+            },
+            {
+              "role": "action",
+              "identity": "pending:b964a2915fa6dd22ae808f8ed7d723b641ff3cc6596918f3b1e4edc6a75d3ef1",
+              "scope": [
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:2066",
+                "episode:2345",
+                "episode:2440",
+                "episode:267",
+                "episode:283"
+              ],
+              "programs": [
+                1851,
+                1820,
+                2038,
+                2206
+              ],
+              "program_stamps": [
+                2138008,
+                2103140,
+                2352077,
+                2544807
+              ],
+              "proposal_probability": [
+                0.12262492626905441,
+                0.18444876372814178,
+                0.2654714584350586,
+                0.4274548292160034
+              ],
+              "actor_values": [
+                -0.05366433039307594,
+                -0.056333500891923904,
+                -0.05454251915216446,
+                -0.052249182015657425
+              ],
+              "intention_source_shift": 0.7179276943206787,
+              "word_execution": "native_anchor"
+            },
+            {
+              "role": "condition",
+              "identity": "pending:678c97589d99970dff88649d02c2ae46b3ec20b8caef81101f8c5ceb0a8aadde",
+              "scope": [
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:2066",
+                "episode:2345",
+                "episode:2440",
+                "episode:267",
+                "episode:283"
+              ],
+              "programs": [
+                1851,
+                1820,
+                2038,
+                2096
+              ],
+              "program_stamps": [
+                2138008,
+                2103140,
+                2352077,
+                2423177
+              ],
+              "proposal_probability": [
+                0.16638974845409393,
+                0.2366723120212555,
+                0.3471165895462036,
+                0.24982136487960815
+              ],
+              "actor_values": [
+                -0.05720296874642372,
+                -0.05997567996382713,
+                -0.0581246092915535,
+                -0.05994001775979996
+              ],
+              "intention_source_shift": 1.0024282932281494,
+              "word_execution": "native_anchor"
+            },
+            {
+              "role": "condition",
+              "identity": "unknown:1352",
+              "scope": [
+                "episode:1368",
+                "episode:1673",
+                "episode:1911",
+                "episode:203",
+                "episode:2460",
+                "episode:263",
+                "episode:267",
+                "episode:283"
+              ],
+              "programs": [
+                1206,
+                2096,
+                877,
+                2038
+              ],
+              "program_stamps": [
+                1402930,
+                2423177,
+                1015721,
+                2352077
+              ],
+              "proposal_probability": [
+                0.1280081421136856,
+                0.046873290091753006,
+                0.04699617996811867,
+                0.7781224250793457
+              ],
+              "actor_values": [
+                0.06165771186351776,
+                0.06125832349061966,
+                0.06099160760641098,
+                0.06848540157079697
+              ],
+              "intention_source_shift": 6.376041412353516,
+              "word_execution": "native_anchor"
+            }
+          ],
+          "model": "raw boundary posterior + native typed questions + transported observed word programs",
+          "terminal": "one explicit Q/program/actor step; original learned terminal value; current intero persistence",
+          "word_endpoint_model": "observed action displacement transported to predicted raw boundary",
+          "reuse_model": "highest native reuse weight; transported endpoint"
+        }
+      ]
+    }
+  ],
+  "ordered_value_chain": [
+    0.018606513738632202,
+    -0.0464642234146595,
+    0.2937113046646118,
+    0.06918536871671677,
+    0.06209780275821686,
+    0.06209780275821686,
+    0.05691247689016521
+  ],
+  "signed_differences": [
+    0.0650707371532917,
+    -0.3401755280792713,
+    0.22452593594789505,
+    0.0070875659584999084,
+    0.0,
+    0.005185325868051649
+  ],
+  "reconstruction_residual": 0.0,
+  "interpretation": "hindsight inputs are substituted in the old complete body; last difference includes later learning, physical state, scope and actual generation",
+  "optimizer_updates": 0,
+  "world_calls": 0,
+  "seconds": 177.64485199999763
+}

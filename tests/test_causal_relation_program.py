@@ -40,6 +40,30 @@ def test_conjugate_dual_solve_matches_primal_and_noise_scale():
     torch.testing.assert_close(log_score(p,q[:,:3]),expected)
 
 
+@pytest.mark.parametrize('dtype', [torch.float32, torch.float64])
+def test_same_query_evidence_update_has_the_grounded_revision_identity(dtype):
+    """Map the review's affine identity to the ACTUAL posterior function.
+
+    This is a conjugate-algebra unit check, not a learning experiment. Other
+    contexts need not improve, and the production evidence budget is bounded.
+    """
+    generator = torch.Generator().manual_seed(151115)
+    x = torch.randn(5, 4, generator=generator, dtype=dtype)
+    y = torch.randn(5, 3, generator=generator, dtype=dtype)
+    query = torch.tensor([[1., .3, -.2, .7]], dtype=dtype)
+    observed = torch.tensor([[.8, -.4, 1.2]], dtype=dtype)
+    ridge = .3
+    old = posterior(x, y, query, ridge)
+    new = posterior(torch.cat((x, query)), torch.cat((y, observed)), query, ridge)
+    precision = x.T @ x + ridge * torch.eye(x.shape[1], dtype=dtype)
+    leverage = (query @ torch.linalg.solve(precision, query.T)).squeeze()
+    gain = leverage / (1 + leverage)
+    assert 0 < gain < 1
+    torch.testing.assert_close(new['mean'], old['mean'] + gain * (observed - old['mean']))
+    torch.testing.assert_close(new['mean'] - observed,
+                               (1 - gain) * (old['mean'] - observed))
+
+
 def test_empty_evidence_is_finite_and_role_axes_do_not_mix():
     p = posterior(torch.zeros(0,4),torch.zeros(0,3),torch.randn(2,4),.1)
     assert torch.isfinite(log_score(p,torch.randn(2,3))).all()

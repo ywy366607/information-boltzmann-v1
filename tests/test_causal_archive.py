@@ -10,12 +10,48 @@ from scripts.ib_local.causal_archive import attach_archive, sha256
 from scripts.ib_local.causal_relation_program import Evidence, Port, mechanism, real_evidence
 from test_causal_relation_program import configured
 
+@pytest.mark.parametrize('device', ['cpu', 'cuda'])
+def test_bulk_sync_preserves_complete_sql_payloads(device, tmp_path):
+    if device == 'cuda' and not torch.cuda.is_available():
+        pytest.skip('CUDA archive transfer parity')
+    e, _ = populated()
+    e.model.to(device)
+    archive = attach_archive(e, tmp_path)
+    try:
+        archive.sync(bulk=False)
+        before = list(archive.db.iterdump())
+        archive.sync(bulk=True)
+        assert list(archive.db.iterdump()) == before
+        archive._payload_cache.clear()
+        archive.sync(pack_rows=1)
+        assert list(archive.db.iterdump()) == before
+        assert archive.db.execute('PRAGMA foreign_key_check').fetchall() == []
+    finally:
+        archive.close()
 
 def populated():
     engine = configured()
     m, bank = engine.model.memory, engine.model.causal_relations
     state = bank.bind(engine.model, m.source[:1])
     return engine, state
+
+
+def test_batched_sync_skips_unchanged_payload_and_keeps_changed_credit(tmp_path):
+    e,_=populated()
+    a=attach_archive(e,tmp_path)
+    try:
+        traced=[]
+        a.db.set_trace_callback(traced.append)
+        a.sync()
+        assert not any(s.startswith('UPDATE episodes SET payload') for s in traced)
+        slot=int(torch.nonzero(e.model.memory.occupied)[0])
+        with torch.no_grad():e.model.memory.read_credit_mean[slot].add_(.125)
+        traced.clear();a.sync()
+        assert sum(s.startswith('UPDATE episodes SET payload') for s in traced)==1
+        eid=a.hot[str(slot)]['id']
+        payload=a.db.execute('SELECT payload FROM episodes WHERE id=?',(eid,)).fetchone()[0]
+        assert float(a._unpack(payload)['read_credit_mean'])==pytest.approx(float(e.model.memory.read_credit_mean[slot]))
+    finally:a.close()
 
 
 def test_migration_shares_attachment_preserves_model_rng_and_bounded_disk(tmp_path):

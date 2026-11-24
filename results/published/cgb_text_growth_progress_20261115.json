@@ -1,0 +1,165 @@
+{
+  "schema": 1,
+  "read_only": true,
+  "last_committed_cycle": 6302,
+  "text_events": 759,
+  "text_optimizer_updates": 3036,
+  "text_external_bytes": 728640,
+  "fixed_validation": [
+    {
+      "cycle": 5771,
+      "owt_nll": 1.3821910172700882,
+      "mother_nll": 1.154226504266262,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+      "fineweb_nll": 1.4046249836683273
+    },
+    {
+      "cycle": 5799,
+      "owt_nll": 1.38213449716568,
+      "mother_nll": 1.1164375394582748,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+      "fineweb_nll": 1.4072891473770142
+    },
+    {
+      "cycle": 5927,
+      "owt_nll": 1.3617209643125534,
+      "mother_nll": 1.1321366503834724,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+      "fineweb_nll": 1.3769307434558868
+    },
+    {
+      "cycle": 6055,
+      "owt_nll": 1.3545105457305908,
+      "mother_nll": 1.1127372309565544,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+      "fineweb_nll": 1.3789876028895378
+    },
+    {
+      "cycle": 6183,
+      "owt_nll": 1.3516124337911606,
+      "mother_nll": 1.1026342175900936,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+      "fineweb_nll": 1.3722886517643929
+    }
+  ],
+  "behavior_windows": [
+    {
+      "window": "first128",
+      "cycles": [
+        5544,
+        5671
+      ],
+      "n": 128,
+      "choices": {
+        "silence": 119,
+        "generate": 9
+      },
+      "spoken": 9,
+      "spoken_bytes_mean": 32.111111111111114,
+      "source_jumps": 6,
+      "wood_policy_tv_mean": 0.005385533360139452,
+      "used_vs_blind_mse_by_action": {
+        "silence": {
+          "n": 119,
+          "used": [
+            0.10251300800005923,
+            0.035227716358273,
+            2.1945544800963992e-14,
+            0.10965855437641475
+          ],
+          "blind": [
+            0.09584223336142492,
+            0.034126713309265255,
+            0.0019628842222974567,
+            0.10978617566251687
+          ]
+        },
+        "generate": {
+          "n": 9,
+          "used": [
+            0.4193249003858202,
+            0.0321875364257317,
+            0.239955464998881,
+            0.052167842762097884
+          ],
+          "blind": [
+            0.1770790323563334,
+            0.034174968828059114,
+            0.6049444218415689,
+            0.010804484743857756
+          ]
+        }
+      }
+    },
+    {
+      "window": "last128",
+      "cycles": [
+        6175,
+        6302
+      ],
+      "n": 128,
+      "choices": {
+        "generate": 94,
+        "reuse": 12,
+        "silence": 22
+      },
+      "spoken": 106,
+      "spoken_bytes_mean": 29.32075471698113,
+      "source_jumps": 90,
+      "wood_policy_tv_mean": 0.02941882201974977,
+      "used_vs_blind_mse_by_action": {
+        "silence": {
+          "n": 22,
+          "used": [
+            0.09704778027178856,
+            0.017993365153415652,
+            3.8460083976716946e-14,
+            0.044288735480418756
+          ],
+          "blind": [
+            0.13486411731785417,
+            0.01738115927635032,
+            0.43682084706696594,
+            0.07168368741986342
+          ]
+        },
+        "generate": {
+          "n": 94,
+          "used": [
+            0.16174164842696553,
+            0.025229961075717046,
+            0.13205605591746403,
+            0.27584357807539533
+          ],
+          "blind": [
+            0.16154914232244297,
+            0.02485633901828128,
+            0.1666036136646537,
+            0.2817102730046534
+          ]
+        },
+        "reuse": {
+          "n": 12,
+          "used": [
+            0.11456397379030629,
+            0.023443500734477613,
+            0.14471976979014775,
+            0.035744475530615695
+          ],
+          "blind": [
+            0.11275753180962056,
+            0.030667271278313517,
+            0.1564496848732233,
+            0.063261731537447
+          ]
+        }
+      }
+    }
+  ],
+  "scope": "same-body natural text growth; no mother API; speech frequency is not evidence of useful asking"
+}

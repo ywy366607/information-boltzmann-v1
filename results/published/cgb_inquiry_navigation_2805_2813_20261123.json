@@ -1,0 +1,470 @@
+{
+  "source": "dcfb7e45ecbd9e94dedef5784ce119f0a26e2a76a7a8c6a101c0f810f066bd1e",
+  "arms": {
+    "old": {
+      "root": "D:\\mengli-native-supply-life-bounded-20261122\\original",
+      "material": {
+        "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+        "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+        "starts": [
+          40960,
+          114688,
+          196608,
+          245760
+        ],
+        "bytes_per_segment": 2048,
+        "total_scored_bytes": 8192,
+        "used_in_training": false
+      },
+      "before": {
+        "mean_nll": 1.630192644894123,
+        "segment_nll": [
+          2.0383980572223663,
+          1.519925706088543,
+          1.4281820803880692,
+          1.5342647358775139
+        ]
+      },
+      "after": {
+        "mean_nll": 1.6163534186780453,
+        "segment_nll": [
+          1.9750894755125046,
+          1.5244224816560745,
+          1.434422917664051,
+          1.531478799879551
+        ]
+      },
+      "midway": 1.6150379367172718,
+      "improvement": 0.013839226216077805,
+      "asks": 5,
+      "hits": 4,
+      "moves": 4,
+      "unique_fresh_bytes": 7680,
+      "corpus_bytes": 7680,
+      "control_bytes": 0,
+      "old_fact_gain": -0.0001750914379954338,
+      "finite_U": 0.019425244070589542,
+      "first": {
+        "utterance_hex": "696369616c7320746f207265636f6d657320726567756c6174696f6e732c206578",
+        "option": 1,
+        "source_sha256": "d1d2e4bbeb179b2aebca2109ef842d241769a291126bb160e54d6575f447b9d9",
+        "endpoint_sha256": [
+          "d1d2e4bbeb179b2aebca2109ef842d241769a291126bb160e54d6575f447b9d9",
+          "67bd540f62f86c18d3f873aa2565a88e2ee63e3ea50952726ebbe8dc3ad67158",
+          "d1d2e4bbeb179b2aebca2109ef842d241769a291126bb160e54d6575f447b9d9"
+        ],
+        "production": [
+          0.5597470789910723,
+          0.44025292100892754,
+          0.0
+        ]
+      },
+      "actions": [
+        {
+          "ask": true,
+          "start": 17903746,
+          "term": null,
+          "match": 16
+        },
+        {
+          "ask": true,
+          "start": 17904706,
+          "term": null,
+          "match": 0
+        },
+        {
+          "ask": false,
+          "start": 17905666,
+          "term": null,
+          "match": 0
+        },
+        {
+          "ask": false,
+          "start": 17906626,
+          "term": null,
+          "match": 0
+        },
+        {
+          "ask": false,
+          "start": 17907586,
+          "term": null,
+          "match": 0
+        },
+        {
+          "ask": true,
+          "start": 17634427,
+          "term": null,
+          "match": 6
+        },
+        {
+          "ask": true,
+          "start": 17391793,
+          "term": null,
+          "match": 4
+        },
+        {
+          "ask": true,
+          "start": 22842150,
+          "term": null,
+          "match": 9
+        }
+      ],
+      "checkpoint_sha256": "3f890fda0a56518a88bc66ea47d0e8a5f991a8b04a464c046b995d8ad819b27e"
+    },
+    "inquire_terms_v1": {
+      "root": "C:\\Users\\85750\\mengli-inquiry-2805-trial\\inquire_terms_v1",
+      "material": {
+        "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+        "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+        "starts": [
+          40960,
+          114688,
+          196608,
+          245760
+        ],
+        "bytes_per_segment": 2048,
+        "total_scored_bytes": 8192,
+        "used_in_training": false
+      },
+      "before": {
+        "mean_nll": 1.630192644894123,
+        "segment_nll": [
+          2.0383980572223663,
+          1.519925706088543,
+          1.4281820803880692,
+          1.5342647358775139
+        ]
+      },
+      "after": {
+        "mean_nll": 1.6204077247530222,
+        "segment_nll": [
+          1.976924568414688,
+          1.5308143272995949,
+          1.4485602751374245,
+          1.5253317281603813
+        ]
+      },
+      "midway": 1.622871046885848,
+      "improvement": 0.009784920141100883,
+      "asks": 3,
+      "hits": 3,
+      "moves": 3,
+      "unique_fresh_bytes": 7168,
+      "corpus_bytes": 7168,
+      "control_bytes": 512,
+      "old_fact_gain": 0.0031326645985245705,
+      "finite_U": -0.0003244234248995781,
+      "first": {
+        "utterance_hex": "696369616c7320746f207265636f6d657320726567756c6174696f6e732c206578",
+        "option": 1,
+        "source_sha256": "d1d2e4bbeb179b2aebca2109ef842d241769a291126bb160e54d6575f447b9d9",
+        "endpoint_sha256": [
+          "d1d2e4bbeb179b2aebca2109ef842d241769a291126bb160e54d6575f447b9d9",
+          "67bd540f62f86c18d3f873aa2565a88e2ee63e3ea50952726ebbe8dc3ad67158",
+          "d1d2e4bbeb179b2aebca2109ef842d241769a291126bb160e54d6575f447b9d9"
+        ],
+        "production": [
+          0.5597470789910723,
+          0.44025292100892754,
+          0.0
+        ]
+      },
+      "actions": [
+        {
+          "ask": true,
+          "start": 31851513,
+          "term": "regulations",
+          "match": 11
+        },
+        {
+          "ask": true,
+          "start": 31787526,
+          "term": "colleague",
+          "match": 9
+        },
+        {
+          "ask": true,
+          "start": 31792172,
+          "term": "thought",
+          "match": 7
+        },
+        {
+          "ask": false,
+          "start": 31793068,
+          "term": "",
+          "match": 0
+        },
+        {
+          "ask": false,
+          "start": 31793964,
+          "term": "",
+          "match": 0
+        },
+        {
+          "ask": false,
+          "start": 31794860,
+          "term": "",
+          "match": 0
+        },
+        {
+          "ask": false,
+          "start": 31795756,
+          "term": "",
+          "match": 0
+        },
+        {
+          "ask": false,
+          "start": 31796652,
+          "term": "",
+          "match": 0
+        }
+      ],
+      "checkpoint_sha256": "31f202a6d0c56a9e55dacf4534c7528844761bd91f1442274c4decebfcce1708"
+    },
+    "inquire_read_control": {
+      "root": "C:\\Users\\85750\\mengli-inquiry-2805-trial\\inquire_read_control",
+      "material": {
+        "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+        "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+        "starts": [
+          40960,
+          114688,
+          196608,
+          245760
+        ],
+        "bytes_per_segment": 2048,
+        "total_scored_bytes": 8192,
+        "used_in_training": false
+      },
+      "before": {
+        "mean_nll": 1.630192644894123,
+        "segment_nll": [
+          2.0383980572223663,
+          1.519925706088543,
+          1.4281820803880692,
+          1.5342647358775139
+        ]
+      },
+      "after": {
+        "mean_nll": 1.6203222069889307,
+        "segment_nll": [
+          2.004061095416546,
+          1.5129773616790771,
+          1.432388037443161,
+          1.5318623334169388
+        ]
+      },
+      "midway": 1.6153242625296116,
+      "improvement": 0.009870437905192375,
+      "asks": 6,
+      "hits": 0,
+      "moves": 0,
+      "unique_fresh_bytes": 6208,
+      "corpus_bytes": 7168,
+      "control_bytes": 512,
+      "old_fact_gain": 0.0019184798002243042,
+      "finite_U": 0.023102229461073875,
+      "first": {
+        "utterance_hex": "696369616c7320746f207265636f6d657320726567756c6174696f6e732c206578",
+        "option": 1,
+        "source_sha256": "d1d2e4bbeb179b2aebca2109ef842d241769a291126bb160e54d6575f447b9d9",
+        "endpoint_sha256": [
+          "d1d2e4bbeb179b2aebca2109ef842d241769a291126bb160e54d6575f447b9d9",
+          "67bd540f62f86c18d3f873aa2565a88e2ee63e3ea50952726ebbe8dc3ad67158",
+          "d1d2e4bbeb179b2aebca2109ef842d241769a291126bb160e54d6575f447b9d9"
+        ],
+        "production": [
+          0.5597470789910723,
+          0.44025292100892754,
+          0.0
+        ]
+      },
+      "actions": [
+        {
+          "ask": true,
+          "start": 31823176,
+          "term": "",
+          "match": 0
+        },
+        {
+          "ask": true,
+          "start": 31824072,
+          "term": "",
+          "match": 0
+        },
+        {
+          "ask": true,
+          "start": 31824968,
+          "term": "",
+          "match": 0
+        },
+        {
+          "ask": false,
+          "start": 31825864,
+          "term": "",
+          "match": 0
+        },
+        {
+          "ask": true,
+          "start": 31826760,
+          "term": "",
+          "match": 0
+        },
+        {
+          "ask": true,
+          "start": 31827656,
+          "term": "",
+          "match": 0
+        },
+        {
+          "ask": true,
+          "start": 31828552,
+          "term": "",
+          "match": 0
+        },
+        {
+          "ask": false,
+          "start": 31829448,
+          "term": "",
+          "match": 0
+        }
+      ],
+      "checkpoint_sha256": "126e88658d2a79517b59166bf04226caa1a59c44c1ac2874e38561786c1fb9e9"
+    },
+    "suffix_read_control": {
+      "root": "C:\\Users\\85750\\mengli-inquiry-2805-trial\\suffix_read_control",
+      "material": {
+        "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+        "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+        "starts": [
+          40960,
+          114688,
+          196608,
+          245760
+        ],
+        "bytes_per_segment": 2048,
+        "total_scored_bytes": 8192,
+        "used_in_training": false
+      },
+      "before": {
+        "mean_nll": 1.630192644894123,
+        "segment_nll": [
+          2.0383980572223663,
+          1.519925706088543,
+          1.4281820803880692,
+          1.5342647358775139
+        ]
+      },
+      "after": {
+        "mean_nll": 1.6238034553825855,
+        "segment_nll": [
+          2.0075530260801315,
+          1.518115758895874,
+          1.4389368817210197,
+          1.5306081548333168
+        ]
+      },
+      "midway": 1.6140300761908293,
+      "improvement": 0.006389189511537552,
+      "asks": 5,
+      "hits": 0,
+      "moves": 0,
+      "unique_fresh_bytes": 6720,
+      "corpus_bytes": 7680,
+      "control_bytes": 0,
+      "old_fact_gain": 0.0006230790168046951,
+      "finite_U": 0.0025062765926122665,
+      "first": {
+        "utterance_hex": "696369616c7320746f207265636f6d657320726567756c6174696f6e732c206578",
+        "option": 1,
+        "source_sha256": "d1d2e4bbeb179b2aebca2109ef842d241769a291126bb160e54d6575f447b9d9",
+        "endpoint_sha256": [
+          "d1d2e4bbeb179b2aebca2109ef842d241769a291126bb160e54d6575f447b9d9",
+          "67bd540f62f86c18d3f873aa2565a88e2ee63e3ea50952726ebbe8dc3ad67158",
+          "d1d2e4bbeb179b2aebca2109ef842d241769a291126bb160e54d6575f447b9d9"
+        ],
+        "production": [
+          0.5597470789910723,
+          0.44025292100892754,
+          0.0
+        ]
+      },
+      "actions": [
+        {
+          "ask": true,
+          "start": 31823176,
+          "term": null,
+          "match": 0
+        },
+        {
+          "ask": false,
+          "start": 31824136,
+          "term": null,
+          "match": 0
+        },
+        {
+          "ask": true,
+          "start": 31825096,
+          "term": null,
+          "match": 0
+        },
+        {
+          "ask": false,
+          "start": 31826056,
+          "term": null,
+          "match": 0
+        },
+        {
+          "ask": true,
+          "start": 31827016,
+          "term": null,
+          "match": 0
+        },
+        {
+          "ask": false,
+          "start": 31827976,
+          "term": null,
+          "match": 0
+        },
+        {
+          "ask": true,
+          "start": 31828936,
+          "term": null,
+          "match": 0
+        },
+        {
+          "ask": true,
+          "start": 31829896,
+          "term": null,
+          "match": 0
+        }
+      ],
+      "checkpoint_sha256": "a22ae9126fead48bc593a53b1d8326a1b2fb4ecc26934ff0f6cd59c4f614a901"
+    }
+  },
+  "active_advantage": {
+    "old": [
+      0.03246355056762695,
+      -0.0063067227602005005,
+      0.004513964056968689,
+      -0.0008706450462341309
+    ],
+    "inquiry": [
+      0.027136527001857758,
+      -0.01783696562051773,
+      -0.016172237694263458,
+      0.006530605256557465
+    ]
+  },
+  "mean_advantage": {
+    "old": 0.007450036704540253,
+    "inquiry": -8.55177640914917e-05
+  },
+  "difference_in_differences": [
+    -0.0053270235657691956,
+    -0.01153024286031723,
+    -0.020686201751232147,
+    0.0074012503027915955
+  ],
+  "mean_difference": -0.007535554468631744
+}

@@ -7,6 +7,7 @@ for read precision, assimilation and eviction. This is a conditional local
 learning rule, not exact historical-write credit or a complete organism proof.
 """
 from dataclasses import dataclass
+from pathlib import Path
 import math
 import numpy as np
 import numba
@@ -116,15 +117,16 @@ class RetrievedCreditTable(ByteNgramFastTable):
     Last-write time is diagnostic only, never used to select what is rewarded.
     """
     def __post_init__(self):
-        if self.storage is not None:
-            raise ValueError('credit prototype uses bounded RAM; memmap restore not implemented')
         if not (0 < self.gain_floor < 1 and self.err_floor > 0 and self.prior_weight > 0):
             raise ValueError('positive read denominator and gain in (0,1) required')
         super().__post_init__()
-        self.count = self.count.astype(np.float64)
-        self.epoch = np.zeros(self.count.shape, dtype=np.uint64)
-        self.last_write = np.zeros(self.count.shape, dtype=np.uint64)
         self.events = 0
+
+    def _array_specs(self, n):
+        # Allocate the real-valued occupancy once, in its final storage tier.
+        return dict(rows=((n, 256), np.float32), count=((n,), np.float64),
+                    tag=((n,), np.uint16), err=((n,), np.float32),
+                    epoch=((n,), np.uint64), last_write=((n,), np.uint64))
 
     @property
     def nbytes(self):
@@ -235,16 +237,14 @@ class RetrievedCreditTable(ByteNgramFastTable):
                     and config['prior_weight'] > 0):
                 raise ValueError('invalid fast-table configuration')
             n = len(config['orders']) * config['heads'] * (1 << config['slots_log2'])
-            shapes = dict(rows=((n, 256), np.float32), count=((n,), np.float64),
-                          tag=((n,), np.uint16), err=((n,), np.float32),
-                          epoch=((n,), np.uint64), last_write=((n,), np.uint64))
             obj = cls.__new__(cls)
             for name, value in config.items():
                 setattr(obj, name, value)
+            storage_directory = None if storage_directory is None else Path(storage_directory)
             obj.storage = storage_directory
             if storage_directory is not None:
                 storage_directory.mkdir(parents=True, exist_ok=False)
-            for name, (shape, dtype) in shapes.items():
+            for name, (shape, dtype) in obj._array_specs(n).items():
                 value = state['arrays'][name]
                 if hasattr(value, 'detach'):
                     value = value.detach().cpu().numpy()

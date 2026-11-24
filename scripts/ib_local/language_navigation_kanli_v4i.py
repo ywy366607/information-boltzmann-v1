@@ -104,6 +104,8 @@ class FilmEngine(EqualEngine):
         self.decision.start(self.recurrent)
         p = peek(self.table, self.pending)
         _, h = self.decision.step(self.pending, p)
+        if getattr(self,'variable_expression_schema',None)==1:
+            self._expression_decision_source=h.detach().clone()
         habit, plan, reusable = self.plan(h[None])
         memory = self.model.memory
         w = plan['weights'][0]*reusable[0]
@@ -131,7 +133,8 @@ class FilmEngine(EqualEngine):
         self._pending_record = record
         if self.mode == 'silence':
             return b'', record
-        choice = int(torch.multinomial(logits.softmax(-1), 1))
+        from scripts.ib_local.finite_choice_contract import choose
+        choice = choose(logits.softmax(-1), stage='actor')
         record['choice'] = choice
         if choice == SILENCE:
             return b'', record

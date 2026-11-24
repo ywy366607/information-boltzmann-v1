@@ -38,6 +38,12 @@ def snapshot(engine):
 
 def restore(engine, state, *, take_table_ownership=False, table_storage=None):
     engine.model.load_state_dict(state['model'])
+    # The execution class is not part of torch's optimizer state_dict. Restore
+    # it before loading budget observers; plain AdamW would silently ignore them.
+    if any('tile_size' in g for g in state['optimizer']['param_groups']):
+        from information_boltzmann.budgeted_adamw import BudgetedAdamW, attach_budgeted_adamw
+        if not isinstance(engine.optimizer, BudgetedAdamW):
+            attach_budgeted_adamw(engine.optimizer)
     engine.optimizer.load_state_dict(state['optimizer'])
     world = {k:(v.cpu().numpy() if torch.is_tensor(v) else v) for k,v in state['world'].items()}
     engine.world.load_state_dict(copy.deepcopy(world))
@@ -74,7 +80,8 @@ def save_checkpoint(engine, output, cycle, config):
         numpy_rng=np.random.get_state(), python_rng=random.getstate(),cycle=cycle,config=config)
     with gzip.open(tmp, 'wb', compresslevel=1) as stream:
         torch.save(state, stream)
-    tmp.replace(target)
+    from scripts.ib_local.checkpoint_commit import publish_checkpoint
+    publish_checkpoint(tmp, target)
 
 
 def resume_audit(engine):
@@ -174,7 +181,8 @@ def main():
     print('WIRING', json.dumps(gate), flush=True)
     start_cycle = 0
     if args.resume_checkpoint:
-        with gzip.open(args.resume_checkpoint, 'rb') as stream:
+        from scripts.ib_local.compressed_checkpoint import checkpoint_stream
+        with checkpoint_stream(args.resume_checkpoint) as stream:
             saved = torch.load(stream, weights_only=False)
         if saved['config']['stage'] != cfg['stage']:
             raise ValueError('checkpoint variant mismatch')

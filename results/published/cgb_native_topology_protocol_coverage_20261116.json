@@ -1,0 +1,108 @@
+{
+  "schema": 1,
+  "contract": "CGB_NATIVE_TOPOLOGY_EXECUTION_20261116.md",
+  "body": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\body",
+  "complete_cycle": 2383,
+  "checkpoint_sha256": "f88ed67bf587f61010f11080a8b44020f2e9db8486a8b0e1926461bc2d03382c",
+  "observer_equivalence": "passed",
+  "segments": [
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations",
+      "external_events": 1,
+      "updates": 4,
+      "quiet_calls": 2,
+      "quiet_time": 0.02,
+      "minimum_intrinsic_periods": 0.00097600187358748
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2361",
+      "external_events": 1,
+      "updates": 4,
+      "quiet_calls": 4,
+      "quiet_time": 0.04,
+      "minimum_intrinsic_periods": 0.0019520028934013136
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2362",
+      "external_events": 8,
+      "updates": 32,
+      "quiet_calls": 17,
+      "quiet_time": 0.17,
+      "minimum_intrinsic_periods": 0.008296000083249254
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2370",
+      "external_events": 1,
+      "updates": 4,
+      "quiet_calls": 2,
+      "quiet_time": 0.02,
+      "minimum_intrinsic_periods": 0.0009759993122665411
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2371",
+      "external_events": 5,
+      "updates": 20,
+      "quiet_calls": 9,
+      "quiet_time": 0.09,
+      "minimum_intrinsic_periods": 0.004391995245084013
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2376",
+      "external_events": 1,
+      "updates": 4,
+      "quiet_calls": 1,
+      "quiet_time": 0.01,
+      "minimum_intrinsic_periods": 0.0004879994189739245
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2377",
+      "external_events": 1,
+      "updates": 4,
+      "quiet_calls": 3,
+      "quiet_time": 0.03,
+      "minimum_intrinsic_periods": 0.0014639985415129887
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2378",
+      "external_events": 5,
+      "updates": 20,
+      "quiet_calls": 7,
+      "quiet_time": 0.07,
+      "minimum_intrinsic_periods": 0.0034159972134779402
+    }
+  ],
+  "totals": {
+    "external_events": 23,
+    "updates": 92,
+    "quiet_calls": 45,
+    "quiet_time": 0.45
+  },
+  "coverage": [
+    {
+      "item": 1,
+      "interface": "passed full-state equality",
+      "acquisition": "real complete-learning segments acquired; waiting for long collection headroom"
+    },
+    {
+      "item": 2,
+      "status": "not completed; graph-flow projections recorded; collective mode identification/preservation not established"
+    },
+    {
+      "item": 3,
+      "status": "not completed; native matrix phase recorded, insufficient cycles; no native edge rotor identified for Dirac"
+    },
+    {
+      "item": 4,
+      "status": "not completed; real weights, program/unknown revisions, all parameter participation recorded; regulatory dynamics not established"
+    },
+    {
+      "item": 5,
+      "status": "not started; requires identified mode and information content, then selective complete-loop intervention"
+    }
+  ],
+  "resource_policy": "Stopped after complete cycle 2383 because managed C pagefile grew while running; do not claim steady collection. 2GiB cold-start reservation, 30s low-commit check, emergency 96MiB, actual atomic-save reserve 775MiB.",
+  "intrinsic_time_sufficiency": {
+    "minimum_integrated_periods_lower_bound": 0.021959994581553455,
+    "qualification": "not observed synchrony; insufficient slow-mode coverage"
+  }
+}

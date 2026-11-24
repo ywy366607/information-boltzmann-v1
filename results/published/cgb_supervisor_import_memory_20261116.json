@@ -1,0 +1,14 @@
+{
+  "scope": "supervisor runtime import/memory repair; learner algorithm unchanged",
+  "before_private_commit_mib": 728.4,
+  "after": {
+    "working_set_mib": 19.91015625,
+    "private_commit_mib": 10.1640625,
+    "peak_working_set_mib": 19.96875
+  },
+  "source_cause": "scripts.ib_local.__init__ imports batched/reference/types, all importing Torch",
+  "repair": "run pure checkpoint publication helper directly with runpy, bypassing package initialization",
+  "regression": "fresh subprocess rejects Torch and scripts.ib_local imports, atomic publication passes; 6 focused tests passed",
+  "complete_boundary": 458,
+  "current_guard": "F:/cgb_continual_learning_20261116/guard_resume_458/status.json"
+}

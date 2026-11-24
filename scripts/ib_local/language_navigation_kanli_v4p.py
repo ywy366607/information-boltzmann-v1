@@ -208,10 +208,18 @@ class ResidualWoodEngine(WoodCalibratedEngine):
         # g only exists after settlement. Statistics are still from BEFORE
         # this turn, including during the delayed residual training below.
         self.optimizer.zero_grad(set_to_none=True)
-        src, act, options, labels = self._training_batch(target)
-        prediction = self._compose_prediction(self._training_base(options), self._residual(src, act, options))
-        squared = (prediction[:, 3]-labels[:, 3]).square()
-        if hasattr(self, 'wood_settlement_versions'):
+        gain_contract = None
+        if getattr(self, 'causal_use_arm', None) == 'C2':
+            from scripts.ib_local.causal_value_learning import gain_loss
+            self._causal_gain_current_slot = result['episode_slot']
+            loss, gain_contract = gain_loss(self, target)
+        else:
+            src, act, options, labels = self._training_batch(target)
+            prediction = self._compose_prediction(self._training_base(options), self._residual(src, act, options))
+            squared = (prediction[:, 3]-labels[:, 3]).square()
+        if gain_contract is not None:
+            pass
+        elif hasattr(self, 'wood_settlement_versions'):
             # Old labels still train the first three channels. Only the
             # incompatible reward coordinate is excluded from replay.
             valid = torch.cat((torch.ones(1, device=self.device),
@@ -222,7 +230,13 @@ class ResidualWoodEngine(WoodCalibratedEngine):
         loss.backward()
         grad = torch.nn.utils.clip_grad_norm_(list(self.model.encoder.parameters())+
                                               list(self.model.kanli.outcome.parameters()), 1.)
-        self.optimizer.step()
+        if getattr(self, 'causal_use_arm', None) == 'C2':
+            # Finish the finite-U transaction in the coordinates used to price
+            # it. GenerativeCycle applies this same optimizer update directly
+            # after its actual support has been committed and verified.
+            self._deferred_causal_use_optimizer_step = True
+        else:
+            self.optimizer.step()
         self.model.wood_evidence.observe(choice, target, base, raw)
         if hasattr(self, 'wood_settlement_versions'):
             slot = result['episode_slot']
@@ -249,4 +263,6 @@ class ResidualWoodEngine(WoodCalibratedEngine):
                 if hasattr(self, 'wood_settlement_versions') and self._wood_replay is not None
                 else (0 if self._wood_replay is None else len(self._wood_replay[0]))),
             updates=result['updates']+1)
+        if gain_contract is not None:
+            result['causal_gain_learning'] = gain_contract
         return result

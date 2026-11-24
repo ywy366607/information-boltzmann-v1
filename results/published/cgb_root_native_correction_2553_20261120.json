@@ -1,0 +1,3943 @@
+{
+  "valid": true,
+  "checks": {
+    "observe_complete": true,
+    "observe_restore": true,
+    "observe_natural": true,
+    "observe_finite_U": true,
+    "observe_teacher_budget": true,
+    "observe_root_bound": true,
+    "observe_mode": true,
+    "observe_interleaved": true,
+    "apply_complete": true,
+    "apply_restore": true,
+    "apply_natural": true,
+    "apply_finite_U": true,
+    "apply_teacher_budget": true,
+    "apply_root_bound": true,
+    "apply_mode": true,
+    "apply_interleaved": true,
+    "same_source": true,
+    "same_initial_queries": true,
+    "observe_no_patch": true,
+    "apply_live_patch": true
+  },
+  "source_cycle": 2553,
+  "arms": {
+    "observe": {
+      "actual_policy_discrepancy_MSE": 0.06458204834453002,
+      "realized_future_MSE": 0.06789666921459973,
+      "response_component_MSE": 0.013852160708715144,
+      "actual_use": [
+        0.00479578971862793,
+        -0.03282133489847183,
+        -0.00373203307390213,
+        0.006293892860412598,
+        -0.04011678695678711,
+        0.018300548195838928,
+        0.02366599440574646,
+        0.019413098692893982,
+        -0.022581659257411957,
+        0.0008543729782104492,
+        0.027996420860290527,
+        -0.002738669514656067,
+        0.0031543150544166565,
+        0.0057638585567474365,
+        0.0009617134928703308,
+        0.07705649733543396
+      ],
+      "mean_actual_use": 0.00539162615314126,
+      "actions": [
+        "silence",
+        "generate",
+        "generate",
+        "silence",
+        "generate",
+        "generate",
+        "silence",
+        "silence",
+        "silence",
+        "generate",
+        "generate",
+        "reuse",
+        "silence",
+        "reuse",
+        "generate",
+        "generate"
+      ],
+      "unknowns": [
+        "unknown:1734",
+        "unknown:1767",
+        "unknown:1723",
+        "unknown:1768",
+        "unknown:1769",
+        "unknown:1770",
+        "unknown:1771",
+        "unknown:1772",
+        "unknown:1773",
+        "unknown:1774",
+        "unknown:1394",
+        "unknown:1775",
+        "unknown:1776",
+        "unknown:1777",
+        "unknown:1760",
+        "unknown:1659"
+      ],
+      "utterance_hex": [
+        "",
+        "77656c6c20617320626c65206469736372696d696e6174696f6e20746f2074686520626567696e2c207265736561726368206d75636820736f207468652064",
+        "72207468652062757420626f617264207365652074686520646973636f6d696e6720746f6f6c73207375636820617320696e206c6f7665722073616363656c6562726174656420746f20636f6e736964657220776861742077652773206f6e206f706f727461205468652064696f6e20746f20617070726f7665207468652073",
+        "",
+        "4d757365756d2050726f67726164207061676573706563696669636174696f6e2e20416c72656164792068617320666f7220746f20696e65742e0a0a41756e6c",
+        "6120e2809c49e28099732067",
+        "",
+        "",
+        "",
+        "7320666f726d73206f6620746865204368616d70696f6e20746f20726573706563742c20736865200a546865206279204d617461207374726174656420746f206d656574696e206567612063616e2068697320747269636174696f6e2c20616e64206265656e206661646974696f6e2077726974696369736d2c20707269736f",
+        "20746865204669766520636f6e73696f6e20677261746520507265737320746f206f75722072656d61696e2074686520666f7220616e20746f2064697370656e207468697320697320746f206265206a6f696e7420746865206120726f756e64207468652076652074776f20796f757220646973636f76657220746f206f7669",
+        "6465766963652e",
+        "",
+        "7220776f756c64206265207465726d20757020327269686f757420776869636820636f756c6420636f6e6365656e20756e7573657320746f2074686174206120726379206f766572737420637275696e6573747269627574696f6e7320302e0a53656e617465727320696e2068656c766563637475732c20736f6e2ee2809d0a",
+        "72636820636f6e666963616e20696e6361766520666f722068657220506120736f6d652d77696c6c2041522d313420616e64206f7468657220617320612063617420736169642c2022476f6f646572205553202d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d232064696e61727261636f6e7669726f6e6d656e74204d6f6f6e20",
+        "737320532e206e6f7420616c736f20697420666f756e64657220746f20766572792063686120736169642074686520636f6d652074686174206d6f76656420746f20696e20457374756d20736572766174697665206f6d20746865207265637474657474696d652074686f726520746f206f6e6e6974206f6620616c6c207772"
+      ],
+      "pairs": [
+        {
+          "prediction_cycle": 2554,
+          "next_cycle": 2555,
+          "previous_unknown": "unknown:1734",
+          "next_unknown": "unknown:1767",
+          "revised_support": [
+            "episode:1616",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2547",
+            "episode:2560",
+            "episode:267",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1977",
+            "episode:203",
+            "episode:2066",
+            "episode:2345",
+            "episode:2465",
+            "episode:283"
+          ],
+          "shared_facts": 4,
+          "support_query_jaccard": 0.3333333333333333,
+          "predicted_future": 0.2307819128036499,
+          "next_action_values": [
+            -0.393612265586853,
+            -0.3184531331062317,
+            -0.4129178524017334
+          ],
+          "next_probabilities": [
+            0.27412691712379456,
+            0.4355470836162567,
+            0.2903260290622711
+          ],
+          "next_policy_value": -0.3664818507170313,
+          "selected_expected": -0.3184531331062317,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.3282133489847183,
+          "error": 0.5589952617883682,
+          "components": {
+            "transport": 0.5972637635206812,
+            "policy_sampling": -0.04802871761079963,
+            "admission": 0.0,
+            "observed_response": 0.009760215878486633
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.001832505963099715,
+          "conditional_model_risk": 0.3585565091779879,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.35672400321488823,
+            "action_sampling_variance": 0.001832505963099715
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2560"
+        },
+        {
+          "prediction_cycle": 2555,
+          "next_cycle": 2556,
+          "previous_unknown": "unknown:1767",
+          "next_unknown": "unknown:1723",
+          "revised_support": [
+            "episode:1133",
+            "episode:1977",
+            "episode:203",
+            "episode:2066",
+            "episode:2345",
+            "episode:2465",
+            "episode:2561",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1251",
+            "episode:1616",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2555",
+            "episode:283"
+          ],
+          "shared_facts": 4,
+          "support_query_jaccard": 0.3333333333333333,
+          "predicted_future": 0.039917826652526855,
+          "next_action_values": [
+            0.007189701311290264,
+            0.10679223388433456,
+            0.007189701311290264
+          ],
+          "next_probabilities": [
+            0.270210325717926,
+            0.729789674282074,
+            0.0
+          ],
+          "next_policy_value": 0.07987860111544193,
+          "selected_expected": 0.10679223388433456,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.0373203307390213,
+          "error": 0.07723815739154816,
+          "components": {
+            "transport": -0.03996077446291507,
+            "policy_sampling": -0.026913632768892637,
+            "admission": 0.0,
+            "observed_response": 0.14411256462335587
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0019563223557037697,
+          "conditional_model_risk": 0.0035531858513797353,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.0015968634956759653,
+            "action_sampling_variance": 0.0019563223557037697
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2561"
+        },
+        {
+          "prediction_cycle": 2556,
+          "next_cycle": 2557,
+          "previous_unknown": "unknown:1723",
+          "next_unknown": "unknown:1768",
+          "revised_support": [
+            "episode:1133",
+            "episode:1251",
+            "episode:1616",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2562",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1393",
+            "episode:1650",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2435",
+            "episode:283"
+          ],
+          "shared_facts": 5,
+          "support_query_jaccard": 0.45454545454545453,
+          "predicted_future": 0.15599745512008667,
+          "next_action_values": [
+            -0.003800329752266407,
+            0.009563237428665161,
+            -0.003800329752266407
+          ],
+          "next_probabilities": [
+            0.4876526892185211,
+            0.5123472809791565,
+            0.0
+          ],
+          "next_policy_value": 0.003046457670324826,
+          "selected_expected": -0.003800329752266407,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.06293892860412598,
+          "error": 0.0930585265159607,
+          "components": {
+            "transport": 0.15295099744976184,
+            "policy_sampling": 0.006846787422591233,
+            "admission": 0.0,
+            "observed_response": -0.06673925835639238
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 4.461900432548985e-05,
+          "conditional_model_risk": 0.023438626625202543,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.023394007620877053,
+            "action_sampling_variance": 4.461900432548985e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2562"
+        },
+        {
+          "prediction_cycle": 2557,
+          "next_cycle": 2558,
+          "previous_unknown": "unknown:1768",
+          "next_unknown": "unknown:1769",
+          "revised_support": [
+            "episode:1133",
+            "episode:1650",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2435",
+            "episode:2563",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1974",
+            "episode:1977",
+            "episode:203",
+            "episode:2345",
+            "episode:2465",
+            "episode:283"
+          ],
+          "shared_facts": 3,
+          "support_query_jaccard": 0.23076923076923078,
+          "predicted_future": 0.011669627390801907,
+          "next_action_values": [
+            -0.2610739767551422,
+            -0.2535596191883087,
+            -0.18566563725471497
+          ],
+          "next_probabilities": [
+            0.2554740011692047,
+            0.293376624584198,
+            0.4511493444442749
+          ],
+          "next_policy_value": -0.22484900918440598,
+          "selected_expected": -0.2535596191883087,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.4011678695678711,
+          "error": 0.412837496958673,
+          "components": {
+            "transport": 0.23651863657520789,
+            "policy_sampling": 0.028710610003902737,
+            "admission": 0.0,
+            "observed_response": 0.14760825037956238
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0012697415296704226,
+          "conditional_model_risk": 0.05721080697706569,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.055941065447395265,
+            "action_sampling_variance": 0.0012697415296704226
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2563"
+        },
+        {
+          "prediction_cycle": 2558,
+          "next_cycle": 2559,
+          "previous_unknown": "unknown:1769",
+          "next_unknown": "unknown:1770",
+          "revised_support": [
+            "episode:1133",
+            "episode:1974",
+            "episode:1977",
+            "episode:203",
+            "episode:2345",
+            "episode:2465",
+            "episode:2564",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:104",
+            "episode:1133",
+            "episode:1977",
+            "episode:203",
+            "episode:2216",
+            "episode:2345",
+            "episode:2389",
+            "episode:283"
+          ],
+          "shared_facts": 5,
+          "support_query_jaccard": 0.45454545454545453,
+          "predicted_future": 0.11205457150936127,
+          "next_action_values": [
+            -0.016991272568702698,
+            0.018540658056735992,
+            -0.006529465317726135
+          ],
+          "next_probabilities": [
+            0.32721245288848877,
+            0.37793099880218506,
+            0.29485657811164856
+          ],
+          "next_policy_value": -0.0004779223575535063,
+          "selected_expected": 0.018540658056735992,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.18300548195838928,
+          "error": -0.07095091044902802,
+          "components": {
+            "transport": 0.11253249386691477,
+            "policy_sampling": -0.0190185804142895,
+            "admission": 0.0,
+            "observed_response": -0.1644648239016533
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0002367258592579968,
+          "conditional_model_risk": 0.012900288035165207,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.01266356217590721,
+            "action_sampling_variance": 0.0002367258592579968
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2564"
+        },
+        {
+          "prediction_cycle": 2559,
+          "next_cycle": 2560,
+          "previous_unknown": "unknown:1770",
+          "next_unknown": "unknown:1771",
+          "revised_support": [
+            "episode:104",
+            "episode:1133",
+            "episode:1977",
+            "episode:203",
+            "episode:2345",
+            "episode:2389",
+            "episode:2565",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1393",
+            "episode:1616",
+            "episode:1650",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:263",
+            "episode:283"
+          ],
+          "shared_facts": 2,
+          "support_query_jaccard": 0.14285714285714285,
+          "predicted_future": 0.0528966449201107,
+          "next_action_values": [
+            0.07112592458724976,
+            0.09662214666604996,
+            0.092974454164505
+          ],
+          "next_probabilities": [
+            0.24705612659454346,
+            0.40299421548843384,
+            0.3499496877193451
+          ],
+          "next_policy_value": 0.08904664282421981,
+          "selected_expected": 0.07112592458724976,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.2366599440574646,
+          "error": -0.1837632991373539,
+          "components": {
+            "transport": -0.03614999790410911,
+            "policy_sampling": 0.017920718236970057,
+            "admission": 0.0,
+            "observed_response": -0.16553401947021484
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.00010786865994809688,
+          "conditional_model_risk": 0.00141469100841519,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.001306822348467093,
+            "action_sampling_variance": 0.00010786865994809688
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2565"
+        },
+        {
+          "prediction_cycle": 2560,
+          "next_cycle": 2561,
+          "previous_unknown": "unknown:1771",
+          "next_unknown": "unknown:1772",
+          "revised_support": [
+            "episode:1616",
+            "episode:1650",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2566",
+            "episode:263",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:2066",
+            "episode:2237",
+            "episode:2478",
+            "episode:283"
+          ],
+          "shared_facts": 5,
+          "support_query_jaccard": 0.45454545454545453,
+          "predicted_future": 0.08914491534233093,
+          "next_action_values": [
+            0.11356040835380554,
+            0.1557529717683792,
+            0.11409886181354523
+          ],
+          "next_probabilities": [
+            0.518187403678894,
+            0.25714927911758423,
+            0.22466333210468292
+          ],
+          "next_policy_value": 0.12453116806061648,
+          "selected_expected": 0.11356040835380554,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.19413098692893982,
+          "error": -0.10498607158660889,
+          "components": {
+            "transport": -0.03538625271828555,
+            "policy_sampling": 0.01097075970681094,
+            "admission": 0.0,
+            "observed_response": -0.08057057857513428
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.00033748794475891143,
+          "conditional_model_risk": 0.0015896748262012829,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.0012521868814423713,
+            "action_sampling_variance": 0.00033748794475891143
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2566"
+        },
+        {
+          "prediction_cycle": 2561,
+          "next_cycle": 2562,
+          "previous_unknown": "unknown:1772",
+          "next_unknown": "unknown:1773",
+          "revised_support": [
+            "episode:1133",
+            "episode:1650",
+            "episode:203",
+            "episode:2066",
+            "episode:2237",
+            "episode:2478",
+            "episode:2567",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:104",
+            "episode:1133",
+            "episode:1977",
+            "episode:203",
+            "episode:2066",
+            "episode:2216",
+            "episode:2345",
+            "episode:283"
+          ],
+          "shared_facts": 4,
+          "support_query_jaccard": 0.3333333333333333,
+          "predicted_future": 0.10984274744987488,
+          "next_action_values": [
+            -0.05604475736618042,
+            0.020106397569179535,
+            -0.05604475736618042
+          ],
+          "next_probabilities": [
+            0.40982550382614136,
+            0.5901744961738586,
+            0.0
+          ],
+          "next_policy_value": -0.01110228786914691,
+          "selected_expected": -0.05604475736618042,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.22581659257411957,
+          "error": 0.33565934002399445,
+          "components": {
+            "transport": 0.12094503531902179,
+            "policy_sampling": 0.04494246949703351,
+            "admission": 0.0,
+            "observed_response": 0.16977183520793915
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0014025953933545,
+          "conditional_model_risk": 0.016030296961673927,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.014627701568319428,
+            "action_sampling_variance": 0.0014025953933545
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2567"
+        },
+        {
+          "prediction_cycle": 2562,
+          "next_cycle": 2563,
+          "previous_unknown": "unknown:1773",
+          "next_unknown": "unknown:1774",
+          "revised_support": [
+            "episode:104",
+            "episode:1133",
+            "episode:1977",
+            "episode:203",
+            "episode:2066",
+            "episode:2345",
+            "episode:2568",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1801",
+            "episode:1854",
+            "episode:1893",
+            "episode:2179",
+            "episode:2223",
+            "episode:2363",
+            "episode:2485",
+            "episode:2543"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": 0.04676733911037445,
+          "next_action_values": [
+            -0.024067163467407227,
+            -0.032321661710739136,
+            -0.024067163467407227
+          ],
+          "next_probabilities": [
+            0.27589547634124756,
+            0.7241045832633972,
+            0.0
+          ],
+          "next_policy_value": -0.030044284912458252,
+          "selected_expected": -0.032321661710739136,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.008543729782104492,
+          "error": 0.03822360932826996,
+          "components": {
+            "transport": 0.0768116240228327,
+            "policy_sampling": 0.0022773767982808835,
+            "admission": 0.0,
+            "observed_response": -0.04086539149284363
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 1.3612165136238896e-05,
+          "conditional_model_risk": 0.0059136377501612485,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.00590002558502501,
+            "action_sampling_variance": 1.3612165136238896e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2568"
+        },
+        {
+          "prediction_cycle": 2563,
+          "next_cycle": 2564,
+          "previous_unknown": "unknown:1774",
+          "next_unknown": "unknown:1394",
+          "revised_support": [
+            "episode:1801",
+            "episode:1854",
+            "episode:1893",
+            "episode:2179",
+            "episode:2223",
+            "episode:2363",
+            "episode:2543",
+            "episode:2569"
+          ],
+          "next_query_scope": [
+            "episode:1855",
+            "episode:1881",
+            "episode:1899",
+            "episode:2147",
+            "episode:2424",
+            "episode:40",
+            "episode:49",
+            "episode:58"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": 0.17352905869483948,
+          "next_action_values": [
+            0.15953856706619263,
+            0.16463465988636017,
+            0.15953856706619263
+          ],
+          "next_probabilities": [
+            0.4022865891456604,
+            0.5977134108543396,
+            0.0
+          ],
+          "next_policy_value": 0.16258457008776528,
+          "selected_expected": 0.16463465988636017,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.2799642086029053,
+          "error": -0.1064351499080658,
+          "components": {
+            "transport": 0.010944488607074199,
+            "policy_sampling": -0.0020500897985948896,
+            "admission": 0.0,
+            "observed_response": -0.1153295487165451
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 6.244579721015302e-06,
+          "conditional_model_risk": 0.00012602641059139224,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.00011978183087037693,
+            "action_sampling_variance": 6.244579721015302e-06
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2569"
+        },
+        {
+          "prediction_cycle": 2564,
+          "next_cycle": 2565,
+          "previous_unknown": "unknown:1394",
+          "next_unknown": "unknown:1775",
+          "revised_support": [
+            "episode:1855",
+            "episode:1881",
+            "episode:1899",
+            "episode:2424",
+            "episode:2570",
+            "episode:40",
+            "episode:49",
+            "episode:58"
+          ],
+          "next_query_scope": [
+            "episode:1616",
+            "episode:1977",
+            "episode:203",
+            "episode:2066",
+            "episode:2216",
+            "episode:2345",
+            "episode:267",
+            "episode:283"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": -0.022791007533669472,
+          "next_action_values": [
+            -0.2582094669342041,
+            -0.2417432963848114,
+            -0.19436243176460266
+          ],
+          "next_probabilities": [
+            0.27150365710258484,
+            0.2600325345993042,
+            0.46846386790275574
+          ],
+          "next_policy_value": -0.22401771321190989,
+          "selected_expected": -0.19436243176460266,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.02738669514656067,
+          "error": 0.004595687612891197,
+          "components": {
+            "transport": 0.20122670567824041,
+            "policy_sampling": -0.029655281447307225,
+            "admission": 0.0,
+            "observed_response": -0.166975736618042
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0008110935334067012,
+          "conditional_model_risk": 0.04130328061152389,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.04049218707811719,
+            "action_sampling_variance": 0.0008110935334067012
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2570"
+        },
+        {
+          "prediction_cycle": 2565,
+          "next_cycle": 2566,
+          "previous_unknown": "unknown:1775",
+          "next_unknown": "unknown:1776",
+          "revised_support": [
+            "episode:1616",
+            "episode:1977",
+            "episode:203",
+            "episode:2216",
+            "episode:2345",
+            "episode:2571",
+            "episode:267",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1650",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2435",
+            "episode:283"
+          ],
+          "shared_facts": 3,
+          "support_query_jaccard": 0.23076923076923078,
+          "predicted_future": 0.014300725422799587,
+          "next_action_values": [
+            -0.024992898106575012,
+            0.04965141415596008,
+            0.04395045340061188
+          ],
+          "next_probabilities": [
+            0.4774710237979889,
+            0.27613893151283264,
+            0.24639011919498444
+          ],
+          "next_policy_value": 0.01260626125855313,
+          "selected_expected": -0.024992898106575012,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.031543150544166565,
+          "error": -0.017242425121366978,
+          "components": {
+            "transport": 0.0016944641642464564,
+            "policy_sampling": 0.03759915936512814,
+            "admission": 0.0,
+            "observed_response": -0.05653604865074158
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.001296024716084217,
+          "conditional_model_risk": 0.0012988959248881324,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 2.871208803915442e-06,
+            "action_sampling_variance": 0.001296024716084217
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2571"
+        },
+        {
+          "prediction_cycle": 2566,
+          "next_cycle": 2567,
+          "previous_unknown": "unknown:1776",
+          "next_unknown": "unknown:1777",
+          "revised_support": [
+            "episode:1133",
+            "episode:1650",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2435",
+            "episode:2572",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1801",
+            "episode:1854",
+            "episode:1893",
+            "episode:2179",
+            "episode:2223",
+            "episode:2363",
+            "episode:2543",
+            "episode:2569"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": 0.2623331546783447,
+          "next_action_values": [
+            0.01011628657579422,
+            0.01490570604801178,
+            0.010093636810779572
+          ],
+          "next_probabilities": [
+            0.23058433830738068,
+            0.48912492394447327,
+            0.2802906930446625
+          ],
+          "next_policy_value": 0.012452562040314308,
+          "selected_expected": 0.010093636810779572,
+          "next_merged": true,
+          "individual_commit": true,
+          "actual": 0.057638585567474365,
+          "error": 0.20469456911087036,
+          "components": {
+            "transport": 0.24988059263803042,
+            "policy_sampling": 0.0023589252295347363,
+            "admission": 0.0,
+            "observed_response": -0.047544948756694794
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 5.7617694747435845e-06,
+          "conditional_model_risk": 0.062446072346608046,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.062440310577133305,
+            "action_sampling_variance": 5.7617694747435845e-06
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2572"
+        },
+        {
+          "prediction_cycle": 2567,
+          "next_cycle": 2568,
+          "previous_unknown": "unknown:1777",
+          "next_unknown": "unknown:1760",
+          "revised_support": [
+            "episode:1801",
+            "episode:1854",
+            "episode:1893",
+            "episode:2179",
+            "episode:2223",
+            "episode:2363",
+            "episode:2543",
+            "episode:2573"
+          ],
+          "next_query_scope": [
+            "episode:2255",
+            "episode:2294",
+            "episode:2423",
+            "episode:2444",
+            "episode:2486",
+            "episode:2503",
+            "episode:2533",
+            "episode:2548"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": -0.08565741777420044,
+          "next_action_values": [
+            0.1267315149307251,
+            0.1522684097290039,
+            0.12331817299127579
+          ],
+          "next_probabilities": [
+            0.3036012649536133,
+            0.38725775480270386,
+            0.3091409504413605
+          ],
+          "next_policy_value": 0.13556566792670321,
+          "selected_expected": 0.1522684097290039,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.009617134928703308,
+          "error": -0.09527455270290375,
+          "components": {
+            "transport": -0.22122308570090365,
+            "policy_sampling": -0.01670274180230069,
+            "admission": 0.0,
+            "observed_response": 0.1426512748003006
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.00017810300291373985,
+          "conditional_model_risk": 0.0491177566499431,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.04893965364702936,
+            "action_sampling_variance": 0.00017810300291373985
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2573"
+        },
+        {
+          "prediction_cycle": 2568,
+          "next_cycle": 2569,
+          "previous_unknown": "unknown:1760",
+          "next_unknown": "unknown:1659",
+          "revised_support": [
+            "episode:2255",
+            "episode:2294",
+            "episode:2423",
+            "episode:2444",
+            "episode:2486",
+            "episode:2533",
+            "episode:2548",
+            "episode:2575"
+          ],
+          "next_query_scope": [
+            "episode:1368",
+            "episode:203",
+            "episode:2514",
+            "episode:2553",
+            "episode:263",
+            "episode:283",
+            "episode:841",
+            "episode:929"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": 0.22803695499897003,
+          "next_action_values": [
+            0.7994357347488403,
+            0.8180422782897949,
+            0.8170625567436218
+          ],
+          "next_probabilities": [
+            0.20256251096725464,
+            0.49847662448883057,
+            0.2989608347415924
+          ],
+          "next_policy_value": 0.8139803673588997,
+          "selected_expected": 0.8180422782897949,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.7705649733543396,
+          "error": -0.5425280183553696,
+          "components": {
+            "transport": -0.5859434123599296,
+            "policy_sampling": -0.004061910930895252,
+            "admission": 0.0,
+            "observed_response": 0.04747730493545532
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 5.3915878676074136e-05,
+          "conditional_model_risk": 0.34338359836667465,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.34332968248799856,
+            "action_sampling_variance": 5.3915878676074136e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2575"
+        }
+      ],
+      "old_query_before": -1.2253111489117146,
+      "old_query_after": -1.223482913337648,
+      "seconds": 708.8670975999848,
+      "response_joint_scores": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "runtime_profile": {
+        "seconds": 180.53294330000062,
+        "functions": {
+          "causal_relation_program.compose": {
+            "calls": 181,
+            "inclusive_seconds": 4.314543600077741,
+            "exclusive_seconds": 4.297219600106473
+          },
+          "joint_successor.quadrature": {
+            "calls": 152,
+            "inclusive_seconds": 2.4225702999538044,
+            "exclusive_seconds": 2.4225702999538044
+          },
+          "navigation_momentum_wood.decision_momentum_read": {
+            "calls": 887,
+            "inclusive_seconds": 0.9961378999287263,
+            "exclusive_seconds": 0.9961378999287263
+          },
+          "native_amortized_decision.recipe": {
+            "calls": 631,
+            "inclusive_seconds": 3.6611545998748625,
+            "exclusive_seconds": 2.9837218999455217
+          },
+          "native_amortized_decision.predict": {
+            "calls": 167,
+            "inclusive_seconds": 1.096090900056879,
+            "exclusive_seconds": 1.096090900056879
+          },
+          "native_amortized_decision.value": {
+            "calls": 152,
+            "inclusive_seconds": 19.042254300016793,
+            "exclusive_seconds": 12.202056300113327
+          },
+          "epistemic_value_reference.batched_context_scores": {
+            "calls": 107,
+            "inclusive_seconds": 1.1565083998575574,
+            "exclusive_seconds": 1.1565083998575574
+          },
+          "finite_use_value.expected": {
+            "calls": 43,
+            "inclusive_seconds": 5.125727799982997,
+            "exclusive_seconds": 4.753860500029987
+          },
+          "navigation_generative_cycle.question_choices": {
+            "calls": 12,
+            "inclusive_seconds": 10.931813500035787,
+            "exclusive_seconds": 3.1110846000519814
+          },
+          "known_utterance_runtime.known_film": {
+            "calls": 4,
+            "inclusive_seconds": 0.6192751999915345,
+            "exclusive_seconds": 0.6192751999915345
+          },
+          "epistemic_value_reference.expected": {
+            "calls": 64,
+            "inclusive_seconds": 4.358051100018201,
+            "exclusive_seconds": 3.573410000113654
+          },
+          "prospective_decision.program_actions": {
+            "calls": 32,
+            "inclusive_seconds": 0.12548969995987136,
+            "exclusive_seconds": 0.12548969995987136
+          },
+          "native_word_batch.table_payload": {
+            "calls": 122,
+            "inclusive_seconds": 0.32425479993980844,
+            "exclusive_seconds": 0.32425479993980844
+          },
+          "native_word_batch.endpoints": {
+            "calls": 32,
+            "inclusive_seconds": 5.498708900049678,
+            "exclusive_seconds": 5.17445410010987
+          },
+          "prospective_self_execution.execute": {
+            "calls": 32,
+            "inclusive_seconds": 6.4594991000776645,
+            "exclusive_seconds": 0.9607902000279864
+          },
+          "latent_action_planner._context_packet": {
+            "calls": 196,
+            "inclusive_seconds": 1.1218807000987,
+            "exclusive_seconds": 0.9061841000802815
+          },
+          "latent_action_planner.teach": {
+            "calls": 32,
+            "inclusive_seconds": 1.1775207000027876,
+            "exclusive_seconds": 0.07847099991340656
+          },
+          "prospective_decision.value": {
+            "calls": 8,
+            "inclusive_seconds": 14.766311500003212,
+            "exclusive_seconds": 1.1751249998924322
+          },
+          "latent_action_planner.flush_teachers": {
+            "calls": 4,
+            "inclusive_seconds": 14.874947699994664,
+            "exclusive_seconds": 0.00889559998176992
+          },
+          "latent_action_planner.predict": {
+            "calls": 4,
+            "inclusive_seconds": 0.03254390001529828,
+            "exclusive_seconds": 0.03254390001529828
+          },
+          "latent_action_planner.capture_world": {
+            "calls": 4,
+            "inclusive_seconds": 0.056987499992828816,
+            "exclusive_seconds": 0.0016125999682117254
+          },
+          "engine._policy_grad": {
+            "calls": 4,
+            "inclusive_seconds": 26.29733440000564,
+            "exclusive_seconds": 26.29733440000564
+          },
+          "engine._advance": {
+            "calls": 8,
+            "inclusive_seconds": 18.897727999981726,
+            "exclusive_seconds": 18.897727999981726
+          },
+          "latent_action_planner.settle": {
+            "calls": 4,
+            "inclusive_seconds": 0.0045519999985117465,
+            "exclusive_seconds": 0.0045519999985117465
+          },
+          "native_amortized_decision.settle": {
+            "calls": 4,
+            "inclusive_seconds": 0.0055456000118283555,
+            "exclusive_seconds": 0.000993600013316609
+          }
+        },
+        "cuda_peak_allocated_bytes": 1754980352,
+        "cuda_peak_reserved_bytes": 2214592512,
+        "timing": "host wall time including waits performed by original code; no per-call CUDA fences"
+      },
+      "actual_use_sum_per_minute": 0.007301736989260595,
+      "root_patches": [
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            2.7330174446105957,
+            2.6852500438690186,
+            2.273941993713379
+          ],
+          "after_critic": [
+            2.7330174446105957,
+            2.6852500438690186,
+            2.273941993713379
+          ],
+          "future_correction": [
+            -0.050556283444166183,
+            0.0,
+            -0.14542444050312042
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "07291441848e588f56dad305d49bc9f19c41ba5f45a31cfbce4bb08c1be80aa6",
+              "root": "41572001544e8d0e17f3938945a0d91ccb520f6c02abf35400755f6103fb9cde",
+              "options": [
+                2
+              ],
+              "mass": 0.90771484375,
+              "predicted": 0.143317312002182,
+              "native": -0.016892079263925552,
+              "future_correction": -0.14542444256039744
+            },
+            {
+              "key": "6c033be2a1815a1b65c92265c80a547ae2241a65418943d5115be989b71fff92",
+              "root": "2e4b02757b808fe1ccfa4860172d1a083be752546a46338e584a663a10fb68f8",
+              "options": [
+                0
+              ],
+              "mass": 0.1259765625,
+              "predicted": 0.30271756649017334,
+              "native": -0.0985974371433258,
+              "future_correction": -0.05055628463742323
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 60,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            -3.9028210639953613,
+            -2.8651885986328125,
+            -4.131473541259766
+          ],
+          "after_critic": [
+            -3.9028210639953613,
+            -2.8651885986328125,
+            -4.131473541259766
+          ],
+          "future_correction": [
+            0.008534670807421207,
+            -0.07480797916650772,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "b6caf4ace67bc5b27f69bcd778da5782f4f6c9742481f5d1021732264c40bdeb",
+              "root": "ec3dc109014c4d67bdf8842a7107c086e69cb9b5ab8bab0a0550a2d8efbed5af",
+              "options": [
+                0
+              ],
+              "mass": 0.7431640625,
+              "predicted": -0.0688314437866211,
+              "native": -0.05734720826148987,
+              "future_correction": 0.008534671127563342
+            },
+            {
+              "key": "ece3e844b31b7e0aa20b35763694a47ce3761e9050ce5dc966cdfe033d9b0906",
+              "root": "1fd757642b47dad82376d25b5a8130db91c5da11ddd2727a18a2d0aad45bc84a",
+              "options": [
+                1
+              ],
+              "mass": 0.71826171875,
+              "predicted": 0.09028568863868713,
+              "native": -0.013865737244486809,
+              "future_correction": -0.07480798216511175
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 61,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            0.839066207408905,
+            2.3159019947052,
+            0.839066207408905
+          ],
+          "after_critic": [
+            0.839066207408905,
+            2.3159019947052,
+            0.839066207408905
+          ],
+          "future_correction": [
+            -0.3166612982749939,
+            -0.03599787503480911,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "c1da1343b2951f9e54d19e50bb87f49728582f404b2abf8393fab9454cbf3c15",
+              "root": "db39f2cfd50fa3a21e2f70e3becd51b06a097f39df4015d2d987b257ea378d77",
+              "options": [
+                0
+              ],
+              "mass": 0.916259765625,
+              "predicted": 0.11537575721740723,
+              "native": -0.2302263379096985,
+              "future_correction": -0.31666129468067084
+            },
+            {
+              "key": "123b52f387145539e1f0f66b7786e681565d852a93aafab927f40ab1d68fb0ed",
+              "root": "8347926d44ff057bf9d570c87bd8a6fb5a78443c89ce4d7bfec6ff767f47de37",
+              "options": [
+                1
+              ],
+              "mass": 0.069091796875,
+              "predicted": 0.36517757177352905,
+              "native": -0.15583759546279907,
+              "future_correction": -0.03599787410348654
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 62,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            0.05535372346639633,
+            -0.4848642945289612,
+            0.05535372346639633
+          ],
+          "after_critic": [
+            0.05535372346639633,
+            -0.4848642945289612,
+            0.05535372346639633
+          ],
+          "future_correction": [
+            0.029364395886659622,
+            0.164896622300148,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "ccea6c4d0cbc972f697c3bc2a48182ef6aa5e68293b45aedae587d5872be9bae",
+              "root": "534f49abed8f86b1ce6f11911d61e897d087b3f335f69a0fd50c40bad626ac83",
+              "options": [
+                1
+              ],
+              "mass": 0.836181640625,
+              "predicted": -0.18267673254013062,
+              "native": 0.014525188133120537,
+              "future_correction": 0.16489662556296025
+            },
+            {
+              "key": "b0f752e706d6d2148c88fe35a65a604a3b1370ca544bdbcc206946edf4f7c886",
+              "root": "122c802cab642134d86fbc6844e3ce7f0751e437224b0252769a79846c58084d",
+              "options": [
+                0
+              ],
+              "mass": 0.1396484375,
+              "predicted": -0.022411368787288666,
+              "native": 0.1878623515367508,
+              "future_correction": 0.029364396490564104
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 63,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            -2.6436524391174316,
+            -1.6391596794128418,
+            -1.1729758977890015
+          ],
+          "after_critic": [
+            -2.6436524391174316,
+            -1.6391596794128418,
+            -1.1729758977890015
+          ],
+          "future_correction": [
+            0.0,
+            -0.15703833103179932,
+            -0.03708707541227341
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "daaf29aa4c586f3c0db357c8375915257a5cd8836846fc7001493dddd30f348a",
+              "root": "f9e2db961438aeb1912442c0fc90891b1b54fb36feb79674829322a7f29d7078",
+              "options": [
+                1
+              ],
+              "mass": 0.79931640625,
+              "predicted": 0.10295920073986053,
+              "native": -0.0935065895318985,
+              "future_correction": -0.15703832943108864
+            },
+            {
+              "key": "a1e6393f571b46ed4bf226e09e6433b16c279469801e3fb9b9932ec61dac4299",
+              "root": "092f1561708b299ac416e043d660e26dc872c93d321e6cceee36bc2b46d78669",
+              "options": [
+                2
+              ],
+              "mass": 0.109130859375,
+              "predicted": 0.12073986977338791,
+              "native": -0.21910053491592407,
+              "future_correction": -0.037087075414092396
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 64,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            0.03620851784944534,
+            0.6085797548294067,
+            -0.06361231952905655
+          ],
+          "after_critic": [
+            0.03620851784944534,
+            0.6085797548294067,
+            -0.06361231952905655
+          ],
+          "future_correction": [
+            -0.09200762957334518,
+            -0.04903371259570122,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "88a2dd305e68ea90165ca204e6e87553dcfd8349a73879b7700708673a935209",
+              "root": "de03614a721a105f3a277302332ec9d34a15799d476520784fe1021ddbae01f6",
+              "options": [
+                0
+              ],
+              "mass": 0.738037109375,
+              "predicted": -0.03765643388032913,
+              "native": -0.16232174634933472,
+              "future_correction": -0.09200762685395603
+            },
+            {
+              "key": "48e923baa16dd3d54cee264e1a01d728492e768f854cfbb5e093a4aaa069452f",
+              "root": "2d03997dd6552ceb024ed13af4250553e048b1753b6deaebf837271428359d26",
+              "options": [
+                1
+              ],
+              "mass": 0.845458984375,
+              "predicted": 0.04781832545995712,
+              "native": -0.010178232565522194,
+              "future_correction": -0.0490337110454675
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 65,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            1.4244186878204346,
+            2.442354917526245,
+            1.9939857721328735
+          ],
+          "after_critic": [
+            1.4244186878204346,
+            2.442354917526245,
+            1.9939857721328735
+          ],
+          "future_correction": [
+            -0.047577306628227234,
+            -0.2305823415517807,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "f5a2d74b369d2aa0450f1349199d2f90f89db7e63fca92750b0c499b9c4f3590",
+              "root": "ad16d37fa1ec6dbbad5b55d5737d974a36b8d69bc4493ba431a6afba292aaf01",
+              "options": [
+                0
+              ],
+              "mass": 0.82666015625,
+              "predicted": 0.049976348876953125,
+              "native": -0.007577297277748585,
+              "future_correction": -0.04757730612300293
+            },
+            {
+              "key": "fe74f0a419081dde5e91a46b164c983597669889c48f425996e71999ce6b7caf",
+              "root": "09d17f646078298b0651b284ec1767eaf73404513bc6e8c18f1931ee333d33e0",
+              "options": [
+                1
+              ],
+              "mass": 0.75732421875,
+              "predicted": 0.1218789666891098,
+              "native": -0.1825908124446869,
+              "future_correction": -0.23058233761548763
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 66,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            2.014346122741699,
+            2.256108283996582,
+            2.404029130935669
+          ],
+          "after_critic": [
+            2.014346122741699,
+            2.256108283996582,
+            2.404029130935669
+          ],
+          "future_correction": [
+            0.0,
+            -0.5616755485534668,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "f465052ccb3b53d687d3770162255926819a7277f5ffef2e9d1036e9e57979f8",
+              "root": "f680b94fe6b7401fdeadfe86fde59671cd2aaa212b7efaf04f236b6205bfa067",
+              "options": [
+                1
+              ],
+              "mass": 0.8125,
+              "predicted": 0.056294120848178864,
+              "native": -0.21424329280853271,
+              "future_correction": -0.21981164859607816
+            },
+            {
+              "key": "70c0011d8be58fc1c04d0ff1b432da0d37dce23b204b8d478918a16d180634e7",
+              "root": "f680b94fe6b7401fdeadfe86fde59671cd2aaa212b7efaf04f236b6205bfa067",
+              "options": [
+                1
+              ],
+              "mass": 0.84375,
+              "predicted": 0.1303037405014038,
+              "native": -0.27486833930015564,
+              "future_correction": -0.3418639423325658
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 67,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            -0.1863088458776474,
+            0.836408257484436,
+            -0.1863088458776474
+          ],
+          "after_critic": [
+            -0.1863088458776474,
+            0.836408257484436,
+            -0.1863088458776474
+          ],
+          "future_correction": [
+            -0.0035071265883743763,
+            0.8774822354316711,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "e6872328ac6fcc5659146f54c5f1299b29e539a2a7d7a54c015a095caa2f3cbd",
+              "root": "1d666f13405daa3d3d41ddc8242c242f8ed92becb653436c13b16a1dcb41e060",
+              "options": [
+                1
+              ],
+              "mass": 0.849609375,
+              "predicted": 0.08500342071056366,
+              "native": 1.1178101301193237,
+              "future_correction": 0.8774822628765833
+            },
+            {
+              "key": "007209f1e79fcac1892256394c980592a02945786582b2cbaa5d18ece0202cca",
+              "root": "2352a36eb38ba00d8a90d9ce94f2478030b2ce0a0cb2fa1df776726c5a1c55de",
+              "options": [
+                0
+              ],
+              "mass": 0.1044921875,
+              "predicted": 0.029800161719322205,
+              "native": -0.003763367421925068,
+              "future_correction": -0.003507126580188924
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 68,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            -0.8607417345046997,
+            1.0650159120559692,
+            -0.8607417345046997
+          ],
+          "after_critic": [
+            -0.8607417345046997,
+            1.0650159120559692,
+            -0.8607417345046997
+          ],
+          "future_correction": [
+            -0.0037947355303913355,
+            -0.2739279866218567,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "3f67421219a4b590b615c595c1a879a83934fff396140c70b795d2ae4b5dfd2c",
+              "root": "0ddc6e91022e22148ccd4e4b61544159cabf79e720dfee938946fcbc745e0965",
+              "options": [
+                1
+              ],
+              "mass": 0.92626953125,
+              "predicted": 0.2525434195995331,
+              "native": -0.043189067393541336,
+              "future_correction": -0.27392799210247176
+            },
+            {
+              "key": "b58435a627fd8d291d9978d271312ba68f3ec259524e50331e4e5e1c5c3709d3",
+              "root": "07909edad1bceb043b7e3fc5c3578e843bc0fc80a2c6ca9c98b434dcd4d6cc62",
+              "options": [
+                0
+              ],
+              "mass": 0.87841796875,
+              "predicted": -0.15390315651893616,
+              "native": -0.15822312235832214,
+              "future_correction": -0.003794735617702827
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 69,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            1.690977692604065,
+            1.4640185832977295,
+            1.690977692604065
+          ],
+          "after_critic": [
+            1.690977692604065,
+            1.4640185832977295,
+            1.690977692604065
+          ],
+          "future_correction": [
+            -0.16511270403862,
+            0.0,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "366c84a99f3c28f418709373a0f45a7f045b16b1f136c50a98ac9a9e7dd53a01",
+              "root": "63c1ee420dc7b3a0693a346c5daf2d5937c5e24bf60380b20935055c03519ffa",
+              "options": [
+                0
+              ],
+              "mass": 0.907958984375,
+              "predicted": 0.09275678545236588,
+              "native": -0.007043011020869017,
+              "future_correction": -0.09061412184667006
+            },
+            {
+              "key": "5b3447b6fdc11693a7e29e851a11e76b4d7ca7577b79089c28b4f83c1924ecc3",
+              "root": "63c1ee420dc7b3a0693a346c5daf2d5937c5e24bf60380b20935055c03519ffa",
+              "options": [
+                0
+              ],
+              "mass": 0.83154296875,
+              "predicted": -0.0381321907043457,
+              "native": -0.12772297859191895,
+              "future_correction": -0.0744985897326842
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 70,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            -3.379720449447632,
+            -2.8588221073150635,
+            -1.8292186260223389
+          ],
+          "after_critic": [
+            -3.379720449447632,
+            -2.8588221073150635,
+            -1.8292186260223389
+          ],
+          "future_correction": [
+            -0.021333571523427963,
+            0.0,
+            -0.14183996617794037
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "e0afa5e12d31250c97488f168706b3a0ed3cae7e73e3b4cca12779b899f23e77",
+              "root": "d814c58eaa713626eef8f217749589baa9e5eec1f77bfd493f0f4c7cf28229f6",
+              "options": [
+                2
+              ],
+              "mass": 0.776123046875,
+              "predicted": 0.08100713789463043,
+              "native": -0.10174734890460968,
+              "future_correction": -0.1418399691247032
+            },
+            {
+              "key": "306c1a4ba109dfbee03ed64a87dd17def209b4631ceac0bf4ae31649328bcda1",
+              "root": "9c909eabb88fd0f0c3847bbba14c98ea90b2e23874757982c5dbb5f9c2cabecf",
+              "options": [
+                0
+              ],
+              "mass": 0.123046875,
+              "predicted": -0.013238191604614258,
+              "native": -0.18661579489707947,
+              "future_correction": -0.021333572280127555
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 71,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            1.84873628616333,
+            2.156336545944214,
+            1.8360346555709839
+          ],
+          "after_critic": [
+            1.84873628616333,
+            2.156336545944214,
+            1.8360346555709839
+          ],
+          "future_correction": [
+            -0.2006935477256775,
+            0.0,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "d7fcde730b637ef2b6ca65f08ddadbe0aaa028a95b3beeb940c84c9671076143",
+              "root": "aa7c14704d9384af9b14df5abae0bedc8bb923958f2e0d600a814e9917936265",
+              "options": [
+                0
+              ],
+              "mass": 0.868408203125,
+              "predicted": 0.17899900674819946,
+              "native": -0.16374647617340088,
+              "future_correction": -0.29764298895315733
+            },
+            {
+              "key": "ac61d5d6d55530e1c6935059f82f621f07c76677f5718fdb734955501582bb20",
+              "root": "aa7c14704d9384af9b14df5abae0bedc8bb923958f2e0d600a814e9917936265",
+              "options": [
+                0
+              ],
+              "mass": 0.884765625,
+              "predicted": 0.3185488283634186,
+              "native": 0.4281252324581146,
+              "future_correction": 0.0969494356540963
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 72,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            -0.4052988886833191,
+            -0.4505951404571533,
+            -0.5843229293823242
+          ],
+          "after_critic": [
+            -0.4052988886833191,
+            -0.4505951404571533,
+            -0.5843229293823242
+          ],
+          "future_correction": [
+            0.0,
+            -0.01079527847468853,
+            -0.034194428473711014
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "449c88df8bd008b64b090a2eb113bcc4a36dd25c9eebcf6a8960ee06e76ebbf9",
+              "root": "3362f25e7aabc5df25b310453ca90db17a3b5402f31aa97a7f845257e5971bc7",
+              "options": [
+                1
+              ],
+              "mass": 0.843017578125,
+              "predicted": -0.021355262026190758,
+              "native": -0.034160781651735306,
+              "future_correction": -0.010795278141358722
+            },
+            {
+              "key": "6f93955164137941649dafbe297d4ee20bd42bc341b64b775a6623b61cbca4f6",
+              "root": "58f1f18f6b8e807e2bf0aefbbbd9c142fbede08e91a117970be8195f282c1ae3",
+              "options": [
+                2
+              ],
+              "mass": 0.830078125,
+              "predicted": -0.11564266681671143,
+              "native": -0.15683689713478088,
+              "future_correction": -0.03419442946324125
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 73,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            2.5310473442077637,
+            3.3469796180725098,
+            2.5757503509521484
+          ],
+          "after_critic": [
+            2.5310473442077637,
+            3.3469796180725098,
+            2.5757503509521484
+          ],
+          "future_correction": [
+            0.0,
+            -0.03020172379910946,
+            -0.3967398405075073
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "a3b1825f4451919f055eb0d22c14b68000d39a78339cb8a3ff5d2ce17289117b",
+              "root": "74d4041acb5bfb9b0c1443494eec39252f40a36295556c9790f2980b19cabad2",
+              "options": [
+                2
+              ],
+              "mass": 0.869873046875,
+              "predicted": 0.19311490654945374,
+              "native": -0.26297444105148315,
+              "future_correction": -0.39673983044485794
+            },
+            {
+              "key": "05ab4df4143fdd9450638811cb07333bfb1f78ac1845fd24989e19a52754b2ba",
+              "root": "d042e509dd1cf4a16dd0ef1a3a2b9100ba0d3c31e00ebf1dc3f8c0292ac12adb",
+              "options": [
+                1
+              ],
+              "mass": 0.158447265625,
+              "predicted": 0.06529997289180756,
+              "native": -0.12531059980392456,
+              "future_correction": -0.03020172404285404
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 74,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "observe",
+          "before_critic": [
+            6.297827243804932,
+            6.58699893951416,
+            6.566383361816406
+          ],
+          "after_critic": [
+            6.297827243804932,
+            6.58699893951416,
+            6.566383361816406
+          ],
+          "future_correction": [
+            0.11711528897285461,
+            0.04634686931967735,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "efcc1348a74ca10275d45935bd0d8151a3f59b3043cab8cb43d1ebbda97da819",
+              "root": "8a4890c50f922d94740c9438b808e4a85887b96ae41e52b9c5b226a542b2e5b4",
+              "options": [
+                0
+              ],
+              "mass": 0.813232421875,
+              "predicted": -0.19878792762756348,
+              "native": -0.05477585271000862,
+              "future_correction": 0.11711528846444708
+            },
+            {
+              "key": "6d0c40563bd135eb5df98dc4249663bfdfd8c61ef21381f5b33846b76425941f",
+              "root": "12ca4b3b312d83928cf4069e3f2556b9d9d8900510f2ead8a6926c5eebacce23",
+              "options": [
+                1
+              ],
+              "mass": 0.83154296875,
+              "predicted": -0.20646655559539795,
+              "native": -0.15073056519031525,
+              "future_correction": 0.046346870927663986
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 75,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        }
+      ],
+      "mean_absolute_critic_patch": 0.0,
+      "positive_U_cycles": 11,
+      "policy_replay_max_error": 1.9073486328125e-06,
+      "zero_prediction_MSE": 0.07530504771914415
+    },
+    "apply": {
+      "actual_policy_discrepancy_MSE": 0.05489749420304258,
+      "realized_future_MSE": 0.06938980171510302,
+      "response_component_MSE": 0.03284800162278477,
+      "actual_use": [
+        0.004797518253326416,
+        -0.0328250452876091,
+        -0.003732047975063324,
+        0.012684687972068787,
+        0.017165489494800568,
+        -0.01620659977197647,
+        0.04270897060632706,
+        -0.018663421273231506,
+        0.009952522814273834,
+        0.014498330652713776,
+        -0.005048178136348724,
+        0.04830362647771835,
+        -0.0259421244263649,
+        -0.034426793456077576,
+        -0.00031488388776779175,
+        -0.013848133385181427
+      ],
+      "mean_actual_use": -5.60050830245018e-05,
+      "actions": [
+        "silence",
+        "generate",
+        "generate",
+        "generate",
+        "silence",
+        "generate",
+        "silence",
+        "generate",
+        "silence",
+        "reuse",
+        "generate",
+        "generate",
+        "reuse",
+        "generate",
+        "reuse",
+        "generate"
+      ],
+      "unknowns": [
+        "unknown:1734",
+        "unknown:1767",
+        "unknown:1723",
+        "unknown:1768",
+        "unknown:981",
+        "unknown:1769",
+        "unknown:1770",
+        "unknown:1771",
+        "unknown:1772",
+        "unknown:1773",
+        "unknown:1774",
+        "unknown:1775",
+        "unknown:1776",
+        "unknown:1777",
+        "unknown:1659",
+        "unknown:1778"
+      ],
+      "utterance_hex": [
+        "",
+        "77656c6c20617320626c65206469736372696d696e6174696f6e20746f2074686520626567696e2c207265736561726368206d75636820736f207468652064",
+        "72207468652062757420626f617264207365652074686520646973636f6d696e6720746f6f6c73207375636820617320696e206c6f7665722073616363656c6562726174656420746f20636f6e736964657220776861742077652773206f6e206f706f727461205468652064696f6e20746f20617070726f7665207468652073",
+        "20746865207573656420746f206174746572207265616465727374616e64617920616e6420e2809c766572206e6f726f7572206167726565206279206b6e6f7720776974682066616e2c207769746865204163742c20e2809c596f752063616e204750524953746120657870657272202843687269737469616e206469736375",
+        "",
+        "652052696e65732066726f6d204769616e747320636f6e74696e75652063",
+        "",
+        "20617468696e6720746f207375626d69733f0a4575726f70656c6c636f6e63656c6c3a207570203272652073652068617320e28093203920496e666f726d6174696f6e2e0a0a447273207365697a6120636f6d6d697474656e7469617465642077697468696e2074686520737065727320746865206368616d70756c6f6f756c",
+        "",
+        "666f7220612063656c6c20666f722068656172696e67206974206172636869766520717569636b20776179732044722e2053656e617465206f6e616c2041737363756c64207374696c6c204f6e4c616b6520746f7020776572652050617320746861742073656c666163696c697479206f66206f6620537175616c6974792074",
+        "6e20656967687420746f2070726f7665206e6f7274686520697373756520746f207265616c206f6620686f72792066616d6265722047656e74207665727920e280",
+        "6669656e207574696c697a6564206d616b2068696d2077696c6c2072656f66205061726b696e736f6e2773207768792062652066697273742079656172732074686579207064617465727365732c20746865207061676520657863657320616e64206d617920796f7520657175616c69747920616e642057616d706169676e73",
+        "6465766963652e",
+        "6c6c20697320656e746172747320696e204c6f4272616d6d656574207468617420697320616c736f207468696e6b207765726520646566696e6974696573742077696c6c2070726f6261626c792073706f7274696f6e74696e756520746f206e6f7420696e672e20697a6e65204b696e67207468652070617374207468696e67",
+        "722073657276696365206f662074686520552e532e2062652073617665206f662e205468652070726f6a656374206f6363757265206f6e6c7920746f20736572766572204e6f746520666c6578696269676820496e74656c6963792c206372696d656e742061204c6f777320696e20746865206d6f766520746f2068656c7020",
+        "64732c20746865204165636f7264736f726520746f206661696c65206c61746520736f6d6520302e6d2e206465204e6f72746820746865207573696e672e2054686520686f6f73652069656c642e20596f75e28099732073706563696669636520666f72207468652070726f64756374696f6e73207573656420746f20666f72"
+      ],
+      "pairs": [
+        {
+          "prediction_cycle": 2554,
+          "next_cycle": 2555,
+          "previous_unknown": "unknown:1734",
+          "next_unknown": "unknown:1767",
+          "revised_support": [
+            "episode:1616",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2547",
+            "episode:2560",
+            "episode:267",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1977",
+            "episode:203",
+            "episode:2066",
+            "episode:2345",
+            "episode:2465",
+            "episode:283"
+          ],
+          "shared_facts": 4,
+          "support_query_jaccard": 0.3333333333333333,
+          "predicted_future": 0.18022562563419342,
+          "next_action_values": [
+            -0.3936104476451874,
+            -0.31845274567604065,
+            -0.41291743516921997
+          ],
+          "next_probabilities": [
+            0.3102152347564697,
+            0.37079668045043945,
+            0.3189880847930908
+          ],
+          "next_policy_value": -0.37190092021815957,
+          "selected_expected": -0.31845274567604065,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.328250452876091,
+          "error": 0.5084760785102844,
+          "components": {
+            "transport": 0.552126545852353,
+            "policy_sampling": -0.05344817454211892,
+            "admission": 0.0,
+            "observed_response": 0.009797707200050354
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0017421141973523345,
+          "conditional_model_risk": 0.30658583683220275,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.30484372263485043,
+            "action_sampling_variance": 0.0017421141973523345
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2560"
+        },
+        {
+          "prediction_cycle": 2555,
+          "next_cycle": 2556,
+          "previous_unknown": "unknown:1767",
+          "next_unknown": "unknown:1723",
+          "revised_support": [
+            "episode:1133",
+            "episode:1977",
+            "episode:203",
+            "episode:2066",
+            "episode:2345",
+            "episode:2465",
+            "episode:2561",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1251",
+            "episode:1616",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2555",
+            "episode:283"
+          ],
+          "shared_facts": 4,
+          "support_query_jaccard": 0.3333333333333333,
+          "predicted_future": -0.034874871373176575,
+          "next_action_values": [
+            0.007170769851654768,
+            0.1067768782377243,
+            0.007170769851654768
+          ],
+          "next_probabilities": [
+            0.12407832592725754,
+            0.8759216666221619,
+            0.0
+          ],
+          "next_policy_value": 0.09441791826150209,
+          "selected_expected": 0.1067768782377243,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.03732047975063324,
+          "error": 0.002445608377456665,
+          "components": {
+            "transport": -0.12929278963467866,
+            "policy_sampling": -0.012358959976222217,
+            "admission": 0.0,
+            "observed_response": 0.14409735798835754
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0010782839545215132,
+          "conditional_model_risk": 0.017794909406038784,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.01671662545151727,
+            "action_sampling_variance": 0.0010782839545215132
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2561"
+        },
+        {
+          "prediction_cycle": 2556,
+          "next_cycle": 2557,
+          "previous_unknown": "unknown:1723",
+          "next_unknown": "unknown:1768",
+          "revised_support": [
+            "episode:1133",
+            "episode:1251",
+            "episode:1616",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2562",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1393",
+            "episode:1650",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2435",
+            "episode:283"
+          ],
+          "shared_facts": 5,
+          "support_query_jaccard": 0.45454545454545453,
+          "predicted_future": 0.12724938988685608,
+          "next_action_values": [
+            -0.0038431398570537567,
+            0.009533816017210484,
+            -0.0038431398570537567
+          ],
+          "next_probabilities": [
+            0.3315911293029785,
+            0.6684089303016663,
+            0.0
+          ],
+          "next_policy_value": 0.005098136680486809,
+          "selected_expected": 0.009533816017210484,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.12684687972068787,
+          "error": 0.0004025101661682129,
+          "components": {
+            "transport": 0.12215125320636927,
+            "policy_sampling": -0.004435679336723675,
+            "admission": 0.0,
+            "observed_response": -0.11731306370347738
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 3.966063931458664e-05,
+          "conditional_model_risk": 0.014960589299201126,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.01492092865988654,
+            "action_sampling_variance": 3.966063931458664e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2562"
+        },
+        {
+          "prediction_cycle": 2557,
+          "next_cycle": 2558,
+          "previous_unknown": "unknown:1768",
+          "next_unknown": "unknown:981",
+          "revised_support": [
+            "episode:1133",
+            "episode:1650",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2435",
+            "episode:2563",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:104",
+            "episode:1368",
+            "episode:1650",
+            "episode:1862",
+            "episode:203",
+            "episode:263",
+            "episode:283",
+            "episode:929"
+          ],
+          "shared_facts": 3,
+          "support_query_jaccard": 0.23076923076923078,
+          "predicted_future": 0.06973974406719208,
+          "next_action_values": [
+            0.0611383393406868,
+            0.06646347045898438,
+            0.0611383393406868
+          ],
+          "next_probabilities": [
+            0.7379747033119202,
+            0.26202529668807983,
+            0.0
+          ],
+          "next_policy_value": 0.06253365840186165,
+          "selected_expected": 0.0611383393406868,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.17165489494800568,
+          "error": -0.1019151508808136,
+          "components": {
+            "transport": 0.007206085665330431,
+            "policy_sampling": 0.001395319061174849,
+            "admission": 0.0,
+            "observed_response": -0.11051655560731888
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 5.483341670138087e-06,
+          "conditional_model_risk": 5.74110122862188e-05,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 5.192767061608071e-05,
+            "action_sampling_variance": 5.483341670138087e-06
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2563"
+        },
+        {
+          "prediction_cycle": 2558,
+          "next_cycle": 2559,
+          "previous_unknown": "unknown:981",
+          "next_unknown": "unknown:1769",
+          "revised_support": [
+            "episode:104",
+            "episode:1368",
+            "episode:1650",
+            "episode:203",
+            "episode:2564",
+            "episode:263",
+            "episode:283",
+            "episode:929"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1974",
+            "episode:1977",
+            "episode:203",
+            "episode:2345",
+            "episode:2465",
+            "episode:283"
+          ],
+          "shared_facts": 2,
+          "support_query_jaccard": 0.14285714285714285,
+          "predicted_future": -0.19086945056915283,
+          "next_action_values": [
+            -0.23201173543930054,
+            -0.17091186344623566,
+            -0.23201173543930054
+          ],
+          "next_probabilities": [
+            0.6629593372344971,
+            0.3370406925678253,
+            0.0
+          ],
+          "next_policy_value": -0.211418599181441,
+          "selected_expected": -0.17091186344623566,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.1620659977197647,
+          "error": -0.028803452849388123,
+          "components": {
+            "transport": 0.02054914861228818,
+            "policy_sampling": -0.04050673573520536,
+            "admission": 0.0,
+            "observed_response": -0.008845865726470947
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0008341608786870341,
+          "conditional_model_risk": 0.0012564283873769393,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.0004222675086899053,
+            "action_sampling_variance": 0.0008341608786870341
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2564"
+        },
+        {
+          "prediction_cycle": 2559,
+          "next_cycle": 2560,
+          "previous_unknown": "unknown:1769",
+          "next_unknown": "unknown:1770",
+          "revised_support": [
+            "episode:1133",
+            "episode:1974",
+            "episode:1977",
+            "episode:203",
+            "episode:2345",
+            "episode:2465",
+            "episode:2565",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1393",
+            "episode:1616",
+            "episode:1974",
+            "episode:1984",
+            "episode:2547",
+            "episode:267",
+            "episode:283"
+          ],
+          "shared_facts": 3,
+          "support_query_jaccard": 0.23076923076923078,
+          "predicted_future": -0.14200247824192047,
+          "next_action_values": [
+            0.16142058372497559,
+            0.2447551190853119,
+            0.16142058372497559
+          ],
+          "next_probabilities": [
+            0.5529575943946838,
+            0.44704240560531616,
+            0.0
+          ],
+          "next_policy_value": 0.1986746548824616,
+          "selected_expected": 0.16142058372497559,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.42708970606327057,
+          "error": -0.569092184305191,
+          "components": {
+            "transport": -0.3406771331243821,
+            "policy_sampling": 0.037254071157486024,
+            "admission": 0.0,
+            "observed_response": -0.265669122338295
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0017166848923829718,
+          "conditional_model_risk": 0.11777759392623093,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.11606090903384796,
+            "action_sampling_variance": 0.0017166848923829718
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2565"
+        },
+        {
+          "prediction_cycle": 2560,
+          "next_cycle": 2561,
+          "previous_unknown": "unknown:1770",
+          "next_unknown": "unknown:1771",
+          "revised_support": [
+            "episode:1133",
+            "episode:1393",
+            "episode:1616",
+            "episode:1974",
+            "episode:2547",
+            "episode:2566",
+            "episode:267",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1919",
+            "episode:1974",
+            "episode:1984",
+            "episode:203",
+            "episode:2547",
+            "episode:283"
+          ],
+          "shared_facts": 5,
+          "support_query_jaccard": 0.45454545454545453,
+          "predicted_future": -0.17977523803710938,
+          "next_action_values": [
+            0.09773589670658112,
+            0.15700873732566833,
+            0.09773589670658112
+          ],
+          "next_probabilities": [
+            0.5800399780273438,
+            0.41996005177497864,
+            0.0
+          ],
+          "next_policy_value": 0.12262812483457974,
+          "selected_expected": 0.15700873732566833,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.18663421273231506,
+          "error": 0.0068589746952056885,
+          "components": {
+            "transport": -0.3024033628716891,
+            "policy_sampling": -0.03438061249108859,
+            "admission": 0.0,
+            "observed_response": 0.3436429500579834
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0008558100401373464,
+          "conditional_model_risk": 0.09230360391624383,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.09144779387610648,
+            "action_sampling_variance": 0.0008558100401373464
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2566"
+        },
+        {
+          "prediction_cycle": 2561,
+          "next_cycle": 2562,
+          "previous_unknown": "unknown:1771",
+          "next_unknown": "unknown:1772",
+          "revised_support": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1919",
+            "episode:1974",
+            "episode:203",
+            "episode:2547",
+            "episode:2567",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:2072",
+            "episode:2114",
+            "episode:2332",
+            "episode:2340",
+            "episode:2351",
+            "episode:2408",
+            "episode:2480",
+            "episode:2564"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": -0.01765359565615654,
+          "next_action_values": [
+            0.10809272527694702,
+            0.11622549593448639,
+            0.10809272527694702
+          ],
+          "next_probabilities": [
+            0.504615068435669,
+            0.49538496136665344,
+            0.0
+          ],
+          "next_policy_value": 0.11212158077635026,
+          "selected_expected": 0.10809272527694702,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.09952522814273834,
+          "error": -0.11717882379889488,
+          "components": {
+            "transport": -0.1297751764325068,
+            "policy_sampling": 0.004028855499403239,
+            "admission": 0.0,
+            "observed_response": 0.00856749713420868
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 1.6534081395884463e-05,
+          "conditional_model_risk": 0.016858130499484154,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.01684159641808827,
+            "action_sampling_variance": 1.6534081395884463e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2567"
+        },
+        {
+          "prediction_cycle": 2562,
+          "next_cycle": 2563,
+          "previous_unknown": "unknown:1772",
+          "next_unknown": "unknown:1773",
+          "revised_support": [
+            "episode:2072",
+            "episode:2114",
+            "episode:2332",
+            "episode:2340",
+            "episode:2408",
+            "episode:2480",
+            "episode:2564",
+            "episode:2568"
+          ],
+          "next_query_scope": [
+            "episode:104",
+            "episode:1133",
+            "episode:1977",
+            "episode:203",
+            "episode:2216",
+            "episode:2345",
+            "episode:2389",
+            "episode:283"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": -0.11188877373933792,
+          "next_action_values": [
+            -0.009972178377211094,
+            0.01359238475561142,
+            0.008690412156283855
+          ],
+          "next_probabilities": [
+            0.3363397419452667,
+            0.3129223585128784,
+            0.35073795914649963
+          ],
+          "next_policy_value": 0.003947378617354003,
+          "selected_expected": 0.008690412156283855,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.14498330652713776,
+          "error": -0.2568720802664757,
+          "components": {
+            "transport": -0.11583615235669192,
+            "policy_sampling": -0.004743033538929853,
+            "admission": 0.0,
+            "observed_response": -0.1362928943708539
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.00010216748297156239,
+          "conditional_model_risk": 0.013520181675774305,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.013418014192802743,
+            "action_sampling_variance": 0.00010216748297156239
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2568"
+        },
+        {
+          "prediction_cycle": 2563,
+          "next_cycle": 2564,
+          "previous_unknown": "unknown:1773",
+          "next_unknown": "unknown:1774",
+          "revised_support": [
+            "episode:104",
+            "episode:1133",
+            "episode:1977",
+            "episode:203",
+            "episode:2345",
+            "episode:2389",
+            "episode:2569",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1251",
+            "episode:1393",
+            "episode:1616",
+            "episode:1974",
+            "episode:203",
+            "episode:2040",
+            "episode:2066"
+          ],
+          "shared_facts": 2,
+          "support_query_jaccard": 0.14285714285714285,
+          "predicted_future": -0.0251877810806036,
+          "next_action_values": [
+            -0.09265489131212234,
+            -0.06513042747974396,
+            -0.09265489131212234
+          ],
+          "next_probabilities": [
+            0.18436971306800842,
+            0.8156302571296692,
+            0.0
+          ],
+          "next_policy_value": -0.07020510303783234,
+          "selected_expected": -0.06513042747974396,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.050481781363487244,
+          "error": 0.025294000282883644,
+          "components": {
+            "transport": 0.04501732195722874,
+            "policy_sampling": -0.005074675558088382,
+            "admission": 0.0,
+            "observed_response": -0.014648646116256714
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.00011392542479807334,
+          "conditional_model_risk": 0.002140484700998862,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.0020265592762007886,
+            "action_sampling_variance": 0.00011392542479807334
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2569"
+        },
+        {
+          "prediction_cycle": 2564,
+          "next_cycle": 2565,
+          "previous_unknown": "unknown:1774",
+          "next_unknown": "unknown:1775",
+          "revised_support": [
+            "episode:1133",
+            "episode:1251",
+            "episode:1393",
+            "episode:1616",
+            "episode:203",
+            "episode:2040",
+            "episode:2066",
+            "episode:2570"
+          ],
+          "next_query_scope": [
+            "episode:104",
+            "episode:1133",
+            "episode:1977",
+            "episode:203",
+            "episode:2066",
+            "episode:2216",
+            "episode:2345",
+            "episode:283"
+          ],
+          "shared_facts": 3,
+          "support_query_jaccard": 0.23076923076923078,
+          "predicted_future": -0.0021235644817352295,
+          "next_action_values": [
+            0.3691116273403168,
+            0.3642730712890625,
+            0.3691116273403168
+          ],
+          "next_probabilities": [
+            0.7409205436706543,
+            0.2590794861316681,
+            0.0
+          ],
+          "next_policy_value": 0.36785806772532226,
+          "selected_expected": 0.3642730712890625,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.48303626477718353,
+          "error": -0.48515982925891876,
+          "components": {
+            "transport": -0.3699816322070575,
+            "policy_sampling": 0.0035849964362597575,
+            "admission": 0.0,
+            "observed_response": -0.11876319348812103
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 4.494032445925849e-06,
+          "conditional_model_risk": 0.13689090220304428,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.13688640817059836,
+            "action_sampling_variance": 4.494032445925849e-06
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2570"
+        },
+        {
+          "prediction_cycle": 2565,
+          "next_cycle": 2566,
+          "previous_unknown": "unknown:1775",
+          "next_unknown": "unknown:1776",
+          "revised_support": [
+            "episode:104",
+            "episode:1133",
+            "episode:203",
+            "episode:2066",
+            "episode:2216",
+            "episode:2345",
+            "episode:2571",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:2453",
+            "episode:2469",
+            "episode:2493",
+            "episode:2498",
+            "episode:2500",
+            "episode:2520",
+            "episode:2531",
+            "episode:2542"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": -0.08746163547039032,
+          "next_action_values": [
+            -0.011291950941085815,
+            -0.037234313786029816,
+            -0.03929927945137024
+          ],
+          "next_probabilities": [
+            0.3220461905002594,
+            0.41379255056381226,
+            0.26416125893592834
+          ],
+          "next_policy_value": -0.029425158589055922,
+          "selected_expected": -0.03929927945137024,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.259421244263649,
+          "error": 0.17195960879325867,
+          "components": {
+            "transport": -0.0580364768813344,
+            "policy_sampling": 0.009874120862314317,
+            "admission": 0.0,
+            "observed_response": 0.22012196481227875
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.00015688258036138436,
+          "conditional_model_risk": 0.0035251152291590464,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.003368232648797662,
+            "action_sampling_variance": 0.00015688258036138436
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2571"
+        },
+        {
+          "prediction_cycle": 2566,
+          "next_cycle": 2567,
+          "previous_unknown": "unknown:1776",
+          "next_unknown": "unknown:1777",
+          "revised_support": [
+            "episode:2453",
+            "episode:2469",
+            "episode:2498",
+            "episode:2500",
+            "episode:2520",
+            "episode:2531",
+            "episode:2542",
+            "episode:2572"
+          ],
+          "next_query_scope": [
+            "episode:1848",
+            "episode:1950",
+            "episode:2334",
+            "episode:2394",
+            "episode:2395",
+            "episode:2445",
+            "episode:2447",
+            "episode:2448"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": -0.03171809762716293,
+          "next_action_values": [
+            -0.047150179743766785,
+            -0.04892762750387192,
+            -0.047150179743766785
+          ],
+          "next_probabilities": [
+            0.45745551586151123,
+            0.5425444841384888,
+            0.0
+          ],
+          "next_policy_value": -0.048114524221856136,
+          "selected_expected": -0.04892762750387192,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.34426793456077576,
+          "error": 0.3125498369336128,
+          "components": {
+            "transport": 0.016396426594693203,
+            "policy_sampling": 0.0008131032820157813,
+            "admission": 0.0,
+            "observed_response": 0.29534030705690384
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 7.841116601282475e-07,
+          "conditional_model_risk": 0.0002696269167352908,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.00026884280507516255,
+            "action_sampling_variance": 7.841116601282475e-07
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2572"
+        },
+        {
+          "prediction_cycle": 2567,
+          "next_cycle": 2568,
+          "previous_unknown": "unknown:1777",
+          "next_unknown": "unknown:1659",
+          "revised_support": [
+            "episode:1848",
+            "episode:1950",
+            "episode:2394",
+            "episode:2395",
+            "episode:2445",
+            "episode:2447",
+            "episode:2448",
+            "episode:2573"
+          ],
+          "next_query_scope": [
+            "episode:1368",
+            "episode:203",
+            "episode:2514",
+            "episode:2553",
+            "episode:263",
+            "episode:283",
+            "episode:841",
+            "episode:929"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": -0.04250721633434296,
+          "next_action_values": [
+            -0.06612997502088547,
+            -0.07861815392971039,
+            -0.04527118057012558
+          ],
+          "next_probabilities": [
+            0.16306889057159424,
+            0.5578120350837708,
+            0.2791191041469574
+          ],
+          "next_policy_value": -0.06727394546265253,
+          "selected_expected": -0.04527118057012558,
+          "next_merged": true,
+          "individual_commit": true,
+          "actual": -0.0031488388776779175,
+          "error": -0.03935837745666504,
+          "components": {
+            "transport": 0.024766729128309573,
+            "policy_sampling": -0.02200276489252695,
+            "admission": 0.0,
+            "observed_response": -0.04212234169244766
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0002071264332304844,
+          "conditional_model_risk": 0.0008205173049455421,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.0006133908717150578,
+            "action_sampling_variance": 0.0002071264332304844
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2573"
+        },
+        {
+          "prediction_cycle": 2568,
+          "next_cycle": 2569,
+          "previous_unknown": "unknown:1659",
+          "next_unknown": "unknown:1778",
+          "revised_support": [
+            "episode:1368",
+            "episode:203",
+            "episode:2514",
+            "episode:2574",
+            "episode:263",
+            "episode:283",
+            "episode:841",
+            "episode:929"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1393",
+            "episode:1616",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:263",
+            "episode:283"
+          ],
+          "shared_facts": 3,
+          "support_query_jaccard": 0.23076923076923078,
+          "predicted_future": -0.18969739973545074,
+          "next_action_values": [
+            0.11915396898984909,
+            0.15598870813846588,
+            0.11915396898984909
+          ],
+          "next_probabilities": [
+            0.5636729598045349,
+            0.4363270699977875,
+            0.0
+          ],
+          "next_policy_value": 0.13522596634776285,
+          "selected_expected": 0.15598870813846588,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.13848133385181427,
+          "error": -0.051216065883636475,
+          "components": {
+            "transport": -0.3249233660832136,
+            "policy_sampling": -0.020762741790703032,
+            "admission": 0.0,
+            "observed_response": 0.29447004199028015
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0003336987222442974,
+          "conditional_model_risk": 0.10590889254909033,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.10557519382684603,
+            "action_sampling_variance": 0.0003336987222442974
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2574"
+        }
+      ],
+      "old_query_before": -1.2253111489117146,
+      "old_query_after": -1.225514329969883,
+      "seconds": 704.7984992999991,
+      "response_joint_scores": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "runtime_profile": {
+        "seconds": 184.93479719999596,
+        "functions": {
+          "causal_relation_program.compose": {
+            "calls": 180,
+            "inclusive_seconds": 4.210376899878611,
+            "exclusive_seconds": 4.194010599865578
+          },
+          "joint_successor.quadrature": {
+            "calls": 152,
+            "inclusive_seconds": 2.392716600006679,
+            "exclusive_seconds": 2.392716600006679
+          },
+          "navigation_momentum_wood.decision_momentum_read": {
+            "calls": 884,
+            "inclusive_seconds": 0.9376625001459615,
+            "exclusive_seconds": 0.9376625001459615
+          },
+          "native_amortized_decision.recipe": {
+            "calls": 628,
+            "inclusive_seconds": 3.4595392997725867,
+            "exclusive_seconds": 2.821452599702752
+          },
+          "native_amortized_decision.predict": {
+            "calls": 164,
+            "inclusive_seconds": 1.0392890000512125,
+            "exclusive_seconds": 1.0392890000512125
+          },
+          "native_amortized_decision.value": {
+            "calls": 152,
+            "inclusive_seconds": 18.327402899987646,
+            "exclusive_seconds": 11.707476500188932
+          },
+          "epistemic_value_reference.batched_context_scores": {
+            "calls": 104,
+            "inclusive_seconds": 1.0766504999046447,
+            "exclusive_seconds": 1.0766504999046447
+          },
+          "finite_use_value.expected": {
+            "calls": 40,
+            "inclusive_seconds": 5.1594873999856645,
+            "exclusive_seconds": 4.8092188000591705
+          },
+          "navigation_generative_cycle.question_choices": {
+            "calls": 12,
+            "inclusive_seconds": 10.980725299974438,
+            "exclusive_seconds": 3.0036389000015333
+          },
+          "epistemic_value_reference.expected": {
+            "calls": 64,
+            "inclusive_seconds": 4.060411499929614,
+            "exclusive_seconds": 3.3340295999514638
+          },
+          "prospective_decision.program_actions": {
+            "calls": 32,
+            "inclusive_seconds": 0.10819819998869207,
+            "exclusive_seconds": 0.10819819998869207
+          },
+          "native_word_batch.table_payload": {
+            "calls": 123,
+            "inclusive_seconds": 0.42822529991099145,
+            "exclusive_seconds": 0.42822529991099145
+          },
+          "native_word_batch.endpoints": {
+            "calls": 32,
+            "inclusive_seconds": 4.781839699964621,
+            "exclusive_seconds": 4.35361440005363
+          },
+          "prospective_self_execution.execute": {
+            "calls": 32,
+            "inclusive_seconds": 5.6298383999819634,
+            "exclusive_seconds": 0.8479987000173423
+          },
+          "latent_action_planner._context_packet": {
+            "calls": 196,
+            "inclusive_seconds": 1.0117868000816088,
+            "exclusive_seconds": 0.8063822999683907
+          },
+          "latent_action_planner.teach": {
+            "calls": 32,
+            "inclusive_seconds": 1.0664737000333844,
+            "exclusive_seconds": 0.07553069994901307
+          },
+          "prospective_decision.value": {
+            "calls": 8,
+            "inclusive_seconds": 13.303032600015285,
+            "exclusive_seconds": 1.1371134001819883
+          },
+          "latent_action_planner.flush_teachers": {
+            "calls": 4,
+            "inclusive_seconds": 13.398894299985841,
+            "exclusive_seconds": 0.008088499977020547
+          },
+          "latent_action_planner.predict": {
+            "calls": 4,
+            "inclusive_seconds": 0.031702800013590604,
+            "exclusive_seconds": 0.031702800013590604
+          },
+          "latent_action_planner.capture_world": {
+            "calls": 4,
+            "inclusive_seconds": 0.05391500001132954,
+            "exclusive_seconds": 0.001368400000501424
+          },
+          "engine._policy_grad": {
+            "calls": 4,
+            "inclusive_seconds": 29.84122089999437,
+            "exclusive_seconds": 29.84122089999437
+          },
+          "engine._advance": {
+            "calls": 8,
+            "inclusive_seconds": 21.023443899975973,
+            "exclusive_seconds": 21.023443899975973
+          },
+          "latent_action_planner.settle": {
+            "calls": 4,
+            "inclusive_seconds": 0.0021938000136287883,
+            "exclusive_seconds": 0.0021938000136287883
+          },
+          "native_amortized_decision.settle": {
+            "calls": 4,
+            "inclusive_seconds": 0.00292319999425672,
+            "exclusive_seconds": 0.0007293999806279317
+          },
+          "known_utterance_runtime.known_film": {
+            "calls": 1,
+            "inclusive_seconds": 0.12877589999698102,
+            "exclusive_seconds": 0.12877589999698102
+          }
+        },
+        "cuda_peak_allocated_bytes": 1508124672,
+        "cuda_peak_reserved_bytes": 2185232384,
+        "timing": "host wall time including waits performed by original code; no per-call CUDA fences"
+      },
+      "actual_use_sum_per_minute": -7.628404395996959e-05,
+      "root_patches": [
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            2.7330174446105957,
+            2.6852500438690186,
+            2.273941993713379
+          ],
+          "after_critic": [
+            2.3285672664642334,
+            2.6852500438690186,
+            1.1105464696884155
+          ],
+          "future_correction": [
+            -0.050556283444166183,
+            0.0,
+            -0.14542444050312042
+          ],
+          "applied_critic_delta": [
+            -0.40445026755332947,
+            0.0,
+            -1.1633955240249634
+          ],
+          "contributions": [
+            {
+              "key": "07291441848e588f56dad305d49bc9f19c41ba5f45a31cfbce4bb08c1be80aa6",
+              "root": "41572001544e8d0e17f3938945a0d91ccb520f6c02abf35400755f6103fb9cde",
+              "options": [
+                2
+              ],
+              "mass": 0.90771484375,
+              "predicted": 0.143317312002182,
+              "native": -0.016892079263925552,
+              "future_correction": -0.14542444256039744
+            },
+            {
+              "key": "6c033be2a1815a1b65c92265c80a547ae2241a65418943d5115be989b71fff92",
+              "root": "2e4b02757b808fe1ccfa4860172d1a083be752546a46338e584a663a10fb68f8",
+              "options": [
+                0
+              ],
+              "mass": 0.1259765625,
+              "predicted": 0.30271756649017334,
+              "native": -0.0985974371433258,
+              "future_correction": -0.05055628463742323
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 60,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            -3.902813196182251,
+            -2.8652119636535645,
+            -4.131491661071777
+          ],
+          "after_critic": [
+            -3.83449125289917,
+            -3.463526487350464,
+            -4.131491661071777
+          ],
+          "future_correction": [
+            0.008540235459804535,
+            -0.07478931546211243,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.06832188367843628,
+            -0.5983145236968994,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "bcb29bc9488bc006595161e63ae63d43bb23a71365de107496d16fc603214c92",
+              "root": "8301a796776503868c94557832d8fd0ea86b6e615d200eb3933dc4489b7000a4",
+              "options": [
+                0
+              ],
+              "mass": 0.7431640625,
+              "predicted": -0.0688304677605629,
+              "native": -0.05733874440193176,
+              "future_correction": 0.008540235816326458
+            },
+            {
+              "key": "6007d30f1b9ef3e4721a6b5013c91d5dc31f6e4b92dd8b40331c75a3e5584b06",
+              "root": "e89956f3abf0c47f64bf3ad3fbab190d738fccc411e9b4ec62cc9be4d24e1df5",
+              "options": [
+                1
+              ],
+              "mass": 0.71826171875,
+              "predicted": 0.09028270840644836,
+              "native": -0.013842725194990635,
+              "future_correction": -0.07478931290415858
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 61,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            0.8609559535980225,
+            2.374727487564087,
+            0.8609559535980225
+          ],
+          "after_critic": [
+            -1.699204683303833,
+            2.085763931274414,
+            0.8609559535980225
+          ],
+          "future_correction": [
+            -0.32002007961273193,
+            -0.03612043708562851,
+            0.0
+          ],
+          "applied_critic_delta": [
+            -2.5601606369018555,
+            -0.2889634966850281,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "72bcb258916e6e81eee95bfa026c77219a29b79a7d20ec54c6bd584543b67edb",
+              "root": "3bf5ee5f05f455df1300e27d2791ef2b00ae2f88f4b8cda36c0ce1523636cf82",
+              "options": [
+                0
+              ],
+              "mass": 0.916259765625,
+              "predicted": 0.11917010694742203,
+              "native": -0.23009774088859558,
+              "future_correction": -0.32002007639857766
+            },
+            {
+              "key": "0a8a77fcd568d919c1ef1f58dd72ec6815a435a67b68341247eecea1d642090a",
+              "root": "0af402405816796d026392c5ce4ec247dd8468a354e2b5130947d8e8e7809b2b",
+              "options": [
+                1
+              ],
+              "mass": 0.069091796875,
+              "predicted": 0.3670386075973511,
+              "native": -0.15575048327445984,
+              "future_correction": -0.036120437674981076
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 62,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            -0.7285532355308533,
+            -0.931130051612854,
+            -0.7285532355308533
+          ],
+          "after_critic": [
+            -0.3696821630001068,
+            0.6532560586929321,
+            -0.7285532355308533
+          ],
+          "future_correction": [
+            0.04485888406634331,
+            0.19804826378822327,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.35887107253074646,
+            1.5843861103057861,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "03a93f470ccd1e63fb07e46ad080171d4d8c747acaef935e8f167bffb2d02481",
+              "root": "9f79a61e8e64f04ab22467318c05ddc75813ba568e70c92366ce2a528d6f066c",
+              "options": [
+                1
+              ],
+              "mass": 0.836181640625,
+              "predicted": -0.22231106460094452,
+              "native": 0.014537302777171135,
+              "future_correction": 0.19804825641358548
+            },
+            {
+              "key": "53fea3548b961606d6125b9dda0b4851c421629bc1a79d059ba6995ad7600843",
+              "root": "256b2fb9c9e2e501007a89d709a178a927c17888476e9f95b8190cbb3e566334",
+              "options": [
+                0
+              ],
+              "mass": 0.1396484375,
+              "predicted": -0.1332767903804779,
+              "native": 0.18795046210289001,
+              "future_correction": 0.044858883891720325
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 63,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            0.38000667095184326,
+            0.28476569056510925,
+            0.38000667095184326
+          ],
+          "after_critic": [
+            -0.9155722856521606,
+            -0.5756726264953613,
+            0.38000667095184326
+          ],
+          "future_correction": [
+            -0.1619473695755005,
+            -0.10755478590726852,
+            0.0
+          ],
+          "applied_critic_delta": [
+            -1.295578956604004,
+            -0.8604382872581482,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "76c166535be0261cf77e52bb279d1ebde16280754d98e90512134320895211bf",
+              "root": "1301f127861e79e84db2ede08fe62f5088811ef0990a2e351adb0e5d0d0eec2e",
+              "options": [
+                0
+              ],
+              "mass": 0.809326171875,
+              "predicted": 0.012920856475830078,
+              "native": -0.18718063831329346,
+              "future_correction": -0.1619473767641466
+            },
+            {
+              "key": "a9cb1c96ef047a4fd1c623ca5dae2e190456fd8e3f77a50a9e816489454c6fbb",
+              "root": "9f20a5820261fd0186e2f511df08abfc4301290a3e34b384eaae70d9b2e57ec9",
+              "options": [
+                1
+              ],
+              "mass": 0.792236328125,
+              "predicted": -0.004842914640903473,
+              "native": -0.1406038999557495,
+              "future_correction": -0.10755478450846567
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 64,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            -2.0295159816741943,
+            -2.310002326965332,
+            -2.0295159816741943
+          ],
+          "after_critic": [
+            -2.0295159816741943,
+            -2.8451385498046875,
+            -2.0295159816741943
+          ],
+          "future_correction": [
+            0.0,
+            -0.06689202785491943,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.0,
+            -0.5351362228393555,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "1b97ec6f43508f9b385799dba277a4b0a91a45c1f19d00e49138c65227a8317b",
+              "root": "a10616f2c97195ef086ad65e30a272c732f33ff577a7c99767c4fc8912245067",
+              "options": [
+                1
+              ],
+              "mass": 0.828369140625,
+              "predicted": -0.07563947141170502,
+              "native": -0.15886762738227844,
+              "future_correction": -0.06894363603714737
+            },
+            {
+              "key": "a61ed7f0a57c5e8bcc4dd5c9eca6c4c8569cf8595bb64017881632216ab44c85",
+              "root": "a10616f2c97195ef086ad65e30a272c732f33ff577a7c99767c4fc8912245067",
+              "options": [
+                1
+              ],
+              "mass": 0.079833984375,
+              "predicted": -0.11969529837369919,
+              "native": -0.09399690479040146,
+              "future_correction": 0.002051605151791591
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 65,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            0.17600387334823608,
+            0.20167812705039978,
+            0.17600387334823608
+          ],
+          "after_critic": [
+            0.17600387334823608,
+            1.5348944664001465,
+            0.17600387334823608
+          ],
+          "future_correction": [
+            0.0,
+            0.16665203869342804,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.0,
+            1.3332163095474243,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "1a0b2b2ca0b82569b292b968630259ced52afe0eec5027220e45b70613d16d06",
+              "root": "4b4c1a132b66b64713040ddffa69e56f8753fb66a4c8298f8302fdf20e3d6124",
+              "options": [
+                1
+              ],
+              "mass": 0.962646484375,
+              "predicted": -0.319197416305542,
+              "native": -0.14773012697696686,
+              "future_correction": 0.1650623832574638
+            },
+            {
+              "key": "b1b599370adb517aa161f4ccbe17e1e06ad7e89fc7d045714d90a8c986324fea",
+              "root": "4b4c1a132b66b64713040ddffa69e56f8753fb66a4c8298f8302fdf20e3d6124",
+              "options": [
+                1
+              ],
+              "mass": 0.015625,
+              "predicted": -0.30031639337539673,
+              "native": -0.19857805967330933,
+              "future_correction": 0.0015896614640951157
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 66,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            0.4963063597679138,
+            1.4288586378097534,
+            0.4963063597679138
+          ],
+          "after_critic": [
+            0.5080569982528687,
+            1.4288586378097534,
+            0.4963063597679138
+          ],
+          "future_correction": [
+            0.0014688307419419289,
+            0.0,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.011750645935535431,
+            0.0,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "d98609382380639231af5d0a0d55e477032c07af5456e05bdb3aff070f5e32b1",
+              "root": "6e46e641c5c50d070ca9728d064ea964650ecc58ffa6109ca3742b9eb8def1d8",
+              "options": [
+                0
+              ],
+              "mass": 0.848388671875,
+              "predicted": -0.08038398623466492,
+              "native": -0.07218298316001892,
+              "future_correction": 0.006957638106541708
+            },
+            {
+              "key": "d6d47defa1d73cc22ec1d154ee37eaaa0a97407aa296bc2494432f4d2c063f54",
+              "root": "6e46e641c5c50d070ca9728d064ea964650ecc58ffa6109ca3742b9eb8def1d8",
+              "options": [
+                0
+              ],
+              "mass": 0.058837890625,
+              "predicted": -0.08197878301143646,
+              "native": -0.17526572942733765,
+              "future_correction": -0.00548880714995903
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 67,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            0.20743414759635925,
+            0.2227693796157837,
+            0.20743414759635925
+          ],
+          "after_critic": [
+            0.18581700325012207,
+            1.8150445222854614,
+            0.20743414759635925
+          ],
+          "future_correction": [
+            -0.002702142344787717,
+            0.19903439283370972,
+            0.0
+          ],
+          "applied_critic_delta": [
+            -0.021617138758301735,
+            1.5922751426696777,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "f119e47ebd6f75b6838388355df0577683b364b11d9434f5e6e386f1ae82e2c9",
+              "root": "b02d159adbc80b58076d328a87884343c90a87e1675e7b3143b13c8cb42fca23",
+              "options": [
+                1
+              ],
+              "mass": 0.927001953125,
+              "predicted": -0.16885042190551758,
+              "native": 0.04585721343755722,
+              "future_correction": 0.19903439731388062
+            },
+            {
+              "key": "d14bc057fc775c0679066788715fe823526834f16caa8e73327a6aaaffcbda42",
+              "root": "9dce076ab254971c36a371e7da961356ab2dc9580248cc90f63b20a0dfae7c9a",
+              "options": [
+                0
+              ],
+              "mass": 0.030517578125,
+              "predicted": 0.026680395007133484,
+              "native": -0.061863407492637634,
+              "future_correction": -0.0027021424102713354
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 68,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            -0.41055113077163696,
+            0.2374388426542282,
+            -0.11459813266992569
+          ],
+          "after_critic": [
+            -0.05120164155960083,
+            -0.07927866280078888,
+            -0.11459813266992569
+          ],
+          "future_correction": [
+            0.04491868615150452,
+            -0.039589688181877136,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.35934948921203613,
+            -0.3167175054550171,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "2a73ae8d5878f2a2da4729ba896f02f242a2ed706faad5c47261d09592b0ec1e",
+              "root": "d74edaaef4cc7774cb9d012aab2e832563262709b25502fecc16108db01510f1",
+              "options": [
+                0
+              ],
+              "mass": 0.794677734375,
+              "predicted": -0.10367169976234436,
+              "native": -0.047147296369075775,
+              "future_correction": 0.04491868482546124
+            },
+            {
+              "key": "72b61019042a0d2861558d622b3918d7d06e10b4fa8ff1215ea734884ec4ce76",
+              "root": "d14ab6af7d92608ccb3439af1010ef62e2094ffe3cfb8a98c43d734307d8aa09",
+              "options": [
+                1
+              ],
+              "mass": 0.747314453125,
+              "predicted": 0.05956372618675232,
+              "native": 0.006587781012058258,
+              "future_correction": -0.039589689497006475
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 69,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            -2.1867916584014893,
+            -1.9712013006210327,
+            -2.1867916584014893
+          ],
+          "after_critic": [
+            -2.1867916584014893,
+            -0.6682928800582886,
+            -2.1867916584014893
+          ],
+          "future_correction": [
+            0.0,
+            0.16286355257034302,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.0,
+            1.3029084205627441,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "7d98df807600574af8b524ef95880ce2bb8560a7396492eb511211056d136900",
+              "root": "4daaf5cee1d027233c7b611d9e598f623d8380aca5e4df443d88f16949463af4",
+              "options": [
+                1
+              ],
+              "mass": 0.912109375,
+              "predicted": -0.1249457374215126,
+              "native": 0.04906067997217178,
+              "future_correction": 0.1587128846149426
+            },
+            {
+              "key": "7657fb55bf998ef917b3f911b8e069bd224c34dba65138190101466eaf8c8f66",
+              "root": "4daaf5cee1d027233c7b611d9e598f623d8380aca5e4df443d88f16949463af4",
+              "options": [
+                1
+              ],
+              "mass": 0.030517578125,
+              "predicted": -0.27368414402008057,
+              "native": -0.1376747041940689,
+              "future_correction": 0.004150678705627797
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 70,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            3.6739184856414795,
+            3.4432077407836914,
+            3.6739184856414795
+          ],
+          "after_critic": [
+            3.6827123165130615,
+            2.943037509918213,
+            3.6739184856414795
+          ],
+          "future_correction": [
+            0.0010992316529154778,
+            -0.06252127140760422,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.008793853223323822,
+            -0.5001701712608337,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "3ad1f4a15845b3e1e80e93f24bc0537ab6077afdc8c0ed3dc5e32a9b5304f92d",
+              "root": "8fa5a69e38adf9ee2de20c29b326e72a37be00abfd7b575cd7d74688e92229ca",
+              "options": [
+                1
+              ],
+              "mass": 0.922607421875,
+              "predicted": -0.012084010988473892,
+              "native": -0.07984985411167145,
+              "future_correction": -0.062521269815079
+            },
+            {
+              "key": "6e204b0c4ac08c080c74de6af1072c6214a39b123da2fc3103f26b0cf9d819e5",
+              "root": "3954242e7c03b145e71d27d27c2d5f23284b0d3fcc71bc4dd49f358cc8419caa",
+              "options": [
+                0
+              ],
+              "mass": 0.07470703125,
+              "predicted": -0.1014169305562973,
+              "native": -0.08670303225517273,
+              "future_correction": 0.0010992316601914354
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 71,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            -0.6909772753715515,
+            -1.188829779624939,
+            -0.6467375755310059
+          ],
+          "after_critic": [
+            -0.39119118452072144,
+            0.8084757328033447,
+            -0.6467375755310059
+          ],
+          "future_correction": [
+            0.03747326135635376,
+            0.24966318905353546,
+            0.0
+          ],
+          "applied_critic_delta": [
+            0.2997860908508301,
+            1.9973055124282837,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "78f1b518ded60a4417b4a524ba9ecad783af01b76d6dce4b4aaf591364185252",
+              "root": "42e183c4b46c7dc9a451a0d9fd08098d61efc81512a724bfc4099aaf728c5f45",
+              "options": [
+                0
+              ],
+              "mass": 0.953369140625,
+              "predicted": -0.10226006805896759,
+              "native": -0.06295392662286758,
+              "future_correction": 0.037473262282219366
+            },
+            {
+              "key": "d94f03ccca778918ab014ac96a71b0d817f186ef9e4f044caa01695e14ef6bab",
+              "root": "acc83e103b76b3664e1bf24366e044251845b0322e5bc26aca2c9b1f2a4b90e1",
+              "options": [
+                1
+              ],
+              "mass": 0.886962890625,
+              "predicted": -0.09342575073242188,
+              "native": 0.18805523216724396,
+              "future_correction": 0.2496631862486538
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 72,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            -0.7828816771507263,
+            -0.2645033001899719,
+            -0.7828816771507263
+          ],
+          "after_critic": [
+            -0.8044666647911072,
+            -0.829334020614624,
+            -0.7828816771507263
+          ],
+          "future_correction": [
+            -0.0026981201954185963,
+            -0.07060384005308151,
+            0.0
+          ],
+          "applied_critic_delta": [
+            -0.02158496156334877,
+            -0.5648307204246521,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "50950b2c805292ccad520d89feb4e5d9fa6b5f1e567e793f19260c62a3cd2698",
+              "root": "5d6cb77d1a451febd9c050084873da39e8ce3d374a419cb1f1d4281ea9fb9081",
+              "options": [
+                1
+              ],
+              "mass": 0.87060546875,
+              "predicted": 0.026270166039466858,
+              "native": -0.054827235639095306,
+              "future_correction": -0.07060384140277165
+            },
+            {
+              "key": "51a1b45bd6923cafc309c22abd00029c6dc185a26253af78d0e8d1bc336d8fd5",
+              "root": "dee91abb9b9d44ad8b8e01276e140cae7d617a7dcf11029e303421f1ea767924",
+              "options": [
+                0
+              ],
+              "mass": 0.05908203125,
+              "predicted": -0.12258731573820114,
+              "native": -0.16825467348098755,
+              "future_correction": -0.002698120257264236
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 73,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            -1.9635448455810547,
+            -2.194373369216919,
+            -2.1153056621551514
+          ],
+          "after_critic": [
+            -1.9635448455810547,
+            -1.0062543153762817,
+            -1.970291018486023
+          ],
+          "future_correction": [
+            0.0,
+            0.14851488173007965,
+            0.0181268360465765
+          ],
+          "applied_critic_delta": [
+            0.0,
+            1.1881190538406372,
+            0.145014688372612
+          ],
+          "contributions": [
+            {
+              "key": "4e541709df49e5c90f2892caeea1032f2d604088def622bd588c1bc0f4e7da35",
+              "root": "dad4b8221e9fcfa68cfcbdaef79268c2c909744ff5fe1a4ed94eeb456c92614a",
+              "options": [
+                1
+              ],
+              "mass": 0.800537109375,
+              "predicted": -0.17637154459953308,
+              "native": 0.009147495031356812,
+              "future_correction": 0.14851487572013866
+            },
+            {
+              "key": "ee0917b927d116257145ed02640d215df89efee8610799623c16c7bdd1379c21",
+              "root": "e481f89a753268c83b0e9bd90eeff61b70de3dcc0a278d9f484328c4d8de0161",
+              "options": [
+                2
+              ],
+              "mass": 0.788330078125,
+              "predicted": -0.15725958347320557,
+              "native": -0.13426561653614044,
+              "future_correction": 0.018126835751900217
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 74,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        },
+        {
+          "schema": 1,
+          "mode": "apply",
+          "before_critic": [
+            0.25478577613830566,
+            0.6752976775169373,
+            0.25478577613830566
+          ],
+          "after_critic": [
+            -0.013474076986312866,
+            -0.016134560108184814,
+            0.25478577613830566
+          ],
+          "future_correction": [
+            -0.033532481640577316,
+            -0.08642902970314026,
+            0.0
+          ],
+          "applied_critic_delta": [
+            -0.26825985312461853,
+            -0.6914322376251221,
+            0.0
+          ],
+          "contributions": [
+            {
+              "key": "4a8a828fc706bf232e118255808ed93279c52c93784cad4e79e4cfa45d55af64",
+              "root": "bad447e02c04946b5080f6ff6d82d9001aa59ea9e7d9090f3b9ec74ef557e172",
+              "options": [
+                0
+              ],
+              "mass": 0.817626953125,
+              "predicted": -0.05791899561882019,
+              "native": -0.0989309549331665,
+              "future_correction": -0.03353248333587544
+            },
+            {
+              "key": "dde5adfc0510be01a84a706ac67a189dec5b711bfcdc97979589e702120fa758",
+              "root": "bcccafdda32d4c9c6a486feca93700bd28650efc7ca97e0b60261d4882e77173",
+              "options": [
+                1
+              ],
+              "mass": 0.61279296875,
+              "predicted": -0.04873006045818329,
+              "native": -0.18977122008800507,
+              "future_correction": -0.08642903092550114
+            }
+          ],
+          "teacher_count": 2,
+          "bank_revision": 75,
+          "semantics": "replace evaluated original successor contributions before actual actor choice"
+        }
+      ],
+      "mean_absolute_critic_patch": 0.4237739328527823,
+      "positive_U_cycles": 7,
+      "policy_replay_max_error": 1.430511474609375e-06,
+      "zero_prediction_MSE": 0.0580003138121743
+    }
+  },
+  "scope": "same full persistent/interleaved learner and root-only native teacher scope; replace evaluated successor mass before actor choice versus learn-only labels"
+}

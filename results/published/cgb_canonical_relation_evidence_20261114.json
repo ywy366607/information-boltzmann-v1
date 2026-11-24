@@ -1,0 +1,189 @@
+{
+  "admission": {
+    "source_cycle": 5010,
+    "source_sha256": "cf7fa11d0e957741cf2ddb5e1bc91481fe2554d402529529f977ead655d444b6",
+    "preserved": {
+      "model": true,
+      "engine": true,
+      "optimizer_state": true,
+      "whole": true,
+      "old_optimizer_groups": true
+    },
+    "new_parameters": {},
+    "new_parameter_count": 0,
+    "initialization": {
+      "schema": 1,
+      "features": [
+        4,
+        5
+      ],
+      "migrated_at_cycle": 4752,
+      "initialization": {
+        "facts": 1702,
+        "decision_facts": 1701,
+        "initial_noise": [
+          0.037731170654296875,
+          0.4154207706451416,
+          0.5671701431274414
+        ]
+      },
+      "semantics": "learned common role coordinates; same bounded posterior/U throughout navigation",
+      "noise": "learned pooled real-evidence prior, no local unit reset",
+      "retained": "all original parameters and Adam, S/P, actual facts, world and pending participation"
+    },
+    "geometry_checks": {
+      "four_shared_inputs": true,
+      "condition_rank": true,
+      "full_rank": true,
+      "conditional_action_rank": true,
+      "finite": true,
+      "same_condition_across_actions": true
+    },
+    "parameter_audit": {
+      "total": 953931,
+      "trainable": 953931,
+      "trainable_in_optimizer": 953931,
+      "trainable_missing_from_optimizer": [],
+      "frozen": []
+    },
+    "events": 2,
+    "updates": 12,
+    "authorized_metadata_migrations": {
+      "joint_relation_update_revision": {
+        "before": 2,
+        "after": 3,
+        "reason": "explicit --unified-relation-evidence migration"
+      }
+    },
+    "scope": "migration and real whole-cycle admission, not capability or convergence",
+    "joint_relation_update": {
+      "schema": 1,
+      "migrated_at_cycle": 4853,
+      "dependencies": {
+        "recorded_real_uses": 98,
+        "edges": 97,
+        "new_parameters": 0
+      },
+      "variables": "versioned shared unknown -> bounded dependent relation uses",
+      "organization": "same shared coordinates and noise prior as prediction",
+      "overlap": "normalized precision quadratic solve at the same bound decision port",
+      "implementation_migration": {
+        "source_cycle": 5010,
+        "previous": 2,
+        "current": 3,
+        "change": "canonical fact IDs for prediction, organization, replay and persistent commit"
+      },
+      "implementation_revision": 3
+    },
+    "event_checks": [
+      {
+        "observed": true,
+        "reproduction": true,
+        "real_revision": true,
+        "same_U": true,
+        "learning": true,
+        "encoder_basis_learned": true,
+        "old_fact_replay": true,
+        "draft_replay": true,
+        "binding_replay": true,
+        "previous_settled": true,
+        "organization_in_U": true,
+        "organization_shared_features": true,
+        "overlap_descends": true,
+        "coordinated_continuation": true,
+        "dependency_used": true,
+        "canonical_support": true
+      },
+      {
+        "observed": true,
+        "reproduction": true,
+        "real_revision": true,
+        "same_U": true,
+        "learning": true,
+        "encoder_basis_learned": true,
+        "old_fact_replay": true,
+        "draft_replay": true,
+        "binding_replay": true,
+        "previous_settled": true,
+        "organization_in_U": true,
+        "organization_shared_features": true,
+        "overlap_descends": true,
+        "coordinated_continuation": true,
+        "dependency_used": true,
+        "canonical_support": true
+      }
+    ],
+    "cycle": 5012,
+    "disk_restore": {
+      "model_exact": true,
+      "optimizer_exact": true
+    },
+    "source_unchanged": true,
+    "event_admission_passed": true
+  },
+  "repaired_contract": {
+    "cycle": 5012,
+    "checkpoint_sha256": "eb158823520d4c33cd2721981f6697db2db0801af7c36cd498f69bea29b509d3",
+    "prediction_facts": [
+      93,
+      4126,
+      4574,
+      4900,
+      5319,
+      5329,
+      5539,
+      5541
+    ],
+    "organization_facts": [
+      93,
+      4126,
+      4574,
+      4900,
+      5319,
+      5329,
+      5539,
+      5541
+    ],
+    "intersection": 8,
+    "prediction_x_shape": [
+      8,
+      4
+    ],
+    "organization_x_shape": [
+      8,
+      4
+    ],
+    "same_feature_evidence": true,
+    "read_only_support_intervention": null,
+    "shared_fact_intervention": {
+      "fact_id": "episode:5319",
+      "prediction_residual_max_change": 0.2293275147676468,
+      "organization_residual_max_change": 0.2293275147676468,
+      "intervention_difference_max": 2.9802322387695312e-08
+    },
+    "source_unchanged": true,
+    "archive_unchanged": true,
+    "world_calls": 0,
+    "optimizer_updates": 0
+  },
+  "cpu_tests_passed": 69,
+  "extra_neural_parameters": 0,
+  "extra_id_buffer_bytes": 4096,
+  "learning": {
+    "source_cycle": 5012,
+    "final_cycle": 5268,
+    "planned_cycles": 256,
+    "validate_every": 64,
+    "change": "revision 3 canonical evidence in the same complete mother-world body",
+    "decision": "replicated support mismatch repaired; test later prediction and actual navigation together",
+    "fixed": "original all-parameter optimizer, loss coefficients, S/P, world/history, rewards and budgets",
+    "report": [
+      "first64 vs last64 prospective forecasts",
+      "factual action-conditional score",
+      "within-generate drafts",
+      "reactivated unknowns",
+      "fixed OWT and mother validation"
+    ],
+    "forbid": "no mid-run code changes, no tuning, no automatic budget extension"
+  }
+}

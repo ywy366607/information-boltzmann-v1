@@ -1,0 +1,87 @@
+{
+  "status": "existing_record_geometry_checked_no_new_learning",
+  "direction_geometry": [
+    {
+      "call_id": 947,
+      "reference": "same actual target; retained predictor after removing the identified input direction",
+      "actual_target_sha256": "e0dfc1eeeba0904421cfdf30ddf588cd6748f79cd2d5a135eaccd688f18182d5",
+      "cosine_to_target_residual": -0.6179518011378563,
+      "retrospectively_optimal_scalar": -0.3179259727038494,
+      "scalar_use": "geometric diagnostic on this already observed target; not a trained gain or policy",
+      "normal_mse": 0.5494530271825326,
+      "removed_direction_mse": 0.07652356404051971,
+      "correction_square_mean": 0.2891028521680464,
+      "twice_alignment_mean": -0.18382661097396666,
+      "error_increase": 0.4729294631420129,
+      "error_decomposition_residual": -1.1102230246251565e-16
+    },
+    {
+      "call_id": 950,
+      "reference": "same actual target; retained predictor after removing the identified input direction",
+      "actual_target_sha256": "e0dfc1eeeba0904421cfdf30ddf588cd6748f79cd2d5a135eaccd688f18182d5",
+      "cosine_to_target_residual": -0.24140759513241514,
+      "retrospectively_optimal_scalar": -0.8297179285347962,
+      "scalar_use": "geometric diagnostic on this already observed target; not a trained gain or policy",
+      "normal_mse": 1.0867639266879854,
+      "removed_direction_mse": 0.8870611926569585,
+      "correction_square_mean": 0.0750921416285172,
+      "twice_alignment_mean": -0.12461059240250966,
+      "error_increase": 0.1997027340310269,
+      "error_decomposition_residual": 5.551115123125783e-17
+    }
+  ],
+  "actual_relation9_calls_by_clock": {
+    "baseline": [
+      {
+        "external_cycle": 2401,
+        "update_clock": 2,
+        "generation": 1,
+        "calls": 2
+      }
+    ],
+    "pending_mode_cut": [
+      {
+        "external_cycle": 2401,
+        "update_clock": 2,
+        "generation": 1,
+        "calls": 2
+      }
+    ],
+    "pending_matched": [
+      {
+        "external_cycle": 2401,
+        "update_clock": 2,
+        "generation": 1,
+        "calls": 2
+      }
+    ]
+  },
+  "observed_scope": "only two calls at the original delayed settlement; no later re-use of relation9 in baseline eight events or intervention three events",
+  "interpretation": "negative contribution to the same current target before this gradient update; long-term learning utility and recovery were not evaluated for this same relation",
+  "sources": [
+    {
+      "path": "D:\\information-boltzmann-v1\\scratch\\native_relation_mode_use_2401_20261117\\baseline\\observations\\operations.jsonl.gz",
+      "sha256": "39688281b39f056e4bc3b272fc17272d0acdd0c5692f9c624e802d209b1d1220"
+    },
+    {
+      "path": "D:\\information-boltzmann-v1\\scratch\\native_relation_mode_use_2401_20261117\\baseline\\observations\\tensors.bin",
+      "sha256": "b8f1624a3b14073aeb14cff6015b890e232e090c7f7f90d99563674758221f32"
+    },
+    {
+      "path": "D:\\information-boltzmann-v1\\scratch\\native_relation_mode_use_2401_20261117\\pending_mode_cut\\observations\\operations.jsonl.gz",
+      "sha256": "670db2ca60ea87116555b105d8c77dc4f36b9639fa6428a00a243a1030753469"
+    },
+    {
+      "path": "D:\\information-boltzmann-v1\\scratch\\native_relation_mode_use_2401_20261117\\pending_mode_cut\\observations\\tensors.bin",
+      "sha256": "087be32ee9f1a71f918fa69fe7399cd3428c9b05c0ea3813988a6941ed470e6f"
+    },
+    {
+      "path": "D:\\information-boltzmann-v1\\scratch\\native_relation_mode_use_2401_20261117\\pending_matched\\observations\\operations.jsonl.gz",
+      "sha256": "4c8542a93f7eb48cb4d52e64050f35c51f286667bedc869b4f576296175376d9"
+    },
+    {
+      "path": "D:\\information-boltzmann-v1\\scratch\\native_relation_mode_use_2401_20261117\\pending_matched\\observations\\tensors.bin",
+      "sha256": "b0fc825437664726a4de09c8065c37c98d7592acda3ec463d1c4e051deadbe20"
+    }
+  ]
+}

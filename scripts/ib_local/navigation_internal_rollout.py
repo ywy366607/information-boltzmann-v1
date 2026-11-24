@@ -45,14 +45,36 @@ def continuation(model, latent, *, reward_valid, shuffle=False):
     No new randomness, table write, event clock or external call is used.
     """
     m, enc = model.memory, model.encoder
-    eligible = (m.occupied & reward_valid & m.internal_valid & (m.count == 1) &
-                (m.internal_stamp == m.last_write) & (m.wood_option >= 0) &
-                (m.wood_target_count == m.count))
-    read = m.read_encoded(latent, enc, eligible=eligible)
-    slots = read.slots
+    from scripts.ib_local.preview_runtime import _scope, encoder_read, read, tensor_key
+    active = None if torch.is_grad_enabled() else _scope.get()
+    in_preview = active is not None and active[0] is model
+    if in_preview:
+        elig_key = (id(m), tensor_key(reward_valid), m.occupied._version, m.internal_valid._version,
+                    m.count._version, m.internal_stamp._version, m.last_write._version,
+                    m.wood_option._version, m.wood_target_count._version)
+        eligible = read(model, 'continuation_eligible', elig_key, lambda: (
+            m.occupied & reward_valid & m.internal_valid & (m.count == 1) &
+            (m.internal_stamp == m.last_write) & (m.wood_option >= 0) &
+            (m.wood_target_count == m.count)), anchors=(m, reward_valid))
+    else:
+        eligible = (m.occupied & reward_valid & m.internal_valid & (m.count == 1) &
+                    (m.internal_stamp == m.last_write) & (m.wood_option >= 0) &
+                    (m.wood_target_count == m.count))
+    read_out = m.read_encoded(latent, enc, eligible=eligible)
+    slots = read_out.slots
     valid = eligible[slots]
     options = m.wood_option[slots].clamp(0, 2)
-    src, act = enc(m.source[slots]), enc(m.action[slots])
+    if in_preview:
+        proj = encoder_read(enc, 'preview_memory_projection',
+            (id(m), *(tensor_key(t) for t in (m.source, m.action, m.long_successor))),
+            lambda: (F.normalize(enc(m.source), dim=-1), enc(m.action), enc(m.long_successor), enc(m.source)),
+            anchors=(m,))
+        if len(proj) >= 4:
+            src, act = proj[3][slots], proj[1][slots]
+        else:
+            src, act = enc(m.source[slots]), proj[1][slots]
+    else:
+        src, act = enc(m.source[slots]), enc(m.action[slots])
     delta = act-src
     if shuffle:
         # Diagnostic only: preserve each query's candidates, change pairing.
@@ -62,13 +84,24 @@ def continuation(model, latent, *, reward_valid, shuffle=False):
     head = model.kanli.outcome
     # The parametric branch of the SAME existing F. No fabricated historical
     # evidence for a future event, no new word/address side channel.
-    residual = head(x)[..., :4]
-    evidence = model.wood_evidence
-    prediction = evidence.bases()[options] + evidence.confidence()[options]*residual
+    evidence = getattr(model, '_causal_use_value_evidence', model.wood_evidence)
+    if in_preview:
+        bases, conf = read(model, 'continuation_evidence_stats', id(evidence),
+                           lambda: (evidence.bases(), evidence.confidence()), anchors=(evidence,))
+    else:
+        bases, conf = evidence.bases(), evidence.confidence()
+    if hasattr(model, '_causal_use_value_evidence'):
+        from scripts.ib_local.causal_value_learning import prediction as gain_prediction
+        raw = gain_prediction(model, z, delta, options)
+        base = bases[options]
+        prediction = base + conf[options]*(raw-base)
+    else:
+        residual = head(x)[..., :4]
+        prediction = bases[options] + conf[options]*residual
     gain = prediction[..., 3]
     # Recalled action prior, reweighted by the currently predicted gain;
     # a bounded soft choice, not an oracle selecting a known future reward.
-    weight = read.weights*valid
+    weight = read_out.weights*valid
     logits = gain + weight.clamp_min(1e-30).log()
     weights = logits.masked_fill(~valid, -1e4).softmax(-1)*valid
     weights = weights/weights.sum(-1, keepdim=True).clamp_min(1e-12)
@@ -97,11 +130,14 @@ class InternalRolloutEngine(DirectReadGainEngine):
             # Recycled/merged addresses do not inherit a previous episode's tag.
             valid = (int(m.count[slot]) == 1 and
                      int(m.last_write[slot]) == pending['stamp'])
-            if valid:
-                m.internal_next[slot].copy_(target)
-                m.internal_stamp[slot] = pending['stamp']
-                m.internal_valid[slot] = True
-                self._internal_label = (pending['source'], pending['action'], target)
+            from scripts.ib_local.identified_event_credit import complete_boundary
+            event_label = complete_boundary(self, pending, target)
+            if valid or event_label is not None:
+                if valid:
+                    m.internal_next[slot].copy_(target)
+                    m.internal_stamp[slot] = pending['stamp']
+                    m.internal_valid[slot] = True
+                self._internal_label = (pending['source'], pending['action'], target) if event_label is None else event_label
                 # Forecast was made before the action, in the then-current
                 # coordinate system; score the target using that encoder too.
                 old_target = F.linear(target, pending['encoder_weight'])

@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-16",
+  "scope": "Read-only training dashboard; model and training process unchanged",
+  "cause": {
+    "observed_first_cycle": 355,
+    "observed_last_cycle": 1096,
+    "spurious_connection": [361, 976],
+    "description": "Bounded per-file log tails merged an old retired interval with recent rows. The SVG checked adjacent array indices but not consecutive cycle numbers."
+  },
+  "repair": [
+    "The observer exposes the most recent contiguous suffix, up to its existing 128-row and 8-MiB per-file read budgets.",
+    "The line renderer starts a new segment whenever cycle numbers are not consecutive, even when array indices are adjacent.",
+    "The chart states the displayed cycle range and measured record count; raw values remain unsmoothed."
+  ],
+  "verification": {
+    "node_tests_passed": 36,
+    "live_first_cycle": 987,
+    "live_last_cycle": 1112,
+    "live_rows": 126,
+    "live_gaps": [],
+    "training_status": "running",
+    "same_training_worker_pid": 5972,
+    "life_state": "saved",
+    "web_service_ready": true,
+    "visual_browser_check": "Unavailable because local browser control is disabled; verified live HTTP telemetry and rebuilt client asset."
+  }
+}

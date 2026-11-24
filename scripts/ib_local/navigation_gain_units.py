@@ -12,13 +12,18 @@ WOOD_GAIN_SCALE = 10.
 def td_gain_target(engine, previous_gain, current_value, compatible=True):
     """Return a TD target in raw gain units, before critic target conversion."""
     divisor = CRITIC_GAIN_SCALE if getattr(engine, 'gain_units_schema', 0) == 1 else 10.
-    return previous_gain + (engine.gamma*current_value/divisor if compatible else 0.)
+    duration = (getattr(engine, 'prev', None) or {}).get('duration_blocks', 1)
+    return previous_gain + (engine.gamma**duration*current_value/divisor if compatible else 0.)
 
 
 def wood_choice_logits(engine, forecast):
     """Express a 10*g wood forecast in the units used by critic precision."""
     conversion = CRITIC_GAIN_SCALE/WOOD_GAIN_SCALE if getattr(engine, 'gain_units_schema', 0) == 1 else 1.
-    return engine.precision()*conversion*forecast
+    scale = engine.precision()*conversion
+    pb = getattr(getattr(engine, 'model', None), 'phase_boltzmann', None)
+    if pb is not None and pb.enable_kinetic_temp:
+        scale = scale * pb.act_inv_temp_scale()
+    return scale*forecast
 
 
 def configure_gain_units(engine):

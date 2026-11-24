@@ -1,0 +1,218 @@
+{
+  "schema": 1,
+  "source_sha256": "102f52357b46be060a196ce83cf7cb29e2e06f0e6030fec86340032386284336",
+  "cycle": 2537,
+  "source_files_sha256": {
+    "scripts/native_action_contrast_geometry.py": "61c64fa7319501b43a4b5ca468d92a7e3c3c034112fb31f77e4a492a399d7d7d",
+    "scripts/audit_action_role_geometry.py": "bfd3768c9152d1ee7fbf5e87cd2cf6fa26661a42d378808ef50e856630c397c1",
+    "scripts/run_native_action_geometry_readonly.py": "33f04f0e0fdc4b73a27bdd4a0ea7f3d716afa8787ffaa8d81473a556b889f820",
+    "tests/test_native_action_contrast_geometry.py": "7827b422de83254e6a44525774aa530a404426b8709fc7fa9d423c574a369185",
+    "lean/CGBAxioms/reviews/NativeActionPortTransport.lean": "e28ad4ed13d650ff06c3d96ffa9393f156da391b966725f7bea0b181d78cab5a",
+    "docs/information_boltzmann/CGB_ACTION_CONTRAST_PORT_TRANSPORT_20261122.md": "723b45c82e82c648b9bec7d73f7b9effcfdb80836f45f7bf2602d8d3cce72978"
+  },
+  "results": {
+    "cgb_native_action_geometry_calibration_20261122.json": "0247c83bf32513f1d0af7c6e50560159f363922dcc5daadcd786c5c9404d235b",
+    "cgb_native_action_geometry_verified_20261122.json": "eaf132473cebc0d903d414639d4f14dd8230f4d7600715b1e4f8a9a6e39a0dc8",
+    "cgb_action_role_geometry_20261122.json": "48d80f2b36c1d097bea4b3a0d1c892b86f2f202803484b1ac02f8f75ef9747b3"
+  },
+  "cases": [
+    {
+      "role": "mother",
+      "identity": "0bf350c4351f9c2c3f70ee7003acbdf847019694a499c121c23978a8efe0d4de",
+      "alias": {
+        "indices": [
+          1,
+          5
+        ],
+        "options": [
+          1,
+          2
+        ],
+        "nominal_max_difference": 0.0,
+        "teacher_endpoint_max_difference": 0.0,
+        "student_local_q_difference": -0.5106986165046692,
+        "teacher_local_q_difference": -3.2782554626464844E-07,
+        "prior_q_difference": -0.5462543368339539,
+        "native_bank_q_difference": 0.006628990173339844,
+        "world_bank_q_difference": 0.028927326202392578,
+        "teacher_total_difference": -3.2782554626464844E-07,
+        "student_total_difference": -0.5108047723770142,
+        "q_error": -0.5106983184814453,
+        "endpoint_error": -0.0001061800867319107,
+        "common_state_error": 0.0,
+        "total_error": -0.5108044743537903,
+        "reconstruction_error": 2.421438694000244E-08,
+        "mixed_interaction": 1.6236299416050315E-05
+      },
+      "gain_calibration": {
+        "seen": [
+          26,
+          27,
+          3
+        ],
+        "base_q": [
+          -0.1300307661294937,
+          -0.03215759992599487,
+          0.514096736907959
+        ],
+        "confidence_q": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "base_error_q": [
+          0.2096763551235199,
+          0.05954635515809059,
+          0.16664165258407593
+        ],
+        "raw_error_q": [
+          0.2350882589817047,
+          1.2034627199172974,
+          0.9226429462432861
+        ]
+      },
+      "fixed_teacher_use": {
+        "student": 0.3884149193763733,
+        "q_corrected": 0.3980618119239807,
+        "endpoint_corrected": 0.3884965181350708,
+        "state_corrected": 0.38839614391326904,
+        "teacher": 0.3983686566352844
+      },
+      "q_correction_fraction": 0.9691729143213011
+    },
+    {
+      "role": "action",
+      "identity": "479404ae4c77f8f6e6124cf89553143c0183fdffc098200a0483ea879a1ef5bf",
+      "alias": {
+        "indices": [
+          1,
+          5
+        ],
+        "options": [
+          1,
+          2
+        ],
+        "nominal_max_difference": 0.0,
+        "teacher_endpoint_max_difference": 0.0,
+        "student_local_q_difference": -0.5112848877906799,
+        "teacher_local_q_difference": -1.1920928955078125E-07,
+        "prior_q_difference": -0.5462543368339539,
+        "native_bank_q_difference": 0.006614208221435547,
+        "world_bank_q_difference": 0.028352737426757812,
+        "teacher_total_difference": -1.1920928955078125E-07,
+        "student_total_difference": -0.511387825012207,
+        "q_error": -0.5112847685813904,
+        "endpoint_error": -0.00010290741920471191,
+        "common_state_error": 0.0,
+        "total_error": -0.5113876461982727,
+        "reconstruction_error": 2.980232238769531E-08,
+        "mixed_interaction": -7.477402687072754E-05
+      },
+      "gain_calibration": {
+        "seen": [
+          26,
+          27,
+          3
+        ],
+        "base_q": [
+          -0.1300307661294937,
+          -0.03215759992599487,
+          0.514096736907959
+        ],
+        "confidence_q": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "base_error_q": [
+          0.2096763551235199,
+          0.05954635515809059,
+          0.16664165258407593
+        ],
+        "raw_error_q": [
+          0.2350882589817047,
+          1.2034627199172974,
+          0.9226429462432861
+        ]
+      },
+      "fixed_teacher_use": {
+        "student": 0.3891517221927643,
+        "q_corrected": 0.39875271916389465,
+        "endpoint_corrected": 0.38916686177253723,
+        "state_corrected": 0.3891463577747345,
+        "teacher": 0.39888355135917664
+      },
+      "q_correction_fraction": 0.9865562585363165
+    }
+  ],
+  "validation": {
+    "lean_theorems": 6,
+    "lean_exit_code": 0,
+    "related_checks_passed": 10,
+    "final_focused_checks_passed": 3
+  },
+  "sampling": {
+    "complete_body_boundaries": 1,
+    "observed_question_branches": 2,
+    "complete_same_source_native_replays": 3,
+    "world_calls": 0,
+    "optimizer_updates": 0
+  },
+  "upgrade_route": [
+    "target and horizon",
+    "role-specific observation and effective readout",
+    "target-minus-prior contrast versus weak feature directions",
+    "Lean and prototype",
+    "existing actual choice contribution C(B)"
+  ],
+  "cleanup": {
+    "status": "deleted after explicit user authorization",
+    "date": "2026-11-22",
+    "removed": [
+      {
+        "path": "D:\\information-boltzmann-v1\\scratch\\cgb_native_action_geometry_20261122\\table",
+        "bytes": 241763072.0
+      },
+      {
+        "path": "D:\\information-boltzmann-v1\\scratch\\cgb_native_action_geometry_20261122_retry1\\table",
+        "bytes": 241763072.0
+      },
+      {
+        "path": "D:\\information-boltzmann-v1\\scratch\\cgb_native_action_geometry_20261122_retry1\\causal",
+        "bytes": 54194176.0
+      },
+      {
+        "path": "D:\\information-boltzmann-v1\\scratch\\cgb_native_action_geometry_20261122_retry2\\table",
+        "bytes": 241763072.0
+      },
+      {
+        "path": "D:\\information-boltzmann-v1\\scratch\\cgb_native_action_geometry_20261122_retry2\\causal",
+        "bytes": 54194176.0
+      },
+      {
+        "path": "D:\\information-boltzmann-v1\\scratch\\cgb_native_action_geometry_20261122_verified\\table",
+        "bytes": 241763072.0
+      },
+      {
+        "path": "D:\\information-boltzmann-v1\\scratch\\cgb_native_action_geometry_20261122_verified\\causal",
+        "bytes": 54194176.0
+      },
+      {
+        "path": "D:\\information-boltzmann-v1\\scratch\\cgb_native_action_geometry_20261122_calibration\\table",
+        "bytes": 241763072.0
+      },
+      {
+        "path": "D:\\information-boltzmann-v1\\scratch\\cgb_native_action_geometry_20261122_calibration\\causal",
+        "bytes": 54194176.0
+      }
+    ],
+    "bytes": 1425592064.0,
+    "free_before": 2816745472,
+    "free_after": 4242456576,
+    "originals_sha256_verified": {
+      "scratch\\cgb_competing_action_teachers_2521_20261120\\competing\\body\\causal_archive_35a328525bf56ed18248b44df35df84d40c615eef9125f5840b19ed3b267d2d8.sqlite": "35a328525bf56ed18248b44df35df84d40c615eef9125f5840b19ed3b267d2d8",
+      "scratch\\cgb_competing_action_teachers_2521_20261120\\competing\\body\\last.pt.gz": "102f52357b46be060a196ce83cf7cb29e2e06f0e6030fec86340032386284336"
+    },
+    "published_results_sha256_verified": true
+  }
+}

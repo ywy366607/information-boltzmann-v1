@@ -1,0 +1,202 @@
+{
+  "schema": 1,
+  "checkpoint": "E:\\cgb_native_body_20261115\\runtime_v2_audit\\optimized_checkpoint\\last.pt.gz",
+  "cycle": 278,
+  "source_sha256": "59d66ba9c2f33b889c7915920dcdf51fd88b448f95f49ff3a429fbedd5c0adde",
+  "optimizer_updates": 0,
+  "world_calls": 0,
+  "trained_field_optimizer_steps": {
+    "key.weight": 190,
+    "bind.weight": 190,
+    "memory_norm.weight": 190,
+    "memory_gate.weight": 190,
+    "memory_gate.bias": 190,
+    "memory_ffn.0.weight": 190,
+    "memory_ffn.2.weight": 190,
+    "read_gate.weight": 190,
+    "read_gate.bias": 190,
+    "null.weight": 190,
+    "null.bias": 190
+  },
+  "graph_logit_max_error": 9.5367431640625e-07,
+  "graph_state_max_error": 9.5367431640625e-07,
+  "live_disabled_graph_max_error": 0.0,
+  "field_logit_effect_l2": 5.2649245262146,
+  "field_gradient_norms": {
+    "key.weight": 0.03727034479379654,
+    "bind.weight": 1.2393746376037598,
+    "memory_norm.weight": 0.0021403005812317133,
+    "memory_gate.weight": 0.009413409046828747,
+    "memory_gate.bias": 0.0007121547823771834,
+    "memory_ffn.0.weight": 0.07719317078590393,
+    "memory_ffn.2.weight": 0.07707270234823227,
+    "read_gate.weight": 0.8852415680885315,
+    "read_gate.bias": 0.1005241796374321,
+    "null.weight": 0.34337538480758667,
+    "null.bias": 0.033343300223350525
+  },
+  "layer_exchange": [
+    {
+      "workspace_residual_rms": 0.020210299640893936,
+      "workspace_write": 0.49329274892807007,
+      "workspace_read_mass": 0.8680652379989624
+    },
+    {
+      "workspace_residual_rms": 0.005012815352529287,
+      "workspace_write": 0.48500314354896545,
+      "workspace_read_mass": 0.7945142388343811
+    },
+    {
+      "workspace_residual_rms": 0.002914503449574113,
+      "workspace_write": 0.46246281266212463,
+      "workspace_read_mass": 0.7302308678627014
+    },
+    {
+      "workspace_residual_rms": 0.0020318026654422283,
+      "workspace_write": 0.476797491312027,
+      "workspace_read_mass": 0.7320640683174133
+    },
+    {
+      "workspace_residual_rms": 0.0010989063885062933,
+      "workspace_write": 0.5191848278045654,
+      "workspace_read_mass": 0.6065208315849304
+    },
+    {
+      "workspace_residual_rms": 0.001218223012983799,
+      "workspace_write": 0.5127940773963928,
+      "workspace_read_mass": 0.6346055269241333
+    },
+    {
+      "workspace_residual_rms": 0.0015853631775826216,
+      "workspace_write": 0.5188853144645691,
+      "workspace_read_mass": 0.6340892910957336
+    },
+    {
+      "workspace_residual_rms": 0.00142879958730191,
+      "workspace_write": 0.5028367638587952,
+      "workspace_read_mass": 0.5959210991859436
+    },
+    {
+      "workspace_residual_rms": 0.001249035936780274,
+      "workspace_write": 0.5383287072181702,
+      "workspace_read_mass": 0.6069732308387756
+    },
+    {
+      "workspace_residual_rms": 0.0016815331764519215,
+      "workspace_write": 0.5329232215881348,
+      "workspace_read_mass": 0.6457074284553528
+    },
+    {
+      "workspace_residual_rms": 0.0015573957934975624,
+      "workspace_write": 0.5333333611488342,
+      "workspace_read_mass": 0.5680409073829651
+    },
+    {
+      "workspace_residual_rms": 0.0016170080052688718,
+      "workspace_write": 0.5110051035881042,
+      "workspace_read_mass": 0.5951880812644958
+    },
+    {
+      "workspace_residual_rms": 0.0024957407731562853,
+      "workspace_write": 0.530039370059967,
+      "workspace_read_mass": 0.6742224097251892
+    },
+    {
+      "workspace_residual_rms": 0.0022101595532149076,
+      "workspace_write": 0.5415088534355164,
+      "workspace_read_mass": 0.6217038035392761
+    },
+    {
+      "workspace_residual_rms": 0.0018493806710466743,
+      "workspace_write": 0.5634278059005737,
+      "workspace_read_mass": 0.6085534691810608
+    },
+    {
+      "workspace_residual_rms": 0.0021902858279645443,
+      "workspace_write": 0.5920833945274353,
+      "workspace_read_mass": 0.6899186372756958
+    },
+    {
+      "workspace_residual_rms": 0.001600616262294352,
+      "workspace_write": 0.5622039437294006,
+      "workspace_read_mass": 0.5586976408958435
+    },
+    {
+      "workspace_residual_rms": 0.0039443629793822765,
+      "workspace_write": 0.5525193214416504,
+      "workspace_read_mass": 0.6764709949493408
+    },
+    {
+      "workspace_residual_rms": 0.0018808161839842796,
+      "workspace_write": 0.5721946358680725,
+      "workspace_read_mass": 0.6179681420326233
+    },
+    {
+      "workspace_residual_rms": 0.0026035874616354704,
+      "workspace_write": 0.5682142972946167,
+      "workspace_read_mass": 0.670747697353363
+    },
+    {
+      "workspace_residual_rms": 0.0017069722525775433,
+      "workspace_write": 0.5554433465003967,
+      "workspace_read_mass": 0.6122955083847046
+    },
+    {
+      "workspace_residual_rms": 0.0028754211962223053,
+      "workspace_write": 0.5801964998245239,
+      "workspace_read_mass": 0.665841281414032
+    },
+    {
+      "workspace_residual_rms": 0.002104265848174691,
+      "workspace_write": 0.5511928796768188,
+      "workspace_read_mass": 0.6322808861732483
+    },
+    {
+      "workspace_residual_rms": 0.0018691924633458257,
+      "workspace_write": 0.5955552458763123,
+      "workspace_read_mass": 0.659233570098877
+    },
+    {
+      "workspace_residual_rms": 0.00227718660607934,
+      "workspace_write": 0.563382089138031,
+      "workspace_read_mass": 0.6724632382392883
+    },
+    {
+      "workspace_residual_rms": 0.0024805141147226095,
+      "workspace_write": 0.5409778356552124,
+      "workspace_read_mass": 0.6377151608467102
+    },
+    {
+      "workspace_residual_rms": 0.0019043993670493364,
+      "workspace_write": 0.5374056696891785,
+      "workspace_read_mass": 0.6149722933769226
+    },
+    {
+      "workspace_residual_rms": 0.0023144264705479145,
+      "workspace_write": 0.5361803770065308,
+      "workspace_read_mass": 0.6725414395332336
+    },
+    {
+      "workspace_residual_rms": 0.002478634240105748,
+      "workspace_write": 0.5461026430130005,
+      "workspace_read_mass": 0.6935434937477112
+    },
+    {
+      "workspace_residual_rms": 0.003011885331943631,
+      "workspace_write": 0.5358838438987732,
+      "workspace_read_mass": 0.7003427743911743
+    },
+    {
+      "workspace_residual_rms": 0.002838700544089079,
+      "workspace_write": 0.5480247735977173,
+      "workspace_read_mass": 0.6912634372711182
+    },
+    {
+      "workspace_residual_rms": 0.005561925005167723,
+      "workspace_write": 0.5131029486656189,
+      "workspace_read_mass": 0.7644039988517761
+    }
+  ],
+  "physical_and_work_state_unchanged": true,
+  "scope": "real-body routing/gradient/capture admission; not a learning-benefit comparison"
+}

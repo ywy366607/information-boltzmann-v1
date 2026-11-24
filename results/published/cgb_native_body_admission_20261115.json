@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "stage": "native full-loop body, normally initialized; real GPU admission and nonzero resume",
+  "spec": "configs\\information_boltzmann\\mengli_native_l32_d256_20261115.json",
+  "spec_sha256": "95c769642295825bcd28cbf17930e93fba0e25fd2d48b399b3a44c3f4578708e",
+  "retired": {
+    "cycle": 7854,
+    "checkpoint": "D:/information-boltzmann-v1/results/cgb_grown_body_20261114/learning_v2/last.pt.gz",
+    "checkpoint_sha256": "668cb19a1edca9eec461cbba2e3e97d7e857323c7e19f14410d191cd2a0a0b5f",
+    "reset": false
+  },
+  "native": {
+    "checkpoint": "E:\\cgb_native_body_20261115\\body\\last.pt.gz",
+    "identity": {
+      "name": "梦漓",
+      "individual_id": "mengli-native-18ce4392d36ca574"
+    },
+    "parameters": 31238429,
+    "birth_cycle": 0,
+    "inherited_parameters": false,
+    "inherited_moments": false,
+    "inherited_facts": false,
+    "continuous_since_birth": true,
+    "physical_depth": 32,
+    "physical_width": 256,
+    "latent_width": 128,
+    "fact_width": 256,
+    "byte_table_input_layer": 2,
+    "experience_input_layer": 32
+  },
+  "admission": {
+    "cycles": 6,
+    "updates": 23,
+    "external_bytes": 5760,
+    "self_bytes": 361,
+    "api_calls": 0,
+    "cuda_peak_mib": 2667.541015625,
+    "actual_choices": [
+      "silence",
+      "generate",
+      "reuse",
+      "generate",
+      "silence",
+      "generate"
+    ],
+    "all_32_momenta_present": true,
+    "positive_momenta_per_event": [
+      32,
+      32,
+      32,
+      32,
+      32,
+      32
+    ],
+    "event_seconds": [
+      5.987404999999853,
+      23.585550600000715,
+      23.650830500002485,
+      27.823155999998562,
+      9.770809499997995,
+      11.243850400001975
+    ],
+    "checkpoint_seconds": [
+      3.306971000005433,
+      3.3085959000018192,
+      3.0339476999943145,
+      3.0054139999992913,
+      3.735825299998396,
+      3.9980355000006966
+    ],
+    "same_evidence_U_contract": true
+  },
+  "validation_at_birth": {
+    "owt_nll": 3.0560768097639084,
+    "mother_nll": 2.4747748598456383,
+    "bytes_each": 8192,
+    "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+    "fineweb_nll": 3.104060620069504
+  },
+  "validation_after_4": {
+    "owt_nll": 2.05242707580328,
+    "mother_nll": 1.4118833504617214,
+    "bytes_each": 8192,
+    "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+    "fineweb_nll": 1.9691916108131409
+  },
+  "resume": {
+    "loaded_nonzero_cycle": 4,
+    "then_committed_cycles": [
+      5,
+      6
+    ],
+    "complete_state_loader": true
+  },
+  "status": "admitted and continuing real natural-text learning",
+  "scope": "numeric/interface checks and initial real learning; no dialogue capability or faster-than-inherited claim"
+}

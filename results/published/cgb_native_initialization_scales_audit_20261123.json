@@ -1,0 +1,255 @@
+{
+  "schema": 1,
+  "optimizer_updates": 0,
+  "world_calls": 0,
+  "checkpoint_loads": 0,
+  "execution": "CPU-only algebra witnesses plus existing event logs; live source untouched",
+  "log_receipts": {
+    "path": "E:\\mengli-batch2-regression-20261123\\batch2_full_32c\\events.jsonl",
+    "external_records": 32,
+    "sha256": "0f654ae3ede86cf94f95bb1628b6447e73c1ac06707d8c691117682e219f8ae6",
+    "cycle_range": [
+      2814,
+      2845
+    ],
+    "scope": "external-boundary snapshots; not all optimizer update receipts",
+    "dynamics_roles": {
+      "freq": {
+        "zero_gate_snapshots": 13,
+        "mean_gate": 0.24603897822089493,
+        "first_gate": 1.0,
+        "final_gate": 0.0
+      },
+      "context": {
+        "zero_gate_snapshots": 16,
+        "mean_gate": 0.1579020592980669,
+        "first_gate": 1.0,
+        "final_gate": 0.0
+      },
+      "coupling": {
+        "zero_gate_snapshots": 16,
+        "mean_gate": 0.23043293389491737,
+        "first_gate": 1.0,
+        "final_gate": 0.0
+      },
+      "pair": {
+        "zero_gate_snapshots": 18,
+        "mean_gate": 0.19163327245041728,
+        "first_gate": 1.0,
+        "final_gate": 0.0
+      }
+    },
+    "coupling": {
+      "first_min": 0.004994022194296122,
+      "first_max": 0.005010825116187334,
+      "first_mean": 0.00500016359728761,
+      "final_min": 0.004993176553398371,
+      "final_max": 0.005014993250370026,
+      "final_mean": 0.005000557110179216,
+      "max_absolute_change": 7.051043212413788e-06,
+      "mean_relative_change": 7.870000329979199e-05
+    },
+    "context_gain": {
+      "first_min": -0.0009781672852113843,
+      "first_max": 0.0010646310402080417,
+      "first_mean": -8.393446415055905e-05,
+      "final_min": -0.001295182853937149,
+      "final_max": 0.001269400236196816,
+      "final_mean": -0.0001430750510849066,
+      "max_absolute_change": 0.0007083846139721572
+    },
+    "content_coefficients": {
+      "first_min": -0.0013269189512357116,
+      "first_max": 0.0024496696423739195,
+      "first_mean": -3.827435935477297e-05,
+      "final_min": -0.0014240933815017343,
+      "final_max": 0.0029160252306610346,
+      "final_mean": -5.285057302018004e-06,
+      "max_absolute_change": 0.001298148068599403
+    },
+    "frequency": {
+      "first_min": 0.30656078457832336,
+      "first_max": 39.30327606201172,
+      "first_mean": 9.77882037195377,
+      "final_min": 0.30638375878334045,
+      "final_max": 39.32511901855469,
+      "final_mean": 9.778531057643704,
+      "max_absolute_change": 0.0677642822265625
+    },
+    "momentum_read": {
+      "first": {
+        "prediction_delta": 6.606466770172119,
+        "read_norm": 38.654258728027344,
+        "weight_norm": 21.539295196533203,
+        "weight_step": 0.06550174206495285,
+        "choice_probability_tv_without_p": 0.0007219314575195312
+      },
+      "final": {
+        "prediction_delta": 6.359796047210693,
+        "read_norm": 38.28763198852539,
+        "weight_norm": 21.540433883666992,
+        "weight_step": 0.05100337043404579,
+        "choice_probability_tv_without_p": 0.0016317367553710938
+      },
+      "weight_update_nonzero_snapshots": 29
+    },
+    "question_read": {
+      "final_decision_byte_tv": 0.01016476470977068,
+      "weight_update_nonzero_snapshots": 28
+    },
+    "scales": {
+      "relation_ridge": {
+        "first": 0.0999700129032135,
+        "final": 0.10008484125137329
+      },
+      "memory_temperature": {
+        "first": 0.20012004673480988,
+        "final": 0.2007492482662201
+      }
+    },
+    "spectrum_revision": 1
+  },
+  "actual_boundary_force": {
+    "coupling_min": 0.0049931760877370834,
+    "coupling_max": 0.005014992784708738,
+    "state_rms": 0.05018600821495056,
+    "momentum_rms": 0.4813612401485443,
+    "force_to_oscillator_force_per_layer": [
+      0.0003653682942967862,
+      0.000150968277011998,
+      0.00015012745279818773,
+      0.00021465531608555466,
+      7.203316636150703e-05,
+      2.0053927073604427e-05,
+      0.0004027527174912393,
+      4.687862019636668e-05,
+      0.0010872618295252323,
+      0.00034626020351424813,
+      0.0004929114365950227,
+      0.00021934337564744055,
+      0.000146077640238218,
+      9.582663187757134e-05,
+      0.00011671279207803309,
+      0.00015046617772895843,
+      9.33411720325239e-05,
+      0.0003339070244692266,
+      0.00014129988267086446,
+      0.00019755319226533175,
+      0.0003904667100869119,
+      0.001217267126776278,
+      4.543623799690977e-05,
+      8.061974222073331e-05,
+      0.005163324065506458,
+      0.0002880796091631055,
+      0.0010117319179698825,
+      0.0006160889170132577,
+      0.0001895851019071415,
+      0.0007241085404530168,
+      0.0007218383834697306,
+      0.0008034626953303814
+    ],
+    "force_to_oscillator_force_median": 0.00021465531608555466,
+    "one_step_coupling_removed_state_relative_max": 9.771702025318518e-06,
+    "one_step_coupling_removed_momentum_relative_max": 6.127535743871704e-05,
+    "dt": 0.01,
+    "scope": "fixed saved S/P and context; original quiet step, zero committed steps"
+  },
+  "equation_checks": {
+    "operator": "production adaptive_hamiltonian.potential/force_analytic, CPU float64",
+    "fixed_pair_weight_homogeneity": [
+      {
+        "state_scale": 0.5,
+        "energy_expected_scale": 0.0625,
+        "force_expected_scale": 0.125,
+        "force_to_linear_expected_scale": 0.25,
+        "energy_relative_error": 0.0,
+        "force_relative_error": 0.0
+      },
+      {
+        "state_scale": 2.0,
+        "energy_expected_scale": 16.0,
+        "force_expected_scale": 8.0,
+        "force_to_linear_expected_scale": 4.0,
+        "energy_relative_error": 0.0,
+        "force_relative_error": 0.0
+      }
+    ],
+    "analytic_force_relative_error": 1.9048076033211138e-16,
+    "small_coupling": {
+      "value": 0.005,
+      "raw_softplus": -5.295816324881587,
+      "d_log_coupling_d_raw": 0.9975041614635374,
+      "d_potential_d_raw_coupling": 2.7872687497969663e-05,
+      "d_potential_d_zero_pair_parameters": [
+        -3.4869833637070225e-08,
+        4.090532398036679e-06
+      ]
+    },
+    "wiener_constant_gradient_scale_invariance": [
+      {
+        "gradient_scale": 0.001,
+        "gate": 0.9523809523809523,
+        "error": 0.0
+      },
+      {
+        "gradient_scale": 1.0,
+        "gate": 0.9523809523809523,
+        "error": 0.0
+      },
+      {
+        "gradient_scale": 1000.0,
+        "gate": 0.9523809523809523,
+        "error": 0.0
+      }
+    ],
+    "adam_constant_gradient_scale": [
+      {
+        "gradient_scale": 0.001,
+        "epsilon_zero_direction": 0.7,
+        "epsilon_1e8_direction": 0.6999930000699993
+      },
+      {
+        "gradient_scale": 1.0,
+        "epsilon_zero_direction": 0.7,
+        "epsilon_1e8_direction": 0.699999993
+      },
+      {
+        "gradient_scale": 1000.0,
+        "epsilon_zero_direction": 0.7,
+        "epsilon_1e8_direction": 0.699999999993
+      }
+    ],
+    "zero_linear_port": {
+      "weight_gradient_norm": 2.2318096728250763,
+      "input_gradient_norm": 0.0
+    },
+    "premise": "quartic/cubic identities fix pair weights (theta_pair=0); learned state-dependent weights add terms"
+  },
+  "code_bindings": {
+    "body_birth": "native_navigation_body.initialize_native: all Linear/Embedding weights reinitialized nonzero, residual std follows actual depth",
+    "dynamic_birth": "adaptive_hamiltonian.AdaptiveHamiltonian: positive softplus coupling, zero context/pair raw coefficients; gradient bridges carry later credit",
+    "clocks": "adaptive_spectrum.admit: inherited state retained, dyadic grid and solver admission",
+    "optimizer": "BudgetedAdamW.coherence_gate: signal/noise ratio homogeneous; gate modulates actual step; independent-noise interpretation is an extra premise",
+    "workset": "PastPresentField.exchange: sigmoid precision gain and shared language operators; constructor matrices nonzero",
+    "memory": "LatentNavigationV3: read_gain=.05; hot-key temperature and relation ridge are trainable positive log scales",
+    "linear_ports": "momentum_to_boundary and question_to_hidden constructor zeros are overwritten by complete native birth; additive migration may retain zero start"
+  },
+  "theorem_bindings": [
+    {
+      "file": "lean/CGBAxioms/CGBAxioms/GenerationBudgetedPlasticity.lean",
+      "declarations": [
+        "closed_gate_preserves_weight",
+        "executed_displacement",
+        "coherent_evidence_reopens"
+      ],
+      "premise": "actual gate and Adam direction supplied; no task-optimality conclusion",
+      "binding": "BudgetedAdamW executed update and per-role boundary gate receipts"
+    }
+  ],
+  "code_sha256": {
+    "scripts/ib_local/adaptive_hamiltonian.py": "156a72ebd867e0d7d699dbfa7a313e0f1004441233dee7ede4a683c792be087c",
+    "scripts/ib_local/native_navigation_body.py": "4c40296efaefa9b5ec6c6e6233a37b3016d4c77f5e1f3daf6f47b146d0995393",
+    "scripts/ib_local/adaptive_spectrum.py": "053b0f82b6f9371fd3b68c9b42a400c3b969c9b348e7c095a36585d90eea50d4",
+    "information_boltzmann/budgeted_adamw.py": "a44192332dea7fb72cf5b810b723918c4eff227589648c19acbcd2c8237bc510"
+  }
+}

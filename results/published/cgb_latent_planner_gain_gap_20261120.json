@@ -1,0 +1,158 @@
+{
+  "scope": "committed same-source life prefix, read-only; no new world calls or training",
+  "cycles": [
+    2494,
+    2495,
+    2496,
+    2497
+  ],
+  "mean_use": 0.017199570313096046,
+  "original_native_reference_use": 0.019387943670153618,
+  "measured_reference_gap_fraction": 0.12723418766986905,
+  "mean_model_policy_gap": 0.004935234935384503,
+  "teacher_RMSE": 0.2340782809559526,
+  "successor_condition_pairs": 4,
+  "successor_pairs_ordered_correctly": 1,
+  "details": [
+    {
+      "cycle": 2494,
+      "actual_use": -0.014995492994785309,
+      "model_action_total": [
+        -0.05120714008808136,
+        -0.042658060789108276,
+        -0.05120714008808136
+      ],
+      "probability": [
+        0.7486398816108704,
+        0.25136011838912964,
+        0.0
+      ],
+      "model_policy_gap": 0.006400181714265152,
+      "teacher_errors": [
+        0.021890409290790558,
+        -0.138884037733078
+      ],
+      "successor_condition_pair": {
+        "predicted": [
+          -0.11883164197206497,
+          -0.14142823219299316
+        ],
+        "native": [
+          -0.09694123268127441,
+          -0.28031226992607117
+        ],
+        "ranking_agrees": true,
+        "native_pair_selection_loss": 0.0
+      },
+      "world_prediction": -0.3163006901741028,
+      "world_target": -0.1499549299478531
+    },
+    {
+      "cycle": 2495,
+      "actual_use": 0.018357060849666595,
+      "model_action_total": [
+        -0.10906089097261429,
+        -0.10239118337631226,
+        -0.10906089097261429
+      ],
+      "probability": [
+        0.4041249454021454,
+        0.5958750247955322,
+        0.0
+      ],
+      "model_policy_gap": 0.0026953921667087766,
+      "teacher_errors": [
+        0.2438793145120144,
+        0.23611391335725784
+      ],
+      "successor_condition_pair": {
+        "predicted": [
+          -0.2041887491941452,
+          -0.1973220854997635
+        ],
+        "native": [
+          0.039690565317869186,
+          0.038791827857494354
+        ],
+        "ranking_agrees": false,
+        "native_pair_selection_loss": 0.0008987374603748322
+      },
+      "world_prediction": -0.19630354642868042,
+      "world_target": 0.18357060849666595
+    },
+    {
+      "cycle": 2496,
+      "actual_use": 0.017773836851119995,
+      "model_action_total": [
+        0.12550467252731323,
+        0.1138528510928154,
+        0.12550467252731323
+      ],
+      "probability": [
+        0.7130662202835083,
+        0.2869337499141693,
+        0.0
+      ],
+      "model_policy_gap": 0.0033433045578614706,
+      "teacher_errors": [
+        -0.35591538064181805,
+        0.3483225181698799
+      ],
+      "successor_condition_pair": {
+        "predicted": [
+          0.33875447511672974,
+          -0.10665125399827957
+        ],
+        "native": [
+          -0.01716090552508831,
+          0.24167126417160034
+        ],
+        "ranking_agrees": false,
+        "native_pair_selection_loss": 0.25883216969668865
+      },
+      "world_prediction": 0.1572955846786499,
+      "world_target": 0.17773836851119995
+    },
+    {
+      "cycle": 2497,
+      "actual_use": 0.047662876546382904,
+      "model_action_total": [
+        0.2845810651779175,
+        0.2707575559616089,
+        0.2845810651779175
+      ],
+      "probability": [
+        0.4717661738395691,
+        0.5282337665557861,
+        0.0
+      ],
+      "model_policy_gap": 0.0073020613027026116,
+      "teacher_errors": [
+        -0.10734463483095169,
+        0.2093300297856331
+      ],
+      "successor_condition_pair": {
+        "predicted": [
+          -0.091129370033741,
+          -0.1060640811920166
+        ],
+        "native": [
+          -0.1984740048646927,
+          0.10326594859361649
+        ],
+        "ranking_agrees": false,
+        "native_pair_selection_loss": 0.3017399534583092
+      },
+      "world_prediction": -0.653606116771698,
+      "world_target": 0.47662876546382904
+    }
+  ],
+  "optimization_order": [
+    "continuous real-feedback calibration of successor values",
+    "spend the same native teacher budget on uncertainty that changes competing action values",
+    "adapt selection only after same-condition value calibration"
+  ],
+  "mathematical_contract": "true_policy_loss <= 2*uniform_value_error + model_policy_gap",
+  "ceiling_provenance": "CGB_USE_COST_FRONTIER_20261119.md: 1.311873913 is a fixed-query Student-t payment certificate",
+  "unit_contract": "actual_use in finite-U; Q and teacher values in original 10*finite-U value units; pairs compare successor CONDITIONS"
+}

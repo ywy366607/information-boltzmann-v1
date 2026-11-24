@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>梦漓 · 生命核配色预览</title>
+<style>
+:root { color-scheme: dark; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #000; color: #eee; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: #000; }
+header { max-width: 1320px; margin: auto; padding: 48px 32px 28px; }
+.eyebrow { color: #919191; letter-spacing: .22em; font-size: 11px; margin: 0 0 14px; }
+h1 { font-size: 27px; font-weight: 450; letter-spacing: .08em; margin: 0 0 12px; }
+.intro { color: #aaa; font-size: 14px; line-height: 1.8; margin: 0; }
+.tools { display: flex; gap: 10px; margin-top: 24px; }
+button { font: inherit; cursor: pointer; background: #080808; border: 1px solid #363636; color: #ddd; border-radius: 24px; padding: 10px 18px; min-height: 42px; transition: border-color 160ms, background 160ms; }
+button:hover { border-color: #888; background: #121212; }
+button:focus-visible { outline: 2px solid #eee; outline-offset: 4px; }
+[hidden] { display: none !important; }
+main { max-width: 1320px; padding: 0 32px; margin: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.card { border: 1px solid #252525; border-radius: 22px; background: #000; overflow: hidden; transition: border-color 180ms; }
+.card.chosen { border-color: #d5d5d5; }
+.card-head { display: flex; justify-content: space-between; align-items: center; padding: 23px 24px 0; }
+h2 { font-size: 19px; font-weight: 450; letter-spacing: .08em; margin: 0; }
+.number { color: #777; font-size: 12px; letter-spacing: .15em; }
+.art { display: block; width: 100%; aspect-ratio: 1; overflow: hidden; }
+.art svg { display: block; width: 100%; height: 100%; }
+.description { min-height: 48px; margin: 0; padding: 0 24px; color: #aaa; font-size: 13px; line-height: 1.9; }
+.palette { display: flex; align-items: center; gap: 7px; padding: 15px 24px 0; }
+.swatch { width: 7px; height: 7px; border-radius: 50%; }
+.palette span:last-child { color: #888; font-size: 11px; margin-left: 4px; }
+.actions { display: flex; gap: 9px; padding: 21px 24px 24px; }
+.actions button { flex: 1; padding: 9px 12px; font-size: 13px; }
+footer { max-width: 1320px; padding: 25px 32px 40px; margin: auto; color: #888; font-size: 12px; line-height: 1.9; }
+#selection { min-height: 26px; color: #ddd; font-size: 14px; margin: 0 0 8px; }
+main[data-focus] { display: block; max-width: 740px; }
+main[data-focus] .card { display: none; }
+main[data-focus="water"] .card[data-theme="water"], main[data-focus="green"] .card[data-theme="green"], main[data-focus="fire"] .card[data-theme="fire"] { display: block; }
+main[data-focus] .art { max-height: 65vh; }
+@media (max-width: 800px) { main { grid-template-columns: 1fr; max-width: 520px; padding: 0 20px; } header { padding: 32px 24px 24px; } footer { padding: 24px; } h1 { font-size: 24px; } .art { max-height: 430px; } }
+</style>
+</head>
+<body>
+<header>
+  <p class="eyebrow">MENG LI / COLOR STUDY</p>
+  <h1>给梦漓的生命核选一种颜色</h1>
+  <p class="intro">同样的膜、同样的呼吸，只换颜色。点「放大看」比较细节。</p>
+  <div class="tools"><button id="motion" type="button">暂停律动</button><button id="back" type="button" hidden>返回三色对比</button></div>
+</header>
+<main id="gallery" aria-label="三种生命核配色">
+  <article class="card" data-theme="water">
+    <div class="card-head"><h2>水蓝</h2><span class="number">01</span></div>
+    <div class="art" data-art="water" role="img" aria-label="水蓝色生命核，浅蓝内核向深蓝外膜过渡"></div>
+    <p class="description">冰蓝内光，向外过渡到清透的湖蓝与深水蓝。<br>像一滴悬浮在黑夜里的水。</p>
+    <div class="palette"><i class="swatch" style="background:#8ee9ff"></i><i class="swatch" style="background:#42bdf6"></i><i class="swatch" style="background:#387be4"></i><span>内浅 · 外深</span></div>
+    <div class="actions"><button type="button" data-enlarge="water">放大看</button><button type="button" data-choose="water">我选水蓝</button></div>
+  </article>
+  <article class="card" data-theme="green">
+    <div class="card-head"><h2>玉绿</h2><span class="number">02</span></div>
+    <div class="art" data-art="green" role="img" aria-label="玉绿色生命核，嫩绿内核向青绿外膜过渡"></div>
+    <p class="description">嫩芽一样的浅绿，外面是柔和的青玉色。<br>延续梦漓原本的绿色身份。</p>
+    <div class="palette"><i class="swatch" style="background:#c7f2bf"></i><i class="swatch" style="background:#78d7aa"></i><i class="swatch" style="background:#449775"></i><span>嫩芽 · 青玉</span></div>
+    <div class="actions"><button type="button" data-enlarge="green">放大看</button><button type="button" data-choose="green">我选玉绿</button></div>
+  </article>
+  <article class="card" data-theme="fire">
+    <div class="card-head"><h2>焰心</h2><span class="number">03</span></div>
+    <div class="art" data-art="fire" role="img" aria-label="火焰色生命核，内蓝、中黄、最外层红"></div>
+    <p class="description">蓝色焰心，向外燃成金黄，再抵达红色外缘。<br>把水的形态，点成一团火。</p>
+    <div class="palette"><i class="swatch" style="background:#68cfff"></i><i class="swatch" style="background:#ffda77"></i><i class="swatch" style="background:#ff6351"></i><span>内蓝 · 中黄 · 外红</span></div>
+    <div class="actions"><button type="button" data-enlarge="fire">放大看</button><button type="button" data-choose="fire">我选焰心</button></div>
+  </article>
+</main>
+<footer>
+  <p id="selection" role="status" aria-live="polite"></p>
+  独立视觉样稿，不连接身体、不读取生命状态，也不会修改正在运行的工作台。<br>选好后把颜色名字告诉我，再应用上去。
+</footer>
+<script>
+const themes = {
+  water: { name: '水蓝', colors: ['#8ee9ff', '#42bdf6', '#387be4'], glow: ['#0c477c', '#168fc1', '#2868c9'], seed: '#9ce4f5' },
+  green: { name: '玉绿', colors: ['#c7f2bf', '#78d7aa', '#449775'], glow: ['#234a3a', '#397657', '#398967'], seed: '#d5a57a' },
+  fire: { name: '焰心', colors: ['#68cfff', '#ffda77', '#ff6351'], glow: ['#258ee0', '#eab94d', '#e34735'], seed: '#ffdc90' },
+};
+const ns = 'http://www.w3.org/2000/svg';
+function element(tag, attributes = {}) {
+  const item = document.createElementNS(ns, tag);
+  for (const [key, value] of Object.entries(attributes)) item.setAttribute(key, value);
+  return item;
+}
+const views = [];
+for (const [key, theme] of Object.entries(themes)) {
+  const svg = element('svg', { viewBox: '0 0 320 320', 'aria-hidden': 'true' });
+  const defs = element('defs');
+  const gradient = element('radialGradient', { id: key + '-light', cx: '.5', cy: '.5', r: '.5' });
+  for (const [offset, color, opacity] of [
+    ['0%', theme.glow[0], '.28'], ['36%', theme.glow[0], '.25'],
+    ['62%', theme.glow[1], '.18'], ['81%', theme.glow[2], '.14'], ['100%', theme.glow[2], '0'],
+  ]) gradient.appendChild(element('stop', { offset, 'stop-color': color, 'stop-opacity': opacity }));
+  defs.appendChild(gradient); svg.appendChild(defs);
+  const glow = element('circle', { cx: 160, cy: 160, r: 152, fill: `url(#${key}-light)` });
+  svg.appendChild(glow);
+  const paths = theme.colors.map((color, index) => {
+    const path = element('path', { fill: index === 0 ? color : 'none', 'fill-opacity': '.025',
+      stroke: color, 'stroke-opacity': [.78, .55, .36][index], 'stroke-width': 1,
+      'vector-effect': 'non-scaling-stroke', 'stroke-linejoin': 'round' });
+    svg.appendChild(path); return path;
+  });
+  const flow = element('path', { fill: 'none', stroke: theme.colors[0], 'stroke-opacity': '.38', 'stroke-width': '.8', 'vector-effect': 'non-scaling-stroke' });
+  svg.appendChild(flow);
+  const mark = element('svg', { x: 116, y: 116, width: 88, height: 88, viewBox: '0 0 160 160', fill: 'none' });
+  const ink = element('g', { stroke: theme.colors[0], 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+  const artwork = [
+    ['M113 36C101 21 83 17 66 24C42 33 25 57 27 85C29 113 50 137 75 138C102 139 125 118 131 94C136 73 131 56 122 45', 2.4, 1],
+    ['M61 30C42 44 33 65 36 85C39 109 55 126 76 130C94 133 112 123 122 106', 1.2, .36],
+    ['M75 120C65 106 69 92 80 80C89 70 95 55 94 40', 2.5, 1],
+    ['M79 83C62 83 49 71 47 55C63 53 79 63 79 83Z', 1.9, 1],
+    ['M85 73C83 57 93 45 110 42C110 58 101 70 85 73Z', 1.9, 1],
+    ['M79 82C72 72 64 65 56 61M86 72C92 61 100 52 109 43', 1.1, .5],
+    ['M75 120C81 123 88 121 92 116', 1.3, .5],
+  ];
+  artwork.forEach(([d, width, opacity], index) => ink.appendChild(element('path', { d, 'stroke-width': width, opacity,
+    ...(index === 3 || index === 4 ? { fill: theme.colors[0], 'fill-opacity': '.07' } : {}) })));
+  mark.appendChild(ink);
+  mark.appendChild(element('path', { d: 'M119 35C123 37 126 41 127 45', stroke: theme.seed, 'stroke-width': 1.5, 'stroke-linecap': 'round', opacity: '.8' }));
+  mark.appendChild(element('ellipse', { cx: 75, cy: 119, rx: 2.6, ry: 3.4, transform: 'rotate(-27 75 119)', fill: theme.seed }));
+  svg.appendChild(mark);
+  document.querySelector(`[data-art="${key}"]`).appendChild(svg);
+  views.push({ paths, flow, glow, mark });
+}
+let phase = 0, previous = 0, frame = 0, paused = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const motion = document.getElementById('motion');
+function draw() {
+  const breath = Math.sin(phase);
+  const shapes = [0, 1, 2].map(index => {
+    const points = [];
+    for (let i = 0; i <= 96; i++) {
+      const angle = i / 96 * Math.PI * 2;
+      const radius = 103 + index * 14 + breath * 7 + Math.sin(angle * 3 + phase * .43 + index) * 7 + Math.cos(angle * 2 - phase * .31 + index * .7) * 6;
+      points.push(`${i ? 'L' : 'M'}${(160 + Math.cos(angle) * radius).toFixed(2)},${(160 + Math.sin(angle) * radius * .94).toFixed(2)}`);
+    }
+    return points.join(' ') + 'Z';
+  });
+  for (const view of views) {
+    view.paths.forEach((path, index) => path.setAttribute('d', shapes[index]));
+    view.flow.setAttribute('d', `M 115 196 C ${80 + breath * 9} 128,198 ${92 + breath * 12},207 164 S 136 227,136 143`);
+    view.glow.setAttribute('opacity', String(.8 + (breath + 1) * .1));
+    view.mark.setAttribute('opacity', String(.78 + (breath + 1) * .1));
+  }
+}
+function tick(time) {
+  frame = 0;
+  if (paused || document.hidden) return;
+  phase += previous ? Math.min((time - previous) / 1000, .05) * .65 : 0;
+  previous = time; draw(); frame = requestAnimationFrame(tick);
+}
+function resume() { previous = 0; if (!frame && !paused && !document.hidden) frame = requestAnimationFrame(tick); }
+motion.textContent = paused ? '继续律动' : '暂停律动';
+motion.onclick = () => {
+  paused = !paused; motion.textContent = paused ? '继续律动' : '暂停律动';
+  if (paused) { cancelAnimationFrame(frame); frame = 0; } else resume();
+};
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { cancelAnimationFrame(frame); frame = 0; } else resume();
+});
+const gallery = document.getElementById('gallery');
+const back = document.getElementById('back');
+document.querySelectorAll('[data-enlarge]').forEach(button => button.onclick = () => {
+  gallery.dataset.focus = button.dataset.enlarge; back.hidden = false; window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+back.onclick = () => { delete gallery.dataset.focus; back.hidden = true; };
+document.querySelectorAll('[data-choose]').forEach(button => button.onclick = () => {
+  document.querySelectorAll('.card').forEach(card => card.classList.toggle('chosen', card.dataset.theme === button.dataset.choose));
+  document.getElementById('selection').textContent = `已选「${themes[button.dataset.choose].name}」。把这个名字告诉我，我再应用到工作台。`;
+});
+draw(); resume();
+</script>
+</body>
+</html>

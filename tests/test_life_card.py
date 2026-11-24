@@ -86,6 +86,49 @@ def test_initial_row_and_unknown_clock_are_null(snapshot):
     assert empty['mother']['turns'] is None
 
 
+def test_committed_dynamics_reads_saved_p_and_actual_head_coefficients(snapshot):
+    from scripts.ib_local.adaptive_hamiltonian import coefficients
+    card = make_card(snapshot)
+    theta = torch.zeros(3, 12)
+    context = torch.arange(24, dtype=torch.float32).reshape(3, 1, 8, 1, 1)/24
+    theta[:, 8] = .2
+    scale = torch.linspace(.2, 2, 8).reshape(1, 1, 8, 1, 1).expand(3, -1, -1, -1, -1)
+    state = {'head_coupling.theta': theta, 'head_coupling.context': context,
+             'head_coupling.frequency_scale': scale}
+    p = [torch.ones(1, 8, 2, 2)*i for i in range(3)]
+    life_card.attach_saved_dynamics(card, state, p)
+    expected, _ = coefficients(theta, context, 8, scale)
+    assert card['dynamics']['frequency'] == expected.flatten(1).tolist()
+    assert card['latest']['momentum_norms'] == [float(x.norm()) for x in p]
+    assert card['dynamics']['source_cycle'] == card['source']['cycle']
+    assert card['dynamics']['source_kind'] == 'committed_checkpoint_state'
+
+
+def test_committed_dynamics_reads_split_theta_head_coefficients(snapshot):
+    from scripts.ib_local.adaptive_hamiltonian import coefficients
+    card = make_card(snapshot)
+    theta = torch.randn(3, 12)
+    context = torch.arange(24, dtype=torch.float32).reshape(3, 1, 8, 1, 1)/24
+    scale = torch.linspace(.2, 2, 8).reshape(1, 1, 8, 1, 1).expand(3, -1, -1, -1, -1)
+    state = {
+        'head_coupling.theta_freq': theta[:, :8],
+        'head_coupling.theta_context': theta[:, 8:9],
+        'head_coupling.theta_coupling': theta[:, 9:10],
+        'head_coupling.theta_pair': theta[:, 10:12],
+        'head_coupling.context': context,
+        'head_coupling.frequency_scale': scale,
+    }
+    p = [torch.ones(1, 8, 2, 2) * (i + 1) for i in range(3)]
+    life_card.attach_saved_dynamics(card, state, p)
+    expected_omega, expected_strength = coefficients(theta, context, 8, scale)
+    assert card['dynamics']['frequency'] == expected_omega.flatten(1).tolist()
+    assert card['dynamics']['coupling'] == expected_strength.tolist()
+    assert card['dynamics']['context_gain'] == theta[:, 8].tolist()
+    assert card['dynamics']['content_coefficients'] == theta[:, 10:12].tolist()
+    assert card['latest']['momentum_norms'] == [float(x.norm()) for x in p]
+    assert card['dynamics']['source_kind'] == 'committed_checkpoint_state'
+
+
 def test_real_zero_values_and_empty_memory(snapshot):
     snapshot['model']['memory.clock'].zero_()
     snapshot['model']['memory.episodes'].zero_()
@@ -266,7 +309,7 @@ def test_cli_with_small_fixture(snapshot, display_root, tmp_path, monkeypatch, c
     assert (display_root / 'current.json').exists()
 
 
-def test_runner_exports_after_both_saves_and_sets_metadata_first():
+def test_runner_exports_only_after_complete_saves_and_sets_metadata_first():
     runner = Path(__file__).resolve().parents[1] / 'scripts/ib_local/run_mother_continuation.py'
     tree = ast.parse(runner.read_text(encoding='utf-8'))
     calls = [node for node in ast.walk(tree) if isinstance(node, ast.Call)
@@ -274,12 +317,14 @@ def test_runner_exports_after_both_saves_and_sets_metadata_first():
     saves = sorted(node.lineno for node in calls if node.func.id == 'save')
     exports = sorted(node.lineno for node in calls if node.func.id == 'export_live')
     identities = [node.lineno for node in calls if node.func.id == 'identity_for']
-    assert len(saves) == len(exports) == 2
-    assert identities[0] < saves[0] < exports[0] < saves[1] < exports[1]
+    assert len(saves) == len(exports) and len(saves) >= 2
+    assert identities[0] < saves[0]
+    assert all(s < e for s,e in zip(saves,exports))
+    assert all(e < s for e,s in zip(exports,saves[1:]))
     export_calls = sorted((node for node in calls if node.func.id == 'export_live'),
                           key=lambda node: node.lineno)
     first_keywords = {kw.arg: kw.value for kw in export_calls[0].keywords}
-    next_keywords = {kw.arg: kw.value for kw in export_calls[1].keywords}
     assert 'row' not in first_keywords
-    assert next_keywords['cycle'].id == 'cycle'
-    assert next_keywords['row'].id == 'row'
+    for call in export_calls[1:]:
+        keywords = {kw.arg: kw.value for kw in call.keywords}
+        assert 'row' in keywords and 'committed_sha' in keywords

@@ -1,0 +1,292 @@
+{
+  "schema": 1,
+  "source": {
+    "path": "D:\\mengli-umwelt-yoneda-smoke5-20261124\\body\\last.pt.gz",
+    "sha256": "fda5d6f6dfbfa3cc467894555e1440b363492bb7699de7896a38950f1b4a5eb1",
+    "cycle": 3276
+  },
+  "output": {
+    "checkpoint": "D:\\mengli-umwelt-gaze-smoke5-20261124\\body\\last.pt.gz",
+    "sha256": "c2e8fd5d3131c2657fa2a9b02df4fd4a779abd661e9c56c2e55e8689b3bbab52",
+    "cycle": 3284
+  },
+  "config": {
+    "schema": 1,
+    "branch_id": "mengli-umwelt-gaze-smoke5-20261124",
+    "mother_enabled": true,
+    "mother_harness_url": "http://127.0.0.1:8902",
+    "mother_cooldown": 1,
+    "mother_max_gap": 3,
+    "mirror_ratio": 0.7,
+    "chinese_corpus": "D:\\information-boltzmann-v1\\data\\cgb_chinese_stories_20261124\\train.bin",
+    "chinese_mix_ratio": 0.5,
+    "restored_prior_port_state": true
+  },
+  "timing": {
+    "life_seconds": 101.188,
+    "save_seconds": 1.825,
+    "peak_vram_gib": 2.2399,
+    "run_external_bytes": 20480,
+    "bytes_per_second": 202.4,
+    "run_calm_pieces": 8,
+    "run_executive_spikes": 8,
+    "mean_calm_seconds": 1.2039,
+    "mean_exec_seconds": 11.421
+  },
+  "unified_port": {
+    "ambient_reads": 40,
+    "sidecar_reads": 20,
+    "spike_turns": 26,
+    "mother_turns": 10,
+    "mother_responsive_turns": 2,
+    "mother_proactive_turns": 8,
+    "book_navigation_turns": 11,
+    "explicit_addressed_turns": 0,
+    "mirror_visible_turns": 7,
+    "book_only_turns": 3,
+    "parent_turns": 0,
+    "tool_turns": 0,
+    "ambient_fallback_turns": 16,
+    "mother_present": true,
+    "active_floor": "book",
+    "last_book_source": "chinese_storybook",
+    "active_interlocutor": "mother",
+    "awaiting_reply_from": null,
+    "turns_since_name_call": 13,
+    "care_stage": "infant_direct_modeling",
+    "care_plan_version": 2,
+    "stage_transitions": [
+      {
+        "turn": 4,
+        "kind": "mother_autonomous_reflection",
+        "stage": "infant_direct_modeling",
+        "version": 2
+      }
+    ],
+    "gaze_pointer": {
+      "schema": 1,
+      "d_model": 256,
+      "d_gaze": 64,
+      "param_count": 49474,
+      "step_count": 8,
+      "baseline_g": 0.000204,
+      "mean_entropy": 0.6931,
+      "known_objects": [
+        "book",
+        "mother"
+      ],
+      "target_counts": {
+        "book": 3,
+        "mother": 5
+      },
+      "target_g_ema": {
+        "book": 0.0,
+        "mother": -0.001409
+      },
+      "last_decision": {
+        "target_id": "mother",
+        "probs": {
+          "book": 0.4993,
+          "mother": 0.5007
+        },
+        "entropy": 0.6931,
+        "num_candidates": 2,
+        "sampled": true
+      }
+    },
+    "summary_version": 0,
+    "provider_hit_rate": 0.8600588384847274,
+    "usage_totals": {
+      "reply_usage": {
+        "prompt_tokens": 27533,
+        "completion_tokens": 605,
+        "cache_hit_tokens": 23680,
+        "cache_miss_tokens": 3853,
+        "total_tokens": 28138
+      },
+      "summary_usage": null,
+      "source_counts": {
+        "api": 10,
+        "local": 1,
+        "shared": 0
+      },
+      "api_calls": 10,
+      "failures": 0
+    }
+  },
+  "hnet": {
+    "schema": 1,
+    "enc_layers": 4,
+    "dec_layers": 4,
+    "target_ratio": 4.0,
+    "ratio_loss_weight": 0.25,
+    "min_seq_len": 32,
+    "router_scale": 6.0,
+    "router_thresh": 0.08564168214797974,
+    "calibrated": true,
+    "calls": 4776,
+    "last_boundary_rate": 0.36230963468551636,
+    "last_compression_ratio": 2.7600700855255127,
+    "mean_boundary_rate_ema": 0.29168206453323364,
+    "effective_compression_ema": 3.428390434633879,
+    "last_ratio_loss": 1.140982985496521,
+    "residual_weight_rms": 0.01661641150712967,
+    "wiener_mean_gate": 0.30579885840415955
+  },
+  "flux_trajectory": [],
+  "dialogue_samples": [
+    {
+      "cycle": 3278,
+      "life_seconds": 23.38,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "mirror_visible",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 2,
+      "utterance_kind": "silent",
+      "mirror_excerpt": "在衣柜里、沙发下，甚至洗衣房里都进行了搜查",
+      "child_text": "",
+      "reply_text": "蒂姆和妈妈系不好风筝的绳子，正难过呢，莉莉过来帮了他们。有些事自己弄不好，请别人帮一把，一点也不丢人。",
+      "metal_g": -0.005934089422225952,
+      "cache_hit_tokens": 2432,
+      "cache_miss_tokens": 384,
+      "turn_hit_rate": 0.8636363636363636,
+      "provider_hit_rate": 0.8123385727990554,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 3279,
+      "life_seconds": 33.49,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "book_only",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 2,
+      "utterance_kind": "silent",
+      "mirror_excerpt": "",
+      "child_text": "",
+      "reply_text": "弟弟把手伸进糖浆里，弄得黏糊糊的，妈妈擦干净了，莉莉就不难受啦。你看她头发被汗弄得湿湿的，扎成马尾辫就凉快了，夏天我们也这样。",
+      "metal_g": -0.0005077756941318512,
+      "cache_hit_tokens": 2688,
+      "cache_miss_tokens": 339,
+      "turn_hit_rate": 0.88800792864222,
+      "provider_hit_rate": 0.8261551453733864,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 3280,
+      "life_seconds": 46.61,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "mirror_visible",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 2,
+      "utterance_kind": "silent",
+      "mirror_excerpt": "在衣柜里、沙发下，甚至洗衣房里都进行了搜查",
+      "child_text": "",
+      "reply_text": "哎呀，泰迪熊掉进池塘里了，莉莉一定急坏了。就像你最喜欢的玩偶忽然不见了，心里会空空的吧。",
+      "metal_g": 0.010743297636508942,
+      "cache_hit_tokens": 3072,
+      "cache_miss_tokens": 275,
+      "turn_hit_rate": 0.9178368688377652,
+      "provider_hit_rate": 0.841555834378921,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 3282,
+      "life_seconds": 76.72,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "mirror_visible",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 2,
+      "utterance_kind": "silent",
+      "mirror_excerpt": "又清晰。于是他尽可能高地伸出手臂，然后跳",
+      "child_text": "",
+      "reply_text": "比尔够那个西瓜，踮起脚、跳起来，还是差一点点。有时候东西就在眼前，可就是够不着，只好请爸爸来帮忙啦。",
+      "metal_g": -0.005282960832118988,
+      "cache_hit_tokens": 3328,
+      "cache_miss_tokens": 321,
+      "turn_hit_rate": 0.9120306933406412,
+      "provider_hit_rate": 0.852464579621617,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 3284,
+      "life_seconds": 101.19,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "mirror_visible",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 2,
+      "utterance_kind": "babble",
+      "mirror_excerpt": "龟托托。托托被困在一个洞里。波波帮助托托",
+      "child_text": "到",
+      "reply_text": "嗯，我听到你说“到”啦。你看，托托被困在洞里，波波伸手把他拉出来，就像伸手把掉进坑里的小伙伴扶起来一样。",
+      "metal_g": 0.0027197599411010742,
+      "cache_hit_tokens": 3584,
+      "cache_miss_tokens": 375,
+      "turn_hit_rate": 0.9052791108865875,
+      "provider_hit_rate": 0.8600588384847274,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    }
+  ],
+  "evaluation": {
+    "checkpoint": "D:\\mengli-umwelt-gaze-smoke5-20261124\\body\\last.pt.gz",
+    "cycle": 3284,
+    "load_seconds": 10.715,
+    "fresh_8192_nll": {
+      "mean_nll": 1.740412000566721,
+      "segment_nll": [
+        1.7842355594038963,
+        1.825778678059578,
+        1.6993223577737808,
+        1.6523114070296288
+      ]
+    },
+    "classic_8192_nll": {
+      "mean_nll": 1.6099868323653936,
+      "segment_nll": [
+        1.4311280772089958,
+        1.8427448198199272,
+        1.6007406562566757,
+        1.5653337761759758
+      ]
+    },
+    "combined_16384_mean_nll": 1.6751994164660573,
+    "fresh_64_facts": {
+      "mean_score": -0.42101632663980126,
+      "mean_mse": 0.10162144951755181
+    },
+    "scale_diagnostics": {
+      "relation_ridge": 0.11269425600767136,
+      "relation_ridge_gate": 0.9178938269615173,
+      "relation_ridge_lr": 0.0003,
+      "memory_temperature": 0.2002423107624054,
+      "memory_temperature_gate": 0.0,
+      "memory_temperature_lr": 0.0003
+    },
+    "optimizer_mean_gate": 0.11809434529187485,
+    "optimizer_alive_frac": 0.4610323886639676,
+    "alif_restored": {
+      "v": 0.0,
+      "a": 2.271464931845463,
+      "executive_spikes": 387,
+      "calm_pieces": 957,
+      "total_external_bytes": 1902720,
+      "total_learned_bytes": 1902720,
+      "pending_spike": false
+    }
+  },
+  "restore_exact": true
+}

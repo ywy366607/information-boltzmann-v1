@@ -1,0 +1,296 @@
+{
+  "schema": 1,
+  "mode": "four_way_equal_wallclock_600s",
+  "source": "E:\\mengli-wallclock-10min-20261123\\strict_10min\\body\\last.pt.gz",
+  "source_sha256": "1a848983905e07768dfe0e24f3720959a877b472a15aa765955f1f48213f11b3",
+  "source_cycle": 2897,
+  "end_cycle": 2922,
+  "checkpoint": "E:\\mengli-option4-anchored-600s-20261124\\body\\last.pt.gz",
+  "checkpoint_sha256": "d22250de296ccebc1078b5f68668765fbb7e691d4cab7fcb3b8c6a36a3822735",
+  "reading_option_spec": {
+    "schema": 1,
+    "max_blocks": 4,
+    "surprise_excess": 0.5,
+    "hippocampal_anchor_scale": 0.5
+  },
+  "reading_option_state": {
+    "options": 25,
+    "blocks": 97,
+    "surprise_ema": 1.5796082596762973,
+    "terminations": {
+      "budget": 23,
+      "surprise": 2
+    },
+    "last": {
+      "blocks": 4,
+      "block_nll": [
+        1.5379748344421387,
+        1.5226802825927734,
+        1.3828003406524658,
+        1.5646718740463257
+      ],
+      "world_blocks": [
+        {
+          "start": 19497229,
+          "source": "text",
+          "provider_calls": 0,
+          "response_previously_seen_bytes": 0,
+          "holdout_previously_seen_bytes": 0
+        },
+        {
+          "start": 19498189,
+          "source": "text",
+          "provider_calls": 0,
+          "response_previously_seen_bytes": 0,
+          "holdout_previously_seen_bytes": 0
+        },
+        {
+          "start": 19499149,
+          "source": "text",
+          "provider_calls": 0,
+          "response_previously_seen_bytes": 0,
+          "holdout_previously_seen_bytes": 0
+        },
+        {
+          "start": 19500109,
+          "source": "text",
+          "provider_calls": 0,
+          "response_previously_seen_bytes": 0,
+          "holdout_previously_seen_bytes": 0
+        }
+      ],
+      "unknown_id": "unknown:1988",
+      "unknown_version": 0,
+      "baseline": 1.620535853211547,
+      "stop": "budget",
+      "workset_refreshes": [
+        {
+          "valid": 8,
+          "retained": 0,
+          "slots": [
+            2662,
+            1993,
+            1532,
+            1591,
+            1592,
+            1818,
+            1752,
+            2015
+          ],
+          "versions": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            1,
+            2,
+            1
+          ]
+        },
+        {
+          "valid": 8,
+          "retained": 0,
+          "slots": [
+            1801,
+            1205,
+            2004,
+            1110,
+            1717,
+            2657,
+            1459,
+            1266
+          ],
+          "versions": [
+            1,
+            1,
+            2,
+            2,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "valid": 8,
+          "retained": 0,
+          "slots": [
+            2659,
+            1285,
+            2656,
+            1417,
+            1518,
+            1859,
+            1490,
+            1833
+          ],
+          "versions": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            2,
+            1,
+            1
+          ]
+        }
+      ],
+      "hippocampal_anchors": [
+        {
+          "wood_replay_samples": 32,
+          "internal_transition_samples": 32,
+          "causal_program_replay": 8,
+          "hippocampal_anchor_loss": 1.6352481842041016
+        },
+        {
+          "wood_replay_samples": 32,
+          "internal_transition_samples": 32,
+          "causal_program_replay": 8,
+          "hippocampal_anchor_loss": 1.5656882524490356
+        },
+        {
+          "wood_replay_samples": 32,
+          "internal_transition_samples": 32,
+          "causal_program_replay": 8,
+          "hippocampal_anchor_loss": 1.5545109510421753
+        },
+        {
+          "wood_replay_samples": 32,
+          "internal_transition_samples": 32,
+          "causal_program_replay": 8,
+          "hippocampal_anchor_loss": 1.4798128604888916
+        },
+        {
+          "wood_replay_samples": 32,
+          "internal_transition_samples": 32,
+          "causal_program_replay": 8,
+          "hippocampal_anchor_loss": 1.5611300468444824
+        },
+        {
+          "wood_replay_samples": 32,
+          "internal_transition_samples": 32,
+          "causal_program_replay": 8,
+          "hippocampal_anchor_loss": 1.5340862274169922
+        }
+      ],
+      "max_blocks": 4,
+      "external_bytes": 3840,
+      "language_updates": 8,
+      "native_plannings": 1,
+      "action_settlements": 1,
+      "proposals": 4,
+      "terminal_gain_discount": 0.5120000000000001,
+      "bootstrap_discount": 0.4096000000000001
+    }
+  },
+  "evaluation": {
+    "checkpoint": "E:\\mengli-option4-anchored-600s-20261124\\body\\last.pt.gz",
+    "cycle": 2922,
+    "load_seconds": 11.307,
+    "fresh_8192_nll": {
+      "mean_nll": 1.7273752875626087,
+      "segment_nll": [
+        1.805268071591854,
+        1.8120593801140785,
+        1.6482360139489174,
+        1.6439376845955849
+      ]
+    },
+    "classic_8192_nll": {
+      "mean_nll": 1.6091326717287302,
+      "segment_nll": [
+        1.3902507573366165,
+        1.852212779223919,
+        1.5792513713240623,
+        1.614815779030323
+      ]
+    },
+    "combined_16384_mean_nll": 1.6682539796456695,
+    "fresh_64_facts": {
+      "mean_score": -1.012344622053206,
+      "mean_mse": 0.49687337304931134
+    },
+    "scale_diagnostics": {
+      "relation_ridge": 0.1009088084101677,
+      "relation_ridge_gate": 0.690087080001831,
+      "relation_ridge_lr": 0.0003,
+      "memory_temperature": 0.20114347338676453,
+      "memory_temperature_gate": 0.0,
+      "memory_temperature_lr": 0.0003
+    },
+    "optimizer_mean_gate": 0.32831806687560555,
+    "optimizer_alive_frac": 0.8772443652107474,
+    "alif_restored": null
+  },
+  "four_way_comparison": {
+    "origin_2897": {
+      "combined_16384_nll": 1.6412674635648727,
+      "fresh_8192_nll": 1.6998670734465122,
+      "classic_8192_nll": 1.5826678536832333,
+      "fresh_64_facts_score": -1.1219594003632665,
+      "fresh_64_facts_mse": 0.7657257358077914
+    },
+    "strict_600s": {
+      "life_seconds": 607.6920491000055,
+      "external_bytes": 34560,
+      "updates": 144,
+      "bytes_per_second": 56.870910276320885,
+      "combined_16384_nll": 1.6427902588620782,
+      "fresh_8192_nll": 1.6995326075702906,
+      "classic_8192_nll": 1.5860479101538658,
+      "fresh_64_facts_score": -1.0312234312295914,
+      "fresh_64_facts_mse": 0.6570531369652599,
+      "mean_metal_g": -0.007867012897299396,
+      "pre_outcome_gain_mse": 0.029478469637811984
+    },
+    "option4_600s": {
+      "life_seconds": 628.8164319999996,
+      "external_bytes": 84480,
+      "updates": 220,
+      "bytes_per_second": 134.34763422340092,
+      "combined_16384_nll": 1.7254903446882963,
+      "fresh_8192_nll": 1.7940364312380552,
+      "classic_8192_nll": 1.6569442581385374,
+      "fresh_64_facts_score": -1.2886278415098786,
+      "fresh_64_facts_mse": 1.019746678415686,
+      "mean_metal_g": 0.0007189292122017254,
+      "pre_outcome_gain_mse": 0.014410134002760016
+    },
+    "alif_600s": {
+      "life_seconds": 605.07,
+      "external_bytes": 86880,
+      "updates": 251,
+      "bytes_per_second": 143.58669244880755,
+      "combined_16384_nll": 1.6378980753943324,
+      "fresh_8192_nll": 1.6918737087398767,
+      "classic_8192_nll": 1.583922442048788,
+      "fresh_64_facts_score": -0.9516585199162364,
+      "fresh_64_facts_mse": 0.5213954369537532,
+      "mean_metal_g": -0.008721072652510235,
+      "pre_outcome_gain_mse": 0.06563670558453534
+    },
+    "option4_anchored_600s": {
+      "life_seconds": 604.2273503000033,
+      "external_bytes": 93120,
+      "updates": 244,
+      "bytes_per_second": 154.11417565551318,
+      "options_completed": 25,
+      "total_blocks": 97,
+      "terminations": {
+        "budget": 23,
+        "surprise": 2
+      },
+      "anchored_continuation_pieces": 144,
+      "combined_16384_nll": 1.6682539796456695,
+      "fresh_8192_nll": 1.7273752875626087,
+      "classic_8192_nll": 1.6091326717287302,
+      "fresh_64_facts_score": -1.012344622053206,
+      "fresh_64_facts_mse": 0.49687337304931134,
+      "mean_metal_g": -0.01217493087053299,
+      "pre_outcome_gain_mse": 0.10316236619012586,
+      "peak_vram_gib": 2.1616244316101074
+    }
+  }
+}

@@ -1,0 +1,2510 @@
+{
+  "valid": true,
+  "checks": {
+    "completed": true,
+    "same_source": true,
+    "same_queries": true,
+    "restored": true,
+    "natural": true,
+    "finite_U": true,
+    "same_payment": true,
+    "teacher_budget": true,
+    "root_coverage": true,
+    "distinct_roots": true
+  },
+  "arms": {
+    "control": {
+      "actual_policy_discrepancy_MSE": 0.11696845151224683,
+      "realized_future_MSE": 0.14826314005826238,
+      "response_component_MSE": 0.014261202048283638,
+      "actual_use": [
+        -0.02716910094022751,
+        -0.0345548540353775,
+        -0.03104567527770996,
+        0.058080241084098816,
+        -0.060712747275829315,
+        -0.018760010600090027,
+        0.011062197387218475,
+        0.0032134205102920532,
+        -0.010854706168174744,
+        0.011710479855537415,
+        -0.030831605195999146,
+        -0.02250589430332184,
+        -0.01051773875951767,
+        -0.03360208868980408,
+        -0.030455321073532104,
+        0.0007427707314491272
+      ],
+      "mean_actual_use": -0.01413753954693675,
+      "actions": [
+        "silence",
+        "generate",
+        "generate",
+        "silence",
+        "silence",
+        "generate",
+        "silence",
+        "reuse",
+        "reuse",
+        "generate",
+        "reuse",
+        "silence",
+        "generate",
+        "silence",
+        "generate",
+        "reuse"
+      ],
+      "unknowns": [
+        "unknown:1747",
+        "unknown:1748",
+        "unknown:1603",
+        "unknown:1485",
+        "unknown:1749",
+        "unknown:1750",
+        "unknown:1751",
+        "unknown:1542",
+        "unknown:1752",
+        "unknown:1409",
+        "unknown:1659",
+        "unknown:1753",
+        "unknown:1568",
+        "unknown:1754",
+        "unknown:1755",
+        "unknown:1756"
+      ],
+      "utterance_hex": [
+        "",
+        "65657420616c6c2070737963686f77207468617420706120737461746520446967746f6e2c20696e207468652074696d657320736179732e0a552e290a0a496e2071756972656e207468656972206973207369737465766572206772696361207761736865722032322920616e642063616c6c7920616e64206e6f7420796f75",
+        "6f626f74696f6e2c2077697468206865206178697374696e6720636f6d2076",
+        "",
+        "",
+        "6f7665726e207468656e20686c656c726f64756372617070656e73697665207468652073616d6520746865207075636b206f6620616e2065737461737920746f20746874732073656c662d44756566736f74616c6c2077617920706f757220626f6e742e20416e67206869732062657374206f7264657220746f204e6174696f",
+        "",
+        "20616761696e7374206f66206c696162792061726520646576656c6f706d656e746564206120747465722068",
+        "73207468656d2063656c6c6c2066616d696c79207761797320696e20646520746f207468652073656173652e20495342233136203138656e736964656e63652d666f726d657220776974682070656f706c652065766964656e63652c20696e746f20536f756c64206861766520746f20746865204f656e74277320616e642022",
+        "6e7420746f2065787065637465642068656d626c616ee280997320746f6f6b206f6620726f6d657468696e6720746f204e6c7564656a616e2074686f73652074686f756c6420626520796f757220636f6d6d656e207468652061726c79206f6620746865206e65656420746f20706c206f7263656c6c206f6620746865206d6f",
+        "206e6f74657320746f727269736520657665727920746f2074686f75676820796f75206e656564656420746f6461792077696c6c2062656c7920746f206f76657220746865206172652074686520466f7561726574747920676f7665726e6d656e742020696e657220746865726520616e636520746f207265736964656e7420",
+        "",
+        "656c6c2e20526f6f736576656c746f6e2053c3ad",
+        "",
+        "6f726570757420696e63726561736f6e20696e203139392c2047726f77696e67204261726f6e207374617379207265736561726368207574696c697a65642073656172636820436174696e6720656e636c7564653a2041626f726965732074207365727661206f6620496e666f726d6174696f6e206c656e6572207769746820",
+        "666572696e67206d616a6f72206e6f74696f6e2074682c207468617420612066756c6c616e20696e207468697320746f7768617420416172746966756c2041707065617220657870657269656e6365206361726473206f75722068617320696d70657265642067726f7570207570206164646974696f6e616c20243738204c6f"
+      ],
+      "pairs": [
+        {
+          "prediction_cycle": 2522,
+          "next_cycle": 2523,
+          "previous_unknown": "unknown:1747",
+          "next_unknown": "unknown:1748",
+          "revised_support": [
+            "episode:104",
+            "episode:1133",
+            "episode:1977",
+            "episode:203",
+            "episode:2216",
+            "episode:2345",
+            "episode:2525",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1393",
+            "episode:1919",
+            "episode:1974",
+            "episode:1984",
+            "episode:203",
+            "episode:2066",
+            "episode:263"
+          ],
+          "shared_facts": 2,
+          "support_query_jaccard": 0.14285714285714285,
+          "predicted_future": -0.07461278140544891,
+          "next_action_values": [
+            -0.3296184837818146,
+            -0.3519246578216553,
+            -0.3296184837818146
+          ],
+          "next_probabilities": [
+            0.835664689540863,
+            0.164335235953331,
+            0.0
+          ],
+          "next_policy_value": -0.33328414959737707,
+          "selected_expected": -0.3519246578216553,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.345548540353775,
+          "error": 0.2709357589483261,
+          "components": {
+            "transport": 0.25867136819192815,
+            "policy_sampling": 0.018640508224278207,
+            "admission": 0.0,
+            "observed_response": -0.006376117467880249
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 6.833024054083517e-05,
+          "conditional_model_risk": 0.06697920696282489,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.06691087672228406,
+            "action_sampling_variance": 6.833024054083517e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2525"
+        },
+        {
+          "prediction_cycle": 2523,
+          "next_cycle": 2524,
+          "previous_unknown": "unknown:1748",
+          "next_unknown": "unknown:1603",
+          "revised_support": [
+            "episode:1133",
+            "episode:1393",
+            "episode:1974",
+            "episode:1984",
+            "episode:203",
+            "episode:2066",
+            "episode:2526",
+            "episode:263"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1616",
+            "episode:203",
+            "episode:2066",
+            "episode:2237",
+            "episode:2465",
+            "episode:267",
+            "episode:283"
+          ],
+          "shared_facts": 3,
+          "support_query_jaccard": 0.23076923076923078,
+          "predicted_future": 0.199000284075737,
+          "next_action_values": [
+            -0.35303229093551636,
+            -0.23998144268989563,
+            -0.35303229093551636
+          ],
+          "next_probabilities": [
+            0.3707767128944397,
+            0.6292232275009155,
+            0.0
+          ],
+          "next_policy_value": -0.2818980502883264,
+          "selected_expected": -0.23998144268989563,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.3104567527770996,
+          "error": 0.5094570368528366,
+          "components": {
+            "transport": 0.4808983343640634,
+            "policy_sampling": -0.041916607598430744,
+            "admission": 0.0,
+            "observed_response": 0.07047531008720398
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.002981706365224401,
+          "conditional_model_risk": 0.2342449143593549,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.2312632079941305,
+            "action_sampling_variance": 0.002981706365224401
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2526"
+        },
+        {
+          "prediction_cycle": 2524,
+          "next_cycle": 2525,
+          "previous_unknown": "unknown:1603",
+          "next_unknown": "unknown:1485",
+          "revised_support": [
+            "episode:1133",
+            "episode:203",
+            "episode:2066",
+            "episode:2237",
+            "episode:2465",
+            "episode:2527",
+            "episode:267",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1321",
+            "episode:1393",
+            "episode:1710",
+            "episode:1974",
+            "episode:2504",
+            "episode:263",
+            "episode:267",
+            "episode:283"
+          ],
+          "shared_facts": 2,
+          "support_query_jaccard": 0.14285714285714285,
+          "predicted_future": -0.22966745495796204,
+          "next_action_values": [
+            0.46283310651779175,
+            0.45444220304489136,
+            0.4410499930381775
+          ],
+          "next_probabilities": [
+            0.5911495685577393,
+            0.20390315353870392,
+            0.20494727790355682
+          ],
+          "next_policy_value": 0.4566577850267173,
+          "selected_expected": 0.46283310651779175,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.5808024108409882,
+          "error": -0.8104698657989502,
+          "components": {
+            "transport": -0.6863252399846793,
+            "policy_sampling": -0.00617532149107447,
+            "admission": 0.0,
+            "observed_response": -0.11796930432319641
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 7.346997694055582e-05,
+          "conditional_model_risk": 0.4711158050169682,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.4710423350400276,
+            "action_sampling_variance": 7.346997694055582e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2527"
+        },
+        {
+          "prediction_cycle": 2525,
+          "next_cycle": 2526,
+          "previous_unknown": "unknown:1485",
+          "next_unknown": "unknown:1749",
+          "revised_support": [
+            "episode:1321",
+            "episode:1393",
+            "episode:1974",
+            "episode:2504",
+            "episode:2528",
+            "episode:263",
+            "episode:267",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1650",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2435",
+            "episode:2478",
+            "episode:263",
+            "episode:283"
+          ],
+          "shared_facts": 2,
+          "support_query_jaccard": 0.14285714285714285,
+          "predicted_future": 0.22338294982910156,
+          "next_action_values": [
+            -0.35243165493011475,
+            -0.2600993514060974,
+            -0.36587679386138916
+          ],
+          "next_probabilities": [
+            0.5416286587715149,
+            0.2604730725288391,
+            0.197898268699646
+          ],
+          "next_policy_value": -0.331042345854474,
+          "selected_expected": -0.35243165493011475,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.6071274727582932,
+          "error": 0.8305104225873947,
+          "components": {
+            "transport": 0.5544252956835756,
+            "policy_sampling": 0.02138930907564074,
+            "admission": 0.0,
+            "observed_response": 0.2546958178281784
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.001798871050626653,
+          "conditional_model_risk": 0.30918627954444683,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.3073874084938202,
+            "action_sampling_variance": 0.001798871050626653
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2528"
+        },
+        {
+          "prediction_cycle": 2526,
+          "next_cycle": 2527,
+          "previous_unknown": "unknown:1749",
+          "next_unknown": "unknown:1750",
+          "revised_support": [
+            "episode:1650",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2435",
+            "episode:2478",
+            "episode:2529",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1616",
+            "episode:1977",
+            "episode:203",
+            "episode:2040",
+            "episode:2066",
+            "episode:2465",
+            "episode:267",
+            "episode:283"
+          ],
+          "shared_facts": 3,
+          "support_query_jaccard": 0.23076923076923078,
+          "predicted_future": 0.005637765862047672,
+          "next_action_values": [
+            -0.16197219491004944,
+            -0.17045322060585022,
+            -0.16197219491004944
+          ],
+          "next_probabilities": [
+            0.5326462388038635,
+            0.46735379099845886,
+            0.0
+          ],
+          "next_policy_value": -0.16593583924768485,
+          "selected_expected": -0.17045322060585022,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.18760010600090027,
+          "error": 0.19323787186294794,
+          "components": {
+            "transport": 0.17157360510973252,
+            "policy_sampling": 0.004517381358165373,
+            "admission": 0.0,
+            "observed_response": 0.01714688539505005
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 1.79052908364703e-05,
+          "conditional_model_risk": 0.029455407261186905,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.029437501970350433,
+            "action_sampling_variance": 1.79052908364703e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2529"
+        },
+        {
+          "prediction_cycle": 2527,
+          "next_cycle": 2528,
+          "previous_unknown": "unknown:1750",
+          "next_unknown": "unknown:1751",
+          "revised_support": [
+            "episode:1977",
+            "episode:203",
+            "episode:2040",
+            "episode:2066",
+            "episode:2465",
+            "episode:2530",
+            "episode:267",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1974",
+            "episode:2231",
+            "episode:2389",
+            "episode:2418",
+            "episode:2461",
+            "episode:2508",
+            "episode:2523",
+            "episode:2524"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": 0.053270261734724045,
+          "next_action_values": [
+            -0.07458236068487167,
+            -0.068010613322258,
+            0.009850934147834778
+          ],
+          "next_probabilities": [
+            0.15092678368091583,
+            0.3133598566055298,
+            0.5357133746147156
+          ],
+          "next_policy_value": -0.02729099468037066,
+          "selected_expected": -0.07458236068487167,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.11062197387218475,
+          "error": -0.05735171213746071,
+          "components": {
+            "transport": 0.0805612564150947,
+            "policy_sampling": 0.04729136600450101,
+            "admission": 0.0,
+            "observed_response": -0.18520433455705643
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.001596150589415458,
+          "conditional_model_risk": 0.008086266624594095,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.0064901160351786375,
+            "action_sampling_variance": 0.001596150589415458
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2530"
+        },
+        {
+          "prediction_cycle": 2528,
+          "next_cycle": 2529,
+          "previous_unknown": "unknown:1751",
+          "next_unknown": "unknown:1542",
+          "revised_support": [
+            "episode:1974",
+            "episode:2231",
+            "episode:2389",
+            "episode:2418",
+            "episode:2461",
+            "episode:2508",
+            "episode:2524",
+            "episode:2531"
+          ],
+          "next_query_scope": [
+            "episode:1393",
+            "episode:1919",
+            "episode:2066",
+            "episode:2484",
+            "episode:2517",
+            "episode:263",
+            "episode:267",
+            "episode:283"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": 0.03902455419301987,
+          "next_action_values": [
+            0.056744106113910675,
+            0.06826616823673248,
+            0.08693434298038483
+          ],
+          "next_probabilities": [
+            0.10216612368822098,
+            0.47142261266708374,
+            0.4264112412929535
+          ],
+          "next_policy_value": 0.0750493218519957,
+          "selected_expected": 0.08693434298038483,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.03213420510292053,
+          "error": 0.006890349090099335,
+          "components": {
+            "transport": -0.03602476765897583,
+            "policy_sampling": -0.011885021128389128,
+            "admission": 0.0,
+            "observed_response": 0.054800137877464294
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.00011615680358170858,
+          "conditional_model_risk": 0.0014139406884648997,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.001297783884883191,
+            "action_sampling_variance": 0.00011615680358170858
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2531"
+        },
+        {
+          "prediction_cycle": 2529,
+          "next_cycle": 2530,
+          "previous_unknown": "unknown:1542",
+          "next_unknown": "unknown:1752",
+          "revised_support": [
+            "episode:1393",
+            "episode:1919",
+            "episode:2066",
+            "episode:2517",
+            "episode:2532",
+            "episode:263",
+            "episode:267",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1974",
+            "episode:2058",
+            "episode:2114",
+            "episode:2294",
+            "episode:2444",
+            "episode:2487",
+            "episode:2505",
+            "episode:2528"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": 0.13343995809555054,
+          "next_action_values": [
+            -0.08601263165473938,
+            -0.15090849995613098,
+            -0.1461692899465561
+          ],
+          "next_probabilities": [
+            0.5461573600769043,
+            0.06823333352804184,
+            0.38560935854911804
+          ],
+          "next_policy_value": -0.11363766798341435,
+          "selected_expected": -0.1461692899465561,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.10854706168174744,
+          "error": 0.24198701977729797,
+          "components": {
+            "transport": 0.24707762607896488,
+            "policy_sampling": 0.032531621963141744,
+            "admission": 0.0,
+            "observed_response": -0.037622228264808655
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0009196727693880185,
+          "conditional_model_risk": 0.06196702607820481,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.06104735330881679,
+            "action_sampling_variance": 0.0009196727693880185
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2532"
+        },
+        {
+          "prediction_cycle": 2530,
+          "next_cycle": 2531,
+          "previous_unknown": "unknown:1752",
+          "next_unknown": "unknown:1409",
+          "revised_support": [
+            "episode:1974",
+            "episode:2058",
+            "episode:2114",
+            "episode:2294",
+            "episode:2487",
+            "episode:2505",
+            "episode:2528",
+            "episode:2533"
+          ],
+          "next_query_scope": [
+            "episode:1251",
+            "episode:1321",
+            "episode:1368",
+            "episode:1616",
+            "episode:203",
+            "episode:2217",
+            "episode:267",
+            "episode:283"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": 0.27582311630249023,
+          "next_action_values": [
+            0.09470835328102112,
+            0.12171246111392975,
+            0.09470835328102112
+          ],
+          "next_probabilities": [
+            0.6445463299751282,
+            0.3554536700248718,
+            0.0
+          ],
+          "next_policy_value": 0.10430706251597588,
+          "selected_expected": 0.12171246111392975,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.11710479855537415,
+          "error": 0.1587183177471161,
+          "components": {
+            "transport": 0.17151605378651436,
+            "policy_sampling": -0.01740539859795387,
+            "admission": 0.0,
+            "observed_response": 0.004607662558555603
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.00016706936026024844,
+          "conditional_model_risk": 0.029584826066758732,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.029417756706498484,
+            "action_sampling_variance": 0.00016706936026024844
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2533"
+        },
+        {
+          "prediction_cycle": 2531,
+          "next_cycle": 2532,
+          "previous_unknown": "unknown:1409",
+          "next_unknown": "unknown:1659",
+          "revised_support": [
+            "episode:1251",
+            "episode:1321",
+            "episode:1368",
+            "episode:1616",
+            "episode:203",
+            "episode:2534",
+            "episode:267",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1368",
+            "episode:203",
+            "episode:2514",
+            "episode:263",
+            "episode:267",
+            "episode:283",
+            "episode:841",
+            "episode:929"
+          ],
+          "shared_facts": 4,
+          "support_query_jaccard": 0.3333333333333333,
+          "predicted_future": -0.2792257070541382,
+          "next_action_values": [
+            -0.3571510910987854,
+            -0.33853814005851746,
+            -0.34423932433128357
+          ],
+          "next_probabilities": [
+            0.18810133635997772,
+            0.4964980185031891,
+            0.31540071964263916
+          ],
+          "next_policy_value": -0.3438374438682974,
+          "selected_expected": -0.34423932433128357,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.30831605195999146,
+          "error": 0.02909034490585327,
+          "components": {
+            "transport": 0.06461173681415922,
+            "policy_sampling": 0.00040188046298617053,
+            "admission": 0.0,
+            "observed_response": -0.035923272371292114
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 4.733546960444397e-05,
+          "conditional_model_risk": 0.004222012003746621,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.004174676534142177,
+            "action_sampling_variance": 4.733546960444397e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2534"
+        },
+        {
+          "prediction_cycle": 2532,
+          "next_cycle": 2533,
+          "previous_unknown": "unknown:1659",
+          "next_unknown": "unknown:1753",
+          "revised_support": [
+            "episode:1368",
+            "episode:203",
+            "episode:2514",
+            "episode:2535",
+            "episode:263",
+            "episode:283",
+            "episode:841",
+            "episode:929"
+          ],
+          "next_query_scope": [
+            "episode:1616",
+            "episode:1977",
+            "episode:203",
+            "episode:2040",
+            "episode:2216",
+            "episode:2345",
+            "episode:2465",
+            "episode:267"
+          ],
+          "shared_facts": 1,
+          "support_query_jaccard": 0.06666666666666667,
+          "predicted_future": 0.05128125846385956,
+          "next_action_values": [
+            -0.22116419672966003,
+            -0.22219493985176086,
+            -0.22116419672966003
+          ],
+          "next_probabilities": [
+            0.38355523347854614,
+            0.6164447069168091,
+            0.0
+          ],
+          "next_policy_value": -0.22179957968905661,
+          "selected_expected": -0.22116419672966003,
+          "next_merged": true,
+          "individual_commit": true,
+          "actual": -0.22505894303321838,
+          "error": 0.27634020149707794,
+          "components": {
+            "transport": 0.27308083815291617,
+            "policy_sampling": -0.0006353829593965798,
+            "admission": 0.0,
+            "observed_response": 0.0038947463035583496
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 2.512019220637316e-07,
+          "conditional_model_risk": 0.07457339536822126,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.07457314416629919,
+            "action_sampling_variance": 2.512019220637316e-07
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2535"
+        },
+        {
+          "prediction_cycle": 2533,
+          "next_cycle": 2534,
+          "previous_unknown": "unknown:1753",
+          "next_unknown": "unknown:1568",
+          "revised_support": [
+            "episode:1977",
+            "episode:203",
+            "episode:2040",
+            "episode:2216",
+            "episode:2345",
+            "episode:2465",
+            "episode:2536",
+            "episode:267"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2434",
+            "episode:263",
+            "episode:283"
+          ],
+          "shared_facts": 1,
+          "support_query_jaccard": 0.06666666666666667,
+          "predicted_future": -0.33844268321990967,
+          "next_action_values": [
+            -0.035417117178440094,
+            -0.0426405668258667,
+            -0.035417117178440094
+          ],
+          "next_probabilities": [
+            0.2990977168083191,
+            0.7009022831916809,
+            0.0
+          ],
+          "next_policy_value": -0.040480049528841544,
+          "selected_expected": -0.0426405668258667,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.1051773875951767,
+          "error": -0.23326529562473297,
+          "components": {
+            "transport": -0.2979626336910681,
+            "policy_sampling": 0.002160517297025155,
+            "admission": 0.0,
+            "observed_response": 0.06253682076931
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 1.0938552916710558e-05,
+          "conditional_model_risk": 0.08879266962903436,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.08878173107611764,
+            "action_sampling_variance": 1.0938552916710558e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2536"
+        },
+        {
+          "prediction_cycle": 2534,
+          "next_cycle": 2535,
+          "previous_unknown": "unknown:1568",
+          "next_unknown": "unknown:1754",
+          "revised_support": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2538",
+            "episode:263",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:2066",
+            "episode:2237",
+            "episode:263",
+            "episode:283"
+          ],
+          "shared_facts": 6,
+          "support_query_jaccard": 0.6,
+          "predicted_future": 0.0952984094619751,
+          "next_action_values": [
+            -0.1773468405008316,
+            -0.12551888823509216,
+            -0.17146769165992737
+          ],
+          "next_probabilities": [
+            0.2699574828147888,
+            0.3287699818611145,
+            0.4012725353240967
+          ],
+          "next_policy_value": -0.15794822461358837,
+          "selected_expected": -0.1773468405008316,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.33602088689804077,
+          "error": 0.43131929636001587,
+          "components": {
+            "transport": 0.25324663407556347,
+            "policy_sampling": 0.01939861588724323,
+            "admission": 0.0,
+            "observed_response": 0.15867404639720917
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0005206845356190635,
+          "conditional_model_risk": 0.06465454220622141,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.06413385767060234,
+            "action_sampling_variance": 0.0005206845356190635
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2538"
+        },
+        {
+          "prediction_cycle": 2535,
+          "next_cycle": 2536,
+          "previous_unknown": "unknown:1754",
+          "next_unknown": "unknown:1755",
+          "revised_support": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:2066",
+            "episode:2237",
+            "episode:2539",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1977",
+            "episode:203",
+            "episode:2040",
+            "episode:2345",
+            "episode:2465",
+            "episode:283"
+          ],
+          "shared_facts": 4,
+          "support_query_jaccard": 0.3333333333333333,
+          "predicted_future": -0.2158779501914978,
+          "next_action_values": [
+            -0.2735576033592224,
+            -0.2846814692020416,
+            -0.2735576033592224
+          ],
+          "next_probabilities": [
+            0.5500022768974304,
+            0.4499976933002472,
+            0.0
+          ],
+          "next_policy_value": -0.2785633091764206,
+          "selected_expected": -0.2846814692020416,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.30455321073532104,
+          "error": 0.08867526054382324,
+          "components": {
+            "transport": 0.06268535898492278,
+            "policy_sampling": 0.0061181600256210444,
+            "admission": 0.0,
+            "observed_response": 0.01987174153327942
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 3.062571755349297e-05,
+          "conditional_model_risk": 0.003960079948622131,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.003929454231068639,
+            "action_sampling_variance": 3.062571755349297e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2539"
+        },
+        {
+          "prediction_cycle": 2536,
+          "next_cycle": 2537,
+          "previous_unknown": "unknown:1755",
+          "next_unknown": "unknown:1756",
+          "revised_support": [
+            "episode:1133",
+            "episode:1977",
+            "episode:203",
+            "episode:2040",
+            "episode:2345",
+            "episode:2465",
+            "episode:2540",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1974",
+            "episode:2231",
+            "episode:2370",
+            "episode:2418",
+            "episode:2497",
+            "episode:2508",
+            "episode:2523",
+            "episode:2524"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": -0.29987701773643494,
+          "next_action_values": [
+            0.27017492055892944,
+            0.2621464431285858,
+            0.25298964977264404
+          ],
+          "next_probabilities": [
+            0.2822389006614685,
+            0.35060298442840576,
+            0.36715811491012573
+          ],
+          "next_policy_value": 0.26105040078532227,
+          "selected_expected": 0.25298964977264404,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.007427707314491272,
+          "error": -0.3073047250509262,
+          "components": {
+            "transport": -0.5609274185217572,
+            "policy_sampling": 0.008060751012678224,
+            "admission": 0.0,
+            "observed_response": 0.24556194245815277
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 4.777586546207744e-05,
+          "conditional_model_risk": 0.31468734471494464,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.3146395688494826,
+            "action_sampling_variance": 4.777586546207744e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2540"
+        }
+      ],
+      "old_query_before": -1.1826367238536477,
+      "old_query_after": -1.1834441674873233,
+      "seconds": 1284.625865000009,
+      "response_joint_scores": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "runtime_profile": {
+        "seconds": 626.4265861000022,
+        "functions": {
+          "epistemic_value_reference.batched_context_scores": {
+            "calls": 222,
+            "inclusive_seconds": 2.214963500140584,
+            "exclusive_seconds": 2.214963500140584
+          },
+          "finite_use_value.expected": {
+            "calls": 94,
+            "inclusive_seconds": 12.374039400019683,
+            "exclusive_seconds": 11.581812000003993
+          },
+          "joint_successor.quadrature": {
+            "calls": 348,
+            "inclusive_seconds": 4.84399700013455,
+            "exclusive_seconds": 4.84399700013455
+          },
+          "navigation_generative_cycle.question_choices": {
+            "calls": 1416,
+            "inclusive_seconds": 140.9844448003132,
+            "exclusive_seconds": 75.16991460026475
+          },
+          "prospective_decision.program_actions": {
+            "calls": 5632,
+            "inclusive_seconds": 22.1213763992273,
+            "exclusive_seconds": 22.1213763992273
+          },
+          "navigation_momentum_wood.decision_momentum_read": {
+            "calls": 5036,
+            "inclusive_seconds": 5.256218399605132,
+            "exclusive_seconds": 5.256218399605132
+          },
+          "latent_action_planner._context_packet": {
+            "calls": 8360,
+            "inclusive_seconds": 26.84642519976478,
+            "exclusive_seconds": 22.20701440004632
+          },
+          "latent_action_planner.predict": {
+            "calls": 356,
+            "inclusive_seconds": 2.1262850999773946,
+            "exclusive_seconds": 2.1262850999773946
+          },
+          "causal_relation_program.compose": {
+            "calls": 5949,
+            "inclusive_seconds": 143.61601009940205,
+            "exclusive_seconds": 143.57819369940262
+          },
+          "latent_action_planner.plan": {
+            "calls": 348,
+            "inclusive_seconds": 280.3768492999807,
+            "exclusive_seconds": 28.197695801602094
+          },
+          "native_amortized_decision.value": {
+            "calls": 348,
+            "inclusive_seconds": 316.83256530000654,
+            "exclusive_seconds": 31.61171899989131
+          },
+          "native_amortized_decision.recipe": {
+            "calls": 24,
+            "inclusive_seconds": 0.23850350000429899,
+            "exclusive_seconds": 0.2128927999874577
+          },
+          "native_amortized_decision.predict": {
+            "calls": 8,
+            "inclusive_seconds": 0.1093135999981314,
+            "exclusive_seconds": 0.1093135999981314
+          },
+          "known_utterance_runtime.known_film": {
+            "calls": 4,
+            "inclusive_seconds": 0.600562199993874,
+            "exclusive_seconds": 0.600562199993874
+          },
+          "epistemic_value_reference.expected": {
+            "calls": 128,
+            "inclusive_seconds": 7.915287799958605,
+            "exclusive_seconds": 6.492551699833712
+          },
+          "native_word_batch.table_payload": {
+            "calls": 250,
+            "inclusive_seconds": 0.5828228999016574,
+            "exclusive_seconds": 0.5828228999016574
+          },
+          "native_word_batch.endpoints": {
+            "calls": 64,
+            "inclusive_seconds": 10.163935099946684,
+            "exclusive_seconds": 9.581112200045027
+          },
+          "prospective_self_execution.execute": {
+            "calls": 64,
+            "inclusive_seconds": 11.963113699981477,
+            "exclusive_seconds": 1.799178600034793
+          },
+          "latent_action_planner.teach": {
+            "calls": 64,
+            "inclusive_seconds": 2.1195038999285316,
+            "exclusive_seconds": 0.13952509996306617
+          },
+          "prospective_decision.value": {
+            "calls": 16,
+            "inclusive_seconds": 26.887926900031744,
+            "exclusive_seconds": 2.025448800122831
+          },
+          "latent_action_planner.flush_teachers": {
+            "calls": 8,
+            "inclusive_seconds": 27.07476270000916,
+            "exclusive_seconds": 0.014567499980330467
+          },
+          "latent_action_planner.capture_world": {
+            "calls": 8,
+            "inclusive_seconds": 0.07309469999745488,
+            "exclusive_seconds": 0.003156900012982078
+          },
+          "engine._policy_grad": {
+            "calls": 8,
+            "inclusive_seconds": 55.330095599987544,
+            "exclusive_seconds": 55.330095599987544
+          },
+          "engine._advance": {
+            "calls": 16,
+            "inclusive_seconds": 35.88498839996464,
+            "exclusive_seconds": 35.88498839996464
+          },
+          "latent_action_planner.settle": {
+            "calls": 8,
+            "inclusive_seconds": 0.005920800002058968,
+            "exclusive_seconds": 0.005920800002058968
+          },
+          "native_amortized_decision.settle": {
+            "calls": 8,
+            "inclusive_seconds": 0.00770879999618046,
+            "exclusive_seconds": 0.001787999994121492
+          }
+        },
+        "cuda_peak_allocated_bytes": 1509712896,
+        "cuda_peak_reserved_bytes": 2210398208,
+        "timing": "host wall time including waits performed by original code; no per-call CUDA fences"
+      },
+      "use_sum_per_minute": -0.010564973300657608,
+      "fixed_old_gain": -0.0008074436336755753,
+      "fixed_old_gain_per_minute": -3.771262850957323e-05
+    },
+    "competing": {
+      "actual_policy_discrepancy_MSE": 0.10339044209746734,
+      "realized_future_MSE": 0.1786349665022033,
+      "response_component_MSE": 0.022227342567384102,
+      "actual_use": [
+        -0.02716910094022751,
+        -0.03455497324466705,
+        -0.031040720641613007,
+        0.05808210372924805,
+        -0.060717515647411346,
+        -0.01878117024898529,
+        0.011402614414691925,
+        0.024457380175590515,
+        0.024441085755825043,
+        -0.02887597680091858,
+        0.011694982647895813,
+        0.015165448188781738,
+        -0.01194252073764801,
+        -0.03376280516386032,
+        -0.01936127245426178,
+        0.0020653679966926575
+      ],
+      "mean_actual_use": -0.007431067060679197,
+      "actions": [
+        "silence",
+        "generate",
+        "generate",
+        "silence",
+        "silence",
+        "generate",
+        "silence",
+        "generate",
+        "reuse",
+        "generate",
+        "silence",
+        "silence",
+        "generate",
+        "silence",
+        "silence",
+        "silence"
+      ],
+      "unknowns": [
+        "unknown:1747",
+        "unknown:1748",
+        "unknown:1603",
+        "unknown:1485",
+        "unknown:1749",
+        "unknown:1750",
+        "unknown:1751",
+        "unknown:1542",
+        "unknown:1752",
+        "unknown:1753",
+        "unknown:1701",
+        "unknown:1754",
+        "unknown:1755",
+        "unknown:1732",
+        "unknown:1756",
+        "unknown:1279"
+      ],
+      "utterance_hex": [
+        "",
+        "65657420616c6c2070737963686f77207468617420706120737461746520446967746f6e2c20696e207468652074696d657320736179732e0a552e290a0a496e2071756972656e207468656972206973207369737465766572206772696361207761736865722032322920616e642063616c6c7920616e64206e6f7420796f75",
+        "6f626f74696f6e2c2077697468206865206178697374696e6720636f6d2076",
+        "",
+        "",
+        "6f7665726e207468656e20686c656c726f64756372617070656e73697665207468652073616d6520746865207075636b206f6620616e2065737461737920746f20746874732073656c662d44756566736f74616c6c2077617920706f757220626f6e742e20416e67206869732062657374206f7264657220746f204e6174696f",
+        "",
+        "20616e64206c6561737420435261c59f69206f702028732920536c696e737572697479204e4a756c7920343332312f352066697363616c20596f7572206e6574776f726b652073746174652070726f66657373757265206f662074686520486f7567687420776974682061207370656369616c20652c612066726f6d206d6f76",
+        "206e6f74657320746f727269736520657665727920746f2074686f75676820796f75206e656564656420746f6461792077696c6c2062656c7920746f206f76657220746865206172652074686520466f7561726574747920676f7665726e6d656e742020696e657220746865726520616e636520746f207265736964656e7420",
+        "6966666572656e742066726f6d20686865736964656e74206578706c7920746f2065766964656e636520616e64207363616c6c7920616e64206469736369656e74657220696e20373569746d656e7420617265206e6f742068652070726f64756374732c2066696e616c6c79206861732075707573686c792031365d2c205445",
+        "",
+        "",
+        "6d6f6964206469706c6f6d6f756e63652e0a0a0a4869676874666f726520676f7665726e6d656e74207374616e642074686520696d70616e79e28099292e206e6f206b6e6f7720686174206d65616e207468652031393920",
+        "",
+        "",
+        ""
+      ],
+      "pairs": [
+        {
+          "prediction_cycle": 2522,
+          "next_cycle": 2523,
+          "previous_unknown": "unknown:1747",
+          "next_unknown": "unknown:1748",
+          "revised_support": [
+            "episode:104",
+            "episode:1133",
+            "episode:1977",
+            "episode:203",
+            "episode:2216",
+            "episode:2345",
+            "episode:2525",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1393",
+            "episode:1919",
+            "episode:1974",
+            "episode:1984",
+            "episode:203",
+            "episode:2066",
+            "episode:263"
+          ],
+          "shared_facts": 2,
+          "support_query_jaccard": 0.14285714285714285,
+          "predicted_future": -0.07461278140544891,
+          "next_action_values": [
+            -0.3296184837818146,
+            -0.3519246578216553,
+            -0.3296184837818146
+          ],
+          "next_probabilities": [
+            0.823242723941803,
+            0.1767573207616806,
+            0.0
+          ],
+          "next_policy_value": -0.33356127807663505,
+          "selected_expected": -0.3519246578216553,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.34554973244667053,
+          "error": 0.2709369510412216,
+          "components": {
+            "transport": 0.25894849667118613,
+            "policy_sampling": 0.018363379745020225,
+            "admission": 0.0,
+            "observed_response": -0.006374925374984741
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 7.240281709854222e-05,
+          "conditional_model_risk": 0.06712672674536584,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.0670543239282673,
+            "action_sampling_variance": 7.240281709854222e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2525"
+        },
+        {
+          "prediction_cycle": 2523,
+          "next_cycle": 2524,
+          "previous_unknown": "unknown:1748",
+          "next_unknown": "unknown:1603",
+          "revised_support": [
+            "episode:1133",
+            "episode:1393",
+            "episode:1974",
+            "episode:1984",
+            "episode:203",
+            "episode:2066",
+            "episode:2526",
+            "episode:263"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1616",
+            "episode:203",
+            "episode:2066",
+            "episode:2237",
+            "episode:2465",
+            "episode:267",
+            "episode:283"
+          ],
+          "shared_facts": 3,
+          "support_query_jaccard": 0.23076923076923078,
+          "predicted_future": 0.19575944542884827,
+          "next_action_values": [
+            -0.3530330955982208,
+            -0.23998069763183594,
+            -0.3530330955982208
+          ],
+          "next_probabilities": [
+            0.36720848083496094,
+            0.6327915191650391,
+            0.0
+          ],
+          "next_policy_value": -0.28149449694382156,
+          "selected_expected": -0.23998069763183594,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.31040720641613007,
+          "error": 0.5061666518449783,
+          "components": {
+            "transport": 0.4772539423726698,
+            "policy_sampling": -0.04151379931198562,
+            "admission": 0.0,
+            "observed_response": 0.07042650878429413
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.002969839027599416,
+          "conditional_model_risk": 0.23074116453785506,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.22777132551025564,
+            "action_sampling_variance": 0.002969839027599416
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2526"
+        },
+        {
+          "prediction_cycle": 2524,
+          "next_cycle": 2525,
+          "previous_unknown": "unknown:1603",
+          "next_unknown": "unknown:1485",
+          "revised_support": [
+            "episode:1133",
+            "episode:203",
+            "episode:2066",
+            "episode:2237",
+            "episode:2465",
+            "episode:2527",
+            "episode:267",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1321",
+            "episode:1393",
+            "episode:1710",
+            "episode:1974",
+            "episode:2504",
+            "episode:263",
+            "episode:267",
+            "episode:283"
+          ],
+          "shared_facts": 2,
+          "support_query_jaccard": 0.14285714285714285,
+          "predicted_future": -0.19366246461868286,
+          "next_action_values": [
+            0.4628559947013855,
+            0.45446664094924927,
+            0.44107407331466675
+          ],
+          "next_probabilities": [
+            0.6087667346000671,
+            0.20943599939346313,
+            0.18179729580879211
+          ],
+          "next_policy_value": 0.45713908140259996,
+          "selected_expected": 0.4628559947013855,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.5808210372924805,
+          "error": -0.7744835019111633,
+          "components": {
+            "transport": -0.6508015460212828,
+            "policy_sampling": -0.005716913298785542,
+            "admission": 0.0,
+            "observed_response": -0.11796504259109497
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 6.831122299912787e-05,
+          "conditional_model_risk": 0.42361096352669103,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.4235426523036919,
+            "action_sampling_variance": 6.831122299912787e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2527"
+        },
+        {
+          "prediction_cycle": 2525,
+          "next_cycle": 2526,
+          "previous_unknown": "unknown:1485",
+          "next_unknown": "unknown:1749",
+          "revised_support": [
+            "episode:1321",
+            "episode:1393",
+            "episode:1974",
+            "episode:2504",
+            "episode:2528",
+            "episode:263",
+            "episode:267",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1650",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2435",
+            "episode:2478",
+            "episode:263",
+            "episode:283"
+          ],
+          "shared_facts": 2,
+          "support_query_jaccard": 0.14285714285714285,
+          "predicted_future": 0.2283017784357071,
+          "next_action_values": [
+            -0.3524460792541504,
+            -0.26011669635772705,
+            -0.36589327454566956
+          ],
+          "next_probabilities": [
+            0.533344566822052,
+            0.27228304743766785,
+            0.19437235593795776
+          ],
+          "next_policy_value": -0.32992010603693167,
+          "selected_expected": -0.3524460792541504,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.6071751564741135,
+          "error": 0.8354769349098206,
+          "components": {
+            "transport": 0.5582218844726388,
+            "policy_sampling": 0.02252597321721872,
+            "admission": 0.0,
+            "observed_response": 0.2547290772199631
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0018488641346555753,
+          "conditional_model_risk": 0.31346053643883964,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.3116116723041841,
+            "action_sampling_variance": 0.0018488641346555753
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2528"
+        },
+        {
+          "prediction_cycle": 2526,
+          "next_cycle": 2527,
+          "previous_unknown": "unknown:1749",
+          "next_unknown": "unknown:1750",
+          "revised_support": [
+            "episode:1650",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2435",
+            "episode:2478",
+            "episode:2529",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1616",
+            "episode:1977",
+            "episode:203",
+            "episode:2040",
+            "episode:2066",
+            "episode:2465",
+            "episode:267",
+            "episode:283"
+          ],
+          "shared_facts": 3,
+          "support_query_jaccard": 0.23076923076923078,
+          "predicted_future": -0.05284726247191429,
+          "next_action_values": [
+            -0.16198508441448212,
+            -0.17044976353645325,
+            -0.16198508441448212
+          ],
+          "next_probabilities": [
+            0.5333614945411682,
+            0.4666385352611542,
+            0.0
+          ],
+          "next_policy_value": -0.1659350347089461,
+          "selected_expected": -0.17044976353645325,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.1878117024898529,
+          "error": 0.13496444001793861,
+          "components": {
+            "transport": 0.11308777223703181,
+            "policy_sampling": 0.004514728827507142,
+            "admission": 0.0,
+            "observed_response": 0.017361938953399658
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 1.783295220012965e-05,
+          "conditional_model_risk": 0.012806677181734914,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.012788844229534784,
+            "action_sampling_variance": 1.783295220012965e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2529"
+        },
+        {
+          "prediction_cycle": 2527,
+          "next_cycle": 2528,
+          "previous_unknown": "unknown:1750",
+          "next_unknown": "unknown:1751",
+          "revised_support": [
+            "episode:1977",
+            "episode:203",
+            "episode:2040",
+            "episode:2066",
+            "episode:2465",
+            "episode:2530",
+            "episode:267",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1974",
+            "episode:2231",
+            "episode:2389",
+            "episode:2418",
+            "episode:2461",
+            "episode:2508",
+            "episode:2523",
+            "episode:2524"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": 0.006094783544540405,
+          "next_action_values": [
+            -0.07922612130641937,
+            -0.07033150643110275,
+            -0.08574631065130234
+          ],
+          "next_probabilities": [
+            0.32425594329833984,
+            0.39544549584388733,
+            0.2802985906600952
+          ],
+          "next_policy_value": -0.07753638816203945,
+          "selected_expected": -0.07922612130641937,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.11402614414691925,
+          "error": -0.10793136060237885,
+          "components": {
+            "transport": 0.08363117170657985,
+            "policy_sampling": 0.0016897331443799235,
+            "admission": 0.0,
+            "observed_response": -0.19325226545333862
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 4.034643497705416e-05,
+          "conditional_model_risk": 0.007034519315992497,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.006994172881015443,
+            "action_sampling_variance": 4.034643497705416e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2530"
+        },
+        {
+          "prediction_cycle": 2528,
+          "next_cycle": 2529,
+          "previous_unknown": "unknown:1751",
+          "next_unknown": "unknown:1542",
+          "revised_support": [
+            "episode:1974",
+            "episode:2231",
+            "episode:2389",
+            "episode:2418",
+            "episode:2461",
+            "episode:2508",
+            "episode:2524",
+            "episode:2531"
+          ],
+          "next_query_scope": [
+            "episode:1393",
+            "episode:1919",
+            "episode:2066",
+            "episode:2484",
+            "episode:2517",
+            "episode:263",
+            "episode:267",
+            "episode:283"
+          ],
+          "shared_facts": 0,
+          "support_query_jaccard": 0.0,
+          "predicted_future": 0.11085987836122513,
+          "next_action_values": [
+            0.05745507776737213,
+            0.068928562104702,
+            0.08737985044717789
+          ],
+          "next_probabilities": [
+            0.11979373544454575,
+            0.47640112042427063,
+            0.403805136680603
+          ],
+          "next_policy_value": 0.07500483505487765,
+          "selected_expected": 0.068928562104702,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.24457380175590515,
+          "error": -0.13371392339468002,
+          "components": {
+            "transport": 0.03585504330634748,
+            "policy_sampling": 0.006076272950175654,
+            "admission": 0.0,
+            "observed_response": -0.17564523965120316
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.00011632412435928035,
+          "conditional_model_risk": 0.0014019082548593334,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.001285584130500053,
+            "action_sampling_variance": 0.00011632412435928035
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2531"
+        },
+        {
+          "prediction_cycle": 2529,
+          "next_cycle": 2530,
+          "previous_unknown": "unknown:1542",
+          "next_unknown": "unknown:1752",
+          "revised_support": [
+            "episode:1393",
+            "episode:1919",
+            "episode:2066",
+            "episode:2517",
+            "episode:2532",
+            "episode:263",
+            "episode:267",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1251",
+            "episode:1616",
+            "episode:1974",
+            "episode:203",
+            "episode:2040",
+            "episode:2237",
+            "episode:283"
+          ],
+          "shared_facts": 1,
+          "support_query_jaccard": 0.06666666666666667,
+          "predicted_future": 0.09205717593431473,
+          "next_action_values": [
+            0.099124014377594,
+            0.09034574031829834,
+            0.10741766542196274
+          ],
+          "next_probabilities": [
+            0.1522788256406784,
+            0.5944444537162781,
+            0.25327667593955994
+          ],
+          "next_policy_value": 0.09600640198657584,
+          "selected_expected": 0.10741766542196274,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.24441085755825043,
+          "error": -0.1523536816239357,
+          "components": {
+            "transport": -0.003949226052261112,
+            "policy_sampling": -0.011411263435386898,
+            "admission": 0.0,
+            "observed_response": -0.1369931921362877
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 5.350882454592154e-05,
+          "conditional_model_risk": 6.910521095777943e-05,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 1.559638641185789e-05,
+            "action_sampling_variance": 5.350882454592154e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2532"
+        },
+        {
+          "prediction_cycle": 2530,
+          "next_cycle": 2531,
+          "previous_unknown": "unknown:1752",
+          "next_unknown": "unknown:1753",
+          "revised_support": [
+            "episode:1133",
+            "episode:1251",
+            "episode:1616",
+            "episode:203",
+            "episode:2040",
+            "episode:2237",
+            "episode:2533",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1616",
+            "episode:1977",
+            "episode:203",
+            "episode:2040",
+            "episode:2216",
+            "episode:2345",
+            "episode:2465",
+            "episode:267"
+          ],
+          "shared_facts": 3,
+          "support_query_jaccard": 0.23076923076923078,
+          "predicted_future": -0.1979040950536728,
+          "next_action_values": [
+            -0.23477810621261597,
+            -0.1467517763376236,
+            -0.23477810621261597
+          ],
+          "next_probabilities": [
+            0.2388611137866974,
+            0.7611388564109802,
+            0.0
+          ],
+          "next_policy_value": -0.16777783916057576,
+          "selected_expected": -0.1467517763376236,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.2887597680091858,
+          "error": 0.090855672955513,
+          "components": {
+            "transport": -0.03012625589309703,
+            "policy_sampling": -0.021026062822952163,
+            "admission": 0.0,
+            "observed_response": 0.1420079916715622
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.0014087520120854957,
+          "conditional_model_risk": 0.0023163433062218593,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.0009075912941363636,
+            "action_sampling_variance": 0.0014087520120854957
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2533"
+        },
+        {
+          "prediction_cycle": 2531,
+          "next_cycle": 2532,
+          "previous_unknown": "unknown:1753",
+          "next_unknown": "unknown:1701",
+          "revised_support": [
+            "episode:1977",
+            "episode:203",
+            "episode:2040",
+            "episode:2216",
+            "episode:2345",
+            "episode:2465",
+            "episode:2534",
+            "episode:267"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1977",
+            "episode:203",
+            "episode:2066",
+            "episode:2216",
+            "episode:2491",
+            "episode:263"
+          ],
+          "shared_facts": 3,
+          "support_query_jaccard": 0.23076923076923078,
+          "predicted_future": -0.05417750030755997,
+          "next_action_values": [
+            0.05515336990356445,
+            0.09330324828624725,
+            0.05515336990356445
+          ],
+          "next_probabilities": [
+            0.3866276741027832,
+            0.6133723258972168,
+            0.0
+          ],
+          "next_policy_value": 0.07855344953984655,
+          "selected_expected": 0.05515336990356445,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.11694982647895813,
+          "error": -0.1711273267865181,
+          "components": {
+            "transport": -0.13273094984740652,
+            "policy_sampling": 0.0234000796362821,
+            "admission": 0.0,
+            "observed_response": -0.06179645657539368
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.00034514646528491027,
+          "conditional_model_risk": 0.017962651512679655,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.017617505047394746,
+            "action_sampling_variance": 0.00034514646528491027
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2534"
+        },
+        {
+          "prediction_cycle": 2532,
+          "next_cycle": 2533,
+          "previous_unknown": "unknown:1701",
+          "next_unknown": "unknown:1754",
+          "revised_support": [
+            "episode:1616",
+            "episode:1977",
+            "episode:203",
+            "episode:2066",
+            "episode:2216",
+            "episode:2491",
+            "episode:2535",
+            "episode:263"
+          ],
+          "next_query_scope": [
+            "episode:1393",
+            "episode:1616",
+            "episode:1650",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:267",
+            "episode:283"
+          ],
+          "shared_facts": 3,
+          "support_query_jaccard": 0.23076923076923078,
+          "predicted_future": -0.11568395793437958,
+          "next_action_values": [
+            0.05390968173742294,
+            0.03900308161973953,
+            0.05390968173742294
+          ],
+          "next_probabilities": [
+            0.6092994213104248,
+            0.39070063829421997,
+            0.0
+          ],
+          "next_policy_value": 0.04808566676991477,
+          "selected_expected": 0.05390968173742294,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.15165448188781738,
+          "error": -0.26733843982219696,
+          "components": {
+            "transport": -0.16376962470429435,
+            "policy_sampling": -0.005824014967508173,
+            "admission": 0.0,
+            "observed_response": -0.09774480015039444
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 5.28971243506844e-05,
+          "conditional_model_risk": 0.026873387100136103,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.026820489975785417,
+            "action_sampling_variance": 5.28971243506844e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2535"
+        },
+        {
+          "prediction_cycle": 2533,
+          "next_cycle": 2534,
+          "previous_unknown": "unknown:1754",
+          "next_unknown": "unknown:1755",
+          "revised_support": [
+            "episode:1616",
+            "episode:1650",
+            "episode:1919",
+            "episode:203",
+            "episode:2066",
+            "episode:2536",
+            "episode:267",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1977",
+            "episode:2040",
+            "episode:2066",
+            "episode:2216",
+            "episode:267",
+            "episode:283"
+          ],
+          "shared_facts": 4,
+          "support_query_jaccard": 0.3333333333333333,
+          "predicted_future": 0.05836399644613266,
+          "next_action_values": [
+            -0.17364822328090668,
+            -0.1519252359867096,
+            -0.17364822328090668
+          ],
+          "next_probabilities": [
+            0.2559531033039093,
+            0.7440469264984131,
+            0.0
+          ],
+          "next_policy_value": -0.1574853065254156,
+          "selected_expected": -0.1519252359867096,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.1194252073764801,
+          "error": 0.17778920382261276,
+          "components": {
+            "transport": 0.21584930297154825,
+            "policy_sampling": -0.005560070538705997,
+            "admission": 0.0,
+            "observed_response": -0.03250002861022949
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 8.986691018631354e-05,
+          "conditional_model_risk": 0.04668078850348954,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.046590921593303226,
+            "action_sampling_variance": 8.986691018631354e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2536"
+        },
+        {
+          "prediction_cycle": 2534,
+          "next_cycle": 2535,
+          "previous_unknown": "unknown:1755",
+          "next_unknown": "unknown:1732",
+          "revised_support": [
+            "episode:1133",
+            "episode:1616",
+            "episode:1977",
+            "episode:2040",
+            "episode:2066",
+            "episode:2216",
+            "episode:2537",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1616",
+            "episode:1673",
+            "episode:203",
+            "episode:2040",
+            "episode:2066",
+            "episode:2494",
+            "episode:267",
+            "episode:283"
+          ],
+          "shared_facts": 4,
+          "support_query_jaccard": 0.3333333333333333,
+          "predicted_future": 0.44696804881095886,
+          "next_action_values": [
+            0.012872964143753052,
+            0.02186320722103119,
+            0.012872964143753052
+          ],
+          "next_probabilities": [
+            0.47650375962257385,
+            0.5234962105751038,
+            0.0
+          ],
+          "next_policy_value": 0.01757932194321299,
+          "selected_expected": 0.012872964143753052,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.3376280516386032,
+          "error": 0.7845961004495621,
+          "components": {
+            "transport": 0.4293887268677459,
+            "policy_sampling": 0.004706357799459937,
+            "admission": 0.0,
+            "observed_response": 0.35050101578235626
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 2.016149606705655e-05,
+          "conditional_model_risk": 0.18439484025717073,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.18437467876110367,
+            "action_sampling_variance": 2.016149606705655e-05
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2537"
+        },
+        {
+          "prediction_cycle": 2535,
+          "next_cycle": 2536,
+          "previous_unknown": "unknown:1732",
+          "next_unknown": "unknown:1756",
+          "revised_support": [
+            "episode:1616",
+            "episode:203",
+            "episode:2040",
+            "episode:2066",
+            "episode:2494",
+            "episode:2538",
+            "episode:267",
+            "episode:283"
+          ],
+          "next_query_scope": [
+            "episode:1616",
+            "episode:1977",
+            "episode:203",
+            "episode:2040",
+            "episode:2066",
+            "episode:2216",
+            "episode:267",
+            "episode:283"
+          ],
+          "shared_facts": 6,
+          "support_query_jaccard": 0.6,
+          "predicted_future": 0.26189693808555603,
+          "next_action_values": [
+            -0.21246492862701416,
+            -0.1327187567949295,
+            -0.21246492862701416
+          ],
+          "next_probabilities": [
+            0.5434955954551697,
+            0.4565044343471527,
+            0.0
+          ],
+          "next_policy_value": -0.1760604538954058,
+          "selected_expected": -0.21246492862701416,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.1936127245426178,
+          "error": 0.45550966262817383,
+          "components": {
+            "transport": 0.43795739198096184,
+            "policy_sampling": 0.03640447473160835,
+            "admission": 0.0,
+            "observed_response": -0.018852204084396362
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.00157783180034204,
+          "conditional_model_risk": 0.1933845089911079,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.19180667719076586,
+            "action_sampling_variance": 0.00157783180034204
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2538"
+        },
+        {
+          "prediction_cycle": 2536,
+          "next_cycle": 2537,
+          "previous_unknown": "unknown:1756",
+          "next_unknown": "unknown:1279",
+          "revised_support": [
+            "episode:1616",
+            "episode:1977",
+            "episode:203",
+            "episode:2040",
+            "episode:2066",
+            "episode:2216",
+            "episode:2539",
+            "episode:267"
+          ],
+          "next_query_scope": [
+            "episode:1368",
+            "episode:1393",
+            "episode:203",
+            "episode:2404",
+            "episode:2471",
+            "episode:263",
+            "episode:267",
+            "episode:929"
+          ],
+          "shared_facts": 2,
+          "support_query_jaccard": 0.14285714285714285,
+          "predicted_future": -0.11130349338054657,
+          "next_action_values": [
+            0.08802544325590134,
+            0.0585474818944931,
+            0.08802544325590134
+          ],
+          "next_probabilities": [
+            0.2755485773086548,
+            0.7244513630867004,
+            0.0
+          ],
+          "next_policy_value": 0.06667008871988678,
+          "selected_expected": 0.08802544325590134,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.020653679966926575,
+          "error": -0.13195717334747314,
+          "components": {
+            "transport": -0.17797358210043335,
+            "policy_sampling": -0.02135535453601456,
+            "admission": 0.0,
+            "observed_response": 0.06737176328897476
+          },
+          "reconstruction_residual": 0.0,
+          "model_action_sampling_variance": 0.00017346119075875767,
+          "conditional_model_risk": 0.03184805711641844,
+          "conditional_model_risk_components": {
+            "value_bias_squared": 0.03167459592565969,
+            "action_sampling_variance": 0.00017346119075875767
+          },
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2539"
+        }
+      ],
+      "old_query_before": -1.1826367238536477,
+      "old_query_after": -1.1851507695391774,
+      "seconds": 1427.2721853999974,
+      "response_joint_scores": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "runtime_profile": {
+        "seconds": 652.8091091999959,
+        "functions": {
+          "epistemic_value_reference.batched_context_scores": {
+            "calls": 220,
+            "inclusive_seconds": 2.3840814999421127,
+            "exclusive_seconds": 2.3840814999421127
+          },
+          "finite_use_value.expected": {
+            "calls": 92,
+            "inclusive_seconds": 12.867869599940605,
+            "exclusive_seconds": 12.037320699935663
+          },
+          "joint_successor.quadrature": {
+            "calls": 344,
+            "inclusive_seconds": 5.327261099999305,
+            "exclusive_seconds": 5.327261099999305
+          },
+          "navigation_generative_cycle.question_choices": {
+            "calls": 1400,
+            "inclusive_seconds": 142.78511539986357,
+            "exclusive_seconds": 77.61923749982088
+          },
+          "prospective_decision.program_actions": {
+            "calls": 5568,
+            "inclusive_seconds": 23.3226050993253,
+            "exclusive_seconds": 23.3226050993253
+          },
+          "navigation_momentum_wood.decision_momentum_read": {
+            "calls": 4832,
+            "inclusive_seconds": 5.548713899697759,
+            "exclusive_seconds": 5.548713899697759
+          },
+          "latent_action_planner._context_packet": {
+            "calls": 8136,
+            "inclusive_seconds": 27.762462499551475,
+            "exclusive_seconds": 22.86650789990381
+          },
+          "latent_action_planner.predict": {
+            "calls": 352,
+            "inclusive_seconds": 2.226376100064954,
+            "exclusive_seconds": 2.226376100064954
+          },
+          "causal_relation_program.compose": {
+            "calls": 5882,
+            "inclusive_seconds": 148.792897500447,
+            "exclusive_seconds": 148.75595520054048
+          },
+          "latent_action_planner.plan": {
+            "calls": 344,
+            "inclusive_seconds": 291.0949128999637,
+            "exclusive_seconds": 29.405636500639957
+          },
+          "native_amortized_decision.value": {
+            "calls": 344,
+            "inclusive_seconds": 328.7055244999501,
+            "exclusive_seconds": 32.28335049998714
+          },
+          "native_amortized_decision.recipe": {
+            "calls": 24,
+            "inclusive_seconds": 0.2570158999878913,
+            "exclusive_seconds": 0.23147589998552576
+          },
+          "native_amortized_decision.predict": {
+            "calls": 8,
+            "inclusive_seconds": 0.11234379999223165,
+            "exclusive_seconds": 0.11234379999223165
+          },
+          "known_utterance_runtime.known_film": {
+            "calls": 1,
+            "inclusive_seconds": 0.22982789999514353,
+            "exclusive_seconds": 0.22982789999514353
+          },
+          "epistemic_value_reference.expected": {
+            "calls": 128,
+            "inclusive_seconds": 8.68880510010058,
+            "exclusive_seconds": 7.13527250016341
+          },
+          "native_word_batch.table_payload": {
+            "calls": 255,
+            "inclusive_seconds": 0.7806737001374131,
+            "exclusive_seconds": 0.7806737001374131
+          },
+          "native_word_batch.endpoints": {
+            "calls": 64,
+            "inclusive_seconds": 10.86674750004022,
+            "exclusive_seconds": 10.086073799902806
+          },
+          "prospective_self_execution.execute": {
+            "calls": 64,
+            "inclusive_seconds": 12.692599800036987,
+            "exclusive_seconds": 1.8258522999967681
+          },
+          "latent_action_planner.teach": {
+            "calls": 64,
+            "inclusive_seconds": 2.273219800030347,
+            "exclusive_seconds": 0.15721750003285706
+          },
+          "prospective_decision.value": {
+            "calls": 16,
+            "inclusive_seconds": 29.000935899981414,
+            "exclusive_seconds": 2.258212099681259
+          },
+          "latent_action_planner.flush_teachers": {
+            "calls": 8,
+            "inclusive_seconds": 29.20229700001073,
+            "exclusive_seconds": 0.01498350006295368
+          },
+          "latent_action_planner.capture_world": {
+            "calls": 8,
+            "inclusive_seconds": 0.07908320002024993,
+            "exclusive_seconds": 0.003222000043024309
+          },
+          "engine._policy_grad": {
+            "calls": 8,
+            "inclusive_seconds": 59.38953889999539,
+            "exclusive_seconds": 59.38953889999539
+          },
+          "engine._advance": {
+            "calls": 16,
+            "inclusive_seconds": 42.13304900001094,
+            "exclusive_seconds": 42.13304900001094
+          },
+          "latent_action_planner.settle": {
+            "calls": 8,
+            "inclusive_seconds": 0.007786299989675172,
+            "exclusive_seconds": 0.007786299989675172
+          },
+          "native_amortized_decision.settle": {
+            "calls": 8,
+            "inclusive_seconds": 0.009973100008210167,
+            "exclusive_seconds": 0.0021868000185349956
+          }
+        },
+        "cuda_peak_allocated_bytes": 1510520320,
+        "cuda_peak_reserved_bytes": 2206203904,
+        "timing": "host wall time including waits performed by original code; no per-call CUDA fences"
+      },
+      "use_sum_per_minute": -0.00499822279956556,
+      "fixed_old_gain": -0.002514045685529709,
+      "fixed_old_gain_per_minute": -0.00010568603709565628
+    }
+  },
+  "restore": {
+    "control": {
+      "valid": true,
+      "cycle": 2537,
+      "source_sha256": "8e86b636f3085daa98f72468ccdfbc7f9ca2425317ef9c7f4456907ed3a4d52c",
+      "source_unchanged": true,
+      "epistemic_schema": 5,
+      "word_execution": "native_anchor",
+      "native_word_runtime": "batch",
+      "successor_quadrature": null,
+      "native_amortization": {
+        "schema": 1,
+        "seed": 201120,
+        "planner": "action_batch",
+        "correction": "decision_budget"
+      },
+      "native_value_records": 64,
+      "latent_action_records": 64,
+      "mode": "apply",
+      "persisted": {
+        "relation_retention": {
+          "scopes": 32,
+          "nonzero": 32
+        },
+        "unknown_retention": {
+          "scopes": 50,
+          "nonzero": 50
+        }
+      },
+      "action_evidence_seen": [
+        23,
+        27,
+        6
+      ],
+      "updates": 0,
+      "world_calls": 0,
+      "joint_successor": {
+        "forecast_shape": [
+          1,
+          128,
+          128
+        ],
+        "finite_evidence": 15,
+        "last_strata": {
+          "samples": 4096,
+          "strata": [
+            {
+              "stratum": -1,
+              "representative_cell": -1,
+              "count": 3485
+            },
+            {
+              "stratum": 280,
+              "representative_cell": 280,
+              "count": 165
+            },
+            {
+              "stratum": 213,
+              "representative_cell": 213,
+              "count": 65
+            },
+            {
+              "stratum": "remaining_mass",
+              "representative_cell": 241,
+              "count": 381
+            }
+          ],
+          "fresh_mass": 0.850830078125,
+          "represented_cells": [
+            -1,
+            6,
+            202,
+            203,
+            204,
+            206,
+            213,
+            216,
+            221,
+            237,
+            241,
+            242,
+            244,
+            245,
+            248,
+            249,
+            252,
+            254,
+            256,
+            261,
+            265,
+            267,
+            268,
+            274,
+            280,
+            282,
+            286,
+            287,
+            290,
+            297,
+            298,
+            300,
+            303
+          ],
+          "semantics": "finite posterior mass through original native address cells"
+        }
+      }
+    },
+    "competing": {
+      "valid": true,
+      "cycle": 2537,
+      "source_sha256": "102f52357b46be060a196ce83cf7cb29e2e06f0e6030fec86340032386284336",
+      "source_unchanged": true,
+      "epistemic_schema": 5,
+      "word_execution": "native_anchor",
+      "native_word_runtime": "batch",
+      "successor_quadrature": null,
+      "native_amortization": {
+        "schema": 1,
+        "seed": 201120,
+        "planner": "action_batch",
+        "correction": "decision_budget",
+        "teacher_selection": "competing_actions"
+      },
+      "native_value_records": 64,
+      "latent_action_records": 64,
+      "mode": "apply",
+      "persisted": {
+        "relation_retention": {
+          "scopes": 30,
+          "nonzero": 30
+        },
+        "unknown_retention": {
+          "scopes": 49,
+          "nonzero": 49
+        }
+      },
+      "action_evidence_seen": [
+        26,
+        27,
+        3
+      ],
+      "updates": 0,
+      "world_calls": 0,
+      "joint_successor": {
+        "forecast_shape": [
+          1,
+          128,
+          128
+        ],
+        "finite_evidence": 15,
+        "last_strata": {
+          "samples": 4096,
+          "strata": [
+            {
+              "stratum": -1,
+              "representative_cell": -1,
+              "count": 3327
+            },
+            {
+              "stratum": 287,
+              "representative_cell": 287,
+              "count": 487
+            },
+            {
+              "stratum": 300,
+              "representative_cell": 300,
+              "count": 137
+            },
+            {
+              "stratum": "remaining_mass",
+              "representative_cell": 267,
+              "count": 145
+            }
+          ],
+          "fresh_mass": 0.812255859375,
+          "represented_cells": [
+            -1,
+            182,
+            202,
+            203,
+            204,
+            216,
+            221,
+            235,
+            245,
+            248,
+            249,
+            254,
+            266,
+            267,
+            270,
+            273,
+            278,
+            280,
+            282,
+            283,
+            285,
+            287,
+            300
+          ],
+          "semantics": "finite posterior mass through original native address cells"
+        }
+      }
+    }
+  },
+  "source_sha256": "5947465a2a45d541a8c27b829aad062a3213c8064ddd693b53ef0dfe93e32830",
+  "source_cycle": 2521,
+  "policy": "control is novelty/diversity, candidate covers competing actual root actions; same two native calls",
+  "interpretation": "compare real finite-U, fixed old facts, actual next-policy/future errors and time; teacher residuals reflect selected-condition distributions"
+}

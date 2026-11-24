@@ -1,0 +1,219 @@
+{
+  "valid": true,
+  "checks": {
+    "observe.complete": true,
+    "observe.mode": true,
+    "observe.settled": true,
+    "observe.writer": true,
+    "observe.reward": true,
+    "observe.paid_U": true,
+    "observe.metadata": true,
+    "observe.delayed_identity": true,
+    "observe.no_paid_calls": true,
+    "apply.complete": true,
+    "apply.mode": true,
+    "apply.settled": true,
+    "apply.writer": true,
+    "apply.reward": true,
+    "apply.paid_U": true,
+    "apply.metadata": true,
+    "apply.delayed_identity": true,
+    "apply.no_paid_calls": true,
+    "same_source": true,
+    "same_initial_queries": true
+  },
+  "arms": {
+    "observe": {
+      "cycle": 2481,
+      "updates": 32,
+      "external_bytes": 7680,
+      "checkpoint": "F:\\cgb_native_retention_2473_20261118\\observe\\body\\last.pt.gz",
+      "checkpoint_sha256": "d60ec062b44bdcf3a7ab6f17c1a9d09f33a9a252606a3c9e3c60a534dd41c9f7",
+      "measured_contributions": 128,
+      "unique_versioned_records": 52,
+      "accepted": 0,
+      "benefits": {
+        "min": -0.018856048583984375,
+        "median": -0.00019311904907226562,
+        "mean": -0.0005145743489265442,
+        "max": 0.009733200073242188
+      },
+      "positive": 61,
+      "negative": 67,
+      "positive_to_negative": 0,
+      "negative_to_positive": 0,
+      "preference_updates": {
+        "min": 0.0,
+        "median": 0.0,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "window_seconds": {
+        "min": 1.6223274000221863,
+        "median": 1.7306217999721412,
+        "mean": 1.7929844937534654,
+        "max": 2.1844017999828793
+      },
+      "replay_error_max": 0.0,
+      "episode_slots": [
+        2219,
+        1839,
+        2220,
+        2221,
+        2222,
+        2223,
+        2224,
+        2225
+      ],
+      "merges": 1,
+      "merged_chain": [
+        {
+          "cycle": 2475,
+          "gain": 0.01356581598520279,
+          "fact": "episode:2475",
+          "paid_U_verified": true,
+          "next_delayed_fact": "episode:2475"
+        }
+      ],
+      "internal_events": 2,
+      "actual_U": {
+        "min": -0.024175815284252167,
+        "median": -0.006006982177495956,
+        "mean": -0.003914089873433113,
+        "max": 0.028669849038124084
+      },
+      "common_old_queries": {
+        "before": {
+          "score": {
+            "min": -2.138878345489502,
+            "median": -1.1261703968048096,
+            "mean": -1.2252310626208782,
+            "max": -0.6343556642532349
+          },
+          "mse": {
+            "min": 0.0991838127374649,
+            "median": 0.7612982094287872,
+            "mean": 0.879905154928565,
+            "max": 2.593569040298462
+          }
+        },
+        "after": {
+          "score": {
+            "min": -2.1600890159606934,
+            "median": -1.116190791130066,
+            "mean": -1.2285760417580605,
+            "max": -0.630692720413208
+          },
+          "mse": {
+            "min": 0.11618584394454956,
+            "median": 0.7651205062866211,
+            "mean": 0.885013266117312,
+            "max": 2.5925817489624023
+          }
+        }
+      }
+    },
+    "apply": {
+      "cycle": 2481,
+      "updates": 32,
+      "external_bytes": 7680,
+      "checkpoint": "F:\\cgb_native_retention_2473_20261118\\apply\\body\\last.pt.gz",
+      "checkpoint_sha256": "b574e457ba0cca18f7aed6d7a291468f8b7eb443e285cf105226878f9210916d",
+      "measured_contributions": 128,
+      "unique_versioned_records": 52,
+      "accepted": 128,
+      "benefits": {
+        "min": -0.018856048583984375,
+        "median": -0.00019311904907226562,
+        "mean": -0.0005145743489265442,
+        "max": 0.009733200073242188
+      },
+      "positive": 61,
+      "negative": 67,
+      "positive_to_negative": 8,
+      "negative_to_positive": 9,
+      "preference_updates": {
+        "min": -1.3756853938102722,
+        "median": 0.002375483512878418,
+        "mean": -0.018490183880203404,
+        "max": 1.3206690549850464
+      },
+      "window_seconds": {
+        "min": 1.6186568000121042,
+        "median": 1.691404950019205,
+        "mean": 1.696663612510747,
+        "max": 1.7999501000158489
+      },
+      "replay_error_max": 0.0,
+      "episode_slots": [
+        2219,
+        1839,
+        2220,
+        2221,
+        2222,
+        2223,
+        2224,
+        2225
+      ],
+      "merges": 1,
+      "merged_chain": [
+        {
+          "cycle": 2475,
+          "gain": 0.01356581598520279,
+          "fact": "episode:2475",
+          "paid_U_verified": true,
+          "next_delayed_fact": "episode:2475"
+        }
+      ],
+      "internal_events": 2,
+      "actual_U": {
+        "min": -0.024175815284252167,
+        "median": -0.006006982177495956,
+        "mean": -0.003914089873433113,
+        "max": 0.028669849038124084
+      },
+      "common_old_queries": {
+        "before": {
+          "score": {
+            "min": -2.138878345489502,
+            "median": -1.1261703968048096,
+            "mean": -1.2252310626208782,
+            "max": -0.6343556642532349
+          },
+          "mse": {
+            "min": 0.0991838127374649,
+            "median": 0.7612982094287872,
+            "mean": 0.879905154928565,
+            "max": 2.593569040298462
+          }
+        },
+        "after": {
+          "score": {
+            "min": -2.1600890159606934,
+            "median": -1.116190791130066,
+            "mean": -1.2285760417580605,
+            "max": -0.630692720413208
+          },
+          "mse": {
+            "min": 0.11618584394454956,
+            "median": 0.7651205062866211,
+            "mean": 0.885013266117312,
+            "max": 2.5925817489624023
+          }
+        }
+      }
+    }
+  },
+  "same_outputs": {
+    "choice": true,
+    "choice_probability": true,
+    "utterance_hex": true,
+    "world": true,
+    "metal_g": true
+  },
+  "same_final_old_queries": true,
+  "scope": "Online arrived-language use, not held-out evaluation of the new retention objective.",
+  "remaining": "Hot retention statistics do not change read dose or the eight-fact relation release. No full-capacity hot competition means no demonstrated retention-driven future benefit.",
+  "summary_world_calls": 0,
+  "summary_optimizer_updates": 0
+}

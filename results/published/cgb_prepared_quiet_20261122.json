@@ -1,0 +1,79 @@
+{
+  "device": "cuda",
+  "cycle": 2537,
+  "results": {
+    "reference_rejected": {
+      "seconds": [
+        0.02318920000016078,
+        0.022868000000016764,
+        0.021963099999993574
+      ],
+      "median_seconds": 0.022868000000016764,
+      "peak_mib": 260.51953125,
+      "max_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "prepared_rejected": {
+      "seconds": [
+        0.019689300000209187,
+        0.01958699999977398,
+        0.01979940000001079
+      ],
+      "median_seconds": 0.019689300000209187,
+      "peak_mib": 260.64990234375,
+      "max_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "reference_accepted": {
+      "seconds": [
+        0.6129801999995834,
+        0.6147997999996733,
+        0.610635000000002
+      ],
+      "median_seconds": 0.6129801999995834,
+      "peak_mib": 973.14599609375,
+      "max_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "prepared_accepted": {
+      "seconds": [
+        0.32409350000034465,
+        0.3254813000003196,
+        0.32592529999965336
+      ],
+      "median_seconds": 0.3254813000003196,
+      "peak_mib": 515.814453125,
+      "max_errors": [
+        0.0,
+        0.0,
+        2.384185791015625e-07,
+        1.1920928955078125e-07,
+        0.0,
+        7.450580596923828e-09
+      ]
+    }
+  },
+  "equal_accept_reject_expected_speedup": 1.8421273422435922,
+  "scope": "frozen complete 32-layer internal proposal/commit port; actual selection frequency belongs to life trace",
+  "source_sha256": "6f772f80a434abba4cf83643fe4c62527ea18818218818829da0d0c0c98c7279",
+  "training_updates": 0,
+  "world_calls": 0
+}

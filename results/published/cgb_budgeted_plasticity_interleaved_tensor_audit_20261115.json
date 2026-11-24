@@ -1,0 +1,103 @@
+{
+  "scope": "tensor_update_admission_not_language_capability",
+  "device": "cuda",
+  "body_parameters": 29672448,
+  "budget_eligible_parameters": 29425664,
+  "observer_units": 7441,
+  "extra_state_bytes": 119056,
+  "live_body_modified": false,
+  "world_calls": 0,
+  "cooling_migration": "old_moments_preserved_with_triangle_bound_and_new_observation_clock",
+  "arms": {
+    "adamw": {
+      "median_step_ms": 0.6917499995324761,
+      "p90_step_ms": 1.0349000003770925,
+      "state_bytes": 7401728,
+      "peak_cuda_allocated_bytes": 48195072,
+      "finite_parameters": true
+    },
+    "budget": {
+      "median_step_ms": 1.9942500002798624,
+      "p90_step_ms": 3.169399999023881,
+      "state_bytes": 7405440,
+      "peak_cuda_allocated_bytes": 48195072,
+      "finite_parameters": true
+    },
+    "budget_cooling": {
+      "median_step_ms": 2.130899998519453,
+      "p90_step_ms": 3.295599999546539,
+      "state_bytes": 7405440,
+      "peak_cuda_allocated_bytes": 48195072,
+      "finite_parameters": true
+    }
+  },
+  "one_layer_shapes": {
+    "layers.0.A_log": [
+      8
+    ],
+    "layers.0.dt_bias": [
+      8
+    ],
+    "layers.0.norm.weight": [
+      256
+    ],
+    "layers.0.q_proj.weight": [
+      256,
+      256
+    ],
+    "layers.0.k_proj.weight": [
+      256,
+      256
+    ],
+    "layers.0.v_proj.weight": [
+      256,
+      256
+    ],
+    "layers.0.g_proj.weight": [
+      256,
+      256
+    ],
+    "layers.0.o_proj.weight": [
+      256,
+      256
+    ],
+    "layers.0.alpha_proj.weight": [
+      8,
+      256
+    ],
+    "layers.0.beta_proj.weight": [
+      8,
+      256
+    ],
+    "layers.0.beta_proj.bias": [
+      8
+    ],
+    "layers.0.mlp_norm.weight": [
+      256
+    ],
+    "layers.0.mlp.gate.weight": [
+      768,
+      256
+    ],
+    "layers.0.mlp.up.weight": [
+      768,
+      256
+    ],
+    "layers.0.mlp.down.weight": [
+      256,
+      768
+    ],
+    "layers.0.qkv_conv.weight": [
+      768,
+      1,
+      4
+    ]
+  },
+  "caveat": "live learner may contend for device; one-layer timing is not whole-loop timing",
+  "interleaved": true,
+  "source_hashes": {
+    "information_boltzmann/budgeted_adamw.py": "f871bd735eb570ca8e82cc26ae46452973334721176ac26f0411c0ebdc0bcd26",
+    "information_boltzmann/budgeted_adamw_fused.py": "7b055d65d2f6277008667076a5c3c5eef6471103c16c6372c6d55850d3b7d9e3",
+    "lean/CGBAxioms/CGBAxioms/GenerationBudgetedPlasticity.lean": "2f4019d03d8d3d1978aad4efdcc461b68463c9040b7734ed6fdc4f3d74dfb8c0"
+  }
+}

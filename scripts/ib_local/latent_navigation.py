@@ -168,9 +168,27 @@ class LatentNavigationBody(nn.Module):
     def initial_state(self, batch, device=None):
         return self.body.initial_state(batch, device)
 
-    def predict_observed(self, ids, state, table_logp):
-        if ids.ndim != 2 or ids.shape[0] != 1 or not 0 < ids.shape[1] <= self.max_chunk:
+    def predict_observed(self, ids, state, table_logp, *, decode=True):
+        from scripts.ib_local.native_word_batch import request, EndpointReady
+        endpoint_request = request.get()
+        endpoint_only = endpoint_request is not None and endpoint_request[0] is self
+        from scripts.ib_local.native_replay_batch import for_model
+        panel = for_model(self)
+        from scripts.ib_local.variable_expression import proposal_batch_for
+        proposal_batch = proposal_batch_for(self)
+        if panel is not None and (torch.is_grad_enabled() or len(panel.exclusions) != ids.shape[0] or
+                                  panel.length != ids.shape[1]):
+            raise ValueError('private replay width and no-grad contract required')
+        if proposal_batch is not None and (proposal_batch[1] != ids.shape[0] or
+                                           proposal_batch[2] != ids.shape[1]):
+            raise ValueError('proposal batch width and length must match input tensor')
+        if endpoint_only and (torch.is_grad_enabled() or decode):
+            raise ValueError('private endpoint request must be no-grad and state-only')
+        multi = panel is not None or proposal_batch is not None
+        if ids.ndim != 2 or (ids.shape[0] != 1 and not endpoint_only and not multi):
             raise ValueError('one continuous individual per latent table')
+        if not 0 < ids.shape[1] <= self.max_chunk:
+            raise ValueError(f'observed chunk length {ids.shape[1]} exceeds bounded limit {self.max_chunk}')
         features, reads = [], []
         # At the existing table injection boundary, use the actual causal state
         # entering this GDN layer. Feed the recall into that SAME layer, so its
@@ -178,19 +196,49 @@ class LatentNavigationBody(nn.Module):
         # Previous chunks alone populate memory; it is immutable during the call.
         def inject(module, args):
             hidden = args[0]
-            h = hidden[0]
+            from scripts.ib_local.question_language_port import condition_hidden
+            # Growth keeps old causal facts in their original feature chart.
+            # The physical recurrent stack may be wider; both bridge maps learn.
+            original = hidden
+            projected = self.feature_read(hidden) if hasattr(self, 'feature_read') else hidden
+            raw_endpoint = endpoint_only and len(endpoint_request) > 2 and endpoint_request[2]
+            feature = projected if raw_endpoint else condition_hidden(self, projected)
+            if not raw_endpoint and hasattr(self, 'expression_budget_to_hidden'):
+                from scripts.ib_local.variable_expression import condition_budget
+                feature = condition_budget(self, feature)
+            if endpoint_only:
+                lengths = torch.as_tensor(endpoint_request[1], device=feature.device)
+                if len(lengths) != len(feature):
+                    raise ValueError('each private trajectory needs its own endpoint')
+                raise EndpointReady(feature[torch.arange(len(feature), device=feature.device), lengths-1])
+            h = feature[0] if not multi else feature.reshape(-1, feature.shape[-1])
             read = self.memory.read(h, self.encoder)
             residual = self.to_hidden(read.value) * self.read_gain.tanh()
             features.append(h)
             reads.append(read)
-            return (hidden + residual[None], *args[1:])
+            residual = residual[None] if not multi else residual.reshape_as(feature)
+            if hasattr(self, 'feature_read'):
+                delta = feature - projected + residual
+                hidden = original + self.feature_write(delta)
+            else:
+                hidden = feature + residual
+            return (hidden, *args[1:])
 
-        handle = self.base.layers[self.body.inject_layer].register_forward_pre_hook(inject)
+        layer = getattr(self, 'experience_layer', self.body.inject_layer)
+        handle = self.base.layers[layer].register_forward_pre_hook(inject)
         try:
-            logits, next_state, diagnostics = self.body.predict(ids, state, table_logp)
+            if decode:
+                logits, next_state, diagnostics = self.body.predict(ids, state, table_logp)
+            else:
+                logits, next_state, diagnostics = self.body.predict(ids, state, table_logp, decode=False)
         finally:
             handle.remove()
         h = features[0]
+        if decode and hasattr(self, 'question_to_hidden'):
+            from scripts.ib_local.question_language_port import condition_logits
+            logits = condition_logits(self, logits)
+        if decode and hasattr(self, 'phase_boltzmann'):
+            logits = self.phase_boltzmann.modulate_language_logits(logits, table_logp)
         return logits, next_state, diagnostics, h, reads[0]
 
     def predict(self, ids, state, table_logp):

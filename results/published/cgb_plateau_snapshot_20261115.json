@@ -1,0 +1,114 @@
+{
+  "cycle": 7183,
+  "text_stage_cycles": 1640,
+  "external_bytes": 1574400,
+  "last_validation": {
+    "cycle": 7079,
+    "owt_nll": 1.317645251750946,
+    "mother_nll": 1.1118650771677494,
+    "bytes_each": 8192,
+    "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+    "fineweb_nll": 1.3457022309303284
+  },
+  "validation_points": [
+    {
+      "cycle": 6439,
+      "owt_nll": 1.3376185446977615,
+      "mother_nll": 1.1155013218522072,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+      "fineweb_nll": 1.35895736515522
+    },
+    {
+      "cycle": 6567,
+      "owt_nll": 1.344454139471054,
+      "mother_nll": 1.1320418044924736,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+      "fineweb_nll": 1.341077834367752
+    },
+    {
+      "cycle": 6695,
+      "owt_nll": 1.3378384932875633,
+      "mother_nll": 1.1041154749691486,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+      "fineweb_nll": 1.3428070098161697
+    },
+    {
+      "cycle": 6823,
+      "owt_nll": 1.324850670993328,
+      "mother_nll": 1.11510244384408,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+      "fineweb_nll": 1.337518371641636
+    },
+    {
+      "cycle": 6951,
+      "owt_nll": 1.3200894594192505,
+      "mother_nll": 1.1294703856110573,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+      "fineweb_nll": 1.3346943631768227
+    },
+    {
+      "cycle": 7079,
+      "owt_nll": 1.317645251750946,
+      "mother_nll": 1.1118650771677494,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+      "fineweb_nll": 1.3457022309303284
+    }
+  ],
+  "windows": [
+    {
+      "start": 6184,
+      "end": 6439,
+      "events": 256,
+      "outcome_error_mean": 0.06529184401733801,
+      "external_bytes": 245760,
+      "source_bytes": {
+        "inherited_prefix": 162240,
+        "natural_append": 83520
+      },
+      "fineweb_share": 0.33984375
+    },
+    {
+      "start": 6440,
+      "end": 6695,
+      "events": 256,
+      "outcome_error_mean": 0.06845220100512961,
+      "external_bytes": 245760,
+      "source_bytes": {
+        "inherited_prefix": 178560,
+        "natural_append": 67200
+      },
+      "fineweb_share": 0.2734375
+    },
+    {
+      "start": 6696,
+      "end": 6951,
+      "events": 256,
+      "outcome_error_mean": 0.0681732786106295,
+      "external_bytes": 245760,
+      "source_bytes": {
+        "inherited_prefix": 168000,
+        "natural_append": 77760
+      },
+      "fineweb_share": 0.31640625
+    },
+    {
+      "start": 6952,
+      "end": 7183,
+      "events": 232,
+      "outcome_error_mean": 0.07295120982774372,
+      "external_bytes": 222720,
+      "source_bytes": {
+        "inherited_prefix": 169920,
+        "natural_append": 52800
+      },
+      "fineweb_share": 0.23706896551724138
+    }
+  ],
+  "assessment": "OWT held-out keeps improving; FineWeb recent validation fluctuates; online action outcome MSE has no downward trend. No optimizer intervention performed."
+}

@@ -1,0 +1,30 @@
+{
+  "source": "results/published/cgb_persistent_rhythm_2537_20261120.json",
+  "scope": "same 15 realized successor transitions per arm; zero predictor chosen without fitting; empirical constant mean is retrospective descriptive reference",
+  "arms": {
+    "control": {
+      "pairs": 15,
+      "realized_prediction_MSE": 0.09808816032294217,
+      "zero_predictor_MSE": 0.054353229588628794,
+      "empirical_mean_reference_MSE": 0.05417276503123306,
+      "MSE_over_zero": 1.8046427243665228,
+      "positive_U_cycles": 9
+    },
+    "port": {
+      "pairs": 15,
+      "realized_prediction_MSE": 0.06392842775801813,
+      "zero_predictor_MSE": 0.04604049342792053,
+      "empirical_mean_reference_MSE": 0.04486421198746907,
+      "MSE_over_zero": 1.3885261212089823,
+      "positive_U_cycles": 10
+    },
+    "coupled": {
+      "pairs": 15,
+      "realized_prediction_MSE": 0.016043131203803417,
+      "zero_predictor_MSE": 0.021802747747963203,
+      "empirical_mean_reference_MSE": 0.021801579080066524,
+      "MSE_over_zero": 0.7358307030499014,
+      "positive_U_cycles": 12
+    }
+  }
+}

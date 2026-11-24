@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "source_cycle": 4752,
+  "source_sha256": "51c3db00668c144906ab814d9d153afac6652f353c387442888166bc543298a4",
+  "original_fields_preserved": {
+    "model": true,
+    "engine": true,
+    "optimizer_state": true,
+    "whole": true,
+    "old_optimizer_groups": true
+  },
+  "new_parameters": 579,
+  "parameter_audit": {
+    "total": 953931,
+    "trainable": 953931,
+    "trainable_in_optimizer": 953931,
+    "trainable_missing_from_optimizer": [],
+    "frozen": []
+  },
+  "geometry": {
+    "four_shared_inputs": true,
+    "condition_rank": true,
+    "full_rank": true,
+    "conditional_action_rank": true,
+    "finite": true,
+    "same_condition_across_actions": true
+  },
+  "summary": {
+    "events": 2,
+    "cycles": [
+      4753,
+      4754
+    ],
+    "actual_updates": 12,
+    "source_scope": "real prospective mother replies; predictions frozen before each response",
+    "inference_scope": "factual action-likelihood discrimination, not full counterfactual world identification",
+    "options": {
+      "events": 2,
+      "original_margin_mean": -0.002261902205646038,
+      "relation_margin_mean": -0.003623582422733307,
+      "original_margin_median": -0.002261902205646038,
+      "relation_margin_median": -0.003623582422733307,
+      "original_positive": 0,
+      "relation_positive": 1,
+      "relation_log_margin_mean": -0.026227358728647232,
+      "comparisons": 4,
+      "original_pair_wins": 1,
+      "relation_pair_wins": 1,
+      "original_chosen_mse": 0.023892379365861416,
+      "relation_chosen_mse": 0.04405283182859421,
+      "legacy_chosen_mse": 0.03480653837323189,
+      "relation_chosen_log_score": 0.13359179720282555,
+      "legacy_chosen_log_score": -1.0977852940559387,
+      "predicted_variance": 0.04617753718048334,
+      "action_rank_given_condition": 2
+    },
+    "generated_drafts": {
+      "events": 2,
+      "original_margin_mean": -0.0025943489745259285,
+      "relation_margin_mean": -0.010520873591303825,
+      "original_margin_median": -0.0025943489745259285,
+      "relation_margin_median": -0.010520873591303825,
+      "original_positive": 0,
+      "relation_positive": 1,
+      "relation_log_margin_mean": -0.1307920515537262,
+      "comparisons": 6,
+      "original_pair_wins": 0,
+      "relation_pair_wins": 2,
+      "original_chosen_mse": 0.023892379365861416,
+      "relation_chosen_mse": 0.04405283182859421,
+      "legacy_chosen_mse": 0.03480653837323189,
+      "relation_chosen_log_score": 0.13359179720282555,
+      "legacy_chosen_log_score": -1.0977852940559387,
+      "predicted_variance": 0.04617753718048334,
+      "action_rank_given_condition": 2
+    },
+    "reproduction_error_max": 7.450580596923828e-09,
+    "wood_policy_tv_mean": 0.025509437080472708,
+    "draft_uniform_tv_mean": 0.008833713829517365,
+    "fixed_validation": [],
+    "world_failure_recovery": {
+      "same_child_input": true,
+      "failed_request_delivered_no_reply": true
+    },
+    "restored": {
+      "model_exact": true,
+      "optimizer_exact": true
+    }
+  },
+  "disk_restore": {
+    "model_exact": true,
+    "optimizer_exact": true
+  },
+  "tests": "31 passed",
+  "background": {
+    "status": "running",
+    "last_committed_cycle": 4766,
+    "target_cycle": 5010,
+    "observation_budget": 256,
+    "validate_every": 64
+  },
+  "capability_claim": "not yet; explicit whole-loop admission and running prospective learning"
+}

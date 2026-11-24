@@ -26,8 +26,15 @@ from scripts.ib_local.language_navigation_kanli_v4c import WitnessEngine
 
 class EqualEngine(WitnessEngine):
     def _speak_bytes(self, utterance_iter, record, sample):
+        if not sample and getattr(self, 'variable_expression_schema', None) == 1:
+            from scripts.ib_local.known_utterance_runtime import deliver
+            result = deliver(self, bytes(utterance_iter), record)
+            if result is not None:
+                return result
         byte = self.pending
         p = peek(self.table, byte)
+        variable=getattr(self,'variable_expression_schema',None)==1
+        if variable:self.model._expression_remaining=1.
         logits, h = self.decision.step(byte, p)
         words = []
         length = self.max_utterance if sample else len(utterance_iter)
@@ -45,8 +52,14 @@ class EqualEngine(WitnessEngine):
                 raise RuntimeError('self-hearing peek differs from prequential table read')
             byte = chosen
             p = peek(self.table, byte)
+            if variable:self.model._expression_remaining=1-(i+1)/self.max_utterance
             logits, h = self.decision.step(byte, p)
         record['truncated'] = False
+        if variable:
+            self.model._expression_remaining=None
+            receipt=getattr(self,'_selected_handover',{}) if record.get('choice')==1 else {}
+            record['ending_reason']=receipt.get('reason','reused_payload')
+            record['truncated']=record['ending_reason']=='budget'
         return bytes(words)
 
 

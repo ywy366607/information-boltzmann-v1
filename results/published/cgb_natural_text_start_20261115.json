@@ -1,0 +1,80 @@
+{
+  "status": "running",
+  "source_cycle": 5543,
+  "latest_cycle": 5554,
+  "world_source": "text",
+  "individual": {
+    "name": "\u68a6\u6f13",
+    "individual_id": "mengli-851f47bb4a72b46c"
+  },
+  "trainable": {
+    "total": 30500893,
+    "trainable": 30500893,
+    "trainable_in_optimizer": 30500893,
+    "trainable_missing_from_optimizer": [],
+    "frozen": []
+  },
+  "corpus": {
+    "schema": 1,
+    "dataset": "HuggingFaceFW/fineweb-edu",
+    "revision": "87f09149ef4734204d70ed1d046ddc9ca3f2b8f9",
+    "config": "sample-10BT",
+    "split": "train",
+    "retrieval": "official dataset viewer rows API; reject truncated cells; pinned start/end revision",
+    "partition": "SHA256(document) mod 32 == 0 held out; exact document deduplication",
+    "content": "natural educational web text; no instruction-answer conversion or SFT",
+    "rows_scanned": 3600,
+    "train_path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\train.bin",
+    "train_bytes": 16778564,
+    "train_sha256": "021b20113dc849526edc4f7d0c973dcea6f314ed5e13fcc9c0e9b5f123e5b5f2",
+    "validation_path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+    "validation_bytes": 288936,
+    "validation_sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+    "prefix_bytes": 40128875
+  },
+  "cycles": 11,
+  "optimizer_updates": 44,
+  "external_bytes": 10560,
+  "provider_calls": 0,
+  "actual_sources": [
+    "text"
+  ],
+  "mean_event_seconds": 11.04732188181818,
+  "initial_validation": {
+    "owt_nll": 2.0122502893209457,
+    "mother_nll": 1.5212086886167526,
+    "bytes_each": 8192,
+    "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+    "fineweb_nll": 2.016595758497715
+  },
+  "guard_pid": 18000,
+  "worker_pid": 7112,
+  "tests": {
+    "python": 14,
+    "node_observer": 9,
+    "deslice": "passed",
+    "native_view_and_family": 27
+  },
+  "mother_history_retained": true,
+  "migration": {
+    "from_source": "mother",
+    "to_source": "text",
+    "at_cycle": 5543,
+    "source_sha256": "cd332e255fda85b7e8c2dbeedd2a3c1b0abb2735c4f7692884f3421d5c0fcc65",
+    "retained": "same parameters, Adam, S/P, memory, causal archive, pending credit and mother history",
+    "boundary": "real suffix-navigation text response; no API, no synthetic caregiver or SFT"
+  },
+  "verified_at": "2026-11-15T01:07:51.629179+00:00",
+  "boundary_check_cycle": 5559,
+  "actual_response_boundary_stored": false,
+  "response_boundary_weight_step": 0.006075181532651186,
+  "actual_relation_evidence_committed": false,
+  "actual_relation_update_items": 1,
+  "latest_observed_cycle": 5562,
+  "observed_text_events": 19,
+  "observed_text_updates": 76,
+  "observed_provider_calls": 0,
+  "response_prequential_events": 19,
+  "response_stored_unmerged_events": 18,
+  "relation_evidence_committed_events": 18
+}

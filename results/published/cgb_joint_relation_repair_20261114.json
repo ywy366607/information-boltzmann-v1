@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "source_cycle": 4853,
+  "source_sha256": "6f7cb84e541df265a32a0ec2fa2608b2cb3ab4e8caabdbd2800e3b6791660e4d",
+  "final_admission_cycle": 4857,
+  "actual_events": 4,
+  "actual_updates": 24,
+  "new_parameters": 0,
+  "original_values_preserved": {
+    "model": true,
+    "engine": true,
+    "optimizer_state": true,
+    "whole": true,
+    "old_optimizer_groups": true
+  },
+  "final_values_preserved": {
+    "model": true,
+    "engine": true,
+    "optimizer_state": true,
+    "whole": true,
+    "old_optimizer_groups": true
+  },
+  "final_gpu_restore": {
+    "model_exact": true,
+    "optimizer_exact": true
+  },
+  "dependencies": {
+    "variable_edges": 105,
+    "shared_variables": 5,
+    "foreign_key_violations": []
+  },
+  "affected_python_checks": 58,
+  "final_whole_cycle_recheck": 6,
+  "observer_backend_checks": 6,
+  "source_frozen": true,
+  "source_files": {
+    "scripts\\ib_local\\joint_relation_update.py": "74afdeb02c61e6dc5f9cf46178018094f82d4d9c4a882646d6e28aefc406a5fd",
+    "scripts\\ib_local\\generative_relations.py": "6f76df6f7d6b33989c5148ee12ba3dde9adb8593c983a7b051ae8b1100ea2c24",
+    "scripts\\ib_local\\shared_unknown_bindings.py": "542e1706d0641a006d72a890b27eb46ef9510d04f979a417c4e63a52455fa8b7",
+    "scripts\\ib_local\\causal_relation_program.py": "697f23565a32328a6466109da3bf06fcd8db943328ed88b735813fb8689b5001",
+    "scripts\\ib_local\\navigation_causal_program.py": "c3ff7b6e95a6e68a96be196ad3dbde21527120fd6f8767b3a93ce8823946c368",
+    "scripts\\ib_local\\run_causal_water_reply.py": "278dddec15a9355da08a7761e7ad80c52926eafc916cd9c97a167705a630ed6c",
+    "scripts\\ib_local\\run_mother_continuation.py": "fc6b7ce17c76c738be3c417a484ea00b294512dc595f885a8324c1a2d5dd2ddb",
+    "scripts\\ib_local\\admit_shared_relation_basis.py": "99ed48139a9b35cca704f551a6a4ae18aadb4d89be2303a8e0757598c4466d2c"
+  },
+  "remaining_budget": 153,
+  "target_cycle": 5010,
+  "implementation_revision": 2,
+  "scope": "whole-loop connection and actual-event admission; benefits assessed in continuing real interaction"
+}

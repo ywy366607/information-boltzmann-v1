@@ -1,0 +1,37 @@
+{
+  "first_cycle": 3885,
+  "last_cycle": 3895,
+  "committed_cycles": 11,
+  "updates": 66,
+  "correct_unit_max_error": 0.0,
+  "critic_rms": [
+    146.65280927274034,
+    145.18011428075587,
+    143.7209829047195,
+    142.27654658213453,
+    140.85189815014033,
+    139.44084078372467,
+    138.03955134755302,
+    136.65241016664245,
+    135.28356680141394,
+    133.92389874730972,
+    132.5812556089289
+  ],
+  "checkpoint": "results\\cgb_generative_joint_20261113\\guarded_from_3887\\body\\last.pt.gz",
+  "checkpoint_sha256": "29ab9de0958a87613f7410eee9b84838c0ab90df2b6b35e45b41b09354928979",
+  "gzip_crc_passed": true,
+  "target_cycle": 4080,
+  "next_cycles": 185,
+  "guard": {
+    "status": "waiting_resources",
+    "pid": 25436,
+    "resources": {
+      "available_commit_mib": 3127.63671875,
+      "available_physical_mib": 3225.28125,
+      "system_disk_free_mib": 849.62890625
+    },
+    "minimum_start_commit_mib": 3328,
+    "minimum_system_disk_mib": 512
+  },
+  "scope": "Actual saved events; resource boundary stops; no convergence or architecture-benefit claim"
+}

@@ -1,0 +1,559 @@
+/*
+ * Meng Li — a quiet emergence. Original artwork and visual composition.
+ * Adapted reference: dsh-startup-screen v1.3.0 (MIT), copyright 沈宏宏.
+ * Reference: https://github.com/6shenhonghong9/dsh-startup-screen
+ * Dark curtain, soft light and handoff easing adapted in a new composition.
+ * Attribution and license: ./THIRD_PARTY_NOTICES.md
+ */
+
+.mengli-intro {
+  --intro-ink: #07120f;
+  --intro-paper: #eee9dc;
+  --intro-jade: #bbd3ba;
+  --intro-amber: #d5a57a;
+  --intro-ease: cubic-bezier(.22, .68, .18, 1);
+  position: fixed;
+  inset: 0 auto auto 0;
+  width: 100vw;
+  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
+  z-index: 10000;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: max(32px, env(safe-area-inset-top)) max(44px, env(safe-area-inset-right)) max(28px, env(safe-area-inset-bottom)) max(44px, env(safe-area-inset-left));
+  color: var(--intro-paper);
+  background-color: var(--intro-ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  opacity: 1;
+  transition: opacity 600ms var(--intro-ease), background-color 1400ms ease;
+}
+
+.mengli-intro:focus { outline: none; }
+
+.mengli-intro *,
+.mengli-intro *::before,
+.mengli-intro *::after {
+  box-sizing: border-box;
+}
+
+.mengli-intro::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 48% 42%, transparent 12%, rgb(2 8 6 / 45%) 100%);
+  transition: opacity 1400ms ease;
+}
+
+.mengli-intro .intro-grain,
+.mengli-intro .intro-ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.mengli-intro .intro-grain {
+  z-index: -1;
+  opacity: .035;
+  background-image: repeating-linear-gradient(17deg, transparent 0 3px, #bbd3ba 3px 4px), repeating-linear-gradient(107deg, transparent 0 5px, #eee9dc 5px 6px);
+}
+
+.mengli-intro .intro-ambient {
+  z-index: -1;
+  background: radial-gradient(ellipse at 48% 43%, rgb(122 162 126 / 11%), transparent 44%), radial-gradient(ellipse at 65% 58%, rgb(213 165 122 / 4%), transparent 35%);
+  opacity: .25;
+  transform: scale(.9);
+  transition: opacity 1800ms ease, transform 2400ms var(--intro-ease);
+}
+
+.mengli-intro .intro-topline {
+  grid-row: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  opacity: .64;
+  font-size: 10px;
+  line-height: 1.6;
+  letter-spacing: .24em;
+}
+
+.mengli-intro .brand-en {
+  color: var(--intro-jade);
+  letter-spacing: .34em;
+  white-space: nowrap;
+}
+
+.mengli-intro .subline {
+  font-size: 9px;
+  text-align: right;
+  letter-spacing: .2em;
+}
+
+.mengli-intro .intro-field {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  width: clamp(260px, 52vmin, 440px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: transform 1500ms var(--intro-ease), opacity 1400ms ease;
+}
+
+.mengli-intro .intro-field::before {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgb(187 211 186 / 8%), rgb(187 211 186 / 2%) 35%, transparent 65%);
+  opacity: 0;
+  transform: scale(.3);
+  transition: opacity 1800ms ease, transform 2400ms var(--intro-ease);
+}
+
+.mengli-intro .intro-orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 1px solid rgb(187 211 186 / 24%);
+  border-radius: 48% 52% 61% 39% / 57% 37% 63% 43%;
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(var(--tilt)) scale(.13);
+  transition: transform 2200ms var(--intro-ease), opacity 1600ms ease, border-radius 2400ms ease;
+}
+
+.mengli-intro .orbit-a {
+  --tilt: -27deg;
+  width: 71%;
+  height: 88%;
+  border-right-color: rgb(187 211 186 / 7%);
+  border-bottom-color: rgb(187 211 186 / 10%);
+}
+
+.mengli-intro .orbit-b {
+  --tilt: 31deg;
+  width: 78%;
+  height: 65%;
+  border-radius: 62% 38% 46% 54% / 44% 58% 42% 56%;
+  border-top-color: rgb(187 211 186 / 6%);
+  border-left-color: rgb(187 211 186 / 9%);
+  transition-delay: 160ms;
+}
+
+.mengli-intro .orbit-c {
+  --tilt: -43deg;
+  width: 92%;
+  height: 52%;
+  border-radius: 41% 59% 67% 33% / 63% 46% 54% 37%;
+  border-color: transparent rgb(213 165 122 / 19%) rgb(187 211 186 / 13%) transparent;
+  transition-delay: 320ms;
+}
+
+.mengli-intro .intro-orbit::after {
+  content: "";
+  position: absolute;
+  inset: 8% -7% -5% 6%;
+  border: 1px solid transparent;
+  border-top-color: rgb(187 211 186 / 9%);
+  border-radius: inherit;
+  transform: rotate(13deg);
+}
+
+.mengli-intro .intro-seed {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--intro-paper);
+  box-shadow: 0 0 12px 3px rgb(187 211 186 / 21%), 0 0 46px 12px rgb(187 211 186 / 7%);
+  transform: translate(-50%, -50%);
+  animation: mengli-seed-wake 900ms ease-out both;
+  transition: opacity 1200ms ease, transform 1600ms var(--intro-ease);
+}
+
+.mengli-intro .intro-mark {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: translateY(10px) scale(.68) rotate(-8deg);
+  transition: opacity 1400ms ease 500ms, transform 2000ms var(--intro-ease) 300ms;
+}
+
+.mengli-intro .intro-mark img {
+  display: block;
+  width: 37%;
+  height: auto;
+  animation: mengli-mark-breathe 5200ms ease-in-out 2300ms infinite;
+}
+
+/* Support both an image class and a wrapper containing the image. */
+.mengli-intro img.intro-mark {
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  width: 37%;
+  height: auto;
+  translate: -50% -50%;
+  animation: mengli-image-breathe 5200ms ease-in-out 2300ms infinite;
+}
+
+.mengli-intro .intro-speck {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  color: var(--intro-jade);
+  background: currentColor;
+  box-shadow: 0 0 7px rgb(187 211 186 / 25%);
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(var(--angle, 0deg)) translateX(var(--distance, 110px));
+}
+
+.mengli-intro .intro-speck:nth-of-type(4n) {
+  color: var(--intro-amber);
+  width: 1px;
+  height: 1px;
+}
+
+.mengli-intro .intro-copy {
+  position: absolute;
+  top: calc(44% + clamp(130px, 26vmin, 220px) - 10px);
+  left: 0;
+  width: 100%;
+  padding: 0 24px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.mengli-intro .intro-copy h1 {
+  margin: 0;
+  color: var(--intro-paper);
+  font-family: "Songti SC", "STSong", "Noto Serif CJK SC", "SimSun", serif;
+  font-size: clamp(38px, 5.4vmin, 54px);
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: .32em;
+  text-indent: .32em;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 1500ms ease, transform 1700ms var(--intro-ease);
+}
+
+.mengli-intro .intro-latin {
+  margin-top: 12px;
+  color: var(--intro-jade);
+  font-size: 9px;
+  line-height: 1.6;
+  letter-spacing: .52em;
+  text-indent: .52em;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 1200ms ease 160ms, transform 1500ms var(--intro-ease) 160ms;
+}
+
+.mengli-intro .intro-verse {
+  margin-top: 25px;
+  color: rgb(238 233 220 / 70%);
+  font-family: "Songti SC", "STSong", "SimSun", serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: .2em;
+  text-indent: .2em;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 1400ms ease 380ms, transform 1500ms var(--intro-ease) 380ms;
+}
+
+.mengli-intro .intro-bottom {
+  grid-row: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-width: 0;
+}
+
+.mengli-intro .intro-continuity {
+  color: rgb(238 233 220 / 72%);
+  font-size: 11px;
+  line-height: 1.8;
+  letter-spacing: .12em;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 1100ms ease, transform 1400ms var(--intro-ease);
+}
+
+.mengli-intro .intro-skip {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid rgb(187 211 186 / 22%);
+  border-radius: 3px;
+  color: var(--intro-jade);
+  background: rgb(7 18 15 / 45%);
+  font: inherit;
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: .08em;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: color 200ms ease, border-color 200ms ease, background-color 200ms ease;
+}
+
+.mengli-intro .intro-skip:hover {
+  color: var(--intro-paper);
+  border-color: rgb(187 211 186 / 60%);
+  background-color: rgb(187 211 186 / 8%);
+}
+
+.mengli-intro .intro-skip:focus-visible,
+button.intro-replay:focus-visible {
+  outline: 2px solid #d5a57a;
+  outline-offset: 5px;
+}
+
+.mengli-intro .intro-edge-label {
+  position: absolute;
+  left: 24px;
+  top: 47%;
+  writing-mode: vertical-rl;
+  color: rgb(187 211 186 / 32%);
+  font-size: 8px;
+  line-height: 1;
+  letter-spacing: .25em;
+  pointer-events: none;
+}
+
+/* The parent owns the four phase clocks; no independent scene timer. */
+.mengli-intro:is([data-phase="unfurl"], [data-phase="name"], [data-phase="handoff"]) .intro-ambient {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.mengli-intro:is([data-phase="unfurl"], [data-phase="name"], [data-phase="handoff"]) .intro-field::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.mengli-intro:is([data-phase="unfurl"], [data-phase="name"], [data-phase="handoff"]) .intro-orbit {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(var(--tilt)) scale(1);
+}
+
+.mengli-intro:is([data-phase="unfurl"], [data-phase="name"], [data-phase="handoff"]) .intro-seed {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.5);
+}
+
+.mengli-intro:is([data-phase="unfurl"], [data-phase="name"], [data-phase="handoff"]) .intro-mark {
+  opacity: 1;
+  transform: translateY(0) scale(1) rotate(0);
+}
+
+.mengli-intro[data-phase="unfurl"] .intro-speck {
+  animation: mengli-gather 1900ms var(--intro-ease) var(--delay, 0s) both;
+}
+
+.mengli-intro:is([data-phase="name"], [data-phase="handoff"]) .intro-copy :is(h1, .intro-latin, .intro-verse) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mengli-intro[data-phase="name"] .intro-orbit {
+  border-radius: 55% 45% 53% 47% / 48% 42% 58% 52%;
+  opacity: .7;
+}
+
+.mengli-intro[data-phase="handoff"] {
+  background-color: rgb(7 18 15 / 86%);
+}
+
+.mengli-intro[data-phase="handoff"]::before,
+.mengli-intro[data-phase="handoff"] .intro-ambient {
+  opacity: .25;
+}
+
+.mengli-intro[data-phase="handoff"] .intro-orbit {
+  opacity: .18;
+  transform: translate(-50%, -50%) rotate(var(--tilt)) scale(1.06);
+}
+
+.mengli-intro[data-phase="handoff"] .intro-field {
+  transform: translate(-50%, -53%);
+}
+
+.mengli-intro[data-phase="handoff"] .intro-continuity {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mengli-intro.is-leaving {
+  opacity: 0;
+  transition: opacity 600ms var(--intro-ease);
+}
+
+.mengli-intro.is-leaving *,
+.mengli-intro.is-leaving *::after {
+  animation-play-state: paused;
+}
+
+/* Only the explicitly opted-in header mark and replay control are styled. */
+.dsh-logo.mengli-brand-mark {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  color: #bbd3ba;
+  flex: 0 0 28px;
+}
+
+.mengli-brand-mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+button.intro-replay {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid rgb(187 211 186 / 20%);
+  border-radius: 4px;
+  color: #bbd3ba;
+  background: transparent;
+  font: inherit;
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+
+button.intro-replay:hover {
+  border-color: rgb(187 211 186 / 50%);
+  background-color: rgb(187 211 186 / 6%);
+}
+
+button.intro-replay :is(.intro-replay-en, .replay-en, .subline, small) {
+  font-size: 9px;
+  opacity: .6;
+  letter-spacing: .08em;
+}
+
+.mengli-intro [hidden],
+.mengli-intro[hidden],
+button.intro-replay[hidden] {
+  display: none !important;
+}
+
+@keyframes mengli-seed-wake {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(.4); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes mengli-gather {
+  0% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--angle, 0deg)) translateX(var(--distance, 110px)) scale(.6); }
+  25% { opacity: .65; }
+  80% { opacity: .3; }
+  100% { opacity: 0; transform: translate(-50%, -50%) rotate(calc(var(--angle, 0deg) + 20deg)) translateX(28px) scale(.3); }
+}
+
+@keyframes mengli-image-breathe {
+  0%, 100% { scale: 1; }
+  50% { scale: 1.025; }
+}
+
+@keyframes mengli-mark-breathe {
+  0%, 100% { opacity: .86; transform: translateY(0) scale(1); }
+  50% { opacity: 1; transform: translateY(-2px) scale(1.025); }
+}
+
+@media (max-width: 600px) {
+  .mengli-intro {
+    padding: max(25px, env(safe-area-inset-top)) max(22px, env(safe-area-inset-right)) max(22px, env(safe-area-inset-bottom)) max(22px, env(safe-area-inset-left));
+  }
+
+  .mengli-intro .intro-topline { gap: 18px; }
+  .mengli-intro .subline { max-width: 155px; font-size: 8px; letter-spacing: .13em; }
+  .mengli-intro .intro-field { width: min(76vw, 330px); }
+  .mengli-intro .intro-copy { top: calc(44% + min(38vw, 165px) - 6px); }
+  .mengli-intro .intro-edge-label { left: 10px; font-size: 7px; opacity: .6; }
+  .mengli-intro .intro-continuity { font-size: 10px; letter-spacing: .04em; }
+  .mengli-intro .intro-skip { padding-inline: 11px; font-size: 10px; }
+  button.intro-replay { padding-inline: 8px; font-size: 10px; }
+  button.intro-replay :is(.intro-replay-en, .replay-en, .subline, small, [lang="en"]) { display: none; }
+}
+
+@media (max-height: 700px) {
+  .mengli-intro .intro-field { top: 37%; width: min(44vh, 60vw, 250px); }
+  .mengli-intro .intro-copy { top: calc(37% + min(22vh, 30vw, 125px) - 4px); }
+  .mengli-intro .intro-copy h1 { font-size: 34px; }
+  .mengli-intro .intro-latin { margin-top: 5px; }
+  .mengli-intro .intro-verse { margin-top: 12px; font-size: 12px; }
+  .mengli-intro .intro-edge-label { display: none; }
+}
+
+/* The JS reduced path lasts about 600ms and need not visit every phase. */
+.mengli-intro.is-reduced *,
+.mengli-intro.is-reduced *::before,
+.mengli-intro.is-reduced *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+.mengli-intro.is-reduced .intro-seed,
+.mengli-intro.is-reduced .intro-orbit,
+.mengli-intro.is-reduced .intro-speck {
+  opacity: 0;
+}
+
+.mengli-intro.is-reduced .intro-mark,
+.mengli-intro.is-reduced .intro-copy :is(h1, .intro-latin, .intro-verse),
+.mengli-intro.is-reduced .intro-continuity {
+  opacity: 1;
+  transform: none;
+}
+
+.mengli-intro.is-reduced .intro-field { transform: translate(-50%, -50%); }
+.mengli-intro.is-reduced { transition: opacity 180ms ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mengli-intro *,
+  .mengli-intro *::before,
+  .mengli-intro *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .mengli-intro .intro-seed,
+  .mengli-intro .intro-orbit,
+  .mengli-intro .intro-speck { opacity: 0; }
+
+  .mengli-intro .intro-mark,
+  .mengli-intro .intro-copy :is(h1, .intro-latin, .intro-verse),
+  .mengli-intro .intro-continuity { opacity: 1; transform: none; }
+
+  .mengli-intro .intro-field { transform: translate(-50%, -50%); }
+  .mengli-intro { transition: opacity 180ms ease; }
+  button.intro-replay { transition: none; }
+}

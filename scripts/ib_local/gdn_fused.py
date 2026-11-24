@@ -15,8 +15,9 @@ The arithmetic is the reference's, event by event:
     S' = P * b / max(b, row_L1(P), col_L1(P))       (only with a content budget)
     o = S'^T q
 
-The backward pass replays the window in reverse from the stored per-event states and
-returns exact gradients for q, k, v, alpha, beta, eta, g and the initial state.  The
+Inference retains only the final state. FP32 backward stores block boundaries
+and reconstructs per-event states within each block, returning the full temporal
+gradients for q, k, v, alpha, beta, eta, g and the initial state. The
 budget's max() follows PyTorch's tie rule only away from ties (measure zero).
 
 `enable()` swaps `GatedDeltaNetLayer.forward` for a version that calls the fused kernels
@@ -45,15 +46,38 @@ FUSED = ("decay_then_delta", "feedback_delta")
 
 
 @triton.jit
+def _state_step(S, kt, vt, at, bt, eta, gain, budget,
+                FEEDBACK: tl.constexpr, BUDGET: tl.constexpr):
+    r = tl.sum(S * kt[:, None], axis=0)
+    target = vt
+    if FEEDBACK:
+        z = gain * r + vt
+        target = vt + eta * (z / (1.0 + tl.abs(z)) - vt)
+    e = target - at * r
+    P = at * S + bt * kt[:, None] * e[None, :]
+    S = P
+    if BUDGET:
+        mag = tl.abs(P)
+        R = tl.sum(mag, axis=1)
+        C = tl.sum(mag, axis=0)
+        den = tl.maximum(tl.maximum(R[:, None], C[None, :]), budget)
+        S = P * (budget / den)
+    return S, e, P
+
+
+@triton.jit
 def _forward_kernel(q_ptr, k_ptr, v_ptr, a_ptr, b_ptr, eta_ptr, gain_ptr, s0_ptr,
                     o_ptr, states_ptr, esq_ptr, corr_ptr, T, H, budget,
-                    D: tl.constexpr, FEEDBACK: tl.constexpr, BUDGET: tl.constexpr):
+                    D: tl.constexpr, FEEDBACK: tl.constexpr, BUDGET: tl.constexpr,
+                    STRIDE: tl.constexpr):
     bh = tl.program_id(0)
     h = bh % H
     offs = tl.arange(0, D)
     grid = offs[:, None] * D + offs[None, :]
     S = tl.load(s0_ptr + bh * D * D + grid)
-    tl.store(states_ptr + bh * (T + 1) * D * D + grid, S)
+    if STRIDE > 0:
+        slots = tl.cdiv(T, STRIDE) + 1
+        tl.store(states_ptr + bh * slots * D * D + grid, S)
     eta = 0.0
     gain = 0.0
     if FEEDBACK:
@@ -67,33 +91,29 @@ def _forward_kernel(q_ptr, k_ptr, v_ptr, a_ptr, b_ptr, eta_ptr, gain_ptr, s0_ptr
         qt = tl.load(q_ptr + row + offs)
         at = tl.load(a_ptr + bh * T + t)
         bt = tl.load(b_ptr + bh * T + t)
-        r = tl.sum(S * kt[:, None], axis=0)
-        target = vt
-        if FEEDBACK:
-            z = gain * r + vt
-            target = vt + eta * (z / (1.0 + tl.abs(z)) - vt)
-        e = target - at * r
-        P = at * S + bt * kt[:, None] * e[None, :]
-        S = P
+        S, e, P = _state_step(S, kt, vt, at, bt, eta, gain, budget, FEEDBACK, BUDGET)
         if BUDGET:
-            mag = tl.abs(P)
-            R = tl.sum(mag, axis=1)
-            C = tl.sum(mag, axis=0)
-            den = tl.maximum(tl.maximum(R[:, None], C[None, :]), budget)
-            S = P * (budget / den)
             diff = S - P
             corr = tl.sum(tl.sum(diff * diff, axis=1), axis=0)
         tl.store(esq_ptr + bh * T + t, tl.sum(e * e, axis=0))
         tl.store(o_ptr + row + offs, tl.sum(S * qt[:, None], axis=0))
-        tl.store(states_ptr + (bh * (T + 1) + t + 1) * D * D + grid, S)
+        if STRIDE == 1:
+            tl.store(states_ptr + (bh * slots + t + 1) * D * D + grid, S)
+        elif STRIDE > 1:
+            if (t + 1) % STRIDE == 0 or t + 1 == T:
+                cell = tl.cdiv(t + 1, STRIDE)
+                tl.store(states_ptr + (bh * slots + cell) * D * D + grid, S)
+    if STRIDE == 0:
+        tl.store(states_ptr + bh * D * D + grid, S)
     tl.store(corr_ptr + bh, corr)
 
 
 @triton.jit
 def _backward_kernel(q_ptr, k_ptr, v_ptr, a_ptr, b_ptr, eta_ptr, gain_ptr, states_ptr,
                      do_ptr, dsT_ptr, dq_ptr, dk_ptr, dv_ptr, da_ptr, db_ptr,
-                     deta_ptr, dgain_ptr, ds0_ptr, T, H, budget,
-                     D: tl.constexpr, FEEDBACK: tl.constexpr, BUDGET: tl.constexpr):
+                     deta_ptr, dgain_ptr, ds0_ptr, scratch_ptr, T, H, budget,
+                     D: tl.constexpr, FEEDBACK: tl.constexpr, BUDGET: tl.constexpr,
+                     BLOCK: tl.constexpr):
     bh = tl.program_id(0)
     h = bh % H
     offs = tl.arange(0, D)
@@ -116,8 +136,27 @@ def _backward_kernel(q_ptr, k_ptr, v_ptr, a_ptr, b_ptr, eta_ptr, gain_ptr, state
         dot = tl.load(do_ptr + row + offs)
         at = tl.load(a_ptr + bh * T + t)
         bt = tl.load(b_ptr + bh * T + t)
-        S_new = tl.load(states_ptr + (bh * (T + 1) + t + 1) * D * D + grid)
-        S_old = tl.load(states_ptr + (bh * (T + 1) + t) * D * D + grid)
+        if BLOCK > 1:
+            scratch = scratch_ptr + bh * (BLOCK + 1) * D * D + grid
+            local = t % BLOCK
+            if local == BLOCK - 1 or t + 1 == T:
+                start = t - local
+                slots = tl.cdiv(T, BLOCK) + 1
+                S = tl.load(states_ptr + (bh * slots + t // BLOCK) * D * D + grid)
+                tl.store(scratch, S)
+                for j in range(local + 1):
+                    index = bh * T + start + j
+                    kj = tl.load(k_ptr + index * D + offs)
+                    vj = tl.load(v_ptr + index * D + offs)
+                    aj = tl.load(a_ptr + index)
+                    bj = tl.load(b_ptr + index)
+                    S, _, _ = _state_step(S, kj, vj, aj, bj, eta, gain, budget, FEEDBACK, BUDGET)
+                    tl.store(scratch + (j + 1) * D * D, S)
+            S_old = tl.load(scratch + local * D * D)
+            S_new = tl.load(scratch + (local + 1) * D * D)
+        else:
+            S_new = tl.load(states_ptr + (bh * (T + 1) + t + 1) * D * D + grid)
+            S_old = tl.load(states_ptr + (bh * (T + 1) + t) * D * D + grid)
         # o = S_new^T q
         dS += qt[:, None] * dot[None, :]
         tl.store(dq_ptr + row + offs, tl.sum(S_new * dot[None, :], axis=1))
@@ -178,23 +217,39 @@ def _backward_kernel(q_ptr, k_ptr, v_ptr, a_ptr, b_ptr, eta_ptr, gain_ptr, state
     tl.store(dgain_ptr + bh, dgain)
 
 
+def _run_forward(q, k, v, alpha, beta, eta, gain, state, budget, feedback, stride):
+    B, H, T, D = q.shape
+    out = torch.empty_like(v)
+    shape = (B, H, triton.cdiv(T, stride) + 1, D, D) if stride else (B, H, D, D)
+    states = q.new_empty(shape)
+    esq, corr = q.new_empty((B, H, T)), q.new_empty((B, H))
+    _forward_kernel[(B * H,)](q, k, v, alpha, beta, eta, gain, state, out, states, esq, corr,
+                              T, H, float(budget), D=D, FEEDBACK=feedback,
+                              BUDGET=bool(budget), STRIDE=stride, num_warps=4)
+    return out, states, esq, corr
+
+
+def fused_delta(q, k, v, alpha, beta, eta, gain, state, budget, feedback, *, block=16):
+    if not torch.is_grad_enabled():
+        return _run_forward(q.contiguous(), k.contiguous(), v.contiguous(), alpha.contiguous(),
+                            beta.contiguous(), eta, gain, state.contiguous(), budget, feedback, 0)
+    return FusedDelta.apply(q, k, v, alpha, beta, eta, gain, state, budget, feedback, block)
+
+
 class FusedDelta(torch.autograd.Function):
     """Inputs [B,H,T,D] for q/k/v, [B,H,T] for alpha/beta, [H] for eta/gain, [B,H,D,D] state."""
 
     @staticmethod
-    def forward(ctx, q, k, v, alpha, beta, eta, gain, state, budget, feedback):
-        B, H, T, D = q.shape
+    def forward(ctx, q, k, v, alpha, beta, eta, gain, state, budget, feedback, block=1):
         q, k, v = q.contiguous(), k.contiguous(), v.contiguous()
         alpha, beta, state = alpha.contiguous(), beta.contiguous(), state.contiguous()
-        out = torch.empty_like(v)
-        states = torch.empty(B, H, T + 1, D, D, device=q.device, dtype=q.dtype)
-        esq = torch.empty(B, H, T, device=q.device, dtype=q.dtype)
-        corr = torch.empty(B, H, device=q.device, dtype=q.dtype)
-        _forward_kernel[(B * H,)](q, k, v, alpha, beta, eta, gain, state, out, states, esq, corr,
-                                  T, H, float(budget), D=D, FEEDBACK=feedback,
-                                  BUDGET=bool(budget), num_warps=4)
+        # Narrow dtypes would round the saved boundary while the scan itself
+        # carries wider accumulators. Keep their existing backward contract.
+        stride = block if q.dtype == torch.float32 and q.shape[2] > block else 1
+        out, states, esq, corr = _run_forward(
+            q, k, v, alpha, beta, eta, gain, state, budget, feedback, stride)
         ctx.save_for_backward(q, k, v, alpha, beta, eta, gain, states)
-        ctx.budget, ctx.feedback = float(budget), feedback
+        ctx.budget, ctx.feedback, ctx.stride = float(budget), feedback, stride
         ctx.mark_non_differentiable(esq, corr)
         return out, states[:, :, -1].clone(), esq, corr
 
@@ -210,12 +265,14 @@ class FusedDelta(torch.autograd.Function):
         deta = torch.empty(B * H, device=q.device, dtype=q.dtype)
         dgain = torch.empty_like(deta)
         ds0 = torch.empty(B, H, D, D, device=q.device, dtype=q.dtype)
+        scratch = (q.new_empty((B, H, ctx.stride + 1, D, D)) if ctx.stride > 1 else ds0)
         _backward_kernel[(B * H,)](q, k, v, alpha, beta, eta, gain, states, d_out, d_final,
-                                   dq, dk, dv, da, db, deta, dgain, ds0, T, H, ctx.budget,
-                                   D=D, FEEDBACK=ctx.feedback, BUDGET=bool(ctx.budget), num_warps=4)
+                                   dq, dk, dv, da, db, deta, dgain, ds0, scratch, T, H, ctx.budget,
+                                   D=D, FEEDBACK=ctx.feedback, BUDGET=bool(ctx.budget),
+                                   BLOCK=ctx.stride, num_warps=4)
         deta = deta.view(B, H).sum(0) if ctx.feedback else None
         dgain = dgain.view(B, H).sum(0) if ctx.feedback else None
-        return dq, dk, dv, da, db, deta, dgain, ds0, None, None
+        return (dq, dk, dv, da, db, deta, dgain, ds0, None, None, None)[:len(ctx.needs_input_grad)]
 
 
 _reference_forward = gated_deltanet.GatedDeltaNetLayer.forward
@@ -228,6 +285,10 @@ def fused_forward(self, x, state):
     B, T, d = x.shape
     if T == 0:
         raise ValueError("at least one input event is required")
+    bundle = getattr(self, '_decode_step_bundle', None)
+    if bundle is not None and B == T == 1 and not torch.is_grad_enabled():
+        from scripts.ib_local.gdn_decode_step import step
+        return step(self, x, state, bundle)
     x_norm = self.norm(x)
     q = self.q_proj(x_norm).view(B, T, self.heads, self.dk)
     k = self.k_proj(x_norm).view(B, T, self.heads, self.dk)
@@ -252,28 +313,29 @@ def fused_forward(self, x, state):
         feedback_gain = F.softplus(self.feedback_gain_raw)
     else:
         strength = feedback_gain = torch.zeros(self.heads, device=x.device, dtype=x.dtype)
-    out, S, esq, corr = FusedDelta.apply(
+    out, S, esq, corr = fused_delta(
         q.transpose(1, 2), k.transpose(1, 2), v.transpose(1, 2),
         alpha.transpose(1, 2), beta.transpose(1, 2), strength, feedback_gain, S,
-        self.content_budget, feedback)
+        self.content_budget, feedback, block=getattr(self, '_gdn_state_block', 16))
     out = out.transpose(1, 2).reshape(B, T, d)
     result = x + self.o_proj(out * F.silu(g))
     if self.mlp is not None:
         normalized = self.mlp_norm(result)
         result = result + self.mlp["down"](
             F.silu(self.mlp["gate"](normalized)) * self.mlp["up"](normalized))
-    diagnostics = {
+    skip_diagnostics = getattr(self, '_decode_no_diagnostics', False) and not torch.is_grad_enabled()
+    diagnostics = {} if skip_diagnostics else {
         "alpha_mean": alpha.detach().mean(),
         "beta_mean": beta.detach().mean(),
         "error_norm": (esq.mean() / self.dv).sqrt(),
         "state_norm": S.detach().square().mean().sqrt(),
     }
-    if self.content_budget:
+    if self.content_budget and not skip_diagnostics:
         diagnostics.update(
             budget_correction_rms=(corr.sum() / (B * self.matrix_size)).sqrt(),
             content_mass_max=torch.maximum(S.detach().abs().sum(-1).max(),
                                            S.detach().abs().sum(-2).max()))
-    if feedback:
+    if feedback and not skip_diagnostics:
         diagnostics.update(feedback_strength_mean=strength.detach().mean(),
                            feedback_gain_mean=feedback_gain.detach().mean())
     if self.conv_kernel:

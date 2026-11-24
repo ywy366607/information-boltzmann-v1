@@ -1,0 +1,263 @@
+{
+  "status": "completed",
+  "origin": 2806,
+  "restored": 2807,
+  "final": 2808,
+  "updates": 8,
+  "external_bytes": 1920,
+  "paid_calls": 0,
+  "checkpoint": "C:\\Users\\85750\\mengli-counterfactual-use-2806-verify\\body\\last.pt.gz",
+  "checkpoint_sha256": "d2808b692bdbd3a8206ebb14eddb86af40b62e48587d1ca6cda6b565b3988bc7",
+  "archive": "C:\\Users\\85750\\mengli-counterfactual-use-2806-verify\\body\\causal_archive_547ceb86b2a55074d69ffa0c8e45a67899e920457cc1ce1b5aeadeda282ea729.sqlite",
+  "archive_sha256": "547ceb86b2a55074d69ffa0c8e45a67899e920457cc1ce1b5aeadeda282ea729",
+  "source_unchanged": true,
+  "first_round_archived_dispatch_matches": 5,
+  "matched_fields": [
+    "autonomous_event",
+    "choice",
+    "choice_probability",
+    "utterance_hex",
+    "external_bytes",
+    "metal_g",
+    "shared_unknown",
+    "world",
+    "updates"
+  ],
+  "rounds": [
+    {
+      "cycle": 2807,
+      "episode": "episode:2825",
+      "previous": "episode:2824",
+      "addressed": 359,
+      "unknown": "unknown:1920",
+      "choice": "generate",
+      "seconds": 0.39333809999516234,
+      "verified_finite_U": true,
+      "successor_learning": {
+        "schema": 1,
+        "event": "episode:2824",
+        "evidence": [
+          "episode:1974",
+          "episode:2231",
+          "episode:2418",
+          "episode:2461",
+          "episode:2508",
+          "episode:2524",
+          "episode:2531",
+          "episode:2824"
+        ],
+        "target_excluded": true,
+        "score": -0.04922002553939819,
+        "mean_scale": 0.9805657267570496
+      },
+      "queries": [
+        "episode:1133",
+        "episode:1977",
+        "episode:203",
+        "episode:2435",
+        "episode:2523",
+        "episode:2676",
+        "episode:2696",
+        "episode:283"
+      ],
+      "alternatives": {
+        "0": {
+          "prior": {
+            "address": {
+              "matched": false,
+              "relation": -1,
+              "generation": 0,
+              "similarity": 0.5849467515945435
+            },
+            "score": -1.3481866121292114,
+            "supports": [
+              "episode:2649",
+              "episode:2663",
+              "episode:2731",
+              "episode:2734",
+              "episode:2825",
+              "episode:40",
+              "episode:49",
+              "episode:58"
+            ]
+          },
+          "copy_factual": {
+            "address": {
+              "matched": false,
+              "relation": -1,
+              "generation": 0,
+              "similarity": 0.6431243419647217
+            },
+            "score": -1.436469316482544,
+            "supports": [
+              "episode:2423",
+              "episode:2558",
+              "episode:2608",
+              "episode:2649",
+              "episode:2680",
+              "episode:2703",
+              "episode:2805",
+              "episode:2812"
+            ]
+          },
+          "full_residual": {
+            "address": {
+              "matched": false,
+              "relation": -1,
+              "generation": 0,
+              "similarity": 0.6300800442695618
+            },
+            "score": -1.436469316482544,
+            "supports": [
+              "episode:2423",
+              "episode:2558",
+              "episode:2608",
+              "episode:2649",
+              "episode:2680",
+              "episode:2703",
+              "episode:2805",
+              "episode:2812"
+            ]
+          },
+          "native_U": {
+            "address": {
+              "matched": false,
+              "relation": -1,
+              "generation": 0,
+              "similarity": 0.6216754913330078
+            },
+            "score": -1.2848875522613525,
+            "supports": [
+              "episode:2649",
+              "episode:2663",
+              "episode:2729",
+              "episode:2731",
+              "episode:2734",
+              "episode:2825",
+              "episode:40",
+              "episode:49"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "cycle": 2808,
+      "episode": "episode:2826",
+      "previous": "episode:2825",
+      "addressed": 359,
+      "unknown": "unknown:1917",
+      "choice": "silence",
+      "seconds": 0.4075812000010046,
+      "verified_finite_U": true,
+      "successor_learning": {
+        "schema": 1,
+        "event": "episode:2825",
+        "evidence": [
+          "episode:1133",
+          "episode:1977",
+          "episode:203",
+          "episode:2523",
+          "episode:2676",
+          "episode:2696",
+          "episode:2825",
+          "episode:283"
+        ],
+        "target_excluded": true,
+        "score": -0.2694242000579834,
+        "mean_scale": 0.95423823595047
+      },
+      "queries": [
+        "episode:2523",
+        "episode:2524",
+        "episode:2649",
+        "episode:2663",
+        "episode:2751",
+        "episode:2769",
+        "episode:2811",
+        "episode:2819"
+      ],
+      "alternatives": {
+        "1": {
+          "prior": {
+            "address": {
+              "matched": false,
+              "relation": -1,
+              "generation": 0,
+              "similarity": 0.5901979207992554
+            },
+            "score": -1.0805563926696777,
+            "supports": [
+              "episode:1292",
+              "episode:1320",
+              "episode:1460",
+              "episode:1525",
+              "episode:1551",
+              "episode:1626",
+              "episode:2157",
+              "episode:810"
+            ]
+          },
+          "copy_factual": {
+            "address": {
+              "matched": false,
+              "relation": -1,
+              "generation": 0,
+              "similarity": 0.5635793805122375
+            },
+            "score": -1.127153754234314,
+            "supports": [
+              "episode:1460",
+              "episode:1551",
+              "episode:1626",
+              "episode:1652",
+              "episode:589",
+              "episode:810",
+              "episode:919",
+              "episode:930"
+            ]
+          },
+          "full_residual": {
+            "address": {
+              "matched": false,
+              "relation": -1,
+              "generation": 0,
+              "similarity": 0.5359699130058289
+            },
+            "score": -1.0376019477844238,
+            "supports": [
+              "episode:1460",
+              "episode:1526",
+              "episode:1551",
+              "episode:1626",
+              "episode:2518",
+              "episode:423",
+              "episode:589",
+              "episode:810"
+            ]
+          },
+          "native_U": {
+            "address": {
+              "matched": false,
+              "relation": -1,
+              "generation": 0,
+              "similarity": 0.5593664050102234
+            },
+            "score": -1.1119611263275146,
+            "supports": [
+              "episode:1292",
+              "episode:1320",
+              "episode:1525",
+              "episode:1551",
+              "episode:589",
+              "episode:670",
+              "episode:779",
+              "episode:810"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "scope": "actual natural acting and settlement; alternate hypotheses flow through private U, successor mean and native address; old-query scores are shadow uses"
+}

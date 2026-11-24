@@ -1,0 +1,231 @@
+{
+  "checkpoint_cycle": 4988,
+  "checkpoint_sha256": "00f487d59d55bce78dda42c25d65904ab6d2ea5b4f4feb2ca5858c298dacb4db",
+  "archive": "D:\\information-boltzmann-v1\\results\\cgb_relation_nonlinearity_20261114\\budget_followup\\archives\\causal_archive_856ab9a8cc1d7a65e19174a367889f1917a96fdc0742983119c5ba8b96fa447b.sqlite",
+  "archive_sha256": "856ab9a8cc1d7a65e19174a367889f1917a96fdc0742983119c5ba8b96fa447b",
+  "facts": 2057,
+  "exact_forecast": {
+    "chosen": 1,
+    "support": 8,
+    "variants": {
+      "base": {
+        "chosen_mse": 0.03594047750619385,
+        "margin": 0.00038515896702333297
+      },
+      "full": {
+        "chosen_mse": 0.018410007302055147,
+        "margin": -0.0015135801445832035
+      },
+      "common_only": {
+        "chosen_mse": 0.018436633922556567,
+        "margin": -0.0021764294536665285
+      },
+      "contrast_only": {
+        "chosen_mse": 0.03654663237107637,
+        "margin": 9.883604803075097e-05
+      }
+    },
+    "reproduction_error": 3.1920166861793e-07,
+    "nonlinear_same_support": {
+      "linear": {
+        "chosen_mse": 0.01841001031206705,
+        "support_leave_one_out_mse": 0.023629320305187988,
+        "dimension": 4,
+        "rank": 4,
+        "ridge": 0.1
+      },
+      "quadratic": {
+        "chosen_mse": 0.017199082490208257,
+        "support_leave_one_out_mse": 0.022557481999959685,
+        "dimension": 10,
+        "rank": 8,
+        "ridge": 0.1
+      }
+    },
+    "correction_common_energy": 0.02003544740628438,
+    "correction_contrast_energy": 0.000688640582302049,
+    "conditional_action_rank": 2,
+    "conditional_action_singular": [
+      1.962442538470493,
+      1.2717821408876897
+    ]
+  },
+  "shared_coordinates": {
+    "condition_std": [
+      0.4948136643423969
+    ],
+    "action_std": [
+      0.5108544488170413,
+      0.49895622687149604
+    ],
+    "action_tanh_saturated_fraction": 0.014584346135148274,
+    "gate_mean": [
+      0.9641892601262554,
+      0.9800675441726188
+    ],
+    "gate_std": [
+      0.023569112917246803,
+      0.022489139987977084
+    ],
+    "centered_singular": [
+      28.825486141926216,
+      22.623241462353317,
+      14.485940978600267,
+      0.0
+    ]
+  },
+  "chronological": {
+    "condition": {
+      "dimension": 2,
+      "ridge": 100.0,
+      "validation_mse": 0.01602402715619032,
+      "test_mse": 0.012547157074597179,
+      "by_action": {
+        "0": {
+          "n": 57,
+          "mse": 0.01390567911522273
+        },
+        "1": {
+          "n": 419,
+          "mse": 0.012479363680706361
+        },
+        "2": {
+          "n": 39,
+          "mse": 0.011289969272663743
+        }
+      },
+      "support_rank": 2
+    },
+    "linear": {
+      "dimension": 4,
+      "ridge": 100.0,
+      "validation_mse": 0.01594448369348585,
+      "test_mse": 0.012362295877821394,
+      "by_action": {
+        "0": {
+          "n": 57,
+          "mse": 0.01374680332952119
+        },
+        "1": {
+          "n": 419,
+          "mse": 0.012283509360320305
+        },
+        "2": {
+          "n": 39,
+          "mse": 0.011185235008233393
+        }
+      },
+      "support_rank": 4
+    },
+    "quadratic": {
+      "dimension": 10,
+      "ridge": 100.0,
+      "validation_mse": 0.016054548224923654,
+      "test_mse": 0.01239141518131848,
+      "by_action": {
+        "0": {
+          "n": 57,
+          "mse": 0.01352179542269398
+        },
+        "1": {
+          "n": 419,
+          "mse": 0.012333907567830224
+        },
+        "2": {
+          "n": 39,
+          "mse": 0.011357159188835812
+        }
+      },
+      "support_rank": 10
+    },
+    "base_test_mse": 0.028165704909637688,
+    "sizes": {
+      "fit": 1028,
+      "validation": 514,
+      "test": 515
+    }
+  },
+  "nearest_context_budget": {
+    "linear_8": {
+      "ridge": 1.0,
+      "validation_mse": 0.015362012384004723,
+      "test_mse": 0.012585093459735651
+    },
+    "quadratic_8": {
+      "ridge": 1.0,
+      "validation_mse": 0.01571451378339182,
+      "test_mse": 0.012989145098967569
+    },
+    "linear_32": {
+      "ridge": 1.0,
+      "validation_mse": 0.014846303101420884,
+      "test_mse": 0.011801367570360101
+    },
+    "quadratic_32": {
+      "ridge": 10.0,
+      "validation_mse": 0.015017702954277951,
+      "test_mse": 0.011727653757270187
+    },
+    "linear_128": {
+      "ridge": 10.0,
+      "validation_mse": 0.014537353703569934,
+      "test_mse": 0.011446781686674453
+    },
+    "quadratic_128": {
+      "ridge": 10.0,
+      "validation_mse": 0.014579410678360388,
+      "test_mse": 0.011441779165155
+    }
+  },
+  "representation": {
+    "shared_linear": {
+      "dimension": 4,
+      "ridge": 100.0,
+      "validation_mse": 0.015899217169468665,
+      "test_mse": 0.012320313054513657,
+      "test_mse_delta_vs_shared_linear": 0.0,
+      "block_bootstrap_delta_interval": [
+        0.0,
+        0.0
+      ]
+    },
+    "shared_rbf": {
+      "dimension": 68,
+      "ridge": 100.0,
+      "validation_mse": 0.015934751538605563,
+      "test_mse": 0.012307362504917718,
+      "test_mse_delta_vs_shared_linear": -1.295054959594072e-05,
+      "block_bootstrap_delta_interval": [
+        -5.199168633194897e-05,
+        2.477623071504295e-05
+      ]
+    },
+    "raw_condition": {
+      "dimension": 65,
+      "ridge": 100.0,
+      "validation_mse": 0.015695462978217868,
+      "test_mse": 0.01235359735682666,
+      "test_mse_delta_vs_shared_linear": 3.328430231300231e-05,
+      "block_bootstrap_delta_interval": [
+        -0.00028757574736430806,
+        0.0003876386759671185
+      ]
+    },
+    "raw_condition_action": {
+      "dimension": 129,
+      "ridge": 100.0,
+      "validation_mse": 0.015611651511215153,
+      "test_mse": 0.012217279886022473,
+      "test_mse_delta_vs_shared_linear": -0.00010303316849118501,
+      "block_bootstrap_delta_interval": [
+        -0.0005107168273859443,
+        0.0003740118206377121
+      ]
+    }
+  },
+  "scope": "Frozen current representation retrospective readouts, not historical forecasts or world interventions",
+  "training_mutations": 0,
+  "world_calls": 0,
+  "source_unchanged": true,
+  "archive_unchanged": true
+}

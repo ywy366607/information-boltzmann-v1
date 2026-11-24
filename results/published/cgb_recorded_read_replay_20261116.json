@@ -1,0 +1,303 @@
+{
+  "schema": 1,
+  "source_cycle": 856,
+  "source_sha256": "1af8bebb958c727630a574260cb9783cc6be04f0a8c291ff11abfd5c181f8141",
+  "failure_reproduction": {
+    "source_cycle": 856,
+    "source_sha": "1af8bebb958c727630a574260cb9783cc6be04f0a8c291ff11abfd5c181f8141",
+    "seconds": 29.379845700008445,
+    "failure": "variable expression replay differs: 0.0022724270820617676",
+    "proposal_receipts": [
+      {
+        "proposal": 0,
+        "bytes": 128,
+        "byte_error": 0.0022724270820617676,
+        "stop_error": 1.9073486328125e-06,
+        "exact_fallbacks": 1,
+        "stop_positions": 127,
+        "error": "variable expression replay differs: 0.0022724270820617676"
+      }
+    ],
+    "optimizer_updates": 0,
+    "main_written": false,
+    "scope": "one actual next complete event on private state; no source save or API calls",
+    "policy_error": null,
+    "replay": null
+  },
+  "route_root_cause": {
+    "position": 42,
+    "byte_error": 0.002272367477416992,
+    "logits_max_error": 0.04951000213623047,
+    "feature_max_error": 7.62939453125e-06,
+    "same_slots": false,
+    "weight_error": 0.0019537433981895447,
+    "actual_slots": [
+      [
+        488,
+        512,
+        495,
+        614,
+        412,
+        467,
+        617,
+        396
+      ]
+    ],
+    "replay_slots": [
+      [
+        488,
+        512,
+        495,
+        614,
+        412,
+        467,
+        617,
+        653
+      ]
+    ]
+  },
+  "repaired_complete_event": {
+    "source_cycle": 856,
+    "source_sha": "1af8bebb958c727630a574260cb9783cc6be04f0a8c291ff11abfd5c181f8141",
+    "seconds": 11.019812800004729,
+    "failure": null,
+    "proposal_receipts": [
+      {
+        "proposal": 0,
+        "bytes": 128,
+        "accepted_error": 1.9073486328125e-06
+      },
+      {
+        "proposal": 1,
+        "bytes": 120,
+        "accepted_error": 1.9073486328125e-06
+      },
+      {
+        "proposal": 2,
+        "bytes": 128,
+        "accepted_error": 1.9073486328125e-06
+      },
+      {
+        "proposal": 3,
+        "bytes": 128,
+        "accepted_error": 1.9073486328125e-06
+      }
+    ],
+    "optimizer_updates": 4,
+    "main_written": false,
+    "scope": "one actual next complete event on private state; no source save or API calls",
+    "policy_error": 9.5367431640625e-07,
+    "replay": {
+      "batched_hits": 3718,
+      "one_byte_fallbacks": 3
+    }
+  },
+  "gradient_audit": {
+    "source_cycle": 856,
+    "source_sha": "1af8bebb958c727630a574260cb9783cc6be04f0a8c291ff11abfd5c181f8141",
+    "proposal_bytes": 128,
+    "read_identity_bytes": 16512,
+    "gradient_presence_equal": true,
+    "gradient_max_error": 1.71661376953125e-05,
+    "gradient_relative_l2": 3.462684924265325e-07,
+    "gradient_cosine": 0.9999999999999423,
+    "terms_max_error": 9.5367431640625e-07,
+    "fast_actual_score_error": 1.9073486328125e-06,
+    "exact_actual_score_error": 1.9073486328125e-06,
+    "optimizer_updates": 0,
+    "world_calls": 0,
+    "main_written": false,
+    "scope": "same real full-boundary draft: recorded-route batch derivative versus exact one-byte derivative"
+  },
+  "tests": {
+    "command": "pytest -q tests/test_variable_expression.py tests/test_scoped_decision_graph.py tests/test_known_utterance_runtime.py tests/test_continuation_event_journal.py",
+    "passed": 21,
+    "seconds": 8.24
+  },
+  "repair": "Retain action-time slot and version identities; recompute differentiable weights and values on those participants. Ordinary reads remain dynamic.",
+  "strict_score_error_limit": 0.001,
+  "scope": "Execution and participant-credit correctness, not evidence of language or loop-multiplier capability.",
+  "production_continuation": {
+    "supervisor": "F:\\cgb_continual_learning_20261116\\guard_resume_856\\status.json",
+    "first_cycle": 857,
+    "last_cycle": 864,
+    "events": 8,
+    "updates": 32,
+    "external_bytes": 7680,
+    "median_event_seconds": 10.251547650004795,
+    "max_policy_error": 9.5367431640625e-07,
+    "one_byte_fallbacks_before": 3,
+    "one_byte_fallbacks_after": 3,
+    "complete_checkpoint_cycle": 864,
+    "raw_receipts": [
+      {
+        "cycle": 857,
+        "updates": 4,
+        "policy_replay_max_error": 9.5367431640625e-07,
+        "runtime_replay": {
+          "batched_hits": 3718,
+          "one_byte_fallbacks": 3
+        },
+        "runtime": {
+          "event_seconds": 11.294882300004247,
+          "checkpoint_seconds": 7.029999687802047e-05,
+          "complete_checkpoint_cycle": 856,
+          "durable_event_cycle": 857,
+          "external_bytes_per_event_second": 84.99424557966745,
+          "replay_fallback_cache_release": null,
+          "cuda_allocated_mib": 564.90185546875,
+          "cuda_reserved_mib": 2910.0,
+          "cuda_peak_reserved_mib": 2910.0,
+          "cuda_peak_allocated_mib": 2763.2919921875
+        }
+      },
+      {
+        "cycle": 858,
+        "updates": 4,
+        "policy_replay_max_error": 2.9802322387695312e-08,
+        "runtime_replay": {
+          "batched_hits": 3722,
+          "one_byte_fallbacks": 3
+        },
+        "runtime": {
+          "event_seconds": 10.12556910001149,
+          "checkpoint_seconds": 0.0001235999952768907,
+          "complete_checkpoint_cycle": 856,
+          "durable_event_cycle": 858,
+          "external_bytes_per_event_second": 94.8094858193117,
+          "replay_fallback_cache_release": null,
+          "cuda_allocated_mib": 564.22314453125,
+          "cuda_reserved_mib": 3010.0,
+          "cuda_peak_reserved_mib": 3010.0,
+          "cuda_peak_allocated_mib": 2763.2919921875
+        }
+      },
+      {
+        "cycle": 859,
+        "updates": 4,
+        "policy_replay_max_error": 1.4901161193847656e-08,
+        "runtime_replay": {
+          "batched_hits": 3726,
+          "one_byte_fallbacks": 3
+        },
+        "runtime": {
+          "event_seconds": 9.49857979999797,
+          "checkpoint_seconds": 6.150000263005495e-05,
+          "complete_checkpoint_cycle": 856,
+          "durable_event_cycle": 859,
+          "external_bytes_per_event_second": 101.0677406742643,
+          "replay_fallback_cache_release": null,
+          "cuda_allocated_mib": 564.22119140625,
+          "cuda_reserved_mib": 3010.0,
+          "cuda_peak_reserved_mib": 3010.0,
+          "cuda_peak_allocated_mib": 2763.2919921875
+        }
+      },
+      {
+        "cycle": 860,
+        "updates": 4,
+        "policy_replay_max_error": 2.9802322387695312e-08,
+        "runtime_replay": {
+          "batched_hits": 3730,
+          "one_byte_fallbacks": 3
+        },
+        "runtime": {
+          "event_seconds": 9.33833389999927,
+          "checkpoint_seconds": 4.959999932907522e-05,
+          "complete_checkpoint_cycle": 856,
+          "durable_event_cycle": 860,
+          "external_bytes_per_event_second": 102.80206408126776,
+          "replay_fallback_cache_release": null,
+          "cuda_allocated_mib": 564.21044921875,
+          "cuda_reserved_mib": 3070.0,
+          "cuda_peak_reserved_mib": 3070.0,
+          "cuda_peak_allocated_mib": 2829.30517578125
+        }
+      },
+      {
+        "cycle": 861,
+        "updates": 4,
+        "policy_replay_max_error": 9.5367431640625e-07,
+        "runtime_replay": {
+          "batched_hits": 3735,
+          "one_byte_fallbacks": 3
+        },
+        "runtime": {
+          "event_seconds": 10.75564889999805,
+          "checkpoint_seconds": 6.27999979769811e-05,
+          "complete_checkpoint_cycle": 856,
+          "durable_event_cycle": 861,
+          "external_bytes_per_event_second": 89.25542372438115,
+          "replay_fallback_cache_release": null,
+          "cuda_allocated_mib": 564.2333984375,
+          "cuda_reserved_mib": 3070.0,
+          "cuda_peak_reserved_mib": 3070.0,
+          "cuda_peak_allocated_mib": 2829.30517578125
+        }
+      },
+      {
+        "cycle": 862,
+        "updates": 4,
+        "policy_replay_max_error": 2.9802322387695312e-08,
+        "runtime_replay": {
+          "batched_hits": 3739,
+          "one_byte_fallbacks": 3
+        },
+        "runtime": {
+          "event_seconds": 10.377526199998101,
+          "checkpoint_seconds": 9.279999358113855e-05,
+          "complete_checkpoint_cycle": 856,
+          "durable_event_cycle": 862,
+          "external_bytes_per_event_second": 92.50759588544095,
+          "replay_fallback_cache_release": null,
+          "cuda_allocated_mib": 564.23046875,
+          "cuda_reserved_mib": 3076.0,
+          "cuda_peak_reserved_mib": 3076.0,
+          "cuda_peak_allocated_mib": 2829.30517578125
+        }
+      },
+      {
+        "cycle": 863,
+        "updates": 4,
+        "policy_replay_max_error": 4.76837158203125e-07,
+        "runtime_replay": {
+          "batched_hits": 3744,
+          "one_byte_fallbacks": 3
+        },
+        "runtime": {
+          "event_seconds": 10.693569299997762,
+          "checkpoint_seconds": 9.639999188948423e-05,
+          "complete_checkpoint_cycle": 856,
+          "durable_event_cycle": 863,
+          "external_bytes_per_event_second": 89.7735800898771,
+          "replay_fallback_cache_release": null,
+          "cuda_allocated_mib": 564.2412109375,
+          "cuda_reserved_mib": 3076.0,
+          "cuda_peak_reserved_mib": 3076.0,
+          "cuda_peak_allocated_mib": 2829.35400390625
+        }
+      },
+      {
+        "cycle": 864,
+        "updates": 4,
+        "policy_replay_max_error": 1.1920928955078125e-07,
+        "runtime_replay": {
+          "batched_hits": 3748,
+          "one_byte_fallbacks": 3
+        },
+        "runtime": {
+          "event_seconds": 9.628056400004425,
+          "checkpoint_seconds": 2.4217396000021836,
+          "complete_checkpoint_cycle": 864,
+          "durable_event_cycle": 864,
+          "external_bytes_per_event_second": 99.70859746932504,
+          "replay_fallback_cache_release": null,
+          "cuda_allocated_mib": 564.23046875,
+          "cuda_reserved_mib": 3080.0,
+          "cuda_peak_reserved_mib": 3080.0,
+          "cuda_peak_allocated_mib": 2829.35400390625
+        }
+      }
+    ]
+  }
+}

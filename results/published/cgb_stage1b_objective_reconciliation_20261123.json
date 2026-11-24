@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "source_checkpoint": "E:\\mengli-batch2-regression-20261123\\batch2_full_32c\\body\\last.pt.gz",
+  "source_sha256": "e30805edda7f01830a43363b77d0b6310de00ac4067d835f73b6e7e3a0597710",
+  "source_cycle": 2845,
+  "optimizer_updates": 0,
+  "world_calls": 0,
+  "elapsed_seconds": 27.34,
+  "temperature_objective_reconciliation": {
+    "formula": "WoodObservationBody.objective = 10*CE + 0.1*(short_loss + long_loss) + 0.001*sigreg",
+    "current_temperature": 0.2007492482662201,
+    "term_values": {
+      "ce": 1.5156982839107513,
+      "short_loss": 0.5325628817081451,
+      "long_loss": 0.0,
+      "sigreg": 30.001301765441895,
+      "total_objective": 15.240240097045898
+    },
+    "raw_term_grads_wrt_log_temp": {
+      "ce": -9.526080248178914e-05,
+      "short_loss": 5.034583364249556e-05,
+      "long_loss": 0.0,
+      "sigreg": 0.0,
+      "total_objective": -0.0009475731785641983
+    },
+    "weighted_grad_contributions": {
+      "w10_ce": -0.0009526080248178914,
+      "w01_short": 5.0345833642495565e-06,
+      "w01_long": 0.0,
+      "w0001_sigreg": 0.0
+    },
+    "reconstructed_total_grad": -0.0009475734414536418,
+    "direct_model_objective_grad": -0.0009475731785641983,
+    "reconciliation_abs_error": 2.628894435040968e-10
+  },
+  "ridge_autograd_vs_full_curve": {
+    "current_ridge": 0.10008484125137329,
+    "current_log_ridge": -2.301737070083618,
+    "detached_path_note": "posterior() detaches residual_sum into noise; autograd differentiates through mean and leverage only",
+    "autograd_grad_at_current": -0.016894493252038956,
+    "autograd_hess_at_current": 0.02833925187587738,
+    "full_curve_fd_grad_h001": -0.012195110321044922,
+    "full_curve_fd_hess_h001": 0.0286102294921875,
+    "full_curve_fd_grad_h005": -0.012197494506835938,
+    "full_curve_fd_hess_h005": 0.026988983154296868,
+    "same_sign": true,
+    "detached_noise_grad_contribution_h001": 0.004699382930994034,
+    "neighbor_points": [
+      {
+        "offset": -0.05,
+        "log_ridge": -2.3517370223999023,
+        "ridge": 0.09520364552736282,
+        "neg_log_score": 1.106806993484497,
+        "autograd_grad": -0.01819729618728161,
+        "autograd_hess": 0.02783558890223503
+      },
+      {
+        "offset": -0.01,
+        "log_ridge": -2.311737060546875,
+        "ridge": 0.09908898174762726,
+        "neg_log_score": 1.1062867641448975,
+        "autograd_grad": -0.017156630754470825,
+        "autograd_hess": 0.028244124725461006
+      },
+      {
+        "offset": 0.0,
+        "log_ridge": -2.301737070083618,
+        "ridge": 0.10008484125137329,
+        "neg_log_score": 1.1061633825302124,
+        "autograd_grad": -0.016894493252038956,
+        "autograd_hess": 0.02833925187587738
+      },
+      {
+        "offset": 0.01,
+        "log_ridge": -2.2917370796203613,
+        "ridge": 0.10109070688486099,
+        "neg_log_score": 1.1060428619384766,
+        "autograd_grad": -0.016631674021482468,
+        "autograd_hess": 0.02843136340379715
+      },
+      {
+        "offset": 0.05,
+        "log_ridge": -2.251737117767334,
+        "ridge": 0.10521629452705383,
+        "neg_log_score": 1.1055872440338135,
+        "autograd_grad": -0.015573848970234394,
+        "autograd_hess": 0.028769733384251595
+      }
+    ]
+  }
+}

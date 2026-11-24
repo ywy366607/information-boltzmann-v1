@@ -16,10 +16,10 @@ from scripts.ib_local.navigation_internal_rollout import next_boundary_predictio
 
 
 class QuestionContextBody(MomentumBody):
-    def predict_observed(self, ids, state, table_logp):
-        logits, next_state, diagnostics, h, read = super().predict_observed(ids, state, table_logp)
+    def predict_observed(self, ids, state, table_logp, *, decode=True):
+        logits, next_state, diagnostics, h, read = super().predict_observed(ids, state, table_logp, decode=decode)
         q = getattr(self, '_question_context', None)
-        if q is not None:
+        if decode and q is not None and not hasattr(self, 'question_to_hidden'):
             logits = logits + self.question_to_logits(q)[None, None, :]
         return logits, next_state, diagnostics, h, read
 
@@ -35,6 +35,9 @@ class QuestionContextEngine(RelationWoodEngine):
             ridge=self.relation_ridge, scale=self.relation_scale)
         if hasattr(self, '_condition_mother_question'):
             context = self._condition_mother_question(h, context)
+        from scripts.ib_local import root_latent_planning
+        if root_latent_planning.enabled(self):
+            context = root_latent_planning.plan_root_intent(self, h, context)
         self._question_turn_context = context[0].detach().clone()
         self._question_turn_receipt = {k: v[0].detach().clone() for k,v in receipt.items()}
         self.decision.start(self.recurrent)
@@ -81,6 +84,8 @@ class QuestionContextEngine(RelationWoodEngine):
 
     def step(self, directions, age_ablate=False):
         before = self.model.question_to_logits.weight.detach().clone()
+        port = getattr(self.model, 'question_to_hidden', None)
+        before_port = None if port is None else port.weight.detach().clone()
         result = super().step(directions, age_ablate)
         receipt = self._question_turn_receipt
         self.internal_pending['question_context'] = self._question_turn_context.detach().clone()
@@ -94,6 +99,14 @@ class QuestionContextEngine(RelationWoodEngine):
             decision_logit_norm=self._question_initial_logit_norm,
             decision_byte_probability_tv=self._question_initial_probability_tv,
             weight_step=float((self.model.question_to_logits.weight.detach()-before).norm()))
+        if port is not None:
+            result['question_context']['conditional_transition'] = dict(
+                schema=1, parameter_step=float((port.weight.detach()-before_port).norm()),
+                input_positions=result['self_bytes']+1,
+                direct_speech_output_positions=result['self_bytes'],
+                direct_world_output_positions=0,
+                scope_cleared=self.model._question_context is None and
+                    self.model._question_input_mask is None and self.model._question_output_mask is None)
         return result
 
 

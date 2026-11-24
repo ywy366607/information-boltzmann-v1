@@ -1,0 +1,27 @@
+{
+  "scope": "read-only actual saved events; no runtime change",
+  "cycles": [
+    5271,
+    5339
+  ],
+  "events": 69,
+  "optimizer_updates": 414,
+  "choices": {
+    "generate": 49,
+    "silence": 7,
+    "reuse": 13
+  },
+  "child_spoken_events": 62,
+  "child_bytes_min": 32,
+  "child_bytes_max": 32,
+  "mother_bytes_mean": 88,
+  "mother_bytes_median": 93,
+  "mother_bytes_p95": 114,
+  "mother_bytes_min": 22,
+  "mother_bytes_max": 164,
+  "generated_sentence_final_punctuation": 1,
+  "generated_count": 49,
+  "current_policy": "fixed 32-byte speech, no within-turn handover choice",
+  "proposed_hard_ceiling_bytes": 128,
+  "proposal_implemented": false
+}

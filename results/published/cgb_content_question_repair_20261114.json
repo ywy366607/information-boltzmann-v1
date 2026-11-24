@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "source_cycle": 5268,
+  "cycle": 5270,
+  "events": 2,
+  "updates": 12,
+  "preserved": {
+    "model": true,
+    "engine": true,
+    "optimizer_state": true,
+    "whole": true,
+    "old_optimizer_groups": true
+  },
+  "new_parameters": 16384,
+  "parameter_audit": {
+    "total": 970315,
+    "trainable": 970315,
+    "trainable_in_optimizer": 970315,
+    "trainable_missing_from_optimizer": [],
+    "frozen": []
+  },
+  "event_checks": [
+    {
+      "observed": true,
+      "reproduction": true,
+      "real_revision": true,
+      "same_U": true,
+      "learning": true,
+      "encoder_basis_learned": true,
+      "old_fact_replay": true,
+      "draft_replay": true,
+      "binding_replay": true,
+      "previous_settled": true,
+      "question_transition_learned": true,
+      "question_scope_clear": true,
+      "no_direct_question_world_bias": true,
+      "own_state_matches_draft": true
+    },
+    {
+      "observed": true,
+      "reproduction": true,
+      "real_revision": true,
+      "same_U": true,
+      "learning": true,
+      "encoder_basis_learned": true,
+      "old_fact_replay": true,
+      "draft_replay": true,
+      "binding_replay": true,
+      "previous_settled": true,
+      "question_transition_learned": true,
+      "question_scope_clear": true,
+      "no_direct_question_world_bias": true,
+      "own_state_matches_draft": true
+    }
+  ],
+  "disk_restore": {
+    "model_exact": true,
+    "optimizer_exact": true,
+    "carried_exact": true
+  },
+  "source_unchanged": true,
+  "frozen_port": {
+    "cycle": 5270,
+    "source_sha256": "fa924caa3c54c467b3393658a60d93b333d27fe591cde0fc90e5687d7e598a9f",
+    "optimizer_updates": 0,
+    "world_calls": 0,
+    "question_norm": 2.5948829650878906,
+    "contexts": [
+      {
+        "actual_byte": 10,
+        "state_change": 0.39837226271629333,
+        "hidden_change": 0.14030466973781586,
+        "logit_change": 10.336458206176758
+      },
+      {
+        "actual_byte": 32,
+        "state_change": 0.49344924092292786,
+        "hidden_change": 0.1291881650686264,
+        "logit_change": 10.271831512451172
+      }
+    ],
+    "context_dependent_logit_shift": 0.019675254821777344,
+    "source_unchanged": true,
+    "scope": "actual trained transition numerical audit; not a dialogue capability evaluation",
+    "passed": true
+  },
+  "scope": "Whole-loop implementation admission; dialogue benefit remains under continuous evaluation"
+}

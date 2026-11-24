@@ -1,0 +1,35 @@
+{
+  "scope": "same complete natural text event after one private warmup; no main body writes",
+  "before": {
+    "source_cycle": 392,
+    "source_sha256": "664f2ca731fb6e4a624094a696add7ed90f6b9cb4dfff10f40c65031966420ca",
+    "seconds": 10.386382500000764,
+    "warmup_events": 1,
+    "peak_allocated_mib": 2827.30126953125,
+    "optimizer_updates": 4,
+    "choice": "generate",
+    "self_bytes": 128,
+    "external_bytes": 960,
+    "policy_error": 9.5367431640625e-07,
+    "proposal_error": 1.9073486328125e-06
+  },
+  "after": {
+    "source_cycle": 392,
+    "source_sha256": "664f2ca731fb6e4a624094a696add7ed90f6b9cb4dfff10f40c65031966420ca",
+    "seconds": 10.119349299988244,
+    "warmup_events": 1,
+    "peak_allocated_mib": 2827.30126953125,
+    "optimizer_updates": 4,
+    "choice": "generate",
+    "self_bytes": 128,
+    "external_bytes": 960,
+    "policy_error": 9.5367431640625e-07,
+    "proposal_error": 1.9073486328125e-06
+  },
+  "saved_seconds": 0.26703320001251996,
+  "same_realized_path": true,
+  "parameter_max_error": 0.0,
+  "recurrent_max_error": 0.0,
+  "change": "reuse current packed CUDA expression budget in handover head; no token decoding needed for long known payloads (previously implemented)",
+  "profile_note": "CPU cumulative times nest and can absorb pending GPU work; one paired event is not a throughput guarantee"
+}

@@ -130,7 +130,9 @@ class ImaginingEngine(KanLiEngine):
         reuse_weight = (plan['weights']*reusable).sum(-1, keepdim=True)
         q = self.intero().expand(len(h), -1)
         logits = self.model.kanli.choice(torch.cat((plan['decision_feature'], plan['action'], reuse_weight, q), -1))
-        logits = torch.cat((logits[..., :2], logits[..., 2:].masked_fill(reuse_weight <= 0, -1e4)), -1)
+        if getattr(self.model, '_expression_speech_only', False):
+            reusable = torch.zeros_like(reusable)
+        logits = torch.cat((logits[..., :2], logits[..., 2:].masked_fill(~reusable.any(-1, keepdim=True) | (reuse_weight <= 0), -1e4)), -1)
         return logits, plan, reusable
 
     @torch.no_grad()

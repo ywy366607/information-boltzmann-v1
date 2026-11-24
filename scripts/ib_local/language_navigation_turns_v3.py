@@ -38,8 +38,12 @@ class DecisionGraphV3:
         device = next(model.parameters()).device
         self.capture = capture and device.type == 'cuda'
         self.state = model.initial_state(1, device=device)
-        self.ids = torch.zeros(1, 1, dtype=torch.long, device=device)
-        self.table = torch.full((1, 1, 256), -5.54517744448, device=device)
+        packed = getattr(self, '_packed_decode_inputs', None)
+        if packed is None:
+            self.ids = torch.zeros(1, 1, dtype=torch.long, device=device)
+            self.table = torch.full((1, 1, 256), -5.54517744448, device=device)
+        else:
+            self.ids, self.table = packed
         if self.capture:
             stream = torch.cuda.Stream()
             stream.wait_stream(torch.cuda.current_stream())
@@ -49,8 +53,12 @@ class DecisionGraphV3:
             torch.cuda.current_stream().wait_stream(stream)
             self.graph = torch.cuda.CUDAGraph()
             with torch.cuda.graph(self.graph), torch.no_grad():
-                self.logits, self.next_state, _, self.h, _ = model.predict_observed(
+                self.logits, self.next_state, _, self.h, self.read = model.predict_observed(
                     self.ids, self.state, self.table)
+                if hasattr(self, '_capture_handover_budget'):
+                    from scripts.ib_local.variable_expression import handover_logits
+                    self.handover_logit = handover_logits(
+                        model, self.h, self._capture_handover_budget).reshape(())
 
     @torch.no_grad()
     def start(self, state):
@@ -65,7 +73,7 @@ class DecisionGraphV3:
             self.graph.replay()
             logits, state, h = self.logits, self.next_state, self.h
         else:
-            logits, state, _, h, _ = self.model.predict_observed(self.ids, self.state, self.table)
+            logits, state, _, h, self.read = self.model.predict_observed(self.ids, self.state, self.table)
         self.state.copy_(state)
         return logits[0, 0].clone(), h[0].clone()
 

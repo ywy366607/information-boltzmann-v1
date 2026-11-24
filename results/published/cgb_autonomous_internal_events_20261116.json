@@ -1,0 +1,136 @@
+{
+  "scope": "real 31,263,168-parameter continuous body; wiring/run evidence, not dialogue benefit",
+  "source_cycle": 1401,
+  "source_sha256": "f010ad432683d3c8bb8afa632ef0041805b740bb1e76fb8654226691a01c7538",
+  "recovered_first_internal_event": {
+    "event": 1,
+    "exact_rng_receipt_replay": true,
+    "checkpoint_sha256": "534a04433bedf25c5cbe6951249bbdb3a0bb3ceeeb3bfa712101618b7b886320",
+    "telemetry_line_missing": true
+  },
+  "supervisor_pid": 20464,
+  "worker_pid": 18260,
+  "unit_checks": 54,
+  "deslice_checks": 9,
+  "logged_event_counts": {
+    "internal": 6,
+    "release": 6,
+    "external": 5
+  },
+  "last_logged_event": {
+    "kind": "release",
+    "admission": {
+      "selected": "external",
+      "probability": [
+        0.5047770738601685,
+        0.49522289633750916
+      ]
+    },
+    "internal": null,
+    "choices": 1,
+    "internal_steps": 0,
+    "eligible_logp": -0.683638334274292,
+    "eligibility_norm": 0.7004165649414062,
+    "new_world_evidence": false,
+    "external_bytes": 0,
+    "updates": 0,
+    "boundary_clocks_unchanged": true,
+    "event": 18,
+    "cycle": 1406,
+    "seconds": 0.14278680000279564,
+    "internal_ticks": 1293
+  },
+  "actual_world_cycles": [
+    1402,
+    1403,
+    1404,
+    1405,
+    1406
+  ],
+  "actual_optimizer_updates": 20,
+  "quiet_boundary_clocks_unchanged": true,
+  "quiet_optimizer_updates": 0,
+  "observed_world_receipts": [
+    {
+      "cycle": 1402,
+      "choice": "silence",
+      "participation": {
+        "choices": 2,
+        "internal_steps": 1,
+        "sampled_logp": -1.3863860368728638,
+        "credit": "bounded accumulated selector score -> same real delayed actor factor",
+        "forced_release": false
+      },
+      "binding_replay_error": 0.0,
+      "joint_replay_error": 1.9073486328125e-06
+    },
+    {
+      "cycle": 1403,
+      "choice": "reuse",
+      "participation": {
+        "choices": 5,
+        "internal_steps": 4,
+        "sampled_logp": -3.4925754070281982,
+        "credit": "bounded accumulated selector score -> same real delayed actor factor",
+        "forced_release": false
+      },
+      "binding_replay_error": 0.0,
+      "joint_replay_error": 1.9073486328125e-06
+    },
+    {
+      "cycle": 1404,
+      "choice": "reuse",
+      "participation": {
+        "choices": 1,
+        "internal_steps": 0,
+        "sampled_logp": -0.684156060218811,
+        "credit": "bounded accumulated selector score -> same real delayed actor factor",
+        "forced_release": false
+      },
+      "binding_replay_error": 0.0,
+      "joint_replay_error": 1.430511474609375e-06
+    },
+    {
+      "cycle": 1405,
+      "choice": "generate",
+      "participation": {
+        "choices": 1,
+        "internal_steps": 0,
+        "sampled_logp": -0.6831333637237549,
+        "credit": "bounded accumulated selector score -> same real delayed actor factor",
+        "forced_release": false
+      },
+      "binding_replay_error": 0.0,
+      "joint_replay_error": 1.9073486328125e-06
+    },
+    {
+      "cycle": 1406,
+      "choice": "reuse",
+      "participation": {
+        "choices": 3,
+        "internal_steps": 2,
+        "sampled_logp": -2.0887314081192017,
+        "credit": "bounded accumulated selector score -> same real delayed actor factor",
+        "forced_release": false
+      },
+      "binding_replay_error": 0.0,
+      "joint_replay_error": 1.430511474609375e-06
+    }
+  ],
+  "added_neural_parameters": 0,
+  "eligibility_bytes": 3104,
+  "latest_followup": {
+    "actual_world_cycle": 1415,
+    "complete_checkpoint_cycle": 1408,
+    "complete_checkpoint_event": 26,
+    "checkpoint_sha256": "fb0c92678642541fd82d58a5f080da27e650c3d4c5d33c8d85481a863ba3e8ca",
+    "logged_event_counts": {
+      "internal": 16,
+      "release": 15,
+      "external": 14
+    },
+    "total_real_updates": 56,
+    "max_internal_steps_before_actual_world": 5,
+    "all_quiet_boundaries_unchanged": true
+  }
+}

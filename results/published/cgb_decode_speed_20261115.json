@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "cycle": 204,
+  "checkpoint": "E:\\cgb_native_body_20261115\\coevolution\\last.pt.gz",
+  "source_sha256": "dc0acb2c2b3c85117e82fbb46218ee1c3379549d5c0f4ccc7eeba047d8e405ee",
+  "bytes": 128,
+  "repeats": 3,
+  "arms": {
+    "original": {
+      "wall_seconds": [
+        1.7312335000024177,
+        1.4931813000002876,
+        1.5542305999988457
+      ],
+      "gpu_seconds": [
+        1.7298411865234375,
+        1.49301220703125,
+        1.553532470703125
+      ],
+      "median_seconds": 1.5542305999988457,
+      "peak_allocated_mib": 559.98291015625,
+      "bytes_per_second": 82.35586147904633
+    },
+    "cached": {
+      "wall_seconds": [
+        0.718978299999435,
+        0.8673424000007799,
+        0.7114800999988802
+      ],
+      "gpu_seconds": [
+        0.718929931640625,
+        0.8673111572265625,
+        0.7114429931640625
+      ],
+      "median_seconds": 0.718978299999435,
+      "peak_allocated_mib": 578.87451171875,
+      "bytes_per_second": 178.03040787197693
+    }
+  },
+  "errors": {
+    "logit_max": 3.814697265625e-06,
+    "state_max": 9.5367431640625e-07
+  },
+  "speedup": 2.1617211534757965,
+  "optimizer_updates": 0,
+  "world_advances": 0,
+  "recurrent_unchanged": true,
+  "scope": "fixed real text numerical/decode runtime comparison; not overall event throughput"
+}

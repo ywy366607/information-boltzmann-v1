@@ -6,6 +6,7 @@ import copy
 import gzip
 import hashlib
 import json
+import math
 import os
 import tempfile
 from datetime import datetime, timezone
@@ -145,17 +146,56 @@ def export_checkpoint(checkpoint, *, metrics=None, output, name=None):
     card = from_state_dict(saved['model'], config=saved['config'], checkpoint=checkpoint,
                            source_sha=source_sha, cycle=cycle, row=_cycle_row(metrics, cycle),
                            mother_state=saved.get('world', {}).get('mother_provider_state'), name=name)
+    attach_saved_dynamics(card, saved['model'], saved.get('engine', {}).get('bfss_momenta'))
     return write_card(card, output)
 
 
-def export_live(engine, *, checkpoint, config, cycle, output, row=None, branch_id=None):
+def export_live(engine, *, checkpoint, config, cycle, output, row=None, branch_id=None,
+                committed_sha=None):
     """Call just after save: read existing buffers, never reload or run the model."""
     mother = getattr(engine.world, 'mother', None)
     mother_state = mother.state_dict() if hasattr(mother, 'state_dict') else None
-    card = from_state_dict(engine.model.state_dict(), config=config, checkpoint=checkpoint,
-                           source_sha=sha256_file(checkpoint), cycle=cycle, row=row,
+    state_dict = engine.model.state_dict()
+    card = from_state_dict(state_dict, config=config, checkpoint=checkpoint,
+                           source_sha=committed_sha or sha256_file(checkpoint), cycle=cycle, row=row,
                            mother_state=mother_state, branch_id=branch_id)
+    attach_saved_dynamics(card, state_dict, getattr(engine, 'bfss_momenta', None))
     return write_card(card, output)
+
+
+@torch.no_grad()
+def attach_saved_dynamics(card, state_dict, momenta):
+    """Read the committed body's P and oscillator coefficients, without a model forward."""
+    if momenta is not None:
+        values = [float(p.float().norm()) for p in momenta]
+        if values and all(math.isfinite(value) for value in values):
+            card['latest']['momentum_norms'] = values
+            card['explanation']['momentum_norms'] = 'per-layer P norm from this committed checkpoint'
+    key = next((k for k in state_dict if k.endswith('head_coupling.theta')), None)
+    if key is not None:
+        prefix = key[:-len('theta')]
+        theta = state_dict[key]
+    else:
+        freq_key = next((k for k in state_dict if k.endswith('head_coupling.theta_freq')), None)
+        if freq_key is None:
+            return card
+        prefix = freq_key[:-len('theta_freq')]
+        parts = [state_dict.get(prefix + name) for name in
+                 ('theta_freq', 'theta_context', 'theta_coupling', 'theta_pair')]
+        if any(part is None for part in parts):
+            return card
+        theta = torch.cat(parts, dim=-1)
+    context = state_dict.get(prefix+'context')
+    scale = state_dict.get(prefix+'frequency_scale')
+    if context is None:
+        return card
+    from scripts.ib_local.adaptive_hamiltonian import coefficients
+    omega, strength = coefficients(theta, context, theta.shape[-1]-4, scale)
+    card['dynamics'] = dict(frequency=omega.flatten(1).cpu().tolist(),
+        coupling=strength.cpu().tolist(), context_gain=theta[:, theta.shape[-1]-4].cpu().tolist(),
+        content_coefficients=theta[:, theta.shape[-1]-2:].cpu().tolist(),
+        source_cycle=card['source']['cycle'], source_kind='committed_checkpoint_state')
+    return card
 
 
 def main():

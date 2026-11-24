@@ -9,6 +9,8 @@ import assert from 'node:assert/strict';
 const option = name => { const i = process.argv.indexOf(name); return i < 0 ? undefined : process.argv[i + 1]; };
 const fixture = process.argv.includes('--fixture')
   ? await (await import('../tests/fixtures/mengli_native_browser.mjs')).startNativeBrowserFixture() : null;
+const loginKey = fixture?.loginKey ?? process.env.MENGLI_BROWSER_LOGIN_KEY;
+delete process.env.MENGLI_BROWSER_LOGIN_KEY;
 const bridge = fixture?.bridge || option('--bridge') || 'http://127.0.0.1:8902';
 const family = await (await fetch(bridge + '/api/family')).json();
 const url = family.workbench?.url;
@@ -89,6 +91,11 @@ try {
     await command('Page.navigate', { url }, sessionId);
     await loaded;
     try {
+      await waitFor(sessionId, 'Boolean(document.getElementById("key") || window.MengliIntro)');
+      if (await evaluate(sessionId, 'Boolean(document.getElementById("key"))')) {
+        assert(loginKey, 'Set MENGLI_BROWSER_LOGIN_KEY for password login');
+        await evaluate(sessionId, `document.getElementById('key').value=${JSON.stringify(loginKey)};document.querySelector('form').requestSubmit()`);
+      }
       await waitFor(sessionId, 'Boolean(document.querySelector("[contenteditable=true],textarea:not([disabled])"))');
       await evaluate(sessionId, 'window.MengliIntro?.skip?.()');
       await waitFor(sessionId, '!document.getElementById("mengli-intro")');
@@ -113,7 +120,13 @@ try {
   assert(!report.initial.text.includes('预览版'), 'Mengli identity must not retain the upstream preview badge');
   assert(report.initial.title.includes('梦漓 MengLi'), 'Native product title must use Mengli identity');
   await capture(desktop, '01-native-mother.png');
-  if (!fixture && !process.argv.includes('--inspect')) {
+  if (process.argv.includes('--inspect-family')) {
+    await evaluate(desktop, `([...document.querySelectorAll('button')].find(b=>b.innerText.trim()==='梦漓'&&b.getAttribute('aria-label')!=='梦漓菜单')).click()`);
+    await waitFor(desktop, 'document.querySelectorAll("[data-chat-node-key]").length>0');
+    report.family_layout = await evaluate(desktop, `(()=>{const n=document.querySelector('[data-chat-flow-kind="assistant-step"]');return {html:n?.outerHTML.slice(0,6000),paragraphs:[...n.querySelectorAll('p')].map(p=>({cls:p.className,top:p.getBoundingClientRect().top,bottom:p.getBoundingClientRect().bottom,margin:getComputedStyle(p).margin,parent:p.parentElement.className,gap:getComputedStyle(p.parentElement).gap}))}})()`);
+    await capture(desktop, 'family-layout.png');
+  }
+  if (!fixture && !process.argv.includes('--inspect') && !process.argv.includes('--inspect-family')) {
     await evaluate(desktop, `(()=>{const b=[...document.querySelectorAll('button')].find(n=>n.innerText.includes('DeepSeek Flash'));if(!b)throw new Error('Native model selector unavailable');b.click()})()`);
     await waitFor(desktop, `Boolean([...document.querySelectorAll('[role=menuitem]')].find(n=>n.innerText.includes('推理等级')))`);
     await evaluate(desktop, `([...document.querySelectorAll('[role=menuitem]')].find(n=>n.innerText.includes('推理等级'))).click()`);
@@ -126,7 +139,7 @@ try {
     }
   }
 
-  if (!process.argv.includes('--inspect')) {
+  if (!process.argv.includes('--inspect') && !process.argv.includes('--inspect-family')) {
     const draft = '未发送的妈妈草稿 · 原生工作台稳定性检查';
     await evaluate(desktop, 'window.__nativePreviewEditor=document.querySelector("[contenteditable=true]");window.__nativePreviewEditor.focus()');
     await command('Input.insertText', { text: draft }, desktop);
@@ -164,7 +177,8 @@ try {
     report.care = await evaluate(desktop, `({text:document.body.innerText.slice(0,6000),nodes:document.querySelectorAll('[data-slot="conversation.chat.flow"] [data-chat-node-key]').length})`);
     assert(!report.care.text.includes('已保存历史/会话原文'), 'Saved provenance must not repeat in every message');
     report.role_sides = await evaluate(desktop, `({rightUserRows:document.querySelectorAll('[data-chat-flow-kind="user"]').length,leftSpeakerRows:document.querySelectorAll('[data-chat-flow-kind="assistant-step"]').length})`);
-    assert.equal(report.role_sides.rightUserRows, fixture ? 2 : 0, 'Only the parent occupies the native user/right side');
+    const expectedRight = fixture ? 2 : (await (await fetch(bridge + '/api/family/history')).json()).turns.filter(turn => turn.actor === 'mother').length;
+    assert.equal(report.role_sides.rightUserRows, expectedRight, 'Caregivers occupy the right side while Mengli stays left');
     await capture(desktop, '02-native-mengli.png');
     // Keep real message nodes, not just equal text, across the former 2-second refresh periods.
     report.stable_setup = await evaluate(desktop, `(()=>{const nodes=[...document.querySelectorAll('[data-chat-node-key]')];window.__nativePreviewNodes=nodes;let scroller=nodes[0];while(scroller && !(scroller.scrollHeight>scroller.clientHeight && /auto|scroll/.test(getComputedStyle(scroller).overflowY)))scroller=scroller.parentElement;window.__nativePreviewScroller=scroller;if(scroller)scroller.scrollTop=Math.floor((scroller.scrollHeight-scroller.clientHeight)/3);window.__nativePreviewScrollTop=scroller?.scrollTop;return {count:nodes.length,scrollTop:scroller?.scrollTop}})()`);
@@ -194,6 +208,45 @@ try {
     report.mobile = await evaluate(mobile, '({width:innerWidth,scrollWidth:document.documentElement.scrollWidth})');
     assert.equal(report.mobile.width, report.mobile.scrollWidth);
     await capture(mobile, '03-native-mobile.png');
+    if (process.argv.includes('--panels')) {
+      await evaluate(desktop, 'document.querySelector("[aria-label=打开生命体征]").click()');
+      await waitFor(desktop, 'Boolean(document.querySelector("[data-mengli-metrics=life]")?.textContent.includes("4,717,536"))');
+      await waitFor(desktop, '(()=>{const r=document.querySelector("[data-mengli-metrics=life]").getBoundingClientRect();return r.width>=350 && r.right<=innerWidth+1})()');
+      await capture(desktop, '04-life-light.png');
+      await evaluate(desktop, `(()=>{const b=[...document.querySelectorAll('button')].find(n=>/^(New tab|新标签页)$/.test(n.getAttribute('aria-label')||n.title||''));if(!b)throw new Error('Native rightbar + unavailable');b.click()})()`);
+      await waitFor(desktop, 'Boolean(document.querySelector("[data-sidebar-right-guide-entry=mengli-learning-metrics]"))');
+      await capture(desktop, '05-native-plugin-guide.png');
+      await evaluate(desktop, 'document.querySelector("[data-sidebar-right-guide-entry=mengli-learning-metrics]").click()');
+      await waitFor(desktop, 'Boolean(document.querySelector("[data-mengli-metrics=learning] .mm-single-record, [data-mengli-metrics=learning] .mm-point"))');
+      await waitFor(desktop, '(()=>{const r=document.querySelector("[data-mengli-metrics=learning]").getBoundingClientRect();return r.width>=350 && r.right<=innerWidth+1})()');
+      await evaluate(desktop, `document.querySelector('[data-mengli-metrics=learning] .mm-hit, [data-mengli-metrics=learning] .mm-single-record')?.focus()`);
+      await capture(desktop, '06-learning-light.png');
+      await evaluate(desktop, `[...document.querySelectorAll('[data-mengli-metrics=learning] button')].find(n=>n.innerText==='原始表格').click()`);
+      assert(await evaluate(desktop, 'Boolean(document.querySelector("[data-mengli-metrics=learning] table"))'));
+      await capture(desktop, '07-learning-table.png');
+      const telemetryReads = report.requests.filter(request => request.url.endsWith('/api/family/telemetry')).length;
+      const closedPanel = await evaluate(desktop, `(()=>{const b=[...document.querySelectorAll('button')].find(n=>/^(Close tab|关闭标签页|Close|关闭)$/.test(n.getAttribute('aria-label')||n.title||'')&&n.closest('[data-dockkit-tab]')?.textContent.includes('学习训练'));if(!b)return false;b.click();return true})()`);
+      assert(closedPanel, 'Native learning-tab close action must be available');
+      await waitFor(desktop, '!document.querySelector("[data-mengli-metrics=learning]")');
+      await evaluate(desktop, 'document.querySelector("[aria-label=打开学习训练]").click()');
+      await waitFor(desktop, 'Boolean(document.querySelector("[data-mengli-metrics=learning]"))');
+      assert.equal(report.requests.filter(request => request.url.endsWith('/api/family/telemetry')).length, telemetryReads, 'Reopening the native tab must not refetch or start a loop');
+      report.native_panel_close_reopen = true;
+      await command('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'dark' }] }, desktop);
+      await delay(500);
+      report.dark_theme = await evaluate(desktop, 'document.body.hasAttribute("data-ds-dark-theme")');
+      if (report.dark_theme) await capture(desktop, '08-learning-dark.png');
+      else report.dark_theme_note = 'Preserved the existing explicit light preference; isolated theme fixture covers dark.';
+      await evaluate(mobile, 'document.querySelector("[aria-label=生命与学习面板]").click()');
+      await waitFor(mobile, `Boolean([...document.querySelectorAll('[role=menuitem]')].find(n=>n.innerText.trim()==='学习训练'))`);
+      await evaluate(mobile, `([...document.querySelectorAll('[role=menuitem]')].find(n=>n.innerText.trim()==='学习训练')).click()`);
+      await waitFor(mobile, 'Boolean(document.querySelector("[data-mengli-metrics=learning] .mm-single-record, [data-mengli-metrics=learning] .mm-point"))');
+      await command('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'dark' }, { name: 'prefers-reduced-motion', value: 'reduce' }] }, mobile);
+      await delay(500);
+      assert(await evaluate(mobile, 'document.documentElement.scrollWidth===innerWidth'));
+      await capture(mobile, '09-learning-mobile-dark.png');
+      report.telemetry = await evaluate(desktop, 'fetch("/api/family/telemetry").then(r=>r.json()).then(v=>({cycle:v.source.cycle,rows:v.history.rows.length,lifeCycle:v.life.card?.source.cycle}))');
+    }
     assert.equal(report.errors.length, 0, report.errors.join('\n'));
     assert(report.requests.every(request => request.inline || request.url.startsWith(origin)), 'No external model requests allowed');
     assert(!report.requests.some(request => request.url.endsWith('/api/session/prompt')), 'Dreamli input must not use the model prompt endpoint');

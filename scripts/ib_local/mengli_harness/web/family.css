@@ -1,0 +1,73 @@
+/* The quiet membrane is scenery, not a physiological or learning indicator. */
+.family-background { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: -1; background: radial-gradient(ellipse at 25% 60%, #bbd3ba0a, transparent 65%); }
+.family-background i { position: absolute; left: 25%; top: 47%; width: min(76vw, 780px); aspect-ratio: 1.18; border: 1px solid #bbd3ba26; border-radius: 43% 57% 54% 46% / 62% 43% 57% 38%; transform: translate(-50%, -50%) rotate(-14deg); }
+.family-background i:nth-child(2) { width: min(65vw, 670px); transform: translate(-50%, -50%) rotate(18deg); }
+.family-background i:nth-child(3) { width: min(52vw, 550px); transform: translate(-50%, -50%) rotate(-37deg); }
+.family-background i:nth-child(4) { width: min(41vw, 450px); transform: translate(-50%, -50%) rotate(38deg); }
+body { background: #0b0d11ed; isolation: isolate; }
+body:has(.mengli-brand-mark.has-life-update) .family-background { animation: mengli-observed-update 1100ms ease-out; }
+[hidden] { display: none !important; }
+.family-tabs { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-bottom: 1px solid var(--dsh-border); flex-shrink: 0; }
+.family-tabs button, .family-actions button, .family-controls button, .family-plan-panel > button { border: 1px solid var(--dsh-border-hover); border-radius: 8px; background: #181d26cc; color: var(--dsh-text-primary); padding: 9px 12px; cursor: pointer; font: inherit; font-size: 12px; }
+button:disabled { opacity: .45; cursor: default; }
+button:focus-visible, a:focus-visible, textarea:focus-visible { outline: 2px solid #bbd3ba; outline-offset: 3px; }
+.family-tabs button[aria-selected="true"] { background: #bbd3ba18; border-color: #bbd3ba66; }
+#care-mode { margin-left: auto; font-size: 12px; color: var(--dsh-text-secondary); }
+.family-notice { padding: 8px 20px; font-size: 12px; line-height: 1.5; background: #181d26; border-bottom: 1px solid var(--dsh-border); }
+.family-notice[data-error="true"] { border-left: 3px solid #f59e0b; }
+body[data-family-view="care"] .dashboard-pane,
+body:not([data-family-view="care"]) .dialogue-pane,
+body:not([data-family-view="care"]) .family-controls,
+body:not([data-family-view="vitals"]) .dashboard-pane { display: none; }
+body[data-family-view="vitals"] .dashboard-pane { flex: 1; }
+.dialogue-pane { background: #0b0d1166; }
+.care-archive { margin: 8px 20px 0; font-size: 12px; color: var(--dsh-text-secondary); max-height: 180px; overflow-y: auto; }
+.care-archive summary { cursor: pointer; padding: 5px 0; }
+#care-history { display: flex; flex-direction: column; gap: 10px; padding: 10px 0; }
+.memory-card { margin: 12px 20px 0; }
+.family-controls { width: 290px; flex-shrink: 0; padding: 22px 18px; overflow-y: auto; border-left: 1px solid var(--dsh-border); background: #12151cb8; display: flex; flex-direction: column; gap: 16px; }
+.family-controls h2 { font-size: 16px; font-weight: 500; }
+.family-controls p, .family-controls summary { font-size: 12px; color: var(--dsh-text-secondary); line-height: 1.8; }
+.family-binding { overflow-wrap: anywhere; font-family: var(--dsh-font-mono); font-size: 10px !important; }
+.family-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; justify-content: space-between; }
+.family-actions > span, #delivery-status { color: var(--dsh-text-secondary); font-size: 11px; line-height: 1.6; }
+.parent-composer { padding: 12px 20px; border-top: 1px solid var(--dsh-border); background: #12151cc9; display: flex; flex-direction: column; gap: 9px; }
+.parent-composer label, .family-plan-panel label { font-size: 12px; color: var(--dsh-text-secondary); }
+.parent-composer textarea, .family-plan-panel textarea { resize: vertical; min-height: 65px; max-height: 30vh; width: 100%; background: #0b0d11c9; color: var(--dsh-text-primary); border: 1px solid var(--dsh-border-hover); border-radius: 8px; padding: 12px; line-height: 1.6; font: inherit; font-size: 13px; }
+.family-plan-panel { flex: 1; max-width: 900px; padding: 32px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+.family-plan-panel h2 { font-weight: 500; font-size: 21px; }
+.family-plan-panel p { font-size: 13px; color: var(--dsh-text-secondary); line-height: 1.8; }
+#plan-form { display: flex; flex-direction: column; gap: 12px; }
+#care-plan { min-height: 240px; max-height: 55vh; }
+.mother-workspace { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.mother-workspace a { font-size: 12px; color: var(--dsh-text-primary); text-decoration: underline; }
+.mother-workspace > p { padding: 16px 20px; font-size: 12px; color: var(--dsh-text-secondary); }
+.mother-workspace iframe { flex: 1; width: 100%; border: 0; background: var(--dsh-bg-base); }
+.turn-parent { align-self: flex-end; }
+.bubble-parent { background: #bbd3ba0d; border: 1px solid #bbd3ba40; }
+.delivery-note { font-size: 10px; color: var(--dsh-text-secondary); padding-top: 8px; }
+@media (max-width: 760px) {
+  header { padding: 0 12px; }
+  .brand-section { gap: 8px; min-width: 0; }
+  .brand-title { white-space: nowrap; gap: 6px; }
+  #life-reading { display: none; }
+  .header-status { flex-shrink: 0; }
+  .header-status > .status-pill { display: none; }
+  .family-tabs { padding: 8px 10px; gap: 5px; flex-wrap: wrap; }
+  .family-tabs button { padding: 8px; font-size: 11px; }
+  #care-mode { width: 100%; margin-left: 0; padding: 3px; }
+  body[data-family-view="care"] .workspace { flex-direction: column-reverse; }
+  .family-controls { width: 100%; max-height: 175px; padding: 10px 14px; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px; border-bottom: 1px solid var(--dsh-border); }
+  .family-controls h2, .family-controls details, .family-controls > p:not(#family-binding) { display: none; }
+  #family-binding { width: 100%; }
+  .family-controls button { font-size: 11px; padding: 7px 8px; }
+  .dialogue-pane { min-height: 0; }
+  .memory-card { margin: 8px 12px; padding: 8px 12px; max-height: 80px; overflow: auto; }
+  .memory-header { font-size: 11px; }
+  .dialogue-stream { padding: 12px; gap: 12px; }
+  .parent-composer { padding: 10px 12px; }
+  .parent-composer textarea { min-height: 55px; }
+  .family-plan-panel { padding: 20px; }
+  .mother-workspace .pane-header { gap: 12px; flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) { .family-background, .family-background *, .dialogue-turn { animation: none !important; transition: none !important; } }

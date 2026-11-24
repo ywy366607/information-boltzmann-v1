@@ -1,0 +1,834 @@
+{
+  "scope": "committed native observations from uninterrupted segments; no training or intervention",
+  "segments": 8,
+  "committed_quiet_samples": 45,
+  "world_events": 23,
+  "event_kinds": {
+    "internal": 22,
+    "release": 23,
+    "external": 23
+  },
+  "recorded_optimizer_updates": 92,
+  "flow_pca_top_variance_by_layer": [
+    0.7327090230097064,
+    0.9453192839909051,
+    0.9201466245283965,
+    0.7685456358565321,
+    0.7062531616906893,
+    0.7714009921650687,
+    0.9702127980241705,
+    0.786401878262342,
+    0.7042253101548995,
+    0.9765728096995886,
+    0.834885215385038,
+    0.8562158500465217,
+    0.9611994348976907,
+    0.7461589041365843,
+    0.5741185296289644,
+    0.6019401735588641,
+    0.7855685598655221,
+    0.8759041481355488,
+    0.7122004851377196,
+    0.9450388305582678,
+    0.9285810161091358,
+    0.7505128973807251,
+    0.9602288826313876,
+    0.9670746877499911,
+    0.9809558617247441,
+    0.7214087120972165,
+    0.9432150751403053,
+    0.9934487031359884,
+    0.8945059296214624,
+    0.8730008121669495,
+    0.8809500857840863,
+    0.9349525043709435
+  ],
+  "flow_pca_first_half_to_second_fraction_by_layer": [
+    0.5966005096654826,
+    0.8914638052581288,
+    0.9368278533561565,
+    0.7047012912160563,
+    0.5509644951544882,
+    0.6770111142052615,
+    0.9628261132370046,
+    0.7050503292011591,
+    0.5519508651497249,
+    0.9690791906726087,
+    0.8657236907215587,
+    0.8263252932241526,
+    0.9593833260647361,
+    0.7940805610805801,
+    0.4333435685151794,
+    0.4192968760960877,
+    0.6882226204649646,
+    0.7664489755377216,
+    0.643825619837108,
+    0.9522060934236054,
+    0.8586485861939259,
+    0.7264520642642518,
+    0.9566299824219247,
+    0.9329786921598958,
+    0.9776707539485837,
+    0.7070651738702157,
+    0.8924579904337657,
+    0.9949079071615589,
+    0.7652786324538223,
+    0.7985162030793259,
+    0.8482820564743755,
+    0.9177154597810653
+  ],
+  "flow_adjacent_quiet_cosine_median_by_layer": [
+    0.6893723262268544,
+    0.9702971070152555,
+    0.6176705630106988,
+    0.9750381536530865,
+    0.5520729052049533,
+    0.8610802401188975,
+    0.9563624899754976,
+    0.5885399019138867,
+    0.9762889849238608,
+    0.9981502212326994,
+    0.8547211693614314,
+    0.9536645834978359,
+    0.980923790511209,
+    0.9278909969376458,
+    0.7829239571777614,
+    0.737036722107533,
+    0.7567601621144137,
+    0.7467773191543656,
+    0.7860627822975348,
+    0.8072189864699117,
+    0.7874071961076702,
+    0.9963781651741056,
+    0.7756120710011988,
+    0.8302124113925177,
+    0.9920607952142286,
+    0.8381772190973995,
+    0.6505835283580034,
+    0.9289099254426113,
+    0.9544210517316926,
+    0.972502533907554,
+    0.5926114477803635,
+    0.9648519837686339
+  ],
+  "graph_cycle_energy_fraction_by_layer": [
+    0.4903436403337473,
+    0.49165546861644177,
+    0.490789869038047,
+    0.7140243676426068,
+    0.48890777310295014,
+    0.43054017953804474,
+    0.5595730130871294,
+    0.5937309774689279,
+    0.7352430556547817,
+    0.6935470475877312,
+    0.6626201076556603,
+    0.5926370049794499,
+    0.6606349330167711,
+    0.5891170149988026,
+    0.5610790827848843,
+    0.5388248564110605,
+    0.5486395393251605,
+    0.684088769151346,
+    0.5158848662809622,
+    0.6644211333710128,
+    0.634868113407931,
+    0.6233809623231996,
+    0.5859107885458054,
+    0.49811831272335705,
+    0.6485802535123375,
+    0.48981716769537953,
+    0.6403246821099544,
+    0.6931237677446236,
+    0.5630774398612646,
+    0.49901930914058684,
+    0.577062804137267,
+    0.6339424395702927
+  ],
+  "physical_pairs": {
+    "quiet_after": {
+      "count": 45,
+      "median_flux_change_l2": 0.4739345130941267,
+      "median_weight_change_l2": 0.0017722126555758126
+    },
+    "event_after": {
+      "count": 68,
+      "median_flux_change_l2": 0.40486707552112416,
+      "median_weight_change_l2": 0.0012088677340964431
+    },
+    "update_after": {
+      "count": 46,
+      "median_flux_change_l2": 0.5967351354095971,
+      "median_weight_change_l2": 0.0023768573802548723
+    }
+  },
+  "relation_revision_records": 1512,
+  "revision_observed_flags": {
+    "False": 1424,
+    "True": 88
+  },
+  "dependency_snapshots": 23,
+  "dependency_changes_between_snapshots": [
+    {
+      "added": 5,
+      "removed": 5
+    },
+    {
+      "added": 9,
+      "removed": 9
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 2,
+      "removed": 2
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 3,
+      "removed": 3
+    },
+    {
+      "added": 9,
+      "removed": 9
+    },
+    {
+      "added": 9,
+      "removed": 9
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 9,
+      "removed": 9
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 2,
+      "removed": 2
+    },
+    {
+      "added": 9,
+      "removed": 1
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 5,
+      "removed": 5
+    },
+    {
+      "added": 5,
+      "removed": 5
+    },
+    {
+      "added": 9,
+      "removed": 9
+    }
+  ],
+  "dependency_edge_changes_ignoring_seen_version": [
+    {
+      "added": 4,
+      "removed": 4
+    },
+    {
+      "added": 8,
+      "removed": 8
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 2,
+      "removed": 2
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 3,
+      "removed": 3
+    },
+    {
+      "added": 9,
+      "removed": 9
+    },
+    {
+      "added": 9,
+      "removed": 9
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 9,
+      "removed": 9
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 2,
+      "removed": 2
+    },
+    {
+      "added": 9,
+      "removed": 1
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "added": 4,
+      "removed": 4
+    },
+    {
+      "added": 4,
+      "removed": 4
+    },
+    {
+      "added": 9,
+      "removed": 9
+    }
+  ],
+  "real_question_receipts": {
+    "total": 23,
+    "recalled": 3,
+    "committed": 21,
+    "committed_then_later_used": 12,
+    "commits": [
+      {
+        "clock": [
+          0,
+          3
+        ],
+        "unknown": "unknown:1657",
+        "version": 1,
+        "later_uses": [
+          {
+            "clock": [
+              2,
+              5
+            ],
+            "relation": 270,
+            "use": {
+              "identity": "unknown:1657",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          },
+          {
+            "clock": [
+              2,
+              20
+            ],
+            "relation": 270,
+            "use": {
+              "identity": "unknown:1657",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          },
+          {
+            "clock": [
+              4,
+              14
+            ],
+            "relation": 270,
+            "use": {
+              "identity": "unknown:1657",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          },
+          {
+            "clock": [
+              7,
+              4
+            ],
+            "relation": 270,
+            "use": {
+              "identity": "unknown:1657",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          }
+        ]
+      },
+      {
+        "clock": [
+          1,
+          4
+        ],
+        "unknown": "unknown:1658",
+        "version": 1,
+        "later_uses": []
+      },
+      {
+        "clock": [
+          2,
+          3
+        ],
+        "unknown": "unknown:1659",
+        "version": 1,
+        "later_uses": [
+          {
+            "clock": [
+              7,
+              10
+            ],
+            "relation": 204,
+            "use": {
+              "identity": "unknown:1659",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          }
+        ]
+      },
+      {
+        "clock": [
+          2,
+          5
+        ],
+        "unknown": "unknown:1660",
+        "version": 1,
+        "later_uses": [
+          {
+            "clock": [
+              2,
+              20
+            ],
+            "relation": 270,
+            "use": {
+              "identity": "unknown:1660",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          },
+          {
+            "clock": [
+              4,
+              14
+            ],
+            "relation": 270,
+            "use": {
+              "identity": "unknown:1660",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          },
+          {
+            "clock": [
+              7,
+              4
+            ],
+            "relation": 270,
+            "use": {
+              "identity": "unknown:1660",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          }
+        ]
+      },
+      {
+        "clock": [
+          2,
+          7
+        ],
+        "unknown": "unknown:1661",
+        "version": 1,
+        "later_uses": [
+          {
+            "clock": [
+              3,
+              3
+            ],
+            "relation": 252,
+            "use": {
+              "identity": "unknown:1661",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          },
+          {
+            "clock": [
+              7,
+              12
+            ],
+            "relation": 252,
+            "use": {
+              "identity": "unknown:1661",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          }
+        ]
+      },
+      {
+        "clock": [
+          2,
+          11
+        ],
+        "unknown": "unknown:1293",
+        "version": 5,
+        "later_uses": [
+          {
+            "clock": [
+              7,
+              2
+            ],
+            "relation": 213,
+            "use": {
+              "identity": "unknown:1293",
+              "port": "mother",
+              "version": 5,
+              "seen_version": 4
+            }
+          }
+        ]
+      },
+      {
+        "clock": [
+          2,
+          13
+        ],
+        "unknown": "unknown:1662",
+        "version": 1,
+        "later_uses": [
+          {
+            "clock": [
+              4,
+              12
+            ],
+            "relation": 265,
+            "use": {
+              "identity": "unknown:1662",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          }
+        ]
+      },
+      {
+        "clock": [
+          2,
+          20
+        ],
+        "unknown": "unknown:1663",
+        "version": 1,
+        "later_uses": [
+          {
+            "clock": [
+              4,
+              14
+            ],
+            "relation": 270,
+            "use": {
+              "identity": "unknown:1663",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          },
+          {
+            "clock": [
+              7,
+              4
+            ],
+            "relation": 270,
+            "use": {
+              "identity": "unknown:1663",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          }
+        ]
+      },
+      {
+        "clock": [
+          2,
+          22
+        ],
+        "unknown": "unknown:1664",
+        "version": 1,
+        "later_uses": [
+          {
+            "clock": [
+              3,
+              3
+            ],
+            "relation": 252,
+            "use": {
+              "identity": "unknown:1664",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          },
+          {
+            "clock": [
+              7,
+              12
+            ],
+            "relation": 252,
+            "use": {
+              "identity": "unknown:1664",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          }
+        ]
+      },
+      {
+        "clock": [
+          2,
+          25
+        ],
+        "unknown": "unknown:1665",
+        "version": 1,
+        "later_uses": [
+          {
+            "clock": [
+              6,
+              4
+            ],
+            "relation": 223,
+            "use": {
+              "identity": "unknown:1665",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          }
+        ]
+      },
+      {
+        "clock": [
+          3,
+          3
+        ],
+        "unknown": "unknown:1666",
+        "version": 1,
+        "later_uses": [
+          {
+            "clock": [
+              7,
+              12
+            ],
+            "relation": 252,
+            "use": {
+              "identity": "unknown:1666",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          }
+        ]
+      },
+      {
+        "clock": [
+          4,
+          6
+        ],
+        "unknown": "unknown:1667",
+        "version": 1,
+        "later_uses": []
+      },
+      {
+        "clock": [
+          4,
+          8
+        ],
+        "unknown": "unknown:1668",
+        "version": 1,
+        "later_uses": []
+      },
+      {
+        "clock": [
+          4,
+          10
+        ],
+        "unknown": "unknown:1669",
+        "version": 1,
+        "later_uses": []
+      },
+      {
+        "clock": [
+          4,
+          12
+        ],
+        "unknown": "unknown:1670",
+        "version": 1,
+        "later_uses": []
+      },
+      {
+        "clock": [
+          4,
+          14
+        ],
+        "unknown": "unknown:1671",
+        "version": 1,
+        "later_uses": [
+          {
+            "clock": [
+              7,
+              4
+            ],
+            "relation": 270,
+            "use": {
+              "identity": "unknown:1671",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          }
+        ]
+      },
+      {
+        "clock": [
+          5,
+          2
+        ],
+        "unknown": "unknown:1495",
+        "version": 3,
+        "later_uses": []
+      },
+      {
+        "clock": [
+          6,
+          4
+        ],
+        "unknown": "unknown:1672",
+        "version": 1,
+        "later_uses": []
+      },
+      {
+        "clock": [
+          7,
+          6
+        ],
+        "unknown": "unknown:1674",
+        "version": 1,
+        "later_uses": [
+          {
+            "clock": [
+              7,
+              10
+            ],
+            "relation": 204,
+            "use": {
+              "identity": "unknown:1674",
+              "port": "condition",
+              "version": 1,
+              "seen_version": 0
+            }
+          }
+        ]
+      },
+      {
+        "clock": [
+          7,
+          10
+        ],
+        "unknown": "unknown:1675",
+        "version": 1,
+        "later_uses": []
+      },
+      {
+        "clock": [
+          7,
+          12
+        ],
+        "unknown": "unknown:1676",
+        "version": 1,
+        "later_uses": []
+      }
+    ]
+  },
+  "caveat": "U revise returns a functional preview and does not commit or increment version. Mechanism records include candidate previews. Dependency differences include version metadata; they do not prove actual reuse. PCA is descriptive.",
+  "counts": {
+    "contract": 8,
+    "mechanism": 4027,
+    "typed_execution": 1191,
+    "quiet_execution": 90,
+    "relation_revision": 1512,
+    "event": 68,
+    "world": 23,
+    "optimizer": 92,
+    "all_parameter_update_participation": 92,
+    "structural_relation_dependencies": 23,
+    "compute_workspace": 6
+  }
+}

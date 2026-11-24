@@ -7,6 +7,7 @@ question label, world answer or self-preservation set point.
 from __future__ import annotations
 
 import copy
+import numpy as np
 import torch
 
 from scripts.ib_local.causal_relation_program import imagine
@@ -34,10 +35,13 @@ class JointCycleMixin:
     def _film(self, words, table):
         if words is not None:
             return super()._film(words, table)
-        candidates, endpoints = [], []
+        candidates, endpoints, handovers = [], [], []
+        from scripts.ib_local import phase_coupled_rhythm, root_latent_planning
+        budget = phase_coupled_rhythm.proposal_budget(self, self.joint_proposal_budget)
+        budget = root_latent_planning.proposal_budget(self, budget)
         # All proposed words start at the SAME real state and fast-table prefix.
         # None of the proposed observations are committed as world evidence.
-        for _ in range(self.joint_proposal_budget):
+        for _ in range(budget):
             with table_branch(self.table) as branch:
                 result = super()._film(None, branch)
             endpoint = self._draft_actions.pop()
@@ -46,6 +50,25 @@ class JointCycleMixin:
             self._causal_words.pop()
             candidates.append(result)
             endpoints.append(endpoint)
+            handovers.append(getattr(self,'_last_expression_receipt',None))
+        if budget == 1 and (phase_coupled_rhythm.enabled(self) or root_latent_planning.is_latent_single_active(self)):
+            # Exact singleton REINFORCE identity: log_softmax([v])[0] == 0, selected == 0.
+            selected = 0
+            self._joint_proposals = [dict(words=v[0], logp=v[1], probs=v[2]) for v in candidates]
+            if getattr(self,'variable_expression_schema',None)==1:
+                self._joint_proposals[0]['handover'] = handovers[0]
+                self._selected_handover = handovers[0]
+            if root_latent_planning.is_latent_single_active(self):
+                self._joint_selection = root_latent_planning.build_single_selection_receipt(self)
+            else:
+                self._joint_selection = dict(selected=0, logp=0.0, distribution=[1.0],
+                    predicted_after_value=[0.0], selection_value=[0.0],
+                    relation_identity=self._program_question_state.identity,
+                    relation_version=self._program_question_state.version,
+                    budget=1, regime='gamma')
+            self._draft_actions.append(endpoints[0])
+            self._causal_words.append(candidates[0][0])
+            return candidates[0]
         self.decision.start(self.recurrent)
         _, h = self.decision.step(self.pending, peek(self.table, self.pending))
         actions = torch.stack(endpoints)
@@ -54,39 +77,121 @@ class JointCycleMixin:
         forecast = imagine(self.model, self._program_question_state, source, actions,
             ridge=self.relation_ridge, reward_valid=self.reward_label_valid(wood=True),
             momentum=momentum)
-        logits = wood_choice_logits(self, forecast['expected_after_value'])
+        from scripts.ib_local.causal_use_value import utility
+        selected_value = utility(self, self._program_question_state, source, actions, forecast)
+        logits = wood_choice_logits(self, selected_value)
         logp = logits.log_softmax(0)
-        selected = int(torch.multinomial(logp.exp(), 1))
+        from scripts.ib_local.finite_choice_contract import choose
+        selected = choose(logp.exp(), stage='proposal')
         self._joint_proposals = [dict(words=v[0], logp=v[1], probs=v[2]) for v in candidates]
+        if getattr(self,'variable_expression_schema',None)==1:
+            for proposal,handover in zip(self._joint_proposals,handovers):
+                proposal['handover']=handover
+            self._selected_handover=handovers[selected]
         self._joint_selection = dict(selected=selected, logp=float(logp[selected]),
             distribution=logp.exp().cpu().tolist(),
             predicted_after_value=forecast['expected_after_value'].cpu().tolist(),
+            selection_value=selected_value.cpu().tolist(),
             relation_identity=self._program_question_state.identity,
             relation_version=self._program_question_state.version)
         self._draft_actions.append(endpoints[selected])
         self._causal_words.append(candidates[selected][0])
         return candidates[selected]
 
-    def _choice_policy_term(self, targets, own, record):
+    def _selected_proposal_audit(self, targets, own, record):
+        if getattr(self, 'variable_expression_schema', None) != 1 or not own or record['choice'] != 1:
+            return None
+        index = self._joint_selection['selected']
+        proposal = self._joint_proposals[index]
+        if (proposal.get('handover') is not self._selected_handover or
+                proposal.get('handover') is None or
+                proposal['words'] != bytes(targets[0, :own].tolist()) or
+                not np.array_equal(proposal['probs'], record['probs'])):
+            return None
+        return index
+
+    def _choice_policy_term(self, targets, own, record, *, reuse_audit=False):
         # Recompute the actual one-byte decision prefix. Do not subtract a
         # detached byte logp from the inherited mean: that would count the
         # selected proposal gradient twice.
-        features, prefix_logits = causal_prefix(self, targets, own, record)
+        if getattr(self,'variable_expression_schema',None)==1 and own:
+            # Choosing whether to speak precedes committing an output budget.
+            # Replay that actual boundary, not the first budget-conditioned
+            # draft state; byte sampling below still uses the speech prefix.
+            features,_=causal_prefix(self,targets,0,record)
+            # Only the boundary contributes to this categorical derivative.
+            # The utterance is scored with its own proposal graph below. A
+            # generated payload is replayed here just for the detached audit;
+            # a reused payload has no byte audit in this term at all.
+            prefix_logits = None
+            if record['choice'] == 1 and not reuse_audit:
+                with torch.no_grad():
+                    _, prefix_logits = causal_prefix(self, targets, own, record)
+        else:
+            features, prefix_logits = causal_prefix(self, targets, own, record)
         habit, _, _ = self.plan(features[:1])
         combined = habit[0]+habit.new_tensor(record['offset'])
         categorical = combined.log_softmax(-1)[record['choice']]
         replay = dict(choice=combined.detach().tolist(), stops=[])
-        if record['choice'] == 1 and own:
+        if record['choice'] == 1 and own and not reuse_audit:
             replay['byte_logp'] = prefix_logits[0].log_softmax(-1).gather(
                 1, targets[0, :own, None]).flatten().detach()
         return categorical, replay
 
-    def _proposal_policy_terms(self, record):
+    def _proposal_policy_terms(self, record, *, audit_index=None, replay=None, batch_size=1):
         max_error = 0.
-        for proposal in self._joint_proposals:
+        indexed = list(enumerate(self._joint_proposals))
+        if batch_size > 1:
+            from scripts.ib_local.variable_expression import proposal_score, proposal_scores_batched
+            groups = {}
+            others = []
+            for index, proposal in indexed:
+                if 'handover' in proposal:
+                    has_routes = proposal['handover'].get('read_slots') is not None
+                    groups.setdefault(has_routes, []).append((index, proposal))
+                else:
+                    others.append((index, proposal))
+            for key, items in groups.items():
+                for pos in range(0, len(items), batch_size):
+                    chunk = items[pos:pos+batch_size]
+                    if len(chunk) == 1:
+                        index, proposal = chunk[0]
+                        terms, error = proposal_score(self, proposal)
+                        max_error = max(max_error, error)
+                        if index == audit_index:
+                            replay['byte_logp'] = terms[:len(proposal['words'])].detach()
+                        yield terms
+                        continue
+                    chunk_proposals = [p for _, p in chunk]
+                    valid_terms, fallbacks, batch_error = proposal_scores_batched(self, chunk_proposals)
+                    max_error = max(max_error, batch_error)
+                    if valid_terms:
+                        for local_k, terms in valid_terms.items():
+                            orig_index, proposal = chunk[local_k]
+                            if orig_index == audit_index:
+                                replay['byte_logp'] = terms[:len(proposal['words'])].detach()
+                        yield torch.stack([t.sum() for t in valid_terms.values()]).sum()
+                    for local_k in fallbacks:
+                        orig_index, proposal = chunk[local_k]
+                        terms, error = proposal_score(self, proposal)
+                        max_error = max(max_error, error)
+                        if orig_index == audit_index:
+                            replay['byte_logp'] = terms[:len(proposal['words'])].detach()
+                        yield terms
+            indexed = others
+        for index, proposal in indexed:
+            if 'handover' in proposal:
+                from scripts.ib_local.variable_expression import proposal_score
+                terms,error=proposal_score(self,proposal)
+                max_error=max(max_error,error)
+                if index == audit_index:
+                    replay['byte_logp'] = terms[:len(proposal['words'])].detach()
+                yield terms
+                continue
             words = torch.tensor(list(proposal['words']), device=self.device, dtype=torch.long)[None]
             _, predicted = causal_prefix(self, words, words.shape[1],
-                dict(probs=proposal['probs'], boundary_probability=record['boundary_probability']))
+                dict(probs=proposal['probs'], boundary_probability=record['boundary_probability'],
+                     expected_byte_logp=proposal['logp']))
             actual = predicted[0].log_softmax(-1).gather(1, words[0, :, None]).flatten()
             sampled = actual.new_tensor(proposal['logp'])
             max_error = max(max_error, float((actual.detach()-sampled).abs().max()))
@@ -114,11 +219,15 @@ class JointCycleMixin:
         autograd graphs alive together is unnecessary. The selection logp is
         detached in both implementations and therefore contributes no gradient.
         """
-        categorical, replay = self._choice_policy_term(targets, own, record)
+        audit_index = self._selected_proposal_audit(targets, own, record)
+        categorical, replay = self._choice_policy_term(targets, own, record,
+                                                       reuse_audit=audit_index is not None)
         result = [None if g is None else g.detach() for g in
                   torch.autograd.grad(categorical, self.params, allow_unused=True)]
         del categorical
-        for term in self._proposal_policy_terms(record):
+        proposal_batch = int(getattr(self, 'policy_proposal_batch_size', 1) or 1)
+        for term in self._proposal_policy_terms(record, audit_index=audit_index, replay=replay,
+                                                batch_size=proposal_batch):
             grads = torch.autograd.grad(term.sum(), self.params, allow_unused=True)
             for i, grad in enumerate(grads):
                 if grad is not None:
@@ -137,6 +246,13 @@ class JointCycleMixin:
             executed=(row['choice'] == 'generate'),
             policy_credit='joint proposal/selection/action sampling path')
         row['internal_ticks'] = self.joint_internal_ticks
+        if getattr(self,'variable_expression_schema',None)==1:
+            row['expression']=dict(cap=self.max_utterance,length=row['self_bytes'],
+                reason=self._pending_record.get('ending_reason','silence'),
+                proposal_lengths=[len(p['words']) for p in self._joint_proposals],
+                handover_policy_credit=True)
+        row['runtime_replay']=dict(batched_hits=getattr(self,'_batched_replay_hits',0),
+            one_byte_fallbacks=getattr(self,'_batched_replay_fallbacks',0))
         return row
 
     @torch.no_grad()
@@ -152,10 +268,15 @@ class JointCycleMixin:
         if self.joint_internal_ticks+ticks >= 2**63:
             raise OverflowError('internal event clock exhausted')
         before = self.recurrent
-        if hasattr(self.model, 'head_coupling'):
+        from scripts.quiet_force_jet import commit_engine
+        prepared = commit_engine(self, ticks)
+        if prepared is not None:
+            self.recurrent, self.bfss_momenta = prepared
+        elif hasattr(self.model, 'head_coupling'):
+            extra = dict(capture=True) if getattr(self,'adaptive_dynamics_schema',None)==1 else {}
             self.recurrent, self.bfss_momenta = self.model.head_coupling.quiet(
                 self.model.body.base, self.recurrent, self.bfss_momenta,
-                dt=self.bfss_dt, frequency=self.bfss_frequency, steps=ticks)
+                dt=self.bfss_dt, frequency=self.bfss_frequency, steps=ticks, **extra)
         else:
             from scripts.ib_local.bfss_gdn_capture import quiet_packed
             self.recurrent, self.bfss_momenta = quiet_packed(self.model.body.base,
@@ -172,9 +293,18 @@ class JointCycleMixin:
             _, h = self.decision.step(self.pending, peek(self.table, self.pending))
             relation = self.model.causal_relations.bind(self.model, h[None])
             momentum = decision_momentum_read(self.model, self.bfss_momenta, h[None])
-            preview = imagine(self.model, relation, h[None], h[None],
-                ridge=self.relation_ridge, reward_valid=self.reward_label_valid(wood=True),
-                momentum=momentum)
+            from scripts.ib_local import persistent_rhythm
+            if persistent_rhythm.enabled(self):
+                from scripts.ib_local.causal_relation_program import compose
+                preview = compose(self.model, relation, h[None], h[None],
+                    ridge=self.relation_ridge, reward_valid=self.reward_label_valid(wood=True),
+                    momentum=momentum)
+                preview['expected_after_value'] = persistent_rhythm.internal_utility(
+                    self, relation, h[None], h[None], preview)
+            else:
+                preview = imagine(self.model, relation, h[None], h[None],
+                    ridge=self.relation_ridge, reward_valid=self.reward_label_valid(wood=True),
+                    momentum=momentum)
         finally:
             self.model._question_context = old_context
         self.joint_internal_receipt = dict(ticks=self.joint_internal_ticks,

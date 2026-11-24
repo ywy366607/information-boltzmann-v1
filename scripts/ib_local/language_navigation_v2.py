@@ -130,6 +130,10 @@ class DialogueEngine:
                 from scripts.ib_local.navigation_read_credit import configure_read_credit
                 configure_read_credit(memory, 'adam', self.optimizer.param_groups[0])
             diagnostics['read_credit'] = self.model.memory.settle_read_credit()
+            from scripts.ib_local.native_retention_feedback import settle as settle_retention
+            settle_retention(self, diagnostics)
+            if 'retention_feedback' in diagnostics:
+                diagnostics['read_credit']['retention_feedback'] = diagnostics['retention_feedback']
         receipt = TransitionRead(None, None, diagnostics['read_slots'], diagnostics['read_weights'])
         self.model.commit_observed(features, receipt)
         self.optimizer.step()

@@ -1,0 +1,413 @@
+{
+  "scope": "Same continuing individual, actual completed natural-text events; descriptive before/after, not a paired architecture treatment.",
+  "source": "F:\\cgb_continual_learning_20261116\\body\\metrics.jsonl",
+  "through_cycle": 1600,
+  "before": {
+    "count": 71,
+    "cycles": [
+      1402,
+      1472
+    ],
+    "momentum_wood.choice_probability_tv_without_p": {
+      "n": 71,
+      "mean": 0.0,
+      "median": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "momentum_wood.prediction_delta": {
+      "n": 71,
+      "mean": 2.0125960380258694,
+      "median": 1.8135802745819092,
+      "min": 1.4377869367599487,
+      "max": 3.449580430984497
+    },
+    "momentum_wood.weight_step": {
+      "n": 71,
+      "mean": 0.0020849846014371763,
+      "median": 0.0019649541936814785,
+      "min": 6.089691669330932e-05,
+      "max": 0.005262881051748991
+    },
+    "bfss_dynamics.state_change": {
+      "n": 71,
+      "mean": 0.18609521065799284,
+      "median": 0.18616598844528198,
+      "min": 0.1747034341096878,
+      "max": 0.19505184888839722
+    },
+    "outcome_error": {
+      "n": 71,
+      "mean": 0.07361613486854124,
+      "median": 0.06448417901992798,
+      "min": 0.03427392616868019,
+      "max": 0.13379351794719696
+    },
+    "progress": {
+      "n": 71,
+      "mean": 0.02160481164153193,
+      "median": 0.016504526138305664,
+      "min": -0.009128451347351074,
+      "max": 0.12400674819946289
+    },
+    "wood_policy_tv": {
+      "n": 71,
+      "mean": 0.025040356101284564,
+      "median": 0.017556019127368927,
+      "min": 0.0010273940861225128,
+      "max": 0.10656405985355377
+    },
+    "internal_transition_loss": {
+      "n": 71,
+      "mean": 0.5068925711470591,
+      "median": 0.4951285421848297,
+      "min": 0.40565285086631775,
+      "max": 0.6770950555801392
+    },
+    "nonzero_p_choice_cycles": 0,
+    "dynamics_write_cycles": 0
+  },
+  "after": {
+    "count": 128,
+    "cycles": [
+      1473,
+      1600
+    ],
+    "momentum_wood.choice_probability_tv_without_p": {
+      "n": 128,
+      "mean": 0.006020195272867568,
+      "median": 0.003814159892499447,
+      "min": 0.0,
+      "max": 0.040369559079408646
+    },
+    "momentum_wood.prediction_delta": {
+      "n": 128,
+      "mean": 1.990543712861836,
+      "median": 1.8780211210250854,
+      "min": 1.4377371072769165,
+      "max": 2.9179115295410156
+    },
+    "momentum_wood.weight_step": {
+      "n": 128,
+      "mean": 0.0014488151777527492,
+      "median": 0.0010501763317734003,
+      "min": 6.785243022022769e-05,
+      "max": 0.005523866508156061
+    },
+    "bfss_dynamics.state_change": {
+      "n": 128,
+      "mean": 0.1897027218947187,
+      "median": 0.1907021328806877,
+      "min": 0.17121367156505585,
+      "max": 0.20470325648784637
+    },
+    "outcome_error": {
+      "n": 128,
+      "mean": 0.06772235728567466,
+      "median": 0.06535699963569641,
+      "min": 0.0245225690305233,
+      "max": 0.1621648371219635
+    },
+    "progress": {
+      "n": 128,
+      "mean": 0.041555910371243954,
+      "median": 0.019040226936340332,
+      "min": -0.02908039093017578,
+      "max": 0.550905704498291
+    },
+    "wood_policy_tv": {
+      "n": 128,
+      "mean": 0.012607279175426811,
+      "median": 0.007437441498041153,
+      "min": 0.0008786432445049286,
+      "max": 0.0672239437699318
+    },
+    "internal_transition_loss": {
+      "n": 128,
+      "mean": 0.5045168898068368,
+      "median": 0.49437564611434937,
+      "min": 0.382583349943161,
+      "max": 0.7436432242393494
+    },
+    "adaptive_dynamics.last_consumed_steps": {
+      "n": 128,
+      "mean": 1.9609375,
+      "median": 1.0,
+      "min": 1,
+      "max": 7
+    },
+    "nonzero_p_choice_cycles": 109,
+    "dynamics_write_cycles": 40
+  },
+  "adaptive": {
+    "frequency_range": [
+      0.7998505234718323,
+      0.8001084923744202
+    ],
+    "coupling_range": [
+      0.004999680910259485,
+      0.005000251345336437
+    ],
+    "context_gain_absmax": 0.0001085829790099524,
+    "content_coefficient_absmax": 9.229779971065e-05,
+    "layers_with_gradient": 32,
+    "trace_bytes": 25165824
+  },
+  "per_layer_momentum": [
+    {
+      "layer": 1,
+      "norm": 3.4922378063201904
+    },
+    {
+      "layer": 2,
+      "norm": 2.687617063522339
+    },
+    {
+      "layer": 3,
+      "norm": 2.433859348297119
+    },
+    {
+      "layer": 4,
+      "norm": 1.884148359298706
+    },
+    {
+      "layer": 5,
+      "norm": 2.0022342205047607
+    },
+    {
+      "layer": 6,
+      "norm": 0.8576164841651917
+    },
+    {
+      "layer": 7,
+      "norm": 6.512017726898193
+    },
+    {
+      "layer": 8,
+      "norm": 1.196867823600769
+    },
+    {
+      "layer": 9,
+      "norm": 2.704885244369507
+    },
+    {
+      "layer": 10,
+      "norm": 2.5297625064849854
+    },
+    {
+      "layer": 11,
+      "norm": 3.040355682373047
+    },
+    {
+      "layer": 12,
+      "norm": 1.7508580684661865
+    },
+    {
+      "layer": 13,
+      "norm": 2.701566219329834
+    },
+    {
+      "layer": 14,
+      "norm": 1.3348737955093384
+    },
+    {
+      "layer": 15,
+      "norm": 1.6105117797851562
+    },
+    {
+      "layer": 16,
+      "norm": 1.8077865839004517
+    },
+    {
+      "layer": 17,
+      "norm": 1.529745101928711
+    },
+    {
+      "layer": 18,
+      "norm": 4.65135383605957
+    },
+    {
+      "layer": 19,
+      "norm": 1.7501552104949951
+    },
+    {
+      "layer": 20,
+      "norm": 2.1108856201171875
+    },
+    {
+      "layer": 21,
+      "norm": 6.900941371917725
+    },
+    {
+      "layer": 22,
+      "norm": 5.99962854385376
+    },
+    {
+      "layer": 23,
+      "norm": 0.9040166735649109
+    },
+    {
+      "layer": 24,
+      "norm": 2.6337547302246094
+    },
+    {
+      "layer": 25,
+      "norm": 6.143599987030029
+    },
+    {
+      "layer": 26,
+      "norm": 3.455779790878296
+    },
+    {
+      "layer": 27,
+      "norm": 2.3979790210723877
+    },
+    {
+      "layer": 28,
+      "norm": 5.547000885009766
+    },
+    {
+      "layer": 29,
+      "norm": 3.205352783203125
+    },
+    {
+      "layer": 30,
+      "norm": 3.5014119148254395
+    },
+    {
+      "layer": 31,
+      "norm": 2.5393474102020264
+    },
+    {
+      "layer": 32,
+      "norm": 3.813147783279419
+    }
+  ],
+  "strongest_momentum_layers": [
+    21,
+    7,
+    25,
+    22,
+    28,
+    18
+  ],
+  "validations": [
+    {
+      "cycle": 1280,
+      "owt_nll": 1.4854713082313538,
+      "mother_nll": 1.2824215441942215,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+      "fineweb_nll": 1.4887259230017662,
+      "language_contribution": {
+        "owt": {
+          "bytes": 8192,
+          "full_nll": 1.4854713082313538,
+          "table_prior_nll": 1.635129652917385,
+          "learned_table_mix_without_decoder_nll": 1.5532928332686424,
+          "full_gain_over_table": 0.14965834468603134,
+          "decoder_residual_gain": 0.06782152503728867,
+          "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+        },
+        "fineweb": {
+          "bytes": 8192,
+          "full_nll": 1.4887259230017662,
+          "table_prior_nll": 1.6246695220470428,
+          "learned_table_mix_without_decoder_nll": 1.5583771020174026,
+          "full_gain_over_table": 0.13594359904527664,
+          "decoder_residual_gain": 0.06965117901563644,
+          "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+        }
+      }
+    },
+    {
+      "cycle": 1408,
+      "owt_nll": 1.4804219603538513,
+      "mother_nll": 1.2812092900276184,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+      "fineweb_nll": 1.4834584072232246,
+      "language_contribution": {
+        "owt": {
+          "bytes": 8192,
+          "full_nll": 1.4804219603538513,
+          "table_prior_nll": 1.6309567391872406,
+          "learned_table_mix_without_decoder_nll": 1.555776797235012,
+          "full_gain_over_table": 0.15053477883338928,
+          "decoder_residual_gain": 0.07535483688116074,
+          "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+        },
+        "fineweb": {
+          "bytes": 8192,
+          "full_nll": 1.4834584072232246,
+          "table_prior_nll": 1.6189246848225594,
+          "learned_table_mix_without_decoder_nll": 1.5615860149264336,
+          "full_gain_over_table": 0.13546627759933472,
+          "decoder_residual_gain": 0.07812760770320892,
+          "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+        }
+      }
+    },
+    {
+      "cycle": 1480,
+      "owt_nll": 1.4832978248596191,
+      "mother_nll": 1.2794984132051468,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+      "fineweb_nll": 1.4727031886577606,
+      "language_contribution": {
+        "owt": {
+          "bytes": 8192,
+          "full_nll": 1.4832978248596191,
+          "table_prior_nll": 1.631869986653328,
+          "learned_table_mix_without_decoder_nll": 1.551052875816822,
+          "full_gain_over_table": 0.1485721617937088,
+          "decoder_residual_gain": 0.06775505095720291,
+          "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+        },
+        "fineweb": {
+          "bytes": 8192,
+          "full_nll": 1.4727031886577606,
+          "table_prior_nll": 1.6097789108753204,
+          "learned_table_mix_without_decoder_nll": 1.5393421351909637,
+          "full_gain_over_table": 0.13707572221755981,
+          "decoder_residual_gain": 0.06663894653320312,
+          "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+        }
+      }
+    },
+    {
+      "cycle": 1536,
+      "owt_nll": 1.4759515896439552,
+      "mother_nll": 1.287337265908718,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+      "fineweb_nll": 1.4851734638214111,
+      "language_contribution": {
+        "owt": {
+          "bytes": 8192,
+          "full_nll": 1.4759515896439552,
+          "table_prior_nll": 1.6283042207360268,
+          "learned_table_mix_without_decoder_nll": 1.5584333315491676,
+          "full_gain_over_table": 0.15235263109207153,
+          "decoder_residual_gain": 0.0824817419052124,
+          "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+        },
+        "fineweb": {
+          "bytes": 8192,
+          "full_nll": 1.4851734638214111,
+          "table_prior_nll": 1.6198386549949646,
+          "learned_table_mix_without_decoder_nll": 1.5665546208620071,
+          "full_gain_over_table": 0.13466519117355347,
+          "decoder_residual_gain": 0.08138115704059601,
+          "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+        }
+      }
+    }
+  ],
+  "interpretation": {
+    "choice": "P-port removal changes the current choice distribution; TV is immediate sensitivity, not a counterfactual lifetime learning benefit.",
+    "rhythm": "Learned frequencies remain close to 0.8; do not magnify their tiny spread in the animation.",
+    "progress": "Navigated input differs across events; progress means and validation shifts are not controlled attribution to dynamics."
+  }
+}

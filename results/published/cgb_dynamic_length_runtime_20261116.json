@@ -1,0 +1,184 @@
+{
+  "schema": 1,
+  "source_cycle": 341,
+  "kernel_measurement": {
+    "schema": 1,
+    "lengths": [
+      17,
+      31,
+      65,
+      89,
+      117,
+      128,
+      137,
+      480,
+      512
+    ],
+    "kernels": [
+      "workspace_forward",
+      "workspace_backward",
+      "momentum"
+    ],
+    "compiled_variants": {
+      "static": [
+        9,
+        9,
+        9
+      ],
+      "dynamic": [
+        1,
+        1,
+        1
+      ]
+    },
+    "timings": {
+      "static": {
+        "first_use_seconds": [
+          0.7612506000004942,
+          0.5855433000033372,
+          0.539363299998513,
+          0.5258156000054441,
+          0.4713895999957458,
+          0.4723597999982303,
+          0.4674777000036556,
+          0.4679367999997339,
+          0.678007800001069
+        ],
+        "warm_seconds": [
+          0.0006289000004471746,
+          0.0005396499997004867,
+          0.0005970300000626594,
+          0.00029508000006899237,
+          0.0005138299995451235,
+          0.0005733599995437544,
+          0.0003714200000104029,
+          0.001334859999769833,
+          0.001413909999973839
+        ],
+        "total_first_use": 4.969144500006223,
+        "median_warm": 0.0005733599995437544
+      },
+      "dynamic": {
+        "first_use_seconds": [
+          0.2696155000012368,
+          0.0005253999988781288,
+          0.0004868000032729469,
+          0.00047249999624909833,
+          0.0006240000002435409,
+          0.0005854999981238507,
+          0.00048749999405117705,
+          0.0013806999995722435,
+          0.0015032000010251068
+        ],
+        "warm_seconds": [
+          0.0004208500002278015,
+          0.000430919999780599,
+          0.0003893799999787007,
+          0.0005821700004162266,
+          0.0004112999995413702,
+          0.00045262999992701225,
+          0.00035350000034668484,
+          0.0012966299997060559,
+          0.0013855999997758773
+        ],
+        "total_first_use": 0.2756810999926529,
+        "median_warm": 0.000430919999780599
+      }
+    },
+    "max_errors": {
+      "17": 0.0,
+      "31": 0.0,
+      "65": 0.0,
+      "89": 0.0,
+      "117": 0.0,
+      "128": 0.0,
+      "137": 0.0,
+      "480": 0.0,
+      "512": 0.0
+    },
+    "optimizer_updates": 0,
+    "world_steps": 0,
+    "scope": "kernel execution parity, not capability evidence"
+  },
+  "whole_event_reference": {
+    "arm": "reference",
+    "runtime_baseline": "v3_static",
+    "source_cycle": 341,
+    "source_sha256": "64dc7d78f13ee885f82069880ae2f956a1567a0c4ab86de643865aad6bff40a7",
+    "seconds": 14.257320599994273,
+    "peak_allocated_mib": 2825.30908203125,
+    "optimizer_updates": 4,
+    "choice": "reuse",
+    "self_bytes": 128,
+    "external_bytes": 960,
+    "metal_g": 0.008562564849853516,
+    "candidates": [
+      "70752c20696620706f737320746f206465636964696d6f7320796f756274616e6420436f20726563746f72792063",
+      "20316d656e742e20546861742074686174206f6e6520736f756c7320686163676f727920746f2062652028532e666f2065786364616c6420746f206772696e64696e6720746f207465642e22626f726e6579206e6f7420746f20636f6e7465726573747220726520536174786172696e672046206f666665726520616e642063",
+      "2079656172732e205768656e20612073746174696f6e20746f20696e746f2067657420746f6f6e730a7572206f662031396e6465206272696e672c206265666f72652070726f6a6563742043616e666f7220746f6c642d666665637469766520666f72206265204d6f746f20796c616465722c2064696e672074696d6520536d",
+      "2031737474542e432e736163746963616c6c792069742074686579e2809973207374756479202854686520563230e2809420616e20417567756e6661797468696e67207468656972204a7520797468696e6720746865206f6620"
+    ],
+    "replay": {
+      "batched_hits": 1435,
+      "one_byte_fallbacks": 0
+    },
+    "policy_error": 5.960464477539063E-08,
+    "proposal_error": 1.9073486328125E-06,
+    "main_checkpoint_written": false,
+    "checkpoint_seconds": 2.2263634000046295
+  },
+  "whole_event_dynamic": {
+    "arm": "optimized",
+    "runtime_baseline": "v3_static",
+    "source_cycle": 341,
+    "source_sha256": "64dc7d78f13ee885f82069880ae2f956a1567a0c4ab86de643865aad6bff40a7",
+    "seconds": 16.687474599995767,
+    "peak_allocated_mib": 2825.30908203125,
+    "optimizer_updates": 4,
+    "choice": "reuse",
+    "self_bytes": 128,
+    "external_bytes": 960,
+    "metal_g": 0.008562564849853516,
+    "candidates": [
+      "70752c20696620706f737320746f206465636964696d6f7320796f756274616e6420436f20726563746f72792063",
+      "20316d656e742e20546861742074686174206f6e6520736f756c7320686163676f727920746f2062652028532e666f2065786364616c6420746f206772696e64696e6720746f207465642e22626f726e6579206e6f7420746f20636f6e7465726573747220726520536174786172696e672046206f666665726520616e642063",
+      "2079656172732e205768656e20612073746174696f6e20746f20696e746f2067657420746f6f6e730a7572206f662031396e6465206272696e672c206265666f72652070726f6a6563742043616e666f7220746f6c642d666665637469766520666f72206265204d6f746f20796c616465722c2064696e672074696d6520536d",
+      "2031737474542e432e736163746963616c6c792069742074686579e2809973207374756479202854686520563230e2809420616e20417567756e6661797468696e67207468656972204a7520797468696e6720746865206f6620"
+    ],
+    "replay": {
+      "batched_hits": 1435,
+      "one_byte_fallbacks": 0
+    },
+    "policy_error": 5.960464477539063E-08,
+    "proposal_error": 1.9073486328125E-06,
+    "main_checkpoint_written": false,
+    "checkpoint_seconds": 3.0122869000042556,
+    "parameter_max_error": 0.0,
+    "parameter_error_l2": 0.0,
+    "recurrent_max_error": 0.0,
+    "same_realized_path": true,
+    "event_speedup": 0.8543725723482384
+  },
+  "complete_state": {
+    "schema": 1,
+    "cycle": 342,
+    "same_cycle": true,
+    "equal": {
+      "world": true,
+      "torch_rng": true,
+      "cuda_rng": true,
+      "numpy_rng": true,
+      "python_rng": true,
+      "model": true,
+      "optimizer": true,
+      "recurrent": true,
+      "causal_archive_sql": true
+    },
+    "pending_actor_max_error": 0.0,
+    "pending_actor_relative_l2": 0.0,
+    "scope": "full saved world, RNGs and future delayed actor; zero learning"
+  },
+  "tests_passed_this_round": 16,
+  "main_checkpoint_overwritten": false,
+  "conclusion": "Shared length binaries eliminate repeated length specialization; this whole-event pair was slower, no steady-state overall speedup claimed."
+}

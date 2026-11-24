@@ -1,0 +1,158 @@
+{
+  "date": "2026-11-15",
+  "source_cycle": 5356,
+  "committed_cycle": 5368,
+  "parameters": 30500893,
+  "backbone": {
+    "layers": 32,
+    "width": 256,
+    "heads": 8,
+    "head_dimension": 32,
+    "ffn": 768
+  },
+  "source_sha256": "39e4c265d95ae8681d1edf57ca17760d85b80da473acc91585ddaaf9ff1fcc24",
+  "checkpoint_5368_sha256": "f29a5a2e23ccce8321803278bb6dcbc47b280349a10d1b0b35eedd66f8df54de",
+  "growth": {
+    "parameters": 30500635,
+    "backbone": {
+      "vocab_size": 256,
+      "d": 256,
+      "layers": 32,
+      "heads": 8,
+      "recurrence": "decay_then_delta",
+      "mlp_hidden": 768,
+      "conv_kernel": 4,
+      "content_budget": 32.0,
+      "contact_availability": false,
+      "decay_init": "log_timescale",
+      "feedback_init": "constant"
+    },
+    "fact_width": 128,
+    "coupling": 0.005,
+    "all_parameters_trainable": true,
+    "identity_layers": 28,
+    "old_moment_states": 107,
+    "archive_schema_unchanged": true,
+    "logit_max_error": 3.814697265625e-06,
+    "feature_max_error": 1.1920928955078125e-06,
+    "latent_max_error": 1.341104507446289e-06,
+    "momentum_prediction_max_error": 5.960464477539063e-08,
+    "seconds": 1.0841686000057962,
+    "world_calls": 0,
+    "optimizer_updates": 0
+  },
+  "actual_updates": 72,
+  "external_bytes": 11520,
+  "expression_lengths": [
+    8,
+    33,
+    58,
+    24,
+    37,
+    8,
+    57,
+    32,
+    32,
+    32,
+    25,
+    3
+  ],
+  "ending_reasons": [
+    "handover",
+    "handover",
+    "handover",
+    "handover",
+    "handover",
+    "handover",
+    "handover",
+    "reused_payload",
+    "reused_payload",
+    "reused_payload",
+    "handover",
+    "handover"
+  ],
+  "policy_replay_max_error": 0.0006892681121826172,
+  "initial_validation": {
+    "owt_nll": 1.3359228447079659,
+    "mother_nll": 1.1430656351149082,
+    "bytes_each": 8192,
+    "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar"
+  },
+  "validation_curve": [
+    {
+      "cycle": 5360,
+      "owt_nll": 1.3669877350330353,
+      "mother_nll": 1.1979147978127003,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar"
+    },
+    {
+      "cycle": 5364,
+      "owt_nll": 1.3643485605716705,
+      "mother_nll": 1.1469034738838673,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar"
+    },
+    {
+      "cycle": 5368,
+      "owt_nll": 1.391452245414257,
+      "mother_nll": 1.167877558618784,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar"
+    }
+  ],
+  "runtime_before": {
+    "event_seconds": 19.296749375000218,
+    "checkpoint_seconds": 19.110334499999226,
+    "sample_cycles": [
+      5357,
+      5360
+    ]
+  },
+  "runtime_after": {
+    "event_seconds": 14.779417675000332,
+    "checkpoint_seconds": 2.520821799999794,
+    "sample_cycles": [
+      5361,
+      5368
+    ]
+  },
+  "runtime_scope": "sequential real events with different utterances; checkpoint policy changed losslessly; not paired capability evidence",
+  "peak_torch_allocated_mib": 1743.08837890625,
+  "source_archive_episodes_migrated": 5942,
+  "causal_fact_width": 128,
+  "latents": 64,
+  "ongoing_budget": {
+    "total_external_bytes_at_least": 10000000,
+    "remaining_cycles": 10405,
+    "bytes_per_cycle": 960,
+    "fixed_validation_every_cycles": 128,
+    "optimizer": "full-parameter inherited AdamW"
+  },
+  "validation": "53 affected CPU/CUDA tests; 22 focused rechecks; deslice test script passed",
+  "failure_records": [
+    {
+      "file": "learning.log",
+      "reason": "static question rank in CUDA graph; no world call"
+    },
+    {
+      "file": "learning_retry1.log",
+      "reason": "tuple delayed credit not lifted; no complete event committed"
+    },
+    {
+      "file": "learning_v2.log",
+      "reason": "pre-speech choice replay used budget-conditioned speech state; four complete events committed"
+    }
+  ],
+  "capability_conclusion": "Runtime admission passed; short initial validation worse than migration baseline; no capability improvement claim",
+  "background_snapshot": {
+    "status": "running",
+    "cycle": 5388,
+    "updates": 192,
+    "external_bytes": 30720,
+    "peak_torch_allocated_mib": 1829.86328125,
+    "latest_event_seconds": 12.094961700000567,
+    "latest_checkpoint_seconds": 3.027089999995951,
+    "source": "live metrics after the frozen initial 12-event admission"
+  }
+}

@@ -1,0 +1,1477 @@
+{
+  "schema": 1,
+  "measurement": "results\\published\\cgb_option_basis_calibration_20261122.json",
+  "source_sha256": "102f52357b46be060a196ce83cf7cb29e2e06f0e6030fec86340032386284336",
+  "capsule_sha256": "8652e32e415c744b75a7cc4edc118db5b5cb1f837b179cbd3aa892f9a45a69ba",
+  "ridge": 0.1,
+  "native": [
+    {
+      "role": "mother",
+      "original": {
+        "mse": 0.08215609530938299,
+        "common_error": -0.18968220800161362,
+        "common_mse": 0.03597934003236741,
+        "centered_mse": 0.04617675527701557,
+        "all_pair_difference_mse": 0.11082421266483737
+      },
+      "calibrated": {
+        "mse": 0.10522649592011128,
+        "common_error": -0.30568092161168653,
+        "common_mse": 0.09344082583737004,
+        "centered_mse": 0.011785670082741223,
+        "all_pair_difference_mse": 0.028285608198578935
+      }
+    },
+    {
+      "role": "action",
+      "original": {
+        "mse": 0.10890222008345733,
+        "common_error": -0.25447549174229306,
+        "common_mse": 0.06475777589748186,
+        "centered_mse": 0.04414444418597547,
+        "all_pair_difference_mse": 0.10594666604634112
+      },
+      "calibrated": {
+        "mse": 0.143106254017286,
+        "common_error": -0.3621313157491386,
+        "common_mse": 0.13113908984620232,
+        "centered_mse": 0.011967164171083677,
+        "all_pair_difference_mse": 0.028721194010600824
+      }
+    }
+  ],
+  "factor_reconstruction_error": 2.1581772209344763e-06,
+  "holdout": {
+    "unit": "one complete bank commit revision",
+    "folds": 38,
+    "rows": 64,
+    "mse": {
+      "original": 0.15286965590123605,
+      "calibrated": 0.1303491268091537
+    },
+    "by_kind": {
+      "native": {
+        "rows": 32,
+        "original": {
+          "mse": 0.14673321909662942,
+          "common_error": 0.027356190294085536,
+          "common_mse": 0.0007483611474062197,
+          "centered_mse": 0.14598485794922322,
+          "all_pair_difference_mse": 0.3013880938306544
+        },
+        "calibrated": {
+          "mse": 0.12044821396503197,
+          "common_error": 0.007834193966118619,
+          "common_mse": 6.137459509876937e-05,
+          "centered_mse": 0.12038683936993322,
+          "all_pair_difference_mse": 0.24854057160244278
+        }
+      },
+      "world": {
+        "rows": 32,
+        "original": {
+          "mse": 0.15900609129862514,
+          "common_error": -0.039298542906180955,
+          "common_mse": 0.0015443754745489455,
+          "centered_mse": 0.1574617158240762,
+          "all_pair_difference_mse": 0.32508225202389923
+        },
+        "calibrated": {
+          "mse": 0.14025004004059444,
+          "common_error": -0.02579174104903359,
+          "common_mse": 0.0006652139063404043,
+          "centered_mse": 0.13958482613425405,
+          "all_pair_difference_mse": 0.28817512492233094
+        }
+      }
+    },
+    "details": [
+      {
+        "revision": 0,
+        "rows": 1,
+        "options": [
+          0
+        ],
+        "kinds": [
+          "world"
+        ],
+        "target": [
+          -0.1499549299478531
+        ],
+        "original_q": [
+          0.1827421320307412
+        ],
+        "calibrated_q": [
+          0.18030064220725006
+        ],
+        "original": {
+          "mse": 0.1106873350491886,
+          "common_error": 0.3326970619785943,
+          "common_mse": 0.1106873350491886,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.10906874293949455,
+          "common_error": 0.33025557215510315,
+          "common_mse": 0.10906874293949455,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 1,
+        "rows": 1,
+        "options": [
+          1
+        ],
+        "kinds": [
+          "native"
+        ],
+        "target": [
+          -0.22199544310569763
+        ],
+        "original_q": [
+          0.0032025121944219137
+        ],
+        "calibrated_q": [
+          0.017438031261132275
+        ],
+        "original": {
+          "mse": 0.05071411907135464,
+          "common_error": 0.22519795530011955,
+          "common_mse": 0.05071411907135464,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.057328388647371394,
+          "common_error": 0.2394334743668299,
+          "common_mse": 0.057328388647371394,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 3,
+        "rows": 1,
+        "options": [
+          0
+        ],
+        "kinds": [
+          "world"
+        ],
+        "target": [
+          0.47662878036499023
+        ],
+        "original_q": [
+          -0.172285002603628
+        ],
+        "calibrated_q": [
+          -0.13675337393953974
+        ],
+        "original": {
+          "mse": 0.421089097726643,
+          "common_error": -0.6489137829686182,
+          "common_mse": 0.421089097726643,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.37623766721926616,
+          "common_error": -0.6133821543045299,
+          "common_mse": 0.37623766721926616,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 4,
+        "rows": 2,
+        "options": [
+          1,
+          0
+        ],
+        "kinds": [
+          "world",
+          "native"
+        ],
+        "target": [
+          -0.266173779964447,
+          0.06604503840208054
+        ],
+        "original_q": [
+          -0.0744769381898589,
+          -0.08032727444341692
+        ],
+        "calibrated_q": [
+          -0.11817191029096799,
+          -0.010333455452483598
+        ],
+        "original": {
+          "mse": 0.029086266557045826,
+          "common_error": 0.022662264464545334,
+          "common_mse": 0.0005135782306609942,
+          "centered_mse": 0.02857268832638483,
+          "all_pair_difference_mse": 0.11429075330553932
+        },
+        "calibrated": {
+          "mse": 0.013869113875168582,
+          "common_error": 0.03581168790945745,
+          "common_mse": 0.0012824769909243808,
+          "centered_mse": 0.0125866368842442,
+          "all_pair_difference_mse": 0.0503465475369768
+        }
+      },
+      {
+        "revision": 5,
+        "rows": 1,
+        "options": [
+          1
+        ],
+        "kinds": [
+          "native"
+        ],
+        "target": [
+          0.048263221979141235
+        ],
+        "original_q": [
+          -0.301600828998593
+        ],
+        "calibrated_q": [
+          -0.21229338041074813
+        ],
+        "original": {
+          "mse": 0.1224048541665506,
+          "common_error": -0.3498640509777342,
+          "common_mse": 0.1224048541665506,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.0678897430489629,
+          "common_error": -0.26055660238988937,
+          "common_mse": 0.0678897430489629,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 6,
+        "rows": 2,
+        "options": [
+          0,
+          1
+        ],
+        "kinds": [
+          "world",
+          "native"
+        ],
+        "target": [
+          0.3081876039505005,
+          -0.1361960917711258
+        ],
+        "original_q": [
+          0.10966947487320411,
+          0.2333347823760903
+        ],
+        "calibrated_q": [
+          0.18641330463127526,
+          0.4455480592063643
+        ],
+        "original": {
+          "mse": 0.08798125726017787,
+          "common_error": 0.08550637253495985,
+          "common_mse": 0.007311339744087336,
+          "centered_mse": 0.08066991751609054,
+          "all_pair_difference_mse": 0.32267967006436216
+        },
+        "calibrated": {
+          "mse": 0.17662761858560452,
+          "common_error": 0.22998492582913244,
+          "common_mse": 0.05289306610863155,
+          "centered_mse": 0.12373455247697299,
+          "all_pair_difference_mse": 0.49493820990789195
+        }
+      },
+      {
+        "revision": 8,
+        "rows": 1,
+        "options": [
+          1
+        ],
+        "kinds": [
+          "world"
+        ],
+        "target": [
+          -0.016026198863983154
+        ],
+        "original_q": [
+          0.24209613638600036
+        ],
+        "calibrated_q": [
+          0.37373560972424297
+        ],
+        "original": {
+          "mse": 0.06662713995490488,
+          "common_error": 0.2581223352499835,
+          "common_mse": 0.06662713995490488,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.15191426743396502,
+          "common_error": 0.3897618085882261,
+          "common_mse": 0.15191426743396502,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 9,
+        "rows": 1,
+        "options": [
+          1
+        ],
+        "kinds": [
+          "world"
+        ],
+        "target": [
+          0.028946101665496826
+        ],
+        "original_q": [
+          0.4743681303161891
+        ],
+        "calibrated_q": [
+          0.37878880440863655
+        ],
+        "original": {
+          "mse": 0.1984007836072981,
+          "common_error": 0.44542202865069225,
+          "common_mse": 0.1984007836072981,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.12238991666262482,
+          "common_error": 0.3498427027431397,
+          "common_mse": 0.12238991666262482,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 10,
+        "rows": 1,
+        "options": [
+          0
+        ],
+        "kinds": [
+          "world"
+        ],
+        "target": [
+          -0.4258749485015869
+        ],
+        "original_q": [
+          -0.3038910560374586
+        ],
+        "calibrated_q": [
+          -0.2958494848265651
+        ],
+        "original": {
+          "mse": 0.014880070020700024,
+          "common_error": 0.12198389246412833,
+          "common_mse": 0.014880070020700024,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.01690662120390442,
+          "common_error": 0.13002546367502182,
+          "common_mse": 0.01690662120390442,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 11,
+        "rows": 2,
+        "options": [
+          1,
+          1
+        ],
+        "kinds": [
+          "world",
+          "native"
+        ],
+        "target": [
+          0.44464975595474243,
+          -0.08115649223327637
+        ],
+        "original_q": [
+          0.05452049088863653,
+          0.27919556029909653
+        ],
+        "calibrated_q": [
+          -0.14576488766028228,
+          0.10415656826867947
+        ],
+        "original": {
+          "mse": 0.141027222612657,
+          "common_error": -0.0148886062668665,
+          "common_mse": 0.00022167059656977642,
+          "centered_mse": 0.14080555201608722,
+          "all_pair_difference_mse": 0.5632222080643489
+        },
+        "calibrated": {
+          "mse": 0.1914651908938291,
+          "common_error": -0.20255079155653444,
+          "common_mse": 0.04102682316017866,
+          "centered_mse": 0.15043836773365044,
+          "all_pair_difference_mse": 0.6017534709346017
+        }
+      },
+      {
+        "revision": 12,
+        "rows": 1,
+        "options": [
+          0
+        ],
+        "kinds": [
+          "world"
+        ],
+        "target": [
+          0.3135909140110016
+        ],
+        "original_q": [
+          -0.04017073211254196
+        ],
+        "calibrated_q": [
+          0.018026652029404455
+        ],
+        "original": {
+          "mse": 0.12514730226803925,
+          "common_error": -0.35376164612354355,
+          "common_mse": 0.12514730226803925,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.08735823296072619,
+          "common_error": -0.29556426198159713,
+          "common_mse": 0.08735823296072619,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 13,
+        "rows": 1,
+        "options": [
+          1
+        ],
+        "kinds": [
+          "native"
+        ],
+        "target": [
+          -0.0402219220995903
+        ],
+        "original_q": [
+          -0.33818086482844834
+        ],
+        "calibrated_q": [
+          -0.36773078537730675
+        ],
+        "original": {
+          "mse": 0.0887795315520989,
+          "common_error": -0.29795894272885803,
+          "common_mse": 0.0887795315520989,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.10726205552546196,
+          "common_error": -0.32750886327771644,
+          "common_mse": 0.10726205552546196,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 14,
+        "rows": 3,
+        "options": [
+          1,
+          0,
+          1
+        ],
+        "kinds": [
+          "world",
+          "native",
+          "native"
+        ],
+        "target": [
+          -0.0006521493196487427,
+          0.25412988662719727,
+          -0.036532655358314514
+        ],
+        "original_q": [
+          0.16980091732576286,
+          0.1765000335493121,
+          0.27708908031945256
+        ],
+        "calibrated_q": [
+          0.2447905471080283,
+          0.25943948179535087,
+          0.12864819391928564
+        ],
+        "original": {
+          "mse": 0.04447974503575145,
+          "common_error": 0.13548164974843116,
+          "common_mse": 0.018355277418556578,
+          "centered_mse": 0.026124467617194877,
+          "all_pair_difference_mse": 0.07837340285158463
+        },
+        "calibrated": {
+          "mse": 0.02918500733286926,
+          "common_error": 0.1386443802911436,
+          "common_mse": 0.019222264186315247,
+          "centered_mse": 0.009962743146554008,
+          "all_pair_difference_mse": 0.029888229439662024
+        }
+      },
+      {
+        "revision": 15,
+        "rows": 1,
+        "options": [
+          1
+        ],
+        "kinds": [
+          "world"
+        ],
+        "target": [
+          0.19606754183769226
+        ],
+        "original_q": [
+          0.21503618952394987
+        ],
+        "calibrated_q": [
+          0.16235215198262956
+        ],
+        "original": {
+          "mse": 0.0003598095950453662,
+          "common_error": 0.01896864768625761,
+          "common_mse": 0.0003598095950453662,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.001136727513078865,
+          "common_error": -0.0337153898550627,
+          "common_mse": 0.001136727513078865,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 16,
+        "rows": 1,
+        "options": [
+          0
+        ],
+        "kinds": [
+          "world"
+        ],
+        "target": [
+          0.30127084255218506
+        ],
+        "original_q": [
+          -0.3901522009034739
+        ],
+        "calibrated_q": [
+          -0.33749807286401595
+        ],
+        "original": {
+          "mse": 0.4780658250214861,
+          "common_error": -0.691423043455659,
+          "common_mse": 0.4780658250214861,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.4080257273019898,
+          "common_error": -0.6387689154162011,
+          "common_mse": 0.4080257273019898,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 17,
+        "rows": 1,
+        "options": [
+          1
+        ],
+        "kinds": [
+          "world"
+        ],
+        "target": [
+          0.17461881041526794
+        ],
+        "original_q": [
+          0.022643792793052953
+        ],
+        "calibrated_q": [
+          0.07485354391951884
+        ],
+        "original": {
+          "mse": 0.023096405981272557,
+          "common_error": -0.151975017622215,
+          "common_mse": 0.023096405981272557,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.009953108398967838,
+          "common_error": -0.0997652664957491,
+          "common_mse": 0.009953108398967838,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 18,
+        "rows": 3,
+        "options": [
+          1,
+          1,
+          2
+        ],
+        "kinds": [
+          "world",
+          "native",
+          "native"
+        ],
+        "target": [
+          0.144638791680336,
+          -0.24941810965538025,
+          0.07196761667728424
+        ],
+        "original_q": [
+          -0.11693199178776759,
+          0.11127183408895291,
+          0.4937295935197845
+        ],
+        "calibrated_q": [
+          0.05738920993291327,
+          0.199037174969196,
+          0.13800355500674638
+        ],
+        "original": {
+          "mse": 0.12546655846416718,
+          "common_error": 0.1736270457062433,
+          "common_mse": 0.030146351000677897,
+          "centered_mse": 0.09532020746348928,
+          "all_pair_difference_mse": 0.2859606223904678
+        },
+        "calibrated": {
+          "mse": 0.0710284589912875,
+          "common_error": 0.14241388040220523,
+          "common_mse": 0.020281713331213615,
+          "centered_mse": 0.050746745660073866,
+          "all_pair_difference_mse": 0.1522402369802216
+        }
+      },
+      {
+        "revision": 19,
+        "rows": 2,
+        "options": [
+          1,
+          1
+        ],
+        "kinds": [
+          "world",
+          "native"
+        ],
+        "target": [
+          0.13638220727443695,
+          -0.00431843101978302
+        ],
+        "original_q": [
+          -0.39177900088932116,
+          -0.17356305964040875
+        ],
+        "calibrated_q": [
+          -0.3166525134346802,
+          -0.255586253412084
+        ],
+        "original": {
+          "mse": 0.15379900306296707,
+          "common_error": -0.3487029183921919,
+          "common_mse": 0.12159372529523166,
+          "centered_mse": 0.03220527776773542,
+          "all_pair_difference_mse": 0.12882111107094169
+        },
+        "calibrated": {
+          "mse": 0.13418798836887835,
+          "common_error": -0.3521512715507091,
+          "common_mse": 0.12401051805478125,
+          "centered_mse": 0.010177470314097107,
+          "all_pair_difference_mse": 0.04070988125638843
+        }
+      },
+      {
+        "revision": 20,
+        "rows": 1,
+        "options": [
+          0
+        ],
+        "kinds": [
+          "world"
+        ],
+        "target": [
+          -0.4831750690937042
+        ],
+        "original_q": [
+          -0.005129997270782782
+        ],
+        "calibrated_q": [
+          0.05254900710827831
+        ],
+        "original": {
+          "mse": 0.22852709069418212,
+          "common_error": 0.47804507182292144,
+          "common_mse": 0.22852709069418212,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.28700028582246767,
+          "common_error": 0.5357240762019826,
+          "common_mse": 0.28700028582246767,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 21,
+        "rows": 3,
+        "options": [
+          1,
+          1,
+          2
+        ],
+        "kinds": [
+          "world",
+          "native",
+          "native"
+        ],
+        "target": [
+          0.06315171718597412,
+          -0.1816791296005249,
+          0.5583544969558716
+        ],
+        "original_q": [
+          -0.180978052674873,
+          0.15264777351681724,
+          0.1051811314296125
+        ],
+        "calibrated_q": [
+          -0.1235055714346739,
+          0.25331799904768826,
+          -0.19703120430359655
+        ],
+        "original": {
+          "mse": 0.12557997396757978,
+          "common_error": -0.12099207742325468,
+          "common_mse": 0.014639082799194856,
+          "centered_mse": 0.1109408911683849,
+          "all_pair_difference_mse": 0.3328226735051547
+        },
+        "calibrated": {
+          "mse": 0.26489033433155346,
+          "common_error": -0.16901528707730099,
+          "common_mse": 0.028566167265822465,
+          "centered_mse": 0.236324167065731,
+          "all_pair_difference_mse": 0.708972501197193
+        }
+      },
+      {
+        "revision": 22,
+        "rows": 1,
+        "options": [
+          2
+        ],
+        "kinds": [
+          "world"
+        ],
+        "target": [
+          0.5489771366119385
+        ],
+        "original_q": [
+          0.7905207840183408
+        ],
+        "calibrated_q": [
+          0.35758476430168806
+        ],
+        "original": {
+          "mse": 0.05834333360238841,
+          "common_error": 0.24154364740640233,
+          "common_mse": 0.05834333360238841,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.03663104017854551,
+          "common_error": -0.1913923723102504,
+          "common_mse": 0.03663104017854551,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 23,
+        "rows": 2,
+        "options": [
+          0,
+          1
+        ],
+        "kinds": [
+          "world",
+          "native"
+        ],
+        "target": [
+          0.3624609112739563,
+          -0.02086140215396881
+        ],
+        "original_q": [
+          -0.3769074165112092,
+          -0.14231488935228132
+        ],
+        "calibrated_q": [
+          -0.23894328294780878,
+          -0.10322552139334708
+        ],
+        "original": {
+          "mse": 0.2807082368422313,
+          "common_error": -0.430410907491739,
+          "common_mse": 0.1852535492878623,
+          "centered_mse": 0.09545468755436898,
+          "all_pair_difference_mse": 0.3818187502174759
+        },
+        "calibrated": {
+          "mse": 0.18423542648280453,
+          "common_error": -0.34188415673057165,
+          "common_mse": 0.11688477662337408,
+          "centered_mse": 0.06735064985943043,
+          "all_pair_difference_mse": 0.2694025994377217
+        }
+      },
+      {
+        "revision": 24,
+        "rows": 1,
+        "options": [
+          1
+        ],
+        "kinds": [
+          "native"
+        ],
+        "target": [
+          -0.1375153362751007
+        ],
+        "original_q": [
+          -0.011914761208622338
+        ],
+        "calibrated_q": [
+          0.04160437025627428
+        ],
+        "original": {
+          "mse": 0.01577550445703007,
+          "common_error": 0.12560057506647837,
+          "common_mse": 0.01577550445703007,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.0320838692678859,
+          "common_error": 0.179119706531375,
+          "common_mse": 0.0320838692678859,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 26,
+        "rows": 1,
+        "options": [
+          1
+        ],
+        "kinds": [
+          "world"
+        ],
+        "target": [
+          0.5466580390930176
+        ],
+        "original_q": [
+          0.26590965578168024
+        ],
+        "calibrated_q": [
+          0.21987073011712804
+        ],
+        "original": {
+          "mse": 0.07881965473192959,
+          "common_error": -0.28074838331133734,
+          "common_mse": 0.07881965473192959,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.1067899453077035,
+          "common_error": -0.32678730897588953,
+          "common_mse": 0.1067899453077035,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 27,
+        "rows": 1,
+        "options": [
+          2
+        ],
+        "kinds": [
+          "native"
+        ],
+        "target": [
+          -0.1079627126455307
+        ],
+        "original_q": [
+          0.6000846290329118
+        ],
+        "calibrated_q": [
+          0.26646908830798527
+        ],
+        "original": {
+          "mse": 0.5013310380579091,
+          "common_error": 0.7080473416784425,
+          "common_mse": 0.5013310380579091,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.1401991735652934,
+          "common_error": 0.37443180095351597,
+          "common_mse": 0.1401991735652934,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 28,
+        "rows": 1,
+        "options": [
+          0
+        ],
+        "kinds": [
+          "world"
+        ],
+        "target": [
+          -0.2716910243034363
+        ],
+        "original_q": [
+          -0.04124077837349294
+        ],
+        "calibrated_q": [
+          0.09658839735830121
+        ],
+        "original": {
+          "mse": 0.05310731584917137,
+          "common_error": 0.23045024592994334,
+          "common_mse": 0.05310731584917137,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.13562973241950385,
+          "common_error": 0.3682794216617375,
+          "common_mse": 0.13562973241950385,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 29,
+        "rows": 1,
+        "options": [
+          1
+        ],
+        "kinds": [
+          "world"
+        ],
+        "target": [
+          -0.34554973244667053
+        ],
+        "original_q": [
+          0.012189507930306043
+        ],
+        "calibrated_q": [
+          -0.01910109389103061
+        ],
+        "original": {
+          "mse": 0.12797736410549623,
+          "common_error": 0.3577392403769766,
+          "common_mse": 0.12797736410549623,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.10656871361483085,
+          "common_error": 0.32644863855563994,
+          "common_mse": 0.10656871361483085,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 31,
+        "rows": 1,
+        "options": [
+          0
+        ],
+        "kinds": [
+          "world"
+        ],
+        "target": [
+          0.5808210372924805
+        ],
+        "original_q": [
+          -0.2573259489702977
+        ],
+        "calibrated_q": [
+          -0.10588773532312093
+        ],
+        "original": {
+          "mse": 0.7024903705813776,
+          "common_error": -0.8381469862627782,
+          "common_mse": 0.7024903705813776,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        },
+        "calibrated": {
+          "mse": 0.4715689383872257,
+          "common_error": -0.6867087726156014,
+          "common_mse": 0.4715689383872257,
+          "centered_mse": 0.0,
+          "all_pair_difference_mse": 0.0
+        }
+      },
+      {
+        "revision": 32,
+        "rows": 2,
+        "options": [
+          0,
+          1
+        ],
+        "kinds": [
+          "world",
+          "native"
+        ],
+        "target": [
+          -0.6071751713752747,
+          -0.008863396942615509
+        ],
+        "original_q": [
+          0.1338347067396679,
+          -0.1397244099079722
+        ],
+        "calibrated_q": [
+          0.15481781568154152,
+          -0.042441762020414026
+        ],
+        "original": {
+          "mse": 0.2831101220891206,
+          "common_error": 0.30507443257479294,
+          "common_mse": 0.09307040941083189,
+          "centered_mse": 0.19003971267828876,
+          "all_pair_difference_mse": 0.760158850713155
+        },
+        "calibrated": {
+          "mse": 0.2908804094625336,
+          "common_error": 0.3642073109895088,
+          "common_mse": 0.13264696537820878,
+          "centered_mse": 0.15823344408432477,
+          "all_pair_difference_mse": 0.6329337763372991
+        }
+      },
+      {
+        "revision": 33,
+        "rows": 2,
+        "options": [
+          1,
+          1
+        ],
+        "kinds": [
+          "world",
+          "native"
+        ],
+        "target": [
+          -0.1878117024898529,
+          -0.09504266083240509
+        ],
+        "original_q": [
+          0.0414158420848274,
+          -0.2729564771769555
+        ],
+        "calibrated_q": [
+          -0.005610041642682709,
+          -0.33911442685524035
+        ],
+        "original": {
+          "mse": 0.04209929661900973,
+          "common_error": 0.02565686411506496,
+          "common_mse": 0.000658274676218908,
+          "centered_mse": 0.04144102194279082,
+          "all_pair_difference_mse": 0.16576408777116328
+        },
+        "calibrated": {
+          "mse": 0.046384236092486444,
+          "common_error": -0.030935052587832523,
+          "common_mse": 0.0009569774786119637,
+          "centered_mse": 0.04542725861387448,
+          "all_pair_difference_mse": 0.1817090344554979
+        }
+      },
+      {
+        "revision": 34,
+        "rows": 2,
+        "options": [
+          1,
+          0
+        ],
+        "kinds": [
+          "native",
+          "native"
+        ],
+        "target": [
+          0.023426488041877747,
+          0.022196657955646515
+        ],
+        "original_q": [
+          -0.04848382238557747,
+          -0.05964902111942649
+        ],
+        "calibrated_q": [
+          -0.05462945874539301,
+          0.06798463190611354
+        ],
+        "original": {
+          "mse": 0.0059349039645164095,
+          "common_error": -0.07687799475126411,
+          "common_mse": 0.005910226076975392,
+          "centered_mse": 2.467788754101665e-05,
+          "all_pair_difference_mse": 9.87115501640666e-05
+        },
+        "calibrated": {
+          "mse": 0.004094634693672946,
+          "common_error": -0.01613398641840187,
+          "common_mse": 0.00026030551774917606,
+          "centered_mse": 0.0038343291759237695,
+          "all_pair_difference_mse": 0.015337316703695078
+        }
+      },
+      {
+        "revision": 35,
+        "rows": 2,
+        "options": [
+          1,
+          1
+        ],
+        "kinds": [
+          "world",
+          "native"
+        ],
+        "target": [
+          0.24457380175590515,
+          0.15568271279335022
+        ],
+        "original_q": [
+          -0.1585057223548747,
+          -0.04727474532841436
+        ],
+        "calibrated_q": [
+          0.05910789479200472,
+          -0.08412462831427671
+        ],
+        "original": {
+          "mse": 0.1018324162823103,
+          "common_error": -0.3030184911162722,
+          "common_mse": 0.09182020595838235,
+          "centered_mse": 0.010012210323927946,
+          "all_pair_difference_mse": 0.04004884129571178
+        },
+        "calibrated": {
+          "mse": 0.04595258174752595,
+          "common_error": -0.21263662403576367,
+          "common_mse": 0.04521433388132671,
+          "centered_mse": 0.000738247866199241,
+          "all_pair_difference_mse": 0.002952991464796964
+        }
+      },
+      {
+        "revision": 36,
+        "rows": 2,
+        "options": [
+          2,
+          0
+        ],
+        "kinds": [
+          "world",
+          "native"
+        ],
+        "target": [
+          0.24441085755825043,
+          -0.08413363248109818
+        ],
+        "original_q": [
+          0.6434411809422542,
+          -0.18907223088502167
+        ],
+        "calibrated_q": [
+          0.28425104034269644,
+          -0.08713705010323436
+        ],
+        "original": {
+          "mse": 0.08511865420746129,
+          "common_error": 0.14704586249004015,
+          "common_mse": 0.021622485675439795,
+          "centered_mse": 0.06349616853202149,
+          "all_pair_difference_mse": 0.25398467412808595
+        },
+        "calibrated": {
+          "mse": 0.0007981303408555132,
+          "common_error": 0.018418382581154913,
+          "common_mse": 0.0003392368169057907,
+          "centered_mse": 0.00045889352394972246,
+          "all_pair_difference_mse": 0.0018355740957988898
+        }
+      },
+      {
+        "revision": 38,
+        "rows": 3,
+        "options": [
+          0,
+          0,
+          1
+        ],
+        "kinds": [
+          "world",
+          "native",
+          "native"
+        ],
+        "target": [
+          0.11694982647895813,
+          -0.2105356752872467,
+          -0.19680622220039368
+        ],
+        "original_q": [
+          -0.19523332480909872,
+          -0.14045838214971296,
+          -0.14545073364132222
+        ],
+        "calibrated_q": [
+          -0.16464681490936078,
+          -0.03379632439038943,
+          -0.14575712334059499
+        ],
+        "original": {
+          "mse": 0.035002177722255515,
+          "common_error": -0.06358345653048388,
+          "common_mse": 0.004042855944363932,
+          "centered_mse": 0.030959321777891582,
+          "all_pair_difference_mse": 0.09287796533367475
+        },
+        "calibrated": {
+          "mse": 0.037713159030340476,
+          "common_error": -0.017936063877220982,
+          "common_mse": 0.0003217023874077514,
+          "centered_mse": 0.03739145664293273,
+          "all_pair_difference_mse": 0.1121743699287982
+        }
+      },
+      {
+        "revision": 39,
+        "rows": 2,
+        "options": [
+          0,
+          2
+        ],
+        "kinds": [
+          "world",
+          "native"
+        ],
+        "target": [
+          0.15165448188781738,
+          -0.038904137909412384
+        ],
+        "original_q": [
+          0.03712512095540932,
+          0.6916757224155532
+        ],
+        "calibrated_q": [
+          0.12230363457593929,
+          0.42459309366511205
+        ],
+        "original": {
+          "mse": 0.273431953414016,
+          "common_error": 0.30802524969627876,
+          "common_mse": 0.09487955445045487,
+          "centered_mse": 0.17855239896356112,
+          "all_pair_difference_mse": 0.7142095958542445
+        },
+        "calibrated": {
+          "mse": 0.10784557795758676,
+          "common_error": 0.21707319213132317,
+          "common_mse": 0.047120770742082346,
+          "centered_mse": 0.06072480721550441,
+          "all_pair_difference_mse": 0.24289922886201765
+        }
+      },
+      {
+        "revision": 40,
+        "rows": 3,
+        "options": [
+          1,
+          0,
+          1
+        ],
+        "kinds": [
+          "world",
+          "native",
+          "native"
+        ],
+        "target": [
+          -0.1194252073764801,
+          0.014201700687408447,
+          0.016433708369731903
+        ],
+        "original_q": [
+          0.09793893881659033,
+          0.18868735656874613,
+          -0.012267976655826018
+        ],
+        "calibrated_q": [
+          -0.020606383077079723,
+          0.21970874333198304,
+          -0.13270650862404731
+        ],
+        "original": {
+          "mse": 0.026172067627296475,
+          "common_error": 0.12104937234961673,
+          "common_mse": 0.014652950546236155,
+          "centered_mse": 0.011519117081060315,
+          "all_pair_difference_mse": 0.03455735124318095
+        },
+        "calibrated": {
+          "mse": 0.0247470363124621,
+          "common_error": 0.051728549983398577,
+          "common_mse": 0.002675842883384965,
+          "centered_mse": 0.022071193429077138,
+          "all_pair_difference_mse": 0.06621358028723141
+        }
+      },
+      {
+        "revision": 41,
+        "rows": 2,
+        "options": [
+          0,
+          1
+        ],
+        "kinds": [
+          "world",
+          "native"
+        ],
+        "target": [
+          -0.3376280665397644,
+          -0.11991538107395172
+        ],
+        "original_q": [
+          -0.11193553576571258,
+          0.007947641981717268
+        ],
+        "calibrated_q": [
+          0.12485136868710611,
+          -0.1324049684134494
+        ],
+        "original": {
+          "mse": 0.03364303555606543,
+          "common_error": 0.1767777769148604,
+          "common_mse": 0.031250382410960155,
+          "centered_mse": 0.0023926531451052818,
+          "all_pair_difference_mse": 0.009570612580421127
+        },
+        "calibrated": {
+          "mse": 0.10702160889983804,
+          "common_error": 0.22499492394368642,
+          "common_mse": 0.05062271580042524,
+          "centered_mse": 0.056398893099412796,
+          "all_pair_difference_mse": 0.22559557239765118
+        }
+      },
+      {
+        "revision": 42,
+        "rows": 5,
+        "options": [
+          0,
+          1,
+          1,
+          1,
+          0
+        ],
+        "kinds": [
+          "world",
+          "native",
+          "native",
+          "native",
+          "native"
+        ],
+        "target": [
+          -0.1936127245426178,
+          -0.1521790325641632,
+          -0.13919353485107422,
+          -0.12877735495567322,
+          1.1355111598968506
+        ],
+        "original_q": [
+          0.04602576290803384,
+          -0.014323971721477147,
+          -0.05096336128415713,
+          0.013405973841927654,
+          -0.31602473053629376
+        ],
+        "calibrated_q": [
+          0.03496876642365698,
+          -0.020480598244593213,
+          -0.05849307564479718,
+          0.0328959859177516,
+          -0.09686028844556749
+        ],
+        "original": {
+          "mse": 0.4422775452397466,
+          "common_error": -0.16872576795505773,
+          "common_mse": 0.028468384772023986,
+          "centered_mse": 0.4138091604677226,
+          "all_pair_difference_mse": 1.0345229011693065
+        },
+        "calibrated": {
+          "mse": 0.32419683911389174,
+          "common_error": -0.12594354459537427,
+          "common_mse": 0.015861776425247026,
+          "centered_mse": 0.30833506268864475,
+          "all_pair_difference_mse": 0.7708376567216119
+        }
+      }
+    ]
+  },
+  "world_calls": 0,
+  "optimizer_updates": 0
+}

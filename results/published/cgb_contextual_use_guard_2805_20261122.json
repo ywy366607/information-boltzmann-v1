@@ -1,0 +1,997 @@
+{
+  "method": "mix original and optional one-cut predictive distributions, equal weights initially; online log-likelihood weights, hold action and realized history fixed",
+  "candidate": "cut the present support with lowest pre-arrival stored mean below -0.015",
+  "latent_dimensions": 128,
+  "early": {
+    "size": 128,
+    "n_changed": 4,
+    "help": 3,
+    "hurt": 1,
+    "cut_delta": 0.0011371774598956108,
+    "mixture_delta": 0.0010948711139202162,
+    "worst_cumulative_gap": 0.0054152123481245725,
+    "largest_observed_baseline_deficit": 0.0
+  },
+  "later": {
+    "size": 64,
+    "n_changed": 3,
+    "help": 2,
+    "hurt": 1,
+    "cut_delta": 0.006099097430706024,
+    "mixture_delta": 0.0060144847377665775,
+    "worst_cumulative_gap": 0.0054152123481245725,
+    "largest_observed_baseline_deficit": 0.0
+  },
+  "continuous": {
+    "size": 192,
+    "n_changed": 7,
+    "help": 5,
+    "hurt": 2,
+    "cut_delta": 0.002791150783499082,
+    "mixture_delta": 0.0027629465525192665,
+    "worst_cumulative_gap": 0.0054152123481245725,
+    "largest_observed_baseline_deficit": 0.0
+  },
+  "events": [
+    {
+      "cycle": 2614,
+      "episode": "episode:1650",
+      "cut_score_delta": 0.0005840063095092773
+    },
+    {
+      "cycle": 2615,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2616,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2617,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2618,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2619,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2620,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2621,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2622,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2623,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2624,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2625,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2626,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2627,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2628,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2629,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2630,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2631,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2632,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2633,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2634,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2635,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2636,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2637,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2638,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2639,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2640,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2641,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2642,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2643,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2644,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2645,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2646,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2647,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2648,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2649,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2650,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2651,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2652,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2653,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2654,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2655,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2656,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2657,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2658,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2659,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2660,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2661,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2662,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2663,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2664,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2665,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2666,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2667,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2668,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2669,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2670,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2671,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2672,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2673,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2674,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2675,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2676,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2677,
+      "episode": "episode:2363",
+      "cut_score_delta": 0.08292865753173828
+    },
+    {
+      "cycle": 2678,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2679,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2680,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2681,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2682,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2683,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2684,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2685,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2686,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2687,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2688,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2689,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2690,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2691,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2692,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2693,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2694,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2695,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2696,
+      "episode": "episode:1650",
+      "cut_score_delta": 0.0637749433517456
+    },
+    {
+      "cycle": 2697,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2698,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2699,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2700,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2701,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2702,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2703,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2704,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2705,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2706,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2707,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2708,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2709,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2710,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2711,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2712,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2713,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2714,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2715,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2716,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2717,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2718,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2719,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2720,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2721,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2722,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2723,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2724,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2725,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2726,
+      "episode": "episode:1974",
+      "cut_score_delta": -0.0017288923263549805
+    },
+    {
+      "cycle": 2727,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2728,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2729,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2730,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2731,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2732,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2733,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2734,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2735,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2736,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2737,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2738,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2739,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2740,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2741,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2742,
+      "episode": "episode:1650",
+      "cut_score_delta": 0.17421627044677734
+    },
+    {
+      "cycle": 2743,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2744,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2745,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2746,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2747,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2748,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2749,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2750,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2751,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2752,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2753,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2754,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2755,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2756,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2757,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2758,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2759,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2760,
+      "episode": "episode:1650",
+      "cut_score_delta": -0.03289985656738281
+    },
+    {
+      "cycle": 2761,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2762,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2763,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2764,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2765,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2766,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2767,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2768,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2769,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2770,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2771,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2772,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2773,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2774,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2775,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2776,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2777,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2778,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2779,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2780,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2781,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2782,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2783,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2784,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2785,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2786,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2787,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2788,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2789,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2790,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2791,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2792,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2793,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2794,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2795,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2796,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2797,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2798,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2799,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2800,
+      "episode": "episode:267",
+      "cut_score_delta": 0.24902582168579102
+    },
+    {
+      "cycle": 2801,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2802,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2803,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2804,
+      "episode": null,
+      "cut_score_delta": 0.0
+    },
+    {
+      "cycle": 2805,
+      "episode": null,
+      "cut_score_delta": 0.0
+    }
+  ]
+}

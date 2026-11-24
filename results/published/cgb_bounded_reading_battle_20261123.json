@@ -1,0 +1,3145 @@
+{
+  "schema": 1,
+  "source": "E:\\mengli-wallclock-10min-20261123\\strict_10min\\body\\last.pt.gz",
+  "source_sha256": "1a848983905e07768dfe0e24f3720959a877b472a15aa765955f1f48213f11b3",
+  "source_cycle": 2897,
+  "budget_seconds": 600,
+  "fresh_text_spec": {
+    "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+    "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+    "starts": [
+      4096,
+      98304,
+      155648,
+      221184
+    ],
+    "bytes_per_segment": 2048,
+    "total_scored_bytes": 8192
+  },
+  "classic_text_spec": {
+    "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+    "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+    "starts": [
+      0,
+      95629,
+      191258,
+      286887
+    ],
+    "bytes_per_segment": 2048,
+    "total_scored_bytes": 8192
+  },
+  "code_manifest": {
+    "scripts/ib_local/bounded_reading_option.py": "5f97a2c1d1b2f40e267403a642deb9065720450d7f22ddf5822f8a970a6e2bae",
+    "scripts/ib_local/world_learning_cycle.py": "7c28ce9edc82b5a9d6ef689a236e8fe447e2e575a9be1328e17c0f543bb6e865",
+    "scripts/ib_local/navigation_gain_units.py": "d0a4ca1d4b8812acf0f519f9044e61d07e6ffe4b91865f953c57460daf9d3c59",
+    "scripts/ib_local/run_causal_water_reply.py": "5fe8b33cc0adf3d17646bc74c54eb654be0177567676c58e5349b51b37503402",
+    "scripts/ib_local/run_mother_continuation.py": "f72500b6b235013a3a35e666347e54d6a05ed9b3c7f343e350aa2e2d3dd4c331",
+    "scripts/run_native_preview_restore_comparison.py": "67bcef69b5ad8bac8f57eeb361463ea9403f83b24c871fb8c7ebc3c417f636e3",
+    "scripts/ib_local/mother_checkpoint.py": "3a1ef0640ed261503ebdc71ff405971d0544ff5bfa9eb2f8ccf5f0aed7006845",
+    "scripts/run_native_throughput_worker.py": "4acba052c2ea1fcf164d458bd5724f8bd9fffb076ba80501b858eb4e8c27971e",
+    "scripts/run_bounded_reading_battle.py": "af51d6f4810dc99ff6ff3d5ceed4abad33c7a9f408e0b62ab19fb3fac8c4f575",
+    "scripts/run_equal_wallclock_rhythm_10min.py": "a359b813a96fa818bdc2f86b2c082a01b42902a9fe387dd00feb210275a4a86a",
+    "lean/CGBAxioms/reviews/BoundedReadingOption.lean": "fd53dac24ae7446626738e71b06f2c598c2f20f91df46df91fbd8143187457d4"
+  },
+  "origin": {
+    "checkpoint": "E:\\mengli-wallclock-10min-20261123\\strict_10min\\body\\last.pt.gz",
+    "cycle": 2897,
+    "load_seconds": 15.923,
+    "fresh_8192_nll": {
+      "mean_nll": 1.6998670734465122,
+      "segment_nll": [
+        1.7807492166757584,
+        1.782004714012146,
+        1.6234149932861328,
+        1.6132993698120117
+      ]
+    },
+    "classic_8192_nll": {
+      "mean_nll": 1.5826678536832333,
+      "segment_nll": [
+        1.384569875895977,
+        1.8151526227593422,
+        1.5456212535500526,
+        1.5853276625275612
+      ]
+    },
+    "combined_16384_mean_nll": 1.6412674635648727,
+    "fresh_64_facts": {
+      "mean_score": -1.1219594003632665,
+      "mean_mse": 0.7657257358077914
+    },
+    "scale_diagnostics": {
+      "relation_ridge": 0.10025961697101593,
+      "relation_ridge_gate": 0.46949994564056396,
+      "relation_ridge_lr": 0.0003,
+      "memory_temperature": 0.20093487203121185,
+      "memory_temperature_gate": 0.0,
+      "memory_temperature_lr": 0.0003
+    },
+    "optimizer_mean_gate": 0.06334263426422705,
+    "optimizer_alive_frac": 0.24699767192699384,
+    "wiener_gate_all_groups": true,
+    "split_theta": true,
+    "trainable_missing_from_optimizer": [],
+    "has_phase_coupled_rhythm": false,
+    "reading_option_state": null,
+    "reading_option_spec": null,
+    "pending_duration_blocks": 1,
+    "active_reading_option": false,
+    "restored_phase_rhythm_cycles": null
+  },
+  "arms": {
+    "strict_600s": {
+      "summary": {
+        "external_cycles": 36,
+        "total_events": 216,
+        "updates": 144,
+        "external_bytes": 34560,
+        "life_seconds": 607.6920491000055,
+        "seconds_per_cycle": 16.880334697222377,
+        "bytes_per_second": 56.870910276320885,
+        "checkpoint_commit_seconds": 2.574700199998915,
+        "checkpoint_sha256": "5368fb4ef448b9249c87c86e22d7faa836a91e0e507a4a698ff49b502d9d08d0",
+        "mean_metal_g": -0.007867012897299396,
+        "pre_outcome_gain_mse": 0.029478469637811984,
+        "online_read_use_mean_log_score": -1.119124016414086,
+        "phase_regimes": {},
+        "own_64_old_facts": [
+          {
+            "external": 0,
+            "cycle": 2897,
+            "mean_score": -1.1219594003632665,
+            "mean_mse": 0.7657257358077914
+          },
+          {
+            "external": 36,
+            "cycle": 2933,
+            "mean_score": -1.0312234312295914,
+            "mean_mse": 0.6570531369652599
+          }
+        ]
+      },
+      "audit": {
+        "checkpoint": "E:\\mengli-bounded-reading-20261123\\strict_600s\\body\\last.pt.gz",
+        "cycle": 2933,
+        "load_seconds": 18.188,
+        "fresh_8192_nll": {
+          "mean_nll": 1.6995326075702906,
+          "segment_nll": [
+            1.776137761771679,
+            1.7835053727030754,
+            1.6176444813609123,
+            1.6208428144454956
+          ]
+        },
+        "classic_8192_nll": {
+          "mean_nll": 1.5860479101538658,
+          "segment_nll": [
+            1.3888372480869293,
+            1.8236791864037514,
+            1.5279515460133553,
+            1.6037236601114273
+          ]
+        },
+        "combined_16384_mean_nll": 1.6427902588620782,
+        "fresh_64_facts": {
+          "mean_score": -1.0312234312295914,
+          "mean_mse": 0.6570531369652599
+        },
+        "scale_diagnostics": {
+          "relation_ridge": 0.10065362602472305,
+          "relation_ridge_gate": 0.0,
+          "relation_ridge_lr": 0.0003,
+          "memory_temperature": 0.20084714889526367,
+          "memory_temperature_gate": 0.42079952359199524,
+          "memory_temperature_lr": 0.0003
+        },
+        "optimizer_mean_gate": 0.14281675220695667,
+        "optimizer_alive_frac": 0.6150860296324984,
+        "wiener_gate_all_groups": true,
+        "split_theta": true,
+        "trainable_missing_from_optimizer": [],
+        "has_phase_coupled_rhythm": false,
+        "reading_option_state": null,
+        "reading_option_spec": null,
+        "pending_duration_blocks": 1,
+        "active_reading_option": false,
+        "restored_phase_rhythm_cycles": null
+      },
+      "fresh_nll_improvement": 0.0003344658762216568,
+      "classic_nll_improvement": -0.003380056470632553,
+      "old_fact_score_improvement": 0.0907359691336751,
+      "option_receipts": []
+    },
+    "option4_600s": {
+      "summary": {
+        "external_cycles": 22,
+        "total_events": 324,
+        "updates": 220,
+        "external_bytes": 84480,
+        "life_seconds": 628.8164319999996,
+        "seconds_per_cycle": 28.582565090909075,
+        "bytes_per_second": 134.34763422340092,
+        "checkpoint_commit_seconds": 3.209318599998369,
+        "checkpoint_sha256": "51bc1073527b2044bd59d6f7be49cb3ddcd5e135ead2c2f520075e9b325438a8",
+        "mean_metal_g": 0.0007189292122017254,
+        "pre_outcome_gain_mse": 0.014410134002760016,
+        "online_read_use_mean_log_score": -1.2552746713838794,
+        "phase_regimes": {},
+        "own_64_old_facts": [
+          {
+            "external": 0,
+            "cycle": 2897,
+            "mean_score": -1.1219594003632665,
+            "mean_mse": 0.7657257358077914
+          },
+          {
+            "external": 22,
+            "cycle": 2919,
+            "mean_score": -1.2886278415098786,
+            "mean_mse": 1.019746678415686
+          }
+        ]
+      },
+      "audit": {
+        "checkpoint": "E:\\mengli-bounded-reading-20261123\\option4_600s\\body\\last.pt.gz",
+        "cycle": 2919,
+        "load_seconds": 15.638,
+        "fresh_8192_nll": {
+          "mean_nll": 1.7940364312380552,
+          "segment_nll": [
+            1.8653658851981163,
+            1.8961743637919426,
+            1.7245416194200516,
+            1.6900638565421104
+          ]
+        },
+        "classic_8192_nll": {
+          "mean_nll": 1.6569442581385374,
+          "segment_nll": [
+            1.4352683871984482,
+            1.9350240528583527,
+            1.6051846593618393,
+            1.6522999331355095
+          ]
+        },
+        "combined_16384_mean_nll": 1.7254903446882963,
+        "fresh_64_facts": {
+          "mean_score": -1.2886278415098786,
+          "mean_mse": 1.019746678415686
+        },
+        "scale_diagnostics": {
+          "relation_ridge": 0.10030913352966309,
+          "relation_ridge_gate": 0.6433866024017334,
+          "relation_ridge_lr": 0.0003,
+          "memory_temperature": 0.20118670165538788,
+          "memory_temperature_gate": 0.5529142022132874,
+          "memory_temperature_lr": 0.0003
+        },
+        "optimizer_mean_gate": 0.3145220316537194,
+        "optimizer_alive_frac": 0.7996459406827108,
+        "wiener_gate_all_groups": true,
+        "split_theta": true,
+        "trainable_missing_from_optimizer": [],
+        "has_phase_coupled_rhythm": false,
+        "reading_option_state": {
+          "options": 22,
+          "blocks": 88,
+          "surprise_ema": 1.4122209549065388,
+          "terminations": {
+            "budget": 22
+          },
+          "last": {
+            "blocks": 4,
+            "block_nll": [
+              1.59335458278656,
+              1.509467601776123,
+              1.6139308214187622,
+              1.407470464706421
+            ],
+            "world_blocks": [
+              {
+                "start": 26454878,
+                "source": "text",
+                "provider_calls": 0,
+                "response_previously_seen_bytes": 0,
+                "holdout_previously_seen_bytes": 0
+              },
+              {
+                "start": 26455838,
+                "source": "text",
+                "provider_calls": 0,
+                "response_previously_seen_bytes": 0,
+                "holdout_previously_seen_bytes": 0
+              },
+              {
+                "start": 26456798,
+                "source": "text",
+                "provider_calls": 0,
+                "response_previously_seen_bytes": 0,
+                "holdout_previously_seen_bytes": 0
+              },
+              {
+                "start": 26457758,
+                "source": "text",
+                "provider_calls": 0,
+                "response_previously_seen_bytes": 0,
+                "holdout_previously_seen_bytes": 0
+              }
+            ],
+            "unknown_id": "unknown:1982",
+            "unknown_version": 1,
+            "baseline": 1.3531438952586525,
+            "stop": "budget",
+            "workset_refreshes": [
+              {
+                "valid": 8,
+                "retained": 0,
+                "slots": [
+                  2658,
+                  2131,
+                  2388,
+                  2566,
+                  1972,
+                  2156,
+                  2154,
+                  2370
+                ],
+                "versions": [
+                  1,
+                  1,
+                  1,
+                  1,
+                  2,
+                  1,
+                  2,
+                  1
+                ]
+              },
+              {
+                "valid": 8,
+                "retained": 1,
+                "slots": [
+                  2658,
+                  1427,
+                  1396,
+                  1403,
+                  1877,
+                  1274,
+                  1699,
+                  1643
+                ],
+                "versions": [
+                  1,
+                  1,
+                  1,
+                  2,
+                  2,
+                  1,
+                  2,
+                  1
+                ]
+              },
+              {
+                "valid": 8,
+                "retained": 0,
+                "slots": [
+                  1677,
+                  2197,
+                  1896,
+                  2243,
+                  2641,
+                  1866,
+                  1902,
+                  2661
+                ],
+                "versions": [
+                  1,
+                  2,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ]
+              }
+            ],
+            "max_blocks": 4,
+            "external_bytes": 3840,
+            "language_updates": 8,
+            "native_plannings": 1,
+            "action_settlements": 1,
+            "proposals": 4,
+            "terminal_gain_discount": 0.5120000000000001,
+            "bootstrap_discount": 0.4096000000000001
+          }
+        },
+        "reading_option_spec": {
+          "schema": 1,
+          "max_blocks": 4,
+          "surprise_excess": 0.5
+        },
+        "pending_duration_blocks": 4,
+        "active_reading_option": false,
+        "restored_phase_rhythm_cycles": null
+      },
+      "fresh_nll_improvement": -0.094169357791543,
+      "classic_nll_improvement": -0.07427640445530415,
+      "old_fact_score_improvement": -0.16666844114661217,
+      "option_receipts": [
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.4430378675460815,
+            1.6185302734375,
+            1.5047907829284668,
+            1.4480708837509155
+          ],
+          "world_blocks": [
+            {
+              "start": 8096408,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 8097368,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 8098328,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 8099288,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1971",
+          "unknown_version": 0,
+          "baseline": 1.615644097328186,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2523,
+                2257,
+                2632,
+                2262,
+                2327,
+                2574,
+                2252,
+                38
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2626,
+                2624,
+                2279,
+                2404,
+                2259,
+                2443,
+                2345,
+                2401
+              ],
+              "versions": [
+                1,
+                1,
+                2,
+                1,
+                2,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2395,
+                2368,
+                2417,
+                2495,
+                2234,
+                2496,
+                2233,
+                2342
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.484216332435608,
+            1.5356100797653198,
+            1.6281641721725464,
+            1.6497446298599243
+          ],
+          "world_blocks": [
+            {
+              "start": 8100248,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 8101208,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 8102168,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 8103128,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1539",
+          "unknown_version": 3,
+          "baseline": 1.5765607637882233,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2614,
+                2264,
+                2549,
+                2565,
+                2625,
+                2607,
+                2611,
+                2622
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 2,
+              "slots": [
+                2549,
+                2570,
+                2638,
+                2544,
+                2465,
+                2462,
+                2394,
+                2614
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2270,
+                2547,
+                2242,
+                2302,
+                2497,
+                2587,
+                2272,
+                2386
+              ],
+              "versions": [
+                2,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.5702850818634033,
+            1.5092558860778809,
+            1.6083780527114868,
+            1.6927186250686646
+          ],
+          "world_blocks": [
+            {
+              "start": 11791147,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 11792107,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 11793067,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 11794027,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1831",
+          "unknown_version": 3,
+          "baseline": 1.5784745426985216,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 2,
+              "slots": [
+                2542,
+                2291,
+                2553,
+                2489,
+                2554,
+                2412,
+                2351,
+                1958
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2641,
+                2347,
+                2050,
+                2046,
+                2197,
+                1889,
+                2464,
+                2333
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                2,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2598,
+                2620,
+                2113,
+                2562,
+                2170,
+                2131,
+                2179,
+                2130
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.8285244703292847,
+            1.986046314239502,
+            1.6200815439224243,
+            1.6070225238800049
+          ],
+          "world_blocks": [
+            {
+              "start": 10379582,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 10380542,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 10381502,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 194
+            },
+            {
+              "start": 10382462,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 480,
+              "holdout_previously_seen_bytes": 286
+            }
+          ],
+          "unknown_id": "unknown:1972",
+          "unknown_version": 0,
+          "baseline": 1.5863865439555511,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 4,
+              "slots": [
+                2500,
+                2324,
+                1695,
+                2342,
+                2609,
+                2563,
+                2150,
+                2374
+              ],
+              "versions": [
+                1,
+                1,
+                2,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 2,
+              "slots": [
+                2417,
+                2342,
+                2609,
+                2430,
+                2234,
+                2425,
+                2233,
+                2495
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2620,
+                2113,
+                2159,
+                2170,
+                2204,
+                2179,
+                2115,
+                1976
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.4039098024368286,
+            1.472411036491394,
+            1.8156521320343018,
+            1.4735300540924072
+          ],
+          "world_blocks": [
+            {
+              "start": 10383422,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 10384382,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 10385342,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 10386302,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1973",
+          "unknown_version": 0,
+          "baseline": 1.6415069881706605,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2615,
+                2418,
+                2546,
+                2616,
+                2409,
+                2624,
+                2279,
+                2501
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2639,
+                2366,
+                2305,
+                2509,
+                2249,
+                2486,
+                1888,
+                2198
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2605,
+                2370,
+                2571,
+                2627,
+                2454,
+                2269,
+                2268,
+                2472
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.54490065574646,
+            1.790712594985962,
+            1.4229105710983276,
+            1.2564544677734375
+          ],
+          "world_blocks": [
+            {
+              "start": 10387262,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 10388222,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 10389182,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 10390142,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1974",
+          "unknown_version": 0,
+          "baseline": 1.609364750784546,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2537,
+                2407,
+                1859,
+                2003,
+                2047,
+                2644,
+                1871,
+                2237
+              ],
+              "versions": [
+                1,
+                1,
+                2,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2576,
+                2194,
+                2643,
+                2381,
+                2399,
+                2390,
+                2314,
+                2315
+              ],
+              "versions": [
+                1,
+                2,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2566,
+                2336,
+                2307,
+                2195,
+                2629,
+                2349,
+                2179,
+                2131
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.297437071800232,
+            1.435592770576477,
+            1.5838284492492676,
+            1.5034736394882202
+          ],
+          "world_blocks": [
+            {
+              "start": 10391102,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 10392062,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 10393022,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 10393982,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1851",
+          "unknown_version": 1,
+          "baseline": 1.5672825891637139,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 6,
+              "slots": [
+                2399,
+                2315,
+                2314,
+                2643,
+                2381,
+                1644,
+                2630,
+                2576
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2647,
+                2635,
+                2270,
+                2423,
+                2242,
+                2260,
+                2427,
+                2587
+              ],
+              "versions": [
+                1,
+                1,
+                2,
+                1,
+                1,
+                2,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2374,
+                2342,
+                2569,
+                2609,
+                2296,
+                2559,
+                2563,
+                2500
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.5008562803268433,
+            1.3980214595794678,
+            1.4443590641021729,
+            1.5324865579605103
+          ],
+          "world_blocks": [
+            {
+              "start": 10394942,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 10395902,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 10396862,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 10397822,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1975",
+          "unknown_version": 0,
+          "baseline": 1.5320522080825003,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2646,
+                2634,
+                2614,
+                2625,
+                1970,
+                2520,
+                2461,
+                2565
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2308,
+                1919,
+                2335,
+                2172,
+                2377,
+                2458,
+                2638,
+                2451
+              ],
+              "versions": [
+                2,
+                1,
+                2,
+                1,
+                2,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 1,
+              "slots": [
+                2623,
+                2451,
+                2448,
+                2392,
+                1947,
+                2507,
+                2490,
+                2406
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.6128690242767334,
+            1.5013034343719482,
+            1.46194326877594,
+            1.439515471458435
+          ],
+          "world_blocks": [
+            {
+              "start": 22725366,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 22726326,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 22727286,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 22728246,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1976",
+          "unknown_version": 0,
+          "baseline": 1.511072586349939,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2535,
+                2545,
+                2536,
+                2580,
+                2445,
+                1967,
+                2551,
+                2284
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                2,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2644,
+                2443,
+                2271,
+                2098,
+                2404,
+                2423,
+                2025,
+                2259
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2646,
+                1704,
+                1833,
+                1490,
+                1518,
+                2392,
+                2520,
+                1844
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.3811366558074951,
+            1.4318828582763672,
+            1.407249927520752,
+            1.4876047372817993
+          ],
+          "world_blocks": [
+            {
+              "start": 22729206,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 22730166,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 22731126,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 22732086,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1977",
+          "unknown_version": 0,
+          "baseline": 1.5061248952937747,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2444,
+                2592,
+                2289,
+                2317,
+                2380,
+                2450,
+                2648,
+                2550
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                2,
+                1,
+                2
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2580,
+                1967,
+                1986,
+                2096,
+                1689,
+                2151,
+                1699,
+                2155
+              ],
+              "versions": [
+                1,
+                2,
+                1,
+                1,
+                1,
+                1,
+                2,
+                2
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2026,
+                2119,
+                2324,
+                2233,
+                2500,
+                1695,
+                2350,
+                1656
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                2,
+                1,
+                2,
+                1,
+                2
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.6498992443084717,
+            1.5739606618881226,
+            1.5258448123931885,
+            1.4423863887786865
+          ],
+          "world_blocks": [
+            {
+              "start": 22486005,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 22486965,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 22487925,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 22488885,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1840",
+          "unknown_version": 1,
+          "baseline": 1.4802488847360455,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2621,
+                2637,
+                2379,
+                2524,
+                2493,
+                2394,
+                2462,
+                2581
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2614,
+                2625,
+                2650,
+                2646,
+                2565,
+                2634,
+                2377,
+                2298
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                2,
+                2,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2636,
+                2294,
+                2578,
+                2161,
+                2510,
+                2383,
+                2236,
+                2160
+              ],
+              "versions": [
+                1,
+                2,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.7117704153060913,
+            1.7147282361984253,
+            1.4864277839660645,
+            1.5219733715057373
+          ],
+          "world_blocks": [
+            {
+              "start": 21645731,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 21646691,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 21647651,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 21648611,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1978",
+          "unknown_version": 0,
+          "baseline": 1.5005244337916008,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2119,
+                2425,
+                2651,
+                2235,
+                2553,
+                2342,
+                2324,
+                2500
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 1,
+              "slots": [
+                2651,
+                2395,
+                2368,
+                2417,
+                2474,
+                2496,
+                2233,
+                2495
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2646,
+                2634,
+                2392,
+                2614,
+                2448,
+                1851,
+                2603,
+                1704
+              ],
+              "versions": [
+                1,
+                2,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.6407434940338135,
+            1.4020336866378784,
+            1.5177459716796875,
+            1.5830665826797485
+          ],
+          "world_blocks": [
+            {
+              "start": 21649571,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 21650531,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 21651491,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 21652451,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1469",
+          "unknown_version": 4,
+          "baseline": 1.5341509691260757,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2501,
+                1843,
+                2418,
+                1756,
+                2616,
+                1825,
+                2323,
+                1971
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                1799,
+                1945,
+                1624,
+                1789,
+                1778,
+                1867,
+                2148,
+                1770
+              ],
+              "versions": [
+                1,
+                1,
+                2,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2409,
+                2615,
+                2546,
+                2628,
+                2418,
+                2184,
+                2391,
+                2616
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.4559355974197388,
+            1.5417237281799316,
+            1.515489935874939,
+            1.7357693910598755
+          ],
+          "world_blocks": [
+            {
+              "start": 21653411,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 21654371,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 21655331,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 21656291,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1979",
+          "unknown_version": 0,
+          "baseline": 1.5346351758954981,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2620,
+                2130,
+                2159,
+                2204,
+                2113,
+                2170,
+                2653,
+                2492
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2317,
+                2592,
+                2444,
+                2380,
+                2481,
+                1702,
+                2222,
+                1920
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2644,
+                2407,
+                2259,
+                1742,
+                1913,
+                2279,
+                1712,
+                2624
+              ],
+              "versions": [
+                1,
+                1,
+                2,
+                1,
+                1,
+                2,
+                1,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.7200900316238403,
+            1.7343353033065796,
+            1.6403934955596924,
+            1.7598201036453247
+          ],
+          "world_blocks": [
+            {
+              "start": 21657251,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 21658211,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 21659171,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 21660131,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1293",
+          "unknown_version": 6,
+          "baseline": 1.5478624992742418,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2626,
+                2404,
+                2271,
+                2443,
+                2000,
+                2297,
+                2114,
+                2423
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2636,
+                2578,
+                2161,
+                2403,
+                2219,
+                2383,
+                2510,
+                2402
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2638,
+                2335,
+                2650,
+                23,
+                2598,
+                1987,
+                30,
+                2010
+              ],
+              "versions": [
+                1,
+                2,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.5211423635482788,
+            1.885158658027649,
+            1.6422278881072998,
+            1.844968318939209
+          ],
+          "world_blocks": [
+            {
+              "start": 21661091,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 21662051,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 307,
+              "holdout_previously_seen_bytes": 480
+            },
+            {
+              "start": 21663011,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 480,
+              "holdout_previously_seen_bytes": 480
+            },
+            {
+              "start": 21663971,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 173,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1980",
+          "unknown_version": 0,
+          "baseline": 1.6050457336119457,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2653,
+                2115,
+                2620,
+                2170,
+                2159,
+                1937,
+                2113,
+                2471
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2354,
+                2630,
+                2436,
+                2020,
+                2314,
+                2576,
+                1701,
+                1879
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 3,
+              "slots": [
+                2630,
+                2441,
+                2436,
+                2511,
+                2360,
+                2076,
+                1923,
+                2314
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.7037651538848877,
+            1.4340835809707642,
+            1.4749140739440918,
+            1.5019861459732056
+          ],
+          "world_blocks": [
+            {
+              "start": 22257719,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 22258679,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 22259639,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 22260599,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 427
+            }
+          ],
+          "unknown_id": "unknown:1981",
+          "unknown_version": 0,
+          "baseline": 1.6489569772492845,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2650,
+                24,
+                29,
+                31,
+                27,
+                30,
+                32,
+                23
+              ],
+              "versions": [
+                1,
+                1,
+                3,
+                3,
+                2,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                1908,
+                1721,
+                1717,
+                2065,
+                1837,
+                1205,
+                1797,
+                1801
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2441,
+                2630,
+                2436,
+                2360,
+                2511,
+                2469,
+                2515,
+                1923
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.6834828853607178,
+            1.4585365056991577,
+            1.3640021085739136,
+            1.310459017753601
+          ],
+          "world_blocks": [
+            {
+              "start": 28011107,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 28012067,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 28013027,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 28013987,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1469",
+          "unknown_version": 5,
+          "baseline": 1.6051868038023849,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2648,
+                2222,
+                1894,
+                2289,
+                1773,
+                2444,
+                2550,
+                2192
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2189,
+                2195,
+                2629,
+                2133,
+                1892,
+                2031,
+                2649,
+                2652
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                1972,
+                1626,
+                1630,
+                1855,
+                2268,
+                2094,
+                2269,
+                1665
+              ],
+              "versions": [
+                2,
+                2,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.5773974657058716,
+            1.6261645555496216,
+            1.3935062885284424,
+            1.41543447971344
+          ],
+          "world_blocks": [
+            {
+              "start": 28077778,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 28078738,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 28079698,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 28080658,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1982",
+          "unknown_version": 0,
+          "baseline": 1.5478365128261853,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2657,
+                2655,
+                2119,
+                2102,
+                2185,
+                1928,
+                2026,
+                2060
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                2,
+                2,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 4,
+              "slots": [
+                2657,
+                2026,
+                2060,
+                2059,
+                1811,
+                1807,
+                2061,
+                2102
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                2,
+                1,
+                2,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                1776,
+                2027,
+                1614,
+                1456,
+                2008,
+                2162,
+                2169,
+                1706
+              ],
+              "versions": [
+                1,
+                2,
+                1,
+                1,
+                2,
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.405052900314331,
+            1.5180503129959106,
+            1.4780734777450562,
+            1.4650027751922607
+          ],
+          "world_blocks": [
+            {
+              "start": 28073923,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 28074883,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 28075843,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 28076803,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1983",
+          "unknown_version": 0,
+          "baseline": 1.5292061542536417,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                1624,
+                1799,
+                1867,
+                1778,
+                1945,
+                1567,
+                1981,
+                1694
+              ],
+              "versions": [
+                2,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                1741,
+                2088,
+                1540,
+                1644,
+                1905,
+                1477,
+                1583,
+                1523
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                1801,
+                1205,
+                1440,
+                1717,
+                1392,
+                1266,
+                1462,
+                1146
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.1251839399337769,
+            1.0468355417251587,
+            1.0125091075897217,
+            1.0564912557601929
+          ],
+          "world_blocks": [
+            {
+              "start": 28077763,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 465,
+              "holdout_previously_seen_bytes": 480
+            },
+            {
+              "start": 28078723,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 480,
+              "holdout_previously_seen_bytes": 480
+            },
+            {
+              "start": 28079683,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 480,
+              "holdout_previously_seen_bytes": 480
+            },
+            {
+              "start": 28080643,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 480,
+              "holdout_previously_seen_bytes": 480
+            }
+          ],
+          "unknown_id": "unknown:1984",
+          "unknown_version": 0,
+          "baseline": 1.5082294801076792,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2169,
+                2162,
+                2642,
+                1856,
+                2400,
+                1776,
+                2583,
+                2190
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2655,
+                2657,
+                2119,
+                2093,
+                2235,
+                2150,
+                2185,
+                1928
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2,
+                2
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2644,
+                2259,
+                2443,
+                2279,
+                2404,
+                2626,
+                1933,
+                2654
+              ],
+              "versions": [
+                1,
+                2,
+                1,
+                2,
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        },
+        {
+          "blocks": 4,
+          "block_nll": [
+            1.59335458278656,
+            1.509467601776123,
+            1.6139308214187622,
+            1.407470464706421
+          ],
+          "world_blocks": [
+            {
+              "start": 26454878,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 26455838,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 26456798,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            },
+            {
+              "start": 26457758,
+              "source": "text",
+              "provider_calls": 0,
+              "response_previously_seen_bytes": 0,
+              "holdout_previously_seen_bytes": 0
+            }
+          ],
+          "unknown_id": "unknown:1982",
+          "unknown_version": 1,
+          "baseline": 1.3531438952586525,
+          "stop": "budget",
+          "workset_refreshes": [
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                2658,
+                2131,
+                2388,
+                2566,
+                1972,
+                2156,
+                2154,
+                2370
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                1,
+                2,
+                1,
+                2,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 1,
+              "slots": [
+                2658,
+                1427,
+                1396,
+                1403,
+                1877,
+                1274,
+                1699,
+                1643
+              ],
+              "versions": [
+                1,
+                1,
+                1,
+                2,
+                2,
+                1,
+                2,
+                1
+              ]
+            },
+            {
+              "valid": 8,
+              "retained": 0,
+              "slots": [
+                1677,
+                2197,
+                1896,
+                2243,
+                2641,
+                1866,
+                1902,
+                2661
+              ],
+              "versions": [
+                1,
+                2,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ],
+          "max_blocks": 4,
+          "external_bytes": 3840,
+          "language_updates": 8,
+          "native_plannings": 1,
+          "action_settlements": 1,
+          "proposals": 4,
+          "terminal_gain_discount": 0.5120000000000001,
+          "bootstrap_discount": 0.4096000000000001
+        }
+      ]
+    }
+  },
+  "total_seconds": 1434.013672699999
+}

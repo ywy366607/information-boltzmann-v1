@@ -1,0 +1,368 @@
+{
+  "source_cycle": 277,
+  "rejected": [
+    "packed sample and handover readback: slower in interleaved timings"
+  ],
+  "retained": [
+    "one LU per posterior and hypotheses",
+    "1036 byte pinned decode inputs",
+    "SHA256 while writing actual gzip"
+  ],
+  "total_before_seconds": 19.78530829999363,
+  "target_cycle": 10417,
+  "state_audit": {
+    "schema": 1,
+    "cycle": 278,
+    "same_cycle": true,
+    "equal": {
+      "world": true,
+      "torch_rng": true,
+      "cuda_rng": true,
+      "numpy_rng": true,
+      "python_rng": true
+    },
+    "pending_actor_max_error": 8.58306884765625E-06,
+    "pending_actor_relative_l2": 2.0952658836987005E-07,
+    "scope": "full saved world, RNGs and future delayed actor; zero learning"
+  },
+  "components": {
+    "schema": 1,
+    "cycle": 277,
+    "source_sha256": "e144924ffc91a0caef0deea27ffb7791c6d142d9bd5c6f538b40a22b55b0bcc8",
+    "components": {
+      "factor_seconds": {
+        "before": [
+          0.0014443239999673097,
+          0.001353363999951398,
+          0.0015974640000058571
+        ],
+        "after": [
+          0.0009707949999574339,
+          0.001042849000004935,
+          0.0030871909999405033
+        ],
+        "evidence_rows": 8,
+        "before_median": 0.0014443239999673097,
+        "after_median": 0.001042849000004935,
+        "speedup": 1.3849790333600307
+      },
+      "decode_128_seconds": {
+        "before": [
+          0.6966642000043066,
+          0.6812658999988344,
+          0.8383730999994441
+        ],
+        "after": [
+          0.6512211000008392,
+          0.6506730999972206,
+          0.6470609000025433
+        ],
+        "before_median": 0.6966642000043066,
+        "after_median": 0.6506730999972206,
+        "speedup": 1.0706823441867852
+      },
+      "sample_seconds": {
+        "before": [
+          0.0005758109999806038,
+          0.0004147000000011758,
+          0.000400677000034193
+        ],
+        "after": [
+          0.0007834614999956102,
+          0.0005501074999847333,
+          0.0005039229999965755
+        ],
+        "before_median": 0.0004147000000011758,
+        "after_median": 0.0005501074999847333,
+        "speedup": 0.7538526560948263
+      },
+      "checkpoint_seconds": {
+        "before": [
+          5.2222403999985545,
+          5.0506454999995185,
+          3.803535800005193,
+          3.917767900005856
+        ],
+        "after": [
+          4.315639699998428,
+          5.089685400002054,
+          4.149134699997376,
+          3.614180900003703
+        ],
+        "before_median": 4.484206700002687,
+        "after_median": 4.232387199997902,
+        "speedup": 1.0594982188786768
+      },
+      "checkpoint_hash_valid": true
+    },
+    "optimizer_updates": 0,
+    "main_checkpoint_written": false,
+    "recurrent_unchanged": true
+  },
+  "before": {
+    "arm": "before",
+    "source_cycle": 277,
+    "source_sha256": "e144924ffc91a0caef0deea27ffb7791c6d142d9bd5c6f538b40a22b55b0bcc8",
+    "seconds": 16.461288599995896,
+    "peak_allocated_mib": 2460.1904296875,
+    "optimizer_updates": 4,
+    "choice": "generate",
+    "self_bytes": 17,
+    "external_bytes": 960,
+    "metal_g": 0.03468799591064453,
+    "candidates": [
+      "7a6f6e204567676572732c20616e642064697320e2809320636172652c20426f6c657320677272657920666f72742074616c65206d6f7265206861642076696e672054686572652773207765206520",
+      "7a6f",
+      "7a6f6e204563686f2e2054686579206c69676874696e672c20616e6420656e652070617274732e220a0a4164616d27732061726520746861742074686520696e20616e206561726c7920706f727461696e7374697475726579206c652e636f6d70616e696573206c617374206669766520636f746963616c20e2809373656361",
+      "7a6f6e204563686f2e204974e280997320"
+    ],
+    "replay": {
+      "batched_hits": 1149,
+      "one_byte_fallbacks": 0
+    },
+    "policy_error": 1.4901161193847656E-07,
+    "proposal_error": 1.9073486328125E-06,
+    "main_checkpoint_written": false,
+    "checkpoint_seconds": 3.3240196999977343
+  },
+  "date": "2026-11-16",
+  "total_speedup": 1.070519261438499,
+  "restore_audit": {
+    "schema": 1,
+    "checkpoint": "E:\\cgb_native_body_20261115\\runtime_v2_audit\\optimized_checkpoint\\last.pt.gz",
+    "cycle": 278,
+    "source_sha256": "59d66ba9c2f33b889c7915920dcdf51fd88b448f95f49ff3a429fbedd5c0adde",
+    "optimizer_updates": 0,
+    "world_calls": 0,
+    "trained_field_optimizer_steps": {
+      "key.weight": 190,
+      "bind.weight": 190,
+      "memory_norm.weight": 190,
+      "memory_gate.weight": 190,
+      "memory_gate.bias": 190,
+      "memory_ffn.0.weight": 190,
+      "memory_ffn.2.weight": 190,
+      "read_gate.weight": 190,
+      "read_gate.bias": 190,
+      "null.weight": 190,
+      "null.bias": 190
+    },
+    "graph_logit_max_error": 9.5367431640625E-07,
+    "graph_state_max_error": 9.5367431640625E-07,
+    "live_disabled_graph_max_error": 0.0,
+    "field_logit_effect_l2": 5.2649245262146,
+    "field_gradient_norms": {
+      "key.weight": 0.03727034479379654,
+      "bind.weight": 1.2393746376037598,
+      "memory_norm.weight": 0.0021403005812317133,
+      "memory_gate.weight": 0.009413409046828747,
+      "memory_gate.bias": 0.0007121547823771834,
+      "memory_ffn.0.weight": 0.07719317078590393,
+      "memory_ffn.2.weight": 0.07707270234823227,
+      "read_gate.weight": 0.8852415680885315,
+      "read_gate.bias": 0.1005241796374321,
+      "null.weight": 0.34337538480758667,
+      "null.bias": 0.033343300223350525
+    },
+    "layer_exchange": [
+      {
+        "workspace_residual_rms": 0.020210299640893936,
+        "workspace_write": 0.49329274892807007,
+        "workspace_read_mass": 0.8680652379989624
+      },
+      {
+        "workspace_residual_rms": 0.005012815352529287,
+        "workspace_write": 0.48500314354896545,
+        "workspace_read_mass": 0.7945142388343811
+      },
+      {
+        "workspace_residual_rms": 0.002914503449574113,
+        "workspace_write": 0.46246281266212463,
+        "workspace_read_mass": 0.7302308678627014
+      },
+      {
+        "workspace_residual_rms": 0.0020318026654422283,
+        "workspace_write": 0.476797491312027,
+        "workspace_read_mass": 0.7320640683174133
+      },
+      {
+        "workspace_residual_rms": 0.0010989063885062933,
+        "workspace_write": 0.5191848278045654,
+        "workspace_read_mass": 0.6065208315849304
+      },
+      {
+        "workspace_residual_rms": 0.001218223012983799,
+        "workspace_write": 0.5127940773963928,
+        "workspace_read_mass": 0.6346055269241333
+      },
+      {
+        "workspace_residual_rms": 0.0015853631775826216,
+        "workspace_write": 0.5188853144645691,
+        "workspace_read_mass": 0.6340892910957336
+      },
+      {
+        "workspace_residual_rms": 0.00142879958730191,
+        "workspace_write": 0.5028367638587952,
+        "workspace_read_mass": 0.5959210991859436
+      },
+      {
+        "workspace_residual_rms": 0.001249035936780274,
+        "workspace_write": 0.5383287072181702,
+        "workspace_read_mass": 0.6069732308387756
+      },
+      {
+        "workspace_residual_rms": 0.0016815331764519215,
+        "workspace_write": 0.5329232215881348,
+        "workspace_read_mass": 0.6457074284553528
+      },
+      {
+        "workspace_residual_rms": 0.0015573957934975624,
+        "workspace_write": 0.5333333611488342,
+        "workspace_read_mass": 0.5680409073829651
+      },
+      {
+        "workspace_residual_rms": 0.0016170080052688718,
+        "workspace_write": 0.5110051035881042,
+        "workspace_read_mass": 0.5951880812644958
+      },
+      {
+        "workspace_residual_rms": 0.0024957407731562853,
+        "workspace_write": 0.530039370059967,
+        "workspace_read_mass": 0.6742224097251892
+      },
+      {
+        "workspace_residual_rms": 0.0022101595532149076,
+        "workspace_write": 0.5415088534355164,
+        "workspace_read_mass": 0.6217038035392761
+      },
+      {
+        "workspace_residual_rms": 0.0018493806710466743,
+        "workspace_write": 0.5634278059005737,
+        "workspace_read_mass": 0.6085534691810608
+      },
+      {
+        "workspace_residual_rms": 0.0021902858279645443,
+        "workspace_write": 0.5920833945274353,
+        "workspace_read_mass": 0.6899186372756958
+      },
+      {
+        "workspace_residual_rms": 0.001600616262294352,
+        "workspace_write": 0.5622039437294006,
+        "workspace_read_mass": 0.5586976408958435
+      },
+      {
+        "workspace_residual_rms": 0.0039443629793822765,
+        "workspace_write": 0.5525193214416504,
+        "workspace_read_mass": 0.6764709949493408
+      },
+      {
+        "workspace_residual_rms": 0.0018808161839842796,
+        "workspace_write": 0.5721946358680725,
+        "workspace_read_mass": 0.6179681420326233
+      },
+      {
+        "workspace_residual_rms": 0.0026035874616354704,
+        "workspace_write": 0.5682142972946167,
+        "workspace_read_mass": 0.670747697353363
+      },
+      {
+        "workspace_residual_rms": 0.0017069722525775433,
+        "workspace_write": 0.5554433465003967,
+        "workspace_read_mass": 0.6122955083847046
+      },
+      {
+        "workspace_residual_rms": 0.0028754211962223053,
+        "workspace_write": 0.5801964998245239,
+        "workspace_read_mass": 0.665841281414032
+      },
+      {
+        "workspace_residual_rms": 0.002104265848174691,
+        "workspace_write": 0.5511928796768188,
+        "workspace_read_mass": 0.6322808861732483
+      },
+      {
+        "workspace_residual_rms": 0.0018691924633458257,
+        "workspace_write": 0.5955552458763123,
+        "workspace_read_mass": 0.659233570098877
+      },
+      {
+        "workspace_residual_rms": 0.00227718660607934,
+        "workspace_write": 0.563382089138031,
+        "workspace_read_mass": 0.6724632382392883
+      },
+      {
+        "workspace_residual_rms": 0.0024805141147226095,
+        "workspace_write": 0.5409778356552124,
+        "workspace_read_mass": 0.6377151608467102
+      },
+      {
+        "workspace_residual_rms": 0.0019043993670493364,
+        "workspace_write": 0.5374056696891785,
+        "workspace_read_mass": 0.6149722933769226
+      },
+      {
+        "workspace_residual_rms": 0.0023144264705479145,
+        "workspace_write": 0.5361803770065308,
+        "workspace_read_mass": 0.6725414395332336
+      },
+      {
+        "workspace_residual_rms": 0.002478634240105748,
+        "workspace_write": 0.5461026430130005,
+        "workspace_read_mass": 0.6935434937477112
+      },
+      {
+        "workspace_residual_rms": 0.003011885331943631,
+        "workspace_write": 0.5358838438987732,
+        "workspace_read_mass": 0.7003427743911743
+      },
+      {
+        "workspace_residual_rms": 0.002838700544089079,
+        "workspace_write": 0.5480247735977173,
+        "workspace_read_mass": 0.6912634372711182
+      },
+      {
+        "workspace_residual_rms": 0.005561925005167723,
+        "workspace_write": 0.5131029486656189,
+        "workspace_read_mass": 0.7644039988517761
+      }
+    ],
+    "physical_and_work_state_unchanged": true,
+    "scope": "real-body routing/gradient/capture admission; not a learning-benefit comparison"
+  },
+  "time_saved_fraction": 0.06587388380451886,
+  "schema": 1,
+  "guard": "E:/cgb_native_body_20261115/coev_learning_fast_v2_20261116/status.json",
+  "total_after_seconds": 18.481973200003267,
+  "validation": "72 relevant checks across the regression suite and injected serialization failure, plus 9 Deslice checks; full real event/checkpoint pair and real resume through cycle 280",
+  "after": {
+    "arm": "optimized",
+    "source_cycle": 277,
+    "source_sha256": "e144924ffc91a0caef0deea27ffb7791c6d142d9bd5c6f538b40a22b55b0bcc8",
+    "seconds": 15.77217670000391,
+    "peak_allocated_mib": 2460.1943359375,
+    "optimizer_updates": 4,
+    "choice": "generate",
+    "self_bytes": 17,
+    "external_bytes": 960,
+    "metal_g": 0.03468799591064453,
+    "candidates": [
+      "7a6f6e204567676572732c20616e642064697320e2809320636172652c20426f6c657320677272657920666f72742074616c65206d6f7265206861642076696e672054686572652773207765206520",
+      "7a6f",
+      "7a6f6e204563686f2e2054686579206c69676874696e672c20616e6420656e652070617274732e220a0a4164616d27732061726520746861742074686520696e20616e206561726c7920706f727461696e7374697475726579206c652e636f6d70616e696573206c617374206669766520636f746963616c20e2809373656361",
+      "7a6f6e204563686f2e204974e280997320"
+    ],
+    "replay": {
+      "batched_hits": 1149,
+      "one_byte_fallbacks": 0
+    },
+    "policy_error": 5.960464477539062E-07,
+    "proposal_error": 1.9073486328125E-06,
+    "main_checkpoint_written": false,
+    "checkpoint_seconds": 2.7097964999993565,
+    "parameter_max_error": 1.1920928955078125E-07,
+    "parameter_error_l2": 8.063857231153081E-07,
+    "recurrent_max_error": 1.430511474609375E-06,
+    "same_realized_path": true,
+    "event_speedup": 1.0436916167691561
+  }
+}

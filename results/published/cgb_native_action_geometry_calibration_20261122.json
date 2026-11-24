@@ -1,0 +1,1381 @@
+{
+  "schema": 1,
+  "cycle": 2537,
+  "source_sha256": "102f52357b46be060a196ce83cf7cb29e2e06f0e6030fec86340032386284336",
+  "boundary": "restored current source; legal silence; original mean successor",
+  "native_value": 0.3911334276199341,
+  "cases": [
+    {
+      "schema": 1,
+      "identity": "0bf350c4351f9c2c3f70ee7003acbdf847019694a499c121c23978a8efe0d4de",
+      "bank_revision": 44,
+      "role": "mother",
+      "relation": [
+        287,
+        7,
+        14
+      ],
+      "unknown": "pending:76634f4cb66b47fae79ee75e1fd20e0cceccf3d16a3fbe6fffabfd668cf69ed2",
+      "options": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      "gamma": 0.8,
+      "teacher_anchor_max_error": 0.0,
+      "vectors": {
+        "student_q": [
+          0.14055608212947845,
+          0.1568722128868103,
+          0.1024060845375061,
+          0.10204440355300903,
+          0.11086183786392212,
+          0.6675708293914795
+        ],
+        "teacher_q": [
+          0.37799614667892456,
+          0.38663536310195923,
+          0.4582759439945221,
+          0.4176062345504761,
+          0.39125531911849976,
+          0.3866356909275055
+        ],
+        "prior_q": [
+          -0.1300307661294937,
+          -0.03215759992599487,
+          -0.03215759992599487,
+          -0.03215759992599487,
+          -0.03215759992599487,
+          0.514096736907959
+        ],
+        "raw_gain_q": [
+          -0.1798926591873169,
+          -0.2491794228553772,
+          0.06107010692358017,
+          2.037222385406494,
+          -1.7449185848236084,
+          0.9998573064804077
+        ],
+        "native_bank_q": [
+          -3.531402111053467,
+          -3.504861354827881,
+          -3.45684814453125,
+          -3.2954490184783936,
+          -3.4356343746185303,
+          -3.5114903450012207
+        ],
+        "world_bank_q": [
+          3.8019890785217285,
+          3.6938915252685547,
+          3.5914130210876465,
+          3.42965030670166,
+          3.578655242919922,
+          3.664964199066162
+        ],
+        "ss": [
+          0.06822019070386887,
+          0.056830599904060364,
+          0.047000057995319366,
+          0.04146789014339447,
+          0.054591938853263855,
+          0.056963324546813965
+        ],
+        "st": [
+          0.06736434251070023,
+          0.07368534803390503,
+          0.06700308620929718,
+          0.0728306919336319,
+          0.07991881668567657,
+          0.07368534803390503
+        ],
+        "ts": [
+          0.06173808127641678,
+          0.0543782040476799,
+          0.041671618819236755,
+          0.03913407027721405,
+          0.042635008692741394,
+          0.05453122407197952
+        ],
+        "tt": [
+          0.06151295453310013,
+          0.07172293961048126,
+          0.06480508297681808,
+          0.07089555263519287,
+          0.0776466429233551,
+          0.07172293961048126
+        ]
+      },
+      "common_state_l2_error": 1.9017361402511597,
+      "endpoint_l2_errors": [
+        7.639787197113037,
+        33.7629508972168,
+        16.364215850830078,
+        20.84494972229004,
+        27.663105010986328,
+        33.64451599121094
+      ],
+      "score_reconstruction_max_error": 3.015156835317612e-08,
+      "bank_prediction_reconstruction_max_error": 1.3709068298339844e-06,
+      "gain_calibration": {
+        "seen": [
+          26,
+          27,
+          3
+        ],
+        "base_q": [
+          -0.1300307661294937,
+          -0.03215759992599487,
+          0.514096736907959
+        ],
+        "confidence_q": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "base_error_q": [
+          0.2096763551235199,
+          0.05954635515809059,
+          0.16664165258407593
+        ],
+        "raw_error_q": [
+          0.2350882589817047,
+          1.2034627199172974,
+          0.9226429462432861
+        ]
+      },
+      "pairs": [
+        {
+          "indices": [
+            0,
+            1
+          ],
+          "options": [
+            0,
+            1
+          ],
+          "nominal_max_difference": 3.6194658279418945,
+          "teacher_endpoint_max_difference": 8.25684928894043,
+          "student_local_q_difference": -0.016316130757331848,
+          "teacher_local_q_difference": -0.008639216423034668,
+          "prior_q_difference": -0.09787316620349884,
+          "native_bank_q_difference": -0.026540756225585938,
+          "world_bank_q_difference": 0.10809755325317383,
+          "teacher_total_difference": -0.016807198524475098,
+          "student_total_difference": -0.007204458117485046,
+          "q_error": -0.00767691433429718,
+          "endpoint_error": 0.01416847761720419,
+          "common_state_error": 0.0031111836433410645,
+          "total_error": 0.009602740406990051,
+          "reconstruction_error": 6.51925802230835e-09,
+          "mixed_interaction": 0.00011258723679929972
+        },
+        {
+          "indices": [
+            0,
+            2
+          ],
+          "options": [
+            0,
+            1
+          ],
+          "nominal_max_difference": 4.842417240142822,
+          "teacher_endpoint_max_difference": 4.888946533203125,
+          "student_local_q_difference": 0.03814999759197235,
+          "teacher_local_q_difference": -0.08027979731559753,
+          "prior_q_difference": -0.09787316620349884,
+          "native_bank_q_difference": -0.0745539665222168,
+          "world_bank_q_difference": 0.21057605743408203,
+          "teacher_total_difference": -0.08291351795196533,
+          "student_total_difference": 0.05512610450387001,
+          "q_error": 0.11842979490756989,
+          "endpoint_error": 0.016687100753188133,
+          "common_state_error": 0.0029227077029645443,
+          "total_error": 0.13803963363170624,
+          "reconstruction_error": 3.026798367500305e-08,
+          "mixed_interaction": -0.001999771688133478
+        },
+        {
+          "indices": [
+            0,
+            3
+          ],
+          "options": [
+            0,
+            1
+          ],
+          "nominal_max_difference": 9.579030990600586,
+          "teacher_endpoint_max_difference": 5.950060844421387,
+          "student_local_q_difference": 0.03851167857646942,
+          "teacher_local_q_difference": -0.039610087871551514,
+          "prior_q_difference": -0.09787316620349884,
+          "native_bank_q_difference": -0.23595309257507324,
+          "world_bank_q_difference": 0.37233877182006836,
+          "teacher_total_difference": -0.04711616039276123,
+          "student_total_difference": 0.059913519769907,
+          "q_error": 0.07812176644802094,
+          "endpoint_error": 0.025774920359253883,
+          "common_state_error": 0.0031329989433288574,
+          "total_error": 0.10702969133853912,
+          "reconstruction_error": 5.587935447692871e-09,
+          "mixed_interaction": 0.00018563272897154093
+        },
+        {
+          "indices": [
+            0,
+            4
+          ],
+          "options": [
+            0,
+            1
+          ],
+          "nominal_max_difference": 4.375452041625977,
+          "teacher_endpoint_max_difference": 5.040722846984863,
+          "student_local_q_difference": 0.029694244265556335,
+          "teacher_local_q_difference": -0.013259172439575195,
+          "prior_q_difference": -0.09787316620349884,
+          "native_bank_q_difference": -0.09576773643493652,
+          "world_bank_q_difference": 0.22333383560180664,
+          "teacher_total_difference": -0.02616611123085022,
+          "student_total_difference": 0.040596846491098404,
+          "q_error": 0.04295341670513153,
+          "endpoint_error": 0.020946180447936058,
+          "common_state_error": 0.002863371279090643,
+          "total_error": 0.06676296889781952,
+          "reconstruction_error": 4.656612873077393e-10,
+          "mixed_interaction": -0.007243228144943714
+        },
+        {
+          "indices": [
+            0,
+            5
+          ],
+          "options": [
+            0,
+            2
+          ],
+          "nominal_max_difference": 3.6194658279418945,
+          "teacher_endpoint_max_difference": 8.25684928894043,
+          "student_local_q_difference": -0.5270147323608398,
+          "teacher_local_q_difference": -0.008639544248580933,
+          "prior_q_difference": -0.6441274881362915,
+          "native_bank_q_difference": -0.019911766052246094,
+          "world_bank_q_difference": 0.1370248794555664,
+          "teacher_total_difference": -0.016807526350021362,
+          "student_total_difference": -0.5180092453956604,
+          "q_error": -0.5183752179145813,
+          "endpoint_error": 0.014062297530472279,
+          "common_state_error": 0.0031111836433410645,
+          "total_error": -0.5012017488479614,
+          "reconstruction_error": 1.210719347000122e-08,
+          "mixed_interaction": 0.00012882353621535003
+        },
+        {
+          "indices": [
+            1,
+            2
+          ],
+          "options": [
+            1,
+            1
+          ],
+          "nominal_max_difference": 4.643532752990723,
+          "teacher_endpoint_max_difference": 7.151431560516357,
+          "student_local_q_difference": 0.0544661283493042,
+          "teacher_local_q_difference": -0.07164058089256287,
+          "prior_q_difference": 0.0,
+          "native_bank_q_difference": -0.04801321029663086,
+          "world_bank_q_difference": 0.1024785041809082,
+          "teacher_total_difference": -0.06610631942749023,
+          "student_total_difference": 0.06233056262135506,
+          "q_error": 0.12610670924186707,
+          "endpoint_error": 0.002518623135983944,
+          "common_state_error": -0.00018847582396119833,
+          "total_error": 0.1284368932247162,
+          "reconstruction_error": 3.6670826375484467e-08,
+          "mixed_interaction": -0.002112358808517456
+        },
+        {
+          "indices": [
+            1,
+            3
+          ],
+          "options": [
+            1,
+            1
+          ],
+          "nominal_max_difference": 5.959565162658691,
+          "teacher_endpoint_max_difference": 10.429170608520508,
+          "student_local_q_difference": 0.05482780933380127,
+          "teacher_local_q_difference": -0.030970871448516846,
+          "prior_q_difference": 0.0,
+          "native_bank_q_difference": -0.2094123363494873,
+          "world_bank_q_difference": 0.26424121856689453,
+          "teacher_total_difference": -0.030308961868286133,
+          "student_total_difference": 0.06711797416210175,
+          "q_error": 0.08579868078231812,
+          "endpoint_error": 0.011606442742049694,
+          "common_state_error": 2.181529998779297e-05,
+          "total_error": 0.09742695093154907,
+          "reconstruction_error": 1.210719347000122e-08,
+          "mixed_interaction": 7.304549217224121e-05
+        },
+        {
+          "indices": [
+            1,
+            4
+          ],
+          "options": [
+            1,
+            1
+          ],
+          "nominal_max_difference": 4.345037460327148,
+          "teacher_endpoint_max_difference": 8.392149925231934,
+          "student_local_q_difference": 0.046010375022888184,
+          "teacher_local_q_difference": -0.004619956016540527,
+          "prior_q_difference": 0.0,
+          "native_bank_q_difference": -0.06922698020935059,
+          "world_bank_q_difference": 0.11523628234863281,
+          "teacher_total_difference": -0.009358912706375122,
+          "student_total_difference": 0.04780130460858345,
+          "q_error": 0.05063033103942871,
+          "endpoint_error": 0.006777702830731869,
+          "common_state_error": -0.0002478122478350997,
+          "total_error": 0.05716022849082947,
+          "reconstruction_error": 6.868503987789154e-09,
+          "mixed_interaction": -0.007355815265327692
+        },
+        {
+          "indices": [
+            1,
+            5
+          ],
+          "options": [
+            1,
+            2
+          ],
+          "nominal_max_difference": 0.0,
+          "teacher_endpoint_max_difference": 0.0,
+          "student_local_q_difference": -0.5106986165046692,
+          "teacher_local_q_difference": -3.2782554626464844e-07,
+          "prior_q_difference": -0.5462543368339539,
+          "native_bank_q_difference": 0.006628990173339844,
+          "world_bank_q_difference": 0.028927326202392578,
+          "teacher_total_difference": -3.2782554626464844e-07,
+          "student_total_difference": -0.5108047723770142,
+          "q_error": -0.5106983184814453,
+          "endpoint_error": -0.0001061800867319107,
+          "common_state_error": 0.0,
+          "total_error": -0.5108044743537903,
+          "reconstruction_error": 2.421438694000244e-08,
+          "mixed_interaction": 1.6236299416050315e-05
+        },
+        {
+          "indices": [
+            2,
+            3
+          ],
+          "options": [
+            1,
+            1
+          ],
+          "nominal_max_difference": 6.102267265319824,
+          "teacher_endpoint_max_difference": 5.199489593505859,
+          "student_local_q_difference": 0.0003616809844970703,
+          "teacher_local_q_difference": 0.04066970944404602,
+          "prior_q_difference": 0.0,
+          "native_bank_q_difference": -0.16139912605285645,
+          "world_bank_q_difference": 0.16176271438598633,
+          "teacher_total_difference": 0.0357973575592041,
+          "student_total_difference": 0.004787415266036987,
+          "q_error": -0.04030802845954895,
+          "endpoint_error": 0.00908781960606575,
+          "common_state_error": 0.0002102911239489913,
+          "total_error": -0.031009942293167114,
+          "reconstruction_error": 2.4563632905483246e-08,
+          "mixed_interaction": 0.0021854043006896973
+        },
+        {
+          "indices": [
+            2,
+            4
+          ],
+          "options": [
+            1,
+            1
+          ],
+          "nominal_max_difference": 5.266973495483398,
+          "teacher_endpoint_max_difference": 5.32465934753418,
+          "student_local_q_difference": -0.008455753326416016,
+          "teacher_local_q_difference": 0.06702062487602234,
+          "prior_q_difference": 0.0,
+          "native_bank_q_difference": -0.021213769912719727,
+          "world_bank_q_difference": 0.01275777816772461,
+          "teacher_total_difference": 0.05674740672111511,
+          "student_total_difference": -0.014529258012771606,
+          "q_error": -0.07547637820243835,
+          "endpoint_error": 0.004259079694747925,
+          "common_state_error": -5.933642387390137e-05,
+          "total_error": -0.07127666473388672,
+          "reconstruction_error": 2.9802322387695312e-08,
+          "mixed_interaction": -0.005243456456810236
+        },
+        {
+          "indices": [
+            2,
+            5
+          ],
+          "options": [
+            1,
+            2
+          ],
+          "nominal_max_difference": 4.643532752990723,
+          "teacher_endpoint_max_difference": 7.151431560516357,
+          "student_local_q_difference": -0.5651647448539734,
+          "teacher_local_q_difference": 0.0716402530670166,
+          "prior_q_difference": -0.5462543368339539,
+          "native_bank_q_difference": 0.0546422004699707,
+          "world_bank_q_difference": -0.07355117797851562,
+          "teacher_total_difference": 0.06610599160194397,
+          "student_total_difference": -0.5731353759765625,
+          "q_error": -0.63680499792099,
+          "endpoint_error": -0.0026248032227158546,
+          "common_state_error": 0.00018847582396119833,
+          "total_error": -0.6392413377761841,
+          "reconstruction_error": 1.2456439435482025e-08,
+          "mixed_interaction": 0.002128595020622015
+        },
+        {
+          "indices": [
+            3,
+            4
+          ],
+          "options": [
+            1,
+            1
+          ],
+          "nominal_max_difference": 6.7519965171813965,
+          "teacher_endpoint_max_difference": 5.062926292419434,
+          "student_local_q_difference": -0.008817434310913086,
+          "teacher_local_q_difference": 0.02635091543197632,
+          "prior_q_difference": 0.0,
+          "native_bank_q_difference": 0.14018535614013672,
+          "world_bank_q_difference": -0.14900493621826172,
+          "teacher_total_difference": 0.02095004916191101,
+          "student_total_difference": -0.019316673278808594,
+          "q_error": -0.035168349742889404,
+          "endpoint_error": -0.004828739911317825,
+          "common_state_error": -0.00026962754782289267,
+          "total_error": -0.040266722440719604,
+          "reconstruction_error": 5.238689482212067e-09,
+          "mixed_interaction": -0.007428860757499933
+        },
+        {
+          "indices": [
+            3,
+            5
+          ],
+          "options": [
+            1,
+            2
+          ],
+          "nominal_max_difference": 5.959565162658691,
+          "teacher_endpoint_max_difference": 10.429170608520508,
+          "student_local_q_difference": -0.5655264258384705,
+          "teacher_local_q_difference": 0.03097054362297058,
+          "prior_q_difference": -0.5462543368339539,
+          "native_bank_q_difference": 0.21604132652282715,
+          "world_bank_q_difference": -0.23531389236450195,
+          "teacher_total_difference": 0.030308634042739868,
+          "student_total_difference": -0.5779227614402771,
+          "q_error": -0.5964969396591187,
+          "endpoint_error": -0.011712622828781605,
+          "common_state_error": -2.181529998779297e-05,
+          "total_error": -0.6082314252853394,
+          "reconstruction_error": 4.7497451305389404e-08,
+          "mixed_interaction": -5.6809192756190896e-05
+        },
+        {
+          "indices": [
+            4,
+            5
+          ],
+          "options": [
+            1,
+            2
+          ],
+          "nominal_max_difference": 4.345037460327148,
+          "teacher_endpoint_max_difference": 8.392149925231934,
+          "student_local_q_difference": -0.5567089915275574,
+          "teacher_local_q_difference": 0.004619628190994263,
+          "prior_q_difference": -0.5462543368339539,
+          "native_bank_q_difference": 0.07585597038269043,
+          "world_bank_q_difference": -0.08630895614624023,
+          "teacher_total_difference": 0.009358584880828857,
+          "student_total_difference": -0.5586060881614685,
+          "q_error": -0.561328649520874,
+          "endpoint_error": -0.0068838829174637794,
+          "common_state_error": 0.0002478122478350997,
+          "total_error": -0.5679646730422974,
+          "reconstruction_error": 4.71482053399086e-08,
+          "mixed_interaction": 0.007372051477432251
+        }
+      ],
+      "policies": {
+        "student": {
+          "actor_probability": [
+            [
+              0.058513328433036804,
+              0.11498662084341049,
+              0.8265000581741333
+            ],
+            [
+              0.05998815596103668,
+              0.09268005937337875,
+              0.8473318219184875
+            ],
+            [
+              0.06009009853005409,
+              0.09113803505897522,
+              0.8487719297409058
+            ],
+            [
+              0.059669192880392075,
+              0.09750419855117798,
+              0.8428266644477844
+            ]
+          ],
+          "draft_probability": [
+            0.2950265109539032,
+            0.23194736242294312,
+            0.22770117223262787,
+            0.24532495439052582
+          ],
+          "expected_local_use": 0.5816876888275146,
+          "teacher_local_use_under_policy": 0.3884149193763733
+        },
+        "q_corrected": {
+          "actor_probability": [
+            [
+              0.2075439840555191,
+              0.3959454596042633,
+              0.396510511636734
+            ],
+            [
+              0.18689294159412384,
+              0.4560501277446747,
+              0.3570568859577179
+            ],
+            [
+              0.2015773206949234,
+              0.4133114218711853,
+              0.3851113021373749
+            ],
+            [
+              0.20664578676223755,
+              0.39855968952178955,
+              0.3947945237159729
+            ]
+          ],
+          "draft_probability": [
+            0.22910524904727936,
+            0.29304179549217224,
+            0.24623259902000427,
+            0.23162034153938293
+          ],
+          "expected_local_use": 0.3980618119239807,
+          "teacher_local_use_under_policy": 0.3980618119239807
+        },
+        "endpoint_corrected": {
+          "actor_probability": [
+            [
+              0.05559159442782402,
+              0.11538496613502502,
+              0.8290234208106995
+            ],
+            [
+              0.056946009397506714,
+              0.09383247792720795,
+              0.8492214679718018
+            ],
+            [
+              0.056856729090213776,
+              0.09525320678949356,
+              0.8478900790214539
+            ],
+            [
+              0.056546978652477264,
+              0.10018213093280792,
+              0.8432708382606506
+            ]
+          ],
+          "draft_probability": [
+            0.2894690930843353,
+            0.22980105876922607,
+            0.23364682495594025,
+            0.24708305299282074
+          ],
+          "expected_local_use": 0.5822184085845947,
+          "teacher_local_use_under_policy": 0.3884965181350708
+        },
+        "state_corrected": {
+          "actor_probability": [
+            [
+              0.05881887674331665,
+              0.11474477499723434,
+              0.8264364004135132
+            ],
+            [
+              0.0603475347161293,
+              0.09173766523599625,
+              0.8479148149490356
+            ],
+            [
+              0.06039845198392868,
+              0.0909714624285698,
+              0.8486300706863403
+            ],
+            [
+              0.060147520154714584,
+              0.09474804252386093,
+              0.8451045155525208
+            ]
+          ],
+          "draft_probability": [
+            0.2977243661880493,
+            0.23199911415576935,
+            0.22986751794815063,
+            0.2404090166091919
+          ],
+          "expected_local_use": 0.5820439457893372,
+          "teacher_local_use_under_policy": 0.38839614391326904
+        },
+        "teacher": {
+          "actor_probability": [
+            [
+              0.199806347489357,
+              0.3995002806186676,
+              0.4006933867931366
+            ],
+            [
+              0.17902113497257233,
+              0.4619683623313904,
+              0.3590105473995209
+            ],
+            [
+              0.19036906957626343,
+              0.42786306142807007,
+              0.38176780939102173
+            ],
+            [
+              0.1969130039215088,
+              0.4081958830356598,
+              0.39489108324050903
+            ]
+          ],
+          "draft_probability": [
+            0.22464370727539062,
+            0.2899308204650879,
+            0.252519428730011,
+            0.23290599882602692
+          ],
+          "expected_local_use": 0.3983686566352844,
+          "teacher_local_use_under_policy": 0.3983686566352844
+        }
+      },
+      "extra_world_calls": 0,
+      "extra_teacher_calls": 0,
+      "target": "same finite native q plus gamma times original compose continuation"
+    },
+    {
+      "schema": 1,
+      "identity": "479404ae4c77f8f6e6124cf89553143c0183fdffc098200a0483ea879a1ef5bf",
+      "bank_revision": 44,
+      "role": "action",
+      "relation": [
+        287,
+        7,
+        14
+      ],
+      "unknown": "pending:abfc9a4f3f6e54250f412ef5e89da322cdcf4b3860cc97dddebca09ed7e75265",
+      "options": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      "gamma": 0.8,
+      "teacher_anchor_max_error": 0.0,
+      "vectors": {
+        "student_q": [
+          0.06550370156764984,
+          0.0807463526725769,
+          0.024780690670013428,
+          0.03711193799972534,
+          0.09247452020645142,
+          0.5920312404632568
+        ],
+        "teacher_q": [
+          0.3791806101799011,
+          0.3871522843837738,
+          0.46179893612861633,
+          0.3919193744659424,
+          0.412297785282135,
+          0.38715240359306335
+        ],
+        "prior_q": [
+          -0.1300307661294937,
+          -0.03215759992599487,
+          -0.03215759992599487,
+          -0.03215759992599487,
+          -0.03215759992599487,
+          0.514096736907959
+        ],
+        "raw_gain_q": [
+          -0.1798926591873169,
+          -0.2491794228553772,
+          0.06107010692358017,
+          -1.7449185848236084,
+          0.2119293212890625,
+          0.9998573064804077
+        ],
+        "native_bank_q": [
+          -3.5354292392730713,
+          -3.5089170932769775,
+          -3.4615750312805176,
+          -3.439850330352783,
+          -3.607595443725586,
+          -3.515531301498413
+        ],
+        "world_bank_q": [
+          3.7309651374816895,
+          3.6218204498291016,
+          3.5185139179229736,
+          3.509121894836426,
+          3.7322285175323486,
+          3.5934677124023438
+        ],
+        "ss": [
+          0.07189719378948212,
+          0.06143985688686371,
+          0.051264941692352295,
+          0.05892615020275116,
+          0.07358105480670929,
+          0.0615684911608696
+        ],
+        "st": [
+          0.06796955317258835,
+          0.0742238312959671,
+          0.06802202016115189,
+          0.0807112455368042,
+          0.07514974474906921,
+          0.0742238312959671
+        ],
+        "ts": [
+          0.06741625815629959,
+          0.056108683347702026,
+          0.04744719713926315,
+          0.04463905096054077,
+          0.06852416694164276,
+          0.05614385008811951
+        ],
+        "tt": [
+          0.06416134536266327,
+          0.07356549799442291,
+          0.06718339025974274,
+          0.08006267249584198,
+          0.07458972930908203,
+          0.07356549799442291
+        ]
+      },
+      "common_state_l2_error": 1.6244887113571167,
+      "endpoint_l2_errors": [
+        9.557435989379883,
+        36.899078369140625,
+        20.166095733642578,
+        25.658985137939453,
+        29.948535919189453,
+        36.676204681396484
+      ],
+      "score_reconstruction_max_error": 2.3283064365386963e-08,
+      "bank_prediction_reconstruction_max_error": 1.9669532775878906e-06,
+      "gain_calibration": {
+        "seen": [
+          26,
+          27,
+          3
+        ],
+        "base_q": [
+          -0.1300307661294937,
+          -0.03215759992599487,
+          0.514096736907959
+        ],
+        "confidence_q": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "base_error_q": [
+          0.2096763551235199,
+          0.05954635515809059,
+          0.16664165258407593
+        ],
+        "raw_error_q": [
+          0.2350882589817047,
+          1.2034627199172974,
+          0.9226429462432861
+        ]
+      },
+      "pairs": [
+        {
+          "indices": [
+            0,
+            1
+          ],
+          "options": [
+            0,
+            1
+          ],
+          "nominal_max_difference": 3.6194658279418945,
+          "teacher_endpoint_max_difference": 8.301471710205078,
+          "student_local_q_difference": -0.015242651104927063,
+          "teacher_local_q_difference": -0.00797167420387268,
+          "prior_q_difference": -0.09787316620349884,
+          "native_bank_q_difference": -0.02651214599609375,
+          "world_bank_q_difference": 0.10914468765258789,
+          "teacher_total_difference": -0.015495002269744873,
+          "student_total_difference": -0.006876781582832336,
+          "q_error": -0.0072709619998931885,
+          "endpoint_error": 0.013369292952120304,
+          "common_state_error": 0.002519899746403098,
+          "total_error": 0.008618205785751343,
+          "reconstruction_error": 2.491287887096405e-08,
+          "mixed_interaction": -0.0032000900246202946
+        },
+        {
+          "indices": [
+            0,
+            2
+          ],
+          "options": [
+            0,
+            1
+          ],
+          "nominal_max_difference": 4.842417240142822,
+          "teacher_endpoint_max_difference": 4.844738960266113,
+          "student_local_q_difference": 0.040723010897636414,
+          "teacher_local_q_difference": -0.08261832594871521,
+          "prior_q_difference": -0.09787316620349884,
+          "native_bank_q_difference": -0.07385420799255371,
+          "world_bank_q_difference": 0.21245121955871582,
+          "teacher_total_difference": -0.08503597974777222,
+          "student_total_difference": 0.05722881108522415,
+          "q_error": 0.12334135174751282,
+          "endpoint_error": 0.016547774896025658,
+          "common_state_error": 0.002375662326812744,
+          "total_error": 0.14226478338241577,
+          "reconstruction_error": 5.587935447692871e-09,
+          "mixed_interaction": -0.0018451095093041658
+        },
+        {
+          "indices": [
+            0,
+            3
+          ],
+          "options": [
+            0,
+            1
+          ],
+          "nominal_max_difference": 4.375452041625977,
+          "teacher_endpoint_max_difference": 5.084035396575928,
+          "student_local_q_difference": 0.0283917635679245,
+          "teacher_local_q_difference": -0.01273876428604126,
+          "prior_q_difference": -0.09787316620349884,
+          "native_bank_q_difference": -0.09557890892028809,
+          "world_bank_q_difference": 0.22184324264526367,
+          "teacher_total_difference": -0.02545982599258423,
+          "student_total_difference": 0.038768596947193146,
+          "q_error": 0.04113054275512695,
+          "endpoint_error": 0.020570188760757446,
+          "common_state_error": 0.0025277079548686743,
+          "total_error": 0.06422841548919678,
+          "reconstruction_error": 2.3981556296348572e-08,
+          "mixed_interaction": -0.010372638702392578
+        },
+        {
+          "indices": [
+            0,
+            4
+          ],
+          "options": [
+            0,
+            1
+          ],
+          "nominal_max_difference": 4.332707405090332,
+          "teacher_endpoint_max_difference": 7.04328727722168,
+          "student_local_q_difference": -0.026970818638801575,
+          "teacher_local_q_difference": -0.03311717510223389,
+          "prior_q_difference": -0.09787316620349884,
+          "native_bank_q_difference": 0.07216620445251465,
+          "world_bank_q_difference": -0.0012633800506591797,
+          "teacher_total_difference": -0.041459888219833374,
+          "student_total_difference": -0.028317907825112343,
+          "q_error": 0.006146371364593506,
+          "endpoint_error": 0.004397064447402954,
+          "common_state_error": 0.002598554128780961,
+          "total_error": 0.01314195990562439,
+          "reconstruction_error": 3.003515303134918e-08,
+          "mixed_interaction": -0.0030593157280236483
+        },
+        {
+          "indices": [
+            0,
+            5
+          ],
+          "options": [
+            0,
+            2
+          ],
+          "nominal_max_difference": 3.6194658279418945,
+          "teacher_endpoint_max_difference": 8.301471710205078,
+          "student_local_q_difference": -0.5265275239944458,
+          "teacher_local_q_difference": -0.007971793413162231,
+          "prior_q_difference": -0.6441274881362915,
+          "native_bank_q_difference": -0.019897937774658203,
+          "world_bank_q_difference": 0.1374974250793457,
+          "teacher_total_difference": -0.015495121479034424,
+          "student_total_difference": -0.5182645320892334,
+          "q_error": -0.518555760383606,
+          "endpoint_error": 0.013266385532915592,
+          "common_state_error": 0.002519899746403098,
+          "total_error": -0.5027694702148438,
+          "reconstruction_error": 4.889443516731262e-09,
+          "mixed_interaction": -0.003274864051491022
+        },
+        {
+          "indices": [
+            1,
+            2
+          ],
+          "options": [
+            1,
+            1
+          ],
+          "nominal_max_difference": 4.643532752990723,
+          "teacher_endpoint_max_difference": 7.170868873596191,
+          "student_local_q_difference": 0.05596566200256348,
+          "teacher_local_q_difference": -0.07464665174484253,
+          "prior_q_difference": 0.0,
+          "native_bank_q_difference": -0.04734206199645996,
+          "world_bank_q_difference": 0.10330653190612793,
+          "teacher_total_difference": -0.06954097747802734,
+          "student_total_difference": 0.06410559266805649,
+          "q_error": 0.130612313747406,
+          "endpoint_error": 0.003178482875227928,
+          "common_state_error": -0.00014423730317503214,
+          "total_error": 0.13364657759666443,
+          "reconstruction_error": 1.8277205526828766e-08,
+          "mixed_interaction": 0.0013549805153161287
+        },
+        {
+          "indices": [
+            1,
+            3
+          ],
+          "options": [
+            1,
+            1
+          ],
+          "nominal_max_difference": 4.345037460327148,
+          "teacher_endpoint_max_difference": 8.448843002319336,
+          "student_local_q_difference": 0.04363441467285156,
+          "teacher_local_q_difference": -0.004767090082168579,
+          "prior_q_difference": 0.0,
+          "native_bank_q_difference": -0.06906676292419434,
+          "world_bank_q_difference": 0.11269855499267578,
+          "teacher_total_difference": -0.009964823722839355,
+          "student_total_difference": 0.04564537853002548,
+          "q_error": 0.04840150475502014,
+          "endpoint_error": 0.007200895808637142,
+          "common_state_error": 7.808208465576172e-06,
+          "total_error": 0.055610209703445435,
+          "reconstruction_error": 9.313225746154785e-10,
+          "mixed_interaction": -0.007172549143433571
+        },
+        {
+          "indices": [
+            1,
+            4
+          ],
+          "options": [
+            1,
+            1
+          ],
+          "nominal_max_difference": 6.684182643890381,
+          "teacher_endpoint_max_difference": 2.8184642791748047,
+          "student_local_q_difference": -0.011728167533874512,
+          "teacher_local_q_difference": -0.025145500898361206,
+          "prior_q_difference": 0.0,
+          "native_bank_q_difference": 0.0986783504486084,
+          "world_bank_q_difference": -0.11040806770324707,
+          "teacher_total_difference": -0.0259648859500885,
+          "student_total_difference": -0.021441126242280006,
+          "q_error": 0.013417333364486694,
+          "endpoint_error": -0.00897222850471735,
+          "common_state_error": 7.865429506637156e-05,
+          "total_error": 0.004523754119873047,
+          "reconstruction_error": 5.034962669014931e-09,
+          "mixed_interaction": 0.0001407742965966463
+        },
+        {
+          "indices": [
+            1,
+            5
+          ],
+          "options": [
+            1,
+            2
+          ],
+          "nominal_max_difference": 0.0,
+          "teacher_endpoint_max_difference": 0.0,
+          "student_local_q_difference": -0.5112848877906799,
+          "teacher_local_q_difference": -1.1920928955078125e-07,
+          "prior_q_difference": -0.5462543368339539,
+          "native_bank_q_difference": 0.006614208221435547,
+          "world_bank_q_difference": 0.028352737426757812,
+          "teacher_total_difference": -1.1920928955078125e-07,
+          "student_total_difference": -0.511387825012207,
+          "q_error": -0.5112847685813904,
+          "endpoint_error": -0.00010290741920471191,
+          "common_state_error": 0.0,
+          "total_error": -0.5113876461982727,
+          "reconstruction_error": 2.9802322387695312e-08,
+          "mixed_interaction": -7.477402687072754e-05
+        },
+        {
+          "indices": [
+            2,
+            3
+          ],
+          "options": [
+            1,
+            1
+          ],
+          "nominal_max_difference": 5.266973495483398,
+          "teacher_endpoint_max_difference": 5.341776371002197,
+          "student_local_q_difference": -0.012331247329711914,
+          "teacher_local_q_difference": 0.06987956166267395,
+          "prior_q_difference": 0.0,
+          "native_bank_q_difference": -0.021724700927734375,
+          "world_bank_q_difference": 0.009392023086547852,
+          "teacher_total_difference": 0.05957615375518799,
+          "student_total_difference": -0.018460214138031006,
+          "q_error": -0.08221080899238586,
+          "endpoint_error": 0.004022412933409214,
+          "common_state_error": 0.0001520455116406083,
+          "total_error": -0.078036367893219,
+          "reconstruction_error": 1.7345882952213287e-08,
+          "mixed_interaction": -0.008527529425919056
+        },
+        {
+          "indices": [
+            2,
+            4
+          ],
+          "options": [
+            1,
+            1
+          ],
+          "nominal_max_difference": 7.495941638946533,
+          "teacher_endpoint_max_difference": 6.369376182556152,
+          "student_local_q_difference": -0.06769382953643799,
+          "teacher_local_q_difference": 0.04950115084648132,
+          "prior_q_difference": 0.0,
+          "native_bank_q_difference": 0.14602041244506836,
+          "world_bank_q_difference": -0.213714599609375,
+          "teacher_total_difference": 0.04357609152793884,
+          "student_total_difference": -0.08554671704769135,
+          "q_error": -0.11719498038291931,
+          "endpoint_error": -0.012150711379945278,
+          "common_state_error": 0.0002228915982414037,
+          "total_error": -0.12912282347679138,
+          "reconstruction_error": 2.3312168195843697e-08,
+          "mixed_interaction": -0.0012142062187194824
+        },
+        {
+          "indices": [
+            2,
+            5
+          ],
+          "options": [
+            1,
+            2
+          ],
+          "nominal_max_difference": 4.643532752990723,
+          "teacher_endpoint_max_difference": 7.170868873596191,
+          "student_local_q_difference": -0.5672505497932434,
+          "teacher_local_q_difference": 0.07464653253555298,
+          "prior_q_difference": -0.5462543368339539,
+          "native_bank_q_difference": 0.05395627021789551,
+          "world_bank_q_difference": -0.07495379447937012,
+          "teacher_total_difference": 0.06954085826873779,
+          "student_total_difference": -0.5754933953285217,
+          "q_error": -0.6418970823287964,
+          "endpoint_error": -0.00328139029443264,
+          "common_state_error": 0.00014423730317503214,
+          "total_error": -0.6450341939926147,
+          "reconstruction_error": 4.132743924856186e-08,
+          "mixed_interaction": -0.0014297545421868563
+        },
+        {
+          "indices": [
+            3,
+            4
+          ],
+          "options": [
+            1,
+            1
+          ],
+          "nominal_max_difference": 7.440168857574463,
+          "teacher_endpoint_max_difference": 8.610630989074707,
+          "student_local_q_difference": -0.055362582206726074,
+          "teacher_local_q_difference": -0.020378410816192627,
+          "prior_q_difference": 0.0,
+          "native_bank_q_difference": 0.16774511337280273,
+          "world_bank_q_difference": -0.22310662269592285,
+          "teacher_total_difference": -0.016000062227249146,
+          "student_total_difference": -0.06708650290966034,
+          "q_error": -0.03498417139053345,
+          "endpoint_error": -0.016173124313354492,
+          "common_state_error": 7.084608660079539e-05,
+          "total_error": -0.05108645558357239,
+          "reconstruction_error": 5.966285243630409e-09,
+          "mixed_interaction": 0.0073133232071995735
+        },
+        {
+          "indices": [
+            3,
+            5
+          ],
+          "options": [
+            1,
+            2
+          ],
+          "nominal_max_difference": 4.345037460327148,
+          "teacher_endpoint_max_difference": 8.448843002319336,
+          "student_local_q_difference": -0.5549193024635315,
+          "teacher_local_q_difference": 0.004766970872879028,
+          "prior_q_difference": -0.5462543368339539,
+          "native_bank_q_difference": 0.07568097114562988,
+          "world_bank_q_difference": -0.08434581756591797,
+          "teacher_total_difference": 0.009964704513549805,
+          "student_total_difference": -0.5570331811904907,
+          "q_error": -0.5596863031387329,
+          "endpoint_error": -0.007303803227841854,
+          "common_state_error": -7.808208465576172e-06,
+          "total_error": -0.5669978857040405,
+          "reconstruction_error": 2.8870999813079834e-08,
+          "mixed_interaction": 0.007097775116562843
+        },
+        {
+          "indices": [
+            4,
+            5
+          ],
+          "options": [
+            1,
+            2
+          ],
+          "nominal_max_difference": 6.684182643890381,
+          "teacher_endpoint_max_difference": 2.8184642791748047,
+          "student_local_q_difference": -0.4995567202568054,
+          "teacher_local_q_difference": 0.025145381689071655,
+          "prior_q_difference": -0.5462543368339539,
+          "native_bank_q_difference": -0.09206414222717285,
+          "world_bank_q_difference": 0.13876080513000488,
+          "teacher_total_difference": 0.02596476674079895,
+          "student_total_difference": -0.4899466633796692,
+          "q_error": -0.5247020721435547,
+          "endpoint_error": 0.008869321085512638,
+          "common_state_error": -7.865429506637156e-05,
+          "total_error": -0.5159114003181458,
+          "reconstruction_error": 5.034962669014931e-09,
+          "mixed_interaction": -0.00021554832346737385
+        }
+      ],
+      "policies": {
+        "student": {
+          "actor_probability": [
+            [
+              0.05846993625164032,
+              0.11509102582931519,
+              0.8264390230178833
+            ],
+            [
+              0.0599830187857151,
+              0.09219138324260712,
+              0.8478255271911621
+            ],
+            [
+              0.05957743152976036,
+              0.09832972288131714,
+              0.8420928120613098
+            ],
+            [
+              0.05789510905742645,
+              0.1237906739115715,
+              0.8183141350746155
+            ]
+          ],
+          "draft_probability": [
+            0.2698635756969452,
+            0.21071605384349823,
+            0.22627604007720947,
+            0.2931443750858307
+          ],
+          "expected_local_use": 0.503659725189209,
+          "teacher_local_use_under_policy": 0.3891517221927643
+        },
+        "q_corrected": {
+          "actor_probability": [
+            [
+              0.2072819024324417,
+              0.39671939611434937,
+              0.39599862694740295
+            ],
+            [
+              0.1857217699289322,
+              0.45946890115737915,
+              0.35480940341949463
+            ],
+            [
+              0.20640626549720764,
+              0.3992679715156555,
+              0.39432579278945923
+            ],
+            [
+              0.19608034193515778,
+              0.4293208420276642,
+              0.37459880113601685
+            ]
+          ],
+          "draft_probability": [
+            0.22485482692718506,
+            0.2906520664691925,
+            0.2272593230009079,
+            0.2572338283061981
+          ],
+          "expected_local_use": 0.39875271916389465,
+          "teacher_local_use_under_policy": 0.39875271916389465
+        },
+        "endpoint_corrected": {
+          "actor_probability": [
+            [
+              0.05571167543530464,
+              0.11546842008829117,
+              0.8288198709487915
+            ],
+            [
+              0.05709303542971611,
+              0.09353644400835037,
+              0.8493704795837402
+            ],
+            [
+              0.05661306530237198,
+              0.1011572778224945,
+              0.8422296047210693
+            ],
+            [
+              0.05539633706212044,
+              0.12047503888607025,
+              0.8241285681724548
+            ]
+          ],
+          "draft_probability": [
+            0.2701336443424225,
+            0.21353021264076233,
+            0.23288540542125702,
+            0.28345078229904175
+          ],
+          "expected_local_use": 0.5050691366195679,
+          "teacher_local_use_under_policy": 0.38916686177253723
+        },
+        "state_corrected": {
+          "actor_probability": [
+            [
+              0.06038082391023636,
+              0.11458094418048859,
+              0.8250382542610168
+            ],
+            [
+              0.06190964952111244,
+              0.09216249734163284,
+              0.8459278345108032
+            ],
+            [
+              0.061684031039476395,
+              0.09547099471092224,
+              0.8428450226783752
+            ],
+            [
+              0.059783585369586945,
+              0.12333895266056061,
+              0.8168774843215942
+            ]
+          ],
+          "draft_probability": [
+            0.2712022066116333,
+            0.2127530425786972,
+            0.2211967408657074,
+            0.2948480248451233
+          ],
+          "expected_local_use": 0.5031125545501709,
+          "teacher_local_use_under_policy": 0.3891463577747345
+        },
+        "teacher": {
+          "actor_probability": [
+            [
+              0.20261141657829285,
+              0.39853113889694214,
+              0.398857444524765
+            ],
+            [
+              0.18047016859054565,
+              0.4642593264579773,
+              0.35527053475379944
+            ],
+            [
+              0.19949430227279663,
+              0.4077845513820648,
+              0.39272111654281616
+            ],
+            [
+              0.19444377720355988,
+              0.4227774441242218,
+              0.38277873396873474
+            ]
+          ],
+          "draft_probability": [
+            0.22459526360034943,
+            0.29373621940612793,
+            0.23340091109275818,
+            0.24826757609844208
+          ],
+          "expected_local_use": 0.39888355135917664,
+          "teacher_local_use_under_policy": 0.39888355135917664
+        }
+      },
+      "extra_world_calls": 0,
+      "extra_teacher_calls": 0,
+      "target": "same finite native q plus gamma times original compose continuation"
+    }
+  ],
+  "elapsed_seconds": 2.449446499998885,
+  "world_calls": 0,
+  "optimizer_updates": 0,
+  "source_unchanged": true
+}

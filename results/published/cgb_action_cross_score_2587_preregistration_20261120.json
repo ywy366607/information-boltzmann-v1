@@ -1,0 +1,27 @@
+{
+  "source": "E:\\mengli-action-pair-2585-20261120-silence\\run\\body\\last.pt.gz",
+  "source_sha256": "e0275fdf9a2059de0a79b824eb5212f50cdbf04b9f17a7c28a4a5c5badf5e73f",
+  "source_cycle": 2587,
+  "selection": "preselected silence endpoint of completed 2585 pair; its next two transitions have not run",
+  "horizon": 2,
+  "first_actions": [
+    "silence",
+    "generate"
+  ],
+  "production_changes": "none: reward, wood, actor, independent validation unchanged",
+  "measurement": "capture actual R/Rprime returned by finite_use_value.revise at second observed settlement, before deferred optimizer update; clone score dependencies and raw facts to CPU; offline change Q only",
+  "diagonal": "reproduce each recorded second U; absolute max per-query score tolerance 3e-6 + 2e-5 relative; scalar tolerance 1e-5",
+  "applicability": "observed raw MOTHER port with explicit source/action/outcome, same widths, exact pre-fork provenance; local unknown IDs are not shared identity",
+  "prediction": "Both fixed-query two-step payment columns have the same sign as generate-minus-silence G2. A reversed or mixed column falsifies this common-measure explanation at the new boundary; either action may win.",
+  "adjudication": [
+    "both columns prefer generate",
+    "both columns prefer silence",
+    "mixed signs or inapplicable queries"
+  ],
+  "validation": "same four 2048-byte FineWeb validation segments, read-only",
+  "training_budget": {
+    "branches": 2,
+    "external_transitions_per_branch": 2,
+    "optimizer_updates_per_branch": 8
+  }
+}

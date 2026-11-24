@@ -1,0 +1,247 @@
+{
+  "schema": 1,
+  "source": "E:\\mengli-ridge-lr-acceptance-20261123\\ref_ridge_3e4_16c\\body\\last.pt.gz",
+  "source_sha256": "938b1558a2132f0907ef7353907a6ce4ff1f259cde6b48c358de659d3cc01f1d",
+  "source_cycle": 2861,
+  "budget_seconds_per_arm": 600.0,
+  "origin_2861": {
+    "checkpoint": "E:\\mengli-ridge-lr-acceptance-20261123\\ref_ridge_3e4_16c\\body\\last.pt.gz",
+    "cycle": 2861,
+    "load_seconds": 17.53,
+    "fresh_8192_nll": {
+      "mean_nll": 1.7566910721361637,
+      "segment_nll": [
+        1.8165931329131126,
+        1.609103225171566,
+        1.8799717500805855,
+        1.7210961803793907
+      ]
+    },
+    "classic_8192_nll": {
+      "mean_nll": 1.5791107416152954,
+      "segment_nll": [
+        1.3815761804580688,
+        1.801433026790619,
+        1.5470812991261482,
+        1.5863524600863457
+      ]
+    },
+    "combined_16384_mean_nll": 1.6679009068757296,
+    "fresh_64_facts": {
+      "mean_score": -1.1513145519420505,
+      "mean_mse": 0.8204703477676958
+    },
+    "scale_diagnostics": {
+      "relation_ridge": 0.10024832934141159,
+      "relation_ridge_gate": 0.0,
+      "relation_ridge_lr": 0.0003,
+      "memory_temperature": 0.20085875689983368,
+      "memory_temperature_gate": 0.7506534457206726,
+      "memory_temperature_lr": 0.0003
+    },
+    "optimizer_mean_gate": 0.160698461913587,
+    "optimizer_alive_frac": 0.5262850845988524,
+    "wiener_gate_all_groups": true,
+    "split_theta": true,
+    "trainable_missing_from_optimizer": [],
+    "has_phase_coupled_rhythm": false,
+    "restored_phase_rhythm_cycles": null
+  },
+  "comparison": {
+    "strict_10min": {
+      "cycles": 36,
+      "updates": 144,
+      "external_bytes": 34560,
+      "life_seconds": 619.59,
+      "seconds_per_cycle": 17.211,
+      "bytes_per_second": 55.78,
+      "fresh_8192_nll": 1.7528053782880306,
+      "fresh_8192_nll_gain": 0.003885693848133087,
+      "classic_8192_nll": 1.5826678536832333,
+      "classic_8192_nll_gain": -0.003557112067937851,
+      "combined_16384_nll": 1.667736615985632,
+      "combined_16384_nll_gain": 0.0001642908900976181,
+      "combined_nll_gain_per_min": 1.590972598309351e-05,
+      "fresh_64_facts_score": -1.1219594003632665,
+      "fresh_64_facts_gain": 0.02935515157878399,
+      "fresh_64_facts_gain_per_min": 0.0028427164618386788,
+      "fresh_64_facts_mse_delta": -0.05474461195990443,
+      "mean_metal_g": 0.00561651773750782,
+      "pre_outcome_gain_mse": 0.05413636053598963,
+      "restore_verified": true
+    },
+    "phase_rhythm_10min": {
+      "cycles": 50,
+      "updates": 200,
+      "external_bytes": 48000,
+      "life_seconds": 614.85,
+      "seconds_per_cycle": 12.297,
+      "bytes_per_second": 78.07,
+      "fresh_8192_nll": 1.7715569753199816,
+      "fresh_8192_nll_gain": -0.014865903183817863,
+      "classic_8192_nll": 1.600144773721695,
+      "classic_8192_nll_gain": -0.021034032106399536,
+      "combined_16384_nll": 1.6858508745208383,
+      "combined_16384_nll_gain": -0.0179499676451087,
+      "combined_nll_gain_per_min": -0.0017516348208942633,
+      "fresh_64_facts_score": -1.064286150969565,
+      "fresh_64_facts_gain": 0.08702840097248554,
+      "fresh_64_facts_gain_per_min": 0.008492604586487583,
+      "fresh_64_facts_mse_delta": -0.12332136975601315,
+      "mean_metal_g": 0.0018024063110351563,
+      "pre_outcome_gain_mse": 0.03365645915896367,
+      "restore_verified": true
+    }
+  },
+  "arms": {
+    "strict_10min": {
+      "summary": {
+        "external_cycles": 36,
+        "total_events": 209,
+        "updates": 144,
+        "external_bytes": 34560,
+        "life_seconds": 619.5866237000009,
+        "seconds_per_cycle": 17.210739547222246,
+        "bytes_per_second": 55.77912543304628,
+        "checkpoint_commit_seconds": 2.8451055999976234,
+        "checkpoint_sha256": "1a848983905e07768dfe0e24f3720959a877b472a15aa765955f1f48213f11b3",
+        "mean_metal_g": 0.00561651773750782,
+        "pre_outcome_gain_mse": 0.05413636053598963,
+        "online_read_use_mean_log_score": -1.1249576987077792,
+        "phase_regimes": {},
+        "own_64_old_facts": [
+          {
+            "external": 0,
+            "cycle": 2861,
+            "mean_score": -1.1329272352159023,
+            "mean_mse": 0.7381389687070623
+          },
+          {
+            "external": 36,
+            "cycle": 2897,
+            "mean_score": -1.0851769745349884,
+            "mean_mse": 0.6710754883242771
+          }
+        ]
+      },
+      "audit": {
+        "checkpoint": "E:\\mengli-wallclock-10min-20261123\\strict_10min\\body\\last.pt.gz",
+        "cycle": 2897,
+        "load_seconds": 19.75,
+        "fresh_8192_nll": {
+          "mean_nll": 1.7528053782880306,
+          "segment_nll": [
+            1.8331246599555016,
+            1.5906049832701683,
+            1.876545637845993,
+            1.7109462320804596
+          ]
+        },
+        "classic_8192_nll": {
+          "mean_nll": 1.5826678536832333,
+          "segment_nll": [
+            1.384569875895977,
+            1.8151526227593422,
+            1.5456212535500526,
+            1.5853276625275612
+          ]
+        },
+        "combined_16384_mean_nll": 1.667736615985632,
+        "fresh_64_facts": {
+          "mean_score": -1.1219594003632665,
+          "mean_mse": 0.7657257358077914
+        },
+        "scale_diagnostics": {
+          "relation_ridge": 0.10025961697101593,
+          "relation_ridge_gate": 0.46949994564056396,
+          "relation_ridge_lr": 0.0003,
+          "memory_temperature": 0.20093487203121185,
+          "memory_temperature_gate": 0.0,
+          "memory_temperature_lr": 0.0003
+        },
+        "optimizer_mean_gate": 0.06334263426422705,
+        "optimizer_alive_frac": 0.24699767192699384,
+        "wiener_gate_all_groups": true,
+        "split_theta": true,
+        "trainable_missing_from_optimizer": [],
+        "has_phase_coupled_rhythm": false,
+        "restored_phase_rhythm_cycles": null
+      }
+    },
+    "phase_rhythm_10min": {
+      "summary": {
+        "external_cycles": 50,
+        "total_events": 294,
+        "updates": 200,
+        "external_bytes": 48000,
+        "life_seconds": 614.8530765999967,
+        "seconds_per_cycle": 12.297061531999935,
+        "bytes_per_second": 78.06743078432578,
+        "checkpoint_commit_seconds": 2.7621461000017007,
+        "checkpoint_sha256": "af48ac369c88df1d3e8704896153a196c71cf02bc9d0943211310ef2b6806089",
+        "mean_metal_g": 0.0018024063110351563,
+        "pre_outcome_gain_mse": 0.03365645915896367,
+        "online_read_use_mean_log_score": -1.1543451611697675,
+        "phase_regimes": {},
+        "own_64_old_facts": [
+          {
+            "external": 0,
+            "cycle": 2861,
+            "mean_score": -1.1329272352159023,
+            "mean_mse": 0.7381389687070623
+          },
+          {
+            "external": 50,
+            "cycle": 2911,
+            "mean_score": -1.0507262405008078,
+            "mean_mse": 0.6349669713526964
+          }
+        ]
+      },
+      "audit": {
+        "checkpoint": "E:\\mengli-wallclock-10min-20261123\\phase_rhythm_10min\\body\\last.pt.gz",
+        "cycle": 2911,
+        "load_seconds": 19.587,
+        "fresh_8192_nll": {
+          "mean_nll": 1.7715569753199816,
+          "segment_nll": [
+            1.86196718364954,
+            1.6146363392472267,
+            1.890009917318821,
+            1.7196144610643387
+          ]
+        },
+        "classic_8192_nll": {
+          "mean_nll": 1.600144773721695,
+          "segment_nll": [
+            1.3883583322167397,
+            1.8384017273783684,
+            1.5705402493476868,
+            1.603278785943985
+          ]
+        },
+        "combined_16384_mean_nll": 1.6858508745208383,
+        "fresh_64_facts": {
+          "mean_score": -1.064286150969565,
+          "mean_mse": 0.6971489780116826
+        },
+        "scale_diagnostics": {
+          "relation_ridge": 0.10037455707788467,
+          "relation_ridge_gate": 0.7257882952690125,
+          "relation_ridge_lr": 0.0003,
+          "memory_temperature": 0.2010214626789093,
+          "memory_temperature_gate": 0.5521516799926758,
+          "memory_temperature_lr": 0.0003
+        },
+        "optimizer_mean_gate": 0.10147391187208012,
+        "optimizer_alive_frac": 0.4556461568391015,
+        "wiener_gate_all_groups": true,
+        "split_theta": true,
+        "trainable_missing_from_optimizer": [],
+        "has_phase_coupled_rhythm": true,
+        "restored_phase_rhythm_cycles": null
+      }
+    }
+  },
+  "total_wall_seconds": 1444.08
+}

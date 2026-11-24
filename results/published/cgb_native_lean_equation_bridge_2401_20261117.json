@@ -1,0 +1,58 @@
+{
+  "anchor": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2383\\anchor_005.npz",
+  "anchor_sha256": "ecf02904ed9285502165dcdb9e30cf49e4fa096b740375a56903313024ad6aef",
+  "shape": [
+    32,
+    8,
+    32,
+    32
+  ],
+  "potential": 0.25029154224515243,
+  "errors": {
+    "potential": 5.551115123125783e-17,
+    "S": 4.440892098500626e-16,
+    "P": 2.220446049250313e-16
+  },
+  "gradient_probes": [
+    {
+      "index": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "finite_difference": -0.00017922237817645333,
+      "production": -0.00017922237812917864,
+      "absolute_error": 4.727468416731995e-14
+    },
+    {
+      "index": [
+        15,
+        3,
+        7,
+        11
+      ],
+      "finite_difference": -2.1848453580260375e-05,
+      "production": -2.1848453780718654e-05,
+      "absolute_error": 2.0045827858424826e-13
+    },
+    {
+      "index": [
+        31,
+        7,
+        31,
+        31
+      ],
+      "finite_difference": 0.00011075531404943628,
+      "production": 0.00011075531403895343,
+      "absolute_error": 1.0482852650164909e-14
+    }
+  ],
+  "passed": true,
+  "source_sha256": {
+    "lean/CGBAxioms/reviews/NativeDynamics.lean": "07e149680ef5588605f08cb8ebb16d29ea57c1cddc9db0532431b57c18ee7ef8",
+    "scripts/ib_local/adaptive_hamiltonian.py": "8549ae270e10f57c3f463a88b5dc6c32073974ff5ed482336314973735a616c4",
+    "scripts/ib_local/bfss_gdn_capture.py": "b5f5b877ecf23cc5487a368678c51501585c1aa880d0e3e20e88f296559599e6"
+  },
+  "meaning": "real-anchor equation translation check; no training or synchronization claim"
+}

@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-18",
+  "status": "completed",
+  "authorization": "User requested inventory and deletion of unused project artifacts on C/D/E/F; G permitted for staging and current comparison.",
+  "deleted_kind": "Inactive regenerable UUID fast-table mmap workspaces; exactly count.npy, epoch.npy, err.npy, last_write.npy, rows.npy, tag.npy",
+  "workspaces_deleted": 113,
+  "files_deleted": 678,
+  "bytes_deleted": 27319227136,
+  "GiB_deleted": 25.443012952804565,
+  "by_drive": {
+    "C": {"workspaces": 1, "bytes_deleted": 241763072, "GiB_deleted": 0.2251594066619873},
+    "D": {"workspaces": 27, "bytes_deleted": 6527602944, "GiB_deleted": 6.079303979873657},
+    "E": {"workspaces": 37, "bytes_deleted": 8945233664, "GiB_deleted": 8.33089804649353},
+    "F": {"workspaces": 48, "bytes_deleted": 11604627456, "GiB_deleted": 10.80765151977539}
+  },
+  "failures": [],
+  "plan_manifest": "G:/cgb_preview_restore_comparison_20261118/cleanup_table_plan_20261118.json",
+  "applied_manifest": "G:/cgb_preview_restore_comparison_20261118/cleanup_table_applied_20261118.json",
+  "restoration_basis": "scripts/ib_local/run_navigation_residual_wood.py:62-80 embeds all six arrays in the complete checkpoint; lines 50-54 reconstruct working mappings. External SQL remains required and was retained.",
+  "preserved": [
+    "All checkpoint files, external SQLite snapshots and working SQL",
+    "All logs, reports, configs, fixed query material, source code and datasets",
+    "Main body 2401 and original private bodies 2433/2437 with matching SQL snapshots; existence checked after cleanup",
+    "G-drive active comparison and E-drive failed-event replay logs",
+    "E:/mengli_private_measurements and all directory junction targets outside the explicitly scanned physical roots",
+    "Web workbench, environments and compiler caches"
+  ],
+  "junction_handling": "C:/Users/85750/.codex/cgb_inner_loop_private_20261117 excluded; Windows reparse directories not followed.",
+  "note": "No model checkpoint was deleted or moved. Recorded bytes are deleted file lengths; instantaneous drive free space also changes with the active process."
+}

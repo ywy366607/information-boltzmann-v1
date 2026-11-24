@@ -1,0 +1,214 @@
+{
+  "valid": true,
+  "checks": {
+    "source_unchanged": true,
+    "native_buffers": true,
+    "sql_read_only": true,
+    "cpu_rng": true,
+    "cuda_rng": true,
+    "same_parameters": true,
+    "finite": true,
+    "latent_coordinate": true,
+    "has_native_queries": true,
+    "bounded_programs": true
+  },
+  "source_cycle": 2493,
+  "source_sha256": "7cccc744d4549eca2662727cba6b4c900609393243b9fb557dee6a2f17498107",
+  "old_value": [
+    0.11254078894853592
+  ],
+  "prospective_value": [
+    0.11086015403270721
+  ],
+  "prospective_seconds": 1.0418253999996523,
+  "native_utter_seconds": 26.98002760000054,
+  "details": [
+    {
+      "dynamics": {
+        "raw_support": 7,
+        "latent_residual": 7.152557373046875e-07,
+        "raw_displacement": 28.11338996887207
+      },
+      "address": {
+        "matched": true,
+        "relation": 237,
+        "generation": 5,
+        "similarity": 0.7407888770103455
+      },
+      "question_probability": [
+        0.20179542899131775,
+        0.0974087193608284,
+        0.6523675322532654,
+        0.04842833802103996
+      ],
+      "question_values": [
+        0.12424231320619583,
+        0.12043102830648422,
+        0.1197512075304985,
+        -0.08392205089330673
+      ],
+      "cases": [
+        {
+          "role": "mother",
+          "identity": "pending:1268a6b5819ab9164410ec747654fc4205cc59db5e8834488d2503c3048577e3",
+          "scope": [
+            "shadow:carried:237:14:mother",
+            "episode:104",
+            "episode:1133",
+            "episode:203",
+            "episode:2216",
+            "episode:2345",
+            "episode:2389",
+            "episode:283"
+          ],
+          "programs": [
+            1324,
+            951,
+            1166,
+            1723
+          ],
+          "program_stamps": [
+            1532560,
+            1102715,
+            1358905,
+            1998113
+          ],
+          "proposal_probability": [
+            0.23590116202831268,
+            0.25659868121147156,
+            0.3450419306755066,
+            0.16245825588703156
+          ],
+          "actor_values": [
+            0.11954916268587112,
+            0.1177465096116066,
+            0.1317829191684723,
+            0.12530171871185303
+          ]
+        },
+        {
+          "role": "action",
+          "identity": "pending:e55f2f8026e241cb90fc8f3668c0592da17674cfe45879b4cd23375eba0c0f2a",
+          "scope": [
+            "shadow:carried:237:14:mother",
+            "episode:104",
+            "episode:1133",
+            "episode:203",
+            "episode:2216",
+            "episode:2345",
+            "episode:2389",
+            "episode:283"
+          ],
+          "programs": [
+            1324,
+            951,
+            1723,
+            1512
+          ],
+          "program_stamps": [
+            1532560,
+            1102715,
+            1998113,
+            1747034
+          ],
+          "proposal_probability": [
+            0.3404677212238312,
+            0.3703397512435913,
+            0.2344702184200287,
+            0.05472227931022644
+          ],
+          "actor_values": [
+            0.11954916268587112,
+            0.1177465096116066,
+            0.12530171871185303,
+            0.12321602553129196
+          ]
+        },
+        {
+          "role": "condition",
+          "identity": "pending:a77c2e44dabb883f6337843d38b9762425a3ef809e0d34272e1b88de500da6be",
+          "scope": [
+            "shadow:carried:237:14:mother",
+            "episode:104",
+            "episode:1133",
+            "episode:203",
+            "episode:2216",
+            "episode:2345",
+            "episode:2389",
+            "episode:283"
+          ],
+          "programs": [
+            1324,
+            951,
+            1482,
+            163
+          ],
+          "program_stamps": [
+            1532560,
+            1102715,
+            1714924,
+            212915
+          ],
+          "proposal_probability": [
+            0.38602879643440247,
+            0.41989824175834656,
+            0.018998540937900543,
+            0.17507439851760864
+          ],
+          "actor_values": [
+            0.11954916268587112,
+            0.1177465096116066,
+            0.12391441315412521,
+            0.12455300241708755
+          ]
+        },
+        {
+          "role": "condition",
+          "identity": "unknown:1299",
+          "scope": [
+            "episode:1314",
+            "episode:1481",
+            "episode:1644",
+            "episode:1662",
+            "episode:1741",
+            "episode:1803",
+            "episode:1806",
+            "episode:1832"
+          ],
+          "programs": [
+            1324,
+            951,
+            1482,
+            1848
+          ],
+          "program_stamps": [
+            1532560,
+            1102715,
+            1714924,
+            2134744
+          ],
+          "proposal_probability": [
+            0.18251590430736542,
+            0.26003915071487427,
+            0.20390258729457855,
+            0.3535423278808594
+          ],
+          "actor_values": [
+            -0.09001341462135315,
+            -0.08154191076755524,
+            -0.09309190511703491,
+            -0.07723940908908844
+          ]
+        }
+      ],
+      "model": "raw boundary posterior + native typed questions + transported observed word programs",
+      "terminal": "one explicit Q/program/actor step; original learned terminal value; current intero persistence",
+      "word_endpoint_model": "observed action displacement transported to predicted raw boundary",
+      "reuse_model": "highest native reuse weight; transported endpoint"
+    }
+  ],
+  "schema": 3,
+  "optimizer_updates": 0,
+  "world_calls": 0,
+  "total_seconds": 64.21260699999948
+}

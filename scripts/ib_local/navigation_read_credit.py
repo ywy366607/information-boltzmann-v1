@@ -36,7 +36,11 @@ def configure_read_credit(memory, rule, optimizer_group=None):
 
 
 def read_logits(memory, selected, slots, valid):
-    logits = selected / memory.temperature
+    from scripts.ib_local.learnable_precision_scales import effective_temperature
+    logits = selected / effective_temperature(memory)
+    pb = getattr(memory, '_phase_boltzmann', None)
+    if pb is not None and pb.enable_kinetic_temp:
+        logits = logits * pb.mem_inv_temp_scale()
     if not memory.read_credit_enabled:
         return logits
     from scripts.ib_local.experience_consolidation import consolidates_reads

@@ -1,0 +1,50 @@
+{
+  "cycle": 2807,
+  "scope": "same recorded question/menu and frozen means; post-observation inference",
+  "inputs": [
+    {
+      "path": "C:\\Users\\85750\\mengli-residual-shadow-2806-20261123\\events.jsonl",
+      "sha256": "40da2b4076138c6839a2f5f5e056c4d3cbee3fc63be6e3e4883da5aed2528175"
+    },
+    {
+      "path": "C:\\Users\\85750\\mengli-residual-shadow-silence-2806-20261123\\events.jsonl",
+      "sha256": "e4960e8d675dc4ef9a2a1efd2e5c55beec592206105c819e528891eed02eb625"
+    }
+  ],
+  "world_starts": [
+    17904706,
+    17904706
+  ],
+  "question_signature": "a8afe8c90e5db4542b3ee1c26303ac2a4b2ecf73498beb8201ddbe447c17bbfd",
+  "dimension": 128,
+  "prior_agreement_max": [
+    1.1920928955078125e-07,
+    1.1920928955078125e-07
+  ],
+  "residual_cosine": 0.9970383560793903,
+  "checks": [
+    {
+      "observed": "generate",
+      "alternative": "silence",
+      "mse": {
+        "prior": 0.794555818371896,
+        "copy_factual": 4.8172807974849324e-08,
+        "full_residual": 0.004718590958623703,
+        "predicted_vs_realized_contrast": 0.004718590958623703
+      }
+    },
+    {
+      "observed": "silence",
+      "alternative": "generate",
+      "mse": {
+        "prior": 0.7820916257032312,
+        "copy_factual": 4.8172807974849324e-08,
+        "full_residual": 0.004718590287189021,
+        "predicted_vs_realized_contrast": 0.004718590287189021
+      }
+    }
+  ],
+  "world_calls": 0,
+  "optimizer_updates": 0,
+  "interpretation": "One action pair; reverse transport errors share one algebraic contrast."
+}

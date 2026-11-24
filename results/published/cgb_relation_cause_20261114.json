@@ -1,0 +1,346 @@
+{
+  "contract": "0 world calls, 0 optimizer updates, frozen current-body structural analysis",
+  "minimal": {
+    "radial_leak": {
+      "prediction": [
+        0.9876543209876545,
+        0.6983770678385655
+      ],
+      "true_action_difference": 0.0,
+      "invented_action_difference": -0.28927725314908903,
+      "condition_norm_fixed_prediction": [
+        0.9876543209876545,
+        0.9876543209876545
+      ]
+    },
+    "nonidentification": {
+      "observation_max_difference": 0.0,
+      "mechanism_1_action_slope": 0.0,
+      "mechanism_2_action_slope": 2.0,
+      "observation_rank": 1,
+      "intervention_predictions": [
+        2.0,
+        -2.0
+      ],
+      "intervention": {
+        "condition": 1.0,
+        "action": -1.0
+      },
+      "crossed_observation_rank": 2,
+      "crossed_action_predictions": [
+        -0.975609756097561,
+        0.975609756097561
+      ]
+    },
+    "residual_prior_floor": {
+      "residual_mse": 0.0,
+      "noise": [
+        0.2
+      ],
+      "predictive_scale2": [
+        0.22469135802469103,
+        1.2123456790123452
+      ],
+      "leverage": [
+        0.12345679012345512,
+        5.061728395061726
+      ],
+      "information_64_coordinates": [
+        3.725131259021113,
+        57.66383913990661
+      ]
+    },
+    "factual_margin_counterexample": {
+      "original_mse": [
+        1.0,
+        4.0
+      ],
+      "corrected_mse": [
+        2.25,
+        0.25
+      ],
+      "mean_mse_before": 2.5,
+      "mean_mse_after": 1.25,
+      "actual_action": 0,
+      "margin_before": 3.0,
+      "margin_after": -2.0,
+      "action_difference_before": -1.0,
+      "action_difference_after": -1.0
+    }
+  },
+  "frozen_last_forecast": {
+    "variants": {
+      "base": {
+        "chosen_mse": 0.03863378805135056,
+        "all_mse": 0.03898488363570491,
+        "margin": 0.0005266433765315284
+      },
+      "full": {
+        "chosen_mse": 0.02831821595211797,
+        "all_mse": 0.030639614425145303,
+        "margin": 0.0034820977095410058
+      },
+      "common_only": {
+        "chosen_mse": 0.026985026104884922,
+        "all_mse": 0.028715007423435076,
+        "margin": 0.002594971977825232
+      },
+      "contrast_only": {
+        "chosen_mse": 0.03752397911162663,
+        "all_mse": 0.04090949063741515,
+        "margin": 0.0050782672886827696
+      },
+      "condition_only": {
+        "chosen_mse": 0.027044812360338524,
+        "all_mse": 0.02927727512275272,
+        "margin": 0.0033486941436212947
+      },
+      "action_only": {
+        "chosen_mse": 0.035842705627339405,
+        "all_mse": 0.04047161629393567,
+        "margin": 0.006943365999894396
+      },
+      "fixed_query_condition": {
+        "chosen_mse": 0.02850073633457941,
+        "all_mse": 0.02967731495279043,
+        "margin": 0.0017648679273165324
+      }
+    },
+    "support": 8,
+    "condition_rank": 8,
+    "conditional_action_excitation": 9.58833828555287e-16,
+    "query_action_contrast_span_coverage": 0.24350189306306977,
+    "correction_common_energy": 0.010804899437103773,
+    "correction_contrast_energy": 0.0015592376565423686,
+    "condition_contrast_energy": 0.0004759510137332351,
+    "action_contrast_energy": 0.001104756383740835,
+    "decomposition_error": 6.033994390253206e-08,
+    "query_condition_norm": [
+      1.0000000414934123,
+      0.6395851524191096,
+      0.6566257260648818
+    ],
+    "leverage": [
+      6.891938209533691,
+      6.061672210693359,
+      5.4297027587890625
+    ],
+    "noise_mean": 0.20284238457679749,
+    "evidence_residual_mse": 0.034749098122119904,
+    "unit_noise_prior_fraction": 0.9860552549362183,
+    "predicted_variance": 1.790508022531867,
+    "observed_error": 0.02831821595211797,
+    "variance_to_observed_error": 63.228136460268495,
+    "same_history_opposite_action_operators": [
+      {
+        "desired_contrast": -1.0,
+        "achieved_contrast": -1.0,
+        "historical_prediction_change": 4.02289023949402e-16,
+        "operator_change_norm": 1.3425653910726518
+      },
+      {
+        "desired_contrast": 1.0,
+        "achieved_contrast": 1.0,
+        "historical_prediction_change": 3.6542277725594717e-16,
+        "operator_change_norm": 1.1959612377034419
+      }
+    ],
+    "epistemic_fraction_of_unconditioned_query_energy": 0.7564981069369302
+  },
+  "frozen_last_extra": {
+    "cycle": 4752,
+    "original_hypotheses_error": 1.114445686340332,
+    "target_coordinate_energy": 0.15365862846374512,
+    "support_singular_values": [
+      1.266601800918579,
+      1.2125109434127808,
+      1.0740152597427368,
+      1.0329533815383911,
+      0.9754395484924316,
+      0.827673077583313,
+      0.7577330470085144,
+      0.7031006217002869
+    ]
+  },
+  "full_planner_noise_intervention": {
+    "cases": [
+      {
+        "noise_multiplier": 1.0,
+        "expected_after_value": [
+          0.17372249066829681,
+          0.1606411188840866,
+          0.19786787033081055
+        ],
+        "future_delta": [
+          0.003026828169822693,
+          -0.007453948259353638,
+          0.014363765716552734
+        ],
+        "wood_choice_probability": [
+          0.331167608499527,
+          0.3239835500717163,
+          0.3448488414287567
+        ],
+        "tv_to_uniform": 0.011515513062477112
+      },
+      {
+        "noise_multiplier": 0.02,
+        "expected_after_value": [
+          0.16880452632904053,
+          0.16750283539295197,
+          0.18784326314926147
+        ],
+        "future_delta": [
+          -0.0018911361694335938,
+          -0.0005922317504882812,
+          0.004339158535003662
+        ],
+        "wood_choice_probability": [
+          0.3300052583217621,
+          0.3292858302593231,
+          0.3407089114189148
+        ],
+        "tv_to_uniform": 0.007375583052635193
+      },
+      {
+        "noise_multiplier": 0.0,
+        "expected_after_value": [
+          0.17055723071098328,
+          0.1641036719083786,
+          0.1836777627468109
+        ],
+        "future_delta": [
+          -0.00013843178749084473,
+          -0.0039913952350616455,
+          0.00017365813255310059
+        ],
+        "wood_choice_probability": [
+          0.33206266164779663,
+          0.32848912477493286,
+          0.33944815397262573
+        ],
+        "tv_to_uniform": 0.006114855408668518
+      }
+    ],
+    "unchanged_mother_mean_max_error": 0.0,
+    "meaning": "current frozen body last option set; simultaneous local-posterior noise intervention throughout U/transport; wood contribution before habit/other calibrated offsets; not a trained repair"
+  },
+  "checkpoint_before": "51c3db00668c144906ab814d9d153afac6652f353c387442888166bc543298a4",
+  "checkpoint_after": "51c3db00668c144906ab814d9d153afac6652f353c387442888166bc543298a4",
+  "archive_before": "6f471ab8dd8d0d719b6bafbd7efec56036f51bdb02f537d2aa7408be8d2299ea",
+  "archive_after": "6f471ab8dd8d0d719b6bafbd7efec56036f51bdb02f537d2aa7408be8d2299ea",
+  "retrospective_current_body": {
+    "n": 31,
+    "variants": {
+      "base": {
+        "chosen_mse": 0.05406297149932125,
+        "all_mse": 0.0541702492969761,
+        "margin": 0.0001215641247214173
+      },
+      "full": {
+        "chosen_mse": 0.04341461990324248,
+        "all_mse": 0.04963302316169293,
+        "margin": 0.007007317475754678
+      },
+      "common_only": {
+        "chosen_mse": 0.042100349960125086,
+        "all_mse": 0.043073800422683974,
+        "margin": 0.0010963415143900774
+      },
+      "contrast_only": {
+        "chosen_mse": 0.055073015026724376,
+        "all_mse": 0.060729472035985096,
+        "margin": 0.0063754274278240595
+      },
+      "condition_only": {
+        "chosen_mse": 0.03932550282298722,
+        "all_mse": 0.04107355989699592,
+        "margin": 0.001966578501221279
+      },
+      "action_only": {
+        "chosen_mse": 0.05580378136347551,
+        "all_mse": 0.06166221649190255,
+        "margin": 0.006606381770315317
+      },
+      "fixed_query_condition": {
+        "chosen_mse": 0.043789687363280004,
+        "all_mse": 0.04950695522655244,
+        "margin": 0.006443948287456214
+      }
+    },
+    "support": {
+      "mean": 6.967741935483871,
+      "median": 7.0
+    },
+    "condition_rank": {
+      "mean": 6.967741935483871,
+      "median": 7.0
+    },
+    "conditional_action_excitation": {
+      "mean": 1.4320662832614552e-15,
+      "median": 9.333109712247898e-16
+    },
+    "query_action_contrast_span_coverage": {
+      "mean": 0.6534521361817249,
+      "median": 0.6508773435098635
+    },
+    "correction_common_energy": {
+      "mean": 0.010833503457614397,
+      "median": 0.009515915529117677
+    },
+    "correction_contrast_energy": {
+      "mean": 0.008293475189250755,
+      "median": 0.008144329734094496
+    },
+    "condition_contrast_energy": {
+      "mean": 0.0005632848353435634,
+      "median": 0.0003082887165182697
+    },
+    "action_contrast_energy": {
+      "mean": 0.008048330349163989,
+      "median": 0.007633878228496413
+    },
+    "decomposition_error": {
+      "mean": 1.3272946474311216e-07,
+      "median": 1.1551229867068358e-07
+    },
+    "noise_mean": {
+      "mean": 0.22595933416197378,
+      "median": 0.22498533129692078
+    },
+    "evidence_residual_mse": {
+      "mean": 0.035510606583087675,
+      "median": 0.03428129479289055
+    },
+    "unit_noise_prior_fraction": {
+      "mean": 0.9874877872005585,
+      "median": 0.9880247116088867
+    },
+    "predicted_variance": {
+      "mean": 2.0838838210257884,
+      "median": 2.146454951858946
+    },
+    "observed_error": {
+      "mean": 0.04341461990324248,
+      "median": 0.03615637751193526
+    },
+    "variance_to_observed_error": {
+      "mean": 59.41421078420188,
+      "median": 48.67425279632123
+    },
+    "epistemic_fraction_of_unconditioned_query_energy": {
+      "mean": 0.346547863818275,
+      "median": 0.3491226564901365
+    },
+    "cycle": {
+      "mean": 4736.322580645161,
+      "median": 4736.0
+    },
+    "episode": {
+      "mean": 5322.322580645161,
+      "median": 5322.0
+    }
+  },
+  "interpretation": "Local relation residual, not whole-body absence of self-model. Historical candidate-margin scores do not identify interventional discrimination. No production repair or capability-training claim.",
+  "checks": "8 passed: numerical causal counterexamples plus existing passive self-action observer regressions"
+}

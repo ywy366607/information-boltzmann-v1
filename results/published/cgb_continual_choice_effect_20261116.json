@@ -1,0 +1,149 @@
+{
+  "schema": 1,
+  "source": "F:\\cgb_continual_learning_20261116\\body\\metrics.jsonl",
+  "logged_events": 31,
+  "one_loop": {
+    "events": 31,
+    "horizon": 1,
+    "discount": 0.8,
+    "skipped": {},
+    "mean_actual_return": 0.07120051883882092,
+    "estimator": "baseline-centered ordinary importance contrast; no clipping or self-normalization",
+    "scope": "one-off draw substitution with unchanged beliefs/learning machinery; actual-state distribution",
+    "fire": {
+      "mean_lift": -0.0038074666413372665,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "uncertainty": "block stability only; no iid significance claim",
+      "uniform_target_ess": 25.718946874149086,
+      "maximum_weight": 2.1775171051220537,
+      "expected_maximally_coupled_choice_changes": 5.934640808858978,
+      "admissible_counts": {
+        "3": 31
+      }
+    },
+    "draft": {
+      "mean_lift": 0.0003336907582652648,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "uncertainty": "block stability only; no iid significance claim",
+      "uniform_target_ess": 30.94675239659959,
+      "maximum_weight": 1.0972343112786869,
+      "expected_maximally_coupled_choice_changes": 0.5100585600954186,
+      "admissible_counts": {
+        "4": 31
+      }
+    },
+    "both": {
+      "mean_lift": -0.0038696974205528066,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "uncertainty": "block stability only; no iid significance claim",
+      "uniform_target_ess": 25.995634260578484,
+      "maximum_weight": 2.1202348472150585
+    },
+    "interaction": {
+      "mean_lift": 0.0003959215374808034,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "uncertainty": "block stability only; no iid significance claim"
+    },
+    "imagination": {
+      "events": 31,
+      "mean_lift": -0.002609763885914743,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "target": "same learned habit, current imagination offset removed",
+      "target_ess": 28.110780463126943,
+      "maximum_weight": 1.8907334133943379,
+      "expected_maximally_coupled_choice_changes": 4.597054500081795
+    },
+    "draft_imagination_interaction": {
+      "events": 31,
+      "mean_lift": 4.271975326824511e-05,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "target": "same learned habit, current imagination offset removed"
+    }
+  },
+  "two_loops": {
+    "events": 30,
+    "horizon": 2,
+    "discount": 0.8,
+    "skipped": {
+      "future_not_observed": 1
+    },
+    "mean_actual_return": 0.1314369014898936,
+    "estimator": "baseline-centered ordinary importance contrast; no clipping or self-normalization",
+    "scope": "one-off draw substitution with unchanged beliefs/learning machinery; actual-state distribution",
+    "fire": {
+      "mean_lift": -0.011961317124648457,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "uncertainty": "block stability only; no iid significance claim",
+      "uniform_target_ess": 24.72800463011146,
+      "maximum_weight": 2.1775171051220537,
+      "expected_maximally_coupled_choice_changes": 5.773058827946282,
+      "admissible_counts": {
+        "3": 30
+      }
+    },
+    "draft": {
+      "mean_lift": 0.0007214352814861695,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "uncertainty": "block stability only; no iid significance claim",
+      "uniform_target_ess": 29.947922468344938,
+      "maximum_weight": 1.0972343112786869,
+      "expected_maximally_coupled_choice_changes": 0.5013963036554318,
+      "admissible_counts": {
+        "4": 30
+      }
+    },
+    "both": {
+      "mean_lift": -0.011304439234215315,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "uncertainty": "block stability only; no iid significance claim",
+      "uniform_target_ess": 25.00791925409315,
+      "maximum_weight": 2.1202348472150585
+    },
+    "interaction": {
+      "mean_lift": 6.455739105302392e-05,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "uncertainty": "block stability only; no iid significance claim"
+    },
+    "imagination": {
+      "events": 30,
+      "mean_lift": -0.013479692097121037,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "target": "same learned habit, current imagination offset removed",
+      "target_ess": 27.12976130028656,
+      "maximum_weight": 1.8907334133943379,
+      "expected_maximally_coupled_choice_changes": 4.439101901263508
+    },
+    "draft_imagination_interaction": {
+      "events": 30,
+      "mean_lift": -0.0003381857651976421,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "target": "same learned habit, current imagination offset removed"
+    }
+  },
+  "optimizer_updates": 0,
+  "world_calls": 0
+}

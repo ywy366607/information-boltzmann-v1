@@ -1,0 +1,158 @@
+{
+  "schema": 1,
+  "source": {
+    "cycle": 5162,
+    "checkpoint": "D:\\information-boltzmann-v1\\results\\cgb_canonical_relation_evidence_20261114\\learning_recovered\\body\\last.pt.gz",
+    "sha256": "0833c937fd67af82338a0c89dbb8590f8b87dc259dd3ef7c54ed171eb509fe4f",
+    "gzip_crc_passed": true,
+    "uncompressed_bytes": 324143683,
+    "completed_events": 150,
+    "updates": 900,
+    "canonical_support_pass": 150,
+    "source_segment_status": "stopped at complete event boundary",
+    "original_target": 5268
+  },
+  "unit_checks": 75,
+  "admission": {
+    "source_cycle": 5162,
+    "source_sha256": "0833c937fd67af82338a0c89dbb8590f8b87dc259dd3ef7c54ed171eb509fe4f",
+    "preserved": {
+      "model": true,
+      "engine": true,
+      "optimizer_state": true,
+      "whole": true,
+      "old_optimizer_groups": true
+    },
+    "new_parameters": {},
+    "new_parameter_count": 0,
+    "initialization": {
+      "schema": 1,
+      "features": [
+        4,
+        5
+      ],
+      "migrated_at_cycle": 4752,
+      "initialization": {
+        "facts": 1702,
+        "decision_facts": 1701,
+        "initial_noise": [
+          0.037731170654296875,
+          0.4154207706451416,
+          0.5671701431274414
+        ]
+      },
+      "semantics": "learned common role coordinates; same bounded posterior/U throughout navigation",
+      "noise": "learned pooled real-evidence prior, no local unit reset",
+      "retained": "all original parameters and Adam, S/P, actual facts, world and pending participation"
+    },
+    "geometry_checks": {
+      "four_shared_inputs": true,
+      "condition_rank": true,
+      "full_rank": true,
+      "conditional_action_rank": true,
+      "finite": true,
+      "same_condition_across_actions": true
+    },
+    "parameter_audit": {
+      "total": 953931,
+      "trainable": 953931,
+      "trainable_in_optimizer": 953931,
+      "trainable_missing_from_optimizer": [],
+      "frozen": []
+    },
+    "events": 2,
+    "updates": 12,
+    "authorized_metadata_migrations": {
+      "joint_relation_update_revision": {
+        "before": 3,
+        "after": 4,
+        "reason": "explicit --qualified-delayed-evidence migration"
+      }
+    },
+    "scope": "migration and real whole-cycle admission, not capability or convergence",
+    "joint_relation_update": {
+      "schema": 1,
+      "migrated_at_cycle": 4853,
+      "dependencies": {
+        "recorded_real_uses": 98,
+        "edges": 97,
+        "new_parameters": 0
+      },
+      "variables": "versioned shared unknown -> bounded dependent relation uses",
+      "organization": "same shared coordinates and noise prior as prediction",
+      "overlap": "normalized precision quadratic solve at the same bound decision port",
+      "implementation_migration": {
+        "source_cycle": 5162,
+        "previous": 3,
+        "current": 4,
+        "change": "delayed target exclusion follows committed fact identity; recycled addresses keep old participants"
+      },
+      "implementation_revision": 4
+    },
+    "event_checks": [
+      {
+        "observed": true,
+        "reproduction": true,
+        "real_revision": true,
+        "same_U": true,
+        "learning": true,
+        "encoder_basis_learned": true,
+        "old_fact_replay": true,
+        "draft_replay": true,
+        "binding_replay": true,
+        "previous_settled": true,
+        "organization_in_U": true,
+        "organization_shared_features": true,
+        "overlap_descends": true,
+        "coordinated_continuation": true,
+        "dependency_used": true,
+        "canonical_support": true,
+        "committed_fact_recorded": true,
+        "delayed_fact_qualified": true
+      },
+      {
+        "observed": true,
+        "reproduction": true,
+        "real_revision": true,
+        "same_U": true,
+        "learning": true,
+        "encoder_basis_learned": true,
+        "old_fact_replay": true,
+        "draft_replay": true,
+        "binding_replay": true,
+        "previous_settled": true,
+        "organization_in_U": true,
+        "organization_shared_features": true,
+        "overlap_descends": true,
+        "coordinated_continuation": true,
+        "dependency_used": true,
+        "canonical_support": true,
+        "committed_fact_recorded": true,
+        "delayed_fact_qualified": true
+      }
+    ],
+    "cycle": 5164,
+    "disk_restore": {
+      "model_exact": true,
+      "optimizer_exact": true
+    },
+    "source_unchanged": true,
+    "event_admission_passed": true
+  },
+  "actual_delayed_identity_chain": [
+    {
+      "cycle": 5163,
+      "delayed": "episode:5748",
+      "committed": "episode:5749"
+    },
+    {
+      "cycle": 5164,
+      "delayed": "episode:5749",
+      "committed": "episode:5750"
+    }
+  ],
+  "second_settles_first": true,
+  "remaining_cycles": 104,
+  "final_target": 5268,
+  "scope": "cache identity and complete real event repair; not a navigation capability claim"
+}

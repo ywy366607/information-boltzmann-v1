@@ -1,0 +1,80 @@
+/* Read-only checkpoint facts, not physiological gauges or a health score. */
+.mengli-intro .intro-life {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  max-width: 680px;
+  margin: 20px auto 0;
+  color: #eee9dc;
+  font-family: "SF Mono", Consolas, "Microsoft YaHei", monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 1200ms ease 220ms, transform 1400ms ease 220ms;
+}
+.mengli-intro .intro-life p { margin: 0; }
+.mengli-intro .intro-life-age { font-size: 13px; letter-spacing: .05em; }
+.mengli-intro .intro-life-oldest,
+.mengli-intro .intro-life-layers,
+.mengli-intro .intro-life-source { color: rgb(238 233 220 / 68%); font-size: 10px; }
+.mengli-intro .intro-life-source { margin-top: 3px; }
+.mengli-intro:is([data-phase="name"], [data-phase="handoff"]) .intro-life {
+  opacity: 1;
+  transform: none;
+}
+.mengli-intro[data-life="bound"] .intro-field { top: 34%; width: clamp(260px, 42vmin, 400px); }
+.mengli-intro[data-life="bound"] .intro-copy { top: calc(34% + clamp(130px, 21vmin, 200px) - 14px); }
+.mengli-intro[data-life="bound"] .intro-verse { margin-top: 18px; }
+.mengli-intro[data-life="bound"] .intro-mark,
+.mengli-intro[data-life="bound"] .intro-mark img { animation: none !important; }
+
+/* Layer order is fixed (1→4); the textual norm readout is the data view.
+   A single jade hue carries relative magnitude, never good/bad status. */
+.mengli-intro .orbit-d {
+  --tilt: 9deg;
+  display: none;
+  width: 62%;
+  height: 94%;
+  border-radius: 43% 57% 54% 46% / 62% 43% 57% 38%;
+}
+.mengli-intro[data-momentum="measured"] .orbit-d { display: block; }
+.mengli-intro[data-momentum="measured"]:is([data-phase="unfurl"], [data-phase="name"], [data-phase="handoff"]) .intro-orbit {
+  border-color: #bbd3ba;
+  opacity: calc(.14 + var(--layer-drive, 0) * .34);
+  transform: translate(-50%, -50%) rotate(var(--tilt)) scale(var(--life-scale, 1));
+}
+.mengli-intro[data-momentum="measured"][data-phase="handoff"] .intro-orbit {
+  opacity: calc(.10 + var(--layer-drive, 0) * .18);
+}
+.mengli-intro.is-learning .intro-mark,
+.mengli-brand-mark.has-life-update img {
+  animation: mengli-observed-update 1100ms ease-out !important;
+}
+@keyframes mengli-observed-update {
+  0%, 100% { filter: brightness(1); }
+  30% { filter: brightness(1.5) drop-shadow(0 0 7px rgb(187 211 186 / 35%)); }
+}
+#life-reading { max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 600px) {
+  .mengli-intro[data-life="bound"] .intro-field { top: 29%; width: min(73vw, 300px); }
+  .mengli-intro[data-life="bound"] .intro-copy { top: calc(29% + min(36.5vw, 150px) - 15px); }
+  .mengli-intro .intro-life { margin-top: 16px; gap: 6px; font-size: 11px; }
+  .mengli-intro .intro-life-age { font-size: 11px; letter-spacing: 0; }
+  .mengli-intro .intro-life-oldest,
+  .mengli-intro .intro-life-layers,
+  .mengli-intro .intro-life-source { font-size: 9px; }
+  #life-reading { max-width: 190px; }
+}
+@media (max-height: 700px) {
+  .mengli-intro[data-life="bound"] .intro-field { top: 25%; width: min(30vh, 230px); }
+  .mengli-intro[data-life="bound"] .intro-copy { top: calc(25% + min(15vh, 115px) - 8px); }
+  .mengli-intro .intro-life { margin-top: 10px; gap: 3px; }
+  .mengli-intro[data-life="bound"] .intro-verse { margin-top: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mengli-intro .intro-life { transition: none !important; }
+  .mengli-intro.is-learning .intro-mark,
+  .mengli-brand-mark.has-life-update img { animation: none !important; }
+}

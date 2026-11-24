@@ -1,0 +1,59 @@
+{
+  "source": 2585,
+  "action_pair": [
+    {
+      "name": "silence",
+      "world": 20066279,
+      "match": 0,
+      "reply_sha256": "503f436110657a826a68c1c3aaebf375b4acf0e9557a2d79d83de359ff5e8eb7",
+      "next_choice": "silence",
+      "next_world": 20067239,
+      "consumed": "episode:2596"
+    },
+    {
+      "name": "generate",
+      "world": 17042644,
+      "match": 5,
+      "reply_sha256": "536d94755a2078aa49273fc6bb6a2be4e7cada58164009ccd3be7265a0a12bcf",
+      "next_choice": "generate",
+      "next_world": 14673547,
+      "consumed": "episode:2596"
+    }
+  ],
+  "frozen_response_mse": [
+    {
+      "actual": 0,
+      "target": 1,
+      "prior": 0.9260139353264248,
+      "copy": 0.8031099086317067,
+      "residual": 0.5762931804287911
+    },
+    {
+      "actual": 1,
+      "target": 0,
+      "prior": 0.8049481944419928,
+      "copy": 0.8031099086317067,
+      "residual": 0.5762931819637858
+    }
+  ],
+  "generate_to_actual_silence_settlement_mse": {
+    "prior": 0.7944514046277364,
+    "copy_factual": 0.8031763150888407,
+    "native_U": 0.6435421319005963,
+    "full_residual": 0.5765184930673168
+  },
+  "generate_to_actual_silence_successor_mse": {
+    "prior": 1.4404876464226066,
+    "copy_factual": 1.0680922101393395,
+    "full_residual": 1.0805969043505605,
+    "native_U": 1.3525878580093653
+  },
+  "replayed": {
+    "cycle": 2586,
+    "updates": 4,
+    "external_bytes": 960,
+    "paid_calls": 0,
+    "checkpoint": "C:\\Users\\85750\\mengli-navigation-pair-2585-cf\\body\\last.pt.gz"
+  },
+  "scope": "actual changed world and subsequent decisions use original policy; methods scored on actual paired response and realized next boundary, no method assigned the later actor"
+}

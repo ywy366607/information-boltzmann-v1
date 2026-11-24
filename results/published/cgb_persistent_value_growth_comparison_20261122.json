@@ -1,0 +1,219 @@
+{
+  "schema": 1,
+  "source": "D:\\information-boltzmann-v1\\scratch\\cgb_wood_policy_use_16rounds_20261120\\natural\\run\\body\\last.pt.gz",
+  "source_sha256": "d673ffaa3168b153fcd853ad6af76f9567fa73336dc44ed129ebdd780e31a729",
+  "protocol": {
+    "schema": 1,
+    "source": "D:\\information-boltzmann-v1\\scratch\\cgb_wood_policy_use_16rounds_20261120\\natural\\run\\body\\last.pt.gz",
+    "source_sha256": "d673ffaa3168b153fcd853ad6af76f9567fa73336dc44ed129ebdd780e31a729",
+    "source_cycle": 2601,
+    "natural_rounds": 8,
+    "arms": [
+      "original",
+      "refined"
+    ],
+    "max_world_rounds": 16,
+    "max_optimizer_updates": 64,
+    "observation_rounds": [],
+    "prefix_paths": {},
+    "score_rounds": [
+      2,
+      4,
+      8
+    ],
+    "record_actions": true,
+    "record_dispatch_timing": true,
+    "intervention": "root persistent scalar second residual fit throughout refined life",
+    "candidate": "fixed two fits; original ridge, features, sources, teacher budget, reward and update rules",
+    "validation": {
+      "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+      "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+      "starts": [
+        40960,
+        114688,
+        196608,
+        245760
+      ],
+      "bytes_per_segment": 2048,
+      "total_scored_bytes": 8192,
+      "used_in_training": false
+    },
+    "comparison": "same complete source and RNG; both sample normally and retain all original learning",
+    "endpoint": "difference of final independent improvement; 2/4/8 trajectory, old facts, choices and cost",
+    "unit": "two complete living trajectories; materials are readouts of each trajectory",
+    "stop": "8 real rounds per arm; stop and preserve on failure; no automatic retry or extra arm"
+  },
+  "completed_at": "2026-11-22T11:34:46.249450+00:00",
+  "arms": {
+    "original": {
+      "cycle": 2609,
+      "rounds": 8,
+      "updates": 32,
+      "external_bytes": 7680,
+      "self_bytes": 256,
+      "independent_gain": {
+        "2": {
+          "mean": -0.005445661023259163,
+          "segments": [
+            -0.009422875940799713,
+            -0.003336310386657715,
+            -0.003704570233821869,
+            -0.005318887531757355
+          ]
+        },
+        "4": {
+          "mean": -0.001298803836107254,
+          "segments": [
+            0.002487659454345703,
+            -0.0010726973414421082,
+            -0.002289615571498871,
+            -0.00432056188583374
+          ]
+        },
+        "8": {
+          "mean": -0.00484696589410305,
+          "segments": [
+            -0.015849702060222626,
+            -0.0007773861289024353,
+            0.0017938464879989624,
+            -0.004554621875286102
+          ]
+        }
+      },
+      "dispatch_seconds": 218.9981040999919,
+      "mean_payment": -0.008841401897370815,
+      "choices": [
+        "silence",
+        "silence",
+        "silence",
+        "generate",
+        "generate",
+        "silence",
+        "silence",
+        "silence"
+      ],
+      "native_teachers": 16,
+      "finite_U_verified": true,
+      "max_policy_replay_error": 1.9073486328125e-06,
+      "mean_gain_per_minute": -0.001327947357541502,
+      "refinement": null,
+      "old_facts": {
+        "queries": 64,
+        "initial_score": -1.1598582491278648,
+        "final_score": -1.1517420504242182,
+        "score_gain": 0.00811619870364666,
+        "mse_gain": 0.010859184549190104
+      },
+      "internal_events": {
+        "outside_learning": 0,
+        "within_learning": 6
+      },
+      "checkpoint": {
+        "path": "F:\\mengli-persistent-value-growth-20261122\\original\\run\\body\\last.pt.gz",
+        "sha256": "6714ad8205ae09a1df7551a4545a975c893ea3306aade5fd14aed5524eb6e0fe"
+      }
+    },
+    "refined": {
+      "cycle": 2609,
+      "rounds": 8,
+      "updates": 32,
+      "external_bytes": 7680,
+      "self_bytes": 372,
+      "independent_gain": {
+        "2": {
+          "mean": -0.005447965115308762,
+          "segments": [
+            -0.009427003562450409,
+            -0.0033415406942367554,
+            -0.0037076547741889954,
+            -0.005315661430358887
+          ]
+        },
+        "4": {
+          "mean": -0.0003746394068002701,
+          "segments": [
+            -0.020072631537914276,
+            0.0059297531843185425,
+            0.004989519715309143,
+            0.00765480101108551
+          ]
+        },
+        "8": {
+          "mean": 0.007120145484805107,
+          "segments": [
+            0.018004700541496277,
+            0.005623169243335724,
+            0.002308778464794159,
+            0.002543933689594269
+          ]
+        }
+      },
+      "dispatch_seconds": 237.51934380002058,
+      "mean_payment": -0.018358967266976833,
+      "choices": [
+        "silence",
+        "silence",
+        "generate",
+        "generate",
+        "silence",
+        "generate",
+        "silence",
+        "generate"
+      ],
+      "native_teachers": 16,
+      "finite_U_verified": true,
+      "max_policy_replay_error": 9.5367431640625e-07,
+      "mean_gain_per_minute": 0.0017986271023382198,
+      "refinement": {
+        "root_calls": 48,
+        "nodes": 192,
+        "extra_teacher_calls": 0,
+        "steps": 2,
+        "channel": "actual final-root persistent scalar value",
+        "mode": "private experiment"
+      },
+      "old_facts": {
+        "queries": 64,
+        "initial_score": -1.1598582491278648,
+        "final_score": -1.1570402942597866,
+        "score_gain": 0.002817954868078232,
+        "mse_gain": 0.004320670384913683
+      },
+      "internal_events": {
+        "outside_learning": 8,
+        "within_learning": 8
+      },
+      "checkpoint": {
+        "path": "F:\\mengli-persistent-value-growth-20261122\\refined\\run\\body\\last.pt.gz",
+        "sha256": "220d8dbf07cb356f79aefec42fcfe1f9c533c60cda2a6c34e07849177e8f7d30"
+      }
+    }
+  },
+  "refined_minus_original": {
+    "2": -2.304092049598694e-06,
+    "4": 0.000924164429306984,
+    "8": 0.011967111378908157
+  },
+  "training_added": {
+    "world_rounds": 16,
+    "optimizer_updates": 64,
+    "external_bytes": 15360,
+    "paid_calls": 0
+  },
+  "validation": {
+    "runtime_source_hashes": "verified unchanged by supervisor",
+    "clock_jet_theorems": 5,
+    "deformation_order_theorems": 3,
+    "new_matrix_tests_passed": 2,
+    "integration_tests_passed": 8
+  },
+  "final_segment_differences": [
+    0.0338544026017189,
+    0.006400555372238159,
+    0.0005149319767951965,
+    0.007098555564880371
+  ],
+  "dispatch_time_change_pct": 8.45726029279783,
+  "decision": "retain refined2609 as next research candidate and original2609 as retention/cost comparator; main2401 preserved",
+  "next": "target-sensitive delayed memory and time-credit transport using the seven-route board"
+}

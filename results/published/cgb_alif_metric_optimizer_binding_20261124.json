@@ -1,0 +1,43 @@
+{
+  "kind": "CPU actual-operator contract check; zero world calls",
+  "shape": [
+    128,
+    256
+  ],
+  "damping": 0.25,
+  "old_covariance_eigenvalue": 9.0,
+  "initial_optimizer_state": "zero moments, real allocation/cooling/Wiener enabled",
+  "protected_column_gradient_gain": 0.027027025818824768,
+  "gradient_drift_ratio": 0.0007304600957367155,
+  "actual_parameter_drift_ratio": 0.9999995087605538,
+  "protected_column_actual_step_gain": 0.9999995827674866,
+  "raw_gate": [
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  ],
+  "projected_gate": [
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  ],
+  "interpretation": "A bound on a projected gradient must be rebound to the final Adam/Wiener parameter displacement."
+}

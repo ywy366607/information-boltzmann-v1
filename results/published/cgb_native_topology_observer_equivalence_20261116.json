@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "checks": {
+    "model": true,
+    "optimizer": true,
+    "recurrent": true,
+    "momenta": true,
+    "pending": true,
+    "world": true,
+    "rng": true,
+    "all_carried_engine": true,
+    "engine_fields": true,
+    "engine_field_types": true,
+    "fast_table": true,
+    "table_clock": true,
+    "sql_logical": true,
+    "initial_same": true,
+    "receipts_same": true,
+    "observer_rng": true,
+    "observer_source_unchanged": true
+  },
+  "differing_engine_fields": [],
+  "differing_initial_fields": [],
+  "plain_seconds": 13.984174899989739,
+  "observed_seconds": 18.171084099973086,
+  "purpose": "same actual complete-learning event with/without detached observer; not capability evidence"
+}

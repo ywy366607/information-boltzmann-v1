@@ -1,0 +1,187 @@
+{
+  "status": "reachable_input_lift",
+  "relation": [
+    213,
+    4
+  ],
+  "event": 1,
+  "update_clock": 0,
+  "before_call": 14,
+  "after_call": 26,
+  "rank": 1,
+  "singular_values": [
+    0.23470731912333745,
+    3.0706397293921497e-15,
+    3.6465802832307736e-16,
+    2.7128851014640587e-16,
+    1.3754001211420692e-16,
+    1.16822300667856e-16,
+    8.886289118574102e-17,
+    6.911365304358642e-17
+  ],
+  "relative_reachability_residual": 1.4571103849778534e-13,
+  "fact_keys": [
+    [
+      "episode:1133",
+      "decision"
+    ],
+    [
+      "episode:1616",
+      "decision"
+    ],
+    [
+      "episode:1919",
+      "decision"
+    ],
+    [
+      "episode:1977",
+      "decision"
+    ],
+    [
+      "episode:203",
+      "decision"
+    ],
+    [
+      "episode:2216",
+      "decision"
+    ],
+    [
+      "episode:267",
+      "decision"
+    ],
+    [
+      "episode:283",
+      "decision"
+    ]
+  ],
+  "variable_uses": [
+    [
+      {
+        "identity": "unknown:1643",
+        "port": "condition"
+      },
+      1,
+      1
+    ],
+    [
+      {
+        "identity": "unknown:1677",
+        "port": "condition"
+      },
+      0,
+      0
+    ],
+    [
+      {
+        "identity": "unknown:1673",
+        "port": "condition"
+      },
+      0,
+      0
+    ],
+    [
+      {
+        "identity": "unknown:1293",
+        "port": "mother"
+      },
+      5,
+      4
+    ],
+    [
+      {
+        "identity": "unknown:1648",
+        "port": "condition"
+      },
+      1,
+      0
+    ],
+    [
+      {
+        "identity": "unknown:1640",
+        "port": "condition"
+      },
+      1,
+      0
+    ],
+    [
+      {
+        "identity": "unknown:1634",
+        "port": "condition"
+      },
+      1,
+      0
+    ],
+    [
+      {
+        "identity": "unknown:1629",
+        "port": "condition"
+      },
+      1,
+      0
+    ]
+  ],
+  "target": {
+    "input_norm": 0.27782271789368557,
+    "relative_input_norm": 0.0072135310425883135,
+    "mean_change_norm": 0.07290367060005039,
+    "gradient_energy": 0.006377934224352796,
+    "curl_energy": 0.00425195614956852,
+    "harmonic_energy": 2.0919649745260184e-33,
+    "dirac_node_energy": 0.031889671121763906,
+    "dirac_face_energy": 0.021259780747842603
+  },
+  "matched": {
+    "input_norm": 0.2778227178936855,
+    "relative_input_norm": 0.007213531042588312,
+    "mean_change_norm": 0.016591713699243664,
+    "gradient_energy": 0.0011011398539106823,
+    "curl_energy": 4.94373296621191e-32,
+    "harmonic_energy": 8.303947505577162e-34,
+    "dirac_node_energy": 0.005505699269553395,
+    "dirac_face_energy": 1.78058006790806e-34
+  },
+  "paired_target": {
+    "input_norm": 0.30981235957918163,
+    "relative_input_norm": 0.008044126449217037,
+    "mean_change_norm": 0.07290367060005039,
+    "gradient_energy": 0.006377934224352797,
+    "curl_energy": 0.00425195614956852,
+    "harmonic_energy": 2.091964974526018e-33,
+    "dirac_node_energy": 0.0318896711217639,
+    "dirac_face_energy": 0.021259780747842603
+  },
+  "paired_control": {
+    "input_norm": 0.30981235957918163,
+    "relative_input_norm": 0.008044126449217037,
+    "mean_change_norm": 0.0729036706000504,
+    "gradient_energy": 0.021259780747842683,
+    "curl_energy": 9.031057633120652e-31,
+    "harmonic_energy": 1.6032486943705292e-32,
+    "dirac_node_energy": 0.10629890373921308,
+    "dirac_face_energy": 5.873445685959871e-34
+  },
+  "paired_input_norm_error": 0.0,
+  "paired_mean_error": 1.480848997850435e-17,
+  "source": {
+    "path": "D:\\information-boltzmann-v1\\results\\published\\cgb_native_shared_response_scoped_2401_20261117.json",
+    "sha256": "cfd57df16abd9e85d5038e7a01b7e0c63dc95a4420c5f6082a753c7bb9944ebd"
+  },
+  "operations": {
+    "path": "scratch\\native_inner_loop_use_2401_20261117\\baseline\\observations\\operations.jsonl.gz",
+    "sha256": "e1e76630494609f4707983e9819c7cd679e3d90886629e8f3121334226584785"
+  },
+  "tensors": {
+    "path": "scratch\\native_inner_loop_use_2401_20261117\\baseline\\observations\\tensors.bin",
+    "sha256": "a2cadc9772a387b6982b49d3d6ace766ec287e40adaf5cfbec0e39249c437681"
+  },
+  "arrays": {
+    "path": "results\\published\\cgb_native_transport_curl_lift_2401_20261117.npz",
+    "sha256": "17443ca2592290846da162054893d749d242c64a05d1b305f69e94d4b2af85ac"
+  },
+  "proof": {
+    "path": "D:\\information-boltzmann-v1\\lean\\CGBAxioms\\reviews\\NativeTransportCurlUse.lean",
+    "sha256": "eb2ee8d64c776c46764c322fcd11ac336cd1b646a6f7cb44d4e23aad70a234de",
+    "exit_code": 0,
+    "binding": "981 actual edges, eight stable fact rows, 128 response coordinates; numerical lift identities in arrays"
+  }
+}

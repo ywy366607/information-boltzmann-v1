@@ -1,0 +1,83 @@
+/* One scene, two light conditions. ThemePresenter owns data-ds-dark-theme.
+   Only palette surfaces change; typography, controls and layout remain native. */
+body.mengli-scene-native {
+  --mengli-membrane-a: 48% 52% 61% 39% / 57% 37% 63% 43%;
+  --mengli-membrane-b: 62% 38% 46% 54% / 44% 58% 42% 56%;
+  --mengli-texture: repeating-linear-gradient(17deg, transparent 0 3px, var(--mengli-grain) 3px 4px), repeating-linear-gradient(107deg, transparent 0 5px, var(--mengli-grain) 5px 6px);
+}
+body.mengli-scene-native:not([data-ds-dark-theme]) {
+  --mengli-paper: #f7f8f3;
+  --mengli-jade: #426653;
+  --mengli-mist: rgb(108 150 116 / 8%);
+  --mengli-thread: rgb(76 118 89 / 14%);
+  --mengli-grain: rgb(65 102 80 / 12%);
+  --dsw-alias-bg-base: var(--mengli-paper);
+  --dsw-specific-sidebar-fill: #edf1e9;
+  --dsw-alias-bg-layer-1: #f0f3ed;
+  --dsw-alias-bg-layer-2: #ffffff;
+  --dsw-alias-bg-layer-3: #e8eee5;
+  --dsw-alias-bg-module-platform: #fcfdf9;
+  --dsw-specific-input-major: #ffffff;
+  --dsw-specific-bubble: #e9efe5;
+  --dsw-specific-menu: #fcfdf9;
+  --dsw-menu-surface-fill: #fcfdf9;
+  --dsw-alias-settings-card-fill: #fcfdf9;
+}
+body.mengli-scene-native[data-ds-dark-theme] {
+  --mengli-paper: var(--dsw-alias-bg-base);
+  --mengli-jade: #c7f2bf;
+  --mengli-mist: rgb(143 185 151 / 7%);
+  --mengli-thread: rgb(187 211 186 / 12%);
+  --mengli-grain: rgb(187 211 186 / 10%);
+}
+/* Keep the very same SVG readable on paper, without a second artwork. */
+body.mengli-scene-native:not([data-ds-dark-theme]) :is(.mengli-identity-mark, .intro-mark) { filter: brightness(.48) saturate(.9); }
+/* Native ConversationShell root. The edge mask keeps grain and membranes out
+   of the reading column, composer and any right-hand native plugin panels. */
+.mengli-scene-native .wSkVaW_root {
+  isolation: isolate;
+  background: radial-gradient(ellipse at 100% 4%, var(--mengli-mist), transparent 34%), var(--mengli-paper);
+}
+.mengli-scene-native .wSkVaW_root::before,
+.mengli-scene-native .wSkVaW_root::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: -1;
+}
+.mengli-scene-native .wSkVaW_root::before {
+  inset: 0;
+  background-image: var(--mengli-texture);
+  opacity: .22;
+  mask-image: linear-gradient(90deg, #000, transparent 14% 86%, #000);
+}
+.mengli-scene-native .wSkVaW_root::after {
+  width: clamp(300px, 38vw, 540px);
+  height: clamp(360px, 48vw, 630px);
+  right: -32%;
+  top: -23%;
+  border: 1px solid var(--mengli-thread);
+  border-right-color: transparent;
+  border-radius: var(--mengli-membrane-a);
+  transform: rotate(-27deg);
+  box-shadow: 0 0 64px var(--mengli-mist), inset 0 0 60px var(--mengli-mist);
+}
+@media (max-width: 767px) {
+  .mengli-scene-native .wSkVaW_root::after { right: -72%; top: -30%; opacity: .65; }
+  .mengli-scene-native .wSkVaW_root::before { opacity: .12; }
+}
+/* Compact the speaker/body gap only in the external family read model. */
+.mengli-scene-native :is([data-chat-node-key^="history:"], [data-chat-node-key^="family:"]) .hWmORq_body { gap: 8px; }
+.mengli-scene-native :is([data-chat-node-key^="history:"], [data-chat-node-key^="family:"]) .hWmORq_root { font-size: 15px; line-height: 1.65; }
+.mengli-scene-native :is([data-chat-node-key^="history:"], [data-chat-node-key^="family:"]) .hWmORq_root p:first-child { margin-bottom: 8px; }
+.mengli-scene-native :is([data-chat-node-key^="history:"], [data-chat-node-key^="family:"]) .hWmORq_root p:first-child + p { margin-top: 0; }
+@media (max-width: 640px) {
+  .mengli-scene-native .mengli-plan-shortcut { display: none; }
+  .mengli-scene-native .mengli-care-menu { min-height: 44px; min-width: 44px; }
+}
+/* These decorations are deliberately static, including during idle learning. */
+@media (prefers-reduced-motion: reduce) {
+  .mengli-scene-native .wSkVaW_root::before,
+  .mengli-scene-native .wSkVaW_root::after { animation: none; transition: none; }
+}

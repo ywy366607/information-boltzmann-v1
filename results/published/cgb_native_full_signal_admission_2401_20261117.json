@@ -1,0 +1,1021 @@
+{
+  "full_event_equivalence": {
+    "before": true,
+    "after": true,
+    "receipts": true
+  },
+  "observer_rng_equal": true,
+  "start_cycle": 2401,
+  "private_final_cycle": 2402,
+  "source_sha256": "6d36cae0d39e41ae5dc0b84c84916733e3c09ed634b68a2d0d04f07c588e09b7",
+  "event_kinds": [
+    "internal",
+    "release",
+    "external"
+  ],
+  "real_optimizer_calls": 4,
+  "record_counts": {
+    "contract": 1,
+    "compute_workspace": 1,
+    "relation_signal_contract": 1,
+    "relation_signal": 973,
+    "mechanism": 176,
+    "typed_execution": 52,
+    "quiet_execution": 4,
+    "relation_revision": 66,
+    "event": 3,
+    "world": 1,
+    "optimizer": 4,
+    "all_parameter_update_participation": 4,
+    "structural_relation_dependencies": 1
+  },
+  "signal_counts": {
+    "_supports": 34,
+    "relation_variables": 4,
+    "_bound_evidence_design": 176,
+    "posterior": 218,
+    "mechanism": 176,
+    "overlap_consensus": 52,
+    "execute_programs": 52,
+    "compose": 52,
+    "log_score": 143,
+    "revise": 66
+  },
+  "seconds": {
+    "plain": 15.729973299981793,
+    "observed": 19.866067099996144
+  },
+  "branch_identity": {
+    "old_context_groups": 109,
+    "complete_context_groups": 165,
+    "old_ambiguous_groups": 22,
+    "complete_ambiguous_groups": 0
+  },
+  "support_maps": [
+    {
+      "event": 1,
+      "call_id": 1,
+      "relation": [
+        213,
+        4
+      ],
+      "unknowns": [
+        "unknown:1643",
+        "unknown:1677",
+        "unknown:1673",
+        "unknown:1293",
+        "unknown:1648",
+        "unknown:1640",
+        "unknown:1634",
+        "unknown:1629"
+      ],
+      "union_fact_ids": [
+        "episode:104",
+        "episode:1133",
+        "episode:1321",
+        "episode:1616",
+        "episode:1919",
+        "episode:1977",
+        "episode:203",
+        "episode:2216",
+        "episode:2319",
+        "episode:2326",
+        "episode:2336",
+        "episode:2339",
+        "episode:2349",
+        "episode:2366",
+        "episode:263",
+        "episode:267",
+        "episode:283",
+        "episode:929"
+      ],
+      "retained_fact_ids": [
+        "episode:1133",
+        "episode:1616",
+        "episode:1919",
+        "episode:1977",
+        "episode:203",
+        "episode:2216",
+        "episode:267",
+        "episode:283"
+      ],
+      "support_columns": [
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2339",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:104",
+          "episode:1321",
+          "episode:203",
+          "episode:2366",
+          "episode:263",
+          "episode:267",
+          "episode:283",
+          "episode:929"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2349",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2336",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2326",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2319",
+          "episode:267"
+        ]
+      ],
+      "retained_support_columns": [
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:203",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ]
+      ],
+      "exact_membership_rank_before": 7,
+      "exact_membership_rank_after": 3,
+      "distinct_support_columns_before": 7,
+      "distinct_support_columns_after": 3,
+      "identical_retained_membership_groups": [
+        [
+          "unknown:1643",
+          "unknown:1648",
+          "unknown:1640",
+          "unknown:1634",
+          "unknown:1629"
+        ],
+        [
+          "unknown:1677",
+          "unknown:1673"
+        ],
+        [
+          "unknown:1293"
+        ]
+      ]
+    },
+    {
+      "event": 1,
+      "call_id": 34,
+      "relation": [
+        213,
+        4
+      ],
+      "unknowns": [
+        "unknown:1643",
+        "unknown:1677",
+        "unknown:1673",
+        "unknown:1293",
+        "unknown:1648",
+        "unknown:1640",
+        "unknown:1634",
+        "unknown:1629"
+      ],
+      "union_fact_ids": [
+        "episode:104",
+        "episode:1133",
+        "episode:1321",
+        "episode:1616",
+        "episode:1919",
+        "episode:1977",
+        "episode:203",
+        "episode:2216",
+        "episode:2319",
+        "episode:2326",
+        "episode:2336",
+        "episode:2339",
+        "episode:2349",
+        "episode:2366",
+        "episode:263",
+        "episode:267",
+        "episode:283",
+        "episode:929"
+      ],
+      "retained_fact_ids": [
+        "episode:1133",
+        "episode:1616",
+        "episode:1919",
+        "episode:1977",
+        "episode:203",
+        "episode:2216",
+        "episode:267",
+        "episode:283"
+      ],
+      "support_columns": [
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2339",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:104",
+          "episode:1321",
+          "episode:203",
+          "episode:2366",
+          "episode:263",
+          "episode:267",
+          "episode:283",
+          "episode:929"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2349",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2336",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2326",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2319",
+          "episode:267"
+        ]
+      ],
+      "retained_support_columns": [
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:203",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ]
+      ],
+      "exact_membership_rank_before": 7,
+      "exact_membership_rank_after": 3,
+      "distinct_support_columns_before": 7,
+      "distinct_support_columns_after": 3,
+      "identical_retained_membership_groups": [
+        [
+          "unknown:1643",
+          "unknown:1648",
+          "unknown:1640",
+          "unknown:1634",
+          "unknown:1629"
+        ],
+        [
+          "unknown:1677",
+          "unknown:1673"
+        ],
+        [
+          "unknown:1293"
+        ]
+      ]
+    },
+    {
+      "event": 2,
+      "call_id": 89,
+      "relation": [
+        213,
+        4
+      ],
+      "unknowns": [
+        "unknown:1643",
+        "unknown:1677",
+        "unknown:1673",
+        "unknown:1293",
+        "unknown:1648",
+        "unknown:1640",
+        "unknown:1634",
+        "unknown:1629"
+      ],
+      "union_fact_ids": [
+        "episode:104",
+        "episode:1133",
+        "episode:1321",
+        "episode:1616",
+        "episode:1919",
+        "episode:1977",
+        "episode:203",
+        "episode:2216",
+        "episode:2319",
+        "episode:2326",
+        "episode:2336",
+        "episode:2339",
+        "episode:2349",
+        "episode:2366",
+        "episode:263",
+        "episode:267",
+        "episode:283",
+        "episode:929"
+      ],
+      "retained_fact_ids": [
+        "episode:1133",
+        "episode:1616",
+        "episode:1919",
+        "episode:1977",
+        "episode:203",
+        "episode:2216",
+        "episode:267",
+        "episode:283"
+      ],
+      "support_columns": [
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2339",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:104",
+          "episode:1321",
+          "episode:203",
+          "episode:2366",
+          "episode:263",
+          "episode:267",
+          "episode:283",
+          "episode:929"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2349",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2336",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2326",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2319",
+          "episode:267"
+        ]
+      ],
+      "retained_support_columns": [
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:203",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ]
+      ],
+      "exact_membership_rank_before": 7,
+      "exact_membership_rank_after": 3,
+      "distinct_support_columns_before": 7,
+      "distinct_support_columns_after": 3,
+      "identical_retained_membership_groups": [
+        [
+          "unknown:1643",
+          "unknown:1648",
+          "unknown:1640",
+          "unknown:1634",
+          "unknown:1629"
+        ],
+        [
+          "unknown:1677",
+          "unknown:1673"
+        ],
+        [
+          "unknown:1293"
+        ]
+      ]
+    },
+    {
+      "event": 3,
+      "call_id": 122,
+      "relation": [
+        213,
+        4
+      ],
+      "unknowns": [
+        "unknown:1643",
+        "unknown:1677",
+        "unknown:1673",
+        "unknown:1293",
+        "unknown:1648",
+        "unknown:1640",
+        "unknown:1634",
+        "unknown:1629"
+      ],
+      "union_fact_ids": [
+        "episode:104",
+        "episode:1133",
+        "episode:1321",
+        "episode:1616",
+        "episode:1919",
+        "episode:1977",
+        "episode:203",
+        "episode:2216",
+        "episode:2319",
+        "episode:2326",
+        "episode:2336",
+        "episode:2339",
+        "episode:2349",
+        "episode:2366",
+        "episode:263",
+        "episode:267",
+        "episode:283",
+        "episode:929"
+      ],
+      "retained_fact_ids": [
+        "episode:1133",
+        "episode:1616",
+        "episode:1919",
+        "episode:1977",
+        "episode:203",
+        "episode:2216",
+        "episode:267",
+        "episode:283"
+      ],
+      "support_columns": [
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2339",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:104",
+          "episode:1321",
+          "episode:203",
+          "episode:2366",
+          "episode:263",
+          "episode:267",
+          "episode:283",
+          "episode:929"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2349",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2336",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2326",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:2319",
+          "episode:267"
+        ]
+      ],
+      "retained_support_columns": [
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:203",
+          "episode:267",
+          "episode:283"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ],
+        [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:1977",
+          "episode:203",
+          "episode:2216",
+          "episode:267"
+        ]
+      ],
+      "exact_membership_rank_before": 7,
+      "exact_membership_rank_after": 3,
+      "distinct_support_columns_before": 7,
+      "distinct_support_columns_after": 3,
+      "identical_retained_membership_groups": [
+        [
+          "unknown:1643",
+          "unknown:1648",
+          "unknown:1640",
+          "unknown:1634",
+          "unknown:1629"
+        ],
+        [
+          "unknown:1677",
+          "unknown:1673"
+        ],
+        [
+          "unknown:1293"
+        ]
+      ]
+    }
+  ],
+  "map_interpretation": "Exact ranks of observed fact-to-unknown membership before/after the existing finite retention. Not the rank of the whole model, not an H1 activity measurement.",
+  "main_body_continued": false,
+  "paid_world_calls": 0,
+  "sources": [
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\signal_admission_2401_20261117\\pair_plain_status.json",
+      "sha256": "bd6dd608fa2f1b8cfbc7d7c2bcf8275f6fed099a52cc4634f123d41522d36c18"
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\signal_admission_2401_20261117\\pair_observed_status.json",
+      "sha256": "f9641bee1989f399ffdfaccd575587223359e89a121cb6db201cfa90ac9ee1f8"
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\signal_admission_2401_20261117\\pair_observed_observations\\operations.jsonl.gz",
+      "sha256": "11badca1cfe2c9b9e942b444a913434259b9b0d18e6460a718d6d39aa111fdd0"
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\signal_admission_2401_20261117\\pair_observed_observations\\tensors.bin",
+      "sha256": "0adcda4d7a4117abf0989f1f1063ac12c2a3439105e5e23fb9559b21d0fb0240"
+    }
+  ],
+  "fact_membership_certificate": {
+    "path": "lean\\CGBAxioms\\reviews\\NativeFactMembershipActual2401.lean",
+    "status": "lean_checks_passed",
+    "selected_relation": [
+      213,
+      4
+    ],
+    "dimensions": [
+      8,
+      8
+    ],
+    "representatives": [
+      0,
+      1,
+      3
+    ],
+    "representative_of_each_unknown": [
+      0,
+      1,
+      1,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    "minor_rows": [
+      0,
+      4,
+      7
+    ],
+    "minor_columns": [
+      0,
+      1,
+      3
+    ],
+    "minor_determinant": -1,
+    "command": "lake env lean reviews/NativeFactMembershipActual2401.lean",
+    "exit_code": 0,
+    "source_sha256": "096a747ad5b4a75954fe29e7cab7e5950508eb012a278c78373d4c431c0202e8",
+    "trust": "Finite membership and minor-entry checks use native_decide; grouping proof and determinant reduction use ordinary Lean proofs.",
+    "checked_utc": "2026-11-17T04:43:33.378093+00:00"
+  },
+  "implementation_sha256": {
+    "scripts/native_relation_signals.py": "0ecf688a8e5434057f8477e4791355158e5e458e989c5a1ed5fb33b7c44b5baa",
+    "scripts/native_topology_observer.py": "49eae0a61c881abdcc19ae431f11229476f5fd9c122cc25bd091d73f27201c74",
+    "scripts/audit_native_full_signal_admission.py": "8e034c325e6a4d19a7f4bd1ad8af3f802319ea12d8df171ecd344933623bcda2",
+    "scripts/export_native_fact_membership_lean.py": "5e3d5e52a42f97165918afd0cd5a4350957e242ce457579168d1a1b576b7b6df",
+    "scripts/run_native_topology.py": "01bdd2d77d848df8b80667e5d2f48aba0090ba779467b6d47160ebe2eb8d009a"
+  },
+  "observer_source_matches_passed_full_event": true,
+  "temporary_copy_cleanup": {
+    "status": "automatic_policy_rejected_deletion",
+    "path": "D:/information-boltzmann-v1/scratch/native_signal_admission_2401_20261117",
+    "evidence_archived": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\signal_admission_2401_20261117"
+  }
+}

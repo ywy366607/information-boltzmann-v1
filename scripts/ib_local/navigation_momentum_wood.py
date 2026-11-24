@@ -18,11 +18,58 @@ from scripts.ib_local.navigation_internal_rollout import continuation, next_boun
 from scripts.ib_local.navigation_direct_read import gain_forecast
 
 
-def decision_momentum_read(model, momenta, source):
+def _packed_momentum_read(model, momenta, source):
+    """Inference-only layer packing; parameter versions invalidate the cache.
+
+    RMSNorm's scalar denominator is shared by these equal-width queries.
+    Its layer-specific affine weight is folded into that layer's projection.
+    No P value is cached: current momenta participate in every read.
+    """
+    layers = tuple(model.body.base.layers)
+    first = layers[0]
+    if any(not isinstance(layer.norm, nn.RMSNorm)
+           or not isinstance(layer.q_proj, nn.Linear)
+           or layer.q_proj.bias is not None
+           or layer.norm.normalized_shape != first.norm.normalized_shape
+           or layer.norm.eps != first.norm.eps
+           or (layer.heads, layer.dk) != (first.heads, first.dk)
+           for layer in layers):
+        return None
+    if len(momenta) != len(layers):
+        raise ValueError('one momentum per body layer required')
+    if any(p.shape[0] != 1 for p in momenta):
+        raise ValueError('one continuous individual is required')
+    parameters = tuple(p for layer in layers for p in (layer.norm.weight, layer.q_proj.weight))
+    # Tensor objects, rather than only addresses, keep old parameters alive
+    # if a module is replaced. This private cache is absent from state_dict.
+    key = (source.dtype, source.device, first.norm.eps,
+           tuple((id(p), p._version, p.dtype, p.device) for p in parameters))
+    cached = getattr(model, '_packed_momentum_query', None)
+    if cached is None or cached['key'] != key:
+        weight = torch.cat([layer.q_proj.weight*layer.norm.weight[None]
+                            for layer in layers], dim=0)
+        cached = dict(key=key, weight=weight, parameters=parameters)
+        model._packed_momentum_query = cached
+    normalized = F.rms_norm(source, first.norm.normalized_shape, eps=first.norm.eps)
+    q = F.linear(normalized, cached['weight']).reshape(
+        len(source), len(layers), first.heads, first.dk)
+    q = F.normalize(q, dim=-1)
+    p = (momenta[:, 0] if isinstance(momenta, torch.Tensor)
+         else torch.stack([value[0] for value in momenta]))
+    return torch.einsum('blhk,lhkv->blhv', q, p).flatten(1)
+
+
+def decision_momentum_read(model, momenta, source, *, capture=False):
     """[batch, width] -> [batch, layers*width], P^T q per layer/head."""
     if source.ndim != 2:
         raise ValueError('decision query must be a batch of body features')
-    result = []
+    if hasattr(model, 'feature_write'):
+        source = model.feature_write(source)
+    if not capture and not torch.is_grad_enabled() and getattr(model, '_packed_momentum_enabled', True):
+        packed = _packed_momentum_read(model, momenta, source)
+        if packed is not None:
+            return packed
+    result, queries = [], []
     for layer, p in zip(model.body.base.layers, momenta):
         q = layer.q_proj(layer.norm(source)).reshape(-1, layer.heads, layer.dk)
         q = F.normalize(q, dim=-1)
@@ -30,7 +77,15 @@ def decision_momentum_read(model, momenta, source):
             raise ValueError('one continuous individual is required')
         values = torch.einsum('bhk,hkv->bhv', q, p[0])
         result.append(values.flatten(1))
-    return torch.cat(result, -1)
+        if capture:
+            queries.append(q.detach())
+    value = torch.cat(result, -1)
+    if not capture:
+        return value
+    from scripts.ib_local.adaptive_hamiltonian import AdaptiveHamiltonian
+    module = getattr(model, 'head_coupling', None)
+    eligibility = module.capture_momentum_read(queries) if isinstance(module, AdaptiveHamiltonian) else None
+    return value, eligibility
 
 
 class MomentumWoodEngine(MomentumEngine):
@@ -40,8 +95,9 @@ class MomentumWoodEngine(MomentumEngine):
         self._momentum_without_offset = self._internal_offset.detach().clone()
         actions = self._internal_action
         source = h.expand_as(actions)
-        p_read = decision_momentum_read(self.model, self.bfss_momenta, h)
+        p_read, eligibility = decision_momentum_read(self.model, self.bfss_momenta, h, capture=True)
         self._momentum_decision_read = p_read[0].detach().clone()
+        self._momentum_decision_eligibility = eligibility
         delta_z = self.model.momentum_to_boundary(p_read).expand(len(actions), -1)
         original = self._internal_next_latent
         latent = original + delta_z
@@ -75,15 +131,20 @@ class MomentumWoodEngine(MomentumEngine):
         old_source, old_action, target = self._internal_label
         base = next_boundary_prediction(self.model, old_source[None], old_action[None])
         p = pending['momentum_read'].detach()[None]
+        eligibility = pending.get('momentum_read_eligibility')
+        if eligibility is not None:
+            p = self.model.head_coupling.bridge_momentum_read(p, eligibility)
         prediction = base + self.model.momentum_to_boundary(p)
         error = F.mse_loss(prediction, self.model.encoder(target[None]))
         return loss + error, dict(diag, momentum_boundary_samples=1,
-                                  momentum_boundary_loss=float(error.detach()))
+                                  momentum_boundary_loss=float(error.detach()),
+                                  momentum_credit_samples=int(eligibility is not None))
 
     def step(self, directions, age_ablate=False):
         before = self.model.momentum_to_boundary.weight.detach().clone()
         result = super().step(directions, age_ablate)
         self.internal_pending['momentum_read'] = self._momentum_decision_read.detach().clone()
+        self.internal_pending['momentum_read_eligibility'] = self._momentum_decision_eligibility
         logits = self._internal_delivered_offset.new_tensor(self._pending_record['choice_logits'])
         available = logits > -1e3
         without = self._momentum_without_offset.clone()

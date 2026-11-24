@@ -1,0 +1,39 @@
+{
+  "status": "integrated_private_run_started",
+  "date": "2026-11-18",
+  "source_cycle": 2401,
+  "work": "F:/mengli-contact-momentum-2401-20261118",
+  "baseline": "F:/mengli-causal-use-2401-v5/A",
+  "fixed_settlement": "A_original_text_gain",
+  "external_events": 32,
+  "trainable_gate_parameters": 64,
+  "additional_full_state_trace_bytes": 4194304,
+  "validation": {
+    "regression_interface_tests_passed": 22,
+    "native_32_by_32_cuda_tests_passed": 2,
+    "checks": [
+      "S write and nonzero admission parity",
+      "complete local gate JVP and content derivative",
+      "actual world relation commit and delayed gate update",
+      "complete state restore and next-event equality"
+    ]
+  },
+  "sources": {
+    "scripts/ib_local/contact_momentum.py": "bc80d0df43d16798f42a26a19549727650627910d28ebed3f471681a829fda57",
+    "scripts/ib_local/contact_momentum_fused.py": "24db152db4e76d4c09665485e7e08d4a16850b1dced38f7153c5725e6a458d22",
+    "scripts/ib_local/momentum_contact_reference.py": "d4ba15545cf9182c8a266bee5b34eeb2dad3559873da55a23c9d6e59614c7be0",
+    "scripts/ib_local/adaptive_hamiltonian.py": "ac16cdfba586df43cb62aa4efaa22b1b128a7356866bbff14d7b4dc6f9b97d4b",
+    "scripts/ib_local/bfss_gdn_capture.py": "dbffbf48963d762e007dbbb74fb0613fd55de7059703c0f1d09a7018823d1e7a",
+    "scripts/ib_local/navigation_bfss_dynamics.py": "c31cdaf3d07245e302db01761e05df6d47225ea5889e39c7f3caff4f55d7cc09",
+    "scripts/ib_local/run_causal_water_reply.py": "a94bab6e086cc1cde50bb9598cccd9b7c506961df7d40c06598a92a3c7932565",
+    "scripts/run_native_causal_use_value.py": "648feab7a39270a72b56d9d994a182dddd38aa23717d4c9d68139a99fcb2813f"
+  },
+  "live_admission": {
+    "completed_external_events": 2,
+    "updated_layers": 32,
+    "last_gate_step_norm": 0.00019063804938923568,
+    "credit_calls": 3,
+    "s_replay_max_error": 3.5762786865234375e-06,
+    "relation_committed": true
+  }
+}

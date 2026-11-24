@@ -1,0 +1,398 @@
+{
+  "schema": 1,
+  "first_cycle": 1703,
+  "last_cycle": 1790,
+  "events": 88,
+  "source": "F:\\cgb_continual_learning_20261116\\body\\metrics.jsonl",
+  "main_written": false,
+  "model_updates": 0,
+  "world_calls": 0,
+  "loop": {
+    "events": 88,
+    "shared_unknown_lineage": {
+      "scope": "current logged window; real selected/dependent reads versus prior real revisions",
+      "capability_claim": false,
+      "observed_selected_reactivations": 7,
+      "observed_cross_relation_dependents": 147,
+      "version_regressions": [],
+      "longest_selected_gaps": [
+        {
+          "identity": "unknown:1211",
+          "cycle": 1782,
+          "previous_selected_cycle": 1704,
+          "selected_gap_external_bytes": 74880,
+          "relation_before": 203,
+          "relation_now": 203,
+          "actual_version": 1,
+          "prior_revision": 1
+        },
+        {
+          "identity": "unknown:1224",
+          "cycle": 1790,
+          "previous_selected_cycle": 1717,
+          "selected_gap_external_bytes": 70080,
+          "relation_before": 206,
+          "relation_now": 206,
+          "actual_version": 1,
+          "prior_revision": 1
+        },
+        {
+          "identity": "unknown:1210",
+          "cycle": 1747,
+          "previous_selected_cycle": 1703,
+          "selected_gap_external_bytes": 42240,
+          "relation_before": 217,
+          "relation_now": 217,
+          "actual_version": 1,
+          "prior_revision": 1
+        }
+      ],
+      "interpretation": "selected-use gaps are not inactivity durations; version consistency is not predictive benefit"
+    },
+    "source_bytes": {
+      "inherited_prefix": 73920,
+      "natural_append": 10560
+    },
+    "choices": {
+      "silence": 34,
+      "generate": 35,
+      "reuse": 19
+    },
+    "real_next_boundary_vs_unchanged": {
+      "events": 70,
+      "real_error": 0.5412422341959817,
+      "control_error": 0.8254344491021973,
+      "better": 52,
+      "worse": 18
+    },
+    "real_next_boundary_vs_other_action": {
+      "events": 70,
+      "real_error": 0.5412422341959817,
+      "control_error": 0.5472516962460109,
+      "better": 41,
+      "worse": 29
+    },
+    "next_return_vs_base": {
+      "events": 88,
+      "real_error": 3.1999198744368766,
+      "control_error": 3.1985694094445623,
+      "better": 28,
+      "worse": 36
+    },
+    "channel_units": [
+      "head4_predictability",
+      "head32_predictability",
+      "joined",
+      "learning_progress"
+    ],
+    "wood_used_error": [
+      0.09138285760797192,
+      0.03461191686164708,
+      0.03419135475600875,
+      1.9364723285318013
+    ],
+    "wood_base_error": [
+      0.09138256896147307,
+      0.03461187405106711,
+      0.03419135475600011,
+      1.9356469526913067
+    ],
+    "episodic_real_error": [
+      0.10725876932635649,
+      0.045439586352875434,
+      0.03871672814454406,
+      4.878826412138468
+    ],
+    "episodic_shuffled_error": [
+      0.1063381909987749,
+      0.044607984913434186,
+      0.03874055742662293,
+      4.828765003694158
+    ],
+    "internal_choice_tv": 0.012593615450896323,
+    "reused_unknown_events": 30,
+    "unknown_real_revisions": 70,
+    "actual_read_credit_records": 80413,
+    "actual_read_credit_participations": 1400384,
+    "stale_read_credits": 0,
+    "question_transition_steps": 0.0002194541038023281,
+    "delayed_actor_events": 88,
+    "expression_mean_bytes": 65.5909090909091,
+    "budget_stop_events": 27,
+    "coevolution_valid": 8.0,
+    "coevolution_retained": 0.48863636363636365,
+    "coevolution_rms": 0.3742218772796067
+  },
+  "two_event_selection": {
+    "events": 88,
+    "horizon": 2,
+    "discount": 0.8,
+    "skipped": {
+      "future_not_observed": 1
+    },
+    "mean_actual_return": 0.08949635855176231,
+    "estimator": "baseline-centered ordinary importance contrast; no clipping or self-normalization",
+    "scope": "one-off draw substitution with unchanged beliefs/learning machinery; actual-state distribution",
+    "fire": {
+      "mean_lift": 0.008518573645641734,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "uncertainty": "block stability only; no iid significance claim",
+      "uniform_target_ess": 72.99506844298107,
+      "maximum_weight": 2.3654185532882024,
+      "expected_maximally_coupled_choice_changes": 15.610990081943108,
+      "admissible_counts": {
+        "3": 88
+      }
+    },
+    "draft": {
+      "mean_lift": 2.8246330235257502e-05,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "uncertainty": "block stability only; no iid significance claim",
+      "uniform_target_ess": 87.89935583409994,
+      "maximum_weight": 1.0980925752819024,
+      "expected_maximally_coupled_choice_changes": 1.0615147097693005,
+      "admissible_counts": {
+        "4": 88
+      }
+    },
+    "both": {
+      "mean_lift": 0.008363790864526991,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "uncertainty": "block stability only; no iid significance claim",
+      "uniform_target_ess": 73.05328333718882,
+      "maximum_weight": 2.2836099682972777
+    },
+    "interaction": {
+      "mean_lift": 0.00018302911134999934,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "uncertainty": "block stability only; no iid significance claim"
+    },
+    "imagination": {
+      "events": 88,
+      "mean_lift": 0.010751733426159612,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "target": "same learned habit, current imagination offset removed",
+      "target_ess": 81.0402084054393,
+      "maximum_weight": 2.1665651452917762,
+      "expected_maximally_coupled_choice_changes": 9.64500389011757
+    },
+    "draft_imagination_interaction": {
+      "events": 88,
+      "mean_lift": 0.00010544250270501328,
+      "full_blocks": 0,
+      "positive_blocks": 0,
+      "block_means": [],
+      "target": "same learned habit, current imagination offset removed"
+    }
+  },
+  "action_discrimination": {
+    "events": 70,
+    "mean_control_minus_real": 0.00600946205002921,
+    "paired_standard_deviation": 0.13353639655383218,
+    "standardized_paired_margin": 0.045002427840761985,
+    "real_better": 41,
+    "real_worse": 29,
+    "scope": "Mean paired advantage divided by per-event paired standard deviation; not an iid significance test."
+  },
+  "change_prediction": {
+    "events": 70,
+    "mean_control_minus_real": 0.28419221490621566,
+    "paired_standard_deviation": 0.4576299764489842,
+    "standardized_paired_margin": 0.6210087396621775,
+    "real_better": 52,
+    "real_worse": 18,
+    "scope": "Mean paired advantage divided by per-event paired standard deviation; not an iid significance test."
+  },
+  "momentum_norm_by_layer": [
+    {
+      "layer": 1,
+      "mean": 4.969631119207903,
+      "standard_deviation": 0.8681347066679523
+    },
+    {
+      "layer": 2,
+      "mean": 2.723521639000286,
+      "standard_deviation": 0.12555352207669954
+    },
+    {
+      "layer": 3,
+      "mean": 2.76191524754871,
+      "standard_deviation": 0.18602449001211221
+    },
+    {
+      "layer": 4,
+      "mean": 1.9533818526701494,
+      "standard_deviation": 0.06171340326828871
+    },
+    {
+      "layer": 5,
+      "mean": 1.9916580536148765,
+      "standard_deviation": 0.21907868262044566
+    },
+    {
+      "layer": 6,
+      "mean": 0.8790592944080179,
+      "standard_deviation": 0.09172612016772287
+    },
+    {
+      "layer": 7,
+      "mean": 4.7816919467665935,
+      "standard_deviation": 0.6854582158031014
+    },
+    {
+      "layer": 8,
+      "mean": 1.5542244464159012,
+      "standard_deviation": 0.2869379487258246
+    },
+    {
+      "layer": 9,
+      "mean": 3.176761407743801,
+      "standard_deviation": 0.1864839796749256
+    },
+    {
+      "layer": 10,
+      "mean": 2.635176945816387,
+      "standard_deviation": 0.09313106175898804
+    },
+    {
+      "layer": 11,
+      "mean": 3.4426789337938484,
+      "standard_deviation": 0.35171483958205785
+    },
+    {
+      "layer": 12,
+      "mean": 1.8439334495501085,
+      "standard_deviation": 0.08733204033941074
+    },
+    {
+      "layer": 13,
+      "mean": 3.0837562598965387,
+      "standard_deviation": 0.36984470474420805
+    },
+    {
+      "layer": 14,
+      "mean": 1.5965057137337597,
+      "standard_deviation": 0.4060788713967366
+    },
+    {
+      "layer": 15,
+      "mean": 1.8946411948312412,
+      "standard_deviation": 0.27256976802082605
+    },
+    {
+      "layer": 16,
+      "mean": 2.088082291863181,
+      "standard_deviation": 0.22070854205873996
+    },
+    {
+      "layer": 17,
+      "mean": 1.572399540380998,
+      "standard_deviation": 0.10989536825657659
+    },
+    {
+      "layer": 18,
+      "mean": 3.7131199186498467,
+      "standard_deviation": 0.17229692284535172
+    },
+    {
+      "layer": 19,
+      "mean": 2.1605810997161,
+      "standard_deviation": 0.38386157616629507
+    },
+    {
+      "layer": 20,
+      "mean": 2.3542735996571453,
+      "standard_deviation": 0.224341501380546
+    },
+    {
+      "layer": 21,
+      "mean": 6.7283612435514275,
+      "standard_deviation": 0.24924134251800836
+    },
+    {
+      "layer": 22,
+      "mean": 5.670605188066309,
+      "standard_deviation": 0.21826280138708695
+    },
+    {
+      "layer": 23,
+      "mean": 1.0554797473278912,
+      "standard_deviation": 0.07958942534881606
+    },
+    {
+      "layer": 24,
+      "mean": 2.6524952243674886,
+      "standard_deviation": 0.13790865770100946
+    },
+    {
+      "layer": 25,
+      "mean": 5.943376172672618,
+      "standard_deviation": 0.22422989733002008
+    },
+    {
+      "layer": 26,
+      "mean": 3.6737036163156684,
+      "standard_deviation": 0.24444379688746085
+    },
+    {
+      "layer": 27,
+      "mean": 2.7489495900544254,
+      "standard_deviation": 0.17344146520853418
+    },
+    {
+      "layer": 28,
+      "mean": 4.6267316314307125,
+      "standard_deviation": 1.001467163366618
+    },
+    {
+      "layer": 29,
+      "mean": 3.781383628194982,
+      "standard_deviation": 0.6398426789989876
+    },
+    {
+      "layer": 30,
+      "mean": 4.78001072731885,
+      "standard_deviation": 0.5719513623061845
+    },
+    {
+      "layer": 31,
+      "mean": 3.0571991828354923,
+      "standard_deviation": 0.4289292624067779
+    },
+    {
+      "layer": 32,
+      "mean": 4.297591030597687,
+      "standard_deviation": 0.4016405074273835
+    }
+  ],
+  "mean_quiet_state_change": 2.787684525955807,
+  "observed_content_correction_max": 0.7300439476966858,
+  "momentum_read_action_tv_mean": 0.013146452679806813,
+  "wood_confidence_positive_fraction": [
+    0.022727272727272728,
+    0.011363636363636364,
+    0.38636363636363635,
+    0.0
+  ],
+  "direct_gain_alpha_positive_fraction": [
+    0.6022727272727273,
+    0.13636363636363635,
+    0.4431818181818182
+  ],
+  "navigation_matched": 51,
+  "generated_events": 35,
+  "generated_handover": 8,
+  "generated_budget_stops": 27,
+  "fixed_validation": null,
+  "scope": "Actual online prequential predictions and logged randomization contrasts; numerical activity is separate from causal usefulness."
+}

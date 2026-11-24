@@ -1,0 +1,35 @@
+{
+  "source": "results\\published\\cgb_joint_response_loop_2493_20261119.json",
+  "execution_valid": true,
+  "decision": "retain schema5 as reference; schema6 remains a completed experimental arm",
+  "changes_percent": {
+    "actual_policy_discrepancy_MSE": 257.8228260105424,
+    "realized_future_MSE": 46.26057498630698,
+    "response_component_MSE": 454.3465929517806,
+    "mean_actual_use": -11.415862420458044,
+    "seconds": -3.4763070673139995
+  },
+  "old_fact_gain": {
+    "schema5": 0.0060913050547242165,
+    "schema6": 0.004839844070374966
+  },
+  "response_signed_errors": [
+    -0.41153545677661896,
+    -0.2507265582680702,
+    -0.42955324426293373
+  ],
+  "last_transition_squared_error_share": 0.8700442693803119,
+  "cost": {
+    "known_word_executions": 9569,
+    "known_word_seconds": 1302.0333521996145,
+    "known_word_fraction": 0.621255744068875,
+    "full_native_forecast_fraction": 0.9319197164360437,
+    "joint_geometry_fraction": 0.007363136872819178,
+    "note": "inclusive timings form a nested call tree; do not add parent and child times"
+  },
+  "next": {
+    "use": "same-boundary comparison separating response sampling from predictive training",
+    "cost": "batch original known-word trajectories with distinct question contexts and states",
+    "benchmark": "same posterior, branch budget, and held-out payment; unchanged U/v5"
+  }
+}

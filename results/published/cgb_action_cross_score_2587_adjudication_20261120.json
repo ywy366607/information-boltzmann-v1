@@ -1,0 +1,29 @@
+{
+  "source_report": "cgb_action_cross_score_2587_20261120.json",
+  "old_availability": "cgb_action_value_pair_2585_cross_availability_20261120.json",
+  "preregistration_sha256": "a1da82381b41c433768857b08d0c13e9888f450e50928c715106af20166d4ecb",
+  "first_step_query_provenance": {
+    "silence": {
+      "query_ids_match": true,
+      "raw_common_facts_equal": true,
+      "verified_count": 8
+    },
+    "generate": {
+      "query_ids_match": true,
+      "raw_common_facts_equal": true,
+      "verified_count": 8
+    }
+  },
+  "first_step_generate_minus_silence_U": -0.017940960824489594,
+  "first_step_generate_minus_silence_G": 0.017274688626483403,
+  "original_two_step_generate_minus_silence_U": 0.004091317951679232,
+  "two_step_G_difference": 0.015002561706773498,
+  "fixed_query_two_step_differences": {
+    "silence": -0.003687523305416107,
+    "generate": -0.022084127366542815
+  },
+  "prediction_passed": false,
+  "mechanism_judgment": "Fixed common questions still prefer silence while independent language prediction improvement prefers generation. At this boundary changing local questions makes original cumulative payment agree with G. The cross-measure correction hypothesis is falsified; preserve production mechanism and investigate which capability each payment evaluates.",
+  "production_change": "none",
+  "additional_experiments_started": false
+}

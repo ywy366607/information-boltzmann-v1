@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "route": "target-sensitive active persistent-value spectrum -> actual root probabilities -> existing full-learning G2",
+  "candidate": "two residual ridge fits; original features/prior/ridge/weights",
+  "boundaries": [
+    {
+      "unknown": "unknown:1797",
+      "original_C": 0.0004935551667826428,
+      "candidate_C": 0.0007956927296891684,
+      "delta_C": 0.0003021375629065257,
+      "weak_modes": 11,
+      "weak_energy_fraction": 0.2843854316003804,
+      "holdout_folds": 44
+    },
+    {
+      "unknown": "unknown:1788",
+      "original_C": 0.00033642974741029453,
+      "candidate_C": 0.0003567514827966452,
+      "delta_C": 2.032173538635067e-05,
+      "weak_modes": 9,
+      "weak_energy_fraction": 0.033172494366862544,
+      "holdout_folds": 46
+    }
+  ],
+  "source_code_current_sha256": {
+    "scripts/native_value_residual_filter.py": "061a248e0b654ecc07410baa1ca532a0b666e34a3dcb8ebcbca08e4c5d48bd1f",
+    "scripts/capture_persistent_value_spectrum.py": "d23344ea77c39770ddda7876bac25ac3840267e8fdb847da3d9e5db24ea89a0a",
+    "scripts/audit_persistent_value_spectrum.py": "a34f82fdd6cd37d0cd88b653b753c0d4d63d80a02cb1d2a7924f20d15e26cfe1",
+    "scripts/run_wood_policy_use_worker.py": "638d0641a7f4b1f6f806e69a90d8f2fc7238b0710c55df5ac0a8abcac5841286",
+    "tests/test_native_value_residual_filter.py": "86449e412db0e3055f6aa85a8dd0e823584e5b43bf5c5c64eecfd3fa1ca6fc6a",
+    "lean/CGBAxioms/reviews/NativePersistentResidualFilter.lean": "503af82ed3d76ed38f6a20f2edde9afa55a6a368afdbb4fd38fd74b23730204e"
+  },
+  "validation": {
+    "lean_theorems": 6,
+    "pytest_passed": 8,
+    "complete_learning_interface_rounds": 2,
+    "complete_learning_interface_updates_at_least": 8,
+    "python_compile": "passed",
+    "diff_whitespace": "passed"
+  },
+  "resources": {
+    "new_measurement_world_arrivals": 0,
+    "new_measurement_optimizer_updates": 0,
+    "original_budget_native_reference_calls": 6,
+    "valid_captures": 2,
+    "superseded_cold_restore": 1,
+    "cleanup": "automatic review rejected bulk removal: blocked by policy; retained in place",
+    "default_runtime": "original",
+    "experiment_flag": "--persistent-residual-refinement"
+  },
+  "next": "new prespecified boundary: actual refined root, original full learning and settlement; compare later use and cost"
+}

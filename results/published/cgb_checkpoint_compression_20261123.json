@@ -1,0 +1,32 @@
+{
+  "source": "D:\\mengli-throughput-20261123\\replay_batched_ready\\body\\last.pt.gz",
+  "source_sha256": "6e1a98bc569a8815e66b4964eef060590d69878c776d488c48d0b95708c622d4",
+  "uncompressed_bytes": null,
+  "rows": [
+    {
+      "backend": "gzip",
+      "workers": 1,
+      "seconds": 24.392699500000163,
+      "compressed_bytes": 519062128,
+      "restored_bytes_sha256": "143e8f729da0d9ada696b7cd4536a97ddd5da1801512b46fa6833261f322bd5c"
+    },
+    {
+      "backend": "isal",
+      "workers": 1,
+      "seconds": 1.567164000000048,
+      "compressed_bytes": 519143383,
+      "restored_bytes_sha256": "143e8f729da0d9ada696b7cd4536a97ddd5da1801512b46fa6833261f322bd5c"
+    },
+    {
+      "backend": "isal",
+      "workers": 4,
+      "seconds": 1.7036359999983688,
+      "compressed_bytes": 519143383,
+      "restored_bytes_sha256": "143e8f729da0d9ada696b7cd4536a97ddd5da1801512b46fa6833261f322bd5c"
+    }
+  ],
+  "byte_exact_restore": true,
+  "source_unchanged": true,
+  "optimizer_updates": 0,
+  "world_calls": 0
+}

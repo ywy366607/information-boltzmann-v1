@@ -1,0 +1,144 @@
+{
+  "mode": "builtin image_gen.imagegen",
+  "date": "2026-11-21",
+  "sources": [
+    "user reference nebula JPEG",
+    "user MengLi character JPEG"
+  ],
+  "assets": [
+    {
+      "file": "mengli-pointing-reference.png",
+      "prompt": "Create a faithful transparent-background cutout asset of the SAME anime MengLi child in the supplied reference. Preserve the exact youthful androgynous child, white hair with pale blue shading, blue eyes, cat ears, face expression, oversized pale hoodie with little animal motifs, white socks and sneakers, full seated pose, left hand resting on seat and right arm pointing upward and to the right. Keep all body parts and clothes visible, entirely within image. Preserve original beautiful soft painterly anime rendering and proportions; do not age up or sexualize. Isolate only the character, remove ALL galaxy, stars, nebula, architecture and glass blocks. Transparent background throughout with clean soft antialiasing, no text, no extra glow, no new background. This will be placed lower-left of a dark astronomical telemetry display, pointing at the nebula to the upper-right. Output tall PNG cutout.",
+      "transparent_background": true
+    },
+    {
+      "file": "mengli-nebula-cloud.png",
+      "prompt": "Create a transparent-background isolated astronomical nebula sprite for an elegant dark scientific dashboard. Use supplied reference ONLY as art direction for rich cyan teal blue violet cloud colours and a small warm white luminous heart. No text, NO interface lines, NO borders, NO stars, NO planet, NO person. The isolated nebula should be asymmetric and organic, wispy translucent volumetric gas, dramatic deep blue/teal veil and violet/magenta upper curls, warm pale ivory luminous central knot and narrow dark dust lanes, photographed astronomical cloud texture with fine filaments, subtle chromatic diffraction. Rich visible colours while mostly delicate transparent wisps. Irregular vertical-diagonal silhouette with some reaching tendrils, not a circular cloud, no rings, no disk, no spherical ball. Occupy central 70 percent of square canvas, large generous fully transparent margins, all wisps fade into complete alpha transparency. Output a beautiful high quality PNG sprite on alpha.",
+      "transparent_background": true
+    }
+  ],
+  "entrance_helix": {
+    "file": "mengli-nebula.png",
+    "source": "https://esahubble.org/images/heic0307a/",
+    "credit": "NASA, ESA, C.R. O'Dell (Vanderbilt University), and M. Meixner and P. McCullough (STScI)",
+    "derivation": "User-supplied 8000x8000 heic0307a.tif; Lanczos downsample to 2000x2000 RGB PNG. The browser adds the blue pupil wave and the perspective star field."
+  },
+  "heel_underpaint": {
+    "file": "mengli-far-shoe-underpaint.png",
+    "mode": "builtin image_gen.imagegen, transparent edit",
+    "prompt": "Use case: precise-object-edit / background-extraction. Asset type: hidden-surface repair layer for a 2D character rig, NOT a redesigned character. Edit target: supplied 1024x1536 transparent original. Keep the same canvas and exact positions, scale, anime rendering, and lighting. Remove ONLY the foreground/near leg below mid-calf and its sneaker (the lower-left sneaker, approximately x580..855,y1160..1510). Reconstruct the previously hidden LEFT/BACK HEEL and sole of the farther/right sneaker behind it, so the right sneaker is complete with a rounded intact back heel rather than a diagonally cut missing corner. Keep the far/right sock and sneaker in exactly the original position (approximately x775..1010,y1230..1435), do not move or rescale them. The new heel should extend naturally behind where the foreground sneaker used to overlap, with the same pale lilac/white material and rubber sole; complete the entire heel contour. Preserve all other visible pixels and the original child, hands, clothes, upper legs, head and pose as faithfully as possible. No background, no shadow backdrop, no text. True transparent background. This image will only supply a tiny hidden heel patch behind the untouched original foreground art; exact same framing and far shoe alignment are essential.",
+    "atlas": "mengli-pointing-rig-atlas.png, copied to existing mengli-pointing.png entry",
+    "packing": "1024x3072 RGBA: untouched original top panel, underpaint bottom panel; ffmpeg format=rgba,vstack=inputs=2",
+    "sampling": "bottom panel only for occluded heel pixels in x>728,y1240..1440 belonging to near-part source region; original visible art uses top panel",
+    "checks": "top panel decoded pixels exactly equal reference; 5413 opaque repair pixels in x740..820,y1280..1420; browser checked both swing extremes"
+  },
+  "nebula_motion": {
+    "renderer": "single-pass WebGL radial outward transport",
+    "data": "selected real layer P norm and selected real head frequency",
+    "mapping": "positive radial expansion and fading cloud veils; readouts retain fixed locations; each beat changes their own leader shape and length with a short chromatic split",
+    "transport_cycles_per_visual_second": "0.24*sqrt(omega/(1+omega))*(0.6+0.55*A), where omega is selected real head frequency and A is selected layer momentum-derived amplitude",
+    "portrait_clock_rate": "sqrt(omega/(1+omega))*(0.85+0.55*A); continuously eased over 0.7s; zero or missing frequency gives a static target",
+    "veil_weight": "0.44 + 0.22*selected layer amplitude; static base 0.35",
+    "telemetry": "coprime scan visits all available layer/head pairs; P remains a layer norm",
+    "resolution": [
+      680,
+      480
+    ]
+  },
+  "retired_video_motion": {
+    "source": "C:/Users/85750/xwechat_files/wxid_wo5v33d7pe522_9368/msg/video/2026-11/5d5b72f4a5206e1641f9b4ac1106346f.mp4",
+    "native_fps": 24.0,
+    "native_frames": 289,
+    "output_fps": 60,
+    "output_frames": 1200,
+    "size": [
+      384,
+      454
+    ],
+    "packing": "top premultiplied BGR; bottom grayscale alpha",
+    "matte_model": "skytnt/anime-seg ISNetDIS",
+    "alpha_threshold": [
+      0.24,
+      0.88
+    ],
+    "flow": "OpenCV DIS medium bidirectional colour+alpha transport",
+    "seconds": 99.3693482875824,
+    "loop": {
+      "trim_seconds": 10,
+      "playback": "forward then reverse",
+      "duration": 20
+    },
+    "foreground_area_range_before_black_tail_trim": [
+      0.0,
+      0.18226872246696035
+    ],
+    "bytes": 1608920,
+    "sha256": "95464d0058d714567b10f771b8044713de4d1932b0430805e57eb04855f838f9",
+    "file": "mengli-idle-60.mp4",
+    "model_source": "https://huggingface.co/skytnt/anime-seg",
+    "implementation": "https://github.com/SkyTNT/anime-segmentation",
+    "model_license": "Apache-2.0",
+    "matte_cleanup": "largest foreground component plus 5px edge support",
+    "status": "retired after transient hand omission; not used by character renderer"
+  },
+  "character_display": {
+    "file": "mengli-pointing.png",
+    "mode": "complete original portrait with joint-mesh animation",
+    "rejected_attempt": "scratch/mengli-rejected-rig-20261121",
+    "source": "original mengli-pointing-reference.png plus generated hidden heel underpaint, packed into two-panel atlas; three local sock-logo patches applied 2026-11-21",
+    "sock_logo_removal": {
+      "tool": "builtin image_gen.imagegen",
+      "asset": "mengli-pointing-plain-socks.png",
+      "record_and_exact_prompt": "docs/information_boltzmann/CGB_CHARACTER_PLAIN_SOCKS_20261121.md",
+      "verification": "11083 changed pixels, zero changes outside the three sock rectangles, full original alpha retained"
+    },
+    "renderer": "single-texture 128x192 WebGL mesh, two independent leg-piece draws with premultiplied-alpha occlusion",
+    "motion": {
+      "period_seconds": 3.8,
+      "near_leg_amplitude_radians": 0.055,
+      "far_leg_amplitude_radians": -0.045,
+      "knee_pivots_source_pixels": [
+        [
+          616,
+          990
+        ],
+        [
+          709,
+          960
+        ]
+      ],
+      "binding": "authored overlap boundary and knee transition; local head, shoulder-elbow-wrist chain, ear and eyelid deformation; resting hand fixed",
+      "leg_piece_topology": "near/far lower legs use separate draw transforms and source-pixel ownership masks; both share their attachment at source y=1080 and become fully rigid by y=1160; each whole shoe inherits one pivot",
+      "swing_margin_source_pixels": {
+        "x": 24,
+        "y": 36
+      },
+      "gestures": "head 0.018rad/7.6 visual seconds; shoulder 0.021rad, elbow 0.14rad and wrist -0.035rad/5.1 visual seconds; staggered ear twitches and brief blinks",
+      "arm_pivots_source_pixels": {
+        "shoulder": [
+          450,
+          530
+        ],
+        "elbow": [
+          540,
+          402
+        ],
+        "wrist": [
+          618,
+          255
+        ]
+      },
+      "gesture_provenance": "authored joint paths run on a display clock mapped from selected actual omega and momentum; not measured anatomical motion"
+    },
+    "verification": "both swing extremes and recorded motion; former stretched shoe-edge 2px pair stays 2px; full silhouette landmark distances checked across 229 times; 39 related tests passed",
+    "preview": "scratch/mengli-heel-underpaint-fixed-20261121.mp4",
+    "lifecycle": "visible pause control; reduced motion and hidden page pause; static original portrait on missing/lost WebGL context",
+    "socks": {
+      "style": "thin opaque white mid-calf cotton; smooth fine knit",
+      "asset": "mengli-pointing-thin-midcalf.png",
+      "tool": "builtin image_gen.imagegen",
+      "record": "docs/information_boltzmann/CGB_CHARACTER_THIN_MIDCALF_20261122.md",
+      "verification": "29141 changed pixels; zero changes outside sock regions; original alpha retained"
+    }
+  }
+}

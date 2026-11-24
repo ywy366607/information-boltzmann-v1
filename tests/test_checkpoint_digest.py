@@ -40,3 +40,27 @@ def test_parameter_layout_slices_and_typed_metadata_are_not_ignored():
     assert state_digest(copy.deepcopy(value))['sha256'] == digest
     value['owners']['gate'] = slice(4096, 8192)
     assert state_digest(value)['sha256'] != digest
+
+
+def test_restore_canonicalizes_lu_wrapper_but_checks_both_tensors():
+    from scripts.ib_local.audit_joint_restore import canonical
+
+    factor = torch.linalg.lu_factor(torch.tensor([[2., 1.], [3., 4.]]))
+    reference = state_digest(canonical(factor))['sha256']
+    assert state_digest(canonical(tuple(factor)))['sha256'] == reference
+    for index in (0, 1):
+        changed = [tensor.clone() for tensor in factor]
+        changed[index][(0,) * changed[index].ndim] += 1
+        assert state_digest(canonical(tuple(changed)))['sha256'] != reference
+
+
+def test_restore_checks_identity_preview_runtime_not_only_saved_tensors():
+    from types import SimpleNamespace
+    from scripts.ib_local.audit_joint_restore import preview_runtime
+
+    engine = SimpleNamespace(model=SimpleNamespace())
+    config = dict(causal_use_value={'arm': 'C2'}, identity_preview_revision=1)
+    assert not preview_runtime(engine, config)['passed']
+    engine.model.identity_preview_revision = 1
+    assert preview_runtime(engine, config)['passed']
+    assert preview_runtime(engine, {'identity_preview_revision': 1})['passed']

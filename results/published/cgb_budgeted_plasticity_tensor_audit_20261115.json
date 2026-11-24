@@ -1,0 +1,98 @@
+{
+  "scope": "tensor_update_admission_not_language_capability",
+  "device": "cuda",
+  "body_parameters": 29672448,
+  "budget_eligible_parameters": 29425664,
+  "observer_units": 7441,
+  "extra_state_bytes": 89292,
+  "live_body_modified": false,
+  "world_calls": 0,
+  "cooling_migration": "rejected_without_matching_observer_history",
+  "arms": {
+    "adamw": {
+      "median_step_ms": 1.6017500001908047,
+      "state_bytes": 7401728,
+      "peak_cuda_allocated_bytes": 18511360,
+      "finite_parameters": true
+    },
+    "budget": {
+      "median_step_ms": 20.913299998937873,
+      "state_bytes": 7404512,
+      "peak_cuda_allocated_bytes": 19556864,
+      "finite_parameters": true
+    },
+    "budget_cooling": {
+      "median_step_ms": 23.985699999684584,
+      "state_bytes": 7404512,
+      "peak_cuda_allocated_bytes": 19556864,
+      "finite_parameters": true
+    }
+  },
+  "one_layer_shapes": {
+    "layers.0.A_log": [
+      8
+    ],
+    "layers.0.dt_bias": [
+      8
+    ],
+    "layers.0.norm.weight": [
+      256
+    ],
+    "layers.0.q_proj.weight": [
+      256,
+      256
+    ],
+    "layers.0.k_proj.weight": [
+      256,
+      256
+    ],
+    "layers.0.v_proj.weight": [
+      256,
+      256
+    ],
+    "layers.0.g_proj.weight": [
+      256,
+      256
+    ],
+    "layers.0.o_proj.weight": [
+      256,
+      256
+    ],
+    "layers.0.alpha_proj.weight": [
+      8,
+      256
+    ],
+    "layers.0.beta_proj.weight": [
+      8,
+      256
+    ],
+    "layers.0.beta_proj.bias": [
+      8
+    ],
+    "layers.0.mlp_norm.weight": [
+      256
+    ],
+    "layers.0.mlp.gate.weight": [
+      768,
+      256
+    ],
+    "layers.0.mlp.up.weight": [
+      768,
+      256
+    ],
+    "layers.0.mlp.down.weight": [
+      256,
+      768
+    ],
+    "layers.0.qkv_conv.weight": [
+      768,
+      1,
+      4
+    ]
+  },
+  "caveat": "live learner may contend for device; one-layer timing is not whole-loop timing",
+  "source_hashes": {
+    "information_boltzmann/budgeted_adamw.py": "46a087a2426b21d05f3ac97e66563e7d74572081767012bd3906935605d46d3f",
+    "lean/CGBAxioms/CGBAxioms/GenerationBudgetedPlasticity.lean": "8160c4c3feb6072286e7f4166ee39307a2760b963b4dbe223df25a30c702e66d"
+  }
+}

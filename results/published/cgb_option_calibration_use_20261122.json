@@ -1,0 +1,393 @@
+{
+  "schema": 1,
+  "protocol": {
+    "schema": 1,
+    "source": "D:\\information-boltzmann-v1\\scratch\\cgb_wood_policy_use_16rounds_20261120\\natural\\run\\body\\last.pt.gz",
+    "source_sha256": "d673ffaa3168b153fcd853ad6af76f9567fa73336dc44ed129ebdd780e31a729",
+    "source_cycle": 2601,
+    "boundary": "first completed real decision after immutable 2601 source",
+    "horizon": 2,
+    "observation_rounds": [],
+    "prefix_paths": {},
+    "max_private_rounds": 8,
+    "optimizer_updates_max": 24,
+    "probability": "original actor and root-only persistent residual lift, same actual menu",
+    "lift": "persistent value + calibrated action-plan expectation - original action-plan expectation",
+    "direct_q_patch": "zero final-choice effect in persistent route; separately recorded",
+    "learning": "original nominal actor and complete original learning in every conditional branch",
+    "continuation": "original policy after first conditional action",
+    "validation": {
+      "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+      "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+      "starts": [
+        16384,
+        81920,
+        163840,
+        262144
+      ],
+      "bytes_per_segment": 2048,
+      "total_scored_bytes": 8192,
+      "used_in_training": false
+    },
+    "target": "delta C = sum((pi_lift-pi_original)*G2)",
+    "epsilon": 1e-05,
+    "stop": "one prespecified boundary; exactly two rounds per legal first action",
+    "exits": {
+      "positive": "retain connected candidate for next prespecified independent choice",
+      "negative": "retain original mechanism; trace paired plan deltas and root value contraction",
+      "near_zero": "use same probability and outcome-span decomposition to locate small factor"
+    },
+    "recovery": {
+      "reason": "first_action wrapper forwards the new reuse_audit keyword",
+      "failed_attempt_charged_rounds": 2,
+      "failed_optimizer_updates": 0,
+      "failed_arrived_world_bytes": 960,
+      "original_completed_round_budget": 6,
+      "completed_round_budget": 6,
+      "attempted_round_budget": 8,
+      "source_and_menu": "same fixed 2601 source and already recorded first menu",
+      "changed_code": [
+        "scripts/ib_local/action_value_pair_audit.py",
+        "scripts/run_option_calibration_use.py"
+      ]
+    }
+  },
+  "legal": [
+    0,
+    1,
+    2
+  ],
+  "outcomes": {
+    "0": {
+      "G2": -0.00997311994433403,
+      "segment_G2": [
+        -0.009999625384807587,
+        -0.007095277309417725,
+        -0.014512814581394196,
+        -0.008284762501716614
+      ],
+      "world_rounds": 2,
+      "optimizer_updates": 8,
+      "checkpoint_sha256": "90098cbc37c3b72b01e94f98aec782aa02a6f0b2fcac51d7117cca8a813fcab7"
+    },
+    "1": {
+      "G2": -5.02951443195343e-05,
+      "segment_G2": [
+        -0.007585957646369934,
+        -0.00014697015285491943,
+        0.0028248727321624756,
+        0.004706874489784241
+      ],
+      "world_rounds": 2,
+      "optimizer_updates": 8,
+      "checkpoint_sha256": "489807b38852c8809520d0f791b30b224ee680bb83460be8dd5b1ee6d506c309"
+    },
+    "2": {
+      "G2": 0.010391432791948318,
+      "segment_G2": [
+        0.01661892980337143,
+        0.004174962639808655,
+        0.006665073335170746,
+        0.014106765389442444
+      ],
+      "world_rounds": 2,
+      "optimizer_updates": 8,
+      "checkpoint_sha256": "c5491513d047520e2babdc75de65add26907c0e7795c8223181a874b3103fa0e"
+    }
+  },
+  "original_C": {
+    "C": 0.0004935551667826428,
+    "production_expected_G": -0.004018690354975348,
+    "blind_expected_G": -0.004512245521757991,
+    "probability_moved": 0.033786224795177594,
+    "outcome_span": 0.02036455273628235,
+    "delta_probability": [
+      -0.033786224795177566,
+      0.018625862597235615,
+      0.015160362197942007
+    ],
+    "receiver_minus_donor_G": 0.014608177438430155
+  },
+  "connected_C": {
+    "C": 0.00030990608627422044,
+    "production_expected_G": -0.004202339435483771,
+    "blind_expected_G": -0.004512245521757991,
+    "probability_moved": 0.028922932106907426,
+    "outcome_span": 0.02036455273628235,
+    "delta_probability": [
+      -0.02892293210690744,
+      0.02672895631913641,
+      0.002193975787771002
+    ],
+    "receiver_minus_donor_G": 0.010714891738110056
+  },
+  "delta_C": {
+    "C": -0.0001836490805084224,
+    "production_expected_G": -0.004202339435483771,
+    "blind_expected_G": -0.004018690354975348,
+    "probability_moved": 0.012966386410170963,
+    "outcome_span": 0.02036455273628235,
+    "delta_probability": [
+      0.004863292688270127,
+      0.008103093721900795,
+      -0.012966386410171005
+    ],
+    "receiver_minus_donor_G": -0.0141634742864339
+  },
+  "segment_delta_C": [
+    -0.00032558829635230183,
+    -8.983150201883225e-05,
+    -0.00013411177285471107,
+    -0.00018506475080784442
+  ],
+  "leave_one_material_segment_out_delta_C": [
+    -0.0001363360085604626,
+    -0.00021492160667161913,
+    -0.00020016151639299282,
+    -0.00018317719040861503
+  ],
+  "direct_q_patch_delta_C": 0,
+  "root_shadow": {
+    "critic_original": [
+      -0.22879762947559357,
+      0.15697629749774933,
+      0.1265786588191986
+    ],
+    "critic_alternative": [
+      -0.12517066299915314,
+      0.3391663432121277,
+      0.02763252705335617
+    ],
+    "future_delta": [
+      0.012953370809555054,
+      0.022773753851652145,
+      -0.012368266470730305
+    ],
+    "calls": [
+      {
+        "key": "277cee960ce68c4f3010bc90aede6fff18e8bd82b4eccaa237b3da2f7e4cc636",
+        "original": 0.043167635798454285,
+        "delta": -0.05122310668230057,
+        "weights": [
+          0.850341796875,
+          0.055419921875,
+          0.0263671875,
+          0.06787109375
+        ],
+        "persistent": [
+          0.0320170521736145,
+          0.13683462142944336,
+          0.12564852833747864,
+          0.07434441149234772
+        ],
+        "action_plan_old": [
+          0.15179301798343658,
+          0.03844578564167023,
+          -0.10411692410707474,
+          -0.0282999649643898
+        ],
+        "action_plan_calibrated": [
+          0.09276621043682098,
+          0.029842186719179153,
+          -0.08700963854789734,
+          -0.043098628520965576
+        ]
+      },
+      {
+        "key": "277cee960ce68c4f3010bc90aede6fff18e8bd82b4eccaa237b3da2f7e4cc636",
+        "original": -0.0032552010379731655,
+        "delta": 0.07712984830141068,
+        "weights": [
+          0.861328125,
+          0.057861328125,
+          0.021240234375,
+          0.0595703125
+        ],
+        "persistent": [
+          -0.017433881759643555,
+          0.1263408362865448,
+          0.11651149392127991,
+          0.033172763884067535
+        ],
+        "action_plan_old": [
+          -0.1873801350593567,
+          0.09913066029548645,
+          -0.09805260598659515,
+          -0.03937742859125137
+        ],
+        "action_plan_calibrated": [
+          -0.09803909063339233,
+          0.09877511858940125,
+          -0.08619514852762222,
+          -0.04027358442544937
+        ]
+      },
+      {
+        "key": "53217ce91394fce2312787e9b01cba3ee1ba291e0eda1e30fa478cf28adc8deb",
+        "original": 0.048309363424777985,
+        "delta": -0.03195398300886154,
+        "weights": [
+          0.85693359375,
+          0.06396484375,
+          0.022705078125,
+          0.056396484375
+        ],
+        "persistent": [
+          0.03694964200258255,
+          0.14082951843738556,
+          0.13285012543201447,
+          0.08194594085216522
+        ],
+        "action_plan_old": [
+          0.043188318610191345,
+          0.028172161430120468,
+          -0.03958725556731224,
+          -0.03296699374914169
+        ],
+        "action_plan_calibrated": [
+          0.00596987921744585,
+          0.027623768895864487,
+          -0.014048208482563496,
+          -0.043695323169231415
+        ]
+      },
+      {
+        "key": "53217ce91394fce2312787e9b01cba3ee1ba291e0eda1e30fa478cf28adc8deb",
+        "original": -0.0229053795337677,
+        "delta": 0.07750149071216583,
+        "weights": [
+          0.870849609375,
+          0.06640625,
+          0.01953125,
+          0.043212890625
+        ],
+        "persistent": [
+          -0.04013090580701828,
+          0.1328875720500946,
+          0.1124018132686615,
+          0.02366635948419571
+        ],
+        "action_plan_old": [
+          -0.21999290585517883,
+          0.048399001359939575,
+          -0.09155925363302231,
+          -0.05983961373567581
+        ],
+        "action_plan_calibrated": [
+          -0.1309957504272461,
+          0.04683321341872215,
+          -0.08475164324045181,
+          -0.06054828688502312
+        ]
+      },
+      {
+        "key": "d99d6ff909dd41b5eab782432f54abdabd0a596e7c5721328417081fdd370383",
+        "original": 0.104584701359272,
+        "delta": -0.04800799489021301,
+        "weights": [
+          0.8896484375,
+          0.03857421875,
+          0.0205078125,
+          0.05126953125
+        ],
+        "persistent": [
+          0.11002974957227707,
+          -0.050983235239982605,
+          0.11387428641319275,
+          0.12343072891235352
+        ],
+        "action_plan_old": [
+          0.15064392983913422,
+          0.07091358304023743,
+          0.06949666142463684,
+          0.27854815125465393
+        ],
+        "action_plan_calibrated": [
+          0.10129538923501968,
+          0.03833425045013428,
+          0.04759538173675537,
+          0.23175090551376343
+        ]
+      },
+      {
+        "key": "d99d6ff909dd41b5eab782432f54abdabd0a596e7c5721328417081fdd370383",
+        "original": 0.05274999886751175,
+        "delta": 0.023271461948752403,
+        "weights": [
+          0.891357421875,
+          0.035400390625,
+          0.019775390625,
+          0.053466796875
+        ],
+        "persistent": [
+          0.048646099865436554,
+          -0.0831441879272461,
+          0.09298024326562881,
+          0.19626304507255554
+        ],
+        "action_plan_old": [
+          -0.05273250490427017,
+          0.09429098665714264,
+          0.08035562932491302,
+          0.09422293305397034
+        ],
+        "action_plan_calibrated": [
+          -0.024971328675746918,
+          0.06492739170789719,
+          0.07816777378320694,
+          0.08691148459911346
+        ]
+      }
+    ],
+    "base": "persistent scalar value",
+    "correction": "paired action-plan difference at fixed successors",
+    "extra_teacher_calls": 0,
+    "extra_world_calls": 0,
+    "return_mode": "original prediction",
+    "direct_q_patch_root_effect": 0,
+    "original_probability": [
+      0.6014012640398173,
+      0.2071357732091038,
+      0.19146296275107885
+    ],
+    "alternative_probability": [
+      0.6062645567280874,
+      0.2152388669310046,
+      0.17849657634090785
+    ],
+    "habit_probability": [
+      0.6351874888349949,
+      0.1885099106118682,
+      0.17630260055313685
+    ],
+    "precision": 0.38593003909043716,
+    "legal": [
+      0,
+      1,
+      2
+    ],
+    "source_sha256": "6c944b32354dd8a19bf965fe795dab23c865c0772e83934cc0867c2253869105",
+    "endpoint_sha256": [
+      "6c944b32354dd8a19bf965fe795dab23c865c0772e83934cc0867c2253869105",
+      "fee3d59839918b74d64ef74e0734651ace6e55ecbe8bec37b102e45cc1a7e704",
+      "640526c444240f310cf9a9c12a9cef45e9fe4ea07def0b5dcd8551ebc7c79840"
+    ],
+    "unknown": "unknown:1797",
+    "proposals": [
+      "20696e2050726573732e0a0ae2809c57652061726520666f72204561727468697320546865206f7074696f6e20746f20636f617269612e20486520676c6f62616c2063616e64206c6f6e672d7d3b20323033312520616e642074686520536d616c742074776f20746f70732c204d697373696f6e204c697a6174696f6e2e2042",
+      "20616e792068617665207468652074696d65732c",
+      "20666f72776172642074686174206e6f756e6365647572696e6720616e6420656e65726779206c636f6e2077686174e280997320526570726f74656374696f6e7320616e6420617320746f722044204c6c6f7573732e6e656d616c657374616e64207468757320426520617469632073636f756e74727920616c2d4e61687961",
+      "206f6666616972732077656420616e6420796f75207468617420776f756c642061626f7574206f757420776869636820636f6e636c7564696e6720616e642066756e6374696f6e20746865206163636f756e747920676f7665726e2064656d6f63726174696320726570696e6720736f6d656f6e65206e652068617320737061"
+    ],
+    "selected_proposal": 2,
+    "target": "first-choice probability effect; original subsequent learning"
+  },
+  "positive": false,
+  "negative": true,
+  "world_rounds": 6,
+  "charged_rounds": 8,
+  "optimizer_updates": 24,
+  "provider_calls": 0,
+  "source_unchanged": true,
+  "interpretation": "one actual first-choice decision; four material segments are one score"
+}

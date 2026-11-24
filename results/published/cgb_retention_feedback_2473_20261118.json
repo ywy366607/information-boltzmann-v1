@@ -1,0 +1,85 @@
+{
+  "cycle": 2473,
+  "source": "E:\\cgb_event_credit_2469_20261118\\identified\\body\\last.pt.gz",
+  "source_sha256": "e9f817bcd3dd5f13b6edead2e5c317fab98f681bdf56544237d32e738e75e0a6",
+  "source_unchanged": true,
+  "optimizer_updates": 0,
+  "world_calls": 0,
+  "engine": "PastPresentEngine",
+  "model": "QuestionContextBody",
+  "runtime_methods": {
+    "objective": {
+      "file": "D:\\information-boltzmann-v1\\scripts\\ib_local\\navigation_bfss_dynamics.py",
+      "line": 17
+    },
+    "advance": {
+      "file": "D:\\information-boltzmann-v1\\scripts\\ib_local\\navigation_question_context.py",
+      "line": 49
+    },
+    "step": {
+      "file": "D:\\information-boltzmann-v1\\scripts\\ib_local\\past_present_coevolution.py",
+      "line": 213
+    }
+  },
+  "retention": {
+    "enabled": true,
+    "rule": "utility",
+    "read_credit_enabled": true,
+    "read_credit_rule": "adam",
+    "capacity": 4096,
+    "occupied": 2219,
+    "preference_nonzero": 0,
+    "replacement_slot": 2219,
+    "statistics": {
+      "read_credit_count": {
+        "nonzero": 2218,
+        "total": 40093280.0,
+        "minimum": 0.0,
+        "median": 2620.0,
+        "mean": 9788.3984375,
+        "maximum": 137510.0
+      },
+      "read_credit_steps": {
+        "nonzero": 2218,
+        "total": 1701435.0,
+        "minimum": 0.0,
+        "median": 179.0,
+        "mean": 415.389404296875,
+        "maximum": 4267.0
+      },
+      "read_credit_mean": {
+        "nonzero": 2218,
+        "total": -1.870985670882419,
+        "minimum": -0.06084583327174187,
+        "median": 0.0,
+        "mean": -0.0004567836110552781,
+        "maximum": 0.048047035932540894
+      },
+      "retention_utility_steps": {
+        "nonzero": 0,
+        "total": 0.0,
+        "minimum": 0.0,
+        "median": 0.0,
+        "mean": 0.0,
+        "maximum": 0.0
+      },
+      "retention_utility_first": {
+        "nonzero": 0,
+        "total": 0.0,
+        "minimum": 0.0,
+        "median": 0.0,
+        "mean": 0.0,
+        "maximum": 0.0
+      },
+      "retention_utility_second": {
+        "nonzero": 0,
+        "total": 0.0,
+        "minimum": 0.0,
+        "median": 0.0,
+        "mean": 0.0,
+        "maximum": 0.0
+      }
+    }
+  },
+  "scope": "Persisted evidence and actual runtime entry points, not a future-use experiment."
+}

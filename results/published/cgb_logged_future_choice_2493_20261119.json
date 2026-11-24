@@ -1,0 +1,118 @@
+{
+  "valid": true,
+  "source": "scratch\\cgb_self_execution_loop_2493_20261119\\native\\events.jsonl",
+  "rows": [
+    {
+      "cycle": 2494,
+      "selected": "silence",
+      "future": [
+        0.018606513738632202,
+        0.03159844130277634,
+        0.018606513738632202
+      ],
+      "common_future": 0.02510247752070427,
+      "future_action_contrast": 0.012991927564144135,
+      "immediate_action_contrast": -0.005750879645347595,
+      "gamma": 0.8,
+      "effective_logit_scale": 18.326469040068815,
+      "actual_probability": [
+        0.7618705665951646,
+        0.23812943340483542,
+        0.0
+      ],
+      "without_future_probability": [
+        0.7946913337513548,
+        0.20530866624864524,
+        0.0
+      ],
+      "future_probability_TV": 0.032820767156190186,
+      "probability_reconstruction_error": 3.564921691179279e-09,
+      "offset_reconstruction_error": 0.0
+    },
+    {
+      "cycle": 2495,
+      "selected": "generate",
+      "future": [
+        0.31284865736961365,
+        0.31764504313468933,
+        0.31284865736961365
+      ],
+      "common_future": 0.3152468502521515,
+      "future_action_contrast": 0.004796385765075684,
+      "immediate_action_contrast": -0.0010314583778381348,
+      "gamma": 0.8,
+      "effective_logit_scale": 17.57805562341994,
+      "actual_probability": [
+        0.41832811160628425,
+        0.5816718883937158,
+        0.0
+      ],
+      "without_future_probability": [
+        0.43482505714183795,
+        0.565174942858162,
+        0.0
+      ],
+      "future_probability_TV": 0.016496945535553698,
+      "probability_reconstruction_error": 5.202933417436384e-09,
+      "offset_reconstruction_error": 2.095475792919521e-07
+    },
+    {
+      "cycle": 2496,
+      "selected": "silence",
+      "future": [
+        0.006217987276613712,
+        0.030476193875074387,
+        0.006217987276613712
+      ],
+      "common_future": 0.01834709057584405,
+      "future_action_contrast": 0.024258206598460674,
+      "immediate_action_contrast": -0.01826457679271698,
+      "gamma": 0.8,
+      "effective_logit_scale": 17.70263201675409,
+      "actual_probability": [
+        0.6665866983177328,
+        0.3334133016822672,
+        0.0
+      ],
+      "without_future_probability": [
+        0.7381421512466468,
+        0.2618578487533532,
+        0.0
+      ],
+      "future_probability_TV": 0.07155545292891402,
+      "probability_reconstruction_error": 1.2161397999754797e-09,
+      "offset_reconstruction_error": 5.2619725465774536e-08
+    },
+    {
+      "cycle": 2497,
+      "selected": "generate",
+      "future": [
+        -0.09990556538105011,
+        -0.07623179256916046,
+        -0.09990556538105011
+      ],
+      "common_future": -0.08806867897510529,
+      "future_action_contrast": 0.02367377281188965,
+      "immediate_action_contrast": 0.03590771555900574,
+      "gamma": 0.8,
+      "effective_logit_scale": 17.576379723215844,
+      "actual_probability": [
+        0.2256968101421516,
+        0.7743031898578485,
+        0.0
+      ],
+      "without_future_probability": [
+        0.28907277654990726,
+        0.7109272234500927,
+        0.0
+      ],
+      "future_probability_TV": 0.06337596640775572,
+      "probability_reconstruction_error": 2.1799453020499016e-08,
+      "offset_reconstruction_error": 0.0
+    }
+  ],
+  "mapping": "NativeActorExpectation.actual_centered_logit_difference; actual recorded total and delivered offset",
+  "scope": "same recorded choice; real continuation term removed; no new rollout",
+  "optimizer_updates": 0,
+  "world_calls": 0
+}

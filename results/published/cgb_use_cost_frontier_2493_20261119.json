@@ -1,0 +1,60 @@
+{
+  "versions": {
+    "mean": {
+      "cycles": 4,
+      "mean_use": 0.011928383260965347,
+      "old_fact_gain": 0.007331367582082748,
+      "seconds": 646.4605207999994,
+      "actual_policy_discrepancy_MSE": 0.06260384247789827,
+      "observed_use_sum_per_minute": 0.0044284405474427635,
+      "fixed_old_gain_per_minute": 0.0006804468962475973
+    },
+    "independent": {
+      "cycles": 4,
+      "mean_use": 0.01193348690867424,
+      "old_fact_gain": 0.007088594138622284,
+      "seconds": 2146.3883529000013,
+      "actual_policy_discrepancy_MSE": 0.047766640385523466,
+      "observed_use_sum_per_minute": 0.0013343516583157917,
+      "fixed_old_gain_per_minute": 0.00019815409813545153
+    },
+    "joint": {
+      "cycles": 4,
+      "mean_use": 0.019387928768992424,
+      "old_fact_gain": 0.0060913050547242165,
+      "seconds": 2171.289651299998,
+      "actual_policy_discrepancy_MSE": 0.00981889763173967,
+      "observed_use_sum_per_minute": 0.002143013439856939,
+      "fixed_old_gain_per_minute": 0.00016832314521677625
+    }
+  },
+  "meaning": "rates describe the completed equal-exposure segment; fixed queries use shared material",
+  "joint_break_even_seconds": {
+    "observed_use": 1050.7317089861692,
+    "fixed_old_queries": 537.1151008240689
+  },
+  "measured_runtime_amdahl": {
+    "source_schema": 6,
+    "total": 2095.8089556999985,
+    "known_words": 1302.0333521996145,
+    "unchanged_remainder": 793.775603500384,
+    "seconds_at_word_speedup": {
+      "2": 1444.7922796001913,
+      "4": 1119.2839415502876,
+      "8": 956.5297725253358
+    },
+    "conditional_infinitely_fast_words": 793.775603500384,
+    "conditional_max_speedup": 2.6403040688803237
+  },
+  "model_action_sampling_variance": {
+    "mean": 9.990877625074692e-05,
+    "independent": 8.920324640982075e-05,
+    "joint": 0.0005140517395672684
+  },
+  "interpretation": "modeled actor variance is conditional on the model action values; error against actual external payoffs includes response uncertainty",
+  "decisions": [
+    "keep schema5 as best observed per-round actual-use route",
+    "prioritize native-word runtime while holding schema5 semantics",
+    "accept acceleration by actual learned use and shared old queries per wall time"
+  ]
+}

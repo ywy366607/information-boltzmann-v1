@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "run": "D:\\information-boltzmann-v1\\scratch\\finite_c2_contact_2401_20261118",
+  "status": "admitted_running",
+  "source_cycle": 2401,
+  "tests_passed": 25,
+  "lean_actual_C_events": 30,
+  "lean_actual_C_sign_proofs": 90,
+  "first_event": {
+    "reward": -0.010725326836109161,
+    "actual_U": -0.010725326836109161,
+    "append": 0.01181861013174057,
+    "release": -0.02254393696784973,
+    "finite_U": {
+      "committed": true,
+      "supports": [
+        "episode:1133",
+        "episode:1616",
+        "episode:1919",
+        "episode:1977",
+        "episode:203",
+        "episode:2216",
+        "episode:2402",
+        "episode:267"
+      ],
+      "representation_shift": 3.807246685028076E-05,
+      "verified": true,
+      "observed_episode": 2402,
+      "committed_score_max_error": 0.0
+    },
+    "runtime_seconds": 26.124667399999453,
+    "updates": 4
+  },
+  "source_plan": {
+    "schema": 1,
+    "checkpoint": {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\body\\last.pt.gz",
+      "sha256": "6d36cae0d39e41ae5dc0b84c84916733e3c09ed634b68a2d0d04f07c588e09b7"
+    },
+    "archive": {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\body\\causal_archive_511e944037da1e9128b452aba47402f5da5f8bb688919b97f896d0582dded02a.sqlite",
+      "sha256": "511e944037da1e9128b452aba47402f5da5f8bb688919b97f896d0582dded02a"
+    },
+    "cycles": 32,
+    "arms": [
+      "C2"
+    ],
+    "use_transport_audit": true,
+    "contact_momentum": true,
+    "baseline_work": "F:\\mengli-causal-use-2401-v5",
+    "source_body": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\body",
+    "budget": {
+      "external_bytes_per_cycle": 960,
+      "full_optimizer_updates": true
+    },
+    "sources": {
+      "scripts\\run_native_causal_use_value.py": "19ec71d450193a1e06755ce511c9717a9619d91428f60e791f0fa10dac3eea55",
+      "scripts\\ib_local\\causal_use_value.py": "43adb862ae3a17b2e1af76eeeddcb4d5ac3cb1af38592ba02a6a4ed81997b807",
+      "scripts\\ib_local\\world_learning_cycle.py": "ad9985a625a3d99b4ab3c98c2f3f1241de8f79d6cdeffdb9e624d0c5d275afa8",
+      "scripts\\ib_local\\causal_use_transport.py": "aaa4da751b3a3c286023be3405e9ccc131f929af5b1be42156ec097d91118ec0",
+      "scripts\\ib_local\\finite_use_value.py": "96bf6ce7b68048e0960c942d746d24a7668c9aaa32d6149bbbdc795edadf2525",
+      "scripts\\ib_local\\language_navigation_kanli_v4p.py": "c1f399635d6f7b97b2c354eaa694679f887de2e1d6624edf0b786ee9d4a7fd0b",
+      "scripts\\ib_local\\navigation_settlement.py": "b7284cd875a6e92f133e172410a69ed0e6e8e5ce761394772842788558bcf339",
+      "scripts\\ib_local\\navigation_direct_read.py": "05ddbe474d6aa7fd441e89ea062542bc441506b687ff4df4fc80fd734ebf0aaf",
+      "scripts\\ib_local\\navigation_generative_cycle.py": "8b42ff21d32285cdb04d2a29190877b0ebbc871d32bd0ec1ea30c56eab7b8065",
+      "scripts\\ib_local\\navigation_joint_cycle.py": "3c213d96d100108069337d14dcca1b714f23099e7f804be9e373285a06541a4e",
+      "scripts\\ib_local\\navigation_causal_program.py": "1c241496ed65307fc0fc2d00b2b583f8e0fa83e009b79b85c59704519a337d65",
+      "scripts\\ib_local\\navigation_internal_rollout.py": "bcb0e83cfae3ff7e1703492ddb177ab5720612f21e38d500a4ae05d739bc5511",
+      "scripts\\ib_local\\causal_archive.py": "8315af988a83eb20eb87fbaf125dafd77fa27ef3e99a1ab7b1a69e2e4fc7e6d7",
+      "scripts\\ib_local\\adaptive_hamiltonian.py": "ac16cdfba586df43cb62aa4efaa22b1b128a7356866bbff14d7b4dc6f9b97d4b",
+      "scripts\\ib_local\\contact_momentum.py": "bc80d0df43d16798f42a26a19549727650627910d28ebed3f471681a829fda57",
+      "scripts\\ib_local\\contact_momentum_fused.py": "24db152db4e76d4c09665485e7e08d4a16850b1dced38f7153c5725e6a458d22",
+      "scripts\\ib_local\\bfss_gdn_capture.py": "dbffbf48963d762e007dbbb74fb0613fd55de7059703c0f1d09a7018823d1e7a",
+      "scripts\\ib_local\\navigation_bfss_dynamics.py": "c31cdaf3d07245e302db01761e05df6d47225ea5889e39c7f3caff4f55d7cc09",
+      "scripts\\ib_local\\run_causal_water_reply.py": "a94bab6e086cc1cde50bb9598cccd9b7c506961df7d40c06598a92a3c7932565",
+      "scripts\\native_policy_activation_storage.py": "41c463fe25a6293fce1ea6e8d46eda8256da74beb73312b5661ef4c895e20948"
+    }
+  }
+}

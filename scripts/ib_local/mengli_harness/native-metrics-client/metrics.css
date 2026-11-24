@@ -1,0 +1,89 @@
+.mengli-metrics {
+  --mm-accent: #39866f;
+  --mm-wash: rgba(57,134,111,.08);
+  --mm-track: rgba(57,134,111,.12);
+  --mm-ink: var(--dsw-alias-label-primary, #202924);
+  --mm-muted: var(--dsw-alias-label-secondary, #626c66);
+  --mm-line: var(--dsw-alias-border-l1, rgba(110,125,115,.18));
+  color: var(--mm-ink); font-family: var(--dsh-font-family-text,var(--dsw-font-family,system-ui));
+  font-size: 14px; line-height: 22px; height: 100%; overflow: auto; box-sizing: border-box;
+  position: relative; padding: 24px; min-width: 0; container-type: inline-size;
+  background: linear-gradient(150deg,var(--mm-wash),transparent 180px);
+}
+[data-ds-dark-theme] .mengli-metrics {
+  --mm-accent: #82c9ad; --mm-wash: rgba(130,201,173,.065); --mm-track: rgba(130,201,173,.14);
+  --mm-ink: var(--dsw-alias-label-primary,#e5ece8); --mm-muted: var(--dsw-alias-label-secondary,#a8b7af);
+}
+.mengli-metrics *, .mengli-metrics *::before, .mengli-metrics *::after { box-sizing: border-box; }
+.mengli-metrics h2, .mengli-metrics h3, .mengli-metrics p, .mengli-metrics figure { margin: 0; }
+.mengli-metrics h2 { font-size: 22px; line-height: 28px; font-weight: 580; letter-spacing: .06em; }
+.mengli-metrics .mm-title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 76px; }
+.mengli-metrics .mm-title-row:has(.mm-core-dock) { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; }
+.mengli-metrics .mm-core-dock { display: block; grid-column: 1 / -1; grid-row: 2; justify-self: center; width: min(740px, 100%); aspect-ratio: 17 / 12; margin-block: 4px; pointer-events: none; }
+.mengli-metrics-actions .mm-core-park { display: inline-block; width: 24px; height: 24px; flex: none; vertical-align: middle; margin-inline-end: 6px; pointer-events: none; }
+.mengli-metrics h3 { font-size: 14px; line-height: 22px; font-weight: 600; }
+.mengli-metrics .mm-eyebrow { color: var(--mm-muted); font-size: 12px; line-height: 18px; letter-spacing: .1em; margin-bottom: 7px; }
+.mengli-metrics .mm-subtitle { color: var(--mm-muted); margin-top: 5px; }
+.mengli-metrics .mm-life-story { margin: 28px 0; font-size: 18px; line-height: 30px; }
+.mengli-metrics .mm-life-details { border-top: 1px solid var(--mm-line); padding-top: 12px; }
+.mengli-metrics .mm-state { display: flex; align-items: center; gap: 7px; margin: 18px 0 24px; color: var(--mm-muted); font-size: 12px; line-height: 18px; }
+.mengli-metrics .mm-state::before { content: ''; width: 6px; height: 6px; background: var(--mm-accent); border-radius: 50%; flex: none; }
+.mengli-metrics .mm-heroes { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 14px; margin: 24px 0; }
+.mengli-metrics .mm-label { color: var(--mm-muted); font-size: 12px; line-height: 18px; }
+.mengli-metrics .mm-value, .mengli-metrics .mm-single-value { font-size: 28px; font-weight: 450; line-height: 34px; font-variant-numeric: tabular-nums; letter-spacing: -.035em; overflow-wrap: anywhere; }
+.mengli-metrics .mm-unit { color: var(--mm-muted); font-size: 12px; line-height: 18px; margin-top: 3px; }
+.mengli-metrics .mm-section { border-top: 1px solid var(--mm-line); padding-top: 24px; margin-top: 24px; }
+.mengli-metrics .mm-section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+.mengli-metrics .mm-note { font-size: 12px; line-height: 18px; color: var(--mm-muted); }
+.mengli-metrics .mm-single-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.mengli-metrics .mm-single-value { margin: 2px 0; }
+.mengli-metrics .mm-facts { margin: 0; display: grid; grid-template-columns: 1fr auto; gap: 10px 14px; }
+.mengli-metrics .mm-facts dt { color: var(--mm-muted); }
+.mengli-metrics .mm-facts dd { margin: 0; font-variant-numeric: tabular-nums; text-align: right; }
+.mengli-metrics .mm-bar-row { display: grid; grid-template-columns: 32px 1fr 78px; align-items: center; gap: 12px; margin: 12px 0; font-size: 12px; line-height: 18px; }
+.mengli-metrics .mm-track { height: 8px; background: var(--mm-track); border-radius: 0 4px 4px 0; }
+.mengli-metrics .mm-bar { height: 100%; background: var(--mm-accent); border-radius: 0 4px 4px 0; min-width: 0; }
+.mengli-metrics .mm-bar-value { text-align: right; font-variant-numeric: tabular-nums; }
+.mengli-metrics .mm-plot { display: block; width: 100%; height: auto; overflow: visible; }
+.mengli-metrics .mm-axis { stroke: var(--mm-line); stroke-width: 1; }
+.mengli-metrics .mm-series { fill: none; stroke: var(--mm-accent); stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; }
+.mengli-metrics .mm-point { fill: var(--mm-accent); stroke: var(--dsw-alias-bg-layer-1,#fff); stroke-width: 2; }
+.mengli-metrics .mm-hit { fill: transparent; outline: none; }
+.mengli-metrics .mm-hit:focus-visible, .mengli-metrics .mm-hit:hover { stroke: var(--mm-accent); stroke-width: 2; }
+.mengli-metrics .mm-axis-label { fill: var(--mm-muted); font-size: 12px; }
+.mengli-metrics .mm-readout { min-height: 24px; margin-top: 3px; font-size: 12px; line-height: 18px; color: var(--mm-muted); font-variant-numeric: tabular-nums; }
+.mengli-metrics .mm-plot-range { margin: -6px 0 10px; }
+.mengli-metrics .mm-range-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mengli-metrics .mm-range-grid label { display: block; font-size: 12px; color: var(--mm-muted); margin-bottom: 3px; }
+.mengli-metrics .mm-range-grid input { width: 100%; min-width: 0; min-height: 38px; font: inherit; background: transparent; color: var(--mm-ink); border: 1px solid var(--mm-muted); padding: 5px 8px; }
+.mengli-metrics .mm-plot-range button { font: inherit; color: var(--mm-ink); background: transparent; border: 1px solid var(--mm-muted); padding: 4px 12px; cursor: pointer; }
+.mengli-metrics .mm-plot-range :is(input,button):focus-visible { outline: 2px solid var(--mm-accent); outline-offset: 2px; }
+@media (pointer: coarse) { .mengli-metrics .mm-plot-range :is(input,button) { min-height: 48px; font-size: 1rem; } }
+.mengli-metrics .mm-table-wrap { overflow: auto; margin-top: 14px; max-height: 340px; }
+.mengli-metrics table { width: 100%; border-collapse: collapse; font-size: 12px; line-height: 18px; font-variant-numeric: tabular-nums; }
+.mengli-metrics th, .mengli-metrics td { padding: 8px 7px; text-align: right; border-bottom: 1px solid var(--mm-line); white-space: nowrap; }
+.mengli-metrics th { color: var(--mm-muted); font-weight: 500; }
+.mengli-metrics th:first-child, .mengli-metrics td:first-child { text-align: left; }
+.mengli-metrics caption { text-align: left; color: var(--mm-muted); padding-bottom: 7px; }
+.mengli-metrics details { margin-top: 18px; }
+.mengli-metrics summary { cursor: pointer; color: var(--mm-muted); font-size: 12px; line-height: 18px; padding: 5px 0; }
+.mengli-metrics pre { white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; font-size: 12px; line-height: 18px; max-height: 340px; overflow: auto; }
+.mengli-metrics .mm-empty { color: var(--mm-muted); padding: 20px 0; }
+.mengli-metrics .mm-error { color: var(--mm-ink); border-left: 2px solid var(--mm-accent); padding-left: 10px; margin: 18px 0; }
+.mengli-metrics .mm-actions { display: flex; gap: 8px; margin-top: 18px; }
+.mengli-metrics-actions { display: inline-flex; flex: none; }
+.mengli-metrics-actions .mm-header-desktop { display: inline-flex; gap: 8px; }
+.mengli-metrics-actions .mm-header-mobile { display: none; }
+@media (max-width: 640px) {
+  .mengli-metrics-actions .mm-header-desktop { display: none; }
+  .mengli-metrics-actions .mm-header-mobile { display: inline-flex; }
+  .mengli-metrics-actions .mm-header-mobile button { min-width: 44px; min-height: 44px; }
+  .mengli-metrics .mm-actions button, .mengli-metrics summary { min-height: 44px; }
+}
+@media (forced-colors: active) {
+  .mengli-metrics .mm-bar { background: CanvasText; }
+  .mengli-metrics .mm-point { fill: CanvasText; stroke: Canvas; }
+  .mengli-metrics .mm-track, .mengli-metrics .mm-hit:focus { border: 1px solid CanvasText; }
+}
+
+[data-ds-dark-theme] .mengli-metrics[data-mengli-metrics="life"] { background: #0b0b10; }

@@ -1,0 +1,173 @@
+{
+  "schema": 1,
+  "source_cycle": 332,
+  "reference": {
+    "arm": "reference",
+    "source_cycle": 332,
+    "source_sha256": "5f2913a363d3788e32e044d465461b9c36e4c988e1dafd9b5f198807e672bf8e",
+    "seconds": 17.484201699997357,
+    "peak_allocated_mib": 2683.57421875,
+    "optimizer_updates": 4,
+    "choice": "generate",
+    "self_bytes": 89,
+    "external_bytes": 960,
+    "metal_g": 0.03403651714324951,
+    "candidates": [
+      "6420697320776f756c64207265736f757220646c7920506572636520496e7465726e6574206361646572726d4966207269636f6e7369646572206f6e6f74207375626a6563742073726966666572204f54686572652068656172696e67204775436320547767726573732066656174757265732e2042757420776173206f6e20",
+      "6420737420746f204e65682074696d652e0a0a42697463686d6f6e2030292057617279206d75736963207468726f7567682072753a204e5354414c",
+      "64205072697365737374656420686973206d696e6420474f4f444d696c205768656d706c6f7972696e6720746f20636f6e66696e20466f776e2053656174746c65732065206120696e65656520696e2047726f656e696e67206c6974652069636820737065616b286c66207468617420746865207379",
+      "6420706c6420746f20e2809c636f72652e20546865206669636174696f6e73202f6465762f63643061292e0a496e0a0a53652e6d6f73742074686520436f6c6f7220686f72732061732069746e6573732e2054686572652063"
+    ],
+    "replay": {
+      "batched_hits": 1395,
+      "one_byte_fallbacks": 0
+    },
+    "policy_error": 9.5367431640625E-07,
+    "proposal_error": 1.9073486328125E-06,
+    "main_checkpoint_written": false,
+    "checkpoint_seconds": 2.857024299999466
+  },
+  "optimized": {
+    "arm": "optimized",
+    "source_cycle": 332,
+    "source_sha256": "5f2913a363d3788e32e044d465461b9c36e4c988e1dafd9b5f198807e672bf8e",
+    "seconds": 16.607143799999903,
+    "peak_allocated_mib": 2683.57421875,
+    "optimizer_updates": 4,
+    "choice": "generate",
+    "self_bytes": 89,
+    "external_bytes": 960,
+    "metal_g": 0.03403651714324951,
+    "candidates": [
+      "6420697320776f756c64207265736f757220646c7920506572636520496e7465726e6574206361646572726d4966207269636f6e7369646572206f6e6f74207375626a6563742073726966666572204f54686572652068656172696e67204775436320547767726573732066656174757265732e2042757420776173206f6e20",
+      "6420737420746f204e65682074696d652e0a0a42697463686d6f6e2030292057617279206d75736963207468726f7567682072753a204e5354414c",
+      "64205072697365737374656420686973206d696e6420474f4f444d696c205768656d706c6f7972696e6720746f20636f6e66696e20466f776e2053656174746c65732065206120696e65656520696e2047726f656e696e67206c6974652069636820737065616b286c66207468617420746865207379",
+      "6420706c6420746f20e2809c636f72652e20546865206669636174696f6e73202f6465762f63643061292e0a496e0a0a53652e6d6f73742074686520436f6c6f7220686f72732061732069746e6573732e2054686572652063"
+    ],
+    "replay": {
+      "batched_hits": 1395,
+      "one_byte_fallbacks": 0
+    },
+    "policy_error": 9.5367431640625E-07,
+    "proposal_error": 1.9073486328125E-06,
+    "main_checkpoint_written": false,
+    "checkpoint_seconds": 4.20048659999884,
+    "parameter_max_error": 0.0,
+    "parameter_error_l2": 0.0,
+    "recurrent_max_error": 0.0,
+    "same_realized_path": true,
+    "event_speedup": 1.0528120856036338
+  },
+  "components": {
+    "schema": 1,
+    "cycle": 332,
+    "source_sha256": "5f2913a363d3788e32e044d465461b9c36e4c988e1dafd9b5f198807e672bf8e",
+    "components": {
+      "four_action_imagination": {
+        "before": [
+          0.8238723999966169,
+          1.2238883000027272,
+          0.8836596999972244
+        ],
+        "after": [
+          0.5942718000005698,
+          0.6421764000042458,
+          0.5825294999958714
+        ],
+        "before_median": 0.8836596999972244,
+        "after_median": 0.5942718000005698,
+        "saved_seconds": 0.2893878999966546,
+        "errors": {
+          "expected_after_value": 0.0,
+          "future_delta": 0.0,
+          "information": 0.0,
+          "shadow_state_shift": 0.0
+        },
+        "source_facts": 8
+      },
+      "leave_one_out": {
+        "before": [
+          0.024320965000151774,
+          0.028047294999851147,
+          0.02292043499983265
+        ],
+        "after": [
+          0.0028651049997279188,
+          0.002969459999803803,
+          0.0025316650000604566
+        ],
+        "before_median": 0.024320965000151774,
+        "after_median": 0.0028651049997279188,
+        "saved_seconds": 0.021455860000423856
+      },
+      "archive_sync": {
+        "before": [
+          0.22327539999969304,
+          0.20181419999425998,
+          0.1834524000005331
+        ],
+        "after": [
+          0.10968790000333684,
+          0.1142829000018537,
+          0.1116120000006049
+        ],
+        "before_median": 0.20181419999425998,
+        "after_median": 0.1116120000006049,
+        "saved_seconds": 0.09020219999365509
+      },
+      "decode_and_stop_128": {
+        "before": [
+          0.7896543999959249,
+          0.7566351999994367,
+          0.7321459999948274
+        ],
+        "after": [
+          0.8031177000011667,
+          0.7222653000062564,
+          0.8883247999983723
+        ],
+        "before_median": 0.7566351999994367,
+        "after_median": 0.8031177000011667,
+        "saved_seconds": -0.04648250000172993,
+        "stop_error": 0.0
+      }
+    },
+    "optimizer_updates": 0,
+    "world_steps": 0,
+    "carried_state_unchanged": true,
+    "torch_rng_unchanged": true,
+    "cuda_rng_unchanged": true
+  },
+  "complete_state": {
+    "schema": 1,
+    "cycle": 333,
+    "same_cycle": true,
+    "equal": {
+      "world": true,
+      "torch_rng": true,
+      "cuda_rng": true,
+      "numpy_rng": true,
+      "python_rng": true,
+      "model": true,
+      "optimizer": true,
+      "recurrent": true,
+      "causal_archive_sql": true
+    },
+    "pending_actor_max_error": 0.0,
+    "pending_actor_relative_l2": 0.0,
+    "scope": "full saved world, RNGs and future delayed actor; zero learning"
+  },
+  "compute_seconds_saved": 0.8770578999974532,
+  "compute_time_reduction": 0.050162879326517085,
+  "total_seconds_before": 20.341225999996823,
+  "total_seconds_after": 20.807630399998743,
+  "retained": [
+    "preview-scoped immutable reads and condition geometry",
+    "batched U base, split and leave-one-out solves",
+    "bulk finite-hot-bank CPU transfer before SQLite transaction"
+  ],
+  "rejected_default": "captured handover head: no interleaved speedup",
+  "tests_passed": 94,
+  "main_checkpoint_overwritten": false,
+  "scope": "Runtime parity and timing; no language or learning-benefit claim"
+}

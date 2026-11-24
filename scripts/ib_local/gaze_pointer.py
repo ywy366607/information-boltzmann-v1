@@ -1,0 +1,617 @@
+"""Pre-linguistic Biological Object-Pointing / Gaze Steering (`GazeObjectPointer`).
+
+Inspired by Drosophila Central Complex steering (`E-PG` / `PFL3`) and human infant
+pre-linguistic gaze & pointing (direction precedes syntax and self-other models):
+
+  1. Strictly O(1) parameters independent of the number of Umwelt objects M.
+     Zero per-person or per-tool output heads — any new person, agent, or tool
+     can be hot-plugged into the scene with zero architecture changes.
+  2. Each in-scene object `i` maintains a live sensory fingerprint `k_i in R^d`
+     computed purely from that object's actual incoming UTF-8 bytes & style
+     through MengLi's own byte embedding + 32-layer GDN bodily state, paired
+     with a stable `target_object_id` for evidence provenance and settlement.
+  3. Unified Target-Conditioned Action `a = (target_id, utterance)`:
+     `target_to_action(k_i)` maps object fingerprint `k_i` to a residual action
+     condition `delta(k_i) in R^d` (zero-init at birth), forming
+     `a_tilde(i, u) = a(u) + delta(k_i)`.
+     - Slow causal model (`causal_relations`) evaluates `p(response | Z, i, u)`
+       for every in-scene object `i` BEFORE world delivery.
+     - Fast gaze pointer provides rapid habit preference `q(h_t, u_t) · W_k k_i`.
+     - Fast habit + slow causal prior jointly select `target_id`.
+  4. Dual learning & exact optimizer recovery:
+     - Gaze habit updates from real settled `metal_g` ONLY when valid response
+       boundary evidence was available (`evidence_available == True`).
+     - `target_to_action` updates from real response-boundary prediction MSE
+       across ALL sources (`book`, `mother`, `parent`, `tool`, `object`),
+       teaching the causal space to distinguish outcomes of the same utterance
+       aimed at different objects.
+     - Full Adam optimizer state (`exp_avg`, `exp_avg_sq`, `step`) is serialized
+       bit-exactly in float32 base64 so save + reload reproduces the exact next
+       learning step (`< 1e-6`).
+"""
+from __future__ import annotations
+
+import base64
+import copy
+import math
+
+import numpy as np
+import torch
+from torch import nn
+from torch.nn import functional as F
+
+
+def _resolve_model_dim_and_device(engine) -> tuple[int, torch.device]:
+    model = getattr(engine, 'model', None)
+    body = getattr(model, 'body', None) if model is not None else None
+    base = getattr(body, 'base', None) if body is not None else None
+    if base is not None and hasattr(base, 'source') and hasattr(base.source, 'embedding'):
+        w = base.source.embedding.weight
+        return int(w.shape[1]), w.device
+    enc = getattr(model, 'encoder', None) if model is not None else None
+    if enc is not None and hasattr(enc, 'in_features'):
+        dev = next(enc.parameters()).device
+        return int(enc.in_features), dev
+    dev = getattr(engine, 'device', torch.device('cpu'))
+    return 64, torch.device(dev)
+
+
+def _tensor_to_b64(t: torch.Tensor) -> dict:
+    arr = t.detach().cpu().contiguous().numpy()
+    return dict(
+        dtype=str(arr.dtype),
+        shape=list(arr.shape),
+        b64=base64.b64encode(arr.tobytes()).decode('ascii'),
+    )
+
+
+def _b64_to_tensor(spec: dict, *, device: torch.device) -> torch.Tensor:
+    raw = base64.b64decode(spec['b64'].encode('ascii'))
+    arr = np.frombuffer(raw, dtype=np.dtype(spec['dtype'])).reshape(spec['shape']).copy()
+    return torch.from_numpy(arr).to(device=device)
+
+
+@torch.no_grad()
+def encode_sensory_bytes(engine, raw_bytes: bytes, *, d_model: int, device: torch.device) -> torch.Tensor:
+    """Encode raw UTF-8 bytes through MengLi's own byte embedding table (no extra forward pass)."""
+    if not raw_bytes:
+        return torch.zeros(d_model, device=device, dtype=torch.float32)
+    sample = raw_bytes[:512]
+    model = getattr(engine, 'model', None)
+    body = getattr(model, 'body', None) if model is not None else None
+    base = getattr(body, 'base', None) if body is not None else None
+    if base is not None and hasattr(base, 'source') and hasattr(base.source, 'embedding'):
+        w = base.source.embedding.weight
+        ids = torch.as_tensor(np.frombuffer(sample, dtype=np.uint8).astype(np.int64), device=w.device)
+        emb = F.embedding(ids, w).float()  # [L, d]
+        mean_v = emb.mean(dim=0)
+        if emb.shape[0] >= 8:
+            tail_v = emb[-min(64, emb.shape[0]):].mean(dim=0)
+            vec = 0.65 * mean_v + 0.35 * tail_v
+        else:
+            vec = mean_v
+        return F.normalize(vec.to(device=device, dtype=torch.float32), dim=-1, eps=1e-6)
+
+    arr = np.frombuffer(sample, dtype=np.uint8)
+    hist = np.bincount(arr, minlength=256).astype(np.float32)
+    hist /= max(float(hist.sum()), 1.0)
+    out = np.zeros(d_model, dtype=np.float32)
+    for idx in range(256):
+        out[idx % d_model] += hist[idx]
+    t = torch.from_numpy(out).to(device=device, dtype=torch.float32)
+    return F.normalize(t, dim=-1, eps=1e-6)
+
+
+@torch.no_grad()
+def read_body_state(engine, *, d_model: int, device: torch.device) -> torch.Tensor:
+    """Read MengLi's live recurrent body state vector cleanly in R^d."""
+    if engine is not None and hasattr(engine, '_read_source'):
+        try:
+            h = engine._read_source()
+            if torch.is_tensor(h) and h.numel() >= d_model:
+                v = h.detach().float().reshape(-1)[:d_model].to(device)
+                return F.normalize(v, dim=-1, eps=1e-6)
+        except Exception:
+            pass
+    return torch.zeros(d_model, device=device, dtype=torch.float32)
+
+
+class GazeObjectPointer(nn.Module):
+    """Constant-parameter O(1) dynamic cross-attention pointer + target-action conditioning."""
+
+    def __init__(
+        self,
+        d_model: int,
+        *,
+        d_gaze: int = 64,
+        lr: float = 1.5e-3,
+        entropy_coef: float = 0.025,
+        causal_prior_scale: float = 1.0,
+        boundary_loss_weight: float = 0.25,
+        fp_ema: float = 0.25,
+        baseline_decay: float = 0.90,
+        device: torch.device | str = 'cpu',
+    ):
+        super().__init__()
+        self.d_model = int(d_model)
+        self.d_gaze = int(d_gaze)
+        self.lr = float(lr)
+        self.entropy_coef = float(entropy_coef)
+        self.causal_prior_scale = float(causal_prior_scale)
+        self.boundary_loss_weight = float(boundary_loss_weight)
+        self.fp_ema = float(fp_ema)
+        self.baseline_decay = float(baseline_decay)
+
+        dev = torch.device(device)
+        # Zero-init query, recency & target_to_action -> exact uniform curiosity & zero distortion at birth.
+        self.q_state = nn.Linear(self.d_model, self.d_gaze, bias=False, device=dev, dtype=torch.float32)
+        self.q_utt = nn.Linear(self.d_model, self.d_gaze, bias=False, device=dev, dtype=torch.float32)
+        self.q_ctx = nn.Linear(4, self.d_gaze, bias=True, device=dev, dtype=torch.float32)
+        self.k_proj = nn.Linear(self.d_model, self.d_gaze, bias=False, device=dev, dtype=torch.float32)
+        self.target_to_action = nn.Linear(self.d_model, self.d_model, bias=False, device=dev, dtype=torch.float32)
+        self.recency_weight = nn.Parameter(torch.zeros(2, device=dev, dtype=torch.float32))
+
+        nn.init.zeros_(self.q_state.weight)
+        nn.init.zeros_(self.q_utt.weight)
+        nn.init.zeros_(self.q_ctx.weight)
+        nn.init.zeros_(self.q_ctx.bias)
+        nn.init.orthogonal_(self.k_proj.weight)
+        nn.init.zeros_(self.target_to_action.weight)
+
+        self.register_buffer('baseline_g', torch.tensor(0.0, device=dev, dtype=torch.float32))
+        self.register_buffer('step_count', torch.tensor(0, device=dev, dtype=torch.long))
+        self.register_buffer('mean_entropy', torch.tensor(0.0, device=dev, dtype=torch.float32))
+        self.register_buffer('boundary_steps', torch.tensor(0, device=dev, dtype=torch.long))
+
+        self._opt = torch.optim.Adam(self.parameters(), lr=self.lr)
+        self.fingerprints: dict[str, torch.Tensor] = {}
+        self.target_counts: dict[str, int] = {}
+        self.target_g_ema: dict[str, float] = {}
+        self.last_decision: dict | None = None
+        self._pending: dict | None = None
+
+    @property
+    def device(self) -> torch.device:
+        return self.recency_weight.device
+
+    def ensure_object(self, engine, obj_id: str, intro_bytes: bytes) -> torch.Tensor:
+        key = str(obj_id)
+        if key not in self.fingerprints:
+            vec = encode_sensory_bytes(engine, intro_bytes, d_model=self.d_model, device=self.device)
+            if float(vec.norm()) < 1e-5:
+                g = torch.Generator(device='cpu')
+                g.manual_seed(abs(hash(key)) % (2 ** 31 - 1) + 1)
+                vec = F.normalize(torch.randn(self.d_model, generator=g), dim=-1).to(self.device)
+            self.fingerprints[key] = vec.detach()
+        return self.fingerprints[key]
+
+    @torch.no_grad()
+    def target_offset(self, obj_id: str | None, *, like: torch.Tensor | None = None) -> torch.Tensor:
+        """Return detached target-conditioning residual delta(k_i) in body action feature space."""
+        dev = like.device if like is not None else self.device
+        dt = like.dtype if like is not None else torch.float32
+        if obj_id is None or str(obj_id) not in self.fingerprints:
+            return torch.zeros(self.d_model, device=dev, dtype=dt)
+        fp = self.fingerprints[str(obj_id)].to(device=self.device, dtype=torch.float32)
+        delta = self.target_to_action(fp)
+        return delta.to(device=dev, dtype=dt).detach()
+
+    @torch.no_grad()
+    def condition_action(self, action: torch.Tensor, obj_id: str | None) -> torch.Tensor:
+        """Form target-conditioned action a_tilde(target, u) = a(u) + delta(k_target)."""
+        if obj_id is None or str(obj_id) not in self.fingerprints:
+            return action
+        if action.shape[-1] != self.d_model:
+            return action
+        delta = self.target_offset(obj_id, like=action)
+        return action + delta
+
+    @torch.no_grad()
+    def observe_object(self, engine, obj_id: str, raw_bytes: bytes, *, fuse_body_state: bool = True) -> None:
+        """Update object `obj_id`'s sensory fingerprint from actual bytes crossing the Membrane."""
+        key = str(obj_id)
+        if not raw_bytes:
+            return
+        byte_vec = encode_sensory_bytes(engine, raw_bytes, d_model=self.d_model, device=self.device)
+        if float(byte_vec.norm()) < 1e-5:
+            return
+        if fuse_body_state:
+            body_vec = read_body_state(engine, d_model=self.d_model, device=self.device)
+            if float(body_vec.norm()) > 1e-5:
+                obs = F.normalize(0.65 * byte_vec + 0.35 * body_vec, dim=-1, eps=1e-6)
+            else:
+                obs = byte_vec
+        else:
+            obs = byte_vec
+        prev = self.fingerprints.get(key)
+        if prev is None:
+            self.fingerprints[key] = obs.detach()
+        else:
+            a = self.fp_ema
+            self.fingerprints[key] = F.normalize((1.0 - a) * prev.to(self.device) + a * obs, dim=-1, eps=1e-6).detach()
+
+    def _compute_habit_logits(
+        self,
+        h: torch.Tensor,
+        u: torch.Tensor,
+        ctx: torch.Tensor,
+        keys: torch.Tensor,
+        recency: torch.Tensor,
+    ) -> torch.Tensor:
+        q = self.q_state(h) + self.q_utt(u) + self.q_ctx(ctx)  # [d_g]
+        k = self.k_proj(keys)                                   # [M, d_g]
+        scores = torch.matmul(k, q) / math.sqrt(float(self.d_gaze))
+        scores = scores + torch.matmul(recency, self.recency_weight)
+        return scores
+
+    @torch.no_grad()
+    def select_target(
+        self,
+        engine,
+        *,
+        candidates: list[tuple[str, bytes]],
+        utterance_bytes: bytes,
+        causal_values: dict[str, float] | None = None,
+        stumble_ratio: float = 1.0,
+        nll_norm: float = 0.0,
+        last_speaker: str | None = None,
+        awaiting_from: str | None = None,
+        rng: np.random.Generator | None = None,
+    ) -> dict:
+        """Select in-scene Umwelt target by fusing fast gaze habit + slow causal consequence prior."""
+        if not candidates:
+            raise ValueError('gaze_pointer requires at least one in-scene candidate object')
+
+        ids = [cid for cid, _ in candidates]
+        for cid, intro in candidates:
+            self.ensure_object(engine, cid, intro)
+
+        if len(ids) == 1:
+            self._pending = None
+            dec = dict(
+                target_id=ids[0],
+                probs={ids[0]: 1.0},
+                habit_logits={ids[0]: 0.0},
+                causal_values=({ids[0]: float(causal_values[ids[0]])} if causal_values and ids[0] in causal_values else None),
+                entropy=0.0,
+                num_candidates=1,
+                sampled=False,
+            )
+            self.last_decision = dec
+            return dec
+
+        dev = self.device
+        h = read_body_state(engine, d_model=self.d_model, device=dev)
+        u = encode_sensory_bytes(engine, utterance_bytes, d_model=self.d_model, device=dev)
+        has_speech = 1.0 if utterance_bytes else 0.0
+        stumble_c = max(-1.0, min(3.0, float(stumble_ratio) - 1.0))
+        nll_c = max(-2.0, min(4.0, float(nll_norm)))
+        awaiting_flag = 1.0 if awaiting_from is not None else 0.0
+        ctx = torch.tensor([stumble_c, has_speech, nll_c, awaiting_flag], device=dev, dtype=torch.float32)
+
+        key_list = [self.fingerprints[cid].to(dev) for cid in ids]
+        keys = torch.stack(key_list, dim=0)  # [M, d_model]
+
+        rec_rows = []
+        for cid in ids:
+            is_last = 1.0 if (last_speaker is not None and cid == last_speaker) else 0.0
+            is_wait = 1.0 if (awaiting_from is not None and cid == awaiting_from) else 0.0
+            rec_rows.append([is_last, is_wait])
+        recency = torch.tensor(rec_rows, device=dev, dtype=torch.float32)  # [M, 2]
+
+        habit_logits = self._compute_habit_logits(h, u, ctx, keys, recency)
+        causal_prior = torch.zeros_like(habit_logits)
+        causal_map = None
+        if causal_values:
+            raw_vals = [float(causal_values.get(cid, 0.0)) for cid in ids]
+            if all(math.isfinite(v) for v in raw_vals):
+                mean_v = sum(raw_vals) / float(len(raw_vals))
+                centered = [max(-2.0, min(2.0, (v - mean_v) * self.causal_prior_scale)) for v in raw_vals]
+                causal_prior = torch.tensor(centered, device=dev, dtype=torch.float32)
+                causal_map = {cid: round(raw_vals[i], 5) for i, cid in enumerate(ids)}
+
+        total_logits = habit_logits + causal_prior
+        probs_t = F.softmax(total_logits, dim=-1)
+        probs_np = probs_t.detach().cpu().numpy().astype(np.float64)
+        probs_np = probs_np / max(float(probs_np.sum()), 1e-12)
+
+        if rng is not None:
+            chosen_idx = int(rng.choice(len(ids), p=probs_np))
+        else:
+            chosen_idx = int(torch.multinomial(probs_t.clamp_min(1e-8), 1).item())
+        chosen_id = ids[chosen_idx]
+
+        log_p = F.log_softmax(total_logits, dim=-1)
+        entropy = float((-(probs_t * log_p).sum()).item())
+        probs_map = {cid: round(float(probs_np[i]), 4) for i, cid in enumerate(ids)}
+        habit_map = {cid: round(float(habit_logits[i].item()), 4) for i, cid in enumerate(ids)}
+
+        self._pending = dict(
+            target_id=chosen_id,
+            chosen_idx=chosen_idx,
+            ids=list(ids),
+            h=h.detach(),
+            u=u.detach(),
+            ctx=ctx.detach(),
+            keys=keys.detach(),
+            recency=recency.detach(),
+            causal_prior=causal_prior.detach(),
+            probs=probs_map,
+            entropy=entropy,
+        )
+        dec = dict(
+            target_id=chosen_id,
+            probs=probs_map,
+            habit_logits=habit_map,
+            causal_values=causal_map,
+            entropy=round(entropy, 4),
+            num_candidates=len(ids),
+            sampled=True,
+        )
+        self.last_decision = dec
+        return dec
+
+    def settle_credit(
+        self,
+        metal_g: float | None,
+        *,
+        evidence_available: bool = True,
+        boundary_context: dict | None = None,
+    ) -> dict | None:
+        """Update GazeObjectPointer from real `metal_g` AND target-conditioned response boundary MSE.
+
+        Never updates gaze policy from missing-evidence zero gain (`evidence_available=False`).
+        """
+        pending = self._pending
+        self._pending = None
+
+        g_valid = (
+            bool(evidence_available)
+            and metal_g is not None
+            and isinstance(metal_g, (int, float))
+            and math.isfinite(metal_g)
+        )
+
+        # Check if we have a target-conditioned boundary supervision signal for `target_to_action`.
+        has_boundary = (
+            isinstance(boundary_context, dict)
+            and boundary_context.get('boundary_target') is not None
+            and boundary_context.get('source') is not None
+            and boundary_context.get('raw_action') is not None
+            and boundary_context.get('actual_target_id') is not None
+            and str(boundary_context['actual_target_id']) in self.fingerprints
+            and boundary_context.get('model') is not None
+        )
+
+        if (pending is None or not g_valid) and not has_boundary:
+            return None
+
+        dev = self.device
+        total_loss = torch.zeros((), device=dev, dtype=torch.float32)
+        gaze_adv = None
+        entropy_val = None
+        g_val = float(metal_g) if g_valid else None
+        boundary_mse_val = None
+        target_id = (
+            pending['target_id'] if pending is not None
+            else str(boundary_context['actual_target_id']) if has_boundary
+            else None
+        )
+
+        with torch.enable_grad():
+            if pending is not None and g_valid:
+                chosen_idx = int(pending['chosen_idx'])
+                steps = int(self.step_count.item())
+                base_g = float(self.baseline_g.item()) if steps > 0 else g_val
+                gaze_adv = max(-0.25, min(0.25, g_val - base_g))
+                habit_logits = self._compute_habit_logits(
+                    pending['h'], pending['u'], pending['ctx'], pending['keys'], pending['recency'],
+                )
+                logits = habit_logits + pending['causal_prior']
+                log_probs = F.log_softmax(logits, dim=-1)
+                probs = log_probs.exp()
+                entropy = -(probs * log_probs).sum()
+                entropy_val = float(entropy.item())
+                total_loss = total_loss - (gaze_adv * log_probs[chosen_idx]) - (self.entropy_coef * entropy)
+
+            if has_boundary:
+                model = boundary_context['model']
+                src = boundary_context['source'].detach().to(device=dev, dtype=torch.float32).reshape(1, -1)
+                raw_act = boundary_context['raw_action'].detach().to(device=dev, dtype=torch.float32).reshape(1, -1)
+                tgt_feat = boundary_context['boundary_target'].detach().to(device=dev, dtype=torch.float32).reshape(1, -1)
+                tid = str(boundary_context['actual_target_id'])
+                fp = self.fingerprints[tid].to(device=dev, dtype=torch.float32)
+                if raw_act.shape[-1] == self.d_model and hasattr(model, 'encoder'):
+                    cond_act = raw_act + self.target_to_action(fp).reshape(1, -1)
+                    enc_w = model.encoder.weight.detach().to(device=dev, dtype=torch.float32)
+                    enc_b = None if model.encoder.bias is None else model.encoder.bias.detach().to(device=dev, dtype=torch.float32)
+                    enc_tgt = F.linear(tgt_feat, enc_w, enc_b)
+                    # Route through existing frozen transition + mother_from_boundary weights if present.
+                    if hasattr(model, 'internal_transition'):
+                        z_s = F.linear(src, enc_w, enc_b)
+                        z_a = F.linear(cond_act, enc_w, enc_b)
+                        tr_w = model.internal_transition.weight.detach().to(device=dev, dtype=torch.float32)
+                        tr_b = None if model.internal_transition.bias is None else model.internal_transition.bias.detach().to(device=dev, dtype=torch.float32)
+                        base_pred = z_s + F.linear(torch.cat((z_s, z_a - z_s), -1), tr_w, tr_b)
+                        if hasattr(model, 'mother_from_boundary'):
+                            mb_w = model.mother_from_boundary.weight.detach().to(device=dev, dtype=torch.float32)
+                            pred = base_pred + F.linear(base_pred, mb_w)
+                        else:
+                            pred = base_pred
+                    else:
+                        pred = F.linear(cond_act, enc_w, enc_b)
+                    b_mse = F.mse_loss(pred, enc_tgt)
+                    boundary_mse_val = float(b_mse.item())
+                    total_loss = total_loss + self.boundary_loss_weight * b_mse
+
+            if total_loss.requires_grad:
+                self._opt.zero_grad(set_to_none=True)
+                total_loss.backward()
+                torch.nn.utils.clip_grad_norm_(self.parameters(), 1.0)
+                self._opt.step()
+
+        with torch.no_grad():
+            if pending is not None and g_valid and entropy_val is not None:
+                steps = int(self.step_count.item())
+                if steps == 0:
+                    self.baseline_g.fill_(g_val)
+                    self.mean_entropy.fill_(entropy_val)
+                else:
+                    d = self.baseline_decay
+                    self.baseline_g.mul_(d).add_((1.0 - d) * g_val)
+                    self.mean_entropy.mul_(d).add_((1.0 - d) * entropy_val)
+                self.step_count.add_(1)
+                self.target_counts[target_id] = int(self.target_counts.get(target_id, 0)) + 1
+                prev_ema = self.target_g_ema.get(target_id)
+                self.target_g_ema[target_id] = g_val if prev_ema is None else (0.8 * prev_ema + 0.2 * g_val)
+            if boundary_mse_val is not None:
+                self.boundary_steps.add_(1)
+
+        return dict(
+            target_id=target_id,
+            metal_g=(None if g_val is None else round(g_val, 6)),
+            evidence_available=bool(g_valid),
+            advantage=(None if gaze_adv is None else round(gaze_adv, 6)),
+            boundary_mse=(None if boundary_mse_val is None else round(boundary_mse_val, 6)),
+            entropy=(None if entropy_val is None else round(entropy_val, 4)),
+            step_count=int(self.step_count.item()),
+            boundary_steps=int(self.boundary_steps.item()),
+            probs=(dict(pending['probs']) if pending is not None else None),
+        )
+
+    def _export_optimizer_state(self) -> dict:
+        raw = self._opt.state_dict()
+        enc_state = {}
+        for pid, st in raw.get('state', {}).items():
+            enc_st = {}
+            for k, v in st.items():
+                if torch.is_tensor(v):
+                    enc_st[k] = dict(__tensor__=True, **_tensor_to_b64(v))
+                else:
+                    enc_st[k] = v
+            enc_state[str(pid)] = enc_st
+        return dict(state=enc_state, param_groups=copy.deepcopy(raw.get('param_groups', [])))
+
+    def _load_optimizer_state(self, payload: dict | None) -> None:
+        if not isinstance(payload, dict) or 'state' not in payload:
+            return
+        dec_state = {}
+        for pid_str, st in payload['state'].items():
+            dec_st = {}
+            for k, v in st.items():
+                if isinstance(v, dict) and v.get('__tensor__'):
+                    # Adam's `step` scalar tensor stays on CPU or same device as params.
+                    target_dev = torch.device('cpu') if k == 'step' else self.device
+                    dec_st[k] = _b64_to_tensor(v, device=target_dev)
+                else:
+                    dec_st[k] = v
+            dec_state[int(pid_str)] = dec_st
+        restored = dict(state=dec_state, param_groups=copy.deepcopy(payload.get('param_groups', [])))
+        self._opt.load_state_dict(restored)
+
+    def export_dynamic_state(self) -> dict:
+        """Export exact dynamic object fingerprints, empirical stats & bit-exact Adam optimizer state."""
+        return dict(
+            schema=2,
+            fingerprints={k: v.detach().cpu().float().tolist() for k, v in self.fingerprints.items()},
+            target_counts=dict(self.target_counts),
+            target_g_ema={k: float(v) for k, v in self.target_g_ema.items()},
+            optimizer_state_b64=self._export_optimizer_state(),
+        )
+
+    def load_dynamic_state(self, state: dict | None) -> None:
+        if not isinstance(state, dict) or state.get('schema') not in (1, 2):
+            return
+        self.fingerprints = {}
+        for k, vals in (state.get('fingerprints') or {}).items():
+            t = torch.tensor(vals, device=self.device, dtype=torch.float32)
+            if t.numel() == self.d_model:
+                self.fingerprints[str(k)] = F.normalize(t, dim=-1, eps=1e-6).detach()
+        self.target_counts = {str(k): int(v) for k, v in (state.get('target_counts') or {}).items()}
+        self.target_g_ema = {str(k): float(v) for k, v in (state.get('target_g_ema') or {}).items()}
+        if state.get('schema') == 2 and state.get('optimizer_state_b64') is not None:
+            self._load_optimizer_state(state['optimizer_state_b64'])
+        self._pending = None
+
+    def diagnostics(self) -> dict:
+        return dict(
+            schema=2,
+            d_model=self.d_model,
+            d_gaze=self.d_gaze,
+            param_count=sum(p.numel() for p in self.parameters()),
+            step_count=int(self.step_count.item()),
+            boundary_steps=int(self.boundary_steps.item()),
+            target_to_action_norm=round(float(self.target_to_action.weight.detach().norm().item()), 6),
+            baseline_g=round(float(self.baseline_g.item()), 6),
+            mean_entropy=round(float(self.mean_entropy.item()), 4),
+            known_objects=sorted(self.fingerprints.keys()),
+            target_counts=dict(self.target_counts),
+            target_g_ema={k: round(float(v), 6) for k, v in self.target_g_ema.items()},
+            last_decision=copy.deepcopy(self.last_decision),
+        )
+
+
+def enabled(engine) -> bool:
+    return (
+        engine is not None
+        and getattr(engine, 'gaze_pointer_schema', None) in (1, 2)
+        and hasattr(getattr(engine, 'model', None), 'gaze_pointer')
+        and isinstance(engine.model.gaze_pointer, GazeObjectPointer)
+    )
+
+
+def configure(
+    engine,
+    config: dict | None = None,
+    *,
+    d_gaze: int = 64,
+    lr: float = 1.5e-3,
+    entropy_coef: float = 0.025,
+    causal_prior_scale: float = 1.0,
+    boundary_loss_weight: float = 0.25,
+    fp_ema: float = 0.25,
+    baseline_decay: float = 0.90,
+    initialize: bool = True,
+) -> GazeObjectPointer:
+    """Attach opt-in O(1) GazeObjectPointer cleanly to MengLi's model."""
+    d_model, device = _resolve_model_dim_and_device(engine)
+    if hasattr(engine.model, 'gaze_pointer') and isinstance(engine.model.gaze_pointer, GazeObjectPointer):
+        mod = engine.model.gaze_pointer
+    else:
+        mod = GazeObjectPointer(
+            d_model,
+            d_gaze=d_gaze,
+            lr=lr,
+            entropy_coef=entropy_coef,
+            causal_prior_scale=causal_prior_scale,
+            boundary_loss_weight=boundary_loss_weight,
+            fp_ema=fp_ema,
+            baseline_decay=baseline_decay,
+            device=device,
+        )
+        engine.model.gaze_pointer = mod
+    engine.gaze_pointer_schema = 2
+    engine._gaze_boundary_context = None
+    try:
+        from scripts.ib_local import run_navigation_residual_wood as _legacy
+        _legacy._DERIVED.add('_gaze_boundary_context')
+    except Exception:
+        pass
+    if config is not None:
+        config['gaze_pointer'] = dict(
+            schema=2,
+            d_gaze=int(d_gaze),
+            lr=float(lr),
+            entropy_coef=float(entropy_coef),
+            causal_prior_scale=float(causal_prior_scale),
+            boundary_loss_weight=float(boundary_loss_weight),
+            fp_ema=float(fp_ema),
+            baseline_decay=float(baseline_decay),
+        )
+    return mod
+
+
+def diagnostics(engine) -> dict | None:
+    if not enabled(engine):
+        return None
+    return engine.model.gaze_pointer.diagnostics()

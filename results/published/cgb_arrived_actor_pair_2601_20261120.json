@@ -1,0 +1,345 @@
+{
+  "arms": {
+    "observe": {
+      "cycles": 8,
+      "cycle": 2609,
+      "updates": 32,
+      "external_bytes": 7680,
+      "checkpoint_sha256": "908b1ecaf43b201569e8d541acb7a0dfaded50d8f2c101ba95a0d46780468b9a",
+      "initial_source_sha256": "d673ffaa3168b153fcd853ad6af76f9567fa73336dc44ed129ebdd780e31a729",
+      "provider_calls": 0,
+      "independent": [
+        {
+          "material": {
+            "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+            "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+            "starts": [
+              8192,
+              81920,
+              163840,
+              262144
+            ],
+            "bytes_per_segment": 2048
+          },
+          "mean_nll": 1.6097837314009666,
+          "segment_nll": [
+            1.4307692646980286,
+            1.610850915312767,
+            1.7170873433351517,
+            1.6804274022579193
+          ]
+        },
+        {
+          "material": {
+            "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+            "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+            "starts": [
+              8192,
+              81920,
+              163840,
+              262144
+            ],
+            "bytes_per_segment": 2048
+          },
+          "mean_nll": 1.6103348713368177,
+          "segment_nll": [
+            1.4361246153712273,
+            1.6119907200336456,
+            1.718015968799591,
+            1.675208181142807
+          ]
+        },
+        {
+          "material": {
+            "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+            "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+            "starts": [
+              8192,
+              81920,
+              163840,
+              262144
+            ],
+            "bytes_per_segment": 2048
+          },
+          "mean_nll": 1.611904351040721,
+          "segment_nll": [
+            1.4367372319102287,
+            1.6084922477602959,
+            1.7290483936667442,
+            1.673339530825615
+          ]
+        }
+      ],
+      "old_scores": [
+        -1.1598582491278648,
+        -1.1547759771347046,
+        -1.1517520127817988
+      ],
+      "mean_U": -0.008841288276016712,
+      "choices": [
+        "silence",
+        "silence",
+        "silence",
+        "generate",
+        "generate",
+        "silence",
+        "silence",
+        "silence"
+      ],
+      "credits": [
+        {
+          "action_round": 1,
+          "endpoint_round": 2,
+          "choice": 0,
+          "start_in_train": 12516382,
+          "endpoint_log_score": -1.7154710441827774,
+          "baseline": 0.0,
+          "advantage": -1.7154710441827774,
+          "mode": "observe",
+          "applied_to_date": 0
+        },
+        {
+          "action_round": 2,
+          "endpoint_round": 3,
+          "choice": 0,
+          "start_in_train": 12364878,
+          "endpoint_log_score": -1.9336789697408676,
+          "baseline": 0.0,
+          "advantage": -1.9336789697408676,
+          "mode": "observe",
+          "applied_to_date": 0
+        },
+        {
+          "action_round": 3,
+          "endpoint_round": 4,
+          "choice": 0,
+          "start_in_train": 7758877,
+          "endpoint_log_score": -1.61312897503376,
+          "baseline": -1.7154710441827774,
+          "advantage": 0.10234206914901733,
+          "mode": "observe",
+          "applied_to_date": 0
+        },
+        {
+          "action_round": 4,
+          "endpoint_round": 5,
+          "choice": 1,
+          "start_in_train": 2513713,
+          "endpoint_log_score": -1.6560092866420746,
+          "baseline": -1.9336789697408676,
+          "advantage": 0.27766968309879303,
+          "mode": "observe",
+          "applied_to_date": 0
+        },
+        {
+          "action_round": 5,
+          "endpoint_round": 6,
+          "choice": 1,
+          "start_in_train": 6949098,
+          "endpoint_log_score": -1.7580061331391335,
+          "baseline": -1.61312897503376,
+          "advantage": -0.14487715810537338,
+          "mode": "observe",
+          "applied_to_date": 0
+        },
+        {
+          "action_round": 6,
+          "endpoint_round": 7,
+          "choice": 0,
+          "start_in_train": 13982033,
+          "endpoint_log_score": -1.50321564078331,
+          "baseline": -1.6560092866420746,
+          "advantage": 0.15279364585876465,
+          "mode": "observe",
+          "applied_to_date": 0
+        },
+        {
+          "action_round": 7,
+          "endpoint_round": 8,
+          "choice": 0,
+          "start_in_train": 1311384,
+          "endpoint_log_score": -2.235830530524254,
+          "baseline": -1.7580061331391335,
+          "advantage": -0.4778243973851204,
+          "mode": "observe",
+          "applied_to_date": 0
+        }
+      ]
+    },
+    "apply": {
+      "cycles": 8,
+      "cycle": 2609,
+      "updates": 32,
+      "external_bytes": 7680,
+      "checkpoint_sha256": "5ec8f93524ef06d67892309368f1b0cb2ede4188b080884ccb37aa480e7abd5f",
+      "initial_source_sha256": "d673ffaa3168b153fcd853ad6af76f9567fa73336dc44ed129ebdd780e31a729",
+      "provider_calls": 0,
+      "independent": [
+        {
+          "material": {
+            "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+            "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+            "starts": [
+              8192,
+              81920,
+              163840,
+              262144
+            ],
+            "bytes_per_segment": 2048
+          },
+          "mean_nll": 1.6097837314009666,
+          "segment_nll": [
+            1.4307692646980286,
+            1.610850915312767,
+            1.7170873433351517,
+            1.6804274022579193
+          ]
+        },
+        {
+          "material": {
+            "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+            "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+            "starts": [
+              8192,
+              81920,
+              163840,
+              262144
+            ],
+            "bytes_per_segment": 2048
+          },
+          "mean_nll": 1.6103431694209576,
+          "segment_nll": [
+            1.4361200705170631,
+            1.6119974553585052,
+            1.7180393785238266,
+            1.6752157732844353
+          ]
+        },
+        {
+          "material": {
+            "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+            "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+            "starts": [
+              8192,
+              81920,
+              163840,
+              262144
+            ],
+            "bytes_per_segment": 2048
+          },
+          "mean_nll": 1.611917333677411,
+          "segment_nll": [
+            1.4367462396621704,
+            1.608500637114048,
+            1.7290705144405365,
+            1.6733519434928894
+          ]
+        }
+      ],
+      "old_scores": [
+        -1.1598582491278648,
+        -1.1548503264784813,
+        -1.1516920700669289
+      ],
+      "mean_U": -0.008854272775352001,
+      "choices": [
+        "silence",
+        "silence",
+        "silence",
+        "generate",
+        "generate",
+        "silence",
+        "silence",
+        "silence"
+      ],
+      "credits": [
+        {
+          "action_round": 1,
+          "endpoint_round": 2,
+          "choice": 0,
+          "start_in_train": 12516382,
+          "endpoint_log_score": -1.7154710665345192,
+          "baseline": 0.0,
+          "advantage": -1.7154710665345192,
+          "mode": "apply",
+          "applied_to_date": 0
+        },
+        {
+          "action_round": 2,
+          "endpoint_round": 3,
+          "choice": 0,
+          "start_in_train": 12364878,
+          "endpoint_log_score": -1.9336800649762154,
+          "baseline": 0.0,
+          "advantage": -1.9336800649762154,
+          "mode": "apply",
+          "applied_to_date": 1
+        },
+        {
+          "action_round": 3,
+          "endpoint_round": 4,
+          "choice": 0,
+          "start_in_train": 7758877,
+          "endpoint_log_score": -1.6131323799490929,
+          "baseline": -1.7154710665345192,
+          "advantage": 0.10233868658542633,
+          "mode": "apply",
+          "applied_to_date": 2
+        },
+        {
+          "action_round": 4,
+          "endpoint_round": 5,
+          "choice": 1,
+          "start_in_train": 2513713,
+          "endpoint_log_score": -1.6560118943452835,
+          "baseline": -1.9336800649762154,
+          "advantage": 0.27766817063093185,
+          "mode": "apply",
+          "applied_to_date": 3
+        },
+        {
+          "action_round": 5,
+          "endpoint_round": 6,
+          "choice": 1,
+          "start_in_train": 6949098,
+          "endpoint_log_score": -1.7580216825008392,
+          "baseline": -1.6131323799490929,
+          "advantage": -0.14488930255174637,
+          "mode": "apply",
+          "applied_to_date": 4
+        },
+        {
+          "action_round": 6,
+          "endpoint_round": 7,
+          "choice": 0,
+          "start_in_train": 13982033,
+          "endpoint_log_score": -1.5032219588756561,
+          "baseline": -1.6560118943452835,
+          "advantage": 0.15278993546962738,
+          "mode": "apply",
+          "applied_to_date": 5
+        },
+        {
+          "action_round": 7,
+          "endpoint_round": 8,
+          "choice": 0,
+          "start_in_train": 1311384,
+          "endpoint_log_score": -2.235863506793976,
+          "baseline": -1.7580216825008392,
+          "advantage": -0.4778418242931366,
+          "mode": "apply",
+          "applied_to_date": 6
+        }
+      ]
+    }
+  },
+  "apply_advantage_nats_per_byte": -1.298263669013977e-05,
+  "segment_advantages": [
+    -9.007751941680908e-06,
+    -8.38935375213623e-06,
+    -2.2120773792266846e-05,
+    -1.2412667274475098e-05
+  ],
+  "utterance_differences": 0,
+  "world_differences": 0
+}

@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "cycle": 2815,
+  "checkpoint": "D:\\mengli-throughput-20261123\\takeover_device\\body\\last.pt.gz",
+  "source_sha256": "1a02a39a75b78f74834e9b00b036a6c4948196cf2f8fbc5dd1157067869435ba",
+  "bytes": 128,
+  "repeats": 4,
+  "arms": {
+    "original": {
+      "wall_seconds": [
+        0.7014971999997215,
+        0.6509908000007272,
+        0.6329263000006904,
+        0.6262641999965126
+      ],
+      "gpu_seconds": [
+        0.7013838500976562,
+        0.6506373291015625,
+        0.6328898315429687,
+        0.6262017822265625
+      ],
+      "median_seconds": 0.6419585500007088,
+      "peak_allocated_mib": 606.212890625,
+      "bytes_per_second": 199.38982041731305
+    },
+    "cached": {
+      "wall_seconds": [
+        0.31254989999797544,
+        0.31289710000055493,
+        0.312127999997756,
+        0.4564557000012428
+      ],
+      "gpu_seconds": [
+        0.3125080261230469,
+        0.31286727905273437,
+        0.3120906982421875,
+        0.4562226867675781
+      ],
+      "median_seconds": 0.3127234999992652,
+      "peak_allocated_mib": 698.462890625,
+      "bytes_per_second": 409.3072634461458
+    }
+  },
+  "errors": {
+    "logit_max": 5.7220458984375e-06,
+    "state_max": 9.059906005859375e-06
+  },
+  "speedup": 2.052799198020671,
+  "optimizer_updates": 0,
+  "world_advances": 0,
+  "recurrent_unchanged": true,
+  "scope": "fixed real text numerical/decode runtime comparison; not overall event throughput"
+}

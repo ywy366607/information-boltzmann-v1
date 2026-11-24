@@ -1,0 +1,24 @@
+{
+  "cycle": 2807,
+  "same_menu": true,
+  "world_starts": [
+    17904706,
+    17904706
+  ],
+  "checks": [
+    {
+      "observed": "generate",
+      "alternative": "silence",
+      "mse_prior": 0.7945558183718961,
+      "mse_transported": 0.004718590958623703
+    },
+    {
+      "observed": "silence",
+      "alternative": "generate",
+      "mse_prior": 0.7820916257032315,
+      "mse_transported": 0.004718590287189021
+    }
+  ],
+  "natural_checkpoint": "completed",
+  "conditional_silence_checkpoint": "failed to serialize temporary first-action hook after observation and event logging"
+}

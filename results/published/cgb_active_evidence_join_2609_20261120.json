@@ -1,0 +1,91 @@
+{
+  "unit": "MOTHER frozen log-score per latent coordinate",
+  "path": "natural 2586-2601 -> same checkpoint observe 2602-2609",
+  "paired_acquisition_rounds": {
+    "2586": [
+      "silence",
+      "generate"
+    ],
+    "2588": [
+      "silence",
+      "generate",
+      "reuse"
+    ],
+    "2589": [
+      "silence",
+      "generate"
+    ],
+    "2595": [
+      "reuse",
+      "silence"
+    ]
+  },
+  "observed_use": [
+    {
+      "acquire": 2587,
+      "action": "silence",
+      "fact": "episode:2597",
+      "revisit": 2601,
+      "revisit_action": "silence",
+      "question": "unknown:1787",
+      "later_question": "unknown:1787",
+      "same_problem": true,
+      "same_relation": true,
+      "later_fact": "episode:2612",
+      "score_with": -0.9408350586891174,
+      "score_without": -1.0447144508361816,
+      "benefit": 0.10387939214706421,
+      "matched_root_actions": null
+    },
+    {
+      "acquire": 2591,
+      "action": "generate",
+      "fact": "episode:2601",
+      "revisit": 2606,
+      "revisit_action": "generate",
+      "question": "unknown:1739",
+      "later_question": "unknown:1798",
+      "same_problem": false,
+      "same_relation": false,
+      "later_fact": "episode:2617",
+      "score_with": -1.735694408416748,
+      "score_without": -1.7671703100204468,
+      "benefit": 0.03147590160369873,
+      "matched_root_actions": null
+    },
+    {
+      "acquire": 2592,
+      "action": "silence",
+      "fact": "episode:2602",
+      "revisit": 2603,
+      "revisit_action": "silence",
+      "question": "unknown:1790",
+      "later_question": "unknown:1790",
+      "same_problem": true,
+      "same_relation": false,
+      "later_fact": "episode:2614",
+      "score_with": -1.4545023441314697,
+      "score_without": -1.4279533624649048,
+      "benefit": -0.02654898166656494,
+      "matched_root_actions": null
+    },
+    {
+      "acquire": 2594,
+      "action": "reuse",
+      "fact": "episode:2604",
+      "revisit": 2605,
+      "revisit_action": "generate",
+      "question": "unknown:1774",
+      "later_question": "unknown:1774",
+      "same_problem": true,
+      "same_relation": true,
+      "later_fact": "episode:2616",
+      "score_with": -1.154622197151184,
+      "score_without": -1.237079381942749,
+      "benefit": 0.08245718479156494,
+      "matched_root_actions": null
+    }
+  ],
+  "world_calls": 0,
+  "updates": 0
+}

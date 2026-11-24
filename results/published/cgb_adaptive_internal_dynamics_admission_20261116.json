@@ -1,0 +1,74 @@
+{
+  "scope": "actual 31M full body integration; 9 real events are admission, not benefit/convergence",
+  "source_cycle": 1472,
+  "source_sha256": "d94e8da5af0b1ab20d89ff02246632e6c3ebbb95381b04a220edd891a3de0eb8",
+  "cycle": 1481,
+  "checkpoint_sha256": "20188ae97ce843a9c238b4a6b4905aecb7b5ab27461b2dfc44bdd8be05b8e4b4",
+  "parameters": 31263552,
+  "new_parameters": 384,
+  "trace_mib": 24,
+  "unit_checks": 58,
+  "deslice_checks": 9,
+  "real_updates": 36,
+  "all_32_layers_received_gradient": true,
+  "moved_layers_per_event": [
+    {
+      "cycle": 1473,
+      "layers": 32
+    },
+    {
+      "cycle": 1474,
+      "layers": 32
+    },
+    {
+      "cycle": 1475,
+      "layers": 0
+    },
+    {
+      "cycle": 1476,
+      "layers": 0
+    },
+    {
+      "cycle": 1477,
+      "layers": 0
+    },
+    {
+      "cycle": 1478,
+      "layers": 0
+    },
+    {
+      "cycle": 1479,
+      "layers": 0
+    },
+    {
+      "cycle": 1480,
+      "layers": 0
+    },
+    {
+      "cycle": 1481,
+      "layers": 0
+    }
+  ],
+  "frequency_min": 0.7998862266540527,
+  "frequency_max": 0.800178587436676,
+  "coupling_min": 0.004999975673854351,
+  "coupling_max": 0.005000066012144089,
+  "content_coefficient_max": 3.181385909556411e-05,
+  "max_policy_replay_error": 2.86102294921875e-06,
+  "median_external_event_seconds": 11.145805000007385,
+  "prior71_median_external_event_seconds": 10.99975319999794,
+  "timing_scope": "different actual navigation inputs; excludes separate internal-event seconds; not paired speed evidence",
+  "restore_report": "cgb_adaptive_hamiltonian_restore_20261116.json",
+  "budget_observation": "first two events wrote all layers; later budget coherence gate held this one tensor; no LR/gate override",
+  "next_acceptance": "128/256 real events, timescales/content-coupling changes, reversible budget write, prediction/action and fixed validation",
+  "live_followup": {
+    "cycle": 1496,
+    "first_resumed_write_cycle": 1488,
+    "first_resumed_gate": 0.14064791798591614,
+    "latest_gate": 0.0,
+    "latest_moved_layers": 32,
+    "cuda_peak_allocated_mib": 2962.58154296875,
+    "no_learning_rate_or_cooling_override": true,
+    "scope": "actual optimizer hold then resumed write; not yet prediction/agency benefit"
+  }
+}

@@ -1,0 +1,355 @@
+{
+  "reference": "D:\\mengli-throughput-20261123\\batch4_quiet_full",
+  "candidate": "D:\\mengli-throughput-20261123\\batch5_analytic_strict2",
+  "actual_ports": {
+    "cycle": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "choice": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "utterance_hex": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "external_bytes": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "self_bytes": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "updates": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "metal_g": {
+      "leaves": 2,
+      "different": 1,
+      "shape_differences": [],
+      "max_abs": 4.544854164123535e-07,
+      "examples": [
+        "/1"
+      ]
+    },
+    "response_nll": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "continuation_nll": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "world": {
+      "leaves": 46,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "pre_outcome_gain": {
+      "leaves": 12,
+      "different": 3,
+      "shape_differences": [],
+      "max_abs": 4.544854164123535e-06,
+      "examples": [
+        "/1/expected",
+        "/1/target",
+        "/1/raw"
+      ]
+    },
+    "joint_language_search": {
+      "leaves": 46,
+      "different": 20,
+      "shape_differences": [],
+      "max_abs": 0.03368091583251953,
+      "examples": [
+        "/0/distribution/0",
+        "/0/distribution/1",
+        "/0/distribution/2",
+        "/0/distribution/3",
+        "/0/predicted_after_value/0",
+        "/0/logp",
+        "/0/selection_value/0",
+        "/0/selection_value/1",
+        "/0/selection_value/2",
+        "/0/selection_value/3",
+        "/1/distribution/0",
+        "/1/distribution/1"
+      ]
+    },
+    "shared_unknown": {
+      "leaves": 228,
+      "different": 60,
+      "shape_differences": [],
+      "max_abs": 3.814697265625e-06,
+      "examples": [
+        "/0/revision/retention_use/trace/benefits/episode:2404",
+        "/0/revision/retention_use/trace/benefits/episode:1974",
+        "/0/revision/retention_use/trace/benefits/episode:263",
+        "/0/revision/retention_use/trace/benefits/episode:1133",
+        "/0/revision/retention_use/trace/selection/priority/1",
+        "/0/revision/retention_use/trace/selection/priority/2",
+        "/0/revision/retention_use/trace/selection/priority/3",
+        "/0/revision/retention_use/trace/selection/priority/4",
+        "/0/revision/retention_use/trace/selection/priority/5",
+        "/0/revision/retention_use/trace/selection/priority/6",
+        "/0/revision/retention_use/trace/selection/geometric/1",
+        "/0/revision/retention_use/trace/selection/geometric/2"
+      ]
+    }
+  },
+  "checkpoint": {
+    "model": {
+      "leaves": 705,
+      "different": 431,
+      "shape_differences": [],
+      "max_abs": 7.359310984611511e-05,
+      "examples": [
+        "/memory.retention_utility_second",
+        "/predictor.2.weight",
+        "/body.base.layers.9.o_proj.weight",
+        "/memory.history",
+        "/head_coupling.last_momentum_gradient",
+        "/body.base.layers.9.mlp.gate.weight",
+        "/head_coupling.contact.sensitivity_p",
+        "/memory.successor",
+        "/body.coevolution.null.bias",
+        "/causal_relations.program_scores",
+        "/body.base.layers.21.q_proj.weight",
+        "/body.base.layers.1.mlp.gate.weight"
+      ]
+    },
+    "optimizer": {
+      "leaves": 5382,
+      "different": 2338,
+      "shape_differences": [],
+      "max_abs": 0.0016766088083386421,
+      "examples": [
+        "/state/0/budget_phase",
+        "/state/0/budget_energy",
+        "/state/0/exp_avg_sq",
+        "/state/0/exp_avg",
+        "/state/0/budget_gate",
+        "/state/1/budget_energy",
+        "/state/1/exp_avg_sq",
+        "/state/1/exp_avg",
+        "/state/2/budget_energy",
+        "/state/2/exp_avg_sq",
+        "/state/2/exp_avg",
+        "/state/3/budget_energy"
+      ]
+    },
+    "table": {
+      "leaves": 20,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "world": {
+      "leaves": 12,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "torch_rng": {
+      "leaves": 1,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "cuda_rng": {
+      "leaves": 1,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "numpy_rng": {
+      "leaves": 5,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "python_rng": {
+      "leaves": 627,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "cycle": {
+      "leaves": 1,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    }
+  },
+  "carried": {
+    "recurrent": {
+      "leaves": 1,
+      "different": 1,
+      "shape_differences": [],
+      "max_abs": 1.430511474609375e-06,
+      "examples": [
+        ""
+      ]
+    },
+    "bfss_momenta": {
+      "leaves": 32,
+      "different": 32,
+      "shape_differences": [],
+      "max_abs": 1.52587890625e-05,
+      "examples": [
+        "/0",
+        "/1",
+        "/2",
+        "/3",
+        "/4",
+        "/5",
+        "/6",
+        "/7",
+        "/8",
+        "/9",
+        "/10",
+        "/11"
+      ]
+    },
+    "internal_pending": {
+      "leaves": 813,
+      "different": 61,
+      "shape_differences": [],
+      "max_abs": 2.6702880859375e-05,
+      "examples": [
+        "/momentum_read_eligibility/quiet",
+        "/momentum_read_eligibility/contact",
+        "/question_context",
+        "/shadow_candidates/baseline",
+        "/shadow_candidates/candidates",
+        "/generated_program_forecasts/0/scale2",
+        "/generated_program_forecasts/0/mean",
+        "/generated_program_forecasts/1/scale2",
+        "/generated_program_forecasts/1/mean",
+        "/next_latent",
+        "/causal_program/decision_forecast/scale2",
+        "/causal_program/decision_forecast/mean"
+      ]
+    },
+    "causal_use_pending": {
+      "leaves": 1,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "native_value_bank": {
+      "leaves": 5509,
+      "different": 1688,
+      "shape_differences": [],
+      "max_abs": 311,
+      "examples": [
+        "/records/9/packet/scalars/30",
+        "/records/9/packet/scalars/31",
+        "/records/9/packet/scalars/32",
+        "/records/9/packet/scalars/33",
+        "/records/9/packet/scalars/34",
+        "/records/9/packet/scalars/38",
+        "/records/9/packet/scalars/39",
+        "/records/9/packet/scalars/40",
+        "/records/9/packet/scalars/41",
+        "/records/9/packet/scalars/42",
+        "/records/9/packet/scalars/43",
+        "/records/9/packet/scalars/44"
+      ]
+    },
+    "latent_action_bank": {
+      "leaves": 4033,
+      "different": 1287,
+      "shape_differences": [],
+      "max_abs": 345,
+      "examples": [
+        "/records/12/packet/relation/0",
+        "/records/12/packet/relation/1",
+        "/records/12/packet/relation/2",
+        "/records/12/packet/option",
+        "/records/12/packet/unknown",
+        "/records/12/packet/scalars/0",
+        "/records/12/packet/scalars/2",
+        "/records/12/packet/scalars/3",
+        "/records/12/packet/scalars/4",
+        "/records/12/packet/scalars/9",
+        "/records/12/packet/scalars/10",
+        "/records/12/packet/scalars/11"
+      ]
+    },
+    "autonomous_eligibility": {
+      "leaves": 1,
+      "different": 1,
+      "shape_differences": [],
+      "max_abs": 0.006799221038818359,
+      "examples": [
+        "/0"
+      ]
+    }
+  },
+  "old_fact_scores": {
+    "leaves": 520,
+    "different": 128,
+    "shape_differences": [],
+    "max_abs": 1.2755393981933594e-05,
+    "examples": [
+      "/1/queries/0/score",
+      "/1/queries/0/mse",
+      "/1/queries/1/score",
+      "/1/queries/1/mse",
+      "/1/queries/2/score",
+      "/1/queries/2/mse",
+      "/1/queries/3/score",
+      "/1/queries/3/mse",
+      "/1/queries/4/mse",
+      "/1/queries/5/score",
+      "/1/queries/5/mse",
+      "/1/queries/6/score"
+    ]
+  },
+  "timing": {
+    "reference_seconds": 50.624107299998286,
+    "candidate_seconds": 33.02488259999882,
+    "reference_profile": "D:\\mengli-throughput-20261123\\replay_reference_ready\\runtime_profile.json",
+    "speedup": 1.5329080170598426,
+    "candidate_peak_gpu_bytes": 2315799040
+  },
+  "audit_seconds": 12.229659200002061
+}

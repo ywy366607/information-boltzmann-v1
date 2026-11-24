@@ -1,0 +1,444 @@
+{
+  "status": "numeric_and_lean_checks_passed",
+  "sources": [
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations\\operations.jsonl.gz",
+      "sha256": "0275df3c51322157d957375a47c89f0892044e1c500c9134d5aca9aca31bc3d1"
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2361\\operations.jsonl.gz",
+      "sha256": "7c16c1c323887674a17afcae4d3101fae38dde333cbc7c6a5b4cae34b282ac14"
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2362\\operations.jsonl.gz",
+      "sha256": "d1f32b40ef14e03a159ad267ac44ad7da6241d28799db8cacc0b53f552f91b52"
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2370\\operations.jsonl.gz",
+      "sha256": "43881ab08215e98b22c8692d7b68fc47b7ab068198e34e69ed51d1cd0e14ef9e"
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2371\\operations.jsonl.gz",
+      "sha256": "700d8e96fe75a22218f98f222e49d90763b653cd15c268c22ab3a9e0e6aabd38"
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2376\\operations.jsonl.gz",
+      "sha256": "094b61782a2e39c5f860c27eb07edebf0e20ee7e6940799d7df91477545d9cc1"
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2377\\operations.jsonl.gz",
+      "sha256": "ce6973c136f6a72baaf34418392197873455bc31594db0bb510cbc02b0d4677d"
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2378\\operations.jsonl.gz",
+      "sha256": "a9b5643ad75485d111eef8575dd905f0742f9937845b78de899f13c70e723a23"
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\collect_observations_from_2383\\operations.jsonl.gz",
+      "sha256": "2c37a6472525dbccdbfbdfc25595d6cfd79233dfeee9dc27a9fc966cf7db8726"
+    }
+  ],
+  "stats": {
+    "optimizer_records": 164,
+    "theta_no_gradient": 82,
+    "theta_gradient": 82,
+    "theta_zero_gate": 67,
+    "external_events": 41,
+    "primary_commits": 36,
+    "merged_episodes": 5,
+    "current_read_credit_samples": 41,
+    "delayed_read_credit_samples": 36,
+    "primary_rejections": 5
+  },
+  "optimizer_settings": {
+    "lr": 0.0003,
+    "weight_decay": 0.0,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "amsgrad": false,
+    "maximize": false,
+    "foreach": true,
+    "capturable": false,
+    "differentiable": false,
+    "fused": null,
+    "decoupled_weight_decay": true,
+    "tile_size": 64,
+    "allocation": true,
+    "cooling": true,
+    "budget_fused": true
+  },
+  "selected_checkpoint": {
+    "cycle": 2401,
+    "selected_storage_bytes": 1703936,
+    "pending_shape": [
+      12,
+      32,
+      256
+    ],
+    "pending_aliases_live_trace": false,
+    "live_trace_shape": [
+      12,
+      32,
+      1,
+      8,
+      32,
+      32
+    ],
+    "all_weights_materialized": false
+  },
+  "adam_budget_formula_max_abs_error": 2.3830277129377464e-07,
+  "adam_budget_formula_max_fp32_ulp": 1.2070426270365715,
+  "gate_min": 0.0,
+  "gate_max": 0.02871975675225258,
+  "pending_read_bridge": {
+    "absolute_error": 2.4278256793852648e-08,
+    "gradient_scale": 0.2665768275538721,
+    "nonzero_eligibility_entries": 98304,
+    "probe": "interface cotangent = saved read; not a real outcome or usefulness score"
+  },
+  "lean_output": "lean\\CGBAxioms\\reviews\\NativeLearningActual2401.lean",
+  "reference_sha256": "289b034144a16197936c86bd3799854e08db5b4235a4acdabf03480a8554fbdd",
+  "events": [
+    {
+      "event": 2824,
+      "cycle": 2360,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2828,
+      "cycle": 2361,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2832,
+      "cycle": 2362,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2834,
+      "cycle": 2363,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2836,
+      "cycle": 2364,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2840,
+      "cycle": 2365,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2842,
+      "cycle": 2366,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2849,
+      "cycle": 2367,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2851,
+      "cycle": 2368,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2854,
+      "cycle": 2369,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2857,
+      "cycle": 2370,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2863,
+      "cycle": 2371,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2865,
+      "cycle": 2372,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2867,
+      "cycle": 2373,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2869,
+      "cycle": 2374,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2871,
+      "cycle": 2375,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2873,
+      "cycle": 2376,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2877,
+      "cycle": 2377,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2879,
+      "cycle": 2378,
+      "primary_committed": false,
+      "merged": true,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2881,
+      "cycle": 2379,
+      "primary_committed": false,
+      "merged": true,
+      "current": 1,
+      "delayed": 0
+    },
+    {
+      "event": 2883,
+      "cycle": 2380,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 0
+    },
+    {
+      "event": 2887,
+      "cycle": 2381,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2889,
+      "cycle": 2382,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2892,
+      "cycle": 2383,
+      "primary_committed": false,
+      "merged": true,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2896,
+      "cycle": 2384,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 0
+    },
+    {
+      "event": 2899,
+      "cycle": 2385,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2901,
+      "cycle": 2386,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2903,
+      "cycle": 2387,
+      "primary_committed": false,
+      "merged": true,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2905,
+      "cycle": 2388,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 0
+    },
+    {
+      "event": 2907,
+      "cycle": 2389,
+      "primary_committed": false,
+      "merged": true,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2909,
+      "cycle": 2390,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 0
+    },
+    {
+      "event": 2914,
+      "cycle": 2391,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2916,
+      "cycle": 2392,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2919,
+      "cycle": 2393,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2921,
+      "cycle": 2394,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2923,
+      "cycle": 2395,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2925,
+      "cycle": 2396,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2927,
+      "cycle": 2397,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2929,
+      "cycle": 2398,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2931,
+      "cycle": 2399,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    },
+    {
+      "event": 2936,
+      "cycle": 2400,
+      "primary_committed": true,
+      "merged": false,
+      "current": 1,
+      "delayed": 1
+    }
+  ],
+  "model_updates": 0,
+  "world_calls": 0,
+  "lean_verification": {
+    "command": "lake env lean reviews/NativeLearningActual2401.lean",
+    "exit_code": 0,
+    "source_sha256": "5f0243d19d0fc8f3920332eb7e443d4849fa02a13c0b5e3c1856857ce1d54cbc",
+    "checked_at_utc": "2026-11-17T03:11:49.791993+00:00",
+    "finite_data_checks": "native_decide, including compiler trust; general proofs use kernel",
+    "ranks_scope": "actual receipt certificate plus independently checked equation bridge"
+  }
+}

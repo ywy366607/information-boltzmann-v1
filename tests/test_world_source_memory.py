@@ -48,3 +48,27 @@ def test_private_checkpoint_table_reuses_storage_without_changing_default_copy(t
     assert np.array_equal(disk_result[1], copied_result[1])
     assert np.array_equal(owned.rows, copied.rows)
     assert np.array_equal(disk.rows, copied.rows)
+
+
+def test_disk_table_birth_and_credit_match_ram_and_preserve_existing_files(tmp_path):
+    from scripts.ib_local.retrieved_table_credit import RetrievedCreditTable
+    config = dict(orders=(0, 1, 3), heads=2, slots_log2=4)
+    ram = RetrievedCreditTable(**config)
+    disk = RetrievedCreditTable(**config, storage=tmp_path/'table')
+    rng = np.random.default_rng(27)
+    for _ in range(3):
+        stream = rng.integers(0, 256, 65, dtype=np.uint8)
+        a, b = ram.run_credit(stream), disk.run_credit(stream)
+        assert np.array_equal(a[0], b[0])
+        assert np.array_equal(a[1], b[1])
+        factor = rng.normal(size=(64, 256))
+        assert ram.settle(a[2], factor) == disk.settle(b[2], factor)
+    disk.flush()
+    for name in disk._array_specs(len(disk.count)):
+        assert isinstance(getattr(disk, name), np.memmap)
+        assert np.array_equal(getattr(disk, name), getattr(ram, name))
+        assert np.array_equal(np.load(tmp_path/'table'/f'{name}.npy'), getattr(ram, name))
+    before = (tmp_path/'table'/'rows.npy').read_bytes()
+    with pytest.raises(FileExistsError):
+        RetrievedCreditTable(**config, storage=tmp_path/'table')
+    assert (tmp_path/'table'/'rows.npy').read_bytes() == before

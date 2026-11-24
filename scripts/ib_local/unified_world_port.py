@@ -1,0 +1,1407 @@
+"""Single unified UTF-8 world interaction port for MengLi.
+
+Keeps MengLi's body strictly single-ported (1 UTF-8 input/output byte stream,
+zero per-participant neural heads or extra gradient ports) while multiplexing
+multiple world-side channels cleanly:
+
+  1. ``LiveParticipantChannel`` — live human parent or guest input (immediate
+     preemption via in-process queue or append-only JSONL inbox file). Recorded
+     into the existing DSH Mother session as ``actual_parent_care`` observations
+     so Mother remembers who spoke without ever fabricating it as her own words.
+  2. ``ToolChannel`` — pluggable tool demonstrations or tool invocations
+     returning ``[工具:名称]`` observation bytes through the same UTF-8 stream.
+  3. ``DshMirrorCaregiverChannel`` — wraps the EXISTING ``FamilyCaregiver`` /
+     ``DshMother`` session (never a second parallel Mother), firing on
+     contingent ALIF spikes with cooldown, alternating ``mirror_visible`` and
+     ``book_only`` perspectives, and keeping ``system_prompt`` + prior prefix
+     100% immutable for high DeepSeek server-side KV prompt-cache hit rates.
+  4. ``StorybookChannel`` — high-throughput local reading (``take_ambient`` at
+     0 API calls for 1600B H-Net calm flow, plus fast local fallback on
+     cooldown spikes), with optional sidecar Chinese corpus interleaving that
+     never disturbs inherited English ``NaturalTextWorld`` addresses.
+"""
+from __future__ import annotations
+
+from collections import deque
+import copy
+import hashlib
+import json
+import math
+from pathlib import Path
+import re
+from typing import Callable
+
+import numpy as np
+
+from scripts.ib_local.body_mirror import (
+    AdaptiveCarePlanTracker,
+    BodyMirrorSnapshot,
+    STAGE_INFANT,
+    build_five_element_reflection_dossier,
+    capture_body_mirror,
+    clean_utf8_excerpt,
+    format_caregiver_turn,
+    parse_mother_reflection,
+)
+
+
+_TERM_RE = re.compile(r'[a-z]{3,}|[\u4e00-\u9fff]{2,}')
+_CJK_RUN_RE = re.compile(r'[\u4e00-\u9fff]+')
+_VOCAL_MOTHER_RE = re.compile(r'(妈妈|妈咪|^\s*(?:mama|mommy|mom)\b)', re.IGNORECASE)
+_VOCAL_PARENT_RE = re.compile(r'(爸爸|爹地|^\s*(?:papa|daddy|dad)\b)', re.IGNORECASE)
+_NAME_OPENING_RE = re.compile(r'^\s*(?:小?梦漓|meng\s*li)\b|^\s*小?梦漓', re.IGNORECASE)
+
+
+def _terms(text: str) -> set[str]:
+    return set(_TERM_RE.findall(text.lower()))
+
+
+def _has_cjk(text: str) -> bool:
+    return bool(_CJK_RUN_RE.search(text or ''))
+
+
+def _is_vocal_mother_call(text: str) -> bool:
+    return bool(text and _VOCAL_MOTHER_RE.search(text))
+
+
+def _is_vocal_parent_call(text: str) -> bool:
+    return bool(text and _VOCAL_PARENT_RE.search(text))
+
+
+class SidecarCorpusStream:
+    """Contiguous UTF-8 sidecar storybook (e.g., Chinese corpus) with exact cursor, seen mask & keyword navigation."""
+
+    def __init__(self, path: str | Path, *, cursor: int = 0):
+        self.path = Path(path).resolve()
+        raw = self.path.read_bytes()
+        if len(raw) < 2048:
+            raise ValueError(f'sidecar corpus too small ({len(raw)} bytes): {self.path}')
+        self._raw_bytes = raw
+        self.data = np.frombuffer(raw, dtype=np.uint8)
+        self.seen = np.zeros(len(self.data), dtype=bool)
+        self.sha256 = hashlib.sha256(raw).hexdigest()
+        self.cursor = int(cursor) % len(self.data)
+
+    def _align_utf8_start(self, pos: int) -> int:
+        """Advance past at most 3 UTF-8 continuation bytes (0x80..0xBF) so slices never split a character."""
+        n = len(self.data)
+        p = int(pos) % n
+        for _ in range(3):
+            if 0x80 <= int(self.data[p]) < 0xC0:
+                p = (p + 1) % n
+            else:
+                break
+        return p
+
+    def _slice_from(self, start: int, response_bytes: int, holdout_bytes: int) -> tuple[np.ndarray, np.ndarray, int, int, int]:
+        total = int(response_bytes) + int(holdout_bytes)
+        n = len(self.data)
+        start = self._align_utf8_start(start)
+        if start + total <= n:
+            buf = self.data[start:start + total].copy()
+            prior_resp = int(self.seen[start:start + response_bytes].sum())
+            prior_hold = int(self.seen[start + response_bytes:start + total].sum())
+            self.seen[start:start + total] = True
+            next_cursor = self._align_utf8_start(start + total)
+        else:
+            part1 = self.data[start:]
+            rem = total - len(part1)
+            part2 = self.data[:rem]
+            buf = np.concatenate((part1, part2)).copy()
+            seen_wrap = np.concatenate((self.seen[start:], self.seen[:rem]))
+            prior_resp = int(seen_wrap[:response_bytes].sum())
+            prior_hold = int(seen_wrap[response_bytes:].sum())
+            self.seen[start:] = True
+            self.seen[:rem] = True
+            next_cursor = self._align_utf8_start(rem)
+        self.cursor = next_cursor
+        return buf[:response_bytes], buf[response_bytes:], start, prior_resp, prior_hold
+
+    def take_ambient(self, response_bytes: int, holdout_bytes: int) -> tuple[np.ndarray, np.ndarray, dict]:
+        if response_bytes < 1 or holdout_bytes < 1:
+            raise ValueError('positive response and holdout lengths required')
+        resp, cont, start, prior_resp, prior_hold = self._slice_from(self.cursor, response_bytes, holdout_bytes)
+        info = dict(
+            start=int(start),
+            anchor=int(start),
+            match=0,
+            navigation_response_bytes=int(len(resp)),
+            response_previously_seen_bytes=prior_resp,
+            holdout_previously_seen_bytes=prior_hold,
+            holdout_position_fresh=(prior_hold == 0),
+            source='chinese_storybook',
+            sidecar_corpus=self.path.name,
+            sidecar_cursor=int(self.cursor),
+        )
+        return resp, cont, info
+
+    def take(self, utterance: bytes, response_bytes: int, holdout_bytes: int) -> tuple[np.ndarray, np.ndarray, dict]:
+        """Navigate the Chinese/sidecar storybook by utterance keywords (or continue sequentially)."""
+        if response_bytes < 1 or holdout_bytes < 1:
+            raise ValueError('positive response and holdout lengths required')
+        query_text = clean_utf8_excerpt(utterance, max_chars=96) if utterance else ''
+        candidates: list[str] = []
+        if query_text:
+            cjk_runs = _CJK_RUN_RE.findall(query_text)
+            for run in sorted(cjk_runs, key=len, reverse=True):
+                if len(run) >= 2:
+                    candidates.append(run[:4])
+                    if len(run) > 2:
+                        candidates.append(run[:2])
+                elif len(run) == 1:
+                    candidates.append(run)
+            for word in sorted(re.findall(r'[a-zA-Z]{3,}', query_text), key=len, reverse=True):
+                candidates.append(word)
+
+        hit_pos = -1
+        matched_term = ''
+        n = len(self._raw_bytes)
+        search_from = (self.cursor + 1) % n
+        for term in candidates[:6]:
+            needle = term.encode('utf-8')
+            pos = self._raw_bytes.find(needle, search_from)
+            if pos < 0:
+                pos = self._raw_bytes.find(needle, 0, search_from)
+            if pos >= 0:
+                hit_pos = pos
+                matched_term = term
+                break
+
+        if hit_pos >= 0:
+            # Back up slightly to the nearest prior newline or period so the passage starts cleanly.
+            win_start = max(0, hit_pos - 96)
+            prefix = self._raw_bytes[win_start:hit_pos]
+            nl = prefix.rfind(b'\n')
+            dot = prefix.rfind('。'.encode('utf-8'))
+            if nl >= 0:
+                start = win_start + nl + 1
+            elif dot >= 0:
+                start = win_start + dot + 3
+            else:
+                start = hit_pos
+            resp, cont, actual_start, prior_resp, prior_hold = self._slice_from(start, response_bytes, holdout_bytes)
+            return resp, cont, dict(
+                start=int(actual_start),
+                anchor=int(hit_pos),
+                match=1,
+                matched_term=matched_term,
+                navigation_response_bytes=int(len(resp)),
+                response_previously_seen_bytes=prior_resp,
+                holdout_previously_seen_bytes=prior_hold,
+                holdout_position_fresh=(prior_hold == 0),
+                source='chinese_storybook',
+                sidecar_corpus=self.path.name,
+                sidecar_cursor=int(self.cursor),
+            )
+        return self.take_ambient(response_bytes, holdout_bytes)
+
+
+class UnifiedWorldPort:
+    """Unified world-side multiplexer over a single UTF-8 body boundary."""
+
+    def __init__(
+        self,
+        base,
+        *,
+        caregiver=None,
+        history: int = 8,
+        ambient_policy: str = 'reply',
+        mother_cooldown: int = 3,
+        mother_max_gap: int = 8,
+        mirror_ratio: float = 0.7,
+        auto_commit: bool = False,
+        inbox_path: str | Path | None = None,
+        sidecar_corpus: str | Path | None = None,
+        sidecar_mix_ratio: float = 0.0,
+        initial_stage: str = STAGE_INFANT,
+        user_plan_text: str | None = None,
+        respond_on_child_speech: bool = True,
+    ):
+        if type(history) is not int or not 1 <= history <= 32:
+            raise ValueError('mother context history must lie in [1, 32]')
+        if ambient_policy not in ('reply', 'quiet'):
+            raise ValueError('unknown ambient navigation policy')
+        if mother_cooldown < 0 or mother_max_gap < 1:
+            raise ValueError('mother_cooldown >= 0 and mother_max_gap >= 1 required')
+        if not (0.0 <= float(mirror_ratio) <= 1.0):
+            raise ValueError('mirror_ratio must lie in [0, 1]')
+        if not (0.0 <= float(sidecar_mix_ratio) <= 1.0):
+            raise ValueError('sidecar_mix_ratio must lie in [0, 1]')
+
+        self.base = base
+        self.caregiver = caregiver
+        self.history = int(history)
+        self.ambient_policy = ambient_policy
+        self.mother_cooldown = int(mother_cooldown)
+        self.mother_max_gap = int(mother_max_gap)
+        self.mirror_ratio = float(mirror_ratio)
+        self.auto_commit = bool(auto_commit)
+        self.inbox_path = None if inbox_path is None else Path(inbox_path)
+        self.inbox_offset = 0
+        self.sidecar_mix_ratio = float(sidecar_mix_ratio) if sidecar_corpus is not None else 0.0
+        self.sidecar = None if sidecar_corpus is None else SidecarCorpusStream(sidecar_corpus)
+
+        # Open Yoneda / Presence Roster & Membrane protocol settings:
+        #   - Any external object (person, tool, book) can join/leave dynamically.
+        #   - Every incoming Membrane slice can carry an explicit source envelope
+        #     (`[来自:妈妈]`, `[来自:书页]`, `[来自:工具:...]`) so MengLi learns
+        #     each black-box object purely through its interaction morphisms.
+        #   - When Mother is present, active speech (`spoke == True`) is NEVER
+        #     silently dropped to unrelated book pages by quiet-checkin cooldown.
+        self.mother_present = (caregiver is not None)
+        self.respond_on_child_speech = bool(respond_on_child_speech)
+        self.envelope_tags = True
+        self.presence_roster: dict[str, dict] = {'book': dict(kind='book', label='书页', description='阅读与检索书页')}
+        if caregiver is not None:
+            self.presence_roster['mother'] = dict(kind='caregiver', label='妈妈', description='陪读、回应与讲解')
+        self.active_floor: str = 'book'
+        self.last_book_source: str = 'text'
+        self.active_interlocutor: str | None = ('mother' if caregiver is not None else None)
+        self.awaiting_reply_from: str | None = None
+        self.consecutive_social_turns: int = 0
+        self.max_consecutive_social_turns: int = 3
+        self.turns_since_name_call: int = 3
+        self._roster_dirty_notice: str | None = None
+        self._dynamic_objects: dict[str, Callable[[str], str]] = {}
+
+        # Clean DSH-aligned caregiver transcript (updated ONLY on actual Mother/Parent turns).
+        self.mother_transcript: list[tuple[str, str]] = []
+        self.care_plan_tracker = AdaptiveCarePlanTracker(
+            initial_stage=initial_stage,
+            user_plan_text=user_plan_text,
+        )
+
+        # Rolling shared storybook page seen by both MengLi and Mother (bounded 512B).
+        self.shared_page_bytes = bytearray()
+        self.shared_page_cap = 512
+
+        # Scheduling & channel state.
+        self.ambient_reads = 0
+        self.sidecar_reads = 0
+        self.spike_turns = 0
+        self.spikes_since_mother = int(mother_max_gap)  # eligible on first quiet pause if desired
+        self.quiet_spikes_since_mother = 0
+        self.mother_turns = 0
+        self.mother_proactive_turns = 0
+        self.mother_responsive_turns = 0
+        self.book_navigation_turns = 0
+        self.explicit_addressed_turns = 0
+        self.mirror_visible_turns = 0
+        self.book_only_turns = 0
+        self.parent_turns = 0
+        self.tool_turns = 0
+        self.ambient_fallback_turns = 0
+        self.recent_metal_g: list[float] = []
+        self.mirror_g: list[float] = []
+        self.book_only_g: list[float] = []
+        self.recent_stumbles: list[str] = []
+        self.reflections_done = 0
+        self.turns_since_reflection = 0
+
+        self._participant_queue: deque[dict] = deque()
+        self._tool_demo_queue: deque[dict] = deque()
+        self._registered_tools: dict[str, Callable[[str], str]] = {}
+        self._pending_tool_notes: list[str] = []
+        self._pending_commit: dict | None = None
+        self._force_next_mother = False
+        self._engine_ref = None
+        self._cycle_hint = 0
+
+        # Preserve compatibility with code inspecting `world.mother`.
+        self.mother = caregiver
+
+    def __getattr__(self, name: str):
+        return getattr(self.__dict__['base'], name)
+
+    def attach_engine(self, engine) -> None:
+        """Bind a read-only engine reference for third-person bodily mirroring & GazeObjectPointer."""
+        self._engine_ref = engine
+        if getattr(self, '_deferred_gaze_state', None) is not None:
+            from scripts.ib_local import gaze_pointer as _gp
+            if _gp.enabled(engine):
+                engine.model.gaze_pointer.load_dynamic_state(self._deferred_gaze_state)
+                self._deferred_gaze_state = None
+
+    def _gaze_pointer(self):
+        from scripts.ib_local import gaze_pointer as _gp
+        return self._engine_ref.model.gaze_pointer if _gp.enabled(self._engine_ref) else None
+
+    def _gaze_candidates(self) -> list[tuple[str, bytes]]:
+        out: list[tuple[str, bytes]] = []
+        for oid, meta in self.presence_roster.items():
+            intro = f'[来自:{meta.get("label", oid)}] {meta.get("description", "")}'.encode('utf-8')
+            out.append((oid, intro))
+        return out
+
+    def prepare_gaze_candidates(self, utterance: bytes) -> tuple[list[tuple[str, bytes]] | None, dict]:
+        """Pre-world hook for `world_cycle_step`: return `(candidates, meta)` if GazePointer should choose target.
+
+        Returns `(None, meta)` if a live external preemption (Dad inbox / tool demo),
+        explicit `@target`, legacy `[tool:...]`, or forced Mother turn already determines the target.
+        """
+        self._poll_inbox()
+        utterance_bytes = bytes(utterance) if utterance else b''
+        child_clean = clean_utf8_excerpt(utterance_bytes, max_chars=180)
+        if (
+            self._participant_queue
+            or self._tool_demo_queue
+            or self._force_next_mother
+            or self._parse_explicit_target(child_clean) is not None
+            or self._match_registered_tool(child_clean) is not None
+        ):
+            return None, dict(overridden=True)
+        alif_st = getattr(self._engine_ref, 'alif_executive_state', None) or {}
+        nll_ema = float(alif_st.get('nll_ema', 0.0) or 0.0)
+        nll_last = float(alif_st.get('last_piece_nll', 0.0) or 0.0)
+        nll_norm = (nll_last - nll_ema) if (nll_ema > 0.0 and nll_last > 0.0) else 0.0
+        return self._gaze_candidates(), dict(
+            stumble_ratio=self._current_stumble_ratio(),
+            nll_norm=nll_norm,
+            last_speaker=self.active_interlocutor,
+            awaiting_from=self.awaiting_reply_from,
+        )
+
+    def _observe_gaze_object(self, obj_id: str, raw_bytes: bytes, *, fuse_body_state: bool = True) -> None:
+        gp = self._gaze_pointer()
+        if gp is not None and raw_bytes:
+            gp.observe_object(self._engine_ref, obj_id, raw_bytes, fuse_body_state=fuse_body_state)
+
+    def set_cycle_hint(self, cycle: int) -> None:
+        self._cycle_hint = int(cycle)
+
+    def set_user_plan(self, text: str | None) -> dict:
+        return self.care_plan_tracker.set_user_plan(text, turn_index=self.mother_turns)
+
+    def force_next_mother(self) -> None:
+        self._force_next_mother = True
+
+    def has_pending_interrupt(self) -> bool:
+        """Return True if an external human/tool event or open Social Floor awaits MengLi's immediate turn.
+
+        Real-world turn-taking physics:
+          - If Dad/guest speaks (inbox/queue) or a tool demo arrives, MengLi hears it immediately
+            instead of waiting through 3-6KB of unrelated calm reading.
+          - If Mother or Dad just spoke/asked (`awaiting_reply_from is not None`), MengLi gets her
+            immediate reply turn BEFORE unrelated storybook pages wash out working memory.
+        """
+        self._poll_inbox()
+        return bool(
+            self._participant_queue
+            or self._tool_demo_queue
+            or self.awaiting_reply_from is not None
+        )
+
+    def enqueue_participant(self, text: str, *, speaker: str = '爸爸', role: str = 'parent') -> None:
+        """Queue a live human parent or guest utterance for immediate preemption."""
+        cleaned = str(text).strip()
+        if not cleaned:
+            raise ValueError('participant text must be non-empty')
+        self._participant_queue.append(dict(speaker=str(speaker).strip() or '爸爸',
+                                            role=str(role), text=cleaned))
+
+    def enqueue_tool_demo(self, tool_name: str, output: str) -> None:
+        """Queue a caregiver/system tool demonstration delivered on the same byte port."""
+        cleaned = str(output).strip()
+        if not cleaned:
+            raise ValueError('tool output must be non-empty')
+        self._tool_demo_queue.append(dict(tool_name=str(tool_name).strip() or '工具', output=cleaned))
+
+    def register_tool(self, name: str, fn: Callable[[str], str], *, description: str = '工具调用') -> None:
+        """Register a world-side tool callable via `[tool:<name> <arg>]` or `@工具:<name> <arg>`."""
+        key = str(name).strip().lower()
+        if not key or not callable(fn):
+            raise ValueError('tool requires a non-empty name and callable')
+        self._registered_tools[key] = fn
+        self.presence_roster[f'tool:{key}'] = dict(kind='tool', label=f'工具:{key}', description=description)
+        self._roster_dirty_notice = self._format_roster_notice()
+
+    def register_object(self, obj_id: str, handler: Callable[[str], str], *,
+                        label: str | None = None, description: str = '外部交互对象') -> None:
+        """Dynamically mount ANY black-box object (person, agent, service, tool) into the Umwelt."""
+        key = str(obj_id).strip().lower()
+        if not key or not callable(handler):
+            raise ValueError('object requires a non-empty id and callable handler')
+        self._dynamic_objects[key] = handler
+        self.presence_roster[key] = dict(kind='object', label=(label or key), description=description)
+        self._roster_dirty_notice = self._format_roster_notice()
+
+    def leave_scene(self, obj_id: str) -> None:
+        """Remove an object or caregiver from the active Umwelt presence roster."""
+        key = str(obj_id).strip().lower()
+        if key == 'mother':
+            self.mother_present = False
+            self.presence_roster.pop('mother', None)
+            if self.active_interlocutor == 'mother':
+                self.active_interlocutor = None
+            if self.awaiting_reply_from == 'mother':
+                self.awaiting_reply_from = None
+            if self.active_floor == 'mother':
+                self.active_floor = 'book'
+        else:
+            self._dynamic_objects.pop(key, None)
+            self._registered_tools.pop(key.removeprefix('tool:'), None)
+            self.presence_roster.pop(key, None)
+            if self.active_interlocutor == key:
+                self.active_interlocutor = ('mother' if self.mother_present else None)
+        self._roster_dirty_notice = self._format_roster_notice()
+
+    def join_mother(self) -> None:
+        """Bring Mother back into the active Umwelt presence roster."""
+        if self.caregiver is None:
+            raise ValueError('no caregiver configured')
+        self.mother_present = True
+        self.presence_roster['mother'] = dict(kind='caregiver', label='妈妈', description='陪读、回应与讲解')
+        if self.active_interlocutor is None:
+            self.active_interlocutor = 'mother'
+        self._roster_dirty_notice = self._format_roster_notice()
+
+    def _format_roster_notice(self) -> str:
+        items = [f'{meta["label"]}' for meta in self.presence_roster.values()]
+        return '[在场] ' + ', '.join(items)
+
+    def _parse_explicit_target(self, child_text: str) -> tuple[str, str] | None:
+        """Parse optional explicit addressing (`@妈妈`, `@书页`, `@工具:calc`, `@obj_id`) from MengLi's stream."""
+        if not child_text:
+            return None
+        m_tool = re.match(r'^\s*@(?:工具|tool)[:：]([^\s:：]+)(?:[:：]\s*|\s+)?(.*)$', child_text, re.IGNORECASE)
+        if m_tool:
+            tname = m_tool.group(1).strip().lower()
+            if tname in self._registered_tools:
+                return f'tool:{tname}', (m_tool.group(2) or '').strip()
+        m = re.match(r'^\s*@([^\s:：]+)(?:[:：]\s*|\s+)?(.*)$', child_text)
+        if not m:
+            return None
+        raw_target = m.group(1).strip()
+        payload = (m.group(2) or '').strip()
+        low = raw_target.lower()
+        if low in ('书页', '书', 'book', 'text'):
+            return 'book', payload
+        if low in ('妈妈', 'mother', 'mama'):
+            return 'mother', payload
+        if low in ('爸爸', 'parent', 'dad'):
+            return 'parent', payload
+        if low in self._registered_tools:
+            return f'tool:{low}', payload
+        if low in self._dynamic_objects:
+            return low, payload
+        for oid, meta in self.presence_roster.items():
+            if meta.get('label', '').lower() == low:
+                return oid, payload
+        return None
+
+    def _poll_inbox(self) -> None:
+        if self.inbox_path is None or not self.inbox_path.exists():
+            return
+        size = self.inbox_path.stat().st_size
+        if size <= self.inbox_offset:
+            return
+        with self.inbox_path.open('rb') as f:
+            f.seek(self.inbox_offset)
+            chunk = f.read()
+        self.inbox_offset += len(chunk)
+        for line in chunk.decode('utf-8', 'replace').splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                msg = json.loads(line)
+            except json.JSONDecodeError:
+                self.enqueue_participant(line, speaker='爸爸', role='parent')
+                continue
+            kind = msg.get('kind', 'participant')
+            if kind == 'care_plan':
+                self.set_user_plan(msg.get('text'))
+            elif kind == 'tool_demo' and msg.get('output'):
+                self.enqueue_tool_demo(msg.get('tool_name', '工具'), msg['output'])
+            elif msg.get('text'):
+                self.enqueue_participant(
+                    msg['text'],
+                    speaker=msg.get('speaker', '爸爸'),
+                    role=msg.get('role', 'parent'),
+                )
+
+    def _record_shared_page(self, data: np.ndarray) -> None:
+        raw = data.tobytes()
+        if not raw:
+            return
+        self.shared_page_bytes.extend(raw)
+        if len(self.shared_page_bytes) > self.shared_page_cap:
+            del self.shared_page_bytes[:-self.shared_page_cap]
+
+    def _use_sidecar_now(self) -> bool:
+        if self.sidecar is None or self.sidecar_mix_ratio <= 0.0:
+            return False
+        k = self.ambient_reads
+        r = self.sidecar_mix_ratio
+        return math.floor((k + 1) * r + 1e-12) > math.floor(k * r + 1e-12)
+
+    def _next_perspective_mode(self) -> str:
+        """Deterministic Bresenham alternation between `mirror_visible` and `book_only`."""
+        k = self.mother_turns
+        r = self.mirror_ratio
+        visible = math.floor((k + 1) * r + 1e-12) > math.floor(k * r + 1e-12)
+        return 'mirror_visible' if visible else 'book_only'
+
+    def take_ambient(self, response_bytes: int, holdout_bytes: int):
+        """High-throughput calm reading: ZERO caregiver API calls, updates shared book page."""
+        if self._use_sidecar_now():
+            resp, cont, info = self.sidecar.take_ambient(response_bytes, holdout_bytes)
+            self.sidecar_reads += 1
+            self.last_book_source = 'chinese_storybook'
+        else:
+            resp, cont, info = self.base.take(b'', response_bytes, holdout_bytes)
+            self.last_book_source = 'text'
+        self.ambient_reads += 1
+        self.consecutive_social_turns = 0
+        self._record_shared_page(resp)
+        self._record_shared_page(cont)
+        self._observe_gaze_object('book', bytes(resp[:256]), fuse_body_state=False)
+        return resp, cont, dict(
+            info,
+            channel='storybook_ambient',
+            source=info.get('source', 'text'),
+            mother_bytes=0,
+            mixed_world_event='ambient_read',
+        )
+
+    def _take_passive_ambient(self, response_bytes: int, holdout_bytes: int):
+        """Advance passive background storybook WITHOUT navigating on a social/tool utterance."""
+        if self.sidecar is not None and self.last_book_source == 'chinese_storybook':
+            return self.sidecar.take_ambient(response_bytes, holdout_bytes)
+        return self.base.take(b'', response_bytes, holdout_bytes)
+
+    def _navigate_book(self, query_bytes: bytes, query_clean: str, response_bytes: int, holdout_bytes: int):
+        """Navigate the active storybook (Chinese TinyStories or English FineWeb) strictly as `Hom(MengLi, Book)`."""
+        if self.sidecar is not None:
+            has_cjk = _has_cjk(query_clean)
+            en_chars = sum(1 for ch in query_clean if 'a' <= ch.lower() <= 'z')
+            if has_cjk or (self.last_book_source == 'chinese_storybook' and en_chars < 4):
+                resp, cont, info = self.sidecar.take(query_bytes, response_bytes, holdout_bytes)
+                self.last_book_source = 'chinese_storybook'
+                return resp, cont, info
+        resp, cont, info = self.base.take(query_bytes, response_bytes, holdout_bytes)
+        self.last_book_source = 'text'
+        return resp, cont, info
+
+    def _match_registered_tool(self, child_text: str) -> tuple[str, str] | None:
+        if not self._registered_tools or not child_text:
+            return None
+        m = re.search(r'\[tool:([a-zA-Z0-9_-]+)(?:\s+([^\]]+))?\]', child_text)
+        if not m:
+            return None
+        name = m.group(1).lower()
+        fn = self._registered_tools.get(name)
+        if fn is None:
+            return None
+        arg = (m.group(2) or '').strip()
+        try:
+            out = str(fn(arg)).strip()
+        except Exception as exc:
+            out = f'error: {exc}'
+        return name, out or 'ok'
+
+    def _pack_prefix_bytes(self, text: str, ambient: np.ndarray, response_bytes: int,
+                           *, source_label: str | None = None) -> tuple[np.ndarray, int]:
+        body = text.strip()
+        prefix_lines = []
+        if self._roster_dirty_notice:
+            prefix_lines.append(self._roster_dirty_notice)
+            self._roster_dirty_notice = None
+        if self.envelope_tags and source_label:
+            body = f'[来自:{source_label}] {body}'
+        prefix_lines.append(body)
+        full = '\n'.join(prefix_lines) + '\n'
+        said = np.frombuffer(full.encode('utf-8')[:response_bytes], dtype=np.uint8)
+        rem = response_bytes - len(said)
+        if rem > 0 and self.envelope_tags:
+            book_tag = np.frombuffer('[来自:书页] '.encode('utf-8'), dtype=np.uint8)
+            tail = np.concatenate((book_tag, ambient))[:rem]
+        else:
+            tail = ambient[:rem]
+        response = np.concatenate((said, tail))
+        return response, int(len(said))
+
+    def _current_stumble_ratio(self) -> float:
+        alif_st = getattr(self._engine_ref, 'alif_executive_state', None) if self._engine_ref is not None else None
+        if not isinstance(alif_st, dict):
+            return 1.0
+        burst_nll = float(alif_st.get('last_burst_nll', 0.0) or 0.0)
+        nll_ema = float(alif_st.get('nll_ema', 0.0) or 0.0)
+        if burst_nll > 0.0 and nll_ema > 0.0:
+            return burst_nll / max(nll_ema, 1e-4)
+        return 1.0
+
+    def _mother_trigger_kind(
+        self,
+        child_clean: str,
+        explicit_target: str | None = None,
+        vocal_mother_call: bool = False,
+    ) -> tuple[str, str] | None:
+        """Strict Yoneda three-party routing: return `(trigger_kind, routing_reason)` or `None`.
+
+        Morphism separation between `Hom(MengLi, Book)` and `Hom(MengLi, Mother)`:
+          1. Explicit `@书页` / `@工具:...` / `@对象` -> NEVER Mother (`None`).
+          2. Explicit `@妈妈` or natural vocal call (`妈妈` / `Mama`) -> Mother (`child_spoke` / `child_replied`).
+          3. Active Social Floor (`active_floor == 'mother'` / `awaiting_reply_from == 'mother'`):
+             - If MengLi speaks -> `child_replied` (`social_floor_reply`), Book does NOT jump.
+             - If MengLi stays silent -> `None` (respect silence, floor returns to Book).
+          4. Active Book Floor (`active_floor == 'book'`):
+             - Unaddressed non-empty speech -> `None`! Routed to **Book navigation** (`Hom(MengLi, Book)`).
+             - Quiet pause -> Mother gently initiates co-reading (`mother_proactive` / `co_reading_opening`)
+               when `quiet_spikes_since_mother >= mother_max_gap` or on a strong stumble after `mother_cooldown`,
+               opening the Social Floor for MengLi's next turn.
+        """
+        if self.caregiver is None or not self.mother_present:
+            return None
+        if explicit_target is not None and explicit_target != 'mother':
+            return None
+        if explicit_target == 'mother':
+            trig = 'child_replied' if self.awaiting_reply_from == 'mother' else 'child_spoke'
+            return trig, 'explicit_mother'
+        if vocal_mother_call:
+            trig = 'child_replied' if self.awaiting_reply_from == 'mother' else 'child_spoke'
+            return trig, 'vocal_call_mother'
+        if self._force_next_mother:
+            if child_clean:
+                trig = 'child_replied' if self.awaiting_reply_from == 'mother' else 'child_spoke'
+                return trig, 'forced_mother'
+            return 'mother_proactive', 'forced_mother'
+        if self.awaiting_reply_from == 'mother' or self.active_floor == 'mother':
+            if child_clean:
+                return 'child_replied', 'social_floor_reply'
+            return None
+        if child_clean and self.respond_on_child_speech:
+            return 'child_spoke', 'co_reading_child_speech'
+        if not child_clean:
+            if self.quiet_spikes_since_mother >= self.mother_max_gap:
+                return 'mother_proactive', 'co_reading_opening'
+            if (self.spikes_since_mother >= self.mother_cooldown
+                    and self._current_stumble_ratio() >= 1.25):
+                return 'mother_proactive', 'stumble_co_reading'
+        return None
+
+    def take(self, utterance: bytes, response_bytes: int, holdout_bytes: int, *, planned_target: dict | None = None):
+        """Route one executive spike through the single UTF-8 Membrane port.
+
+        Implements strict Yoneda morphism routing over `{书页, 妈妈, 爸爸, 工具, 动态对象}`:
+          1. Live human parent / guest preemption (inbox/queue) — passive ambient, zero book jump,
+          2. Explicit addressing (`@书页`, `@工具:...`, `@任意动态对象`) or tool demo,
+          3. Mother (`dsh_mother`): ONLY on explicit `@妈妈` / vocal call (`妈妈`), active
+             Social Floor reply (`child_replied`), or quiet co-reading opening (`mother_proactive`).
+             NEVER jumps the book (`_take_passive_ambient()`), cleanly separates `[来自:妈妈]` and `[来自:书页]`.
+          4. Book Floor (`book_navigation` when MengLi emits words, `storybook_spike_fallback` when quiet):
+             unaddressed speech navigates the active Chinese/English storybook (`Hom(MengLi, Book)`)
+             without Mother hijacking!
+        """
+        if response_bytes < 1 or holdout_bytes < 1:
+            raise ValueError('positive response and holdout lengths required')
+        if self._pending_commit is not None:
+            raise RuntimeError('previous unified caregiver turn has not been committed')
+
+        self._poll_inbox()
+        self.spike_turns += 1
+        utterance_bytes = bytes(utterance) if utterance else b''
+        child_clean = clean_utf8_excerpt(utterance_bytes, max_chars=180)
+        cycle_num = int(self._cycle_hint or self.spike_turns)
+
+        # Priority 1: Live human parent or guest input (immediate preemption, ZERO book jump).
+        if self._participant_queue:
+            msg = self._participant_queue.popleft()
+            speaker = msg['speaker']
+            role = msg['role']
+            raw_text = msg['text']
+            delivered_text = f'[{speaker}] {raw_text}'
+            ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
+            response, said_len = self._pack_prefix_bytes(
+                raw_text, ambient, response_bytes, source_label=speaker,
+            )
+            self._record_shared_page(heldout)
+            if 'parent' not in self.presence_roster:
+                self.presence_roster['parent'] = dict(kind='parent', label=speaker, description='爸爸实时陪伴与对话')
+            self._observe_gaze_object('parent', delivered_text.encode('utf-8'))
+            self.active_interlocutor = 'parent'
+            self.awaiting_reply_from = 'parent'
+            self.active_floor = 'parent'
+
+            if self.caregiver is not None and hasattr(self.caregiver, 'begin_turn'):
+                plan = self.care_plan_tracker.current_plan()
+                child_entry = child_clean or '[本次未开口]'
+                turn = self.mother_transcript[-2 * self.history:] + [('child', child_entry)]
+                self.caregiver.begin_turn(
+                    caregiver='parent',
+                    text=delivered_text,
+                    plan=plan,
+                    cycle=cycle_num,
+                    response_bytes=response_bytes,
+                )
+                reply = self.caregiver.reply(turn)
+                self._pending_commit = dict(
+                    kind='parent',
+                    turn=turn,
+                    reply=reply,
+                    utterance_kind=None,
+                )
+                if self.auto_commit:
+                    self.commit_pending_turn()
+            self.parent_turns += 1
+            return response, heldout, dict(
+                {k: v for k, v in info.items() if k != 'text_reply'},
+                channel='live_participant',
+                source='parent',
+                speaker=speaker,
+                target_object_id='parent',
+                participant_role=role,
+                routing_reason='live_participant',
+                active_floor=self.active_floor,
+                book_excerpt=clean_utf8_excerpt(bytes(self.shared_page_bytes), max_chars=220),
+                mother_bytes=said_len,
+                mother_reply=delivered_text,
+                child_text=child_clean,
+                ambient_match=int(info.get('match', 0)),
+                match=len(_terms(child_clean) & _terms(raw_text)) if child_clean else 0,
+            )
+
+        # Parse optional explicit Yoneda target (`@书页`, `@妈妈`, `@工具:calc`, `@dynamic_obj`).
+        parsed = self._parse_explicit_target(child_clean)
+        explicit_target = parsed[0] if parsed is not None else None
+        explicit_payload = parsed[1] if parsed is not None else ''
+        if explicit_target is not None:
+            self.explicit_addressed_turns += 1
+
+        # Pre-linguistic Biological Gaze Pointer (`GazeObjectPointer`):
+        # When attached and no explicit `@` / vocal override / forced turn is active,
+        # MengLi's OWN O(1) cross-attention pointer steers her action toward an in-scene object!
+        gaze_decision = None
+        gaze_target = None
+        gp = self._gaze_pointer()
+        if (
+            gp is not None
+            and explicit_target is None
+            and not self._tool_demo_queue
+            and not self._force_next_mother
+            and self._match_registered_tool(child_clean) is None
+        ):
+            if isinstance(planned_target, dict) and planned_target.get('target_id') in self.presence_roster:
+                gaze_decision = planned_target
+                gaze_target = str(planned_target['target_id'])
+            else:
+                alif_st = getattr(self._engine_ref, 'alif_executive_state', None) or {}
+                nll_ema = float(alif_st.get('nll_ema', 0.0) or 0.0)
+                nll_last = float(alif_st.get('last_piece_nll', 0.0) or 0.0)
+                nll_norm = (nll_last - nll_ema) if (nll_ema > 0.0 and nll_last > 0.0) else 0.0
+                gaze_decision = gp.select_target(
+                    self._engine_ref,
+                    candidates=self._gaze_candidates(),
+                    utterance_bytes=utterance_bytes,
+                    stumble_ratio=self._current_stumble_ratio(),
+                    nll_norm=nll_norm,
+                    last_speaker=self.active_interlocutor,
+                    awaiting_from=self.awaiting_reply_from,
+                )
+                gaze_target = gaze_decision['target_id']
+
+        # Priority 2A: Explicit book navigation (`@书页 ...`) — MengLi chooses to read/search the book.
+        if explicit_target == 'book':
+            query_bytes = explicit_payload.encode('utf-8') if explicit_payload else utterance_bytes
+            query_clean = explicit_payload or child_clean
+            resp, cont, info = self._navigate_book(query_bytes, query_clean, response_bytes, holdout_bytes)
+            self._record_shared_page(resp)
+            self._record_shared_page(cont)
+            self._observe_gaze_object('book', bytes(resp[:256]))
+            self.active_floor = 'book'
+            self.awaiting_reply_from = None
+            self.spikes_since_mother += 1
+            self.book_navigation_turns += 1
+            self.ambient_fallback_turns += 1
+            if self.envelope_tags:
+                tag = np.frombuffer('[来自:书页] '.encode('utf-8'), dtype=np.uint8)
+                resp = np.concatenate((tag, resp[:max(0, response_bytes - len(tag))]))
+            return resp, cont, dict(
+                info,
+                channel='book_addressed',
+                source=info.get('source', 'text'),
+                speaker='book',
+                target_object_id='book',
+                navigation_response_bytes=int(len(resp)),
+                explicit_target='book',
+                routing_reason='explicit_book',
+                active_floor=self.active_floor,
+                mother_bytes=0,
+                child_text=child_clean,
+            )
+
+        # Priority 2B: Tool demonstration, `@工具:name`, legacy `[tool:name arg]`, dynamic object, OR Gaze -> tool/object.
+        tool_hit = None
+        tool_obj_id = None
+        eff_tool_target = explicit_target if explicit_target is not None else gaze_target
+        eff_tool_payload = explicit_payload if explicit_target is not None else child_clean
+        if self._tool_demo_queue:
+            demo = self._tool_demo_queue.popleft()
+            tool_hit = ('tool', demo['tool_name'], demo['output'])
+            tool_obj_id = f'tool:{demo["tool_name"]}'
+        elif eff_tool_target is not None and eff_tool_target.startswith('tool:'):
+            tname = eff_tool_target.split(':', 1)[1]
+            fn = self._registered_tools.get(tname)
+            if fn is not None:
+                try:
+                    tout = str(fn(eff_tool_payload)).strip() or 'ok'
+                except Exception as exc:
+                    tout = f'error: {exc}'
+                tool_hit = ('tool', tname, tout)
+                tool_obj_id = eff_tool_target
+        elif eff_tool_target is not None and eff_tool_target in self._dynamic_objects:
+            handler = self._dynamic_objects[eff_tool_target]
+            label = self.presence_roster.get(eff_tool_target, {}).get('label', eff_tool_target)
+            try:
+                dout = str(handler(eff_tool_payload)).strip() or 'ok'
+            except Exception as exc:
+                dout = f'error: {exc}'
+            tool_hit = ('object', label, dout)
+            tool_obj_id = eff_tool_target
+        else:
+            legacy_tool = self._match_registered_tool(child_clean)
+            if legacy_tool is not None:
+                tool_hit = ('tool', legacy_tool[0], legacy_tool[1])
+                tool_obj_id = f'tool:{legacy_tool[0]}'
+
+        if tool_hit is not None:
+            obj_kind, obj_name, obj_out = tool_hit
+            src_label = f'工具:{obj_name}' if obj_kind == 'tool' else obj_name
+            delivered_text = f'[{src_label}] {obj_out}'
+            ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
+            response, said_len = self._pack_prefix_bytes(
+                obj_out, ambient, response_bytes, source_label=src_label,
+            )
+            self._record_shared_page(heldout)
+            if tool_obj_id is not None:
+                self._observe_gaze_object(tool_obj_id, delivered_text.encode('utf-8'))
+            self._pending_tool_notes.append(f'刚刚与「{src_label}」交互，返回：{obj_out[:96]}')
+            del self._pending_tool_notes[:-3]
+            self.tool_turns += 1
+            self.spikes_since_mother += 1
+            self.active_floor = 'book'
+            self.awaiting_reply_from = None
+            via_gaze = (explicit_target is None and gaze_target == tool_obj_id)
+            return response, heldout, dict(
+                {k: v for k, v in info.items() if k != 'text_reply'},
+                channel=('tool' if obj_kind == 'tool' else 'dynamic_object'),
+                source=('tool' if obj_kind == 'tool' else 'object'),
+                speaker=src_label,
+                target_object_id=(tool_obj_id or src_label),
+                tool_name=obj_name,
+                explicit_target=explicit_target,
+                gaze_decision=gaze_decision,
+                routing_reason=(('gaze_tool' if obj_kind == 'tool' else 'gaze_object') if via_gaze else ('explicit_tool' if obj_kind == 'tool' else 'explicit_object')),
+                active_floor=self.active_floor,
+                mother_bytes=said_len,
+                mother_reply=delivered_text,
+                child_text=child_clean,
+                ambient_match=int(info.get('match', 0)),
+                match=len(_terms(child_clean) & _terms(obj_out)) if child_clean else 0,
+            )
+
+        # Priority 2C: Parent/Guest Social Floor reply, explicit/vocal call to Dad, OR Gaze -> `parent`.
+        # Keeps Dad's turn clean (ZERO hidden book jump!) and notifies Mother what MengLi said to Dad.
+        vocal_parent_call = (explicit_target is None and _is_vocal_parent_call(child_clean))
+        gaze_to_parent = (gaze_target == 'parent')
+        on_parent_floor = (
+            self.active_floor == 'parent'
+            and self.awaiting_reply_from not in (None, 'mother')
+            and explicit_target is None
+            and gaze_target is None
+            and not _is_vocal_mother_call(child_clean)
+        )
+        if explicit_target == 'parent' or vocal_parent_call or gaze_to_parent or (on_parent_floor and child_clean):
+            parent_meta = self.presence_roster.get('parent') or {}
+            parent_label = str(parent_meta.get('label') or '爸爸')
+            ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
+            self._record_shared_page(heldout)
+            if child_clean:
+                self._pending_tool_notes.append(f'孩子刚刚对{parent_label}说：「{child_clean[:96]}」')
+                del self._pending_tool_notes[:-3]
+            self.active_floor = 'book'
+            self.awaiting_reply_from = None
+            self.spikes_since_mother += 1
+            if self.envelope_tags:
+                tag = np.frombuffer('[来自:书页] '.encode('utf-8'), dtype=np.uint8)
+                ambient = np.concatenate((tag, ambient[:max(0, response_bytes - len(tag))]))
+            ch_name = 'reply_to_parent' if (on_parent_floor or self.active_interlocutor == 'parent') else 'call_parent'
+            r_reason = (
+                'gaze_parent' if gaze_to_parent
+                else 'social_floor_reply' if on_parent_floor
+                else ('explicit_parent' if explicit_target == 'parent' else 'vocal_call_parent')
+            )
+            return ambient, heldout, dict(
+                {k: v for k, v in info.items() if k != 'text_reply'},
+                channel=ch_name,
+                source='parent_reply',
+                speaker=parent_label,
+                target_object_id='parent',
+                navigation_response_bytes=int(len(ambient)),
+                explicit_target=explicit_target,
+                gaze_decision=gaze_decision,
+                routing_reason=r_reason,
+                active_floor=self.active_floor,
+                mother_bytes=0,
+                mother_reply='',
+                child_text=child_clean,
+            )
+
+        # Priority 3: Mother routing — either via MengLi's GazeObjectPointer (`gaze_target == 'mother'`)
+        # or fallback presence/floor rules when GazeObjectPointer is disabled.
+        if gaze_target is not None:
+            if gaze_target == 'mother' and self.caregiver is not None and self.mother_present:
+                if child_clean:
+                    trig = 'child_replied' if self.awaiting_reply_from == 'mother' else 'child_spoke'
+                    trigger_pair = (trig, 'gaze_mother_speak')
+                else:
+                    trigger_pair = ('mother_proactive', 'gaze_mother_look')
+            else:
+                trigger_pair = None
+        else:
+            vocal_call = (explicit_target is None and _is_vocal_mother_call(child_clean))
+            trigger_pair = self._mother_trigger_kind(
+                child_clean,
+                explicit_target=explicit_target,
+                vocal_mother_call=vocal_call,
+            )
+        if trigger_pair is not None:
+            trigger_kind, routing_reason = trigger_pair
+            self._force_next_mother = False
+            perspective_mode = self._next_perspective_mode()
+            snapshot: BodyMirrorSnapshot = capture_body_mirror(
+                self._engine_ref,
+                utterance_bytes=utterance_bytes,
+                recent_book_bytes=bytes(self.shared_page_bytes),
+                recent_metal_g=self.recent_metal_g,
+            )
+            extra_note = '；'.join(self._pending_tool_notes) if self._pending_tool_notes else None
+            opening_cue = (
+                '直接顺着眼前的故事画面、声音或轻声安抚接话，略去称呼。'
+                if (self.mother_turns > 0 and self.turns_since_name_call < 3)
+                else None
+            )
+            packet = format_caregiver_turn(
+                snapshot,
+                perspective_mode=perspective_mode,
+                trigger_kind=trigger_kind,
+                extra_note=extra_note,
+                opening_cue=opening_cue,
+            )
+            plan = self.care_plan_tracker.current_plan()
+            turn = self.mother_transcript[-2 * self.history:] + [('child', packet)]
+
+            if hasattr(self.caregiver, 'begin_turn'):
+                self.caregiver.begin_turn(
+                    caregiver='mother',
+                    plan=plan,
+                    cycle=cycle_num,
+                    response_bytes=response_bytes,
+                )
+            reply = self.caregiver.reply(turn)
+            if not isinstance(reply, str) or not reply.strip():
+                raise RuntimeError('mother returned no usable reply; world not advanced')
+            reply = reply.strip()
+
+            # Track name-opening cadence so Mother varies openings naturally (zero white-bear lock).
+            if _NAME_OPENING_RE.search(reply[:14]):
+                self.turns_since_name_call = 0
+            elif ('梦漓' in reply) or ('mengli' in reply.lower()):
+                self.turns_since_name_call = min(self.turns_since_name_call, 1)
+            else:
+                self.turns_since_name_call += 1
+
+            # Strict Yoneda hygiene: talking to Mother NEVER triggers a hidden book jump!
+            ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
+            response, said_len = self._pack_prefix_bytes(
+                reply, ambient, response_bytes, source_label='妈妈',
+            )
+            self._record_shared_page(heldout)
+            self._observe_gaze_object('mother', f'[来自:妈妈] {reply}'.encode('utf-8'))
+
+            self._pending_commit = dict(
+                kind='mother',
+                turn=turn,
+                reply=reply,
+                utterance_kind=snapshot.utterance_kind,
+                perspective_mode=perspective_mode,
+                stumble_excerpt=(snapshot.stumble_excerpt if perspective_mode == 'mirror_visible' else ''),
+            )
+            self._pending_tool_notes.clear()
+            self.spikes_since_mother = 0
+            self.quiet_spikes_since_mother = 0
+            self.mother_turns += 1
+            self.active_interlocutor = 'mother'
+            self.consecutive_social_turns += 1
+            allow_immediate_followup = (self.consecutive_social_turns < self.max_consecutive_social_turns)
+            asked_question = reply.endswith(('?', '？'))
+            if trigger_kind == 'mother_proactive':
+                self.mother_proactive_turns += 1
+                # With GazePointer active, only force an immediate 0-calm-piece reply beat
+                # when Mother actually asked a question; plain warm comments let MengLi keep reading!
+                keep_open = allow_immediate_followup and (asked_question or self._gaze_pointer() is None)
+                self.active_floor = 'mother' if keep_open else 'book'
+                self.awaiting_reply_from = 'mother' if keep_open else None
+            else:
+                self.mother_responsive_turns += 1
+                if asked_question and allow_immediate_followup:
+                    self.active_floor = 'mother'
+                    self.awaiting_reply_from = 'mother'
+                else:
+                    self.active_floor = 'book'
+                    self.awaiting_reply_from = None
+            if perspective_mode == 'mirror_visible':
+                self.mirror_visible_turns += 1
+            else:
+                self.book_only_turns += 1
+
+            telemetry = getattr(self.caregiver, 'last_telemetry', None) or {}
+            if self.auto_commit:
+                self.commit_pending_turn()
+                telemetry = getattr(self.caregiver, 'last_telemetry', None) or telemetry
+
+            api_usage = telemetry.get('api_usage') or {}
+            return response, heldout, dict(
+                {k: v for k, v in info.items() if k != 'text_reply'},
+                channel='dsh_mother',
+                source='mother',
+                speaker='mother',
+                target_object_id='mother',
+                trigger_kind=trigger_kind,
+                routing_reason=routing_reason,
+                gaze_decision=gaze_decision,
+                active_floor=self.active_floor,
+                explicit_target=explicit_target,
+                perspective_mode=perspective_mode,
+                care_stage=self.care_plan_tracker.stage,
+                care_plan_version=int(plan['version']),
+                utterance_kind=snapshot.utterance_kind,
+                book_excerpt=snapshot.book_excerpt,
+                mirror_excerpt=snapshot.stumble_excerpt if perspective_mode == 'mirror_visible' else '',
+                mirror_trigger_cause=snapshot.trigger_cause if perspective_mode == 'mirror_visible' else '',
+                mother_bytes=said_len,
+                mother_reply=reply,
+                child_text=child_clean,
+                caregiver_prompt_tokens=api_usage.get('prompt_tokens'),
+                caregiver_cache_hit_tokens=api_usage.get('cache_hit_tokens'),
+                caregiver_cache_miss_tokens=api_usage.get('cache_miss_tokens'),
+                caregiver_source=telemetry.get('source'),
+                ambient_match=int(info.get('match', 0)),
+                match=len(_terms(child_clean) & _terms(reply)) if child_clean else 0,
+            )
+
+        # Priority 4: Book Floor (`book_navigation` = Search Engine when MengLi emits words, quiet continuation when silent).
+        is_navigation = bool(child_clean)
+        if is_navigation:
+            resp, cont, info = self._navigate_book(utterance_bytes, child_clean, response_bytes, holdout_bytes)
+            self.book_navigation_turns += 1
+            channel = 'book_navigation'
+            routing_reason = 'gaze_book_search' if gaze_target == 'book' else 'book_floor_navigation'
+        else:
+            resp, cont, info = self._take_passive_ambient(response_bytes, holdout_bytes)
+            self.quiet_spikes_since_mother += 1
+            channel = 'storybook_spike_fallback'
+            routing_reason = 'gaze_book_read' if gaze_target == 'book' else 'quiet_book_continue'
+        self._record_shared_page(resp)
+        self._record_shared_page(cont)
+        self._observe_gaze_object('book', bytes(resp[:256]))
+        self.spikes_since_mother += 1
+        self.active_floor = 'book'
+        self.awaiting_reply_from = None
+        self.consecutive_social_turns = 0
+        self.ambient_fallback_turns += 1
+        if self.envelope_tags:
+            prefix = ''
+            if self._roster_dirty_notice:
+                prefix = self._roster_dirty_notice + '\n'
+                self._roster_dirty_notice = None
+            tag = np.frombuffer((prefix + '[来自:书页] ').encode('utf-8'), dtype=np.uint8)
+            resp = np.concatenate((tag, resp[:max(0, response_bytes - len(tag))]))
+        return resp, cont, dict(
+            info,
+            channel=channel,
+            source=info.get('source', 'text'),
+            speaker='book',
+            target_object_id='book',
+            navigation_response_bytes=int(len(resp)),
+            routing_reason=routing_reason,
+            gaze_decision=gaze_decision,
+            active_floor=self.active_floor,
+            mother_bytes=0,
+            child_text=child_clean,
+        )
+
+    def commit_pending_turn(
+        self,
+        *,
+        metal_g: float | None = None,
+        evidence_available: bool = True,
+        boundary_context: dict | None = None,
+    ) -> dict | None:
+        """Commit an open DSH caregiver turn & settle GazeObjectPointer credit AFTER body learning."""
+        if isinstance(metal_g, (int, float)) and math.isfinite(metal_g):
+            self.recent_metal_g.append(float(metal_g))
+            if len(self.recent_metal_g) > 16:
+                del self.recent_metal_g[:-16]
+
+        gaze_receipt = None
+        gp = self._gaze_pointer()
+        if gp is not None:
+            b_ctx = boundary_context
+            if b_ctx is None and self._engine_ref is not None:
+                b_ctx = getattr(self._engine_ref, '_gaze_boundary_context', None)
+                self._engine_ref._gaze_boundary_context = None
+            eff_ev = (
+                bool(b_ctx['evidence_available'])
+                if isinstance(b_ctx, dict) and 'evidence_available' in b_ctx
+                else bool(evidence_available)
+            )
+            gaze_receipt = gp.settle_credit(
+                metal_g,
+                evidence_available=eff_ev,
+                boundary_context=b_ctx,
+            )
+
+        if self._pending_commit is None:
+            return (dict(committed=None, gaze=gaze_receipt) if gaze_receipt is not None else None)
+        pending = self._pending_commit
+        if self.caregiver is not None and hasattr(self.caregiver, 'commit_turn'):
+            self.caregiver.commit_turn()
+        self.mother_transcript = (pending['turn'] + [('mother', pending['reply'])])[-2 * self.history:]
+        stage_changed = False
+        if pending['kind'] == 'mother':
+            self.turns_since_reflection += 1
+            if pending.get('stumble_excerpt'):
+                self.recent_stumbles.append(str(pending['stumble_excerpt'])[:72])
+                del self.recent_stumbles[:-8]
+            if isinstance(metal_g, (int, float)) and math.isfinite(metal_g):
+                if pending.get('perspective_mode') == 'mirror_visible':
+                    self.mirror_g.append(float(metal_g))
+                    del self.mirror_g[:-16]
+                elif pending.get('perspective_mode') == 'book_only':
+                    self.book_only_g.append(float(metal_g))
+                    del self.book_only_g[:-16]
+            stage_changed = self.care_plan_tracker.observe_turn(
+                utterance_kind=pending['utterance_kind'] or 'silent',
+                metal_g=metal_g,
+                turn_index=self.mother_turns,
+            )
+        self._pending_commit = None
+        return dict(committed=pending['kind'], stage_changed=stage_changed,
+                    stage=self.care_plan_tracker.stage,
+                    plan_version=self.care_plan_tracker.version)
+
+    def maybe_reflect_and_adapt(
+        self,
+        *,
+        reflect_every_turns: int = 16,
+        cycle: int = 0,
+        recent_flux: dict | None = None,
+        notes_path: str | Path | None = None,
+    ) -> dict | None:
+        """Periodic Mother Agent reflection using full Five-Element + Causal Bank + Episode dossier."""
+        if (self.caregiver is None or reflect_every_turns <= 0
+                or self.turns_since_reflection < int(reflect_every_turns)
+                or self._pending_commit is not None):
+            return None
+        auto = getattr(self.caregiver, 'automatic', self.caregiver)
+        if not hasattr(auto, 'reflect'):
+            return None
+        plan = self.care_plan_tracker.current_plan()
+        dossier = build_five_element_reflection_dossier(
+            self._engine_ref,
+            cycle=int(cycle or self._cycle_hint or self.spike_turns),
+            mother_turns=int(self.mother_turns),
+            care_stage=self.care_plan_tracker.stage,
+            plan_version=int(plan['version']),
+            current_plan_text=plan['text'],
+            prior_mengli_model=self.care_plan_tracker.mengli_model_summary,
+            recent_kinds=self.care_plan_tracker.recent_kinds,
+            recent_metal_g=self.recent_metal_g,
+            mirror_g=self.mirror_g,
+            book_only_g=self.book_only_g,
+            recent_stumbles=self.recent_stumbles,
+            recent_flux=recent_flux,
+            presence_labels=[m['label'] for m in self.presence_roster.values()],
+        )
+        res = auto.reflect(dossier)
+        parsed = parse_mother_reflection(res.get('raw', ''))
+        plan_updated = self.care_plan_tracker.apply_mother_reflection(
+            new_care_plan=(parsed['new_care_plan'] if parsed['update_plan'] else None),
+            mengli_model=parsed['mengli_model'],
+            turn_index=self.mother_turns,
+        )
+        self.turns_since_reflection = 0
+        self.reflections_done += 1
+        if notes_path is not None:
+            p = Path(notes_path)
+            p.parent.mkdir(parents=True, exist_ok=True)
+            import time as _t
+            ts = _t.strftime('%Y-%m-%d %H:%M:%S')
+            entry = [
+                f'\n## [{ts}] 第 {cycle or self._cycle_hint} 轮 · 妈妈自主复盘 #{self.reflections_done}（累计互动 {self.mother_turns} 轮）',
+            ]
+            if parsed['mengli_model']:
+                entry.append(f'- **梦漓模型**：{parsed["mengli_model"]}')
+            if parsed['progress_note']:
+                entry.append(f'- **阶段手记**：{parsed["progress_note"]}')
+            if plan_updated:
+                entry.append(f'- **育儿计划更新（v{self.care_plan_tracker.version}）**：{parsed["new_care_plan"]}')
+            else:
+                entry.append(f'- **育儿计划**：保持 v{self.care_plan_tracker.version} 不变')
+            with p.open('a', encoding='utf-8') as f:
+                f.write('\n'.join(entry) + '\n')
+        return dict(
+            reflection_index=int(self.reflections_done),
+            plan_updated=bool(plan_updated),
+            plan_version=int(self.care_plan_tracker.version),
+            **parsed,
+        )
+
+    def telemetry_summary(self) -> dict:
+        usage_totals = None
+        provider_hit_rate = None
+        summary_version = None
+        if self.caregiver is not None:
+            auto = getattr(self.caregiver, 'automatic', self.caregiver)
+            usage_totals = copy.deepcopy(getattr(auto, 'usage_totals', None))
+            ckpt_ref = getattr(auto, 'checkpoint_ref', None) or {}
+            summary_version = ckpt_ref.get('summary_version')
+            if isinstance(usage_totals, dict):
+                ru = usage_totals.get('reply_usage') or {}
+                hit, miss = ru.get('cache_hit_tokens'), ru.get('cache_miss_tokens')
+                if isinstance(hit, (int, float)) and isinstance(miss, (int, float)) and (hit + miss) > 0:
+                    provider_hit_rate = float(hit) / float(hit + miss)
+        gp = self._gaze_pointer()
+        return dict(
+            ambient_reads=int(self.ambient_reads),
+            sidecar_reads=int(self.sidecar_reads),
+            spike_turns=int(self.spike_turns),
+            mother_turns=int(self.mother_turns),
+            mother_responsive_turns=int(self.mother_responsive_turns),
+            mother_proactive_turns=int(self.mother_proactive_turns),
+            book_navigation_turns=int(self.book_navigation_turns),
+            explicit_addressed_turns=int(self.explicit_addressed_turns),
+            mirror_visible_turns=int(self.mirror_visible_turns),
+            book_only_turns=int(self.book_only_turns),
+            parent_turns=int(self.parent_turns),
+            tool_turns=int(self.tool_turns),
+            ambient_fallback_turns=int(self.ambient_fallback_turns),
+            mother_present=bool(self.mother_present),
+            active_floor=self.active_floor,
+            last_book_source=self.last_book_source,
+            active_interlocutor=self.active_interlocutor,
+            awaiting_reply_from=self.awaiting_reply_from,
+            turns_since_name_call=int(self.turns_since_name_call),
+            care_stage=self.care_plan_tracker.stage,
+            care_plan_version=int(self.care_plan_tracker.version),
+            stage_transitions=copy.deepcopy(self.care_plan_tracker.transitions),
+            gaze_pointer=(gp.diagnostics() if gp is not None else None),
+            summary_version=summary_version,
+            provider_hit_rate=provider_hit_rate,
+            usage_totals=usage_totals,
+        )
+
+    def state_dict(self, *, copy_arrays: bool = True) -> dict:
+        if self._pending_commit is not None:
+            raise RuntimeError('cannot checkpoint UnifiedWorldPort with an uncommitted caregiver turn')
+        base_state = self.base.state_dict() if copy_arrays else self.base.checkpoint_state_dict()
+        gp = self._gaze_pointer()
+        state = dict(
+            base_state,
+            mother_transcript=copy.deepcopy(self.mother_transcript),
+            mother_history=int(self.history),
+            mother_ambient_policy=self.ambient_policy,
+            mother_unified_port=dict(
+                schema=1,
+                mother_cooldown=int(self.mother_cooldown),
+                mother_max_gap=int(self.mother_max_gap),
+                mirror_ratio=float(self.mirror_ratio),
+                shared_page_hex=bytes(self.shared_page_bytes).hex(),
+                ambient_reads=int(self.ambient_reads),
+                sidecar_reads=int(self.sidecar_reads),
+                spike_turns=int(self.spike_turns),
+                spikes_since_mother=int(self.spikes_since_mother),
+                quiet_spikes_since_mother=int(self.quiet_spikes_since_mother),
+                mother_turns=int(self.mother_turns),
+                mother_responsive_turns=int(self.mother_responsive_turns),
+                mother_proactive_turns=int(self.mother_proactive_turns),
+                book_navigation_turns=int(self.book_navigation_turns),
+                explicit_addressed_turns=int(self.explicit_addressed_turns),
+                mother_present=bool(self.mother_present),
+                active_floor=self.active_floor,
+                last_book_source=self.last_book_source,
+                active_interlocutor=self.active_interlocutor,
+                awaiting_reply_from=self.awaiting_reply_from,
+                turns_since_name_call=int(self.turns_since_name_call),
+                mirror_visible_turns=int(self.mirror_visible_turns),
+                book_only_turns=int(self.book_only_turns),
+                parent_turns=int(self.parent_turns),
+                tool_turns=int(self.tool_turns),
+                ambient_fallback_turns=int(self.ambient_fallback_turns),
+                recent_metal_g=list(self.recent_metal_g),
+                inbox_offset=int(self.inbox_offset),
+                sidecar_cursor=(None if self.sidecar is None else int(self.sidecar.cursor)),
+                care_plan_tracker=self.care_plan_tracker.state_dict(),
+                pending_tool_notes=list(self._pending_tool_notes),
+                gaze_dynamic_state=(gp.export_dynamic_state() if gp is not None else None),
+            ),
+        )
+        if self.caregiver is not None and hasattr(self.caregiver, 'state_dict'):
+            state['mother_provider_state'] = self.caregiver.state_dict()
+        return state
+
+    def checkpoint_state_dict(self) -> dict:
+        return self.state_dict(copy_arrays=False)
+
+    def load_state_dict(self, state: dict) -> None:
+        state = dict(state)
+        state.pop('mother_history', None)
+        transcript = state.pop('mother_transcript', [])
+        state.pop('mother_ambient_policy', None)
+        provider = state.pop('mother_provider_state', None)
+        uwp = state.pop('mother_unified_port', None) or state.pop('unified_world_port', None)
+
+        self.base.load_state_dict(state)
+        self.mother_transcript = [tuple(pair) for pair in copy.deepcopy(transcript)][-2 * self.history:]
+        if provider is not None and self.caregiver is not None and hasattr(self.caregiver, 'load_state_dict'):
+            self.caregiver.load_state_dict(provider)
+
+        if isinstance(uwp, dict) and uwp.get('schema') == 1:
+            self.shared_page_bytes = bytearray(bytes.fromhex(uwp.get('shared_page_hex', '')))
+            self.ambient_reads = int(uwp.get('ambient_reads', 0))
+            self.sidecar_reads = int(uwp.get('sidecar_reads', 0))
+            self.spike_turns = int(uwp.get('spike_turns', 0))
+            self.spikes_since_mother = int(uwp.get('spikes_since_mother', self.mother_max_gap))
+            self.quiet_spikes_since_mother = int(uwp.get('quiet_spikes_since_mother', 0))
+            self.mother_turns = int(uwp.get('mother_turns', 0))
+            self.mother_responsive_turns = int(uwp.get('mother_responsive_turns', 0))
+            self.mother_proactive_turns = int(uwp.get('mother_proactive_turns', 0))
+            self.book_navigation_turns = int(uwp.get('book_navigation_turns', 0))
+            self.explicit_addressed_turns = int(uwp.get('explicit_addressed_turns', 0))
+            self.mother_present = bool(uwp.get('mother_present', self.caregiver is not None))
+            self.active_floor = str(uwp.get('active_floor', 'book'))
+            self.last_book_source = str(uwp.get('last_book_source', 'text'))
+            self.active_interlocutor = uwp.get('active_interlocutor', self.active_interlocutor)
+            self.awaiting_reply_from = uwp.get('awaiting_reply_from', None)
+            self.turns_since_name_call = int(uwp.get('turns_since_name_call', 3))
+            self.mirror_visible_turns = int(uwp.get('mirror_visible_turns', 0))
+            self.book_only_turns = int(uwp.get('book_only_turns', 0))
+            self.parent_turns = int(uwp.get('parent_turns', 0))
+            self.tool_turns = int(uwp.get('tool_turns', 0))
+            self.ambient_fallback_turns = int(uwp.get('ambient_fallback_turns', 0))
+            self.recent_metal_g = [float(x) for x in uwp.get('recent_metal_g', [])]
+            self.inbox_offset = int(uwp.get('inbox_offset', 0))
+            if self.sidecar is not None and uwp.get('sidecar_cursor') is not None:
+                self.sidecar.cursor = int(uwp['sidecar_cursor']) % len(self.sidecar.data)
+            if isinstance(uwp.get('care_plan_tracker'), dict):
+                self.care_plan_tracker.load_state_dict(uwp['care_plan_tracker'])
+            self._pending_tool_notes = list(uwp.get('pending_tool_notes', []))
+            gaze_state = uwp.get('gaze_dynamic_state')
+            if isinstance(gaze_state, dict):
+                gp = self._gaze_pointer()
+                if gp is not None:
+                    gp.load_dynamic_state(gaze_state)
+                else:
+                    self._deferred_gaze_state = copy.deepcopy(gaze_state)
+        self._pending_commit = None

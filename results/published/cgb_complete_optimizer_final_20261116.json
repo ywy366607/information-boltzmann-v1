@@ -1,0 +1,140 @@
+{
+  "source_sha": "f087d24defb2c23e5bf47e20bed5f33a50cbbbe347fd547585c92184e95a66d7",
+  "external_bytes_per_arm": 92160,
+  "optimizer_calls_per_arm": 384,
+  "scope": "real complete-body optimizer/relearning comparison; no dialogue capability verdict",
+  "arms": {
+    "budgeted": {
+      "initial_validation": {
+        "owt": 1.5953291654586792,
+        "fineweb": 1.5750627666711807
+      },
+      "phases": [
+        {
+          "name": "stable_owt",
+          "validation_after": {
+            "owt": 1.5797358229756355,
+            "fineweb": 1.5616261810064316
+          },
+          "event_seconds": 12.031690009374415,
+          "actual_source_bytes": {
+            "inherited_prefix": 30720,
+            "natural_append": 0
+          }
+        },
+        {
+          "name": "new_fineweb",
+          "validation_after": {
+            "owt": 1.5710081830620766,
+            "fineweb": 1.5521153211593628
+          },
+          "event_seconds": 12.231681824999669,
+          "actual_source_bytes": {
+            "inherited_prefix": 0,
+            "natural_append": 30720
+          }
+        },
+        {
+          "name": "revisit_owt",
+          "validation_after": {
+            "owt": 1.5589402467012405,
+            "fineweb": 1.5420913249254227
+          },
+          "event_seconds": 12.352633350000815,
+          "actual_source_bytes": {
+            "inherited_prefix": 30720,
+            "natural_append": 0
+          }
+        }
+      ]
+    },
+    "adamw": {
+      "initial_validation": {
+        "owt": 1.5953291654586792,
+        "fineweb": 1.5750627666711807
+      },
+      "phases": [
+        {
+          "name": "stable_owt",
+          "validation_after": {
+            "owt": 1.587604433298111,
+            "fineweb": 1.5869496315717697
+          },
+          "event_seconds": 11.976781596875298,
+          "actual_source_bytes": {
+            "inherited_prefix": 30720,
+            "natural_append": 0
+          }
+        },
+        {
+          "name": "new_fineweb",
+          "validation_after": {
+            "owt": 1.5802895426750183,
+            "fineweb": 1.5642520859837532
+          },
+          "event_seconds": 11.87607524374971,
+          "actual_source_bytes": {
+            "inherited_prefix": 0,
+            "natural_append": 30720
+          }
+        },
+        {
+          "name": "revisit_owt",
+          "validation_after": {
+            "owt": 1.572616569697857,
+            "fineweb": 1.5526346638798714
+          },
+          "event_seconds": 11.828702134375362,
+          "actual_source_bytes": {
+            "inherited_prefix": 30720,
+            "natural_append": 0
+          }
+        }
+      ]
+    },
+    "global_anneal": {
+      "initial_validation": {
+        "owt": 1.5953291654586792,
+        "fineweb": 1.5750627666711807
+      },
+      "phases": [
+        {
+          "name": "stable_owt",
+          "validation_after": {
+            "owt": 1.5796098336577415,
+            "fineweb": 1.5695196390151978
+          },
+          "event_seconds": 12.055323428125575,
+          "actual_source_bytes": {
+            "inherited_prefix": 30720,
+            "natural_append": 0
+          }
+        },
+        {
+          "name": "new_fineweb",
+          "validation_after": {
+            "owt": 1.5712290480732918,
+            "fineweb": 1.5480991899967194
+          },
+          "event_seconds": 11.975040018748587,
+          "actual_source_bytes": {
+            "inherited_prefix": 0,
+            "natural_append": 30720
+          }
+        },
+        {
+          "name": "revisit_owt",
+          "validation_after": {
+            "owt": 1.5520745366811752,
+            "fineweb": 1.5303662195801735
+          },
+          "event_seconds": 12.217792668750462,
+          "actual_source_bytes": {
+            "inherited_prefix": 30720,
+            "natural_append": 0
+          }
+        }
+      ]
+    }
+  }
+}

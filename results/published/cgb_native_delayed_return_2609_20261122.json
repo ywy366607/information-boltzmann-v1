@@ -1,0 +1,975 @@
+{
+  "schema": 1,
+  "world_calls_added": 0,
+  "optimizer_updates_added": 0,
+  "clock": "cumulative non-overlapping dispatch seconds, observed at dispatch end",
+  "projection": "score derivative in a common internal-logit direction, fixed logged menus; credit signed as ascent",
+  "pending": "two separate owners: 2609 prior actor and selector for the next action; no assigned future factor",
+  "arms": {
+    "original": {
+      "cycle": 2609,
+      "checkpoint_sha256": "6714ad8205ae09a1df7551a4545a975c893ea3306aade5fd14aed5524eb6e0fe",
+      "dispatches": 45,
+      "rounds": 8,
+      "dispatch_seconds": 218.9981040999919,
+      "inherited_actor_return": {
+        "future_cycle": 2602,
+        "future_event": 3718
+      },
+      "returned": [
+        {
+          "action_cycle": 2602,
+          "action": "silence",
+          "action_question": "unknown:1797",
+          "action_relation": [
+            297,
+            6,
+            10
+          ],
+          "future_cycle": 2603,
+          "future_question": "unknown:1790",
+          "future_relation": [
+            276,
+            6,
+            21
+          ],
+          "future_actual_value": -1.1910004615783691,
+          "td_target": -0.02428559219837189,
+          "factor": -0.02035211885518591,
+          "arrival_event": 3720,
+          "arrival_seconds": 24.71100280000246,
+          "return_read": null,
+          "td_value_slope": 0.008
+        },
+        {
+          "action_cycle": 2603,
+          "action": "silence",
+          "action_question": "unknown:1790",
+          "action_relation": [
+            276,
+            6,
+            21
+          ],
+          "future_cycle": 2604,
+          "future_question": "unknown:1704",
+          "future_relation": [
+            319,
+            5,
+            0
+          ],
+          "future_actual_value": 0.866188645362854,
+          "td_target": -0.008009910762310026,
+          "factor": -0.003058831476364752,
+          "arrival_event": 3727,
+          "arrival_seconds": 27.70236419999128,
+          "return_read": {
+            "endpoint_event": 3730,
+            "eligibility": 0.0015461854012995793,
+            "age_moment": 0.08961976537460849,
+            "source_count": 1,
+            "joint_rank": 1,
+            "last_stamp_error": 0.0,
+            "reconstruction_error": 0.0,
+            "sources": [
+              {
+                "source_event": 3717,
+                "kind": "release",
+                "within_learning": true,
+                "internal_relation": null,
+                "dispatches": 13,
+                "seconds": 57.96184940000239,
+                "credit": 0.0015461854012995793
+              }
+            ]
+          },
+          "td_value_slope": 0.008
+        },
+        {
+          "action_cycle": 2604,
+          "action": "silence",
+          "action_question": "unknown:1704",
+          "action_relation": [
+            319,
+            5,
+            0
+          ],
+          "future_cycle": 2605,
+          "future_question": "unknown:1774",
+          "future_relation": [
+            307,
+            5,
+            12
+          ],
+          "future_actual_value": 0.27707594633102417,
+          "td_target": 0.005412496864795685,
+          "factor": 0.010516517724559197,
+          "arrival_event": 3732,
+          "arrival_seconds": 27.97319110000535,
+          "return_read": {
+            "endpoint_event": 3735,
+            "eligibility": 0.005435238977118201,
+            "age_moment": 0.328875008387555,
+            "source_count": 3,
+            "joint_rank": 2,
+            "last_stamp_error": 0.035671657035985904,
+            "reconstruction_error": 0.0,
+            "sources": [
+              {
+                "source_event": 3722,
+                "kind": "internal",
+                "within_learning": true,
+                "internal_relation": [
+                  270,
+                  87
+                ],
+                "dispatches": 13,
+                "seconds": 59.268609999991895,
+                "credit": 0.005272673834337705
+              },
+              {
+                "source_event": 3724,
+                "kind": "internal",
+                "within_learning": true,
+                "internal_relation": [
+                  298,
+                  11
+                ],
+                "dispatches": 11,
+                "seconds": 55.38379019999411,
+                "credit": 0.005282773685936264
+              },
+              {
+                "source_event": 3726,
+                "kind": "release",
+                "within_learning": false,
+                "internal_relation": null,
+                "dispatches": 9,
+                "seconds": 53.94488679999631,
+                "credit": -0.005120208543155768
+              }
+            ]
+          },
+          "td_value_slope": 0.008
+        },
+        {
+          "action_cycle": 2605,
+          "action": "generate",
+          "action_question": "unknown:1774",
+          "action_relation": [
+            307,
+            5,
+            12
+          ],
+          "future_cycle": 2606,
+          "future_question": "unknown:1798",
+          "future_relation": [
+            322,
+            7,
+            0
+          ],
+          "future_actual_value": -1.985763669013977,
+          "td_target": -0.02606257426738739,
+          "factor": -0.02148437929385184,
+          "arrival_event": 3738,
+          "arrival_seconds": 28.20318409999163,
+          "return_read": {
+            "endpoint_event": 3741,
+            "eligibility": 0.012938557217436426,
+            "age_moment": 0.7578768326052536,
+            "source_count": 1,
+            "joint_rank": 1,
+            "last_stamp_error": 0.0,
+            "reconstruction_error": 0.0,
+            "sources": [
+              {
+                "source_event": 3729,
+                "kind": "release",
+                "within_learning": true,
+                "internal_relation": null,
+                "dispatches": 12,
+                "seconds": 58.57506519999879,
+                "credit": 0.012938557217436426
+              }
+            ]
+          },
+          "td_value_slope": 0.008
+        },
+        {
+          "action_cycle": 2606,
+          "action": "generate",
+          "action_question": "unknown:1798",
+          "action_relation": [
+            322,
+            7,
+            0
+          ],
+          "future_cycle": 2607,
+          "future_question": "unknown:1799",
+          "future_relation": [
+            270,
+            4,
+            87
+          ],
+          "future_actual_value": -2.1893374919891357,
+          "td_target": -0.08246125453710557,
+          "factor": -0.07680884059887742,
+          "arrival_event": 3744,
+          "arrival_seconds": 27.660787500004517,
+          "return_read": {
+            "endpoint_event": 3747,
+            "eligibility": 0.009252519115661256,
+            "age_moment": 0.41033660536579436,
+            "source_count": 2,
+            "joint_rank": 2,
+            "last_stamp_error": 0.09148621351034886,
+            "reconstruction_error": 3.885780586188048e-16,
+            "sources": [
+              {
+                "source_event": 3734,
+                "kind": "internal",
+                "within_learning": true,
+                "internal_relation": [
+                  307,
+                  12
+                ],
+                "dispatches": 13,
+                "seconds": 57.51082160000078,
+                "credit": -0.027939186833847336
+              },
+              {
+                "source_event": 3736,
+                "kind": "release",
+                "within_learning": true,
+                "internal_relation": null,
+                "dispatches": 11,
+                "seconds": 54.2363450000048,
+                "credit": 0.03719170594950859
+              }
+            ]
+          },
+          "td_value_slope": 0.008
+        },
+        {
+          "action_cycle": 2607,
+          "action": "silence",
+          "action_question": "unknown:1799",
+          "action_relation": [
+            270,
+            4,
+            87
+          ],
+          "future_cycle": 2608,
+          "future_question": "unknown:1361",
+          "future_relation": [
+            297,
+            6,
+            12
+          ],
+          "future_actual_value": 2.217849016189575,
+          "td_target": 0.010918641448020936,
+          "factor": 0.020411497416192956,
+          "arrival_event": 3749,
+          "arrival_seconds": 25.788256599989836,
+          "return_read": {
+            "endpoint_event": 3752,
+            "eligibility": -0.009363526443846951,
+            "age_moment": -0.48495905473736167,
+            "source_count": 2,
+            "joint_rank": 2,
+            "last_stamp_error": 0.002917253475772985,
+            "reconstruction_error": 5.551115123125783e-17,
+            "sources": [
+              {
+                "source_event": 3740,
+                "kind": "internal",
+                "within_learning": true,
+                "internal_relation": [
+                  319,
+                  2
+                ],
+                "dispatches": 12,
+                "seconds": 55.433913199995004,
+                "credit": 0.000876050384818354
+              },
+              {
+                "source_event": 3742,
+                "kind": "release",
+                "within_learning": true,
+                "internal_relation": null,
+                "dispatches": 10,
+                "seconds": 52.103906699994695,
+                "credit": -0.010239576828665305
+              }
+            ]
+          },
+          "td_value_slope": 0.008
+        },
+        {
+          "action_cycle": 2608,
+          "action": "silence",
+          "action_question": "unknown:1361",
+          "action_relation": [
+            297,
+            6,
+            12
+          ],
+          "future_cycle": 2609,
+          "future_question": "unknown:1800",
+          "future_relation": [
+            213,
+            4,
+            183
+          ],
+          "future_actual_value": -0.03395730257034302,
+          "td_target": 0.028612022280693053,
+          "factor": 0.03708430337805542,
+          "arrival_event": 3754,
+          "arrival_seconds": 25.79619590000948,
+          "return_read": {
+            "endpoint_event": 3757,
+            "eligibility": -0.019726690034035585,
+            "age_moment": -1.148108454844143,
+            "source_count": 1,
+            "joint_rank": 1,
+            "last_stamp_error": 0.0,
+            "reconstruction_error": 0.0,
+            "sources": [
+              {
+                "source_event": 3746,
+                "kind": "release",
+                "within_learning": true,
+                "internal_relation": null,
+                "dispatches": 11,
+                "seconds": 58.200765200002934,
+                "credit": -0.019726690034035585
+              }
+            ]
+          },
+          "td_value_slope": 0.008
+        }
+      ],
+      "pending": {
+        "action_cycle": 2609,
+        "action_question": "unknown:1800",
+        "action_relation": [
+          213,
+          4,
+          183
+        ],
+        "action_selector": {
+          "endpoint_event": 3759,
+          "eligibility": -0.5290283560752869,
+          "age_moment": -18.11993316194564,
+          "source_count": 1,
+          "joint_rank": 1,
+          "last_stamp_error": 0.0,
+          "reconstruction_error": 0.0,
+          "sources": [
+            {
+              "source_event": 3751,
+              "kind": "release",
+              "within_learning": true,
+              "internal_relation": null,
+              "dispatches": 8,
+              "seconds": 34.25134580001031,
+              "credit": -0.5290283560752869
+            }
+          ]
+        },
+        "next_selector": {
+          "endpoint_event": 3759,
+          "eligibility": 0.9754951000213623,
+          "age_moment": 3.479084861025382,
+          "source_count": 2,
+          "joint_rank": 2,
+          "last_stamp_error": 2.4000650508650274,
+          "reconstruction_error": 4.440892098500626e-16,
+          "sources": [
+            {
+              "source_event": 3756,
+              "kind": "internal",
+              "within_learning": true,
+              "internal_relation": [
+                213,
+                183
+              ],
+              "dispatches": 3,
+              "seconds": 6.045013499999186,
+              "credit": 0.4859524965286255
+            },
+            {
+              "source_event": 3758,
+              "kind": "internal",
+              "within_learning": true,
+              "internal_relation": [
+                270,
+                89
+              ],
+              "dispatches": 1,
+              "seconds": 1.1061253000007127,
+              "credit": 0.4895426034927368
+            }
+          ]
+        },
+        "parameter": "binding_choice.weight",
+        "parameter_coordinates": 388,
+        "action_selector_norm": 0.8852245807647705,
+        "action_question_norm": 7.9483182294724415,
+        "action_actor_norm": 8.079057492210138,
+        "action_actor_reconstruction_max_error": 4.7337309272421635e-07,
+        "next_selector_norm": 1.4659661054611206,
+        "next_selector_first_norm": 0.7573877573013306,
+        "next_selector_ready": false,
+        "next_selector_source_gap_seconds": 4.938888199998473,
+        "next_selector_last_stamp_error_norm": 3.740653457358849
+      }
+    },
+    "refined": {
+      "cycle": 2609,
+      "checkpoint_sha256": "220d8dbf07cb356f79aefec42fcfe1f9c533c60cda2a6c34e07849177e8f7d30",
+      "dispatches": 56,
+      "rounds": 8,
+      "dispatch_seconds": 237.51934380002058,
+      "inherited_actor_return": {
+        "future_cycle": 2602,
+        "future_event": 3718
+      },
+      "returned": [
+        {
+          "action_cycle": 2602,
+          "action": "silence",
+          "action_question": "unknown:1797",
+          "action_relation": [
+            297,
+            6,
+            10
+          ],
+          "future_cycle": 2603,
+          "future_question": "unknown:1790",
+          "future_relation": [
+            276,
+            6,
+            21
+          ],
+          "future_actual_value": -1.5095235109329224,
+          "td_target": -0.026833702087402343,
+          "factor": -0.022881913184590742,
+          "arrival_event": 3720,
+          "arrival_seconds": 25.34480060000351,
+          "return_read": null,
+          "td_value_slope": 0.008
+        },
+        {
+          "action_cycle": 2603,
+          "action": "silence",
+          "action_question": "unknown:1790",
+          "action_relation": [
+            276,
+            6,
+            21
+          ],
+          "future_cycle": 2604,
+          "future_question": "unknown:1704",
+          "future_relation": [
+            319,
+            5,
+            0
+          ],
+          "future_actual_value": 1.0647945404052734,
+          "td_target": -0.006421264767646789,
+          "factor": -0.001325380205605649,
+          "arrival_event": 3727,
+          "arrival_seconds": 30.004070000002685,
+          "return_read": {
+            "endpoint_event": 3730,
+            "eligibility": 0.0006699606008677302,
+            "age_moment": 0.04072443612193836,
+            "source_count": 1,
+            "joint_rank": 1,
+            "last_stamp_error": 0.0,
+            "reconstruction_error": 0.0,
+            "sources": [
+              {
+                "source_event": 3717,
+                "kind": "release",
+                "within_learning": true,
+                "internal_relation": null,
+                "dispatches": 13,
+                "seconds": 60.786315000004834,
+                "credit": 0.0006699606008677302
+              }
+            ]
+          },
+          "td_value_slope": 0.008
+        },
+        {
+          "action_cycle": 2604,
+          "action": "generate",
+          "action_question": "unknown:1704",
+          "action_relation": [
+            319,
+            5,
+            0
+          ],
+          "future_cycle": 2605,
+          "future_question": "unknown:1703",
+          "future_relation": [
+            252,
+            6,
+            83
+          ],
+          "future_actual_value": -0.46072638034820557,
+          "td_target": -0.0017951740622520452,
+          "factor": 0.0033669795100693778,
+          "arrival_event": 3732,
+          "arrival_seconds": 30.10352409999905,
+          "return_read": {
+            "endpoint_event": 3735,
+            "eligibility": 0.001740158519697242,
+            "age_moment": 0.11812764406197178,
+            "source_count": 3,
+            "joint_rank": 2,
+            "last_stamp_error": 0.012461918361294066,
+            "reconstruction_error": 1.3877787807814457e-17,
+            "sources": [
+              {
+                "source_event": 3722,
+                "kind": "internal",
+                "within_learning": true,
+                "internal_relation": [
+                  270,
+                  87
+                ],
+                "dispatches": 13,
+                "seconds": 66.55625670000882,
+                "credit": 0.0016881022588952626
+              },
+              {
+                "source_event": 3724,
+                "kind": "internal",
+                "within_learning": true,
+                "internal_relation": [
+                  298,
+                  11
+                ],
+                "dispatches": 11,
+                "seconds": 62.266757800010964,
+                "credit": 0.0016913635330261067
+              },
+              {
+                "source_event": 3726,
+                "kind": "release",
+                "within_learning": false,
+                "internal_relation": null,
+                "dispatches": 9,
+                "seconds": 60.72189660000731,
+                "credit": -0.0016393072722241274
+              }
+            ]
+          },
+          "td_value_slope": 0.008
+        },
+        {
+          "action_cycle": 2605,
+          "action": "generate",
+          "action_question": "unknown:1703",
+          "action_relation": [
+            252,
+            6,
+            83
+          ],
+          "future_cycle": 2606,
+          "future_question": "unknown:1702",
+          "future_relation": [
+            286,
+            2,
+            5
+          ],
+          "future_actual_value": -1.9668848514556885,
+          "td_target": -0.017291862726211547,
+          "factor": -0.012298058129393594,
+          "arrival_event": 3740,
+          "arrival_seconds": 33.84086970001226,
+          "return_read": {
+            "endpoint_event": 3743,
+            "eligibility": 0.0065900528477646145,
+            "age_moment": 0.4399124602903862,
+            "source_count": 1,
+            "joint_rank": 1,
+            "last_stamp_error": 0.0,
+            "reconstruction_error": 0.0,
+            "sources": [
+              {
+                "source_event": 3729,
+                "kind": "release",
+                "within_learning": true,
+                "internal_relation": null,
+                "dispatches": 14,
+                "seconds": 66.75401100001909,
+                "credit": 0.0065900528477646145
+              }
+            ]
+          },
+          "td_value_slope": 0.008
+        },
+        {
+          "action_cycle": 2606,
+          "action": "silence",
+          "action_question": "unknown:1702",
+          "action_relation": [
+            286,
+            2,
+            5
+          ],
+          "future_cycle": 2607,
+          "future_question": "unknown:1798",
+          "future_relation": [
+            241,
+            5,
+            29
+          ],
+          "future_actual_value": -3.8935775756835938,
+          "td_target": -0.06048985636234283,
+          "factor": -0.05488114885905519,
+          "arrival_event": 3746,
+          "arrival_seconds": 28.196865199999593,
+          "return_read": {
+            "endpoint_event": 3749,
+            "eligibility": -0.03461363174902714,
+            "age_moment": -2.019167366702744,
+            "source_count": 4,
+            "joint_rank": 2,
+            "last_stamp_error": 0.12860465616390648,
+            "reconstruction_error": 0.0,
+            "sources": [
+              {
+                "source_event": 3734,
+                "kind": "internal",
+                "within_learning": true,
+                "internal_relation": [
+                  320,
+                  0
+                ],
+                "dispatches": 15,
+                "seconds": 61.83368370001699,
+                "credit": -0.006583598778696107
+              },
+              {
+                "source_event": 3736,
+                "kind": "internal",
+                "within_learning": true,
+                "internal_relation": [
+                  252,
+                  83
+                ],
+                "dispatches": 13,
+                "seconds": 57.2366150000089,
+                "credit": -0.027037000202540937
+              },
+              {
+                "source_event": 3738,
+                "kind": "internal",
+                "within_learning": false,
+                "internal_relation": [
+                  286,
+                  5
+                ],
+                "dispatches": 11,
+                "seconds": 54.99289070000668,
+                "credit": -0.02764165497000228
+              },
+              {
+                "source_event": 3739,
+                "kind": "release",
+                "within_learning": false,
+                "internal_relation": null,
+                "dispatches": 10,
+                "seconds": 54.619021900005464,
+                "credit": 0.026648622202212188
+              }
+            ]
+          },
+          "td_value_slope": 0.008
+        },
+        {
+          "action_cycle": 2607,
+          "action": "generate",
+          "action_question": "unknown:1798",
+          "action_relation": [
+            241,
+            5,
+            29
+          ],
+          "future_cycle": 2608,
+          "future_question": "unknown:1799",
+          "future_relation": [
+            315,
+            6,
+            1
+          ],
+          "future_actual_value": -5.186450958251953,
+          "td_target": -0.07909710937738419,
+          "factor": -0.0707443444311438,
+          "arrival_event": 3751,
+          "arrival_seconds": 27.31261980000272,
+          "return_read": {
+            "endpoint_event": 3754,
+            "eligibility": -0.00017231299060621713,
+            "age_moment": -0.14068731715123714,
+            "source_count": 2,
+            "joint_rank": 2,
+            "last_stamp_error": 0.13118503217886943,
+            "reconstruction_error": 8.326672684688674e-17,
+            "sources": [
+              {
+                "source_event": 3742,
+                "kind": "internal",
+                "within_learning": true,
+                "internal_relation": [
+                  286,
+                  5
+                ],
+                "dispatches": 12,
+                "seconds": 58.65640350001195,
+                "credit": -0.037364970086046806
+              },
+              {
+                "source_event": 3744,
+                "kind": "release",
+                "within_learning": true,
+                "internal_relation": null,
+                "dispatches": 10,
+                "seconds": 55.14549390001048,
+                "credit": 0.03719265709544059
+              }
+            ]
+          },
+          "td_value_slope": 0.008
+        },
+        {
+          "action_cycle": 2608,
+          "action": "silence",
+          "action_question": "unknown:1799",
+          "action_relation": [
+            315,
+            6,
+            1
+          ],
+          "future_cycle": 2609,
+          "future_question": "unknown:1788",
+          "future_relation": [
+            321,
+            5,
+            0
+          ],
+          "future_actual_value": -4.64459228515625,
+          "td_target": -0.059965960621833805,
+          "factor": -0.04807597845403622,
+          "arrival_event": 3765,
+          "arrival_seconds": 33.222165100014536,
+          "return_read": {
+            "endpoint_event": 3768,
+            "eligibility": 0.023935492743970315,
+            "age_moment": 1.5325842340593305,
+            "source_count": 1,
+            "joint_rank": 1,
+            "last_stamp_error": 2.220446049250313e-16,
+            "reconstruction_error": 2.220446049250313e-16,
+            "sources": [
+              {
+                "source_event": 3748,
+                "kind": "release",
+                "within_learning": true,
+                "internal_relation": null,
+                "dispatches": 20,
+                "seconds": 64.02977580001607,
+                "credit": 0.023935492743970315
+              }
+            ]
+          },
+          "td_value_slope": 0.008
+        }
+      ],
+      "pending": {
+        "action_cycle": 2609,
+        "action_question": "unknown:1788",
+        "action_relation": [
+          321,
+          5,
+          0
+        ],
+        "action_selector": {
+          "endpoint_event": 3770,
+          "eligibility": 3.705423593521118,
+          "age_moment": 116.59523251881174,
+          "source_count": 10,
+          "joint_rank": 2,
+          "last_stamp_error": 18.359882785131788,
+          "reconstruction_error": 0.0,
+          "sources": [
+            {
+              "source_event": 3753,
+              "kind": "internal",
+              "within_learning": true,
+              "internal_relation": [
+                285,
+                10
+              ],
+              "dispatches": 17,
+              "seconds": 38.14361590000044,
+              "credit": 0.46542495489120483
+            },
+            {
+              "source_event": 3755,
+              "kind": "internal",
+              "within_learning": true,
+              "internal_relation": [
+                293,
+                14
+              ],
+              "dispatches": 15,
+              "seconds": 34.11037260000012,
+              "credit": 0.4923363924026489
+            },
+            {
+              "source_event": 3757,
+              "kind": "internal",
+              "within_learning": false,
+              "internal_relation": [
+                293,
+                15
+              ],
+              "dispatches": 13,
+              "seconds": 32.040770599996904,
+              "credit": 0.3324052095413208
+            },
+            {
+              "source_event": 3758,
+              "kind": "internal",
+              "within_learning": false,
+              "internal_relation": [
+                293,
+                15
+              ],
+              "dispatches": 12,
+              "seconds": 31.155579399994167,
+              "credit": 0.4993642568588257
+            },
+            {
+              "source_event": 3759,
+              "kind": "internal",
+              "within_learning": false,
+              "internal_relation": [
+                293,
+                15
+              ],
+              "dispatches": 11,
+              "seconds": 30.262918999993417,
+              "credit": 0.5071493983268738
+            },
+            {
+              "source_event": 3760,
+              "kind": "internal",
+              "within_learning": false,
+              "internal_relation": [
+                293,
+                15
+              ],
+              "dispatches": 10,
+              "seconds": 29.37156079999113,
+              "credit": 0.5009957551956177
+            },
+            {
+              "source_event": 3761,
+              "kind": "internal",
+              "within_learning": false,
+              "internal_relation": [
+                321,
+                0
+              ],
+              "dispatches": 9,
+              "seconds": 28.405068099986238,
+              "credit": 0.5472052693367004
+            },
+            {
+              "source_event": 3762,
+              "kind": "internal",
+              "within_learning": false,
+              "internal_relation": [
+                321,
+                0
+              ],
+              "dispatches": 8,
+              "seconds": 27.622069899989583,
+              "credit": 0.5194168984889984
+            },
+            {
+              "source_event": 3763,
+              "kind": "internal",
+              "within_learning": false,
+              "internal_relation": [
+                321,
+                0
+              ],
+              "dispatches": 7,
+              "seconds": 26.833753699989757,
+              "credit": 0.30479007959365845
+            },
+            {
+              "source_event": 3764,
+              "kind": "release",
+              "within_learning": false,
+              "internal_relation": null,
+              "dispatches": 6,
+              "seconds": 26.511233399993216,
+              "credit": -0.46366462111473083
+            }
+          ]
+        },
+        "next_selector": {
+          "endpoint_event": 3770,
+          "eligibility": -0.04481738805770874,
+          "age_moment": 1.74663882926954,
+          "source_count": 2,
+          "joint_rank": 2,
+          "last_stamp_error": 1.7988992695304244,
+          "reconstruction_error": 0.0,
+          "sources": [
+            {
+              "source_event": 3767,
+              "kind": "internal",
+              "within_learning": true,
+              "internal_relation": [
+                315,
+                2
+              ],
+              "dispatches": 3,
+              "seconds": 4.873623799998313,
+              "credit": 0.48519909381866455
+            },
+            {
+              "source_event": 3769,
+              "kind": "release",
+              "within_learning": true,
+              "internal_relation": null,
+              "dispatches": 1,
+              "seconds": 1.1660750999944867,
+              "credit": -0.5300164818763733
+            }
+          ]
+        },
+        "parameter": "binding_choice.weight",
+        "parameter_coordinates": 388,
+        "action_selector_norm": 5.717593193054199,
+        "action_question_norm": 15.47601324775848,
+        "action_actor_norm": 16.959338847916747,
+        "action_actor_reconstruction_max_error": 4.244956883781015e-07,
+        "next_selector_norm": 0.30896222591400146,
+        "next_selector_first_norm": 0.7297369241714478,
+        "next_selector_ready": true,
+        "next_selector_source_gap_seconds": 3.7075487000038265,
+        "next_selector_last_stamp_error_norm": 2.705535184556642
+      }
+    }
+  }
+}

@@ -17,20 +17,25 @@ class MomentumBody(InternalRolloutBody):
     def objective(self, *args, **kwargs):
         if not getattr(self, '_momentum_active', False):
             return super().objective(*args, **kwargs)
+        if hasattr(self, 'head_coupling'):
+            from scripts.ib_local.adaptive_hamiltonian import bridge_state
+            args = (*args[:2], bridge_state(self, args[2]), *args[3:])
         layers = self.body.base.layers
         captured = [None] * len(layers)
         handles = []
         for i, layer in enumerate(layers):
             def capture(module, inputs, output, index=i):
                 x, before = inputs
+                adaptive = getattr(self, 'head_coupling', None)
+                contact = getattr(adaptive, 'contact', None)
+                impedance = adaptive.impedance[index, ..., 0, 0] if contact is not None else None
                 s, p, correction = observed_momentum(module, x.detach(), before.detach(),
-                                                       self._momentum_current[index])
+                    self._momentum_current[index], contact=contact, layer_index=index,
+                    impedance=impedance)
                 actual = matrix_view(module, output[1].detach())
-                error = float((s-actual).abs().max())
-                scale = float(actual.abs().max())
-                if error > 2e-5 + 2e-4*scale:
-                    raise RuntimeError(f'S/P observed replay disagrees at layer {index}: {error}')
-                captured[index] = (p, error, float(correction))
+                error = (s-actual).abs().max()
+                scale = actual.abs().max()
+                captured[index] = (p, error, correction, scale)
             handles.append(layer.register_forward_hook(capture))
         try:
             result = super().objective(*args, **kwargs)
@@ -39,6 +44,12 @@ class MomentumBody(InternalRolloutBody):
                 handle.remove()
         if any(item is None for item in captured):
             raise RuntimeError('S/P event capture missed a layer')
+        # One host transfer per window, rather than 3 synchronizations per layer.
+        summary=torch.stack([torch.stack((x[1],x[2],x[3])) for x in captured]).detach().cpu().tolist()
+        for index,(error,correction,scale) in enumerate(summary):
+            if error>2e-5+2e-4*scale:
+                raise RuntimeError(f'S/P observed replay disagrees at layer {index}: {error}')
+            captured[index]=(captured[index][0],error,correction)
         self._momentum_captured = captured
         return result
 
@@ -46,7 +57,11 @@ class MomentumBody(InternalRolloutBody):
 class MomentumEngine(InternalRolloutEngine):
     def _advance(self, loss, features, diagnostics, next_state, actor=None, advantage=0.):
         captured = self.model._momentum_captured
+        adaptive = getattr(self.model.body.base, '_adaptive_quiet', None)
+        active_trace = adaptive is not None and int(adaptive.trace_steps) > 0
         result = super()._advance(loss, features, diagnostics, next_state, actor, advantage)
+        if active_trace:
+            adaptive.consume()
         self.bfss_momenta = [item[0].detach() for item in captured]
         self.model._momentum_current = self.bfss_momenta
         self._bfss_event_errors.extend(item[1] for item in captured)

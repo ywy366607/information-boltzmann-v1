@@ -106,7 +106,8 @@ class TransitionMemory(nn.Module):
         score = (q @ k.T).masked_fill(~self.occupied, -1e4)
         selected, slots = score.topk(self.topk, dim=-1)
         valid = self.occupied[slots]
-        weights = (selected / self.temperature).softmax(-1) * valid
+        from scripts.ib_local.learnable_precision_scales import effective_temperature
+        weights = (selected / effective_temperature(self)).softmax(-1) * valid
         weights = weights / weights.sum(-1, keepdim=True).clamp_min(1e-12)
         short = (weights[..., None] * encoder(self.successor)[slots]).sum(-2)
         long = (weights[..., None] * encoder(self.long_successor)[slots]).sum(-2)

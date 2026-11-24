@@ -1,0 +1,173 @@
+{
+  "schema": 1,
+  "mode": "equal_wallclock_600s",
+  "source": "E:\\mengli-wallclock-10min-20261123\\strict_10min\\body\\last.pt.gz",
+  "source_sha256": "1a848983905e07768dfe0e24f3720959a877b472a15aa765955f1f48213f11b3",
+  "source_cycle": 2897,
+  "end_cycle": 2929,
+  "budget_seconds": 600.0,
+  "life_seconds": 601.3091224000018,
+  "save_seconds": 1.9028950000065379,
+  "checkpoint": "C:\\mengli-alif-fast-fixed-600s-20261124\\body\\last.pt.gz",
+  "checkpoint_sha256": "001e99377baf3d6022472e5f7500a388d9397ab1ca6379e4fae9f006f03602fb",
+  "restore_exact": true,
+  "peak_vram_gib": 2.27854585647583,
+  "total_updates": 225,
+  "bytes_per_second": 154.32993870042728,
+  "mean_calm_piece_seconds": 1.1194814144334122,
+  "mean_exec_spike_seconds": 15.393486831250584,
+  "mean_metal_g": 0.003829027758911252,
+  "pre_outcome_gain_mse": 0.08563770300951401,
+  "alif_diagnostics": {
+    "schema": 1,
+    "v": 0.0,
+    "a": 1.4682508409627315,
+    "threshold": 2.394838298914595,
+    "pending_spike": false,
+    "executive_spikes": 32,
+    "calm_pieces": 97,
+    "total_external_bytes": 92800,
+    "total_learned_bytes": 92800,
+    "byte_conservation_exact": true,
+    "effective_960b_blocks": 96.66666666666667,
+    "executive_duty_cycle": 0.3310344827586207,
+    "inter_spike_pieces": [
+      3,
+      2,
+      4,
+      2,
+      4,
+      2,
+      3,
+      3,
+      2,
+      3,
+      2,
+      3,
+      3,
+      4,
+      4,
+      3,
+      3,
+      3,
+      2,
+      5,
+      4,
+      2,
+      2,
+      2,
+      3,
+      5,
+      3,
+      3,
+      4,
+      4,
+      5
+    ],
+    "mean_inter_spike_pieces": 3.129032258064516,
+    "max_inter_spike_pieces": 5,
+    "min_inter_spike_pieces": 2,
+    "preempt_causes": {
+      "initial": 1,
+      "sensory": 0,
+      "burst": 29,
+      "kinetic": 0,
+      "epistemic": 0,
+      "rheobase": 2
+    },
+    "params": {
+      "piece_bytes": 640,
+      "burst_window": 64,
+      "lam_v": 0.84,
+      "lam_a": 0.78,
+      "theta0": 1.0,
+      "beta": 0.95,
+      "delta0": 0.2,
+      "i_max": 1.85,
+      "w_sens": 0.35,
+      "w_burst": 0.22,
+      "w_kin": 12.0,
+      "w_epi": 0.18,
+      "ema_decay": 0.85,
+      "workset_refresh_pieces": 2,
+      "hippocampal_anchor_scale": 0.5
+    }
+  },
+  "encoder_subspace_metric": null,
+  "emeans_alif_reservoir": null,
+  "learnable_alif_rhythm": null,
+  "evaluation": {
+    "checkpoint": "C:\\mengli-alif-fast-fixed-600s-20261124\\body\\last.pt.gz",
+    "cycle": 2929,
+    "load_seconds": 10.002,
+    "fresh_8192_nll": {
+      "mean_nll": 1.6912836581468582,
+      "segment_nll": [
+        1.7436828464269638,
+        1.7715028300881386,
+        1.6349687576293945,
+        1.614980198442936
+      ]
+    },
+    "classic_8192_nll": {
+      "mean_nll": 1.591282930225134,
+      "segment_nll": [
+        1.3899205178022385,
+        1.8183692321181297,
+        1.56929250061512,
+        1.5875494703650475
+      ]
+    },
+    "combined_16384_mean_nll": 1.641283294185996,
+    "fresh_64_facts": {
+      "mean_score": -1.0109743867069483,
+      "mean_mse": 0.6057103020139039
+    },
+    "scale_diagnostics": {
+      "relation_ridge": 0.10074322670698166,
+      "relation_ridge_gate": 0.7887896299362183,
+      "relation_ridge_lr": 0.0003,
+      "memory_temperature": 0.2010500580072403,
+      "memory_temperature_gate": 0.6548072695732117,
+      "memory_temperature_lr": 0.0003
+    },
+    "optimizer_mean_gate": 0.23063978245934574,
+    "optimizer_alive_frac": 0.6531261938112823,
+    "alif_restored": {
+      "v": 0.0,
+      "a": 1.4682508409627315,
+      "executive_spikes": 32,
+      "calm_pieces": 97,
+      "total_external_bytes": 92800,
+      "total_learned_bytes": 92800,
+      "pending_spike": false
+    }
+  },
+  "references_from_same_2897": {
+    "origin_2897": {
+      "combined_16384_nll": 1.6412674635648727,
+      "fresh_64_facts_score": -1.1219594003632665,
+      "fresh_64_facts_mse": 0.7657257358077914
+    },
+    "strict_600s": {
+      "life_seconds": 607.6920491000055,
+      "external_bytes": 34560,
+      "bytes_per_second": 56.870910276320885,
+      "combined_16384_nll": 1.6427902588620782,
+      "fresh_8192_nll": 1.6995326075702906,
+      "classic_8192_nll": 1.5860479101538658,
+      "fresh_64_facts_score": -1.0312234312295914,
+      "fresh_64_facts_mse": 0.6570531369652599
+    },
+    "option4_600s": {
+      "life_seconds": 628.8164319999996,
+      "external_bytes": 84480,
+      "bytes_per_second": 134.34763422340092,
+      "combined_16384_nll": 1.7254903446882963,
+      "fresh_8192_nll": 1.7940364312380552,
+      "classic_8192_nll": 1.6569442581385374,
+      "fresh_64_facts_score": -1.2886278415098786,
+      "fresh_64_facts_mse": 1.019746678415686
+    }
+  }
+}

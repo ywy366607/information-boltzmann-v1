@@ -1,0 +1,99 @@
+{
+  "source_measurement": "cgb_successor_distribution_measurement_2493_20261119.json",
+  "source_loop": "cgb_successor_distribution_loop_2493_20261119.json",
+  "transitions": [
+    {
+      "cycle": 2494,
+      "points": 8,
+      "matched_existing": 0,
+      "matched_actual": 0,
+      "similarities": [
+        0.4742487072944641,
+        0.4383828938007355,
+        0.3847048580646515,
+        0.5012077689170837,
+        0.45244938135147095,
+        0.4145263135433197,
+        0.43530842661857605,
+        0.49363967776298523
+      ],
+      "actual_relation": 285,
+      "mean_absolute_error": 0.03830596315153301,
+      "distribution_absolute_error": 0.07940595107563198
+    },
+    {
+      "cycle": 2495,
+      "points": 8,
+      "matched_existing": 0,
+      "matched_actual": 0,
+      "similarities": [
+        0.4982142150402069,
+        0.38699662685394287,
+        0.3559954762458801,
+        0.45273131132125854,
+        0.403781920671463,
+        0.32889240980148315,
+        0.3783020079135895,
+        0.4274224042892456
+      ],
+      "actual_relation": 288,
+      "mean_absolute_error": 0.26314579228404344,
+      "distribution_absolute_error": 0.13868607858660997
+    },
+    {
+      "cycle": 2496,
+      "points": 8,
+      "matched_existing": 0,
+      "matched_actual": 0,
+      "similarities": [
+        0.45231759548187256,
+        0.2883465588092804,
+        0.3300955891609192,
+        0.33818888664245605,
+        0.36075976490974426,
+        0.21140120923519135,
+        0.3658609390258789,
+        0.3067788779735565
+      ],
+      "actual_relation": 270,
+      "mean_absolute_error": 0.3421965411620622,
+      "distribution_absolute_error": 0.34636020569488757
+    }
+  ],
+  "behavior": [
+    {
+      "cycle": 2494,
+      "same_action": true,
+      "same_utterance": true,
+      "same_unknown": true,
+      "actual_use_change": -2.0116567611694336E-07
+    },
+    {
+      "cycle": 2495,
+      "same_action": true,
+      "same_utterance": true,
+      "same_unknown": true,
+      "actual_use_change": 1.8581748008728027E-05
+    },
+    {
+      "cycle": 2496,
+      "same_action": true,
+      "same_utterance": true,
+      "same_unknown": true,
+      "actual_use_change": 8.717179298400879E-07
+    },
+    {
+      "cycle": 2497,
+      "same_action": true,
+      "same_utterance": true,
+      "same_unknown": true,
+      "actual_use_change": 1.1622905731201172E-06
+    }
+  ],
+  "matched_absolute_error_reduction": 0.12304244671996178,
+  "policy_MSE_reduction": 0.23700146037542258,
+  "realized_future_MSE_reduction": 0.016658175746113613,
+  "runtime_ratio": 3.3202156726350913,
+  "mean_actual_use_old": 0.011928383260965347,
+  "mean_actual_use_new": 0.01193348690867424
+}

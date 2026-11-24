@@ -1,0 +1,261 @@
+{
+  "schema": 1,
+  "source": {
+    "path": "D:\\mengli-umwelt-phase2-30min-20261124\\body\\last.pt.gz",
+    "sha256": "9f793c0c1476eb1e42c6d7984be14604d9c5720c7462322ce32c2c1379976bf3",
+    "cycle": 3258
+  },
+  "output": {
+    "checkpoint": "D:\\mengli-umwelt-yoneda-smoke5-20261124\\body\\last.pt.gz",
+    "sha256": "fda5d6f6dfbfa3cc467894555e1440b363492bb7699de7896a38950f1b4a5eb1",
+    "cycle": 3276
+  },
+  "config": {
+    "schema": 1,
+    "branch_id": "mengli-umwelt-yoneda-smoke5-20261124",
+    "mother_enabled": true,
+    "mother_harness_url": "http://127.0.0.1:8902",
+    "mother_cooldown": 1,
+    "mother_max_gap": 2,
+    "mirror_ratio": 0.7,
+    "chinese_corpus": "D:\\information-boltzmann-v1\\data\\cgb_chinese_stories_20261124\\train.bin",
+    "chinese_mix_ratio": 0.5,
+    "restored_prior_port_state": false
+  },
+  "timing": {
+    "life_seconds": 218.973,
+    "save_seconds": 2.165,
+    "peak_vram_gib": 2.339,
+    "run_external_bytes": 68480,
+    "bytes_per_second": 312.73,
+    "run_calm_pieces": 32,
+    "run_executive_spikes": 18,
+    "mean_calm_seconds": 1.2366,
+    "mean_exec_seconds": 9.7463
+  },
+  "unified_port": {
+    "ambient_reads": 32,
+    "sidecar_reads": 16,
+    "spike_turns": 18,
+    "mother_turns": 5,
+    "mother_responsive_turns": 1,
+    "mother_proactive_turns": 4,
+    "book_navigation_turns": 11,
+    "explicit_addressed_turns": 0,
+    "mirror_visible_turns": 3,
+    "book_only_turns": 2,
+    "parent_turns": 0,
+    "tool_turns": 0,
+    "ambient_fallback_turns": 13,
+    "mother_present": true,
+    "active_floor": "mother",
+    "last_book_source": "chinese_storybook",
+    "active_interlocutor": "mother",
+    "awaiting_reply_from": "mother",
+    "turns_since_name_call": 8,
+    "care_stage": "infant_direct_modeling",
+    "care_plan_version": 2,
+    "stage_transitions": [
+      {
+        "turn": 4,
+        "kind": "mother_autonomous_reflection",
+        "stage": "infant_direct_modeling",
+        "version": 2
+      }
+    ],
+    "summary_version": 0,
+    "provider_hit_rate": 0.7988821611551001,
+    "usage_totals": {
+      "reply_usage": {
+        "prompt_tokens": 10735,
+        "completion_tokens": 424,
+        "cache_hit_tokens": 8576,
+        "cache_miss_tokens": 2159,
+        "total_tokens": 11159
+      },
+      "summary_usage": null,
+      "source_counts": {
+        "api": 5,
+        "local": 1,
+        "shared": 0
+      },
+      "api_calls": 5,
+      "failures": 0
+    }
+  },
+  "hnet": {
+    "schema": 1,
+    "enc_layers": 4,
+    "dec_layers": 4,
+    "target_ratio": 4.0,
+    "ratio_loss_weight": 0.25,
+    "min_seq_len": 32,
+    "router_scale": 6.0,
+    "router_thresh": 0.08847993612289429,
+    "calibrated": true,
+    "calls": 4672,
+    "last_boundary_rate": 0.2921087443828583,
+    "last_compression_ratio": 3.423382520675659,
+    "mean_boundary_rate_ema": 0.24685199558734894,
+    "effective_compression_ema": 4.051010394388927,
+    "last_ratio_loss": 1.0530232191085815,
+    "residual_weight_rms": 0.01654481515288353,
+    "wiener_mean_gate": 0.08989511849358678
+  },
+  "flux_trajectory": [],
+  "dialogue_samples": [
+    {
+      "cycle": 3268,
+      "life_seconds": 117.6,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "book_only",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 1,
+      "utterance_kind": "silent",
+      "mirror_excerpt": "",
+      "child_text": "",
+      "reply_text": "这一页字好多呀，句子也长，慢慢看就好。你看，这里说一个人当了好多年的 Attorney General，就像小镇上帮大家处理事情的人，一做就是好多年呢。",
+      "metal_g": 0.010127436369657516,
+      "cache_hit_tokens": null,
+      "cache_miss_tokens": null,
+      "turn_hit_rate": null,
+      "provider_hit_rate": null,
+      "caregiver_source": "local",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 3270,
+      "life_seconds": 140.8,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "mirror_visible",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 1,
+      "utterance_kind": "babble",
+      "mirror_excerpt": "群蚂蚁正朝他的冰淇淋走来。他试图把他们赶走",
+      "child_text": "",
+      "reply_text": "慢慢来，刚才那个词有点陌生，卡一下没关系。你看，饼干一下子变得像房子那么大，多有意思呀，就像面团在炉子里吹了个大大的气球。刚才那个“赶走”呀，就是像你挥挥小手，把小蚂蚁请到别处去。",
+      "metal_g": 0.00016953051090240479,
+      "cache_hit_tokens": 1152,
+      "cache_miss_tokens": 380,
+      "turn_hit_rate": 0.7519582245430809,
+      "provider_hit_rate": 0.7519582245430809,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 3271,
+      "life_seconds": 153.72,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "mirror_visible",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 1,
+      "utterance_kind": "babble",
+      "mirror_excerpt": "群蚂蚁正朝他的冰淇淋走来。他试图把他们赶走",
+      "child_text": "。她看他的网站",
+      "reply_text": "嗯，我听到你在试着说了。你看，莉莉在花园里捡到一个红罐子，打开一看全是糖，就像你突然发现口袋里藏着一颗糖那样惊喜呢。",
+      "metal_g": 0.005995504558086395,
+      "cache_hit_tokens": 1536,
+      "cache_miss_tokens": 332,
+      "turn_hit_rate": 0.8222698072805139,
+      "provider_hit_rate": 0.7905882352941176,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 3273,
+      "life_seconds": 184.56,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "book_only",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 1,
+      "utterance_kind": "silent",
+      "mirror_excerpt": "",
+      "child_text": "",
+      "reply_text": "这个小朋友一开始也不想剪头发呢，坐在椅子上有点紧张。不过他乖乖坐好，剪完还得到了一辆小汽车，是不是很棒呀。",
+      "metal_g": -0.008230671286582947,
+      "cache_hit_tokens": 1792,
+      "cache_miss_tokens": 282,
+      "turn_hit_rate": 0.8640308582449373,
+      "provider_hit_rate": 0.7926177756192326,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 3276,
+      "life_seconds": 218.97,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "mirror_visible",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 2,
+      "utterance_kind": "silent",
+      "mirror_excerpt": "非常聪明。他教 Spot 和 Tweet 将糕点分成两块。",
+      "child_text": "",
+      "reply_text": "芬溅的水花小小的，心里有点难过，可莉莉说大家本来就不一样，一起玩还是开心。就像有的孩子跳得高，有的孩子跳得矮，笑声是一样的呀。",
+      "metal_g": 0.007371127605438232,
+      "cache_hit_tokens": 2048,
+      "cache_miss_tokens": 451,
+      "turn_hit_rate": 0.8195278111244498,
+      "provider_hit_rate": 0.7988821611551001,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    }
+  ],
+  "evaluation": {
+    "checkpoint": "D:\\mengli-umwelt-yoneda-smoke5-20261124\\body\\last.pt.gz",
+    "cycle": 3276,
+    "load_seconds": 10.184,
+    "fresh_8192_nll": {
+      "mean_nll": 1.7471046429127455,
+      "segment_nll": [
+        1.7886008843779564,
+        1.8272766694426537,
+        1.7152155116200447,
+        1.6573255062103271
+      ]
+    },
+    "classic_8192_nll": {
+      "mean_nll": 1.6203589234501123,
+      "segment_nll": [
+        1.4366630166769028,
+        1.8738703429698944,
+        1.6053692921996117,
+        1.5655330419540405
+      ]
+    },
+    "combined_16384_mean_nll": 1.683731783181429,
+    "fresh_64_facts": {
+      "mean_score": -0.393829177133739,
+      "mean_mse": 0.09283579039038159
+    },
+    "scale_diagnostics": {
+      "relation_ridge": 0.11235881596803665,
+      "relation_ridge_gate": 0.9408369064331055,
+      "relation_ridge_lr": 0.0003,
+      "memory_temperature": 0.2001705914735794,
+      "memory_temperature_gate": 0.5089669823646545,
+      "memory_temperature_lr": 0.0003
+    },
+    "optimizer_mean_gate": 0.17444092817796567,
+    "optimizer_alive_frac": 0.5689524291497976,
+    "alif_restored": {
+      "v": 0.0,
+      "a": 2.2428420440551573,
+      "executive_spikes": 379,
+      "calm_pieces": 949,
+      "total_external_bytes": 1882240,
+      "total_learned_bytes": 1882240,
+      "pending_spike": false
+    }
+  },
+  "restore_exact": true
+}

@@ -1,0 +1,2020 @@
+{
+  "status": "completed",
+  "main_hashes_preserved": true,
+  "plan": {
+    "schema": 1,
+    "checkpoint": {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\body\\last.pt.gz",
+      "sha256": "6d36cae0d39e41ae5dc0b84c84916733e3c09ed634b68a2d0d04f07c588e09b7"
+    },
+    "archive": {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\body\\causal_archive_511e944037da1e9128b452aba47402f5da5f8bb688919b97f896d0582dded02a.sqlite",
+      "sha256": "511e944037da1e9128b452aba47402f5da5f8bb688919b97f896d0582dded02a"
+    },
+    "cycles": 32,
+    "arms": [
+      "A"
+    ],
+    "contact_momentum": true,
+    "baseline_work": "F:\\mengli-causal-use-2401-v5",
+    "source_body": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\body",
+    "budget": {
+      "external_bytes_per_cycle": 960,
+      "full_optimizer_updates": true
+    },
+    "sources": {
+      "scripts\\run_native_causal_use_value.py": "648feab7a39270a72b56d9d994a182dddd38aa23717d4c9d68139a99fcb2813f",
+      "scripts\\ib_local\\causal_use_value.py": "ef4b8aa4a437411c26c587897ff742817c1ab4bf5e3faa94d1795aabdbd72b56",
+      "scripts\\ib_local\\world_learning_cycle.py": "c2b32fdc40bea7819af7b0f6bdb4f384af5f751ec1005aeb1cfbb6f10a649e41",
+      "scripts\\ib_local\\navigation_generative_cycle.py": "d5aa49a3575fc6d9c9d6b53e11ddeec10198114d26bd826041326f593f59a0eb",
+      "scripts\\ib_local\\navigation_joint_cycle.py": "3c213d96d100108069337d14dcca1b714f23099e7f804be9e373285a06541a4e",
+      "scripts\\ib_local\\navigation_causal_program.py": "1c241496ed65307fc0fc2d00b2b583f8e0fa83e009b79b85c59704519a337d65",
+      "scripts\\ib_local\\navigation_internal_rollout.py": "bcb0e83cfae3ff7e1703492ddb177ab5720612f21e38d500a4ae05d739bc5511",
+      "scripts\\ib_local\\causal_archive.py": "8315af988a83eb20eb87fbaf125dafd77fa27ef3e99a1ab7b1a69e2e4fc7e6d7",
+      "scripts\\ib_local\\adaptive_hamiltonian.py": "ac16cdfba586df43cb62aa4efaa22b1b128a7356866bbff14d7b4dc6f9b97d4b",
+      "scripts\\ib_local\\contact_momentum.py": "bc80d0df43d16798f42a26a19549727650627910d28ebed3f471681a829fda57",
+      "scripts\\ib_local\\contact_momentum_fused.py": "24db152db4e76d4c09665485e7e08d4a16850b1dced38f7153c5725e6a458d22",
+      "scripts\\ib_local\\bfss_gdn_capture.py": "dbffbf48963d762e007dbbb74fb0613fd55de7059703c0f1d09a7018823d1e7a",
+      "scripts\\ib_local\\navigation_bfss_dynamics.py": "c31cdaf3d07245e302db01761e05df6d47225ea5889e39c7f3caff4f55d7cc09",
+      "scripts\\ib_local\\run_causal_water_reply.py": "a94bab6e086cc1cde50bb9598cccd9b7c506961df7d40c06598a92a3c7932565",
+      "scripts\\native_policy_activation_storage.py": "41c463fe25a6293fce1ea6e8d46eda8256da74beb73312b5661ef4c895e20948"
+    }
+  },
+  "arms": {
+    "A": {
+      "cycles": 32,
+      "updates": 128,
+      "external_bytes": 30720,
+      "seconds": 836.6767578999861,
+      "evaluations": [
+        [
+          0,
+          {
+            "queries": [
+              {
+                "relation": 3,
+                "query": "episode:1345",
+                "score": -1.281020164489746,
+                "mse": 0.8815411329269409
+              },
+              {
+                "relation": 3,
+                "query": "episode:1616",
+                "score": -1.1089755296707153,
+                "mse": 0.5383666157722473
+              },
+              {
+                "relation": 3,
+                "query": "episode:1650",
+                "score": -1.7055901288986206,
+                "mse": 1.9152804613113403
+              },
+              {
+                "relation": 3,
+                "query": "episode:203",
+                "score": -1.6698205471038818,
+                "mse": 1.4216642379760742
+              },
+              {
+                "relation": 3,
+                "query": "episode:2066",
+                "score": -0.9866626262664795,
+                "mse": 0.33062684535980225
+              },
+              {
+                "relation": 3,
+                "query": "episode:2237",
+                "score": -1.2286787033081055,
+                "mse": 0.750605046749115
+              },
+              {
+                "relation": 3,
+                "query": "episode:2354",
+                "score": -1.0437012910842896,
+                "mse": 0.8474446535110474
+              },
+              {
+                "relation": 3,
+                "query": "episode:263",
+                "score": -0.9381166696548462,
+                "mse": 0.47233232855796814
+              },
+              {
+                "relation": 9,
+                "query": "episode:1321",
+                "score": -1.3957147598266602,
+                "mse": 0.9173833727836609
+              },
+              {
+                "relation": 9,
+                "query": "episode:1368",
+                "score": -1.1426818370819092,
+                "mse": 0.7591338157653809
+              },
+              {
+                "relation": 9,
+                "query": "episode:1616",
+                "score": -1.234420657157898,
+                "mse": 0.9360876679420471
+              },
+              {
+                "relation": 9,
+                "query": "episode:1710",
+                "score": -1.4047476053237915,
+                "mse": 1.03928542137146
+              },
+              {
+                "relation": 9,
+                "query": "episode:203",
+                "score": -1.3754910230636597,
+                "mse": 0.856092631816864
+              },
+              {
+                "relation": 9,
+                "query": "episode:2401",
+                "score": -1.1938352584838867,
+                "mse": 1.0855133533477783
+              },
+              {
+                "relation": 9,
+                "query": "episode:263",
+                "score": -1.152636170387268,
+                "mse": 0.7181745767593384
+              },
+              {
+                "relation": 9,
+                "query": "episode:929",
+                "score": -1.0420472621917725,
+                "mse": 0.5996501445770264
+              },
+              {
+                "relation": 12,
+                "query": "episode:1345",
+                "score": -1.2943695783615112,
+                "mse": 0.9146082401275635
+              },
+              {
+                "relation": 12,
+                "query": "episode:1616",
+                "score": -1.0555740594863892,
+                "mse": 0.5278127193450928
+              },
+              {
+                "relation": 12,
+                "query": "episode:1919",
+                "score": -0.9251590967178345,
+                "mse": 0.4774572253227234
+              },
+              {
+                "relation": 12,
+                "query": "episode:203",
+                "score": -1.5484555959701538,
+                "mse": 1.1500346660614014
+              },
+              {
+                "relation": 12,
+                "query": "episode:2066",
+                "score": -0.7289708852767944,
+                "mse": 0.12678742408752441
+              },
+              {
+                "relation": 12,
+                "query": "episode:2237",
+                "score": -1.1721596717834473,
+                "mse": 0.6200680136680603
+              },
+              {
+                "relation": 12,
+                "query": "episode:2386",
+                "score": -0.8449926972389221,
+                "mse": 0.46844738721847534
+              },
+              {
+                "relation": 12,
+                "query": "episode:263",
+                "score": -1.075726866722107,
+                "mse": 0.6669123768806458
+              },
+              {
+                "relation": 14,
+                "query": "episode:2223",
+                "score": -1.1441700458526611,
+                "mse": 0.5436270236968994
+              },
+              {
+                "relation": 14,
+                "query": "episode:28",
+                "score": -0.7216073274612427,
+                "mse": 0.20586936175823212
+              },
+              {
+                "relation": 14,
+                "query": "episode:346",
+                "score": -0.8789829015731812,
+                "mse": 0.3915044963359833
+              },
+              {
+                "relation": 14,
+                "query": "episode:350",
+                "score": -0.7409438490867615,
+                "mse": 0.2006276696920395
+              },
+              {
+                "relation": 14,
+                "query": "episode:38",
+                "score": -0.638234555721283,
+                "mse": 0.16284655034542084
+              },
+              {
+                "relation": 14,
+                "query": "episode:39",
+                "score": -0.8890906572341919,
+                "mse": 0.3200642764568329
+              },
+              {
+                "relation": 14,
+                "query": "episode:42",
+                "score": -0.5902557373046875,
+                "mse": 0.10497792065143585
+              },
+              {
+                "relation": 14,
+                "query": "episode:58",
+                "score": -0.899726390838623,
+                "mse": 0.31751948595046997
+              },
+              {
+                "relation": 155,
+                "query": "episode:1145",
+                "score": -0.8878411054611206,
+                "mse": 0.330822229385376
+              },
+              {
+                "relation": 155,
+                "query": "episode:1321",
+                "score": -1.7903306484222412,
+                "mse": 1.5001424551010132
+              },
+              {
+                "relation": 155,
+                "query": "episode:1566",
+                "score": -1.339514970779419,
+                "mse": 1.0095105171203613
+              },
+              {
+                "relation": 155,
+                "query": "episode:1616",
+                "score": -1.3028570413589478,
+                "mse": 1.0358479022979736
+              },
+              {
+                "relation": 155,
+                "query": "episode:1907",
+                "score": -1.0796594619750977,
+                "mse": 0.5442454814910889
+              },
+              {
+                "relation": 155,
+                "query": "episode:203",
+                "score": -1.4201629161834717,
+                "mse": 0.9160799980163574
+              },
+              {
+                "relation": 155,
+                "query": "episode:263",
+                "score": -0.8797135353088379,
+                "mse": 0.2754376530647278
+              },
+              {
+                "relation": 155,
+                "query": "episode:267",
+                "score": -1.2829127311706543,
+                "mse": 0.8331527709960938
+              },
+              {
+                "relation": 184,
+                "query": "episode:104",
+                "score": -1.0512638092041016,
+                "mse": 0.5421961545944214
+              },
+              {
+                "relation": 184,
+                "query": "episode:1321",
+                "score": -1.7120094299316406,
+                "mse": 1.2772514820098877
+              },
+              {
+                "relation": 184,
+                "query": "episode:1368",
+                "score": -1.0047404766082764,
+                "mse": 0.43268516659736633
+              },
+              {
+                "relation": 184,
+                "query": "episode:1710",
+                "score": -1.4394481182098389,
+                "mse": 1.2369108200073242
+              },
+              {
+                "relation": 184,
+                "query": "episode:1974",
+                "score": -1.452856183052063,
+                "mse": 1.3637441396713257
+              },
+              {
+                "relation": 184,
+                "query": "episode:2012",
+                "score": -1.0006638765335083,
+                "mse": 0.7486426830291748
+              },
+              {
+                "relation": 184,
+                "query": "episode:267",
+                "score": -1.6680688858032227,
+                "mse": 1.3750118017196655
+              },
+              {
+                "relation": 184,
+                "query": "episode:283",
+                "score": -1.3100498914718628,
+                "mse": 1.1578738689422607
+              },
+              {
+                "relation": 202,
+                "query": "episode:1321",
+                "score": -1.4179236888885498,
+                "mse": 0.8477069139480591
+              },
+              {
+                "relation": 202,
+                "query": "episode:1368",
+                "score": -1.1713299751281738,
+                "mse": 0.7574089169502258
+              },
+              {
+                "relation": 202,
+                "query": "episode:1439",
+                "score": -1.6006665229797363,
+                "mse": 1.37939453125
+              },
+              {
+                "relation": 202,
+                "query": "episode:1616",
+                "score": -1.2485451698303223,
+                "mse": 0.866335391998291
+              },
+              {
+                "relation": 202,
+                "query": "episode:203",
+                "score": -1.5767055749893188,
+                "mse": 1.1992700099945068
+              },
+              {
+                "relation": 202,
+                "query": "episode:2381",
+                "score": -1.2291337251663208,
+                "mse": 0.7408234477043152
+              },
+              {
+                "relation": 202,
+                "query": "episode:263",
+                "score": -1.2261950969696045,
+                "mse": 0.8103507161140442
+              },
+              {
+                "relation": 202,
+                "query": "episode:929",
+                "score": -1.1021205186843872,
+                "mse": 0.6729646921157837
+              },
+              {
+                "relation": 203,
+                "query": "episode:1133",
+                "score": -1.1952135562896729,
+                "mse": 0.6946841478347778
+              },
+              {
+                "relation": 203,
+                "query": "episode:1616",
+                "score": -1.0928153991699219,
+                "mse": 0.607147216796875
+              },
+              {
+                "relation": 203,
+                "query": "episode:1919",
+                "score": -1.2156269550323486,
+                "mse": 1.1617183685302734
+              },
+              {
+                "relation": 203,
+                "query": "episode:203",
+                "score": -0.8808153867721558,
+                "mse": 0.28944116830825806
+              },
+              {
+                "relation": 203,
+                "query": "episode:2040",
+                "score": -1.1984248161315918,
+                "mse": 0.8483640551567078
+              },
+              {
+                "relation": 203,
+                "query": "episode:2334",
+                "score": -0.977635383605957,
+                "mse": 0.5481898784637451
+              },
+              {
+                "relation": 203,
+                "query": "episode:263",
+                "score": -0.9587939977645874,
+                "mse": 0.4404539465904236
+              },
+              {
+                "relation": 203,
+                "query": "episode:283",
+                "score": -1.0205367803573608,
+                "mse": 0.6291638016700745
+              }
+            ],
+            "mean_score": -1.1685489965602756,
+            "mean_mse": 0.7553331167437136
+          }
+        ],
+        [
+          8,
+          {
+            "queries": [
+              {
+                "relation": 3,
+                "query": "episode:1345",
+                "score": -1.2821755409240723,
+                "mse": 0.8808754682540894
+              },
+              {
+                "relation": 3,
+                "query": "episode:1616",
+                "score": -1.1083420515060425,
+                "mse": 0.535408079624176
+              },
+              {
+                "relation": 3,
+                "query": "episode:1650",
+                "score": -1.7138397693634033,
+                "mse": 1.9173188209533691
+              },
+              {
+                "relation": 3,
+                "query": "episode:203",
+                "score": -1.6775131225585938,
+                "mse": 1.432692527770996
+              },
+              {
+                "relation": 3,
+                "query": "episode:2066",
+                "score": -0.9902337789535522,
+                "mse": 0.32543322443962097
+              },
+              {
+                "relation": 3,
+                "query": "episode:2237",
+                "score": -1.2271201610565186,
+                "mse": 0.7502795457839966
+              },
+              {
+                "relation": 3,
+                "query": "episode:2354",
+                "score": -1.0444014072418213,
+                "mse": 0.8388996124267578
+              },
+              {
+                "relation": 3,
+                "query": "episode:263",
+                "score": -0.9409427642822266,
+                "mse": 0.47179609537124634
+              },
+              {
+                "relation": 9,
+                "query": "episode:1321",
+                "score": -1.4008301496505737,
+                "mse": 0.9209028482437134
+              },
+              {
+                "relation": 9,
+                "query": "episode:1368",
+                "score": -1.1426148414611816,
+                "mse": 0.7571477293968201
+              },
+              {
+                "relation": 9,
+                "query": "episode:1616",
+                "score": -1.2338731288909912,
+                "mse": 0.9340829849243164
+              },
+              {
+                "relation": 9,
+                "query": "episode:1710",
+                "score": -1.4007055759429932,
+                "mse": 1.0321996212005615
+              },
+              {
+                "relation": 9,
+                "query": "episode:203",
+                "score": -1.3710699081420898,
+                "mse": 0.8497857451438904
+              },
+              {
+                "relation": 9,
+                "query": "episode:2401",
+                "score": -1.1880450248718262,
+                "mse": 1.081027865409851
+              },
+              {
+                "relation": 9,
+                "query": "episode:263",
+                "score": -1.1553990840911865,
+                "mse": 0.719248354434967
+              },
+              {
+                "relation": 9,
+                "query": "episode:929",
+                "score": -1.0447416305541992,
+                "mse": 0.6004478931427002
+              },
+              {
+                "relation": 12,
+                "query": "episode:1345",
+                "score": -1.2936729192733765,
+                "mse": 0.9123820662498474
+              },
+              {
+                "relation": 12,
+                "query": "episode:1616",
+                "score": -1.0548025369644165,
+                "mse": 0.5240603685379028
+              },
+              {
+                "relation": 12,
+                "query": "episode:1919",
+                "score": -0.9266407489776611,
+                "mse": 0.48130834102630615
+              },
+              {
+                "relation": 12,
+                "query": "episode:203",
+                "score": -1.5530000925064087,
+                "mse": 1.152071475982666
+              },
+              {
+                "relation": 12,
+                "query": "episode:2066",
+                "score": -0.7323224544525146,
+                "mse": 0.1259310245513916
+              },
+              {
+                "relation": 12,
+                "query": "episode:2237",
+                "score": -1.1682416200637817,
+                "mse": 0.6166154742240906
+              },
+              {
+                "relation": 12,
+                "query": "episode:2386",
+                "score": -0.844144344329834,
+                "mse": 0.47043266892433167
+              },
+              {
+                "relation": 12,
+                "query": "episode:263",
+                "score": -1.0774438381195068,
+                "mse": 0.670764148235321
+              },
+              {
+                "relation": 14,
+                "query": "episode:2223",
+                "score": -1.1471149921417236,
+                "mse": 0.5462227463722229
+              },
+              {
+                "relation": 14,
+                "query": "episode:28",
+                "score": -0.7225133776664734,
+                "mse": 0.206499382853508
+              },
+              {
+                "relation": 14,
+                "query": "episode:346",
+                "score": -0.8800978660583496,
+                "mse": 0.3922475278377533
+              },
+              {
+                "relation": 14,
+                "query": "episode:350",
+                "score": -0.7416008114814758,
+                "mse": 0.20090541243553162
+              },
+              {
+                "relation": 14,
+                "query": "episode:38",
+                "score": -0.6390929222106934,
+                "mse": 0.16309241950511932
+              },
+              {
+                "relation": 14,
+                "query": "episode:39",
+                "score": -0.8915258646011353,
+                "mse": 0.32136619091033936
+              },
+              {
+                "relation": 14,
+                "query": "episode:42",
+                "score": -0.5917865037918091,
+                "mse": 0.10530765354633331
+              },
+              {
+                "relation": 14,
+                "query": "episode:58",
+                "score": -0.9011263847351074,
+                "mse": 0.3183901906013489
+              },
+              {
+                "relation": 155,
+                "query": "episode:1145",
+                "score": -0.8880941867828369,
+                "mse": 0.32668933272361755
+              },
+              {
+                "relation": 155,
+                "query": "episode:1321",
+                "score": -1.7949998378753662,
+                "mse": 1.4902575016021729
+              },
+              {
+                "relation": 155,
+                "query": "episode:1566",
+                "score": -1.338126301765442,
+                "mse": 1.0072238445281982
+              },
+              {
+                "relation": 155,
+                "query": "episode:1616",
+                "score": -1.301612138748169,
+                "mse": 1.0322622060775757
+              },
+              {
+                "relation": 155,
+                "query": "episode:1907",
+                "score": -1.0831782817840576,
+                "mse": 0.5483457446098328
+              },
+              {
+                "relation": 155,
+                "query": "episode:203",
+                "score": -1.4219903945922852,
+                "mse": 0.9157246947288513
+              },
+              {
+                "relation": 155,
+                "query": "episode:263",
+                "score": -0.8823620080947876,
+                "mse": 0.2764601409435272
+              },
+              {
+                "relation": 155,
+                "query": "episode:267",
+                "score": -1.2824828624725342,
+                "mse": 0.8326736092567444
+              },
+              {
+                "relation": 184,
+                "query": "episode:104",
+                "score": -1.0492184162139893,
+                "mse": 0.5388257503509521
+              },
+              {
+                "relation": 184,
+                "query": "episode:1321",
+                "score": -1.7126414775848389,
+                "mse": 1.2686721086502075
+              },
+              {
+                "relation": 184,
+                "query": "episode:1368",
+                "score": -1.0067634582519531,
+                "mse": 0.435660719871521
+              },
+              {
+                "relation": 184,
+                "query": "episode:1710",
+                "score": -1.4345883131027222,
+                "mse": 1.2205922603607178
+              },
+              {
+                "relation": 184,
+                "query": "episode:1974",
+                "score": -1.4640159606933594,
+                "mse": 1.387056589126587
+              },
+              {
+                "relation": 184,
+                "query": "episode:2012",
+                "score": -1.0046401023864746,
+                "mse": 0.7527124881744385
+              },
+              {
+                "relation": 184,
+                "query": "episode:267",
+                "score": -1.6668953895568848,
+                "mse": 1.375675082206726
+              },
+              {
+                "relation": 184,
+                "query": "episode:283",
+                "score": -1.302424430847168,
+                "mse": 1.1433370113372803
+              },
+              {
+                "relation": 202,
+                "query": "episode:1321",
+                "score": -1.4229204654693604,
+                "mse": 0.8513233065605164
+              },
+              {
+                "relation": 202,
+                "query": "episode:1368",
+                "score": -1.172086477279663,
+                "mse": 0.7573137283325195
+              },
+              {
+                "relation": 202,
+                "query": "episode:1439",
+                "score": -1.603745937347412,
+                "mse": 1.3839688301086426
+              },
+              {
+                "relation": 202,
+                "query": "episode:1616",
+                "score": -1.2492191791534424,
+                "mse": 0.8651823997497559
+              },
+              {
+                "relation": 202,
+                "query": "episode:203",
+                "score": -1.5763492584228516,
+                "mse": 1.1971508264541626
+              },
+              {
+                "relation": 202,
+                "query": "episode:2381",
+                "score": -1.2316255569458008,
+                "mse": 0.7434260845184326
+              },
+              {
+                "relation": 202,
+                "query": "episode:263",
+                "score": -1.229781985282898,
+                "mse": 0.8143471479415894
+              },
+              {
+                "relation": 202,
+                "query": "episode:929",
+                "score": -1.1047616004943848,
+                "mse": 0.6726945042610168
+              },
+              {
+                "relation": 203,
+                "query": "episode:1133",
+                "score": -1.200042724609375,
+                "mse": 0.7004746794700623
+              },
+              {
+                "relation": 203,
+                "query": "episode:1616",
+                "score": -1.0933969020843506,
+                "mse": 0.6051563620567322
+              },
+              {
+                "relation": 203,
+                "query": "episode:1919",
+                "score": -1.2134168148040771,
+                "mse": 1.1583490371704102
+              },
+              {
+                "relation": 203,
+                "query": "episode:203",
+                "score": -0.8826924562454224,
+                "mse": 0.2931928038597107
+              },
+              {
+                "relation": 203,
+                "query": "episode:2040",
+                "score": -1.1970010995864868,
+                "mse": 0.8459057807922363
+              },
+              {
+                "relation": 203,
+                "query": "episode:2334",
+                "score": -0.9712643623352051,
+                "mse": 0.5426440238952637
+              },
+              {
+                "relation": 203,
+                "query": "episode:263",
+                "score": -0.9596830010414124,
+                "mse": 0.44120699167251587
+              },
+              {
+                "relation": 203,
+                "query": "episode:283",
+                "score": -1.023186445236206,
+                "mse": 0.6312341690063477
+              }
+            ],
+            "mean_score": -1.1695653600618243,
+            "mean_mse": 0.7548575510736555
+          }
+        ],
+        [
+          16,
+          {
+            "queries": [
+              {
+                "relation": 3,
+                "query": "episode:1345",
+                "score": -1.2822065353393555,
+                "mse": 0.8807246685028076
+              },
+              {
+                "relation": 3,
+                "query": "episode:1616",
+                "score": -1.1078619956970215,
+                "mse": 0.5345193147659302
+              },
+              {
+                "relation": 3,
+                "query": "episode:1650",
+                "score": -1.7134571075439453,
+                "mse": 1.9145643711090088
+              },
+              {
+                "relation": 3,
+                "query": "episode:203",
+                "score": -1.6784535646438599,
+                "mse": 1.4329899549484253
+              },
+              {
+                "relation": 3,
+                "query": "episode:2066",
+                "score": -0.9911971092224121,
+                "mse": 0.3246758282184601
+              },
+              {
+                "relation": 3,
+                "query": "episode:2237",
+                "score": -1.2258076667785645,
+                "mse": 0.7476619482040405
+              },
+              {
+                "relation": 3,
+                "query": "episode:2354",
+                "score": -1.045203685760498,
+                "mse": 0.8397860527038574
+              },
+              {
+                "relation": 3,
+                "query": "episode:263",
+                "score": -0.9404627680778503,
+                "mse": 0.4703601002693176
+              },
+              {
+                "relation": 9,
+                "query": "episode:1321",
+                "score": -1.4004902839660645,
+                "mse": 0.92095947265625
+              },
+              {
+                "relation": 9,
+                "query": "episode:1368",
+                "score": -1.1418099403381348,
+                "mse": 0.7557417154312134
+              },
+              {
+                "relation": 9,
+                "query": "episode:1616",
+                "score": -1.2333418130874634,
+                "mse": 0.9332265853881836
+              },
+              {
+                "relation": 9,
+                "query": "episode:1710",
+                "score": -1.3996610641479492,
+                "mse": 1.030678391456604
+              },
+              {
+                "relation": 9,
+                "query": "episode:203",
+                "score": -1.3708264827728271,
+                "mse": 0.8493880033493042
+              },
+              {
+                "relation": 9,
+                "query": "episode:2401",
+                "score": -1.188529133796692,
+                "mse": 1.0822538137435913
+              },
+              {
+                "relation": 9,
+                "query": "episode:263",
+                "score": -1.1546695232391357,
+                "mse": 0.717659056186676
+              },
+              {
+                "relation": 9,
+                "query": "episode:929",
+                "score": -1.0454506874084473,
+                "mse": 0.6010116338729858
+              },
+              {
+                "relation": 12,
+                "query": "episode:1345",
+                "score": -1.2928581237792969,
+                "mse": 0.9115943312644958
+              },
+              {
+                "relation": 12,
+                "query": "episode:1616",
+                "score": -1.054710865020752,
+                "mse": 0.5232181549072266
+              },
+              {
+                "relation": 12,
+                "query": "episode:1919",
+                "score": -0.9275051355361938,
+                "mse": 0.48286116123199463
+              },
+              {
+                "relation": 12,
+                "query": "episode:203",
+                "score": -1.553676724433899,
+                "mse": 1.1517534255981445
+              },
+              {
+                "relation": 12,
+                "query": "episode:2066",
+                "score": -0.7327895164489746,
+                "mse": 0.12569491565227509
+              },
+              {
+                "relation": 12,
+                "query": "episode:2237",
+                "score": -1.1675828695297241,
+                "mse": 0.6159929037094116
+              },
+              {
+                "relation": 12,
+                "query": "episode:2386",
+                "score": -0.8438093662261963,
+                "mse": 0.47048574686050415
+              },
+              {
+                "relation": 12,
+                "query": "episode:263",
+                "score": -1.0780020952224731,
+                "mse": 0.6715347766876221
+              },
+              {
+                "relation": 14,
+                "query": "episode:2223",
+                "score": -1.1475197076797485,
+                "mse": 0.5464995503425598
+              },
+              {
+                "relation": 14,
+                "query": "episode:28",
+                "score": -0.7226705551147461,
+                "mse": 0.20647336542606354
+              },
+              {
+                "relation": 14,
+                "query": "episode:346",
+                "score": -0.8804686665534973,
+                "mse": 0.39243099093437195
+              },
+              {
+                "relation": 14,
+                "query": "episode:350",
+                "score": -0.7419339418411255,
+                "mse": 0.20101530849933624
+              },
+              {
+                "relation": 14,
+                "query": "episode:38",
+                "score": -0.639326274394989,
+                "mse": 0.16312725841999054
+              },
+              {
+                "relation": 14,
+                "query": "episode:39",
+                "score": -0.892768144607544,
+                "mse": 0.32220351696014404
+              },
+              {
+                "relation": 14,
+                "query": "episode:42",
+                "score": -0.5920044779777527,
+                "mse": 0.1052413061261177
+              },
+              {
+                "relation": 14,
+                "query": "episode:58",
+                "score": -0.9019027948379517,
+                "mse": 0.31895190477371216
+              },
+              {
+                "relation": 155,
+                "query": "episode:1145",
+                "score": -0.8879773616790771,
+                "mse": 0.3261265158653259
+              },
+              {
+                "relation": 155,
+                "query": "episode:1321",
+                "score": -1.794555425643921,
+                "mse": 1.4895873069763184
+              },
+              {
+                "relation": 155,
+                "query": "episode:1566",
+                "score": -1.3391947746276855,
+                "mse": 1.008530616760254
+              },
+              {
+                "relation": 155,
+                "query": "episode:1616",
+                "score": -1.300964593887329,
+                "mse": 1.0308032035827637
+              },
+              {
+                "relation": 155,
+                "query": "episode:1907",
+                "score": -1.0841196775436401,
+                "mse": 0.5494353771209717
+              },
+              {
+                "relation": 155,
+                "query": "episode:203",
+                "score": -1.4230142831802368,
+                "mse": 0.9168562293052673
+              },
+              {
+                "relation": 155,
+                "query": "episode:263",
+                "score": -0.8823120594024658,
+                "mse": 0.27606362104415894
+              },
+              {
+                "relation": 155,
+                "query": "episode:267",
+                "score": -1.2821816205978394,
+                "mse": 0.8320304751396179
+              },
+              {
+                "relation": 184,
+                "query": "episode:104",
+                "score": -1.0480544567108154,
+                "mse": 0.5370324850082397
+              },
+              {
+                "relation": 184,
+                "query": "episode:1321",
+                "score": -1.7109122276306152,
+                "mse": 1.2665369510650635
+              },
+              {
+                "relation": 184,
+                "query": "episode:1368",
+                "score": -1.0070520639419556,
+                "mse": 0.43644386529922485
+              },
+              {
+                "relation": 184,
+                "query": "episode:1710",
+                "score": -1.432718276977539,
+                "mse": 1.2152981758117676
+              },
+              {
+                "relation": 184,
+                "query": "episode:1974",
+                "score": -1.4652836322784424,
+                "mse": 1.3889751434326172
+              },
+              {
+                "relation": 184,
+                "query": "episode:2012",
+                "score": -1.0059092044830322,
+                "mse": 0.7546689510345459
+              },
+              {
+                "relation": 184,
+                "query": "episode:267",
+                "score": -1.6657668352127075,
+                "mse": 1.373641014099121
+              },
+              {
+                "relation": 184,
+                "query": "episode:283",
+                "score": -1.3015400171279907,
+                "mse": 1.1412159204483032
+              },
+              {
+                "relation": 202,
+                "query": "episode:1321",
+                "score": -1.4228129386901855,
+                "mse": 0.8510833382606506
+              },
+              {
+                "relation": 202,
+                "query": "episode:1368",
+                "score": -1.171654462814331,
+                "mse": 0.7564747333526611
+              },
+              {
+                "relation": 202,
+                "query": "episode:1439",
+                "score": -1.604706048965454,
+                "mse": 1.3848307132720947
+              },
+              {
+                "relation": 202,
+                "query": "episode:1616",
+                "score": -1.248957633972168,
+                "mse": 0.864668071269989
+              },
+              {
+                "relation": 202,
+                "query": "episode:203",
+                "score": -1.5768964290618896,
+                "mse": 1.197422742843628
+              },
+              {
+                "relation": 202,
+                "query": "episode:2381",
+                "score": -1.2319536209106445,
+                "mse": 0.7439608573913574
+              },
+              {
+                "relation": 202,
+                "query": "episode:263",
+                "score": -1.2290301322937012,
+                "mse": 0.8132227063179016
+              },
+              {
+                "relation": 202,
+                "query": "episode:929",
+                "score": -1.1053709983825684,
+                "mse": 0.672784686088562
+              },
+              {
+                "relation": 203,
+                "query": "episode:1133",
+                "score": -1.2007038593292236,
+                "mse": 0.7012820243835449
+              },
+              {
+                "relation": 203,
+                "query": "episode:1616",
+                "score": -1.0935426950454712,
+                "mse": 0.6047731637954712
+              },
+              {
+                "relation": 203,
+                "query": "episode:1919",
+                "score": -1.2143504619598389,
+                "mse": 1.159897804260254
+              },
+              {
+                "relation": 203,
+                "query": "episode:203",
+                "score": -0.8831685781478882,
+                "mse": 0.29392507672309875
+              },
+              {
+                "relation": 203,
+                "query": "episode:2040",
+                "score": -1.197683572769165,
+                "mse": 0.8476239442825317
+              },
+              {
+                "relation": 203,
+                "query": "episode:2334",
+                "score": -0.9710174202919006,
+                "mse": 0.54233717918396
+              },
+              {
+                "relation": 203,
+                "query": "episode:263",
+                "score": -0.9600170850753784,
+                "mse": 0.4412499666213989
+              },
+              {
+                "relation": 203,
+                "query": "episode:283",
+                "score": -1.0240106582641602,
+                "mse": 0.6317499876022339
+              }
+            ],
+            "mean_score": -1.169631120748818,
+            "mean_mse": 0.7546220683725551
+          }
+        ],
+        [
+          24,
+          {
+            "queries": [
+              {
+                "relation": 3,
+                "query": "episode:1345",
+                "score": -1.281768560409546,
+                "mse": 0.880327582359314
+              },
+              {
+                "relation": 3,
+                "query": "episode:1616",
+                "score": -1.1070270538330078,
+                "mse": 0.5333647131919861
+              },
+              {
+                "relation": 3,
+                "query": "episode:1650",
+                "score": -1.7158520221710205,
+                "mse": 1.9173858165740967
+              },
+              {
+                "relation": 3,
+                "query": "episode:203",
+                "score": -1.6809329986572266,
+                "mse": 1.4357566833496094
+              },
+              {
+                "relation": 3,
+                "query": "episode:2066",
+                "score": -0.9916589260101318,
+                "mse": 0.323739230632782
+              },
+              {
+                "relation": 3,
+                "query": "episode:2237",
+                "score": -1.2262625694274902,
+                "mse": 0.7478159666061401
+              },
+              {
+                "relation": 3,
+                "query": "episode:2354",
+                "score": -1.045809268951416,
+                "mse": 0.8416404128074646
+              },
+              {
+                "relation": 3,
+                "query": "episode:263",
+                "score": -0.9390289783477783,
+                "mse": 0.46821486949920654
+              },
+              {
+                "relation": 9,
+                "query": "episode:1321",
+                "score": -1.399451732635498,
+                "mse": 0.9204539060592651
+              },
+              {
+                "relation": 9,
+                "query": "episode:1368",
+                "score": -1.1414051055908203,
+                "mse": 0.7554130554199219
+              },
+              {
+                "relation": 9,
+                "query": "episode:1616",
+                "score": -1.2320091724395752,
+                "mse": 0.9307939410209656
+              },
+              {
+                "relation": 9,
+                "query": "episode:1710",
+                "score": -1.4017692804336548,
+                "mse": 1.0341708660125732
+              },
+              {
+                "relation": 9,
+                "query": "episode:203",
+                "score": -1.3719604015350342,
+                "mse": 0.8509628176689148
+              },
+              {
+                "relation": 9,
+                "query": "episode:2401",
+                "score": -1.1894255876541138,
+                "mse": 1.0838360786437988
+              },
+              {
+                "relation": 9,
+                "query": "episode:263",
+                "score": -1.1532626152038574,
+                "mse": 0.7159505486488342
+              },
+              {
+                "relation": 9,
+                "query": "episode:929",
+                "score": -1.0460611581802368,
+                "mse": 0.6019962430000305
+              },
+              {
+                "relation": 12,
+                "query": "episode:1345",
+                "score": -1.2927935123443604,
+                "mse": 0.9121238589286804
+              },
+              {
+                "relation": 12,
+                "query": "episode:1616",
+                "score": -1.0535725355148315,
+                "mse": 0.5218507647514343
+              },
+              {
+                "relation": 12,
+                "query": "episode:1919",
+                "score": -0.9277843832969666,
+                "mse": 0.4834653437137604
+              },
+              {
+                "relation": 12,
+                "query": "episode:203",
+                "score": -1.5549030303955078,
+                "mse": 1.1528384685516357
+              },
+              {
+                "relation": 12,
+                "query": "episode:2066",
+                "score": -0.7325100898742676,
+                "mse": 0.12520962953567505
+              },
+              {
+                "relation": 12,
+                "query": "episode:2237",
+                "score": -1.1678204536437988,
+                "mse": 0.6163466572761536
+              },
+              {
+                "relation": 12,
+                "query": "episode:2386",
+                "score": -0.8429564237594604,
+                "mse": 0.4698546826839447
+              },
+              {
+                "relation": 12,
+                "query": "episode:263",
+                "score": -1.0762161016464233,
+                "mse": 0.6693156957626343
+              },
+              {
+                "relation": 14,
+                "query": "episode:2223",
+                "score": -1.147908091545105,
+                "mse": 0.5469837784767151
+              },
+              {
+                "relation": 14,
+                "query": "episode:28",
+                "score": -0.7225834131240845,
+                "mse": 0.20621687173843384
+              },
+              {
+                "relation": 14,
+                "query": "episode:346",
+                "score": -0.8808674812316895,
+                "mse": 0.3927929103374481
+              },
+              {
+                "relation": 14,
+                "query": "episode:350",
+                "score": -0.7416728734970093,
+                "mse": 0.20073573291301727
+              },
+              {
+                "relation": 14,
+                "query": "episode:38",
+                "score": -0.6391521096229553,
+                "mse": 0.16276293992996216
+              },
+              {
+                "relation": 14,
+                "query": "episode:39",
+                "score": -0.893269419670105,
+                "mse": 0.3224697709083557
+              },
+              {
+                "relation": 14,
+                "query": "episode:42",
+                "score": -0.5921619534492493,
+                "mse": 0.10534206032752991
+              },
+              {
+                "relation": 14,
+                "query": "episode:58",
+                "score": -0.9024375081062317,
+                "mse": 0.3194185197353363
+              },
+              {
+                "relation": 155,
+                "query": "episode:1145",
+                "score": -0.8879041075706482,
+                "mse": 0.32577815651893616
+              },
+              {
+                "relation": 155,
+                "query": "episode:1321",
+                "score": -1.7953687906265259,
+                "mse": 1.4918485879898071
+              },
+              {
+                "relation": 155,
+                "query": "episode:1566",
+                "score": -1.3409078121185303,
+                "mse": 1.0112594366073608
+              },
+              {
+                "relation": 155,
+                "query": "episode:1616",
+                "score": -1.2985594272613525,
+                "mse": 1.0259112119674683
+              },
+              {
+                "relation": 155,
+                "query": "episode:1907",
+                "score": -1.0861661434173584,
+                "mse": 0.5523826479911804
+              },
+              {
+                "relation": 155,
+                "query": "episode:203",
+                "score": -1.4242281913757324,
+                "mse": 0.9190076589584351
+              },
+              {
+                "relation": 155,
+                "query": "episode:263",
+                "score": -0.8812721967697144,
+                "mse": 0.2744359076023102
+              },
+              {
+                "relation": 155,
+                "query": "episode:267",
+                "score": -1.2810919284820557,
+                "mse": 0.8305583000183105
+              },
+              {
+                "relation": 184,
+                "query": "episode:104",
+                "score": -1.0486143827438354,
+                "mse": 0.5371111035346985
+              },
+              {
+                "relation": 184,
+                "query": "episode:1321",
+                "score": -1.7103444337844849,
+                "mse": 1.2669813632965088
+              },
+              {
+                "relation": 184,
+                "query": "episode:1368",
+                "score": -1.007317304611206,
+                "mse": 0.4372417628765106
+              },
+              {
+                "relation": 184,
+                "query": "episode:1710",
+                "score": -1.4344232082366943,
+                "mse": 1.2201011180877686
+              },
+              {
+                "relation": 184,
+                "query": "episode:1974",
+                "score": -1.4658254384994507,
+                "mse": 1.388988971710205
+              },
+              {
+                "relation": 184,
+                "query": "episode:2012",
+                "score": -1.0060176849365234,
+                "mse": 0.7544113397598267
+              },
+              {
+                "relation": 184,
+                "query": "episode:267",
+                "score": -1.6649034023284912,
+                "mse": 1.3734012842178345
+              },
+              {
+                "relation": 184,
+                "query": "episode:283",
+                "score": -1.3036894798278809,
+                "mse": 1.1442477703094482
+              },
+              {
+                "relation": 202,
+                "query": "episode:1321",
+                "score": -1.422083854675293,
+                "mse": 0.8504339456558228
+              },
+              {
+                "relation": 202,
+                "query": "episode:1368",
+                "score": -1.171048641204834,
+                "mse": 0.7555161714553833
+              },
+              {
+                "relation": 202,
+                "query": "episode:1439",
+                "score": -1.606804609298706,
+                "mse": 1.3879668712615967
+              },
+              {
+                "relation": 202,
+                "query": "episode:1616",
+                "score": -1.2472769021987915,
+                "mse": 0.8617901802062988
+              },
+              {
+                "relation": 202,
+                "query": "episode:203",
+                "score": -1.5787893533706665,
+                "mse": 1.199663519859314
+              },
+              {
+                "relation": 202,
+                "query": "episode:2381",
+                "score": -1.2320518493652344,
+                "mse": 0.744333803653717
+              },
+              {
+                "relation": 202,
+                "query": "episode:263",
+                "score": -1.2276790142059326,
+                "mse": 0.8119611144065857
+              },
+              {
+                "relation": 202,
+                "query": "episode:929",
+                "score": -1.10562264919281,
+                "mse": 0.6730523109436035
+              },
+              {
+                "relation": 203,
+                "query": "episode:1133",
+                "score": -1.2014083862304688,
+                "mse": 0.7021458148956299
+              },
+              {
+                "relation": 203,
+                "query": "episode:1616",
+                "score": -1.0926320552825928,
+                "mse": 0.6036148071289062
+              },
+              {
+                "relation": 203,
+                "query": "episode:1919",
+                "score": -1.2144670486450195,
+                "mse": 1.1609535217285156
+              },
+              {
+                "relation": 203,
+                "query": "episode:203",
+                "score": -0.8828902244567871,
+                "mse": 0.2932279407978058
+              },
+              {
+                "relation": 203,
+                "query": "episode:2040",
+                "score": -1.1982495784759521,
+                "mse": 0.8498238325119019
+              },
+              {
+                "relation": 203,
+                "query": "episode:2334",
+                "score": -0.9697216153144836,
+                "mse": 0.5411728024482727
+              },
+              {
+                "relation": 203,
+                "query": "episode:263",
+                "score": -0.9584125280380249,
+                "mse": 0.43914103507995605
+              },
+              {
+                "relation": 203,
+                "query": "episode:283",
+                "score": -1.0253100395202637,
+                "mse": 0.6337857246398926
+              }
+            ],
+            "mean_score": -1.16974026709795,
+            "mean_mse": 0.7548718817997724
+          }
+        ],
+        [
+          32,
+          {
+            "queries": [
+              {
+                "relation": 3,
+                "query": "episode:1345",
+                "score": -1.2815790176391602,
+                "mse": 0.8801330327987671
+              },
+              {
+                "relation": 3,
+                "query": "episode:1616",
+                "score": -1.1066954135894775,
+                "mse": 0.5341233015060425
+              },
+              {
+                "relation": 3,
+                "query": "episode:1650",
+                "score": -1.7178829908370972,
+                "mse": 1.9192066192626953
+              },
+              {
+                "relation": 3,
+                "query": "episode:203",
+                "score": -1.681572675704956,
+                "mse": 1.4370436668395996
+              },
+              {
+                "relation": 3,
+                "query": "episode:2066",
+                "score": -0.9917751550674438,
+                "mse": 0.3239017724990845
+              },
+              {
+                "relation": 3,
+                "query": "episode:2237",
+                "score": -1.2262053489685059,
+                "mse": 0.7469098567962646
+              },
+              {
+                "relation": 3,
+                "query": "episode:2354",
+                "score": -1.0455317497253418,
+                "mse": 0.8430731296539307
+              },
+              {
+                "relation": 3,
+                "query": "episode:263",
+                "score": -0.9386456608772278,
+                "mse": 0.4678404927253723
+              },
+              {
+                "relation": 9,
+                "query": "episode:1321",
+                "score": -1.398667812347412,
+                "mse": 0.9200076460838318
+              },
+              {
+                "relation": 9,
+                "query": "episode:1368",
+                "score": -1.1403369903564453,
+                "mse": 0.7540225982666016
+              },
+              {
+                "relation": 9,
+                "query": "episode:1616",
+                "score": -1.2300548553466797,
+                "mse": 0.926944375038147
+              },
+              {
+                "relation": 9,
+                "query": "episode:1710",
+                "score": -1.4035587310791016,
+                "mse": 1.03696870803833
+              },
+              {
+                "relation": 9,
+                "query": "episode:203",
+                "score": -1.3725154399871826,
+                "mse": 0.8516345024108887
+              },
+              {
+                "relation": 9,
+                "query": "episode:2401",
+                "score": -1.1891586780548096,
+                "mse": 1.0836125612258911
+              },
+              {
+                "relation": 9,
+                "query": "episode:263",
+                "score": -1.1526691913604736,
+                "mse": 0.7157562971115112
+              },
+              {
+                "relation": 9,
+                "query": "episode:929",
+                "score": -1.0461947917938232,
+                "mse": 0.6022996306419373
+              },
+              {
+                "relation": 12,
+                "query": "episode:1345",
+                "score": -1.2930151224136353,
+                "mse": 0.9126586318016052
+              },
+              {
+                "relation": 12,
+                "query": "episode:1616",
+                "score": -1.0524845123291016,
+                "mse": 0.5210550427436829
+              },
+              {
+                "relation": 12,
+                "query": "episode:1919",
+                "score": -0.9279529452323914,
+                "mse": 0.4838113784790039
+              },
+              {
+                "relation": 12,
+                "query": "episode:203",
+                "score": -1.5554957389831543,
+                "mse": 1.1536039113998413
+              },
+              {
+                "relation": 12,
+                "query": "episode:2066",
+                "score": -0.7322475910186768,
+                "mse": 0.12519168853759766
+              },
+              {
+                "relation": 12,
+                "query": "episode:2237",
+                "score": -1.1679356098175049,
+                "mse": 0.6164876222610474
+              },
+              {
+                "relation": 12,
+                "query": "episode:2386",
+                "score": -0.8429033756256104,
+                "mse": 0.46969306468963623
+              },
+              {
+                "relation": 12,
+                "query": "episode:263",
+                "score": -1.0757536888122559,
+                "mse": 0.66866534948349
+              },
+              {
+                "relation": 14,
+                "query": "episode:2223",
+                "score": -1.147963523864746,
+                "mse": 0.5470616817474365
+              },
+              {
+                "relation": 14,
+                "query": "episode:28",
+                "score": -0.7226057648658752,
+                "mse": 0.20607298612594604
+              },
+              {
+                "relation": 14,
+                "query": "episode:346",
+                "score": -0.8814033269882202,
+                "mse": 0.3932255208492279
+              },
+              {
+                "relation": 14,
+                "query": "episode:350",
+                "score": -0.7417933940887451,
+                "mse": 0.2006981074810028
+              },
+              {
+                "relation": 14,
+                "query": "episode:38",
+                "score": -0.6392219066619873,
+                "mse": 0.16266483068466187
+              },
+              {
+                "relation": 14,
+                "query": "episode:39",
+                "score": -0.8937920331954956,
+                "mse": 0.32282939553260803
+              },
+              {
+                "relation": 14,
+                "query": "episode:42",
+                "score": -0.5922715067863464,
+                "mse": 0.10538928210735321
+              },
+              {
+                "relation": 14,
+                "query": "episode:58",
+                "score": -0.902633547782898,
+                "mse": 0.3196203410625458
+              },
+              {
+                "relation": 155,
+                "query": "episode:1145",
+                "score": -0.8879549503326416,
+                "mse": 0.3254771828651428
+              },
+              {
+                "relation": 155,
+                "query": "episode:1321",
+                "score": -1.795639991760254,
+                "mse": 1.493772268295288
+              },
+              {
+                "relation": 155,
+                "query": "episode:1566",
+                "score": -1.3418598175048828,
+                "mse": 1.0128302574157715
+              },
+              {
+                "relation": 155,
+                "query": "episode:1616",
+                "score": -1.2966407537460327,
+                "mse": 1.0220227241516113
+              },
+              {
+                "relation": 155,
+                "query": "episode:1907",
+                "score": -1.0871765613555908,
+                "mse": 0.5538346171379089
+              },
+              {
+                "relation": 155,
+                "query": "episode:203",
+                "score": -1.4246137142181396,
+                "mse": 0.9198402166366577
+              },
+              {
+                "relation": 155,
+                "query": "episode:263",
+                "score": -0.8809953927993774,
+                "mse": 0.2740511894226074
+              },
+              {
+                "relation": 155,
+                "query": "episode:267",
+                "score": -1.280959129333496,
+                "mse": 0.8305599689483643
+              },
+              {
+                "relation": 184,
+                "query": "episode:104",
+                "score": -1.0491746664047241,
+                "mse": 0.5373833179473877
+              },
+              {
+                "relation": 184,
+                "query": "episode:1321",
+                "score": -1.7100883722305298,
+                "mse": 1.2678391933441162
+              },
+              {
+                "relation": 184,
+                "query": "episode:1368",
+                "score": -1.0075708627700806,
+                "mse": 0.43755388259887695
+              },
+              {
+                "relation": 184,
+                "query": "episode:1710",
+                "score": -1.4365270137786865,
+                "mse": 1.225243091583252
+              },
+              {
+                "relation": 184,
+                "query": "episode:1974",
+                "score": -1.4657270908355713,
+                "mse": 1.388128638267517
+              },
+              {
+                "relation": 184,
+                "query": "episode:2012",
+                "score": -1.0062265396118164,
+                "mse": 0.7543366551399231
+              },
+              {
+                "relation": 184,
+                "query": "episode:267",
+                "score": -1.6648728847503662,
+                "mse": 1.3742554187774658
+              },
+              {
+                "relation": 184,
+                "query": "episode:283",
+                "score": -1.305478811264038,
+                "mse": 1.147134780883789
+              },
+              {
+                "relation": 202,
+                "query": "episode:1321",
+                "score": -1.421580195426941,
+                "mse": 0.8501253128051758
+              },
+              {
+                "relation": 202,
+                "query": "episode:1368",
+                "score": -1.1700456142425537,
+                "mse": 0.7538830637931824
+              },
+              {
+                "relation": 202,
+                "query": "episode:1439",
+                "score": -1.6092982292175293,
+                "mse": 1.3918237686157227
+              },
+              {
+                "relation": 202,
+                "query": "episode:1616",
+                "score": -1.2449382543563843,
+                "mse": 0.8575090169906616
+              },
+              {
+                "relation": 202,
+                "query": "episode:203",
+                "score": -1.5802916288375854,
+                "mse": 1.2017351388931274
+              },
+              {
+                "relation": 202,
+                "query": "episode:2381",
+                "score": -1.2321648597717285,
+                "mse": 0.7444970607757568
+              },
+              {
+                "relation": 202,
+                "query": "episode:263",
+                "score": -1.2275394201278687,
+                "mse": 0.8125298619270325
+              },
+              {
+                "relation": 202,
+                "query": "episode:929",
+                "score": -1.105788230895996,
+                "mse": 0.6732756495475769
+              },
+              {
+                "relation": 203,
+                "query": "episode:1133",
+                "score": -1.2016196250915527,
+                "mse": 0.7024595737457275
+              },
+              {
+                "relation": 203,
+                "query": "episode:1616",
+                "score": -1.0920449495315552,
+                "mse": 0.6038140654563904
+              },
+              {
+                "relation": 203,
+                "query": "episode:1919",
+                "score": -1.2143681049346924,
+                "mse": 1.1612943410873413
+              },
+              {
+                "relation": 203,
+                "query": "episode:203",
+                "score": -0.8826794624328613,
+                "mse": 0.29250264167785645
+              },
+              {
+                "relation": 203,
+                "query": "episode:2040",
+                "score": -1.1988263130187988,
+                "mse": 0.8517540693283081
+              },
+              {
+                "relation": 203,
+                "query": "episode:2334",
+                "score": -0.9697631597518921,
+                "mse": 0.5411838293075562
+              },
+              {
+                "relation": 203,
+                "query": "episode:263",
+                "score": -0.957902729511261,
+                "mse": 0.4384978711605072
+              },
+              {
+                "relation": 203,
+                "query": "episode:283",
+                "score": -1.0259270668029785,
+                "mse": 0.6344418525695801
+              }
+            ],
+            "mean_score": -1.1698250388726592,
+            "mean_mse": 0.7551218366716057
+          }
+        ]
+      ],
+      "peak_gpu_mib": 1429.642578125,
+      "provider_calls": 0
+    }
+  }
+}

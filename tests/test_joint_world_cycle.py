@@ -54,6 +54,31 @@ def test_joint_sampling_credits_unchosen_proposals_once_and_choice_once():
     assert float(loss.detach()) == pytest.approx(-2.2)
 
 
+@pytest.mark.parametrize('choice', [1, 2])
+def test_variable_choice_does_not_build_an_unused_payload_derivative(monkeypatch, choice):
+    from types import SimpleNamespace
+    import scripts.ib_local.navigation_joint_cycle as joint
+    p = torch.tensor(.4, requires_grad=True)
+    calls = []
+    def prefix(engine, targets, own, record):
+        calls.append((own, torch.is_grad_enabled()))
+        h = p.expand(max(own, 1), 2)
+        logits = p.expand(1, max(own, 1), 256)
+        return h, logits
+    monkeypatch.setattr(joint, 'causal_prefix', prefix)
+    e = SimpleNamespace(variable_expression_schema=1,
+        plan=lambda h: (torch.stack((h[:, 0], h[:, 0]*2, h[:, 0]*3), -1), None, None))
+    terms, replay = joint.JointCycleMixin._choice_policy_term(e,
+        torch.ones(1, 12, dtype=torch.long), 12, dict(choice=choice, offset=[0., 0., 0.]))
+    assert calls == ([(0, True), (12, False)] if choice == 1 else [(0, True)])
+    grad, = torch.autograd.grad(terms, (p,))
+    expected = torch.stack((p, 2*p, 3*p)).log_softmax(-1)[choice]
+    ref, = torch.autograd.grad(expected, (p,))
+    torch.testing.assert_close(grad, ref)
+    if choice == 1:
+        assert not replay['byte_logp'].requires_grad
+
+
 def test_joint_migration_preserves_real_facts_parameters_pending_credit_and_rng():
     e = configured()
     e.settlement_kind, e.reward_memory_kind = 'continuation_joint', 'observed'

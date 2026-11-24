@@ -1,0 +1,85 @@
+{
+  "cycle": 2481,
+  "source": "F:\\cgb_native_retention_2473_20261118\\apply\\body\\last.pt.gz",
+  "source_sha256": "b574e457ba0cca18f7aed6d7a291468f8b7eb443e285cf105226878f9210916d",
+  "source_unchanged": true,
+  "world_calls": 0,
+  "optimizer_updates": 0,
+  "scope": {
+    "relation": 246,
+    "generation": 4,
+    "unknown": "unknown:1726"
+  },
+  "arrived_event": "episode:2482",
+  "factual_score": -1.0059893131256104,
+  "old_contributions": [
+    {
+      "fact": "episode:1650",
+      "benefit": 0.023794889450073242,
+      "next_leverage": 0.4191722571849823,
+      "next_bias": 0.7615939378738403,
+      "next_priority": 0.8977358341217041
+    },
+    {
+      "fact": "episode:1974",
+      "benefit": 0.0419158935546875
+    },
+    {
+      "fact": "episode:203",
+      "benefit": -0.0001766681671142578,
+      "next_leverage": 0.42725467681884766,
+      "next_bias": -0.761570394039154,
+      "next_priority": 0.19949911534786224
+    },
+    {
+      "fact": "episode:2066",
+      "benefit": 0.04116547107696533,
+      "next_leverage": 0.6672471165657043,
+      "next_bias": 0.7615939974784851,
+      "next_priority": 1.42903470993042
+    },
+    {
+      "fact": "episode:2369",
+      "benefit": -0.03476512432098389,
+      "next_leverage": 0.3426612615585327,
+      "next_bias": -0.7615939974784851,
+      "next_priority": 0.1599959284067154
+    },
+    {
+      "fact": "episode:2478",
+      "benefit": -0.0588376522064209,
+      "next_leverage": 0.4740082025527954,
+      "next_bias": -0.7615940570831299,
+      "next_priority": 0.2213246375322342
+    },
+    {
+      "fact": "episode:263",
+      "benefit": 0.17215847969055176,
+      "next_leverage": 0.39360177516937256,
+      "next_bias": 0.7615941166877747,
+      "next_priority": 0.8429720401763916
+    },
+    {
+      "fact": "episode:283",
+      "benefit": -0.01808333396911621,
+      "next_leverage": 0.41774749755859375,
+      "next_bias": -0.7615939378738403,
+      "next_priority": 0.19505532085895538
+    }
+  ],
+  "actual_first_supports": [
+    "episode:1650",
+    "episode:203",
+    "episode:2066",
+    "episode:2369",
+    "episode:2478",
+    "episode:2482",
+    "episode:263",
+    "episode:283"
+  ],
+  "prospective_next_release": {
+    "geometric": "episode:2482",
+    "use_weighted": "episode:2369"
+  },
+  "interpretation": "Use of the saved real response in common current coordinates; next release is a local admission diagnostic, not a real next event."
+}

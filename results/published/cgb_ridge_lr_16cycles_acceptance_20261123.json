@@ -1,0 +1,807 @@
+{
+  "schema": 1,
+  "source": "E:\\mengli-batch2-regression-20261123\\batch2_full_32c\\body\\last.pt.gz",
+  "source_cycle": 2845,
+  "cycles": 16,
+  "locked_manifest": {
+    "schema": 1,
+    "locked_at": "2026-11-23 22:27:02",
+    "source_sha256": "e30805edda7f01830a43363b77d0b6310de00ac4067d835f73b6e7e3a0597710",
+    "fresh_validation_text": {
+      "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+      "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+      "starts": [
+        49152,
+        147456,
+        212992,
+        274432
+      ],
+      "bytes_per_segment": 2048,
+      "total_scored_bytes": 8192,
+      "segment_sha256s": [
+        "116d5e448d0807572cc84001e6859bd15c30a723ada1f818446c2fde8c8544f0",
+        "ddd505b539f08550cc30a119de5424263c52f96026e429cd15891310157154a7",
+        "ce61b52684c98a51caebfe885b57cc3ccf520a2d5446f18897620c86dd55f6d2",
+        "a1696cf04a8adcb8af137542ec2f844be975c6a9b9363718c2ed5de385d3cf74"
+      ],
+      "disjoint_from_historical_starts": [
+        0,
+        16384,
+        32768,
+        40960,
+        65536,
+        81920,
+        95629,
+        114688,
+        131072,
+        163840,
+        191258,
+        196608,
+        229376,
+        245760,
+        262144,
+        286887
+      ]
+    },
+    "fresh_old_facts_sha256": "57d3e821d8b828fc0b206261f60ea71e3b0485864c21f22cb1be05f31d6e7d4d",
+    "origin_checkpoint": "E:\\mengli-batch2-regression-20261123\\batch2_full_32c\\body\\last.pt.gz",
+    "origin_cycle": 2845,
+    "fresh_old_facts_path": "E:\\mengli-ridge-lr-acceptance-20261123\\fresh_old_facts_64.pt",
+    "fresh_old_facts_count": 64,
+    "fresh_relation_ids": [
+      217,
+      246,
+      254,
+      267,
+      268,
+      270,
+      273,
+      274,
+      278
+    ],
+    "dev_relation_ids_excluded": [
+      47,
+      213,
+      225,
+      231,
+      252,
+      259,
+      261,
+      265
+    ],
+    "fresh_query_pairs": [
+      [
+        217,
+        "episode:1616"
+      ],
+      [
+        217,
+        "episode:1650"
+      ],
+      [
+        217,
+        "episode:1919"
+      ],
+      [
+        217,
+        "episode:203"
+      ],
+      [
+        217,
+        "episode:2435"
+      ],
+      [
+        217,
+        "episode:283"
+      ],
+      [
+        217,
+        "episode:2833"
+      ],
+      [
+        217,
+        "episode:2857"
+      ],
+      [
+        246,
+        "episode:1133"
+      ],
+      [
+        246,
+        "episode:1616"
+      ],
+      [
+        246,
+        "episode:1650"
+      ],
+      [
+        246,
+        "episode:1919"
+      ],
+      [
+        246,
+        "episode:203"
+      ],
+      [
+        246,
+        "episode:2066"
+      ],
+      [
+        246,
+        "episode:283"
+      ],
+      [
+        246,
+        "episode:2837"
+      ],
+      [
+        254,
+        "episode:1133"
+      ],
+      [
+        254,
+        "episode:1616"
+      ],
+      [
+        254,
+        "episode:1650"
+      ],
+      [
+        254,
+        "episode:1919"
+      ],
+      [
+        254,
+        "episode:203"
+      ],
+      [
+        254,
+        "episode:2066"
+      ],
+      [
+        254,
+        "episode:283"
+      ],
+      [
+        254,
+        "episode:2837"
+      ],
+      [
+        267,
+        "episode:1616"
+      ],
+      [
+        267,
+        "episode:1650"
+      ],
+      [
+        267,
+        "episode:1919"
+      ],
+      [
+        267,
+        "episode:203"
+      ],
+      [
+        267,
+        "episode:2216"
+      ],
+      [
+        267,
+        "episode:2345"
+      ],
+      [
+        267,
+        "episode:283"
+      ],
+      [
+        267,
+        "episode:2856"
+      ],
+      [
+        268,
+        "episode:1984"
+      ],
+      [
+        268,
+        "episode:203"
+      ],
+      [
+        268,
+        "episode:2040"
+      ],
+      [
+        268,
+        "episode:2435"
+      ],
+      [
+        268,
+        "episode:2523"
+      ],
+      [
+        268,
+        "episode:283"
+      ],
+      [
+        268,
+        "episode:2846"
+      ],
+      [
+        268,
+        "episode:2848"
+      ],
+      [
+        270,
+        "episode:104"
+      ],
+      [
+        270,
+        "episode:1974"
+      ],
+      [
+        270,
+        "episode:2676"
+      ],
+      [
+        270,
+        "episode:2696"
+      ],
+      [
+        270,
+        "episode:2772"
+      ],
+      [
+        273,
+        "episode:104"
+      ],
+      [
+        273,
+        "episode:1919"
+      ],
+      [
+        273,
+        "episode:1977"
+      ],
+      [
+        273,
+        "episode:203"
+      ],
+      [
+        273,
+        "episode:2345"
+      ],
+      [
+        273,
+        "episode:2421"
+      ],
+      [
+        273,
+        "episode:283"
+      ],
+      [
+        273,
+        "episode:2852"
+      ],
+      [
+        274,
+        "episode:1251"
+      ],
+      [
+        274,
+        "episode:1368"
+      ],
+      [
+        274,
+        "episode:203"
+      ],
+      [
+        274,
+        "episode:2040"
+      ],
+      [
+        274,
+        "episode:2465"
+      ],
+      [
+        274,
+        "episode:2742"
+      ],
+      [
+        274,
+        "episode:283"
+      ],
+      [
+        274,
+        "episode:929"
+      ],
+      [
+        278,
+        "episode:1321"
+      ],
+      [
+        278,
+        "episode:1650"
+      ],
+      [
+        278,
+        "episode:1919"
+      ]
+    ],
+    "origin_2845_fresh_8192_nll": {
+      "mean_nll": 1.7429915592074394,
+      "segment_nll": [
+        1.8255410194396973,
+        1.5953322425484657,
+        1.8592270016670227,
+        1.691865973174572
+      ]
+    },
+    "origin_2845_fresh_64_facts": {
+      "mean_score": -1.1946566924452782,
+      "mean_mse": 0.8721135465893894
+    },
+    "migration_invariance_verified_on_2845": true,
+    "migration_verified_lrs": {
+      "ridge_lr": 0.01,
+      "temperature_lr": 0.0003
+    }
+  },
+  "comparison": {
+    "origin_2845_fresh_nll": 1.7429915592074394,
+    "ref_fresh_nll": 1.7566910721361637,
+    "cand_fresh_nll": 1.7533782925456762,
+    "ref_fresh_nll_improvement": -0.013699512928724289,
+    "cand_fresh_nll_improvement": -0.010386733338236809,
+    "cand_vs_ref_nll_advantage": 0.00331277959048748,
+    "origin_2845_fresh_64_facts_score": -1.1946566924452782,
+    "ref_fresh_64_facts_score": -1.1513145519420505,
+    "cand_fresh_64_facts_score": -1.1712485449388623,
+    "ref_fresh_64_facts_delta": 0.04334214050322771,
+    "cand_fresh_64_facts_delta": 0.023408147506415844,
+    "ref_fresh_64_facts_mse_delta": -0.05164319882169366,
+    "cand_fresh_64_facts_mse_delta": -0.035979335429146886,
+    "ref_final_ridge": 0.10024832934141159,
+    "cand_final_ridge": 0.10826195031404495,
+    "ref_final_temperature": 0.20085875689983368,
+    "cand_final_temperature": 0.20079566538333893,
+    "ref_online_read_use_score": -1.1761158225126565,
+    "cand_online_read_use_score": -1.168967792764306,
+    "ref_pre_outcome_gain_mse": 0.015732524603305487,
+    "cand_pre_outcome_gain_mse": 0.04283738696044398,
+    "ref_mean_metal_g": 0.004401708487421274,
+    "cand_mean_metal_g": -0.000661815982311964,
+    "cand_restore_verified": true
+  },
+  "arms": {
+    "ref_ridge_3e4_16c": {
+      "summary": {
+        "external_cycles": 16,
+        "total_events": 98,
+        "updates": 64,
+        "external_bytes": 15360,
+        "life_seconds": 275.5992643999998,
+        "seconds_per_cycle": 17.224954024999988,
+        "checkpoint_commit_seconds": 2.436652699994738,
+        "checkpoint_sha256": "938b1558a2132f0907ef7353907a6ce4ff1f259cde6b48c358de659d3cc01f1d",
+        "peak_vram_mib": null,
+        "ridge_trajectory": [
+          {
+            "cycle": 2846,
+            "ridge": 0.10009724646806717,
+            "log_ridge": -2.3016131008508256,
+            "gate": 0.8981110453605652,
+            "lr": 0.0003
+          },
+          {
+            "cycle": 2847,
+            "ridge": 0.10011235624551773,
+            "log_ridge": -2.3014621612627693,
+            "gate": 0.9226658344268799,
+            "lr": 0.0003
+          },
+          {
+            "cycle": 2848,
+            "ridge": 0.10012500733137131,
+            "log_ridge": -2.3013358003714313,
+            "gate": 0.8910085558891296,
+            "lr": 0.0003
+          },
+          {
+            "cycle": 2849,
+            "ridge": 0.10013983398675919,
+            "log_ridge": -2.3011877298931847,
+            "gate": 0.9174743890762329,
+            "lr": 0.0003
+          },
+          {
+            "cycle": 2850,
+            "ridge": 0.10015535354614258,
+            "log_ridge": -2.3010327630204843,
+            "gate": 0.9295060038566589,
+            "lr": 0.0003
+          },
+          {
+            "cycle": 2851,
+            "ridge": 0.10016963630914688,
+            "log_ridge": -2.300890167101335,
+            "gate": 0.9207748174667358,
+            "lr": 0.0003
+          },
+          {
+            "cycle": 2852,
+            "ridge": 0.10018369555473328,
+            "log_ridge": -2.3007498225861855,
+            "gate": 0.9240309000015259,
+            "lr": 0.0003
+          },
+          {
+            "cycle": 2853,
+            "ridge": 0.10019467025995255,
+            "log_ridge": -2.3006402827645025,
+            "gate": 0.8722643256187439,
+            "lr": 0.0003
+          },
+          {
+            "cycle": 2854,
+            "ridge": 0.10020780563354492,
+            "log_ridge": -2.3005091928310812,
+            "gate": 0.9051951169967651,
+            "lr": 0.0003
+          },
+          {
+            "cycle": 2855,
+            "ridge": 0.10021881759166718,
+            "log_ridge": -2.300399307647605,
+            "gate": 0.8716493248939514,
+            "lr": 0.0003
+          },
+          {
+            "cycle": 2856,
+            "ridge": 0.10022459924221039,
+            "log_ridge": -2.3003416190426496,
+            "gate": 0.6593536138534546,
+            "lr": 0.0003
+          },
+          {
+            "cycle": 2857,
+            "ridge": 0.10023220628499985,
+            "log_ridge": -2.3002657219657396,
+            "gate": 0.7565485835075378,
+            "lr": 0.0003
+          },
+          {
+            "cycle": 2858,
+            "ridge": 0.10023920238018036,
+            "log_ridge": -2.300195925527136,
+            "gate": 0.7436851263046265,
+            "lr": 0.0003
+          },
+          {
+            "cycle": 2859,
+            "ridge": 0.10024832934141159,
+            "log_ridge": -2.300104877857895,
+            "gate": 0.8220213055610657,
+            "lr": 0.0003
+          },
+          {
+            "cycle": 2860,
+            "ridge": 0.10024832934141159,
+            "log_ridge": -2.300104877857895,
+            "gate": 0.0,
+            "lr": 0.0003
+          },
+          {
+            "cycle": 2861,
+            "ridge": 0.10024832934141159,
+            "log_ridge": -2.300104877857895,
+            "gate": 0.0,
+            "lr": 0.0003
+          }
+        ],
+        "ridge_log_step_stats": {
+          "mean": 0.00010054819952870867,
+          "max_abs": 0.00015496687270033505,
+          "total_log_delta": 0.0015082229929306301
+        },
+        "temperature_start": {
+          "cycle": 2846,
+          "temperature": 0.2007848024368286,
+          "gate": 0.10055332630872726,
+          "lr": 0.0003
+        },
+        "temperature_end": {
+          "cycle": 2861,
+          "temperature": 0.20085875689983368,
+          "gate": 0.7506534457206726,
+          "lr": 0.0003
+        },
+        "online_read_use_mean_log_score": -1.1761158225126565,
+        "online_read_use_count": 128,
+        "pre_outcome_gain_mse": 0.015732524603305487,
+        "mean_metal_g": 0.004401708487421274,
+        "revisions_committed": 16,
+        "dev_64_old_facts_evals": [
+          {
+            "external": 0,
+            "cycle": 2845,
+            "mean_score": -1.1558969616889954,
+            "mean_mse": 0.7682417358737439
+          },
+          {
+            "external": 8,
+            "cycle": 2853,
+            "mean_score": -1.162314122542739,
+            "mean_mse": 0.7715360354632139
+          },
+          {
+            "external": 16,
+            "cycle": 2861,
+            "mean_score": -1.1240919576957822,
+            "mean_mse": 0.7372708438197151
+          }
+        ]
+      },
+      "audit": {
+        "checkpoint": "E:\\mengli-ridge-lr-acceptance-20261123\\ref_ridge_3e4_16c\\body\\last.pt.gz",
+        "cycle": 2861,
+        "load_seconds": 18.512,
+        "fresh_8192_nll": {
+          "mean_nll": 1.7566910721361637,
+          "segment_nll": [
+            1.8165931329131126,
+            1.609103225171566,
+            1.8799717500805855,
+            1.7210961803793907
+          ]
+        },
+        "fresh_64_facts": {
+          "mean_score": -1.1513145519420505,
+          "mean_mse": 0.8204703477676958
+        },
+        "scale_diagnostics": {
+          "relation_ridge": 0.10024832934141159,
+          "relation_ridge_gate": 0.0,
+          "relation_ridge_lr": 0.0003,
+          "memory_temperature": 0.20085875689983368,
+          "memory_temperature_gate": 0.7506534457206726,
+          "memory_temperature_lr": 0.0003
+        },
+        "ridge_group_index": 15,
+        "ridge_group_lr": 0.0003,
+        "ridge_group_wd": 0.0,
+        "ridge_step": 48,
+        "ridge_adam_dir": -0.19645023305945405,
+        "temp_group_index": 15,
+        "temp_group_lr": 0.0003,
+        "temp_group_wd": 0.0,
+        "temp_step": 96,
+        "param_group_count": 16,
+        "wiener_gate_all_groups": true,
+        "split_theta": true,
+        "trainable_missing_from_optimizer": [],
+        "saved_scale_config": {
+          "schema": 1,
+          "ridge": true,
+          "temperature": true
+        },
+        "peak_eval_vram_mib": 916.0
+      }
+    },
+    "cand_ridge_1e2_16c": {
+      "summary": {
+        "external_cycles": 16,
+        "total_events": 99,
+        "updates": 64,
+        "external_bytes": 15360,
+        "life_seconds": 273.41832279999653,
+        "seconds_per_cycle": 17.088645174999783,
+        "checkpoint_commit_seconds": 2.5954130999962217,
+        "checkpoint_sha256": "45d3ca041486e0175e25f060f9dd8cccfbd17fcce06b377a17dbf06de321071f",
+        "peak_vram_mib": null,
+        "ridge_trajectory": [
+          {
+            "cycle": 2846,
+            "ridge": 0.10049929469823837,
+            "log_ridge": -2.2976045694356086,
+            "gate": 0.8981110453605652,
+            "lr": 0.01
+          },
+          {
+            "cycle": 2847,
+            "ridge": 0.10100585967302322,
+            "log_ridge": -2.292576747259187,
+            "gate": 0.9226788282394409,
+            "lr": 0.01
+          },
+          {
+            "cycle": 2848,
+            "ridge": 0.10143114626407623,
+            "log_ridge": -2.2883750726221406,
+            "gate": 0.8904134631156921,
+            "lr": 0.01
+          },
+          {
+            "cycle": 2849,
+            "ridge": 0.10193092375993729,
+            "log_ridge": -2.2834599131534152,
+            "gate": 0.9169909954071045,
+            "lr": 0.01
+          },
+          {
+            "cycle": 2850,
+            "ridge": 0.10245618224143982,
+            "log_ridge": -2.27832006213113,
+            "gate": 0.9289936423301697,
+            "lr": 0.01
+          },
+          {
+            "cycle": 2851,
+            "ridge": 0.10294143110513687,
+            "log_ridge": -2.2735950825310947,
+            "gate": 0.9200087785720825,
+            "lr": 0.01
+          },
+          {
+            "cycle": 2852,
+            "ridge": 0.1033891886472702,
+            "log_ridge": -2.269254880911472,
+            "gate": 0.910443902015686,
+            "lr": 0.01
+          },
+          {
+            "cycle": 2853,
+            "ridge": 0.10391722619533539,
+            "log_ridge": -2.2641605987068223,
+            "gate": 0.9307522177696228,
+            "lr": 0.01
+          },
+          {
+            "cycle": 2854,
+            "ridge": 0.10441922396421432,
+            "log_ridge": -2.2593414828965837,
+            "gate": 0.9273144602775574,
+            "lr": 0.01
+          },
+          {
+            "cycle": 2855,
+            "ridge": 0.1050732284784317,
+            "log_ridge": -2.2530977578244995,
+            "gate": 0.9287012815475464,
+            "lr": 0.01
+          },
+          {
+            "cycle": 2856,
+            "ridge": 0.10564633458852768,
+            "log_ridge": -2.2476582294307907,
+            "gate": 0.9081873893737793,
+            "lr": 0.01
+          },
+          {
+            "cycle": 2857,
+            "ridge": 0.10612692683935165,
+            "log_ridge": -2.2431194781964705,
+            "gate": 0.8740584254264832,
+            "lr": 0.01
+          },
+          {
+            "cycle": 2858,
+            "ridge": 0.10658301413059235,
+            "log_ridge": -2.2388311220612147,
+            "gate": 0.8697556257247925,
+            "lr": 0.01
+          },
+          {
+            "cycle": 2859,
+            "ridge": 0.10710921138525009,
+            "log_ridge": -2.2339062978949187,
+            "gate": 0.9002044200897217,
+            "lr": 0.01
+          },
+          {
+            "cycle": 2860,
+            "ridge": 0.1077328696846962,
+            "log_ridge": -2.2281005446818476,
+            "gate": 0.9238523244857788,
+            "lr": 0.01
+          },
+          {
+            "cycle": 2861,
+            "ridge": 0.10826195031404495,
+            "log_ridge": -2.2232015226818658,
+            "gate": 0.8951094746589661,
+            "lr": 0.01
+          }
+        ],
+        "ridge_log_step_stats": {
+          "mean": 0.004960203116916192,
+          "max_abs": 0.00624372507208415,
+          "total_log_delta": 0.07440304675374287
+        },
+        "temperature_start": {
+          "cycle": 2846,
+          "temperature": 0.2007848024368286,
+          "gate": 0.10055332630872726,
+          "lr": 0.0003
+        },
+        "temperature_end": {
+          "cycle": 2861,
+          "temperature": 0.20079566538333893,
+          "gate": 0.0,
+          "lr": 0.0003
+        },
+        "online_read_use_mean_log_score": -1.168967792764306,
+        "online_read_use_count": 128,
+        "pre_outcome_gain_mse": 0.04283738696044398,
+        "mean_metal_g": -0.000661815982311964,
+        "revisions_committed": 16,
+        "dev_64_old_facts_evals": [
+          {
+            "external": 0,
+            "cycle": 2845,
+            "mean_score": -1.1558969616889954,
+            "mean_mse": 0.7682417358737439
+          },
+          {
+            "external": 8,
+            "cycle": 2853,
+            "mean_score": -1.1642491407692432,
+            "mean_mse": 0.7727346103638411
+          },
+          {
+            "external": 16,
+            "cycle": 2861,
+            "mean_score": -1.1486468110233545,
+            "mean_mse": 0.7576395848300308
+          }
+        ]
+      },
+      "audit": {
+        "checkpoint": "E:\\mengli-ridge-lr-acceptance-20261123\\cand_ridge_1e2_16c\\body\\last.pt.gz",
+        "cycle": 2861,
+        "load_seconds": 20.527,
+        "fresh_8192_nll": {
+          "mean_nll": 1.7533782925456762,
+          "segment_nll": [
+            1.835692822933197,
+            1.5941292569041252,
+            1.8815283477306366,
+            1.702162742614746
+          ]
+        },
+        "fresh_64_facts": {
+          "mean_score": -1.1712485449388623,
+          "mean_mse": 0.8361342111602426
+        },
+        "scale_diagnostics": {
+          "relation_ridge": 0.10826195031404495,
+          "relation_ridge_gate": 0.8951094746589661,
+          "relation_ridge_lr": 0.01,
+          "memory_temperature": 0.20079566538333893,
+          "memory_temperature_gate": 0.0,
+          "memory_temperature_lr": 0.0003
+        },
+        "ridge_group_index": 15,
+        "ridge_group_lr": 0.01,
+        "ridge_group_wd": 0.0,
+        "ridge_step": 48,
+        "ridge_adam_dir": -0.5473084826783549,
+        "temp_group_index": 16,
+        "temp_group_lr": 0.0003,
+        "temp_group_wd": 0.0,
+        "temp_step": 96,
+        "param_group_count": 17,
+        "wiener_gate_all_groups": true,
+        "split_theta": true,
+        "trainable_missing_from_optimizer": [],
+        "saved_scale_config": {
+          "schema": 1,
+          "ridge": true,
+          "temperature": true,
+          "ridge_lr": 0.01
+        },
+        "peak_eval_vram_mib": 916.0
+      }
+    }
+  },
+  "total_wall_seconds": 717.39
+}

@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "source": "F:\\mengli-persistent-value-growth-20261122\\original\\dispatch_timing.jsonl",
+  "dispatches": 45,
+  "total_dispatch_seconds": 218.9981040999919,
+  "clock_jet_reconstruction_error": 0.0,
+  "phase_seconds": {
+    "world_arrived": 120.55911259999993,
+    "response_updated": 56.35278440001275,
+    "release:within_learning": 2.580993199982913,
+    "continuation_updated": 24.843183800010593,
+    "external": 8.043668699989212,
+    "internal:within_learning": 6.116645199996128,
+    "release": 0.5017162000003736
+  },
+  "phase_dispatches": {
+    "world_arrived": 8,
+    "response_updated": 8,
+    "release:within_learning": 6,
+    "continuation_updated": 8,
+    "external": 8,
+    "internal:within_learning": 6,
+    "release": 1
+  },
+  "arrivals": [
+    {
+      "kind": "checkpoint_to_arrival",
+      "seconds": 15.540703799997573,
+      "event": 3715
+    },
+    {
+      "kind": "arrival_to_arrival",
+      "seconds": 24.71100280000246,
+      "event": 3720
+    },
+    {
+      "kind": "arrival_to_arrival",
+      "seconds": 27.70236419999128,
+      "event": 3727
+    },
+    {
+      "kind": "arrival_to_arrival",
+      "seconds": 27.97319110000535,
+      "event": 3732
+    },
+    {
+      "kind": "arrival_to_arrival",
+      "seconds": 28.20318409999163,
+      "event": 3738
+    },
+    {
+      "kind": "arrival_to_arrival",
+      "seconds": 27.660787500004517,
+      "event": 3744
+    },
+    {
+      "kind": "arrival_to_arrival",
+      "seconds": 25.788256599989836,
+      "event": 3749
+    },
+    {
+      "kind": "arrival_to_arrival",
+      "seconds": 25.79619590000948,
+      "event": 3754
+    }
+  ],
+  "pending_after_last_arrival_seconds": 15.622418099999777,
+  "mass_convention": "unit weight on this realized event path; clock binding only",
+  "credit_convention": "credit operators are supplied directional derivatives; trace clock binding uses zero credit",
+  "world_calls_added": 0,
+  "optimizer_updates_added": 0
+}

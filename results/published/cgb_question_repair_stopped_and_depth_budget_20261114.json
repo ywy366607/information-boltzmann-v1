@@ -1,0 +1,155 @@
+{
+  "status": "stopped_at_saved_event",
+  "cycle": 5356,
+  "checkpoint_sha256": "39e4c265d95ae8681d1edf57ca17760d85b80da473acc91585ddaaf9ff1fcc24",
+  "observed_events": 86,
+  "optimizer_updates": 516,
+  "before_matched": {
+    "events": 86,
+    "cycles": [
+      5183,
+      5268
+    ],
+    "updates": 516,
+    "choices": {
+      "silence": 12,
+      "generate": 60,
+      "reuse": 14
+    },
+    "generated": 60,
+    "generated_lengths": {
+      "32": 60
+    },
+    "sentence_punctuation_at_end": 1,
+    "punctuation_anywhere": 16,
+    "reported_truncated": 0,
+    "mother_bytes_mean": 86.30232558139535,
+    "external_bytes_mean": 960,
+    "mother_source_progress_mean": 0.0053167566657066345,
+    "ambient_source_progress_mean": 0.028776696617823352,
+    "recalled": 20,
+    "relation_chosen_mse": 0.013661106783073656,
+    "original_chosen_mse": 0.0491175573362514,
+    "draft_relation_wins": 97,
+    "draft_original_wins": 82,
+    "draft_comparisons": 174,
+    "shadow_settlements": 76,
+    "shadow_mse": 0.11840602293667052,
+    "shadow_baseline_mse": 0.11847989553396819,
+    "shadow_abs_offset": 0.0061278214828538085,
+    "draft_uniform_tv": 0.004504181704548902
+  },
+  "after": {
+    "events": 86,
+    "cycles": [
+      5271,
+      5356
+    ],
+    "updates": 516,
+    "choices": {
+      "generate": 61,
+      "silence": 8,
+      "reuse": 17
+    },
+    "generated": 61,
+    "generated_lengths": {
+      "32": 61
+    },
+    "sentence_punctuation_at_end": 1,
+    "punctuation_anywhere": 16,
+    "reported_truncated": 0,
+    "mother_bytes_mean": 88.88372093023256,
+    "external_bytes_mean": 960,
+    "mother_source_progress_mean": 0.01371443219656168,
+    "ambient_source_progress_mean": 0.025865774249744622,
+    "recalled": 20,
+    "relation_chosen_mse": 0.012365824797428971,
+    "original_chosen_mse": 0.05425031831877869,
+    "draft_relation_wins": 92,
+    "draft_original_wins": 91,
+    "draft_comparisons": 182,
+    "shadow_settlements": 78,
+    "shadow_mse": 0.11300839918302058,
+    "shadow_baseline_mse": 0.11314969775458558,
+    "shadow_abs_offset": 0.0030593960701804997,
+    "draft_uniform_tv": 0.0034822746244973913
+  },
+  "port_checks": {
+    "all_ports_updated": true,
+    "all_scopes_cleared": true,
+    "all_no_direct_world_bias": true,
+    "canonical_facts_all": true,
+    "replay_max": 0.0,
+    "port_update_norm_mean": 0.018059682480037906,
+    "port_update_norm_min": 0.013283190317451954,
+    "port_update_norm_max": 0.034985631704330444
+  },
+  "fixed_start": {
+    "owt_nll": 1.3387051820755005,
+    "mother_nll": 1.142928883433342,
+    "bytes_each": 8192,
+    "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar"
+  },
+  "fixed_end": {
+    "owt_nll": 1.3359228149056435,
+    "mother_nll": 1.1430656239390373,
+    "bytes_each": 8192
+  },
+  "fixed_owt_decoded_offset": 262144,
+  "post_stop_probe_optimizer_updates": 0,
+  "post_stop_world_calls": 0,
+  "recommended_config": {
+    "schema": 1,
+    "status": "native_memory_calibrated_proposal_not_migrated_or_trained",
+    "backbone": {
+      "vocab_size": 256,
+      "d": 256,
+      "layers": 32,
+      "heads": 8,
+      "recurrence": "decay_then_delta",
+      "mlp_hidden": 768,
+      "conv_kernel": 4,
+      "content_budget": 32.0,
+      "contact_availability": false,
+      "decay_init": "log_timescale",
+      "feedback_init": "constant"
+    },
+    "runtime": {
+      "dtype": "float32",
+      "batch_size": 1,
+      "max_chunk_bytes": 512,
+      "live_recurrent_reset": false,
+      "optimizer": "AdamW; preserve existing group settings and mapped moments",
+      "training_started": false
+    },
+    "inheritance": {
+      "checkpoint": "results/cgb_content_question_20261114/learning/body/last.pt.gz",
+      "cycle": 5356,
+      "sha256": "39e4c265d95ae8681d1edf57ca17760d85b80da473acc91585ddaaf9ff1fcc24",
+      "required": [
+        "explicit depth and width growth mapping, with original-function checks",
+        "existing S/P, old raw episode features, relation IDs, shared unknowns and actual world history",
+        "existing parameters, mapped Adam moments and qualified pending credit",
+        "parameterized complete loader and exact disk restore"
+      ]
+    },
+    "separate_required_action_upgrade": {
+      "max_utterance_bytes": 128,
+      "within_turn_handover": "planned_not_implemented",
+      "remaining_budget_condition": "planned_not_implemented",
+      "scope": "drafting, execution, self-hearing, actual response, settlement, retrieval payload and delayed credit together"
+    },
+    "measured_native_budget": {
+      "parameters": 29672448,
+      "peak_torch_allocated_mib": 1654.95947265625,
+      "peak_nvidia_smi_sampled_mib": 1843,
+      "additional_whole_loop_reserve_mib": 192,
+      "estimated_device_budget_with_reserve_mib": 2035,
+      "optimizer_updates": 0,
+      "world_calls": 0,
+      "whole_body_admission_passed": false,
+      "report": "results/cgb_depth_budget_20261114/l32_d256_h8_ffn768_native/report.json"
+    }
+  },
+  "evidence_scope": "repair active; sequential observations do not establish causal navigation benefit; depth proposal memory calibrated but no new body training"
+}

@@ -93,7 +93,8 @@ and creates the current participation receipt. The top-k boundary is discrete.
     preference = bounded_preference(memory)
     if not bool(preference.any()):
         return scores.topk(memory.topk, dim=-1)
-    rank = (scores / memory.temperature + preference).masked_fill(
+    from scripts.ib_local.learnable_precision_scales import effective_temperature
+    rank = (scores / effective_temperature(memory) + preference).masked_fill(
         ~memory.occupied, -torch.inf)
     slots = rank.topk(memory.topk, dim=-1).indices
     return scores.gather(-1, slots), slots

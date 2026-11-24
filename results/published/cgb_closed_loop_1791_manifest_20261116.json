@@ -1,0 +1,38 @@
+{
+  "source_cycle": 1791,
+  "source_sha256": "1b86d71eb4916c3fdfc15ed619b6759edaf09417e39393d0c2ac0440615de9e0",
+  "retained_original": "E:/before_closed_loop_1791",
+  "private_workspaces": "G:\\cgb_closed_loop_dynamics_1791_20261116",
+  "restored_initial_state_checks": "all seven exact for all eleven executed arms",
+  "actual_main_reference_checks": {
+    "choice": true,
+    "utterance_hex": true,
+    "choice_probability": true,
+    "response_nll": true,
+    "metal_g": true,
+    "short_loss": true,
+    "long_loss": true,
+    "imagined_value": true,
+    "world": true
+  },
+  "executed_arms": [
+    "closed_0",
+    "closed_1",
+    "closed_2",
+    "closed_3",
+    "closed_fire2",
+    "gdn_0",
+    "gdn_1",
+    "gdn_2",
+    "gdn_3",
+    "yoked_0",
+    "yoked_fire2"
+  ],
+  "derived_arms": [
+    "yoked_1",
+    "yoked_2",
+    "yoked_3"
+  ],
+  "cycles_per_arm": 8,
+  "excluded_baseline": "invalid_gdn0_optimizer_group_clipping; corrected gdn_0 restores byte-identical E:/before_closed_loop_1791 and uses engine.groups like gdn_1/2/3"
+}

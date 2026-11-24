@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "cycle": 2537,
+  "source_sha256": "6f772f80a434abba4cf83643fe4c62527ea18818218818829da0d0c0c98c7279",
+  "role_map": {
+    "pre": 0,
+    "nominal": 1,
+    "pre_momentum": 6
+  },
+  "native_records": 32,
+  "matched_context_pairs": [
+    {
+      "context_sha256": "6499c36ad1edd182665ed503204f8248e151489c763aa91b22463af3cd710e69",
+      "indices": [
+        47,
+        49
+      ],
+      "record_keys": [
+        "01868531a5c381944c40cfd5c36476d6799d766d53cf00a9a4396fed9fdf0c7d",
+        "01cf0d3be5ffa482156f2a2bb71a098dd97e43de0f5f34f9bacf6d91b43cb3f2"
+      ],
+      "teacher_bank_revision": 42,
+      "relation": [
+        -1,
+        0,
+        0
+      ],
+      "unknown": "pending:00574c7e74e106d1dfae9841e9f5ced06bd66533a54f0b7e0ff814d9fd32761c",
+      "role": "mother",
+      "options": [
+        1,
+        1
+      ],
+      "nominal_difference_l2": 24.112364493329416,
+      "encoder_visible_difference_l2": 19.451539920058355,
+      "encoder_null_difference_l2": 14.249340903969918,
+      "encoder_null_energy_fraction": 0.34922872103232244,
+      "encoded_difference_l2": 12.28968679217202,
+      "shared_post_target_max_difference": 0.0,
+      "endpoint_target_difference_l2": 27.419354939939705,
+      "archived_local_q": [
+        -0.13919353485107422,
+        -0.12877735495567322
+      ],
+      "archived_local_q_difference": 0.010416179895401001,
+      "feature_distance": 0.2218870008495413,
+      "kernel_distance": 0.44240635057266436,
+      "local_q_interpolant_pair_norm_lower_bound": 0.023544372457397995
+    }
+  ],
+  "target": "archived native q and endpoint targets in the current bank representation",
+  "feature_encoder": "saved cycle2537 encoder",
+  "context_matching": "all non-nominal raw blocks, non-option scalars, relation, unknown, role and teacher revision",
+  "contrast_span": "local native q; total continuation and policy supplied by the live four-corner observer",
+  "training_updates": 0,
+  "world_calls": 0
+}

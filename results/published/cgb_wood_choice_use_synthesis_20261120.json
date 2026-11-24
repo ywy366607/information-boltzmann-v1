@@ -1,0 +1,44 @@
+{
+  "complete_boundary": 2587,
+  "scope": "Same initial source and complete first-action candidate search; only actual first actor choice differs, then original learning and policy for two transitions.",
+  "rows": [
+    {
+      "action": "silence",
+      "wood_two_step_raw_U": 0.006261042505502701,
+      "realized_P2": -0.003684663772583009,
+      "independent_G2": -0.008728261477747523,
+      "G2_relative_to_silence": 0.0
+    },
+    {
+      "action": "generate",
+      "wood_two_step_raw_U": 0.010218026489019394,
+      "realized_P2": 0.00040665417909622244,
+      "independent_G2": 0.006274300229025975,
+      "G2_relative_to_silence": 0.015002561706773498
+    },
+    {
+      "action": "reuse",
+      "wood_two_step_raw_U": 0.011213840544223785,
+      "realized_P2": -0.039521798491477966,
+      "independent_G2": 0.006092058385200438,
+      "G2_relative_to_silence": 0.014820319862947962
+    }
+  ],
+  "wood_vs_habit_G2": 0.014820319862947962,
+  "wood_vs_habit_segment_G2": [
+    0.019708442398613357,
+    0.011857666972446168,
+    0.015659385714513974,
+    0.012055784366218347
+  ],
+  "earlier_2585": {
+    "wood": "generate",
+    "habit": "silence",
+    "G2_difference": 0.005650561705584423
+  },
+  "fraction_of_best_measured_candidate_advantage": 0.9878526182802997,
+  "generate_minus_reuse_G2": 0.00018224184382553688,
+  "checks_passed": 27,
+  "production_changed": false,
+  "conclusion": "Following Wood first-action argmax improved the declared independent language prediction readout relative to habit argmax at both measured boundaries. At 2587 Wood selected a near-best realized candidate despite a lower realized local payment. Preserve production mechanisms; evaluate decision usefulness directly before assigning a bottleneck."
+}

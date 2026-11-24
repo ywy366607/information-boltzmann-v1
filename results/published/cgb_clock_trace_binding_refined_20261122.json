@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "source": "F:\\mengli-persistent-value-growth-20261122\\refined\\dispatch_timing.jsonl",
+  "dispatches": 56,
+  "total_dispatch_seconds": 237.51934380002058,
+  "clock_jet_reconstruction_error": 0.0,
+  "phase_seconds": {
+    "world_arrived": 124.7945116000119,
+    "response_updated": 58.59325409999292,
+    "release:within_learning": 2.215706199989654,
+    "continuation_updated": 26.43394530002115,
+    "external": 9.014277599999332,
+    "internal:within_learning": 8.113195099998848,
+    "release": 1.2282792999976664,
+    "internal": 7.126174600009108
+  },
+  "phase_dispatches": {
+    "world_arrived": 8,
+    "response_updated": 8,
+    "release:within_learning": 5,
+    "continuation_updated": 8,
+    "external": 8,
+    "internal:within_learning": 8,
+    "release": 3,
+    "internal": 8
+  },
+  "arrivals": [
+    {
+      "kind": "checkpoint_to_arrival",
+      "seconds": 16.685325399994326,
+      "event": 3715
+    },
+    {
+      "kind": "arrival_to_arrival",
+      "seconds": 25.34480060000351,
+      "event": 3720
+    },
+    {
+      "kind": "arrival_to_arrival",
+      "seconds": 30.004070000002685,
+      "event": 3727
+    },
+    {
+      "kind": "arrival_to_arrival",
+      "seconds": 30.10352409999905,
+      "event": 3732
+    },
+    {
+      "kind": "arrival_to_arrival",
+      "seconds": 33.84086970001226,
+      "event": 3740
+    },
+    {
+      "kind": "arrival_to_arrival",
+      "seconds": 28.196865199999593,
+      "event": 3746
+    },
+    {
+      "kind": "arrival_to_arrival",
+      "seconds": 27.31261980000272,
+      "event": 3751
+    },
+    {
+      "kind": "arrival_to_arrival",
+      "seconds": 33.222165100014536,
+      "event": 3765
+    }
+  ],
+  "pending_after_last_arrival_seconds": 12.809103899991896,
+  "mass_convention": "unit weight on this realized event path; clock binding only",
+  "credit_convention": "credit operators are supplied directional derivatives; trace clock binding uses zero credit",
+  "world_calls_added": 0,
+  "optimizer_updates_added": 0
+}

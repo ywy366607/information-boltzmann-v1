@@ -1,0 +1,229 @@
+{
+  "schema": 1,
+  "source_cycle": 5268,
+  "source_sha256": "665e62d0673d78b51339ba4125e419dc839ec5c7b11751c996db0600b6c975bb",
+  "source_unchanged": true,
+  "optimizer_updates": 0,
+  "world_calls": 0,
+  "query_route": {
+    "state_change": 0.0,
+    "hidden_change": 0.0,
+    "logit_shift_context_difference": 1.9073486328125e-06,
+    "logit_shift_norm": 11.232598304748535,
+    "contract": "same forced input and state; indirect changes from sampled words are separate"
+  },
+  "runtime": {
+    "events": 104,
+    "cycles": [
+      5165,
+      5268
+    ],
+    "updates": 624,
+    "choices": {
+      "generate": 71,
+      "silence": 14,
+      "reuse": 19
+    },
+    "generated": 71,
+    "generated_lengths": {
+      "32": 71
+    },
+    "sentence_punctuation_at_end": 1,
+    "punctuation_anywhere": 22,
+    "reported_truncated": 0,
+    "mother_bytes_mean": 87.29807692307692,
+    "external_bytes_mean": 960,
+    "mother_source_progress_mean": 0.004923332769137163,
+    "ambient_source_progress_mean": 0.034253233627308734,
+    "recalled": 23,
+    "relation_chosen_mse": 0.01371825337320423,
+    "original_chosen_mse": 0.04996488341846718,
+    "draft_relation_wins": 118,
+    "draft_original_wins": 102,
+    "draft_comparisons": 207,
+    "shadow_settlements": 92,
+    "shadow_mse": 0.23655582365340652,
+    "shadow_baseline_mse": 0.236710627003588,
+    "shadow_abs_offset": 0.005804476739682193,
+    "draft_uniform_tv": 0.004952937221297851
+  },
+  "validation_tail": [
+    {
+      "cycle": 5228,
+      "owt_nll": 1.3361204713582993,
+      "mother_nll": 1.1362323984503746,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar"
+    },
+    {
+      "cycle": 5268,
+      "owt_nll": 1.3408222123980522,
+      "mother_nll": 1.1353469118475914,
+      "bytes_each": 8192,
+      "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar"
+    }
+  ],
+  "samples": [
+    {
+      "condition": "live_question",
+      "seed": 110,
+      "prefix": "",
+      "first32": "Crawals, skilling for meeting �",
+      "full128": "Crawals, skilling for meeting ‘Of States—to Rs Objection’s CNB,” communication that \"FBmoves things\" sounds like a mix o",
+      "hex": "43726177616c732c20736b696c6c696e6720666f72206d656574696e6720e280984f6620537461746573e28094746f205273204f626a656374696f6ee280997320434e422ce2809d20636f6d6d756e69636174696f6e2074686174202246426d6f766573207468696e67732220736f756e6473206c696b652061206d6978206f",
+      "punctuation_within32": false,
+      "punctuation_within128": false
+    },
+    {
+      "condition": "live_question",
+      "seed": 111,
+      "prefix": "",
+      "first32": "PC's Still — like a thought or",
+      "full128": "PC's Still — like a thought or logy. And \"unic\" like a list also with animatic.\ntms\"li\" \"sily\" SAA teache sounds like a and pl",
+      "hex": "50432773205374696c6c20e28094206c696b6520612074686f75676874206f72206c6f67792e20416e642022756e696322206c696b652061206c69737420616c736f207769746820616e696d617469632e0a746d73226c6922202273696c7922205341412074656163686520736f756e6473206c696b65206120616e6420706c",
+      "punctuation_within32": false,
+      "punctuation_within128": true
+    },
+    {
+      "condition": "live_question",
+      "seed": 112,
+      "prefix": "",
+      "first32": "NIS. Election long on Argument m",
+      "full128": "NIS. Election long on Argument must be astrosed together. Spiected Afghanistint, Williga Coachs.Quiet turn. And \"but\" like great",
+      "hex": "4e49532e20456c656374696f6e206c6f6e67206f6e20417267756d656e74206d75737420626520617374726f73656420746f6765746865722e2053706965637465642041666768616e697374696e742c2057696c6c69676120436f616368732e5175696574207475726e2e20416e64202262757422206c696b65206772656174",
+      "punctuation_within32": true,
+      "punctuation_within128": true
+    },
+    {
+      "condition": "live_question",
+      "seed": 113,
+      "prefix": "",
+      "first32": "police varing and have MES GOP.B",
+      "full128": "police varing and have MES GOP.BAKERAG: Security — like leven something marriers that the many inemable will else your default",
+      "hex": "706f6c69636520766172696e6720616e642068617665204d455320474f502e42414b455241473a20536563757269747920e28094206c696b65206c6576656e20736f6d657468696e67206d61727269657273207468617420746865206d616e7920696e656d61626c652077696c6c20656c736520796f75722064656661756c74",
+      "punctuation_within32": true,
+      "punctuation_within128": true
+    },
+    {
+      "condition": "live_no_question",
+      "seed": 110,
+      "prefix": "",
+      "first32": "Crawals, skilling for meeting se",
+      "full128": "Crawals, skilling for meeting self-interested Peds Objection using Isifical Smith Party, voluntments and comped: ‘96 Warning: ",
+      "hex": "43726177616c732c20736b696c6c696e6720666f72206d656574696e672073656c662d696e74657265737465642050656473204f626a656374696f6e207573696e6720497369666963616c20536d6974682050617274792c20766f6c756e746d656e747320616e6420636f6d7065643a20e280983936205761726e696e673a20",
+      "punctuation_within32": false,
+      "punctuation_within128": false
+    },
+    {
+      "condition": "live_no_question",
+      "seed": 111,
+      "prefix": "",
+      "first32": "PC's conclude in a seathat the r",
+      "full128": "PC's conclude in a seathat the relation of But Prinezune, that JIN St\"an might be the list\"sily\" sounds like a mix of solaar and",
+      "hex": "5043277320636f6e636c75646520696e20612073656174686174207468652072656c6174696f6e206f6620427574205072696e657a756e652c2074686174204a494e20537422616e206d6967687420626520746865206c6973742273696c792220736f756e6473206c696b652061206d6978206f6620736f6c61617220616e64",
+      "punctuation_within32": false,
+      "punctuation_within128": false
+    },
+    {
+      "condition": "live_no_question",
+      "seed": 112,
+      "prefix": "",
+      "first32": "NIV. Election long on How world ",
+      "full128": "NIV. Election long on How world West sinstructed pgradicates but her previous types, 2010, 2010.Quiet turn. And \"but\" like event",
+      "hex": "4e49562e20456c656374696f6e206c6f6e67206f6e20486f7720776f726c6420576573742073696e737472756374656420706772616469636174657320627574206865722070726576696f75732074797065732c20323031302c20323031302e5175696574207475726e2e20416e64202262757422206c696b65206576656e74",
+      "punctuation_within32": true,
+      "punctuation_within128": true
+    },
+    {
+      "condition": "live_no_question",
+      "seed": 113,
+      "prefix": "",
+      "first32": "police varing and have MEmix of ",
+      "full128": "police varing and have MEmix of threatened sales. Olso drops Middescribe: min\"European to formersion about the electric Hamisic ",
+      "hex": "706f6c69636520766172696e6720616e642068617665204d456d6978206f6620746872656174656e65642073616c65732e204f6c736f2064726f7073204d696464657363726962653a206d696e224575726f7065616e20746f20666f726d657273696f6e2061626f75742074686520656c6563747269632048616d6973696320",
+      "punctuation_within32": false,
+      "punctuation_within128": true
+    },
+    {
+      "condition": "real_mother_prefix",
+      "seed": 110,
+      "prefix": "Shh, it's okay, sweetie. Mama is right here with you. Can you say \"Mama\"?\nYou said \"her justice\" and \"January.\" Good words, swee",
+      "first32": "ts are costage of forcese areas:",
+      "full128": "ts are costage of forcese areas:\n\nFairfield PTC Rs 1.72017, 25 deCPS,\"112]\n\nSmith two bright\"FBmoves as never difficulty and cla",
+      "hex": "74732061726520636f7374616765206f6620666f72636573652061726561733a0a0a466169726669656c642050544320527320312e37323031372c2032352064654350532c223131325d0a0a536d6974682074776f206272696768742246426d6f766573206173206e6576657220646966666963756c747920616e6420636c61",
+      "punctuation_within32": false,
+      "punctuation_within128": true
+    },
+    {
+      "condition": "real_mother_prefix",
+      "seed": 111,
+      "prefix": "Shh, it's okay, sweetie. Mama is right here with you. Can you say \"Mama\"?\nYou said \"her justice\" and \"January.\" Good words, swee",
+      "first32": "t says that’s also apparent ar",
+      "full128": "t says that’s also apparent are happened their fields. Let's like a mix of page among about 90thn at PM’s assault solaar app",
+      "hex": "7420736179732074686174e280997320616c736f206170706172656e74206172652068617070656e6564207468656972206669656c64732e204c65742773206c696b652061206d6978206f66207061676520616d6f6e672061626f757420393074686e20617420504de28099732061737361756c7420736f6c61617220617070",
+      "punctuation_within32": false,
+      "punctuation_within128": true
+    },
+    {
+      "condition": "real_mother_prefix",
+      "seed": 112,
+      "prefix": "Shh, it's okay, sweetie. Mama is right here with you. Can you say \"Mama\"?\nYou said \"her justice\" and \"January.\" Good words, swee",
+      "first32": "t on line videos isome of what t",
+      "full128": "t on line videos isome of what the fornist. The teged that Pight has liverbag to play. But and \"Qustmas\" sounds like a mix of th",
+      "hex": "74206f6e206c696e6520766964656f732069736f6d65206f6620776861742074686520666f726e6973742e20546865207465676564207468617420506967687420686173206c6976657262616720746f20706c61792e2042757420616e642022517573746d61732220736f756e6473206c696b652061206d6978206f66207468",
+      "punctuation_within32": false,
+      "punctuation_within128": true
+    },
+    {
+      "condition": "real_mother_prefix",
+      "seed": 113,
+      "prefix": "Shh, it's okay, sweetie. Mama is right here with you. Can you say \"Mama\"?\nYou said \"her justice\" and \"January.\" Good words, swee",
+      "first32": "ts\n\nReever, poetive that many Ha",
+      "full128": "ts\n\nReever, poetive that many Hazarras even all efforts to see any until there her Feder creates.\n\nNote: 16 Warning: implode(): ",
+      "hex": "74730a0a5265657665722c20706f65746976652074686174206d616e792048617a6172726173206576656e20616c6c206566666f72747320746f2073656520616e7920756e74696c2074686572652068657220466564657220637265617465732e0a0a4e6f74653a203136205761726e696e673a20696d706c6f646528293a20",
+      "punctuation_within32": false,
+      "punctuation_within128": true
+    },
+    {
+      "condition": "real_owt_prefix",
+      "seed": 110,
+      "prefix": "e tragic death of singer Ian Curtis, while Still comes with a deluxe gatefold sleeve and includes a mixture of studio and live r",
+      "first32": "esearchesskational couple of the",
+      "full128": "esearchesskational couple of the and faulting Peds Objections finCousing communication (nowledgments arrierman): Argument must b",
+      "hex": "657365617263686573736b6174696f6e616c20636f75706c65206f662074686520616e64206661756c74696e672050656473204f626a656374696f6e732066696e436f7573696e6720636f6d6d756e69636174696f6e20286e6f776c6564676d656e7473206172726965726d616e293a20417267756d656e74206d7573742062",
+      "punctuation_within32": false,
+      "punctuation_within128": false
+    },
+    {
+      "condition": "real_owt_prefix",
+      "seed": 111,
+      "prefix": "e tragic death of singer Ian Curtis, while Still comes with a deluxe gatefold sleeve and includes a mixture of studio and live r",
+      "first32": "estaurance “institution grectr",
+      "full128": "estaurance “institution grectres”. The Rulick Mazenes’s Ristax Marnmigge, Common is \"sultztenator\" — like peoplelist. An",
+      "hex": "657374617572616e636520e2809c696e737469747574696f6e206772656374726573e2809d2e205468652052756c69636b204d617a656e6573e280997320526973746178204d61726e6d696767652c20436f6d6d6f6e206973202273756c747a74656e61746f722220e28094206c696b652070656f706c656c6973742e20416e",
+      "punctuation_within32": false,
+      "punctuation_within128": true
+    },
+    {
+      "condition": "real_owt_prefix",
+      "seed": 112,
+      "prefix": "e tragic death of singer Ian Curtis, while Still comes with a deluxe gatefold sleeve and includes a mixture of studio and live r",
+      "first32": "eportion to bly against the begi",
+      "full128": "eportion to bly against the begines. Minstitute that ‘Eeople that forving into Williro beauts.”\n\nThe Storagain, which is the",
+      "hex": "65706f7274696f6e20746f20626c7920616761696e73742074686520626567696e65732e204d696e73746974757465207468617420e2809845656f706c65207468617420666f7276696e6720696e746f2057696c6c69726f206265617574732ee2809d0a0a5468652053746f72616761696e2c20776869636820697320746865",
+      "punctuation_within32": false,
+      "punctuation_within128": true
+    },
+    {
+      "condition": "real_owt_prefix",
+      "seed": 113,
+      "prefix": "e tragic death of singer Ian Curtis, while Still comes with a deluxe gatefold sleeve and includes a mixture of studio and live r",
+      "first32": "ashinger to.\n\nInvestigation by\n\n",
+      "full128": "ashinger to.\n\nInvestigation by\n\nAlready! Simal terms continued, he underwamproves he up to memory: emailth Wincelsus still faith",
+      "hex": "617368696e67657220746f2e0a0a496e7665737469676174696f6e2062790a0a416c7265616479212053696d616c207465726d7320636f6e74696e7565642c20686520756e64657277616d70726f76657320686520757020746f206d656d6f72793a20656d61696c74682057696e63656c737573207374696c6c206661697468",
+      "punctuation_within32": true,
+      "punctuation_within128": true
+    }
+  ],
+  "scope": "frozen expression and real trajectory diagnosis; not a controlled parameter scaling experiment"
+}

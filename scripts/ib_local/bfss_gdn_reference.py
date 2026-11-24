@@ -38,19 +38,15 @@ def coupling_potential_and_gradient(
     """Exact block formula; no full Jacobian or autograd-inside-forward."""
     if s.ndim < 3 or s.shape[-3] < 1:
         raise ValueError("S must have at least one head: [..., heads, keys, values]")
-    heads = s.unbind(-3)
-    gradients = [torch.zeros_like(head) for head in heads]
-    potential = s.new_zeros(s.shape[:-3])
-    for i, si in enumerate(heads):
-        for j in range(i + 1, len(heads)):
-            sj = heads[j]
-            a = si @ sj.transpose(-1, -2) - sj @ si.transpose(-1, -2)
-            b = si.transpose(-1, -2) @ sj - sj.transpose(-1, -2) @ si
-            potential = potential + coupling / 8 * (
-                a.square().sum((-2, -1)) + b.square().sum((-2, -1)))
-            gradients[i] = gradients[i] + coupling / 2 * (a @ sj - sj @ b)
-            gradients[j] = gradients[j] + coupling / 2 * (si @ b - a @ si)
-    return potential, torch.stack(gradients, -3)
+    # All ordered pairs in batched GEMMs; no Python head-pair launch loop.
+    # Both i,j and j,i occur, so the potential coefficient is halved.
+    si, sj = s.unsqueeze(-3), s.unsqueeze(-4)
+    a = si @ sj.transpose(-1, -2) - sj @ si.transpose(-1, -2)
+    b = si.transpose(-1, -2) @ sj - sj.transpose(-1, -2) @ si
+    potential = coupling / 16 * (a.square().sum((-4, -3, -2, -1)) +
+                                  b.square().sum((-4, -3, -2, -1)))
+    gradient = coupling / 2 * (a @ sj - sj @ b).sum(-3)
+    return potential, gradient
 
 
 def energy(s: Tensor, p: Tensor, *, frequency: float | Tensor,

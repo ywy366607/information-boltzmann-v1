@@ -1,0 +1,259 @@
+{
+  "reference": "D:\\mengli-throughput-20261123\\replay_reference_ready",
+  "candidate": "D:\\mengli-throughput-20261123\\replay_batched_ready",
+  "actual_ports": {
+    "cycle": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "choice": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "utterance_hex": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "external_bytes": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "self_bytes": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "updates": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "metal_g": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "response_nll": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "continuation_nll": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "world": {
+      "leaves": 46,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "pre_outcome_gain": {
+      "leaves": 12,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "joint_language_search": {
+      "leaves": 46,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "shared_unknown": {
+      "leaves": 228,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    }
+  },
+  "checkpoint": {
+    "model": {
+      "leaves": 705,
+      "different": 2,
+      "shape_differences": [],
+      "max_abs": 2.7654459699988365e-07,
+      "examples": [
+        "/memory.retention_utility_first",
+        "/memory.retention_utility_second"
+      ]
+    },
+    "optimizer": {
+      "leaves": 5382,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "table": {
+      "leaves": 20,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "world": {
+      "leaves": 12,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "torch_rng": {
+      "leaves": 1,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "cuda_rng": {
+      "leaves": 1,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "numpy_rng": {
+      "leaves": 5,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "python_rng": {
+      "leaves": 627,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "cycle": {
+      "leaves": 1,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    }
+  },
+  "carried": {
+    "recurrent": {
+      "leaves": 1,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "bfss_momenta": {
+      "leaves": 32,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "internal_pending": {
+      "leaves": 813,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "causal_use_pending": {
+      "leaves": 1,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "native_value_bank": {
+      "leaves": 5509,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "latent_action_bank": {
+      "leaves": 4033,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "autonomous_eligibility": {
+      "leaves": 1,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    }
+  },
+  "old_fact_scores": {
+    "leaves": 520,
+    "different": 0,
+    "shape_differences": [],
+    "max_abs": 0.0,
+    "examples": []
+  },
+  "timing": {
+    "reference_seconds": 50.624107299998286,
+    "candidate_seconds": 48.94000070000038,
+    "reference_profile": "D:\\mengli-throughput-20261123\\replay_reference_ready\\runtime_profile.json",
+    "speedup": 1.0344116586822585,
+    "candidate_peak_gpu_bytes": 2314707968,
+    "scope": "life dispatch plus final 64 old-fact scores, before final checkpoint commit"
+  },
+  "audit_seconds": 16.385853199997655,
+  "retention_panels": {
+    "panels": 4,
+    "observations": 32,
+    "reference_seconds": 5.887856600002124,
+    "candidate_seconds": 1.7575028000064776,
+    "identity_version_age_equal": true,
+    "benefit_max_difference": 1.9073486328125e-06,
+    "preference_max_difference": 0.00023576617240905762
+  },
+  "invocation_including_save": [
+    {
+      "start_cycle": 2813,
+      "cycles": 2,
+      "updates": 8,
+      "external_bytes": 1920,
+      "self_bytes": 128,
+      "seconds": 74.69001510000089
+    },
+    {
+      "start_cycle": 2813,
+      "cycles": 2,
+      "updates": 8,
+      "external_bytes": 1920,
+      "self_bytes": 128,
+      "seconds": 75.0151236999991
+    }
+  ]
+}

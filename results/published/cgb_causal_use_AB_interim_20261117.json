@@ -1,0 +1,122 @@
+{
+  "status": "A_B_complete_C_restarted_after_disk_exhaustion",
+  "work": "F:\\mengli-causal-use-2401-v5",
+  "arms": {
+    "A": {
+      "cycles": 32,
+      "updates": 128,
+      "external_bytes": 30720,
+      "evaluations": [
+        {
+          "cycle": 0,
+          "score": -1.1685489965602756,
+          "mse": 0.7553331167437136
+        },
+        {
+          "cycle": 8,
+          "score": -1.1690566558390856,
+          "mse": 0.7552208215929568
+        },
+        {
+          "cycle": 16,
+          "score": -1.170152436941862,
+          "mse": 0.7558933071559295
+        },
+        {
+          "cycle": 24,
+          "score": -1.1715184105560184,
+          "mse": 0.7582759087672457
+        },
+        {
+          "cycle": 32,
+          "score": -1.1711496897041798,
+          "mse": 0.758404825348407
+        }
+      ],
+      "positive_use_events": 29,
+      "choices": {
+        "generate": 19,
+        "reuse": 7,
+        "silence": 6
+      },
+      "prequential": {
+        "mother_prequential": {
+          "count": 32,
+          "log_score": -1.0554120186716318,
+          "mse": 0.6133975614793599
+        },
+        "decision_prequential": {
+          "count": 32,
+          "log_score": -1.0849779769778252,
+          "mse": 0.6612827964127064
+        }
+      },
+      "observed_use_mean": 0.01750907115638256,
+      "expected_use_mean": 0.01276551742788093,
+      "coefficient_mean": 0.0920573523035273
+    },
+    "B": {
+      "cycles": 32,
+      "updates": 128,
+      "external_bytes": 30720,
+      "evaluations": [
+        {
+          "cycle": 0,
+          "score": -1.1685489965602756,
+          "mse": 0.7553331167437136
+        },
+        {
+          "cycle": 8,
+          "score": -1.1690539913251996,
+          "mse": 0.7557576554827392
+        },
+        {
+          "cycle": 16,
+          "score": -1.1709116119891405,
+          "mse": 0.7579958601854742
+        },
+        {
+          "cycle": 24,
+          "score": -1.1719242567196488,
+          "mse": 0.7580869180383161
+        },
+        {
+          "cycle": 32,
+          "score": -1.1777323363348842,
+          "mse": 0.7610221633221954
+        }
+      ],
+      "positive_use_events": 28,
+      "choices": {
+        "generate": 17,
+        "reuse": 5,
+        "silence": 10
+      },
+      "prequential": {
+        "mother_prequential": {
+          "count": 32,
+          "log_score": -1.0268306769430637,
+          "mse": 0.617654484231025
+        },
+        "decision_prequential": {
+          "count": 28,
+          "log_score": -1.1018634459802084,
+          "mse": 0.7112859647188868
+        }
+      },
+      "observed_use_mean": 0.0151967101264745,
+      "expected_use_mean": 0.013990142770349913,
+      "coefficient_mean": 0.1054555147420615
+    }
+  },
+  "comparison": {
+    "matched_queries": 64,
+    "B_minus_A_old_score": -0.006582646630704403,
+    "median": -0.0023542046546936035,
+    "B_better_queries": 29,
+    "B_minus_A_old_mse": 0.0026173379737883806,
+    "different_actions": 18,
+    "different_navigation": 32,
+    "scope": "fixed old raw facts with target excluded; live use/prequential averages describe different self-selected trajectories"
+  }
+}

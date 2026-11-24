@@ -1,0 +1,193 @@
+{
+  "valid": true,
+  "cycle": 2481,
+  "source_sha256": "b574e457ba0cca18f7aed6d7a291468f8b7eb443e285cf105226878f9210916d",
+  "schema": 2,
+  "settlement_kind": "finite_relation_use_v5",
+  "source_unchanged": true,
+  "optimizer_updates": 0,
+  "world_calls": 0,
+  "scope": "unknown:1726",
+  "arrived_event": "episode:2482",
+  "old_supports": [
+    "episode:1650",
+    "episode:1974",
+    "episode:203",
+    "episode:2066",
+    "episode:2369",
+    "episode:2478",
+    "episode:263",
+    "episode:283"
+  ],
+  "raw_encoded_finite_U_max_error": 0.0,
+  "first_uses_old_neutral": true,
+  "after_use": {
+    "scope": "unknown:1726",
+    "revision": 1,
+    "mode": "apply",
+    "moments": [
+      [
+        "episode:1650",
+        0.0023794531822204585,
+        5.661797446379074e-07,
+        1
+      ],
+      [
+        "episode:203",
+        -1.7690658569335935e-05,
+        3.1295940061681934e-11,
+        1
+      ],
+      [
+        "episode:2066",
+        0.004116499423980712,
+        1.6945567507633557e-06,
+        1
+      ],
+      [
+        "episode:2369",
+        -0.0034765541553497307,
+        1.2086428795079495e-06,
+        1
+      ],
+      [
+        "episode:2478",
+        -0.005883765220642089,
+        3.461869317163749e-06,
+        1
+      ],
+      [
+        "episode:2482",
+        0.0,
+        0.0,
+        0
+      ],
+      [
+        "episode:263",
+        0.017215800285339353,
+        2.963837794646909e-05,
+        1
+      ],
+      [
+        "episode:283",
+        -0.001808381080627441,
+        3.270242132771276e-07,
+        1
+      ]
+    ],
+    "last_event": "episode:2482",
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08
+  },
+  "next_geometric_release": {
+    "identities": [
+      "episode:1650",
+      "episode:203",
+      "episode:2066",
+      "episode:2369",
+      "episode:2478",
+      "episode:2482",
+      "episode:263",
+      "episode:283"
+    ],
+    "geometric": [
+      0.4191722571849823,
+      0.42725467681884766,
+      0.6672471165657043,
+      0.3426612615585327,
+      0.4740082025527954,
+      0.16155952215194702,
+      0.39360177516937256,
+      0.41774749755859375
+    ],
+    "priority": [
+      0.4191722571849823,
+      0.42725467681884766,
+      0.6672471165657043,
+      0.3426612615585327,
+      0.4740082025527954,
+      0.16155952215194702,
+      0.39360177516937256,
+      0.41774749755859375
+    ],
+    "biases": [
+      0.7615939974784851,
+      -0.761570394039154,
+      0.7615940570831299,
+      -0.7615940570831299,
+      -0.7615940570831299,
+      0.0,
+      0.7615941166877747,
+      -0.7615939378738403
+    ],
+    "released": "episode:2482",
+    "geometric_released": "episode:2482",
+    "consumed_revision": 1
+  },
+  "next_use_release": {
+    "identities": [
+      "episode:1650",
+      "episode:203",
+      "episode:2066",
+      "episode:2369",
+      "episode:2478",
+      "episode:2482",
+      "episode:263",
+      "episode:283"
+    ],
+    "geometric": [
+      0.4191722571849823,
+      0.42725467681884766,
+      0.6672471165657043,
+      0.3426612615585327,
+      0.4740082025527954,
+      0.16155952215194702,
+      0.39360177516937256,
+      0.41774749755859375
+    ],
+    "priority": [
+      0.8977359533309937,
+      0.19949911534786224,
+      1.429034948348999,
+      0.1599959284067154,
+      0.2213246375322342,
+      0.16155952215194702,
+      0.8429720401763916,
+      0.19505532085895538
+    ],
+    "biases": [
+      0.7615939974784851,
+      -0.761570394039154,
+      0.7615940570831299,
+      -0.7615940570831299,
+      -0.7615940570831299,
+      0.0,
+      0.7615941166877747,
+      -0.7615939378738403
+    ],
+    "released": "episode:2369",
+    "geometric_released": "episode:2482",
+    "consumed_revision": 1
+  },
+  "actual_core_releases": {
+    "observe": [
+      "episode:2482"
+    ],
+    "apply": [
+      "episode:2369"
+    ]
+  },
+  "persisted_then_reread": true,
+  "budget": 8,
+  "complete_imagination_seconds": 0.39486219999980676,
+  "contextual_future": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "audit_total_seconds": 1.3493063999999322,
+  "scope_note": "saved actual response, common current coordinates; controlled next release, not a natural next outcome"
+}

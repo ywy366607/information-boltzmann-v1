@@ -1,0 +1,2439 @@
+{
+  "rows": {
+    "candidate_weights_candidate_state": {
+      "text": {
+        "mean_nll": 1.8807701244950294,
+        "segment_nll": [
+          1.8653658851981163,
+          1.8961743637919426
+        ]
+      },
+      "facts": {
+        "mean_score": -1.2886278415098786,
+        "mean_mse": 1.019746678415686
+      }
+    },
+    "candidate_weights_candidate_physical_zero_workspace": {
+      "text": {
+        "mean_nll": 1.8807617872953415,
+        "segment_nll": [
+          1.8653424978256226,
+          1.8961810767650604
+        ]
+      },
+      "facts": {
+        "mean_score": -1.2886278415098786,
+        "mean_mse": 1.019746678415686
+      }
+    },
+    "candidate_weights_source_physical_zero_workspace": {
+      "text": {
+        "mean_nll": 1.880162090063095,
+        "segment_nll": [
+          1.8648357391357422,
+          1.895488440990448
+        ]
+      },
+      "facts": {
+        "mean_score": -1.2886278415098786,
+        "mean_mse": 1.019746678415686
+      }
+    },
+    "source_weights_candidate_state": {
+      "text": {
+        "mean_nll": 1.8018461130559444,
+        "segment_nll": [
+          1.792390875518322,
+          1.811301350593567
+        ]
+      },
+      "facts": {
+        "mean_score": -1.1219594003632665,
+        "mean_mse": 0.7657257358077914
+      }
+    },
+    "source_weights_source_physical_zero_workspace": {
+      "text": {
+        "mean_nll": 1.8013199865818024,
+        "segment_nll": [
+          1.7918985411524773,
+          1.8107414320111275
+        ]
+      },
+      "facts": {
+        "mean_score": -1.1219594003632665,
+        "mean_mse": 0.7657257358077914
+      }
+    },
+    "candidate_with_source_language_core": {
+      "text": {
+        "mean_nll": 1.8517925925552845,
+        "segment_nll": [
+          1.8431241735816002,
+          1.8604610115289688
+        ]
+      },
+      "facts": {
+        "mean_score": -1.2886278415098786,
+        "mean_mse": 1.019746678415686
+      }
+    },
+    "candidate_with_source_encoder": {
+      "text": {
+        "mean_nll": 1.8843746967613697,
+        "segment_nll": [
+          1.8683657944202423,
+          1.900383599102497
+        ]
+      },
+      "facts": {
+        "mean_score": -1.1325105465948582,
+        "mean_mse": 0.7800701560918242
+      }
+    },
+    "candidate_with_source_working_field": {
+      "text": {
+        "mean_nll": 1.8819008022546768,
+        "segment_nll": [
+          1.8664496690034866,
+          1.897351935505867
+        ]
+      },
+      "facts": {
+        "mean_score": -1.2886278415098786,
+        "mean_mse": 1.019746678415686
+      }
+    },
+    "candidate_with_source_dynamics": {
+      "text": {
+        "mean_nll": 1.8807701244950294,
+        "segment_nll": [
+          1.8653658851981163,
+          1.8961743637919426
+        ]
+      },
+      "facts": {
+        "mean_score": -1.2886278415098786,
+        "mean_mse": 1.019746678415686
+      }
+    }
+  },
+  "parameter_delta": {
+    "read_gain": {
+      "norm": 0.0015815794467926025,
+      "source_norm": 0.089506596326828
+    },
+    "log_relation_ridge": {
+      "norm": 0.0004937648773193359,
+      "source_norm": 2.299992322921753
+    },
+    "body.base.source.embedding.weight": {
+      "norm": 0.22917038202285767,
+      "source_norm": 5.683093547821045
+    },
+    "body.base.layers.0.A_log": {
+      "norm": 0.0021427664905786514,
+      "source_norm": 5.945038318634033
+    },
+    "body.base.layers.0.dt_bias": {
+      "norm": 0.0019343913299962878,
+      "source_norm": 11.262396812438965
+    },
+    "body.base.layers.0.norm.weight": {
+      "norm": 0.007492670789361,
+      "source_norm": 15.937758445739746
+    },
+    "body.base.layers.0.q_proj.weight": {
+      "norm": 0.19157028198242188,
+      "source_norm": 6.104915142059326
+    },
+    "body.base.layers.0.k_proj.weight": {
+      "norm": 0.16243350505828857,
+      "source_norm": 6.014049530029297
+    },
+    "body.base.layers.0.v_proj.weight": {
+      "norm": 0.16342362761497498,
+      "source_norm": 5.9101691246032715
+    },
+    "body.base.layers.0.g_proj.weight": {
+      "norm": 0.13147330284118652,
+      "source_norm": 5.9363017082214355
+    },
+    "body.base.layers.0.o_proj.weight": {
+      "norm": 0.21204699575901031,
+      "source_norm": 2.821286201477051
+    },
+    "body.base.layers.0.alpha_proj.weight": {
+      "norm": 0.025342965498566628,
+      "source_norm": 1.1265571117401123
+    },
+    "body.base.layers.0.beta_proj.weight": {
+      "norm": 0.01631074585020542,
+      "source_norm": 1.0876227617263794
+    },
+    "body.base.layers.0.beta_proj.bias": {
+      "norm": 0.0009791504126042128,
+      "source_norm": 0.042268961668014526
+    },
+    "body.base.layers.0.mlp_norm.weight": {
+      "norm": 0.019015971571207047,
+      "source_norm": 16.104494094848633
+    },
+    "body.base.layers.0.mlp.gate.weight": {
+      "norm": 0.3616580069065094,
+      "source_norm": 9.588129043579102
+    },
+    "body.base.layers.0.mlp.up.weight": {
+      "norm": 0.34687450528144836,
+      "source_norm": 9.541011810302734
+    },
+    "body.base.layers.0.mlp.down.weight": {
+      "norm": 0.6057403683662415,
+      "source_norm": 3.3155460357666016
+    },
+    "body.base.layers.0.qkv_conv.weight": {
+      "norm": 0.03193209320306778,
+      "source_norm": 16.08011817932129
+    },
+    "body.base.layers.1.A_log": {
+      "norm": 0.001146406284533441,
+      "source_norm": 5.57783842086792
+    },
+    "body.base.layers.1.dt_bias": {
+      "norm": 0.0023535331711173058,
+      "source_norm": 15.762736320495605
+    },
+    "body.base.layers.1.norm.weight": {
+      "norm": 0.011746356263756752,
+      "source_norm": 15.906911849975586
+    },
+    "body.base.layers.1.q_proj.weight": {
+      "norm": 0.2522135078907013,
+      "source_norm": 5.471765995025635
+    },
+    "body.base.layers.1.k_proj.weight": {
+      "norm": 0.24953854084014893,
+      "source_norm": 5.417938709259033
+    },
+    "body.base.layers.1.v_proj.weight": {
+      "norm": 0.1876298487186432,
+      "source_norm": 5.320514678955078
+    },
+    "body.base.layers.1.g_proj.weight": {
+      "norm": 0.1907401978969574,
+      "source_norm": 5.305628299713135
+    },
+    "body.base.layers.1.o_proj.weight": {
+      "norm": 0.2162933647632599,
+      "source_norm": 1.6014647483825684
+    },
+    "body.base.layers.1.alpha_proj.weight": {
+      "norm": 0.023322906345129013,
+      "source_norm": 1.0476181507110596
+    },
+    "body.base.layers.1.beta_proj.weight": {
+      "norm": 0.0361860953271389,
+      "source_norm": 0.9661463499069214
+    },
+    "body.base.layers.1.beta_proj.bias": {
+      "norm": 0.002056913683190942,
+      "source_norm": 0.023142866790294647
+    },
+    "body.base.layers.1.mlp_norm.weight": {
+      "norm": 0.013707720674574375,
+      "source_norm": 15.840205192565918
+    },
+    "body.base.layers.1.mlp.gate.weight": {
+      "norm": 0.35702693462371826,
+      "source_norm": 9.18725872039795
+    },
+    "body.base.layers.1.mlp.up.weight": {
+      "norm": 0.34412264823913574,
+      "source_norm": 9.176112174987793
+    },
+    "body.base.layers.1.mlp.down.weight": {
+      "norm": 0.37369608879089355,
+      "source_norm": 2.4132423400878906
+    },
+    "body.base.layers.1.qkv_conv.weight": {
+      "norm": 0.04263322427868843,
+      "source_norm": 15.879980087280273
+    },
+    "body.base.layers.2.A_log": {
+      "norm": 0.006377110257744789,
+      "source_norm": 5.0544304847717285
+    },
+    "body.base.layers.2.dt_bias": {
+      "norm": 0.00646232021972537,
+      "source_norm": 10.771836280822754
+    },
+    "body.base.layers.2.norm.weight": {
+      "norm": 0.02187131717801094,
+      "source_norm": 15.948019027709961
+    },
+    "body.base.layers.2.q_proj.weight": {
+      "norm": 0.38752782344818115,
+      "source_norm": 5.551384925842285
+    },
+    "body.base.layers.2.k_proj.weight": {
+      "norm": 0.36503902077674866,
+      "source_norm": 5.441312313079834
+    },
+    "body.base.layers.2.v_proj.weight": {
+      "norm": 0.32557493448257446,
+      "source_norm": 5.3910722732543945
+    },
+    "body.base.layers.2.g_proj.weight": {
+      "norm": 0.27794772386550903,
+      "source_norm": 5.332937717437744
+    },
+    "body.base.layers.2.o_proj.weight": {
+      "norm": 0.32578688859939575,
+      "source_norm": 1.6484743356704712
+    },
+    "body.base.layers.2.alpha_proj.weight": {
+      "norm": 0.08299213647842407,
+      "source_norm": 0.9825365543365479
+    },
+    "body.base.layers.2.beta_proj.weight": {
+      "norm": 0.07641478627920151,
+      "source_norm": 0.9710960388183594
+    },
+    "body.base.layers.2.beta_proj.bias": {
+      "norm": 0.005013961810618639,
+      "source_norm": 0.012391272000968456
+    },
+    "body.base.layers.2.mlp_norm.weight": {
+      "norm": 0.01595431938767433,
+      "source_norm": 15.855978965759277
+    },
+    "body.base.layers.2.mlp.gate.weight": {
+      "norm": 0.3788842260837555,
+      "source_norm": 9.131370544433594
+    },
+    "body.base.layers.2.mlp.up.weight": {
+      "norm": 0.38752174377441406,
+      "source_norm": 9.120648384094238
+    },
+    "body.base.layers.2.mlp.down.weight": {
+      "norm": 0.39943990111351013,
+      "source_norm": 2.275566577911377
+    },
+    "body.base.layers.2.qkv_conv.weight": {
+      "norm": 0.06887537240982056,
+      "source_norm": 15.975692749023438
+    },
+    "body.base.layers.3.A_log": {
+      "norm": 0.0028668129816651344,
+      "source_norm": 4.9762797355651855
+    },
+    "body.base.layers.3.dt_bias": {
+      "norm": 0.004120829980820417,
+      "source_norm": 14.31226634979248
+    },
+    "body.base.layers.3.norm.weight": {
+      "norm": 0.020685141906142235,
+      "source_norm": 15.939552307128906
+    },
+    "body.base.layers.3.q_proj.weight": {
+      "norm": 0.26934725046157837,
+      "source_norm": 5.524733066558838
+    },
+    "body.base.layers.3.k_proj.weight": {
+      "norm": 0.27203938364982605,
+      "source_norm": 5.368632793426514
+    },
+    "body.base.layers.3.v_proj.weight": {
+      "norm": 0.26356494426727295,
+      "source_norm": 5.324424743652344
+    },
+    "body.base.layers.3.g_proj.weight": {
+      "norm": 0.24486875534057617,
+      "source_norm": 5.279664993286133
+    },
+    "body.base.layers.3.o_proj.weight": {
+      "norm": 0.28356698155403137,
+      "source_norm": 1.5149502754211426
+    },
+    "body.base.layers.3.alpha_proj.weight": {
+      "norm": 0.04967445135116577,
+      "source_norm": 0.995326578617096
+    },
+    "body.base.layers.3.beta_proj.weight": {
+      "norm": 0.0729237049818039,
+      "source_norm": 0.9601224660873413
+    },
+    "body.base.layers.3.beta_proj.bias": {
+      "norm": 0.003422423033043742,
+      "source_norm": 0.02594994381070137
+    },
+    "body.base.layers.3.mlp_norm.weight": {
+      "norm": 0.021231522783637047,
+      "source_norm": 15.867850303649902
+    },
+    "body.base.layers.3.mlp.gate.weight": {
+      "norm": 0.4119780957698822,
+      "source_norm": 9.139603614807129
+    },
+    "body.base.layers.3.mlp.up.weight": {
+      "norm": 0.407690167427063,
+      "source_norm": 9.164528846740723
+    },
+    "body.base.layers.3.mlp.down.weight": {
+      "norm": 0.4036370515823364,
+      "source_norm": 2.214118003845215
+    },
+    "body.base.layers.3.qkv_conv.weight": {
+      "norm": 0.07753942906856537,
+      "source_norm": 15.7229642868042
+    },
+    "body.base.layers.4.A_log": {
+      "norm": 0.00821865163743496,
+      "source_norm": 5.2190070152282715
+    },
+    "body.base.layers.4.dt_bias": {
+      "norm": 0.007360199932008982,
+      "source_norm": 14.027233123779297
+    },
+    "body.base.layers.4.norm.weight": {
+      "norm": 0.027081510052084923,
+      "source_norm": 16.047279357910156
+    },
+    "body.base.layers.4.q_proj.weight": {
+      "norm": 0.4389393627643585,
+      "source_norm": 5.643950462341309
+    },
+    "body.base.layers.4.k_proj.weight": {
+      "norm": 0.4295908808708191,
+      "source_norm": 5.406466960906982
+    },
+    "body.base.layers.4.v_proj.weight": {
+      "norm": 0.2797090411186218,
+      "source_norm": 5.37488317489624
+    },
+    "body.base.layers.4.g_proj.weight": {
+      "norm": 0.3006110191345215,
+      "source_norm": 5.300901412963867
+    },
+    "body.base.layers.4.o_proj.weight": {
+      "norm": 0.39471256732940674,
+      "source_norm": 1.507465124130249
+    },
+    "body.base.layers.4.alpha_proj.weight": {
+      "norm": 0.11504916101694107,
+      "source_norm": 1.0203763246536255
+    },
+    "body.base.layers.4.beta_proj.weight": {
+      "norm": 0.08517245948314667,
+      "source_norm": 1.0082002878189087
+    },
+    "body.base.layers.4.beta_proj.bias": {
+      "norm": 0.004450841806828976,
+      "source_norm": 0.023728329688310623
+    },
+    "body.base.layers.4.mlp_norm.weight": {
+      "norm": 0.021424878388643265,
+      "source_norm": 15.829797744750977
+    },
+    "body.base.layers.4.mlp.gate.weight": {
+      "norm": 0.40248429775238037,
+      "source_norm": 9.097695350646973
+    },
+    "body.base.layers.4.mlp.up.weight": {
+      "norm": 0.415432333946228,
+      "source_norm": 9.094209671020508
+    },
+    "body.base.layers.4.mlp.down.weight": {
+      "norm": 0.38810470700263977,
+      "source_norm": 2.1588399410247803
+    },
+    "body.base.layers.4.qkv_conv.weight": {
+      "norm": 0.0705346092581749,
+      "source_norm": 15.83089828491211
+    },
+    "body.base.layers.5.A_log": {
+      "norm": 0.0043208361603319645,
+      "source_norm": 6.020191669464111
+    },
+    "body.base.layers.5.dt_bias": {
+      "norm": 0.0045774891041219234,
+      "source_norm": 12.314044952392578
+    },
+    "body.base.layers.5.norm.weight": {
+      "norm": 0.02245250530540943,
+      "source_norm": 15.94601821899414
+    },
+    "body.base.layers.5.q_proj.weight": {
+      "norm": 0.42382386326789856,
+      "source_norm": 5.579410076141357
+    },
+    "body.base.layers.5.k_proj.weight": {
+      "norm": 0.39917367696762085,
+      "source_norm": 5.314355373382568
+    },
+    "body.base.layers.5.v_proj.weight": {
+      "norm": 0.2994173467159271,
+      "source_norm": 5.293304920196533
+    },
+    "body.base.layers.5.g_proj.weight": {
+      "norm": 0.3170432150363922,
+      "source_norm": 5.21636962890625
+    },
+    "body.base.layers.5.o_proj.weight": {
+      "norm": 0.29530900716781616,
+      "source_norm": 1.3925278186798096
+    },
+    "body.base.layers.5.alpha_proj.weight": {
+      "norm": 0.05725255608558655,
+      "source_norm": 0.9785321354866028
+    },
+    "body.base.layers.5.beta_proj.weight": {
+      "norm": 0.06957456469535828,
+      "source_norm": 1.0057588815689087
+    },
+    "body.base.layers.5.beta_proj.bias": {
+      "norm": 0.0057915872894227505,
+      "source_norm": 0.025338638573884964
+    },
+    "body.base.layers.5.mlp_norm.weight": {
+      "norm": 0.018514947965741158,
+      "source_norm": 15.851724624633789
+    },
+    "body.base.layers.5.mlp.gate.weight": {
+      "norm": 0.43365418910980225,
+      "source_norm": 9.087481498718262
+    },
+    "body.base.layers.5.mlp.up.weight": {
+      "norm": 0.38938719034194946,
+      "source_norm": 9.106725692749023
+    },
+    "body.base.layers.5.mlp.down.weight": {
+      "norm": 0.40266916155815125,
+      "source_norm": 2.1391537189483643
+    },
+    "body.base.layers.5.qkv_conv.weight": {
+      "norm": 0.06611655652523041,
+      "source_norm": 16.070493698120117
+    },
+    "body.base.layers.6.A_log": {
+      "norm": 0.0018441055435687304,
+      "source_norm": 5.510748386383057
+    },
+    "body.base.layers.6.dt_bias": {
+      "norm": 0.0022183952387422323,
+      "source_norm": 15.19710922241211
+    },
+    "body.base.layers.6.norm.weight": {
+      "norm": 0.011134960688650608,
+      "source_norm": 16.008827209472656
+    },
+    "body.base.layers.6.q_proj.weight": {
+      "norm": 0.3788767457008362,
+      "source_norm": 5.669535160064697
+    },
+    "body.base.layers.6.k_proj.weight": {
+      "norm": 0.41276171803474426,
+      "source_norm": 5.493441104888916
+    },
+    "body.base.layers.6.v_proj.weight": {
+      "norm": 0.42542946338653564,
+      "source_norm": 5.356386661529541
+    },
+    "body.base.layers.6.g_proj.weight": {
+      "norm": 0.3174549639225006,
+      "source_norm": 5.339150428771973
+    },
+    "body.base.layers.6.o_proj.weight": {
+      "norm": 0.35360220074653625,
+      "source_norm": 1.5622328519821167
+    },
+    "body.base.layers.6.alpha_proj.weight": {
+      "norm": 0.041503969579935074,
+      "source_norm": 1.0368989706039429
+    },
+    "body.base.layers.6.beta_proj.weight": {
+      "norm": 0.11885342001914978,
+      "source_norm": 1.0540493726730347
+    },
+    "body.base.layers.6.beta_proj.bias": {
+      "norm": 0.005129234865307808,
+      "source_norm": 0.038764096796512604
+    },
+    "body.base.layers.6.mlp_norm.weight": {
+      "norm": 0.02064334787428379,
+      "source_norm": 15.838506698608398
+    },
+    "body.base.layers.6.mlp.gate.weight": {
+      "norm": 0.43459272384643555,
+      "source_norm": 9.076460838317871
+    },
+    "body.base.layers.6.mlp.up.weight": {
+      "norm": 0.3975473940372467,
+      "source_norm": 9.071554183959961
+    },
+    "body.base.layers.6.mlp.down.weight": {
+      "norm": 0.4044440686702728,
+      "source_norm": 2.130882978439331
+    },
+    "body.base.layers.6.qkv_conv.weight": {
+      "norm": 0.060241296887397766,
+      "source_norm": 15.893567085266113
+    },
+    "body.base.layers.7.A_log": {
+      "norm": 0.0037168157286942005,
+      "source_norm": 5.949882507324219
+    },
+    "body.base.layers.7.dt_bias": {
+      "norm": 0.004069584421813488,
+      "source_norm": 10.743547439575195
+    },
+    "body.base.layers.7.norm.weight": {
+      "norm": 0.03145628049969673,
+      "source_norm": 15.993696212768555
+    },
+    "body.base.layers.7.q_proj.weight": {
+      "norm": 0.313029944896698,
+      "source_norm": 5.720025062561035
+    },
+    "body.base.layers.7.k_proj.weight": {
+      "norm": 0.39473119378089905,
+      "source_norm": 5.492720603942871
+    },
+    "body.base.layers.7.v_proj.weight": {
+      "norm": 0.3777655065059662,
+      "source_norm": 5.455186367034912
+    },
+    "body.base.layers.7.g_proj.weight": {
+      "norm": 0.4159381687641144,
+      "source_norm": 5.373829364776611
+    },
+    "body.base.layers.7.o_proj.weight": {
+      "norm": 0.3216390907764435,
+      "source_norm": 1.6969410181045532
+    },
+    "body.base.layers.7.alpha_proj.weight": {
+      "norm": 0.05980871245265007,
+      "source_norm": 1.0188795328140259
+    },
+    "body.base.layers.7.beta_proj.weight": {
+      "norm": 0.04888596758246422,
+      "source_norm": 1.0116546154022217
+    },
+    "body.base.layers.7.beta_proj.bias": {
+      "norm": 0.002468142192810774,
+      "source_norm": 0.025899190455675125
+    },
+    "body.base.layers.7.mlp_norm.weight": {
+      "norm": 0.02822069637477398,
+      "source_norm": 15.838154792785645
+    },
+    "body.base.layers.7.mlp.gate.weight": {
+      "norm": 0.42331573367118835,
+      "source_norm": 9.073590278625488
+    },
+    "body.base.layers.7.mlp.up.weight": {
+      "norm": 0.42637255787849426,
+      "source_norm": 9.064680099487305
+    },
+    "body.base.layers.7.mlp.down.weight": {
+      "norm": 0.4482075273990631,
+      "source_norm": 2.093116521835327
+    },
+    "body.base.layers.7.qkv_conv.weight": {
+      "norm": 0.08920644223690033,
+      "source_norm": 15.943133354187012
+    },
+    "body.base.layers.8.A_log": {
+      "norm": 0.0037351935170590878,
+      "source_norm": 6.392525672912598
+    },
+    "body.base.layers.8.dt_bias": {
+      "norm": 0.0035835637245327234,
+      "source_norm": 12.787740707397461
+    },
+    "body.base.layers.8.norm.weight": {
+      "norm": 0.022087011486291885,
+      "source_norm": 15.993492126464844
+    },
+    "body.base.layers.8.q_proj.weight": {
+      "norm": 0.3478642404079437,
+      "source_norm": 5.628681182861328
+    },
+    "body.base.layers.8.k_proj.weight": {
+      "norm": 0.3869916498661041,
+      "source_norm": 5.389373779296875
+    },
+    "body.base.layers.8.v_proj.weight": {
+      "norm": 0.3309454917907715,
+      "source_norm": 5.38256311416626
+    },
+    "body.base.layers.8.g_proj.weight": {
+      "norm": 0.40860623121261597,
+      "source_norm": 5.3218817710876465
+    },
+    "body.base.layers.8.o_proj.weight": {
+      "norm": 0.32587045431137085,
+      "source_norm": 1.5121463537216187
+    },
+    "body.base.layers.8.alpha_proj.weight": {
+      "norm": 0.04925752803683281,
+      "source_norm": 1.0395702123641968
+    },
+    "body.base.layers.8.beta_proj.weight": {
+      "norm": 0.062079817056655884,
+      "source_norm": 0.9900178909301758
+    },
+    "body.base.layers.8.beta_proj.bias": {
+      "norm": 0.00280645489692688,
+      "source_norm": 0.03275853395462036
+    },
+    "body.base.layers.8.mlp_norm.weight": {
+      "norm": 0.01987484283745289,
+      "source_norm": 15.850509643554688
+    },
+    "body.base.layers.8.mlp.gate.weight": {
+      "norm": 0.43664252758026123,
+      "source_norm": 9.073938369750977
+    },
+    "body.base.layers.8.mlp.up.weight": {
+      "norm": 0.3867994546890259,
+      "source_norm": 9.050891876220703
+    },
+    "body.base.layers.8.mlp.down.weight": {
+      "norm": 0.43251436948776245,
+      "source_norm": 2.1136574745178223
+    },
+    "body.base.layers.8.qkv_conv.weight": {
+      "norm": 0.07198993861675262,
+      "source_norm": 15.928163528442383
+    },
+    "body.base.layers.9.A_log": {
+      "norm": 0.0037308242172002792,
+      "source_norm": 5.313316345214844
+    },
+    "body.base.layers.9.dt_bias": {
+      "norm": 0.0030579259619116783,
+      "source_norm": 12.893385887145996
+    },
+    "body.base.layers.9.norm.weight": {
+      "norm": 0.010650033131241798,
+      "source_norm": 15.981145858764648
+    },
+    "body.base.layers.9.q_proj.weight": {
+      "norm": 0.3643356263637543,
+      "source_norm": 5.67943811416626
+    },
+    "body.base.layers.9.k_proj.weight": {
+      "norm": 0.4276352524757385,
+      "source_norm": 5.432775020599365
+    },
+    "body.base.layers.9.v_proj.weight": {
+      "norm": 0.2980715334415436,
+      "source_norm": 5.30891227722168
+    },
+    "body.base.layers.9.g_proj.weight": {
+      "norm": 0.3005879819393158,
+      "source_norm": 5.282075881958008
+    },
+    "body.base.layers.9.o_proj.weight": {
+      "norm": 0.2622719705104828,
+      "source_norm": 1.4761922359466553
+    },
+    "body.base.layers.9.alpha_proj.weight": {
+      "norm": 0.04728631675243378,
+      "source_norm": 1.004365086555481
+    },
+    "body.base.layers.9.beta_proj.weight": {
+      "norm": 0.033915307372808456,
+      "source_norm": 0.9753043055534363
+    },
+    "body.base.layers.9.beta_proj.bias": {
+      "norm": 0.0017682809848338366,
+      "source_norm": 0.018703360110521317
+    },
+    "body.base.layers.9.mlp_norm.weight": {
+      "norm": 0.02538922242820263,
+      "source_norm": 15.839048385620117
+    },
+    "body.base.layers.9.mlp.gate.weight": {
+      "norm": 0.4642866551876068,
+      "source_norm": 9.072617530822754
+    },
+    "body.base.layers.9.mlp.up.weight": {
+      "norm": 0.42468541860580444,
+      "source_norm": 9.048873901367188
+    },
+    "body.base.layers.9.mlp.down.weight": {
+      "norm": 0.4351279139518738,
+      "source_norm": 2.117720127105713
+    },
+    "body.base.layers.9.qkv_conv.weight": {
+      "norm": 0.06795589625835419,
+      "source_norm": 16.050085067749023
+    },
+    "body.base.layers.10.A_log": {
+      "norm": 0.010729954577982426,
+      "source_norm": 6.482576847076416
+    },
+    "body.base.layers.10.dt_bias": {
+      "norm": 0.012487349100410938,
+      "source_norm": 13.049452781677246
+    },
+    "body.base.layers.10.norm.weight": {
+      "norm": 0.020202597603201866,
+      "source_norm": 15.997270584106445
+    },
+    "body.base.layers.10.q_proj.weight": {
+      "norm": 0.7194250822067261,
+      "source_norm": 5.671672821044922
+    },
+    "body.base.layers.10.k_proj.weight": {
+      "norm": 0.7192885875701904,
+      "source_norm": 5.4147467613220215
+    },
+    "body.base.layers.10.v_proj.weight": {
+      "norm": 0.4097623825073242,
+      "source_norm": 5.330345153808594
+    },
+    "body.base.layers.10.g_proj.weight": {
+      "norm": 0.4179821312427521,
+      "source_norm": 5.272227764129639
+    },
+    "body.base.layers.10.o_proj.weight": {
+      "norm": 0.4336824119091034,
+      "source_norm": 1.5859109163284302
+    },
+    "body.base.layers.10.alpha_proj.weight": {
+      "norm": 0.1476464569568634,
+      "source_norm": 1.0244731903076172
+    },
+    "body.base.layers.10.beta_proj.weight": {
+      "norm": 0.08994466811418533,
+      "source_norm": 1.0389512777328491
+    },
+    "body.base.layers.10.beta_proj.bias": {
+      "norm": 0.005359561648219824,
+      "source_norm": 0.04418031871318817
+    },
+    "body.base.layers.10.mlp_norm.weight": {
+      "norm": 0.021735111251473427,
+      "source_norm": 15.830792427062988
+    },
+    "body.base.layers.10.mlp.gate.weight": {
+      "norm": 0.4363134801387787,
+      "source_norm": 9.072205543518066
+    },
+    "body.base.layers.10.mlp.up.weight": {
+      "norm": 0.4210185706615448,
+      "source_norm": 9.061932563781738
+    },
+    "body.base.layers.10.mlp.down.weight": {
+      "norm": 0.43803271651268005,
+      "source_norm": 2.1277081966400146
+    },
+    "body.base.layers.10.qkv_conv.weight": {
+      "norm": 0.14714795351028442,
+      "source_norm": 16.165664672851562
+    },
+    "body.base.layers.11.A_log": {
+      "norm": 0.0066705504432320595,
+      "source_norm": 6.383052349090576
+    },
+    "body.base.layers.11.dt_bias": {
+      "norm": 0.006980144884437323,
+      "source_norm": 12.895462989807129
+    },
+    "body.base.layers.11.norm.weight": {
+      "norm": 0.031046591699123383,
+      "source_norm": 16.029943466186523
+    },
+    "body.base.layers.11.q_proj.weight": {
+      "norm": 1.0646872520446777,
+      "source_norm": 5.805915832519531
+    },
+    "body.base.layers.11.k_proj.weight": {
+      "norm": 1.0425176620483398,
+      "source_norm": 5.515396595001221
+    },
+    "body.base.layers.11.v_proj.weight": {
+      "norm": 0.5276025533676147,
+      "source_norm": 5.426774978637695
+    },
+    "body.base.layers.11.g_proj.weight": {
+      "norm": 0.6217640042304993,
+      "source_norm": 5.3552961349487305
+    },
+    "body.base.layers.11.o_proj.weight": {
+      "norm": 0.6832014918327332,
+      "source_norm": 1.762296199798584
+    },
+    "body.base.layers.11.alpha_proj.weight": {
+      "norm": 0.1244959756731987,
+      "source_norm": 1.0412906408309937
+    },
+    "body.base.layers.11.beta_proj.weight": {
+      "norm": 0.14680258929729462,
+      "source_norm": 1.0092487335205078
+    },
+    "body.base.layers.11.beta_proj.bias": {
+      "norm": 0.008554126136004925,
+      "source_norm": 0.03515048697590828
+    },
+    "body.base.layers.11.mlp_norm.weight": {
+      "norm": 0.022909564897418022,
+      "source_norm": 15.818014144897461
+    },
+    "body.base.layers.11.mlp.gate.weight": {
+      "norm": 0.4447576701641083,
+      "source_norm": 9.030470848083496
+    },
+    "body.base.layers.11.mlp.up.weight": {
+      "norm": 0.4386536777019501,
+      "source_norm": 9.050273895263672
+    },
+    "body.base.layers.11.mlp.down.weight": {
+      "norm": 0.42925190925598145,
+      "source_norm": 2.0853257179260254
+    },
+    "body.base.layers.11.qkv_conv.weight": {
+      "norm": 0.11233332753181458,
+      "source_norm": 16.079233169555664
+    },
+    "body.base.layers.12.A_log": {
+      "norm": 0.007258614990860224,
+      "source_norm": 6.102140426635742
+    },
+    "body.base.layers.12.dt_bias": {
+      "norm": 0.007844937965273857,
+      "source_norm": 14.848505020141602
+    },
+    "body.base.layers.12.norm.weight": {
+      "norm": 0.025728924199938774,
+      "source_norm": 15.988716125488281
+    },
+    "body.base.layers.12.q_proj.weight": {
+      "norm": 0.6514275074005127,
+      "source_norm": 5.798666477203369
+    },
+    "body.base.layers.12.k_proj.weight": {
+      "norm": 0.9899773001670837,
+      "source_norm": 5.555542469024658
+    },
+    "body.base.layers.12.v_proj.weight": {
+      "norm": 0.5779231190681458,
+      "source_norm": 5.403754711151123
+    },
+    "body.base.layers.12.g_proj.weight": {
+      "norm": 0.49538731575012207,
+      "source_norm": 5.334670543670654
+    },
+    "body.base.layers.12.o_proj.weight": {
+      "norm": 0.47241368889808655,
+      "source_norm": 1.7565418481826782
+    },
+    "body.base.layers.12.alpha_proj.weight": {
+      "norm": 0.10882280021905899,
+      "source_norm": 1.0404690504074097
+    },
+    "body.base.layers.12.beta_proj.weight": {
+      "norm": 0.09443541616201401,
+      "source_norm": 1.009164810180664
+    },
+    "body.base.layers.12.beta_proj.bias": {
+      "norm": 0.006284658797085285,
+      "source_norm": 0.026035591959953308
+    },
+    "body.base.layers.12.mlp_norm.weight": {
+      "norm": 0.03413727506995201,
+      "source_norm": 15.839116096496582
+    },
+    "body.base.layers.12.mlp.gate.weight": {
+      "norm": 0.47304782271385193,
+      "source_norm": 9.05627155303955
+    },
+    "body.base.layers.12.mlp.up.weight": {
+      "norm": 0.46623602509498596,
+      "source_norm": 9.017040252685547
+    },
+    "body.base.layers.12.mlp.down.weight": {
+      "norm": 0.4446071684360504,
+      "source_norm": 2.072681188583374
+    },
+    "body.base.layers.12.qkv_conv.weight": {
+      "norm": 0.08004868030548096,
+      "source_norm": 16.020549774169922
+    },
+    "body.base.layers.13.A_log": {
+      "norm": 0.004198109731078148,
+      "source_norm": 5.981784820556641
+    },
+    "body.base.layers.13.dt_bias": {
+      "norm": 0.004943688400089741,
+      "source_norm": 12.8662109375
+    },
+    "body.base.layers.13.norm.weight": {
+      "norm": 0.03823479264974594,
+      "source_norm": 16.233356475830078
+    },
+    "body.base.layers.13.q_proj.weight": {
+      "norm": 0.41174226999282837,
+      "source_norm": 5.728286266326904
+    },
+    "body.base.layers.13.k_proj.weight": {
+      "norm": 0.47617462277412415,
+      "source_norm": 5.5074872970581055
+    },
+    "body.base.layers.13.v_proj.weight": {
+      "norm": 0.4137379229068756,
+      "source_norm": 5.450431823730469
+    },
+    "body.base.layers.13.g_proj.weight": {
+      "norm": 0.43228238821029663,
+      "source_norm": 5.3805928230285645
+    },
+    "body.base.layers.13.o_proj.weight": {
+      "norm": 0.3730679154396057,
+      "source_norm": 1.7295091152191162
+    },
+    "body.base.layers.13.alpha_proj.weight": {
+      "norm": 0.06391149014234543,
+      "source_norm": 1.009382724761963
+    },
+    "body.base.layers.13.beta_proj.weight": {
+      "norm": 0.13871459662914276,
+      "source_norm": 1.0198272466659546
+    },
+    "body.base.layers.13.beta_proj.bias": {
+      "norm": 0.012777932919561863,
+      "source_norm": 0.03391006588935852
+    },
+    "body.base.layers.13.mlp_norm.weight": {
+      "norm": 0.027556611225008965,
+      "source_norm": 15.848411560058594
+    },
+    "body.base.layers.13.mlp.gate.weight": {
+      "norm": 0.47472429275512695,
+      "source_norm": 9.052937507629395
+    },
+    "body.base.layers.13.mlp.up.weight": {
+      "norm": 0.456100732088089,
+      "source_norm": 9.060419082641602
+    },
+    "body.base.layers.13.mlp.down.weight": {
+      "norm": 0.47758644819259644,
+      "source_norm": 2.1157751083374023
+    },
+    "body.base.layers.13.qkv_conv.weight": {
+      "norm": 0.08387000113725662,
+      "source_norm": 15.908967018127441
+    },
+    "body.base.layers.14.A_log": {
+      "norm": 0.0032188910990953445,
+      "source_norm": 5.642749309539795
+    },
+    "body.base.layers.14.dt_bias": {
+      "norm": 0.0038957258220762014,
+      "source_norm": 13.461560249328613
+    },
+    "body.base.layers.14.norm.weight": {
+      "norm": 0.04464027285575867,
+      "source_norm": 16.035491943359375
+    },
+    "body.base.layers.14.q_proj.weight": {
+      "norm": 0.6381350159645081,
+      "source_norm": 5.673384189605713
+    },
+    "body.base.layers.14.k_proj.weight": {
+      "norm": 0.68592768907547,
+      "source_norm": 5.483747959136963
+    },
+    "body.base.layers.14.v_proj.weight": {
+      "norm": 0.3647528886795044,
+      "source_norm": 5.385446548461914
+    },
+    "body.base.layers.14.g_proj.weight": {
+      "norm": 0.35788506269454956,
+      "source_norm": 5.334220886230469
+    },
+    "body.base.layers.14.o_proj.weight": {
+      "norm": 0.3533303737640381,
+      "source_norm": 1.5623135566711426
+    },
+    "body.base.layers.14.alpha_proj.weight": {
+      "norm": 0.05206150934100151,
+      "source_norm": 1.0415905714035034
+    },
+    "body.base.layers.14.beta_proj.weight": {
+      "norm": 0.08042696863412857,
+      "source_norm": 1.0279810428619385
+    },
+    "body.base.layers.14.beta_proj.bias": {
+      "norm": 0.004809238016605377,
+      "source_norm": 0.035395875573158264
+    },
+    "body.base.layers.14.mlp_norm.weight": {
+      "norm": 0.02942841500043869,
+      "source_norm": 15.833775520324707
+    },
+    "body.base.layers.14.mlp.gate.weight": {
+      "norm": 0.4698340892791748,
+      "source_norm": 9.07919692993164
+    },
+    "body.base.layers.14.mlp.up.weight": {
+      "norm": 0.4593132734298706,
+      "source_norm": 9.067599296569824
+    },
+    "body.base.layers.14.mlp.down.weight": {
+      "norm": 0.4506113827228546,
+      "source_norm": 2.1220085620880127
+    },
+    "body.base.layers.14.qkv_conv.weight": {
+      "norm": 0.09272951632738113,
+      "source_norm": 15.787922859191895
+    },
+    "body.base.layers.15.A_log": {
+      "norm": 0.0032134782522916794,
+      "source_norm": 6.620076656341553
+    },
+    "body.base.layers.15.dt_bias": {
+      "norm": 0.0037366976030170918,
+      "source_norm": 12.488127708435059
+    },
+    "body.base.layers.15.norm.weight": {
+      "norm": 0.02540591172873974,
+      "source_norm": 16.117156982421875
+    },
+    "body.base.layers.15.q_proj.weight": {
+      "norm": 0.42004942893981934,
+      "source_norm": 5.758877754211426
+    },
+    "body.base.layers.15.k_proj.weight": {
+      "norm": 0.4385317265987396,
+      "source_norm": 5.4919514656066895
+    },
+    "body.base.layers.15.v_proj.weight": {
+      "norm": 0.3896080255508423,
+      "source_norm": 5.513175964355469
+    },
+    "body.base.layers.15.g_proj.weight": {
+      "norm": 0.41826149821281433,
+      "source_norm": 5.421125411987305
+    },
+    "body.base.layers.15.o_proj.weight": {
+      "norm": 0.4127410352230072,
+      "source_norm": 1.781333088874817
+    },
+    "body.base.layers.15.alpha_proj.weight": {
+      "norm": 0.05405018478631973,
+      "source_norm": 1.0560054779052734
+    },
+    "body.base.layers.15.beta_proj.weight": {
+      "norm": 0.09569068998098373,
+      "source_norm": 1.1059223413467407
+    },
+    "body.base.layers.15.beta_proj.bias": {
+      "norm": 0.008502751588821411,
+      "source_norm": 0.03336586803197861
+    },
+    "body.base.layers.15.mlp_norm.weight": {
+      "norm": 0.03457716852426529,
+      "source_norm": 15.841760635375977
+    },
+    "body.base.layers.15.mlp.gate.weight": {
+      "norm": 0.49258220195770264,
+      "source_norm": 9.046298027038574
+    },
+    "body.base.layers.15.mlp.up.weight": {
+      "norm": 0.45900097489356995,
+      "source_norm": 9.042521476745605
+    },
+    "body.base.layers.15.mlp.down.weight": {
+      "norm": 0.46051478385925293,
+      "source_norm": 2.1007776260375977
+    },
+    "body.base.layers.15.qkv_conv.weight": {
+      "norm": 0.08456656336784363,
+      "source_norm": 15.835413932800293
+    },
+    "body.base.layers.16.A_log": {
+      "norm": 0.0034245324786752462,
+      "source_norm": 6.45957088470459
+    },
+    "body.base.layers.16.dt_bias": {
+      "norm": 0.004680650774389505,
+      "source_norm": 13.7152738571167
+    },
+    "body.base.layers.16.norm.weight": {
+      "norm": 0.02108469419181347,
+      "source_norm": 16.010305404663086
+    },
+    "body.base.layers.16.q_proj.weight": {
+      "norm": 0.29265233874320984,
+      "source_norm": 5.6107048988342285
+    },
+    "body.base.layers.16.k_proj.weight": {
+      "norm": 0.3420329689979553,
+      "source_norm": 5.317275524139404
+    },
+    "body.base.layers.16.v_proj.weight": {
+      "norm": 0.2617916762828827,
+      "source_norm": 5.303916931152344
+    },
+    "body.base.layers.16.g_proj.weight": {
+      "norm": 0.2804883122444153,
+      "source_norm": 5.260933876037598
+    },
+    "body.base.layers.16.o_proj.weight": {
+      "norm": 0.27628856897354126,
+      "source_norm": 1.3633930683135986
+    },
+    "body.base.layers.16.alpha_proj.weight": {
+      "norm": 0.04853710159659386,
+      "source_norm": 0.9847754836082458
+    },
+    "body.base.layers.16.beta_proj.weight": {
+      "norm": 0.04964675009250641,
+      "source_norm": 1.004685640335083
+    },
+    "body.base.layers.16.beta_proj.bias": {
+      "norm": 0.0031882834155112505,
+      "source_norm": 0.026045508682727814
+    },
+    "body.base.layers.16.mlp_norm.weight": {
+      "norm": 0.034532368183135986,
+      "source_norm": 15.827618598937988
+    },
+    "body.base.layers.16.mlp.gate.weight": {
+      "norm": 0.5160719156265259,
+      "source_norm": 9.011343002319336
+    },
+    "body.base.layers.16.mlp.up.weight": {
+      "norm": 0.48938819766044617,
+      "source_norm": 9.040078163146973
+    },
+    "body.base.layers.16.mlp.down.weight": {
+      "norm": 0.47771599888801575,
+      "source_norm": 2.105076789855957
+    },
+    "body.base.layers.16.qkv_conv.weight": {
+      "norm": 0.0634990856051445,
+      "source_norm": 15.821794509887695
+    },
+    "body.base.layers.17.A_log": {
+      "norm": 0.009043429046869278,
+      "source_norm": 6.455666542053223
+    },
+    "body.base.layers.17.dt_bias": {
+      "norm": 0.011010601185262203,
+      "source_norm": 14.112937927246094
+    },
+    "body.base.layers.17.norm.weight": {
+      "norm": 0.014878085814416409,
+      "source_norm": 16.00959014892578
+    },
+    "body.base.layers.17.q_proj.weight": {
+      "norm": 0.4485930800437927,
+      "source_norm": 5.473893165588379
+    },
+    "body.base.layers.17.k_proj.weight": {
+      "norm": 0.3635888397693634,
+      "source_norm": 5.325150966644287
+    },
+    "body.base.layers.17.v_proj.weight": {
+      "norm": 0.41481852531433105,
+      "source_norm": 5.332989692687988
+    },
+    "body.base.layers.17.g_proj.weight": {
+      "norm": 0.3676350712776184,
+      "source_norm": 5.285034656524658
+    },
+    "body.base.layers.17.o_proj.weight": {
+      "norm": 0.3591651916503906,
+      "source_norm": 1.4544682502746582
+    },
+    "body.base.layers.17.alpha_proj.weight": {
+      "norm": 0.10759662836790085,
+      "source_norm": 1.0050947666168213
+    },
+    "body.base.layers.17.beta_proj.weight": {
+      "norm": 0.08021659404039383,
+      "source_norm": 0.9778812527656555
+    },
+    "body.base.layers.17.beta_proj.bias": {
+      "norm": 0.006539305672049522,
+      "source_norm": 0.024553552269935608
+    },
+    "body.base.layers.17.mlp_norm.weight": {
+      "norm": 0.02874298207461834,
+      "source_norm": 15.831048965454102
+    },
+    "body.base.layers.17.mlp.gate.weight": {
+      "norm": 0.4679538607597351,
+      "source_norm": 9.063653945922852
+    },
+    "body.base.layers.17.mlp.up.weight": {
+      "norm": 0.45768192410469055,
+      "source_norm": 9.03441047668457
+    },
+    "body.base.layers.17.mlp.down.weight": {
+      "norm": 0.4575110375881195,
+      "source_norm": 2.1138625144958496
+    },
+    "body.base.layers.17.qkv_conv.weight": {
+      "norm": 0.08708351105451584,
+      "source_norm": 15.809538841247559
+    },
+    "body.base.layers.18.A_log": {
+      "norm": 0.004265023395419121,
+      "source_norm": 6.288352012634277
+    },
+    "body.base.layers.18.dt_bias": {
+      "norm": 0.005810163449496031,
+      "source_norm": 13.446659088134766
+    },
+    "body.base.layers.18.norm.weight": {
+      "norm": 0.014971059747040272,
+      "source_norm": 16.12172508239746
+    },
+    "body.base.layers.18.q_proj.weight": {
+      "norm": 0.5214951634407043,
+      "source_norm": 5.737623691558838
+    },
+    "body.base.layers.18.k_proj.weight": {
+      "norm": 0.5937080383300781,
+      "source_norm": 5.487787246704102
+    },
+    "body.base.layers.18.v_proj.weight": {
+      "norm": 0.5449333190917969,
+      "source_norm": 5.468957901000977
+    },
+    "body.base.layers.18.g_proj.weight": {
+      "norm": 0.5369985699653625,
+      "source_norm": 5.379807949066162
+    },
+    "body.base.layers.18.o_proj.weight": {
+      "norm": 0.503649890422821,
+      "source_norm": 1.7480641603469849
+    },
+    "body.base.layers.18.alpha_proj.weight": {
+      "norm": 0.08154546469449997,
+      "source_norm": 1.0433608293533325
+    },
+    "body.base.layers.18.beta_proj.weight": {
+      "norm": 0.10107430815696716,
+      "source_norm": 1.0594347715377808
+    },
+    "body.base.layers.18.beta_proj.bias": {
+      "norm": 0.006402250379323959,
+      "source_norm": 0.0221039280295372
+    },
+    "body.base.layers.18.mlp_norm.weight": {
+      "norm": 0.02970670349895954,
+      "source_norm": 15.833683967590332
+    },
+    "body.base.layers.18.mlp.gate.weight": {
+      "norm": 0.480174720287323,
+      "source_norm": 9.050177574157715
+    },
+    "body.base.layers.18.mlp.up.weight": {
+      "norm": 0.4619923233985901,
+      "source_norm": 9.021665573120117
+    },
+    "body.base.layers.18.mlp.down.weight": {
+      "norm": 0.44081610441207886,
+      "source_norm": 2.1011850833892822
+    },
+    "body.base.layers.18.qkv_conv.weight": {
+      "norm": 0.11814756691455841,
+      "source_norm": 15.824690818786621
+    },
+    "body.base.layers.19.A_log": {
+      "norm": 0.0058762445114552975,
+      "source_norm": 5.595786094665527
+    },
+    "body.base.layers.19.dt_bias": {
+      "norm": 0.006029834505170584,
+      "source_norm": 11.413433074951172
+    },
+    "body.base.layers.19.norm.weight": {
+      "norm": 0.011604083701968193,
+      "source_norm": 15.941654205322266
+    },
+    "body.base.layers.19.q_proj.weight": {
+      "norm": 0.29650935530662537,
+      "source_norm": 5.863738059997559
+    },
+    "body.base.layers.19.k_proj.weight": {
+      "norm": 0.2988983392715454,
+      "source_norm": 5.640554428100586
+    },
+    "body.base.layers.19.v_proj.weight": {
+      "norm": 0.42693066596984863,
+      "source_norm": 5.46634578704834
+    },
+    "body.base.layers.19.g_proj.weight": {
+      "norm": 0.44401219487190247,
+      "source_norm": 5.466043949127197
+    },
+    "body.base.layers.19.o_proj.weight": {
+      "norm": 0.38465648889541626,
+      "source_norm": 1.7562696933746338
+    },
+    "body.base.layers.19.alpha_proj.weight": {
+      "norm": 0.0759604349732399,
+      "source_norm": 1.0032272338867188
+    },
+    "body.base.layers.19.beta_proj.weight": {
+      "norm": 0.08574551343917847,
+      "source_norm": 1.0470144748687744
+    },
+    "body.base.layers.19.beta_proj.bias": {
+      "norm": 0.00429213372990489,
+      "source_norm": 0.03491109237074852
+    },
+    "body.base.layers.19.mlp_norm.weight": {
+      "norm": 0.034452442079782486,
+      "source_norm": 15.828625679016113
+    },
+    "body.base.layers.19.mlp.gate.weight": {
+      "norm": 0.49426570534706116,
+      "source_norm": 9.051191329956055
+    },
+    "body.base.layers.19.mlp.up.weight": {
+      "norm": 0.4781327545642853,
+      "source_norm": 9.071999549865723
+    },
+    "body.base.layers.19.mlp.down.weight": {
+      "norm": 0.4564274251461029,
+      "source_norm": 2.105501174926758
+    },
+    "body.base.layers.19.qkv_conv.weight": {
+      "norm": 0.06524282693862915,
+      "source_norm": 15.783392906188965
+    },
+    "body.base.layers.20.A_log": {
+      "norm": 0.001718119834549725,
+      "source_norm": 5.851481914520264
+    },
+    "body.base.layers.20.dt_bias": {
+      "norm": 0.003589554689824581,
+      "source_norm": 12.811034202575684
+    },
+    "body.base.layers.20.norm.weight": {
+      "norm": 0.015964442864060402,
+      "source_norm": 16.08584213256836
+    },
+    "body.base.layers.20.q_proj.weight": {
+      "norm": 0.2856256067752838,
+      "source_norm": 5.7711405754089355
+    },
+    "body.base.layers.20.k_proj.weight": {
+      "norm": 0.3525642156600952,
+      "source_norm": 5.4440226554870605
+    },
+    "body.base.layers.20.v_proj.weight": {
+      "norm": 0.34132179617881775,
+      "source_norm": 5.475861072540283
+    },
+    "body.base.layers.20.g_proj.weight": {
+      "norm": 0.3817862570285797,
+      "source_norm": 5.402090072631836
+    },
+    "body.base.layers.20.o_proj.weight": {
+      "norm": 0.38431331515312195,
+      "source_norm": 1.939931035041809
+    },
+    "body.base.layers.20.alpha_proj.weight": {
+      "norm": 0.051390279084444046,
+      "source_norm": 0.9784190654754639
+    },
+    "body.base.layers.20.beta_proj.weight": {
+      "norm": 0.08011273294687271,
+      "source_norm": 1.0172853469848633
+    },
+    "body.base.layers.20.beta_proj.bias": {
+      "norm": 0.005454894620925188,
+      "source_norm": 0.03581956773996353
+    },
+    "body.base.layers.20.mlp_norm.weight": {
+      "norm": 0.04678419977426529,
+      "source_norm": 15.842188835144043
+    },
+    "body.base.layers.20.mlp.gate.weight": {
+      "norm": 0.5411617159843445,
+      "source_norm": 9.03500747680664
+    },
+    "body.base.layers.20.mlp.up.weight": {
+      "norm": 0.5317537188529968,
+      "source_norm": 9.058610916137695
+    },
+    "body.base.layers.20.mlp.down.weight": {
+      "norm": 0.49721863865852356,
+      "source_norm": 2.105592966079712
+    },
+    "body.base.layers.20.qkv_conv.weight": {
+      "norm": 0.0498974546790123,
+      "source_norm": 16.0059814453125
+    },
+    "body.base.layers.21.A_log": {
+      "norm": 0.006476548500359058,
+      "source_norm": 4.662125587463379
+    },
+    "body.base.layers.21.dt_bias": {
+      "norm": 0.007300183176994324,
+      "source_norm": 15.403860092163086
+    },
+    "body.base.layers.21.norm.weight": {
+      "norm": 0.013147925958037376,
+      "source_norm": 16.00955581665039
+    },
+    "body.base.layers.21.q_proj.weight": {
+      "norm": 0.36227330565452576,
+      "source_norm": 5.717320442199707
+    },
+    "body.base.layers.21.k_proj.weight": {
+      "norm": 0.3263552784919739,
+      "source_norm": 5.493451118469238
+    },
+    "body.base.layers.21.v_proj.weight": {
+      "norm": 0.2942364513874054,
+      "source_norm": 5.391748428344727
+    },
+    "body.base.layers.21.g_proj.weight": {
+      "norm": 0.30895742774009705,
+      "source_norm": 5.376989841461182
+    },
+    "body.base.layers.21.o_proj.weight": {
+      "norm": 0.33815670013427734,
+      "source_norm": 1.8259706497192383
+    },
+    "body.base.layers.21.alpha_proj.weight": {
+      "norm": 0.09039731323719025,
+      "source_norm": 1.1098992824554443
+    },
+    "body.base.layers.21.beta_proj.weight": {
+      "norm": 0.0458255410194397,
+      "source_norm": 1.0443931818008423
+    },
+    "body.base.layers.21.beta_proj.bias": {
+      "norm": 0.0022162378299981356,
+      "source_norm": 0.0372372642159462
+    },
+    "body.base.layers.21.mlp_norm.weight": {
+      "norm": 0.03670451417565346,
+      "source_norm": 15.86019515991211
+    },
+    "body.base.layers.21.mlp.gate.weight": {
+      "norm": 0.5639970302581787,
+      "source_norm": 9.071939468383789
+    },
+    "body.base.layers.21.mlp.up.weight": {
+      "norm": 0.5367395281791687,
+      "source_norm": 9.06329345703125
+    },
+    "body.base.layers.21.mlp.down.weight": {
+      "norm": 0.5110869407653809,
+      "source_norm": 2.1456902027130127
+    },
+    "body.base.layers.21.qkv_conv.weight": {
+      "norm": 0.05164544656872749,
+      "source_norm": 15.753188133239746
+    },
+    "body.base.layers.22.A_log": {
+      "norm": 0.0013861780753359199,
+      "source_norm": 5.789804458618164
+    },
+    "body.base.layers.22.dt_bias": {
+      "norm": 0.0025717439129948616,
+      "source_norm": 13.490226745605469
+    },
+    "body.base.layers.22.norm.weight": {
+      "norm": 0.022211670875549316,
+      "source_norm": 15.957228660583496
+    },
+    "body.base.layers.22.q_proj.weight": {
+      "norm": 0.3645462095737457,
+      "source_norm": 5.619732856750488
+    },
+    "body.base.layers.22.k_proj.weight": {
+      "norm": 0.34606924653053284,
+      "source_norm": 5.410455226898193
+    },
+    "body.base.layers.22.v_proj.weight": {
+      "norm": 0.277224600315094,
+      "source_norm": 5.287359237670898
+    },
+    "body.base.layers.22.g_proj.weight": {
+      "norm": 0.2888502776622772,
+      "source_norm": 5.28009557723999
+    },
+    "body.base.layers.22.o_proj.weight": {
+      "norm": 0.3286110460758209,
+      "source_norm": 1.5021605491638184
+    },
+    "body.base.layers.22.alpha_proj.weight": {
+      "norm": 0.038082972168922424,
+      "source_norm": 1.0736267566680908
+    },
+    "body.base.layers.22.beta_proj.weight": {
+      "norm": 0.06162748485803604,
+      "source_norm": 0.9957494139671326
+    },
+    "body.base.layers.22.beta_proj.bias": {
+      "norm": 0.00456038024276495,
+      "source_norm": 0.03693249821662903
+    },
+    "body.base.layers.22.mlp_norm.weight": {
+      "norm": 0.04427336901426315,
+      "source_norm": 15.829035758972168
+    },
+    "body.base.layers.22.mlp.gate.weight": {
+      "norm": 0.5634385943412781,
+      "source_norm": 9.04401969909668
+    },
+    "body.base.layers.22.mlp.up.weight": {
+      "norm": 0.5421307682991028,
+      "source_norm": 9.059999465942383
+    },
+    "body.base.layers.22.mlp.down.weight": {
+      "norm": 0.5057930946350098,
+      "source_norm": 2.1006319522857666
+    },
+    "body.base.layers.22.qkv_conv.weight": {
+      "norm": 0.08085770905017853,
+      "source_norm": 15.897157669067383
+    },
+    "body.base.layers.23.A_log": {
+      "norm": 0.002265021437779069,
+      "source_norm": 4.210967063903809
+    },
+    "body.base.layers.23.dt_bias": {
+      "norm": 0.00313837849535048,
+      "source_norm": 13.024282455444336
+    },
+    "body.base.layers.23.norm.weight": {
+      "norm": 0.014565118588507175,
+      "source_norm": 15.969825744628906
+    },
+    "body.base.layers.23.q_proj.weight": {
+      "norm": 0.19459933042526245,
+      "source_norm": 5.777445316314697
+    },
+    "body.base.layers.23.k_proj.weight": {
+      "norm": 0.22195105254650116,
+      "source_norm": 5.477684497833252
+    },
+    "body.base.layers.23.v_proj.weight": {
+      "norm": 0.24727754294872284,
+      "source_norm": 5.349091529846191
+    },
+    "body.base.layers.23.g_proj.weight": {
+      "norm": 0.2575022280216217,
+      "source_norm": 5.317500591278076
+    },
+    "body.base.layers.23.o_proj.weight": {
+      "norm": 0.25030651688575745,
+      "source_norm": 1.7005770206451416
+    },
+    "body.base.layers.23.alpha_proj.weight": {
+      "norm": 0.03474457189440727,
+      "source_norm": 1.0459678173065186
+    },
+    "body.base.layers.23.beta_proj.weight": {
+      "norm": 0.04503408819437027,
+      "source_norm": 1.0057450532913208
+    },
+    "body.base.layers.23.beta_proj.bias": {
+      "norm": 0.0020027034915983677,
+      "source_norm": 0.03307175263762474
+    },
+    "body.base.layers.23.mlp_norm.weight": {
+      "norm": 0.02693135291337967,
+      "source_norm": 15.877789497375488
+    },
+    "body.base.layers.23.mlp.gate.weight": {
+      "norm": 0.5687634348869324,
+      "source_norm": 9.077044486999512
+    },
+    "body.base.layers.23.mlp.up.weight": {
+      "norm": 0.5436571836471558,
+      "source_norm": 9.068365097045898
+    },
+    "body.base.layers.23.mlp.down.weight": {
+      "norm": 0.4828338921070099,
+      "source_norm": 2.117260217666626
+    },
+    "body.base.layers.23.qkv_conv.weight": {
+      "norm": 0.045414529740810394,
+      "source_norm": 15.76093578338623
+    },
+    "body.base.layers.24.A_log": {
+      "norm": 0.0032076931092888117,
+      "source_norm": 4.065295696258545
+    },
+    "body.base.layers.24.dt_bias": {
+      "norm": 0.003417706349864602,
+      "source_norm": 14.093904495239258
+    },
+    "body.base.layers.24.norm.weight": {
+      "norm": 0.019560664892196655,
+      "source_norm": 16.02409553527832
+    },
+    "body.base.layers.24.q_proj.weight": {
+      "norm": 0.2667400538921356,
+      "source_norm": 5.601152420043945
+    },
+    "body.base.layers.24.k_proj.weight": {
+      "norm": 0.30297714471817017,
+      "source_norm": 5.3205461502075195
+    },
+    "body.base.layers.24.v_proj.weight": {
+      "norm": 0.29844892024993896,
+      "source_norm": 5.3135504722595215
+    },
+    "body.base.layers.24.g_proj.weight": {
+      "norm": 0.2722737491130829,
+      "source_norm": 5.245333671569824
+    },
+    "body.base.layers.24.o_proj.weight": {
+      "norm": 0.2837884724140167,
+      "source_norm": 1.3832706212997437
+    },
+    "body.base.layers.24.alpha_proj.weight": {
+      "norm": 0.055121615529060364,
+      "source_norm": 1.0021932125091553
+    },
+    "body.base.layers.24.beta_proj.weight": {
+      "norm": 0.05528745800256729,
+      "source_norm": 1.019291639328003
+    },
+    "body.base.layers.24.beta_proj.bias": {
+      "norm": 0.0036847887095063925,
+      "source_norm": 0.0346098467707634
+    },
+    "body.base.layers.24.mlp_norm.weight": {
+      "norm": 0.04993605613708496,
+      "source_norm": 15.83802604675293
+    },
+    "body.base.layers.24.mlp.gate.weight": {
+      "norm": 0.6109650731086731,
+      "source_norm": 9.065007209777832
+    },
+    "body.base.layers.24.mlp.up.weight": {
+      "norm": 0.5953683853149414,
+      "source_norm": 9.066791534423828
+    },
+    "body.base.layers.24.mlp.down.weight": {
+      "norm": 0.5221290588378906,
+      "source_norm": 2.109022378921509
+    },
+    "body.base.layers.24.qkv_conv.weight": {
+      "norm": 0.05940353870391846,
+      "source_norm": 15.743969917297363
+    },
+    "body.base.layers.25.A_log": {
+      "norm": 0.005103855859488249,
+      "source_norm": 6.204188823699951
+    },
+    "body.base.layers.25.dt_bias": {
+      "norm": 0.004022496286779642,
+      "source_norm": 12.872967720031738
+    },
+    "body.base.layers.25.norm.weight": {
+      "norm": 0.020711328834295273,
+      "source_norm": 16.023303985595703
+    },
+    "body.base.layers.25.q_proj.weight": {
+      "norm": 0.3892943561077118,
+      "source_norm": 5.958709239959717
+    },
+    "body.base.layers.25.k_proj.weight": {
+      "norm": 0.45815807580947876,
+      "source_norm": 5.731348514556885
+    },
+    "body.base.layers.25.v_proj.weight": {
+      "norm": 0.4374539256095886,
+      "source_norm": 5.631419658660889
+    },
+    "body.base.layers.25.g_proj.weight": {
+      "norm": 0.40495917201042175,
+      "source_norm": 5.513454914093018
+    },
+    "body.base.layers.25.o_proj.weight": {
+      "norm": 0.36308741569519043,
+      "source_norm": 1.9693655967712402
+    },
+    "body.base.layers.25.alpha_proj.weight": {
+      "norm": 0.0804867297410965,
+      "source_norm": 1.087218999862671
+    },
+    "body.base.layers.25.beta_proj.weight": {
+      "norm": 0.10955598950386047,
+      "source_norm": 1.0986820459365845
+    },
+    "body.base.layers.25.beta_proj.bias": {
+      "norm": 0.010166740044951439,
+      "source_norm": 0.03799477219581604
+    },
+    "body.base.layers.25.mlp_norm.weight": {
+      "norm": 0.04711791127920151,
+      "source_norm": 15.83903980255127
+    },
+    "body.base.layers.25.mlp.gate.weight": {
+      "norm": 0.6283990740776062,
+      "source_norm": 9.042367935180664
+    },
+    "body.base.layers.25.mlp.up.weight": {
+      "norm": 0.5913918614387512,
+      "source_norm": 9.044805526733398
+    },
+    "body.base.layers.25.mlp.down.weight": {
+      "norm": 0.5357269048690796,
+      "source_norm": 2.109084367752075
+    },
+    "body.base.layers.25.qkv_conv.weight": {
+      "norm": 0.0969860851764679,
+      "source_norm": 15.876619338989258
+    },
+    "body.base.layers.26.A_log": {
+      "norm": 0.005348379723727703,
+      "source_norm": 6.086490631103516
+    },
+    "body.base.layers.26.dt_bias": {
+      "norm": 0.005064868368208408,
+      "source_norm": 13.452880859375
+    },
+    "body.base.layers.26.norm.weight": {
+      "norm": 0.033730536699295044,
+      "source_norm": 16.039627075195312
+    },
+    "body.base.layers.26.q_proj.weight": {
+      "norm": 0.3743587136268616,
+      "source_norm": 5.75696325302124
+    },
+    "body.base.layers.26.k_proj.weight": {
+      "norm": 0.4277472198009491,
+      "source_norm": 5.508763313293457
+    },
+    "body.base.layers.26.v_proj.weight": {
+      "norm": 0.4112018048763275,
+      "source_norm": 5.5275654792785645
+    },
+    "body.base.layers.26.g_proj.weight": {
+      "norm": 0.4314359426498413,
+      "source_norm": 5.386621952056885
+    },
+    "body.base.layers.26.o_proj.weight": {
+      "norm": 0.41672417521476746,
+      "source_norm": 1.9522299766540527
+    },
+    "body.base.layers.26.alpha_proj.weight": {
+      "norm": 0.07566766440868378,
+      "source_norm": 1.0103137493133545
+    },
+    "body.base.layers.26.beta_proj.weight": {
+      "norm": 0.08338875323534012,
+      "source_norm": 0.9979794025421143
+    },
+    "body.base.layers.26.beta_proj.bias": {
+      "norm": 0.004331791773438454,
+      "source_norm": 0.024685639888048172
+    },
+    "body.base.layers.26.mlp_norm.weight": {
+      "norm": 0.0426618792116642,
+      "source_norm": 15.844009399414062
+    },
+    "body.base.layers.26.mlp.gate.weight": {
+      "norm": 0.6228853464126587,
+      "source_norm": 9.089208602905273
+    },
+    "body.base.layers.26.mlp.up.weight": {
+      "norm": 0.581616222858429,
+      "source_norm": 9.06579303741455
+    },
+    "body.base.layers.26.mlp.down.weight": {
+      "norm": 0.5292754173278809,
+      "source_norm": 2.147810697555542
+    },
+    "body.base.layers.26.qkv_conv.weight": {
+      "norm": 0.11488427221775055,
+      "source_norm": 15.953702926635742
+    },
+    "body.base.layers.27.A_log": {
+      "norm": 0.0064595043659210205,
+      "source_norm": 5.447076320648193
+    },
+    "body.base.layers.27.dt_bias": {
+      "norm": 0.006354617886245251,
+      "source_norm": 11.802969932556152
+    },
+    "body.base.layers.27.norm.weight": {
+      "norm": 0.02394193410873413,
+      "source_norm": 16.04474449157715
+    },
+    "body.base.layers.27.q_proj.weight": {
+      "norm": 0.4313162863254547,
+      "source_norm": 5.7422919273376465
+    },
+    "body.base.layers.27.k_proj.weight": {
+      "norm": 0.49501949548721313,
+      "source_norm": 5.534815788269043
+    },
+    "body.base.layers.27.v_proj.weight": {
+      "norm": 0.45577171444892883,
+      "source_norm": 5.588326930999756
+    },
+    "body.base.layers.27.g_proj.weight": {
+      "norm": 0.4980599582195282,
+      "source_norm": 5.493639945983887
+    },
+    "body.base.layers.27.o_proj.weight": {
+      "norm": 0.44051608443260193,
+      "source_norm": 1.9175515174865723
+    },
+    "body.base.layers.27.alpha_proj.weight": {
+      "norm": 0.0884818285703659,
+      "source_norm": 0.9955739974975586
+    },
+    "body.base.layers.27.beta_proj.weight": {
+      "norm": 0.11619223654270172,
+      "source_norm": 1.0388177633285522
+    },
+    "body.base.layers.27.beta_proj.bias": {
+      "norm": 0.00834080670028925,
+      "source_norm": 0.026879042387008667
+    },
+    "body.base.layers.27.mlp_norm.weight": {
+      "norm": 0.05453766509890556,
+      "source_norm": 15.84618854522705
+    },
+    "body.base.layers.27.mlp.gate.weight": {
+      "norm": 0.6785042881965637,
+      "source_norm": 9.077590942382812
+    },
+    "body.base.layers.27.mlp.up.weight": {
+      "norm": 0.6483411192893982,
+      "source_norm": 9.080596923828125
+    },
+    "body.base.layers.27.mlp.down.weight": {
+      "norm": 0.5385155081748962,
+      "source_norm": 2.1574363708496094
+    },
+    "body.base.layers.27.qkv_conv.weight": {
+      "norm": 0.1264030933380127,
+      "source_norm": 15.998712539672852
+    },
+    "body.base.layers.28.A_log": {
+      "norm": 0.005741768982261419,
+      "source_norm": 6.112989902496338
+    },
+    "body.base.layers.28.dt_bias": {
+      "norm": 0.0043908096849918365,
+      "source_norm": 13.920610427856445
+    },
+    "body.base.layers.28.norm.weight": {
+      "norm": 0.012615072540938854,
+      "source_norm": 15.988947868347168
+    },
+    "body.base.layers.28.q_proj.weight": {
+      "norm": 0.2931276261806488,
+      "source_norm": 5.8460373878479
+    },
+    "body.base.layers.28.k_proj.weight": {
+      "norm": 0.2593247890472412,
+      "source_norm": 5.613113880157471
+    },
+    "body.base.layers.28.v_proj.weight": {
+      "norm": 0.36534467339515686,
+      "source_norm": 5.6250834465026855
+    },
+    "body.base.layers.28.g_proj.weight": {
+      "norm": 0.43964019417762756,
+      "source_norm": 5.536952495574951
+    },
+    "body.base.layers.28.o_proj.weight": {
+      "norm": 0.3500659465789795,
+      "source_norm": 2.2235405445098877
+    },
+    "body.base.layers.28.alpha_proj.weight": {
+      "norm": 0.07455360144376755,
+      "source_norm": 1.0461111068725586
+    },
+    "body.base.layers.28.beta_proj.weight": {
+      "norm": 0.07975320518016815,
+      "source_norm": 1.024391531944275
+    },
+    "body.base.layers.28.beta_proj.bias": {
+      "norm": 0.005447734612971544,
+      "source_norm": 0.02550528198480606
+    },
+    "body.base.layers.28.mlp_norm.weight": {
+      "norm": 0.049945954233407974,
+      "source_norm": 15.847444534301758
+    },
+    "body.base.layers.28.mlp.gate.weight": {
+      "norm": 0.6167661547660828,
+      "source_norm": 9.089516639709473
+    },
+    "body.base.layers.28.mlp.up.weight": {
+      "norm": 0.584254801273346,
+      "source_norm": 9.10326862335205
+    },
+    "body.base.layers.28.mlp.down.weight": {
+      "norm": 0.49448448419570923,
+      "source_norm": 2.1466922760009766
+    },
+    "body.base.layers.28.qkv_conv.weight": {
+      "norm": 0.08364902436733246,
+      "source_norm": 15.904271125793457
+    },
+    "body.base.layers.29.A_log": {
+      "norm": 0.007900061085820198,
+      "source_norm": 5.632880210876465
+    },
+    "body.base.layers.29.dt_bias": {
+      "norm": 0.006714202929288149,
+      "source_norm": 15.586256980895996
+    },
+    "body.base.layers.29.norm.weight": {
+      "norm": 0.016921890899538994,
+      "source_norm": 16.14109230041504
+    },
+    "body.base.layers.29.q_proj.weight": {
+      "norm": 0.3936941921710968,
+      "source_norm": 5.585910320281982
+    },
+    "body.base.layers.29.k_proj.weight": {
+      "norm": 0.4720563292503357,
+      "source_norm": 5.433872699737549
+    },
+    "body.base.layers.29.v_proj.weight": {
+      "norm": 0.3934417963027954,
+      "source_norm": 5.52991247177124
+    },
+    "body.base.layers.29.g_proj.weight": {
+      "norm": 0.391374409198761,
+      "source_norm": 5.376850605010986
+    },
+    "body.base.layers.29.o_proj.weight": {
+      "norm": 0.2897803783416748,
+      "source_norm": 1.6433345079421997
+    },
+    "body.base.layers.29.alpha_proj.weight": {
+      "norm": 0.09819818288087845,
+      "source_norm": 1.0163558721542358
+    },
+    "body.base.layers.29.beta_proj.weight": {
+      "norm": 0.1458284705877304,
+      "source_norm": 1.1598026752471924
+    },
+    "body.base.layers.29.beta_proj.bias": {
+      "norm": 0.013494552113115788,
+      "source_norm": 0.027647772803902626
+    },
+    "body.base.layers.29.mlp_norm.weight": {
+      "norm": 0.044424641877412796,
+      "source_norm": 15.849126815795898
+    },
+    "body.base.layers.29.mlp.gate.weight": {
+      "norm": 0.6385706067085266,
+      "source_norm": 9.101584434509277
+    },
+    "body.base.layers.29.mlp.up.weight": {
+      "norm": 0.6241187453269958,
+      "source_norm": 9.096599578857422
+    },
+    "body.base.layers.29.mlp.down.weight": {
+      "norm": 0.5377479791641235,
+      "source_norm": 2.1543915271759033
+    },
+    "body.base.layers.29.qkv_conv.weight": {
+      "norm": 0.10429675132036209,
+      "source_norm": 15.941153526306152
+    },
+    "body.base.layers.30.A_log": {
+      "norm": 0.004324025008827448,
+      "source_norm": 5.36854362487793
+    },
+    "body.base.layers.30.dt_bias": {
+      "norm": 0.0035559358075261116,
+      "source_norm": 12.831400871276855
+    },
+    "body.base.layers.30.norm.weight": {
+      "norm": 0.028530269861221313,
+      "source_norm": 16.122072219848633
+    },
+    "body.base.layers.30.q_proj.weight": {
+      "norm": 0.3985154628753662,
+      "source_norm": 5.682770729064941
+    },
+    "body.base.layers.30.k_proj.weight": {
+      "norm": 0.4585285484790802,
+      "source_norm": 5.54861307144165
+    },
+    "body.base.layers.30.v_proj.weight": {
+      "norm": 0.4856032431125641,
+      "source_norm": 5.517240524291992
+    },
+    "body.base.layers.30.g_proj.weight": {
+      "norm": 0.42631226778030396,
+      "source_norm": 5.369354724884033
+    },
+    "body.base.layers.30.o_proj.weight": {
+      "norm": 0.35598939657211304,
+      "source_norm": 1.8502289056777954
+    },
+    "body.base.layers.30.alpha_proj.weight": {
+      "norm": 0.06309878081083298,
+      "source_norm": 1.0823559761047363
+    },
+    "body.base.layers.30.beta_proj.weight": {
+      "norm": 0.06227812543511391,
+      "source_norm": 1.0502597093582153
+    },
+    "body.base.layers.30.beta_proj.bias": {
+      "norm": 0.0025914786383509636,
+      "source_norm": 0.035678278654813766
+    },
+    "body.base.layers.30.mlp_norm.weight": {
+      "norm": 0.04827581346035004,
+      "source_norm": 15.858870506286621
+    },
+    "body.base.layers.30.mlp.gate.weight": {
+      "norm": 0.6163917779922485,
+      "source_norm": 9.092598915100098
+    },
+    "body.base.layers.30.mlp.up.weight": {
+      "norm": 0.6143344640731812,
+      "source_norm": 9.07559585571289
+    },
+    "body.base.layers.30.mlp.down.weight": {
+      "norm": 0.49241623282432556,
+      "source_norm": 2.154515504837036
+    },
+    "body.base.layers.30.qkv_conv.weight": {
+      "norm": 0.10624942183494568,
+      "source_norm": 15.818781852722168
+    },
+    "body.base.layers.31.A_log": {
+      "norm": 0.0144072650000453,
+      "source_norm": 5.72952127456665
+    },
+    "body.base.layers.31.dt_bias": {
+      "norm": 0.012131181545555592,
+      "source_norm": 14.837483406066895
+    },
+    "body.base.layers.31.norm.weight": {
+      "norm": 0.04680139198899269,
+      "source_norm": 15.956319808959961
+    },
+    "body.base.layers.31.q_proj.weight": {
+      "norm": 0.46365079283714294,
+      "source_norm": 5.603586196899414
+    },
+    "body.base.layers.31.k_proj.weight": {
+      "norm": 0.4674947261810303,
+      "source_norm": 5.531905651092529
+    },
+    "body.base.layers.31.v_proj.weight": {
+      "norm": 0.48568806052207947,
+      "source_norm": 5.3874077796936035
+    },
+    "body.base.layers.31.g_proj.weight": {
+      "norm": 0.47050487995147705,
+      "source_norm": 5.330078125
+    },
+    "body.base.layers.31.o_proj.weight": {
+      "norm": 0.36808621883392334,
+      "source_norm": 1.658780574798584
+    },
+    "body.base.layers.31.alpha_proj.weight": {
+      "norm": 0.18261019885540009,
+      "source_norm": 1.0184530019760132
+    },
+    "body.base.layers.31.beta_proj.weight": {
+      "norm": 0.21507073938846588,
+      "source_norm": 1.0051400661468506
+    },
+    "body.base.layers.31.beta_proj.bias": {
+      "norm": 0.0180861447006464,
+      "source_norm": 0.025004655122756958
+    },
+    "body.base.layers.31.mlp_norm.weight": {
+      "norm": 0.0251513309776783,
+      "source_norm": 15.944112777709961
+    },
+    "body.base.layers.31.mlp.gate.weight": {
+      "norm": 0.6002403497695923,
+      "source_norm": 9.24259090423584
+    },
+    "body.base.layers.31.mlp.up.weight": {
+      "norm": 0.5813046097755432,
+      "source_norm": 9.288568496704102
+    },
+    "body.base.layers.31.mlp.down.weight": {
+      "norm": 0.44252699613571167,
+      "source_norm": 2.858494281768799
+    },
+    "body.base.layers.31.qkv_conv.weight": {
+      "norm": 0.12335600703954697,
+      "source_norm": 15.98019027709961
+    },
+    "body.base.final_norm.weight": {
+      "norm": 0.015225856564939022,
+      "source_norm": 15.705825805664062
+    },
+    "body.table_key.weight": {
+      "norm": 0.06878487020730972,
+      "source_norm": 5.220450401306152
+    },
+    "body.table_value.weight": {
+      "norm": 0.18115215003490448,
+      "source_norm": 5.465817928314209
+    },
+    "body.key_norm.weight": {
+      "norm": 0.004510439932346344,
+      "source_norm": 15.962874412536621
+    },
+    "body.query_norm.weight": {
+      "norm": 0.00451044412329793,
+      "source_norm": 15.962874412536621
+    },
+    "body.mix.weight": {
+      "norm": 0.02386299893260002,
+      "source_norm": 0.1924576461315155
+    },
+    "body.mix.bias": {
+      "norm": 0.0021175742149353027,
+      "source_norm": 0.42781558632850647
+    },
+    "body.coevolution.key.weight": {
+      "norm": 0.06524961441755295,
+      "source_norm": 1.3465254306793213
+    },
+    "body.coevolution.bind.weight": {
+      "norm": 0.06242989003658295,
+      "source_norm": 2.6523942947387695
+    },
+    "body.coevolution.memory_norm.weight": {
+      "norm": 0.0024001477286219597,
+      "source_norm": 5.645280838012695
+    },
+    "body.coevolution.memory_gate.weight": {
+      "norm": 0.003459448227658868,
+      "source_norm": 0.1500236988067627
+    },
+    "body.coevolution.memory_gate.bias": {
+      "norm": 0.0010962075321003795,
+      "source_norm": 0.00014430322335101664
+    },
+    "body.coevolution.memory_ffn.0.weight": {
+      "norm": 0.027787303552031517,
+      "source_norm": 0.931627094745636
+    },
+    "body.coevolution.memory_ffn.2.weight": {
+      "norm": 0.03044755384325981,
+      "source_norm": 0.9306941628456116
+    },
+    "body.coevolution.read_gate.weight": {
+      "norm": 0.031425803899765015,
+      "source_norm": 0.2373797744512558
+    },
+    "body.coevolution.read_gate.bias": {
+      "norm": 0.00936271995306015,
+      "source_norm": 0.04358188807964325
+    },
+    "body.coevolution.null.weight": {
+      "norm": 0.025656655430793762,
+      "source_norm": 0.17198409140110016
+    },
+    "body.coevolution.null.bias": {
+      "norm": 0.008778013288974762,
+      "source_norm": 0.03660958632826805
+    },
+    "encoder.weight": {
+      "norm": 0.5705967545509338,
+      "source_norm": 4.082958221435547
+    },
+    "predictor.0.weight": {
+      "norm": 2.3786208629608154,
+      "source_norm": 4.921621322631836
+    },
+    "predictor.0.bias": {
+      "norm": 0.11031955480575562,
+      "source_norm": 0.1714359074831009
+    },
+    "predictor.2.weight": {
+      "norm": 2.8390846252441406,
+      "source_norm": 3.391298770904541
+    },
+    "predictor.2.bias": {
+      "norm": 0.2062942236661911,
+      "source_norm": 0.20383626222610474
+    },
+    "to_hidden.weight": {
+      "norm": 0.40929415822029114,
+      "source_norm": 4.417182922363281
+    },
+    "memory.log_temperature": {
+      "norm": 0.0012525320053100586,
+      "source_norm": 1.6047744750976562
+    },
+    "long_predictor.0.weight": {
+      "norm": 0.06350036710500717,
+      "source_norm": 4.257716655731201
+    },
+    "long_predictor.0.bias": {
+      "norm": 0.007572495844215155,
+      "source_norm": 0.16038455069065094
+    },
+    "long_predictor.2.weight": {
+      "norm": 0.0630168616771698,
+      "source_norm": 3.0877113342285156
+    },
+    "long_predictor.2.bias": {
+      "norm": 0.02014259435236454,
+      "source_norm": 0.4660520553588867
+    },
+    "action_decisions.weight": {
+      "norm": 0.0,
+      "source_norm": 0.592640221118927
+    },
+    "action_decisions.bias": {
+      "norm": 0.0,
+      "source_norm": 0.0
+    },
+    "kanli.generate_intent": {
+      "norm": 0.0,
+      "source_norm": 0.0
+    },
+    "kanli.choice.weight": {
+      "norm": 0.0006949232192710042,
+      "source_norm": 0.806044340133667
+    },
+    "kanli.choice.bias": {
+      "norm": 0.0004106938431505114,
+      "source_norm": 0.007911289110779762
+    },
+    "kanli.outcome.0.weight": {
+      "norm": 0.14841365814208984,
+      "source_norm": 5.831295013427734
+    },
+    "kanli.outcome.0.bias": {
+      "norm": 0.021860603243112564,
+      "source_norm": 0.3614506721496582
+    },
+    "kanli.outcome.2.weight": {
+      "norm": 0.029797803610563278,
+      "source_norm": 2.616832733154297
+    },
+    "kanli.outcome.2.bias": {
+      "norm": 0.002840619068592787,
+      "source_norm": 0.036710649728775024
+    },
+    "kanli.critic.0.weight": {
+      "norm": 0.08108723163604736,
+      "source_norm": 4.2909746170043945
+    },
+    "kanli.critic.0.bias": {
+      "norm": 0.028702417388558388,
+      "source_norm": 1.2325055599212646
+    },
+    "kanli.critic.2.weight": {
+      "norm": 0.03250160440802574,
+      "source_norm": 0.7109970450401306
+    },
+    "kanli.critic.2.bias": {
+      "norm": 0.0028904005885124207,
+      "source_norm": 0.08555172383785248
+    },
+    "kanli.causal_input.weight": {
+      "norm": 0.00037309667095541954,
+      "source_norm": 3.012721061706543
+    },
+    "momentum_to_boundary.weight": {
+      "norm": 0.5962596535682678,
+      "source_norm": 21.538772583007812
+    },
+    "question_to_logits.weight": {
+      "norm": 0.004796167835593224,
+      "source_norm": 3.7986414432525635
+    },
+    "mother_from_boundary.weight": {
+      "norm": 0.08308377116918564,
+      "source_norm": 2.571458101272583
+    },
+    "question_reactivation.weight": {
+      "norm": 0.01831255666911602,
+      "source_norm": 2.5890002250671387
+    },
+    "binding_choice.weight": {
+      "norm": 0.0015090858796611428,
+      "source_norm": 0.3849077522754669
+    },
+    "relation_basis.log_noise": {
+      "norm": 0.025285473093390465,
+      "source_norm": 1.1218119859695435
+    },
+    "relation_basis.condition.weight": {
+      "norm": 0.003610854735597968,
+      "source_norm": 0.2024008184671402
+    },
+    "relation_basis.condition.bias": {
+      "norm": 0.00021600801846943796,
+      "source_norm": 0.0002939260739367455
+    },
+    "relation_basis.action.weight": {
+      "norm": 0.0043435473926365376,
+      "source_norm": 0.3153302073478699
+    },
+    "relation_basis.gate.weight": {
+      "norm": 0.01266914326697588,
+      "source_norm": 0.4070110023021698
+    },
+    "relation_basis.gate.bias": {
+      "norm": 0.0031224056147038937,
+      "source_norm": 0.13433010876178741
+    },
+    "relation_basis.mother.weight": {
+      "norm": 0.004217476584017277,
+      "source_norm": 0.2128523588180542
+    },
+    "question_to_hidden.weight": {
+      "norm": 0.0038425950333476067,
+      "source_norm": 5.345982074737549
+    },
+    "expression_budget_to_hidden.weight": {
+      "norm": 0.0006721417303197086,
+      "source_norm": 0.31906914710998535
+    },
+    "handover.weight": {
+      "norm": 0.005735612940043211,
+      "source_norm": 0.3046645224094391
+    },
+    "handover.bias": {
+      "norm": 0.0002472400665283203,
+      "source_norm": 3.436483144760132
+    },
+    "head_coupling.theta_freq": {
+      "norm": 0.0004877415776718408,
+      "source_norm": 3.2538716793060303
+    },
+    "head_coupling.theta_context": {
+      "norm": 0.0001608585735084489,
+      "source_norm": 0.0036632379051297903
+    },
+    "head_coupling.theta_coupling": {
+      "norm": 0.00011596558033488691,
+      "source_norm": 29.956140518188477
+    },
+    "head_coupling.theta_pair": {
+      "norm": 3.911835665348917e-05,
+      "source_norm": 0.006119812838733196
+    },
+    "head_coupling.contact.phi": {
+      "norm": 0.008180920034646988,
+      "source_norm": 0.04666614532470703
+    }
+  }
+}

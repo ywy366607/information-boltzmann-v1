@@ -1,0 +1,43 @@
+{
+  "committed_samples": 45,
+  "layers": 32,
+  "pairs_per_layer": 28,
+  "overlap_magnitude_quantiles": [
+    4.112718841042806e-07,
+    0.004673306015320122,
+    0.0118117262609303,
+    0.025533555541187525,
+    0.044667394086718555,
+    0.11477944701910019,
+    0.2654423117637634
+  ],
+  "intrinsic_cycles_min_max": [
+    0.021960005158860287,
+    2.8147394015086538
+  ],
+  "same_segment_adjacent_pairs": 37,
+  "thresholds": {
+    "0.1": {
+      "sample_fraction": 0.015476190476190477,
+      "pairs_with_at_least_10_samples": 25,
+      "eligible_phase_concentration_median": 0.9976716995239258,
+      "adjacent_qualified": 410,
+      "adjacent_abs_phase_change_median_radians": 0.04298879951238632
+    },
+    "0.25": {
+      "sample_fraction": 0.00029761904761904765,
+      "pairs_with_at_least_10_samples": 0,
+      "eligible_phase_concentration_median": null,
+      "adjacent_qualified": 7,
+      "adjacent_abs_phase_change_median_radians": 0.2947292625904083
+    },
+    "0.5": {
+      "sample_fraction": 0.0,
+      "pairs_with_at_least_10_samples": 0,
+      "eligible_phase_concentration_median": null,
+      "adjacent_qualified": 0,
+      "adjacent_abs_phase_change_median_radians": null
+    }
+  },
+  "note": "Adjacent committed samples may have external input and updates between them; phase concentration is not proof of dynamical locking or Dirac synchrony."
+}

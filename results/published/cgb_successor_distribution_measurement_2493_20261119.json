@@ -1,0 +1,1493 @@
+{
+  "valid": true,
+  "checks": {
+    "three_transitions": true,
+    "original_material_exact": true,
+    "source_unchanged": true,
+    "private": true,
+    "same_ports": true,
+    "native_lift": true
+  },
+  "observations": [
+    {
+      "cycle": 2494,
+      "choice": 0,
+      "source_errors": [
+        0.0,
+        5.7220458984375e-06
+      ],
+      "actions": [
+        {
+          "action": 0,
+          "mean_value": 0.018606513738632202,
+          "distribution_value": -0.022493474185466766,
+          "branches": [
+            {
+              "mean_value": 0.10917830467224121,
+              "distribution_value": -0.02271861582994461,
+              "seconds": 11.836130499999854,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    -0.06763895601034164,
+                    -0.15140345692634583,
+                    -0.10660947859287262,
+                    0.23477742075920105
+                  ]
+                ],
+                "expected": [
+                  -0.02271861582994461
+                ],
+                "df": 9.0,
+                "scale_mean": 0.6936765909194946,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": true,
+                "relation": 237,
+                "generation": 5,
+                "similarity": 0.7418808937072754
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4742487072944641
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4383828938007355
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.3847048580646515
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.5012077689170837
+                }
+              ],
+              "max_lift_residual": 1.1920928955078125e-06
+            },
+            {
+              "mean_value": -0.0719652771949768,
+              "distribution_value": -0.022268332540988922,
+              "seconds": 11.455609900000127,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    -0.014578375034034252,
+                    -0.1513999104499817,
+                    -0.14848019182682037,
+                    0.2253851592540741
+                  ]
+                ],
+                "expected": [
+                  -0.022268332540988922
+                ],
+                "df": 9.0,
+                "scale_mean": 0.6611117124557495,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": false,
+                "relation": -1,
+                "generation": 0,
+                "similarity": 0.6861619353294373
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.45244938135147095
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4145263135433197
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.43530842661857605
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.49363967776298523
+                }
+              ],
+              "max_lift_residual": 8.344650268554688e-07
+            }
+          ]
+        },
+        {
+          "action": 1,
+          "mean_value": 0.03159844130277634,
+          "distribution_value": -0.05194589775055647,
+          "branches": [
+            {
+              "mean_value": 0.1461581587791443,
+              "distribution_value": -0.0875539779663086,
+              "seconds": 11.990950100000191,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    -0.07805532962083817,
+                    -0.15365846455097198,
+                    -0.13327255845069885,
+                    0.014770443551242352
+                  ]
+                ],
+                "expected": [
+                  -0.0875539779663086
+                ],
+                "df": 9.0,
+                "scale_mean": 0.6995484232902527,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": true,
+                "relation": 237,
+                "generation": 5,
+                "similarity": 0.7131969332695007
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.44873884320259094
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4019065797328949
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.40401560068130493
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4597104787826538
+                }
+              ],
+              "max_lift_residual": 8.344650268554688e-07
+            },
+            {
+              "mean_value": -0.08296127617359161,
+              "distribution_value": -0.016337817534804344,
+              "seconds": 11.624981999997544,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    0.02039214037358761,
+                    -0.15660877525806427,
+                    -0.12216123193502426,
+                    0.1930265873670578
+                  ]
+                ],
+                "expected": [
+                  -0.016337817534804344
+                ],
+                "df": 9.0,
+                "scale_mean": 0.6776682138442993,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": false,
+                "relation": -1,
+                "generation": 0,
+                "similarity": 0.6857168674468994
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4357343316078186
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.39643874764442444
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.430454283952713
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4792480766773224
+                }
+              ],
+              "max_lift_residual": 9.5367431640625e-07
+            }
+          ]
+        },
+        {
+          "action": 2,
+          "mean_value": 0.018606513738632202,
+          "distribution_value": -0.022493474185466766,
+          "branches": [
+            {
+              "mean_value": 0.10917830467224121,
+              "distribution_value": -0.02271861582994461,
+              "seconds": 4.10164420000001,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    -0.06763895601034164,
+                    -0.15140345692634583,
+                    -0.10660947859287262,
+                    0.23477742075920105
+                  ]
+                ],
+                "expected": [
+                  -0.02271861582994461
+                ],
+                "df": 9.0,
+                "scale_mean": 0.6936765909194946,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": true,
+                "relation": 237,
+                "generation": 5,
+                "similarity": 0.7418808937072754
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4742487072944641
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4383828938007355
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.3847048580646515
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.5012077689170837
+                }
+              ],
+              "max_lift_residual": 1.1920928955078125e-06
+            },
+            {
+              "mean_value": -0.0719652771949768,
+              "distribution_value": -0.022268332540988922,
+              "seconds": 4.122684899997694,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    -0.014578375034034252,
+                    -0.1513999104499817,
+                    -0.14848019182682037,
+                    0.2253851592540741
+                  ]
+                ],
+                "expected": [
+                  -0.022268332540988922
+                ],
+                "df": 9.0,
+                "scale_mean": 0.6611117124557495,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": false,
+                "relation": -1,
+                "generation": 0,
+                "similarity": 0.6861619353294373
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.45244938135147095
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4145263135433197
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.43530842661857605
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.49363967776298523
+                }
+              ],
+              "max_lift_residual": 8.344650268554688e-07
+            }
+          ]
+        }
+      ],
+      "retrospective_actual_response": {
+        "mean_value": 0.2899782955646515,
+        "distribution_value": -0.005018182098865509,
+        "mean_address": {
+          "matched": true,
+          "relation": 237,
+          "generation": 5,
+          "similarity": 0.7785442471504211
+        },
+        "addresses": [
+          {
+            "matched": false,
+            "relation": -1,
+            "generation": 0,
+            "similarity": 0.45870241522789
+          },
+          {
+            "matched": false,
+            "relation": -1,
+            "generation": 0,
+            "similarity": 0.3995361626148224
+          },
+          {
+            "matched": false,
+            "relation": -1,
+            "generation": 0,
+            "similarity": 0.47727376222610474
+          },
+          {
+            "matched": false,
+            "relation": -1,
+            "generation": 0,
+            "similarity": 0.458464652299881
+          }
+        ],
+        "seconds": 11.532256900001812,
+        "actual_latent_log_score": -1.1434326171875,
+        "quadrature": {
+          "schema": 1,
+          "budget": 4,
+          "branches": 4,
+          "weights": [
+            0.25,
+            0.25,
+            0.25,
+            0.25
+          ],
+          "values": [
+            [
+              -0.07461843639612198,
+              0.007972713559865952,
+              0.0007607359439134598,
+              0.045812271535396576
+            ]
+          ],
+          "expected": [
+            -0.005018182098865509
+          ],
+          "df": 9.0,
+          "scale_mean": 0.7291960120201111,
+          "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+        }
+      },
+      "checks": {
+        "sql_read_only": true,
+        "cpu_rng": true,
+        "gpu_rng": true,
+        "bank_unchanged": true
+      },
+      "actual_next_policy_value": 0.05691247689016521,
+      "actual_next_relation": 285,
+      "mean_absolute_error": 0.03830596315153301,
+      "distribution_absolute_error": 0.07940595107563198,
+      "mean_value_action_contrasts": [
+        0.0,
+        0.012991927564144135,
+        0.0
+      ],
+      "distribution_value_action_contrasts": [
+        0.0,
+        -0.029452423565089703,
+        0.0
+      ]
+    },
+    {
+      "cycle": 2495,
+      "choice": 1,
+      "source_errors": [
+        0.0,
+        4.76837158203125e-06
+      ],
+      "actions": [
+        {
+          "action": 0,
+          "mean_value": 0.31284865736961365,
+          "distribution_value": 0.09818633273243904,
+          "branches": [
+            {
+              "mean_value": 0.3048320412635803,
+              "distribution_value": 0.1364111602306366,
+              "seconds": 11.97729430000254,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    -0.004665921907871962,
+                    -0.09654998779296875,
+                    0.2666853666305542,
+                    0.38017523288726807
+                  ]
+                ],
+                "expected": [
+                  0.1364111602306366
+                ],
+                "df": 9.0,
+                "scale_mean": 0.6883589625358582,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": false,
+                "relation": -1,
+                "generation": 0,
+                "similarity": 0.6687451601028442
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.5277975797653198
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.416319340467453
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.3676161468029022
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4900795817375183
+                }
+              ],
+              "max_lift_residual": 7.152557373046875e-07
+            },
+            {
+              "mean_value": 0.320865273475647,
+              "distribution_value": 0.059961505234241486,
+              "seconds": 12.245546899997862,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    -0.06383384764194489,
+                    0.39958667755126953,
+                    -0.07913099974393845,
+                    -0.016775790601968765
+                  ]
+                ],
+                "expected": [
+                  0.059961505234241486
+                ],
+                "df": 9.0,
+                "scale_mean": 0.7010471820831299,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": false,
+                "relation": -1,
+                "generation": 0,
+                "similarity": 0.6396790742874146
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4359540641307831
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.35984310507774353
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.35617461800575256
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4724588096141815
+                }
+              ],
+              "max_lift_residual": 7.152557373046875e-07
+            }
+          ]
+        },
+        {
+          "action": 1,
+          "mean_value": 0.31764504313468933,
+          "distribution_value": 0.19318532943725586,
+          "branches": [
+            {
+              "mean_value": 0.3102591335773468,
+              "distribution_value": 0.240642711520195,
+              "seconds": 11.803355899999588,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    0.04129986837506294,
+                    0.3051963448524475,
+                    0.2466968446969986,
+                    0.36937782168388367
+                  ]
+                ],
+                "expected": [
+                  0.240642711520195
+                ],
+                "df": 9.0,
+                "scale_mean": 0.6974706649780273,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": false,
+                "relation": -1,
+                "generation": 0,
+                "similarity": 0.6467128992080688
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4982142150402069
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.38699662685394287
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.3559954762458801
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.45273131132125854
+                }
+              ],
+              "max_lift_residual": 7.748603820800781e-07
+            },
+            {
+              "mean_value": 0.32503095269203186,
+              "distribution_value": 0.1457279473543167,
+              "seconds": 12.691802099998313,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    -0.03931272402405739,
+                    0.4064689874649048,
+                    -0.08973817527294159,
+                    0.30549368262290955
+                  ]
+                ],
+                "expected": [
+                  0.1457279473543167
+                ],
+                "df": 9.0,
+                "scale_mean": 0.6979362964630127,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": false,
+                "relation": -1,
+                "generation": 0,
+                "similarity": 0.6114987134933472
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.403781920671463
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.32889240980148315
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.3783020079135895
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4274224042892456
+                }
+              ],
+              "max_lift_residual": 7.152557373046875e-07
+            }
+          ]
+        },
+        {
+          "action": 2,
+          "mean_value": 0.31284865736961365,
+          "distribution_value": 0.09818633273243904,
+          "branches": [
+            {
+              "mean_value": 0.3048320412635803,
+              "distribution_value": 0.1364111602306366,
+              "seconds": 4.259045499999047,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    -0.004665921907871962,
+                    -0.09654998779296875,
+                    0.2666853666305542,
+                    0.38017523288726807
+                  ]
+                ],
+                "expected": [
+                  0.1364111602306366
+                ],
+                "df": 9.0,
+                "scale_mean": 0.6883589625358582,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": false,
+                "relation": -1,
+                "generation": 0,
+                "similarity": 0.6687451601028442
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.5277975797653198
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.416319340467453
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.3676161468029022
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4900795817375183
+                }
+              ],
+              "max_lift_residual": 7.152557373046875e-07
+            },
+            {
+              "mean_value": 0.320865273475647,
+              "distribution_value": 0.059961505234241486,
+              "seconds": 4.208851399998821,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    -0.06383384764194489,
+                    0.39958667755126953,
+                    -0.07913099974393845,
+                    -0.016775790601968765
+                  ]
+                ],
+                "expected": [
+                  0.059961505234241486
+                ],
+                "df": 9.0,
+                "scale_mean": 0.7010471820831299,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": false,
+                "relation": -1,
+                "generation": 0,
+                "similarity": 0.6396790742874146
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4359540641307831
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.35984310507774353
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.35617461800575256
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.4724588096141815
+                }
+              ],
+              "max_lift_residual": 7.152557373046875e-07
+            }
+          ]
+        }
+      ],
+      "retrospective_actual_response": {
+        "mean_value": -0.05655334144830704,
+        "distribution_value": -0.022718630731105804,
+        "mean_address": {
+          "matched": false,
+          "relation": -1,
+          "generation": 0,
+          "similarity": 0.6089527010917664
+        },
+        "addresses": [
+          {
+            "matched": false,
+            "relation": -1,
+            "generation": 0,
+            "similarity": 0.42999711632728577
+          },
+          {
+            "matched": false,
+            "relation": -1,
+            "generation": 0,
+            "similarity": 0.14367786049842834
+          },
+          {
+            "matched": false,
+            "relation": -1,
+            "generation": 0,
+            "similarity": 0.2399219125509262
+          },
+          {
+            "matched": false,
+            "relation": -1,
+            "generation": 0,
+            "similarity": 0.3945711851119995
+          }
+        ],
+        "seconds": 11.815888299999642,
+        "actual_latent_log_score": -0.930557131767273,
+        "quadrature": {
+          "schema": 1,
+          "budget": 4,
+          "branches": 4,
+          "weights": [
+            0.25,
+            0.25,
+            0.25,
+            0.25
+          ],
+          "values": [
+            [
+              0.0644150823354721,
+              -0.06546249240636826,
+              -0.0692509114742279,
+              -0.020576201379299164
+            ]
+          ],
+          "expected": [
+            -0.022718630731105804
+          ],
+          "df": 9.0,
+          "scale_mean": 0.8527307510375977,
+          "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+        }
+      },
+      "checks": {
+        "sql_read_only": true,
+        "cpu_rng": true,
+        "gpu_rng": true,
+        "bank_unchanged": true
+      },
+      "actual_next_policy_value": 0.054499250850645886,
+      "actual_next_relation": 288,
+      "mean_absolute_error": 0.26314579228404344,
+      "distribution_absolute_error": 0.13868607858660997,
+      "mean_value_action_contrasts": [
+        0.0,
+        0.004796385765075684,
+        0.0
+      ],
+      "distribution_value_action_contrasts": [
+        0.0,
+        0.09499899670481682,
+        0.0
+      ]
+    },
+    {
+      "cycle": 2496,
+      "choice": 0,
+      "source_errors": [
+        0.0,
+        5.7220458984375e-06
+      ],
+      "actions": [
+        {
+          "action": 0,
+          "mean_value": 0.006217987043783069,
+          "distribution_value": 0.002054322510957718,
+          "branches": [
+            {
+              "mean_value": 0.01967904530465603,
+              "distribution_value": -0.003348208963871002,
+              "seconds": 12.710635299998103,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    0.03810066729784012,
+                    -0.1501328945159912,
+                    -0.019113190472126007,
+                    0.1177525743842125
+                  ]
+                ],
+                "expected": [
+                  -0.003348208963871002
+                ],
+                "df": 9.0,
+                "scale_mean": 0.7394827604293823,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": false,
+                "relation": -1,
+                "generation": 0,
+                "similarity": 0.5302127599716187
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.45231759548187256
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.2883465588092804
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.3300955891609192
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.33818888664245605
+                }
+              ],
+              "max_lift_residual": 7.748603820800781e-07
+            },
+            {
+              "mean_value": -0.0072430712170898914,
+              "distribution_value": 0.007456853985786438,
+              "seconds": 12.556162400000176,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    -0.11819717288017273,
+                    -0.10149996727705002,
+                    -0.009310105815529823,
+                    0.2588346302509308
+                  ]
+                ],
+                "expected": [
+                  0.007456853985786438
+                ],
+                "df": 9.0,
+                "scale_mean": 0.7513154745101929,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": false,
+                "relation": -1,
+                "generation": 0,
+                "similarity": 0.44910120964050293
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.36075976490974426
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.21140120923519135
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.3658609390258789
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.3067788779735565
+                }
+              ],
+              "max_lift_residual": 7.152557373046875e-07
+            }
+          ]
+        },
+        {
+          "action": 1,
+          "mean_value": 0.030476194573566318,
+          "distribution_value": 0.016554590314626694,
+          "branches": [
+            {
+              "mean_value": 0.0685056820511818,
+              "distribution_value": 0.013365395367145538,
+              "seconds": 12.298921300000075,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    -0.0635092481970787,
+                    -0.14055082201957703,
+                    0.007123867049813271,
+                    0.25039777159690857
+                  ]
+                ],
+                "expected": [
+                  0.013365395367145538
+                ],
+                "df": 9.0,
+                "scale_mean": 0.7522934079170227,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": false,
+                "relation": -1,
+                "generation": 0,
+                "similarity": 0.43441835045814514
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.39789289236068726
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.3077235817909241
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.37364405393600464
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.2803506851196289
+                }
+              ],
+              "max_lift_residual": 7.152557373046875e-07
+            },
+            {
+              "mean_value": -0.007553292904049158,
+              "distribution_value": 0.01974378526210785,
+              "seconds": 12.992416699999012,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    -0.23135407269001007,
+                    0.13496878743171692,
+                    -0.0814109519124031,
+                    0.25677135586738586
+                  ]
+                ],
+                "expected": [
+                  0.01974378526210785
+                ],
+                "df": 9.0,
+                "scale_mean": 0.7598267793655396,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": false,
+                "relation": -1,
+                "generation": 0,
+                "similarity": 0.362770676612854
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.3249335289001465
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.23207080364227295
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.36233824491500854
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.3010174036026001
+                }
+              ],
+              "max_lift_residual": 7.152557373046875e-07
+            }
+          ]
+        },
+        {
+          "action": 2,
+          "mean_value": 0.006217987043783069,
+          "distribution_value": 0.002054322510957718,
+          "branches": [
+            {
+              "mean_value": 0.01967904530465603,
+              "distribution_value": -0.003348208963871002,
+              "seconds": 4.257214099998237,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    0.03810066729784012,
+                    -0.1501328945159912,
+                    -0.019113190472126007,
+                    0.1177525743842125
+                  ]
+                ],
+                "expected": [
+                  -0.003348208963871002
+                ],
+                "df": 9.0,
+                "scale_mean": 0.7394827604293823,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": false,
+                "relation": -1,
+                "generation": 0,
+                "similarity": 0.5302127599716187
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.45231759548187256
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.2883465588092804
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.3300955891609192
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.33818888664245605
+                }
+              ],
+              "max_lift_residual": 7.748603820800781e-07
+            },
+            {
+              "mean_value": -0.0072430712170898914,
+              "distribution_value": 0.007456853985786438,
+              "seconds": 4.397426899999118,
+              "quadrature": {
+                "schema": 1,
+                "budget": 4,
+                "branches": 4,
+                "weights": [
+                  0.25,
+                  0.25,
+                  0.25,
+                  0.25
+                ],
+                "values": [
+                  [
+                    -0.11819717288017273,
+                    -0.10149996727705002,
+                    -0.009310105815529823,
+                    0.2588346302509308
+                  ]
+                ],
+                "expected": [
+                  0.007456853985786438
+                ],
+                "df": 9.0,
+                "scale_mean": 0.7513154745101929,
+                "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+              },
+              "mean_address": {
+                "matched": false,
+                "relation": -1,
+                "generation": 0,
+                "similarity": 0.44910120964050293
+              },
+              "addresses": [
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.36075976490974426
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.21140120923519135
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.3658609390258789
+                },
+                {
+                  "matched": false,
+                  "relation": -1,
+                  "generation": 0,
+                  "similarity": 0.3067788779735565
+                }
+              ],
+              "max_lift_residual": 7.152557373046875e-07
+            }
+          ]
+        }
+      ],
+      "retrospective_actual_response": {
+        "mean_value": -0.011421065777540207,
+        "distribution_value": -0.025152474641799927,
+        "mean_address": {
+          "matched": false,
+          "relation": -1,
+          "generation": 0,
+          "similarity": 0.6898149251937866
+        },
+        "addresses": [
+          {
+            "matched": false,
+            "relation": -1,
+            "generation": 0,
+            "similarity": 0.3307795226573944
+          },
+          {
+            "matched": false,
+            "relation": -1,
+            "generation": 0,
+            "similarity": 0.3365139961242676
+          },
+          {
+            "matched": false,
+            "relation": -1,
+            "generation": 0,
+            "similarity": 0.3652212917804718
+          },
+          {
+            "matched": false,
+            "relation": -1,
+            "generation": 0,
+            "similarity": 0.30384230613708496
+          }
+        ],
+        "seconds": 12.813696499997604,
+        "actual_latent_log_score": -0.9655658006668091,
+        "quadrature": {
+          "schema": 1,
+          "budget": 4,
+          "branches": 4,
+          "weights": [
+            0.25,
+            0.25,
+            0.25,
+            0.25
+          ],
+          "values": [
+            [
+              -0.14357812702655792,
+              -0.03933975100517273,
+              0.12658770382404327,
+              -0.04427974671125412
+            ]
+          ],
+          "expected": [
+            -0.025152474641799927
+          ],
+          "df": 9.0,
+          "scale_mean": 0.804480791091919,
+          "semantics": "fixed antithetic Student-t product-marginal cubature before native addressing"
+        }
+      },
+      "checks": {
+        "sql_read_only": true,
+        "cpu_rng": true,
+        "gpu_rng": true,
+        "bank_unchanged": true
+      },
+      "actual_next_policy_value": 0.3484145282058453,
+      "actual_next_relation": 270,
+      "mean_absolute_error": 0.3421965411620622,
+      "distribution_absolute_error": 0.34636020569488757,
+      "mean_value_action_contrasts": [
+        0.0,
+        0.02425820752978325,
+        0.0
+      ],
+      "distribution_value_action_contrasts": [
+        0.0,
+        0.014500267803668976,
+        0.0
+      ]
+    }
+  ],
+  "source_sha256": "7cccc744d4549eca2662727cba6b4c900609393243b9fb557dee6a2f17498107",
+  "reference": "D:\\information-boltzmann-v1\\scratch\\cgb_self_execution_loop_2493_20261119\\native",
+  "mean_absolute_error": 0.21454943219921288,
+  "distribution_absolute_error": 0.18815074511904317
+}

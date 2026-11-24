@@ -72,6 +72,39 @@ def test_fused_matches_reference(recurrence, conv, budget, eta, gain, decay_init
         torch.testing.assert_close(fus[3][key], ref[3][key], rtol=5e-4, atol=5e-5, msg=key)
 
 
+@pytest.mark.parametrize('steps', (1, 16, 17, 128))
+def test_state_checkpoints_match_full_scan_and_inference(steps):
+    from gdn_fused import fused_delta
+
+    torch.manual_seed(17)
+    shape = (1, 8, steps, 32)
+    values = [torch.randn(shape, device='cuda') * .15 for _ in range(3)]
+    values += [torch.rand(shape[:-1], device='cuda') for _ in range(2)]
+    values += [torch.rand(8, device='cuda') for _ in range(2)]
+    values.append(torch.randn((1, 8, 32, 32), device='cuda') * .15)
+
+    def run(block):
+        inputs = [v.detach().requires_grad_() for v in values]
+        retained = []
+        def pack(t):
+            if t.ndim == 5:
+                retained.append(t.shape[2])
+            return t
+        with torch.autograd.graph.saved_tensors_hooks(pack, lambda t: t):
+            out = fused_delta(*inputs, 0.6, True, block=block)
+        grad = torch.autograd.grad(out[0].square().sum()+out[1].square().sum(), inputs)
+        return out, grad, retained
+
+    full, d_full, old = run(1)
+    compact, d_compact, new = run(16)
+    with torch.no_grad():
+        inference = fused_delta(*values, 0.6, True)
+    assert old == [steps+1]
+    assert new == [math.ceil(steps/16)+1 if steps > 16 else steps+1]
+    for expected, actual in zip((*full, *full, *d_full), (*inference, *compact, *d_compact)):
+        torch.testing.assert_close(actual, expected, atol=2e-5, rtol=2e-4)
+
+
 def test_birth_initialization():
     """Log-timescale heads span short to long memory; feedback heads straddle the latch
     threshold; shared weights equal the plain control's; old configs keep old behaviour."""

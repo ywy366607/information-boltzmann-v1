@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "cycle": 2537,
+  "source": "D:\\information-boltzmann-v1\\scratch\\cgb_competing_action_teachers_2521_20261120\\competing\\body\\last.pt.gz",
+  "extracted_input_sha256": "6f772f80a434abba4cf83643fe4c62527ea18818218818829da0d0c0c98c7279",
+  "feature_inversion": {
+    "native": {
+      "records": 64,
+      "role_blocks": 31,
+      "width": 128,
+      "feature_width": 4074,
+      "anchor_scalar_index": 37,
+      "anchor_value": 0.8,
+      "encoded_max_abs_error": 2.111472256594027e-06,
+      "encoded_relative_l2_error": 1.1374259010211461e-07,
+      "scalar_max_abs_error": 1.0827091529108657e-05,
+      "zero_encoded_blocks": 360
+    },
+    "action": {
+      "records": 64,
+      "role_blocks": 13,
+      "width": 128,
+      "feature_width": 1729,
+      "anchor_scalar_index": 6,
+      "anchor_value": 0.8,
+      "encoded_max_abs_error": 1.5343367056885882e-06,
+      "encoded_relative_l2_error": 1.0498512181720668e-07,
+      "scalar_max_abs_error": 8.802720037337508e-07,
+      "zero_encoded_blocks": 0
+    }
+  },
+  "repeated_kernel_identity": {
+    "kind": "numerical identity binding; declared alternating labels",
+    "actual_feature_self_kernel": 3.3808535030174873,
+    "ridge": 0.1,
+    "cases": [
+      {
+        "repetitions": 2,
+        "actual_schur_novelty": 0.014573633049625485,
+        "closed_form": 0.014573633049625771,
+        "declared_label_mse": 1.0
+      },
+      {
+        "repetitions": 4,
+        "actual_schur_novelty": 0.0073403039731006195,
+        "closed_form": 0.007340303973101229,
+        "declared_label_mse": 1.0
+      },
+      {
+        "repetitions": 8,
+        "actual_schur_novelty": 0.003683671621268696,
+        "closed_form": 0.0036836716212692157,
+        "declared_label_mse": 1.0
+      },
+      {
+        "repetitions": 16,
+        "actual_schur_novelty": 0.0018452344294853861,
+        "closed_form": 0.0018452344294858508,
+        "declared_label_mse": 1.0
+      }
+    ]
+  },
+  "quiet": {
+    "layers": 32,
+    "heads": 8,
+    "theta_directions": 12,
+    "contact_directions": 2,
+    "context_was_valid": false,
+    "subdivisions": 1,
+    "proposal_commit_state_max_abs_error": 0.0,
+    "proposal_commit_momentum_max_abs_error": 0.0,
+    "jet_transport_max_relative_error": 1.1552025824812517e-07,
+    "jet_transport_max_abs_error": 1.1920928955078125e-07,
+    "jet_source": "second quiet step after actual first-step eligibility capture",
+    "carried_theta_eligibility_norm": 19.519943237304688,
+    "erase_history_gradient_difference_l2": 14.614001274108887,
+    "full_next_gradient_l2": 29.227741241455078,
+    "captured_theta_sensitivity_norm": 19.519943237304688,
+    "captured_contact_sensitivity_norm": 58.405120849609375,
+    "cpu_proposal_seconds": 1.725351299999602,
+    "cpu_capture_seconds": 6.821782099999837,
+    "timing_scope": "one CPU contract check, not a throughput benchmark"
+  },
+  "stopping": {
+    "source": "scratch\\native_signal_admission_2401_20261117\\body\\autonomous_events.jsonl",
+    "sha256": "d1b160bb4b9877e803dad05f37b2dde93108c2651d34c15c6a88f4af98da5948",
+    "complete_quiet_prefixes": 999,
+    "skipped_incomplete_start": 1,
+    "max_prefix_length": 9,
+    "max_mass_error": 2.220446049250313e-16,
+    "max_tangent_error": 5.551115123125783e-17,
+    "max_actual_path_logp_error": 2.8304948340718283e-07,
+    "mean_surviving_mass_at_observed_prefix": 0.3353742427707784,
+    "derivative_direction": "shared additive internal-vs-release logit field; fixed recorded quiet path",
+    "role": "read-only binding of existing stopped-path receipt and finite-prefix tail"
+  },
+  "training_updates": 0,
+  "world_calls": 0,
+  "lean_verification": {
+    "path": "lean\\CGBAxioms\\reviews\\NativeTargetClosureAndStopping.lean",
+    "sha256": "f942733baa6fb41a0ab0e0570e6cf20287a0694d3e691ab410965af31bf29fdc",
+    "returncode": 0,
+    "theorem_count": 8,
+    "stdout": "",
+    "stderr": "",
+    "seconds": 12.97232460000032
+  },
+  "audit_script_sha256": "42d46f39a84ea3540c43bec182bbb4c91e52969b7331df53fd5e5dccfd367ff7",
+  "source_checkpoint_sha256": "102f52357b46be060a196ce83cf7cb29e2e06f0e6030fec86340032386284336",
+  "encoder_geometry": {
+    "shape": [
+      128,
+      256
+    ],
+    "rank": 128,
+    "nullity": 128,
+    "singular_min": 0.10268142013897778,
+    "singular_max": 1.2799003087123166
+  }
+}

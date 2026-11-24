@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "cycle": 363,
+  "same_cycle": true,
+  "equal": {
+    "world": true,
+    "torch_rng": true,
+    "cuda_rng": true,
+    "numpy_rng": true,
+    "python_rng": true,
+    "model": true,
+    "optimizer": true,
+    "table": true,
+    "recurrent": true,
+    "causal_archive_sql": true
+  },
+  "pending_actor_max_error": 0.0,
+  "pending_actor_relative_l2": 0.0,
+  "scope": "full saved world, RNGs and future delayed actor; zero learning"
+}

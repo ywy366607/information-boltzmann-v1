@@ -46,7 +46,7 @@ def test_contingent_response_and_complete_world_state_roundtrip():
     restored.load_state_dict(state)
     assert restored.state_dict() == state
     restored.take(b'', 16, 5)
-    assert restored.mother.seen[0][-1] == ('child', '<quiet_turn/>')
+    assert restored.mother.seen[0][-1] == ('child', '[The child does not speak this turn.]')
     assert world.state_dict() == state
 
 
@@ -56,6 +56,31 @@ def test_failed_reply_does_not_advance_world_or_create_fake_experience():
     with pytest.raises(RuntimeError, match='not advanced'):
         world.take(b'hello', 16, 5)
     assert world.state_dict() == before
+
+
+def test_ambient_read_preserves_conversation_but_actual_silence_calls_mother():
+    mother = Mother()
+    world = MotherReplyWorld(Ambient(), mother)
+    response, held, info = world.take_ambient(16, 5)
+    assert bytes(response) == b'x' * 16 and bytes(held) == b'y' * 5
+    assert info['source'] == 'text' and info['mother_bytes'] == 0
+    assert world.base.clock == 1 and world.transcript == [] and mother.seen == []
+    world.take(b'', 16, 5)
+    assert world.base.clock == 2 and len(mother.seen) == 1
+    assert mother.seen[0][-1] == ('child', '[The child does not speak this turn.]')
+
+
+def test_ambient_read_roundtrip_preserves_caregiver_history():
+    world = MotherReplyWorld(Ambient(), Mother(), history=2)
+    world.take(b'hello', 16, 5)
+    history = copy.deepcopy(world.transcript)
+    world.take_ambient(8, 8)
+    state = world.state_dict()
+    restored = MotherReplyWorld(Ambient(), Mother(), history=2)
+    restored.load_state_dict(state)
+    assert restored.state_dict() == state and restored.transcript == history
+    restored.take_ambient(8, 8)
+    assert restored.transcript == history and restored.mother.seen == []
 
 
 def test_legacy_quiet_is_explicit_and_does_not_hide_migration():

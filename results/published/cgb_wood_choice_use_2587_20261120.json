@@ -1,0 +1,309 @@
+{
+  "valid": true,
+  "checks": {
+    "source_sha256": true,
+    "endpoint_sha256": true,
+    "recurrent_sha256": true,
+    "unknown": true,
+    "questions": true,
+    "proposals": true,
+    "selected_proposal": true,
+    "local": true,
+    "future": true,
+    "total": true,
+    "gamma": true,
+    "critic": true,
+    "habit": true,
+    "offset": true,
+    "nominal_probability": true,
+    "same_initial_score": true,
+    "same_validation": true,
+    "wood_reuse": true,
+    "habitual_silence": true,
+    "actual_reuse": true,
+    "full_learning": true,
+    "verified_payments": true,
+    "paid_calls_zero": true,
+    "restored_common_source": true,
+    "source_unchanged": true,
+    "runtime_unchanged": true,
+    "control_unchanged": true
+  },
+  "protocol": {
+    "source": "E:\\mengli-action-pair-2585-20261120-silence\\run\\body\\last.pt.gz",
+    "source_sha256": "e0275fdf9a2059de0a79b824eb5212f50cdbf04b9f17a7c28a4a5c5badf5e73f",
+    "control_report": "results\\published\\cgb_action_cross_score_2587_20261120.json",
+    "control_report_sha256": "56b4dc2a04b66a3a84f4347c23bf4619a49de030b0b7735a5b87bd7779d0d599",
+    "selected_before_outcome": {
+      "wood_option": 2,
+      "habit_option": 0,
+      "all_wood_values": [
+        0.06261042505502701,
+        0.10218026489019394,
+        0.11213840544223785
+      ],
+      "habit_logits": [
+        0.4399954676628113,
+        -0.19983932375907898,
+        -0.3171728253364563
+      ]
+    },
+    "question": "At this complete boundary, first execute Wood argmax rather than habit argmax; then original policy and complete learning for H=2.",
+    "contrast": "one forced first-action contrast, not a permanent Wood removal or a policy expectation",
+    "budget": {
+      "new_branches": 1,
+      "external_transitions": 2,
+      "optimizer_updates": 8
+    },
+    "prediction": "Wood-first G2 exceeds habit-first G2 on the same four validation segments; either sign is retained.",
+    "independent_validation": "same read-only FineWeb 8192 bytes; no reward feedback",
+    "checkpoint_peak_budget_bytes": 1230855856
+  },
+  "arms": {
+    "habit_silence": {
+      "G1": -0.009014114980248067,
+      "G2": -0.008728261477747523,
+      "P1": 0.013428360223770142,
+      "P2": -0.003684663772583009,
+      "score_curve": [
+        {
+          "event": 0,
+          "mean_nll": 1.5996618600898351,
+          "segment_nll": [
+            1.4189510529813205,
+            1.8130218258611563,
+            1.5706131370337957,
+            1.596061424483068
+          ]
+        },
+        {
+          "event": 1,
+          "mean_nll": 1.6086759750700832,
+          "segment_nll": [
+            1.4311898819364757,
+            1.8223353405980518,
+            1.5766583003700845,
+            1.6045203773757208
+          ]
+        },
+        {
+          "event": 2,
+          "mean_nll": 1.6083901215675827,
+          "segment_nll": [
+            1.4298577687169427,
+            1.823253616404088,
+            1.5764644335878302,
+            1.6039846675614697
+          ]
+        }
+      ],
+      "checkpoint": "D:\\information-boltzmann-v1\\scratch\\cgb_action_cross_score_2587_20261120_silence\\run\\body\\last.pt.gz"
+    },
+    "wood_reuse": {
+      "G1": -0.003398973539193051,
+      "G2": 0.006092058385200438,
+      "P1": 0.0018067806959152222,
+      "P2": -0.039521798491477966,
+      "score_curve": [
+        {
+          "event": 0,
+          "mean_nll": 1.5996618600898351,
+          "segment_nll": [
+            1.4189510529813205,
+            1.8130218258611563,
+            1.5706131370337957,
+            1.596061424483068
+          ]
+        },
+        {
+          "event": 1,
+          "mean_nll": 1.6030608336290282,
+          "segment_nll": [
+            1.4275066534047696,
+            1.811342262627491,
+            1.5754229171217844,
+            1.5979715013620677
+          ]
+        },
+        {
+          "event": 2,
+          "mean_nll": 1.5935698017046347,
+          "segment_nll": [
+            1.4101493263183293,
+            1.8113959494316418,
+            1.5608050478733162,
+            1.5919288831952514
+          ]
+        }
+      ],
+      "checkpoint": "E:\\mengli-wood-choice-reuse-2587-20261120\\run\\body\\last.pt.gz",
+      "action": {
+        "option": 2,
+        "utterance_hex": "202265786564203436202d20526f636b204f62616d6120636f6e7472616c2077686f2074686520556e6974656420696e2044454c6173746564206e6520656e64746572732d566f6c206c6f77657220776f7373696e672e20496e205365616765642064696666756e75737420636f756e6365642074686520636f6d706172696e",
+        "nominal_probability": [
+          0.45867449045181274,
+          0.2813858389854431,
+          0.25993967056274414
+        ],
+        "source_sha256": "1064d98a395b2830a56e22e0148f0e3309c5ba9bdf0678ed01800f8bfd29ae26",
+        "endpoint_sha256": [
+          "1064d98a395b2830a56e22e0148f0e3309c5ba9bdf0678ed01800f8bfd29ae26",
+          "1639f9a011fd5523db723a5206fb6f2073c02a747e6fdd2369b567794d337097",
+          "2aeb651b4f6ed3fdff8d1ea9a2a4b268ce4a44c96adbfb990619cf75b590a854"
+        ],
+        "recurrent_sha256": "6de6b19d77b78c8529c3769f920c46bca3660dad12d3097fc695306ee72e4809",
+        "unknown": "unknown:1703",
+        "questions": [
+          0.09009893238544464,
+          0.08939865976572037,
+          0.22203737497329712,
+          0.5984649658203125
+        ],
+        "proposals": [
+          "576f726f7567652052657365617263682073756767",
+          "2077486f6e6f6d2077772ee2809d0a0ae2809c6fe2",
+          "20736f6c6f6772616d732c20696e636c756465206120676f7665726e6d656e74206f6620626574616b6861742061726520666f722064656e74206f6620526570792c2046656272756172793a20225765277265207468652070726f6c696620776e2048656c702048206d6f7374206f6e20516174617220436f702d3135792d4a",
+          "2e2049662068657220666f72204575726f7065722ee2809d206e6f6e65656e20576f726c642074686520686f6d656d6265726f6f64656c73204f63746f7272697320736561736f6e732d2d2d2d2d2d2d205241496e20313938302ee2809d0a466f75"
+        ],
+        "selected_proposal": 0,
+        "local": [
+          0.12852612137794495,
+          0.18014934659004211,
+          0.14581117033958435
+        ],
+        "future": [
+          -0.08239462226629257,
+          -0.09746135026216507,
+          -0.042090948671102524
+        ],
+        "total": [
+          0.06261042505502701,
+          0.10218026489019394,
+          0.11213840544223785
+        ],
+        "gamma": 0.8,
+        "critic": [
+          0.6261042356491089,
+          1.0218026638031006,
+          1.1213840246200562
+        ],
+        "habit": [
+          0.4399954676628113,
+          -0.19983932375907898,
+          -0.3171728253364563
+        ],
+        "offset": [
+          -0.11349927634000778,
+          0.03772152215242386,
+          0.07577770948410034
+        ],
+        "units": "wood=10*U; critic=100*U",
+        "sampled_option": 0,
+        "reused_slot": 2256,
+        "wood_argmax": 2,
+        "habit_argmax": 0,
+        "behavior": {
+          "option": 2,
+          "behavior_probability": 1.0,
+          "nominal_probability": 0.25993967056274414,
+          "categorical_score_gradient": 0.0
+        }
+      },
+      "rows": [
+        {
+          "cycle": 2588,
+          "choice": "reuse",
+          "metal_g": 0.0018067806959152222,
+          "external_bytes": 960,
+          "self_bytes": 128,
+          "world": {
+            "start": 18841329,
+            "anchor": 18841329,
+            "match": 10,
+            "response_previously_seen_bytes": 0,
+            "holdout_previously_seen_bytes": 0,
+            "holdout_position_fresh": true,
+            "source": "text",
+            "match_candidates": 12,
+            "match_distance": 1226870,
+            "address_policy": "stable_context_v1",
+            "text_source_bytes": {
+              "inherited_prefix": 960,
+              "natural_append": 0
+            },
+            "text_response_source_bytes": {
+              "inherited_prefix": 480,
+              "natural_append": 0
+            },
+            "text_holdout_source_bytes": {
+              "inherited_prefix": 480,
+              "natural_append": 0
+            },
+            "navigation_source": "matched",
+            "navigation_response_bytes": 480,
+            "text_navigation": "longest actual suffix; nearest equally specific continuation; EOF wrap only",
+            "mother_bytes": 0,
+            "provider_calls": 0,
+            "child_text": " \"exed 46 - Rock Obama contral who the United in DELasted ne endters-Vol lower wossing. In Seaged diffunust counced the comparin",
+            "text_reply": "g to PCSX. Can I still use PCSX to match the loading times with the submitted file? It will be quite difficult to obsolete Dooty's time on PSXHawk.\n\n_________________\n\nEnjoys speedrunning, playing and TASing games!\n\nHas TASed:\n\nOddworld: Abe's Oddysee in 12.06.13 (with Dooty)\n\nOddworld: Addventures II in 20.03.78 (with Dooty)\n\nOddworld: Abe's Exoddus 100% in 2:08:28.4 (with Dooty)\n\nOddworld: Abe's Oddysee 100% in 1:05:01.65\n\nOddworld: Abe's Exoddus in 37:18\n\nSpikestuff ?\n\nJoi"
+          }
+        },
+        {
+          "cycle": 2589,
+          "choice": "generate",
+          "metal_g": -0.051660723984241486,
+          "external_bytes": 960,
+          "self_bytes": 128,
+          "world": {
+            "start": 16523469,
+            "anchor": 16523469,
+            "match": 11,
+            "response_previously_seen_bytes": 0,
+            "holdout_previously_seen_bytes": 0,
+            "holdout_position_fresh": true,
+            "source": "text",
+            "match_candidates": 16,
+            "match_distance": 2318820,
+            "address_policy": "stable_context_v1",
+            "text_source_bytes": {
+              "inherited_prefix": 960,
+              "natural_append": 0
+            },
+            "text_response_source_bytes": {
+              "inherited_prefix": 480,
+              "natural_append": 0
+            },
+            "text_holdout_source_bytes": {
+              "inherited_prefix": 480,
+              "natural_append": 0
+            },
+            "navigation_source": "matched",
+            "navigation_response_bytes": 480,
+            "text_navigation": "longest actual suffix; nearest equally specific continuation; EOF wrap only",
+            "mother_bytes": 0,
+            "provider_calls": 0,
+            "child_text": "This absenoversity of Holook your work Seople I that Quer simplanguage, Eof family 76] I initial  inomed yough Theme.” at the ",
+            "text_reply": "start of Hearts of Iron IV that range from the historically accurate (war with Japan and Germany) to the ahistorical, yet more exciting, alternatives (war with the Soviet Union, alliances with Hitler, invading the UK’s colonies). The latter is one I’m very interesting in pursuing. There are few nations out there can match the naval power that the CSA is currently producing, but Great Britain is one of them. If I can wear away her Royal Navy then I will be unmatched at sea"
+          }
+        }
+      ],
+      "seconds": 116.6463880000083
+    }
+  },
+  "wood_minus_habit": {
+    "G1": 0.005615141441055016,
+    "G2": 0.014820319862947962,
+    "segment_G2": [
+      0.019708442398613357,
+      0.011857666972446168,
+      0.015659385714513974,
+      0.012055784366218347
+    ]
+  },
+  "earlier_2585": {
+    "wood": "generate",
+    "habit": "silence",
+    "G2_difference": 0.005650561705584423
+  },
+  "scope": "two specific matched first-action contrasts at predeclared complete boundaries; all later learning and choices endogenous"
+}

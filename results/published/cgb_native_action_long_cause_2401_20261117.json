@@ -1,0 +1,3300 @@
+{
+  "source_sha256": "d7917dd839d3575f9eb96039b57a89800ae6f556e66541361fbaf7e97b5f8106",
+  "gamma": 0.8,
+  "arms": {
+    "baseline": {
+      "events": [
+        {
+          "event": 3,
+          "choice": "reuse",
+          "words": "726573697320747461636573686f",
+          "source_cursor": 11530429,
+          "actual_start": 11846285,
+          "silent_start": 11530429,
+          "jump": 315856,
+          "match": 4,
+          "ties": 316,
+          "action_bytes": 14,
+          "response_nll": 1.7450016736984253,
+          "pre": 1.7119028568267822,
+          "post": 1.7016619443893433,
+          "gain": 0.010240912437438965,
+          "previous_credit": {
+            "g": 0.125543475151062,
+            "bootstrap": 0.051775321960449205,
+            "target": 0.17731879711151122,
+            "advantage": 0.08148892192441842,
+            "choice": 0
+          },
+          "two_turn": null,
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 11485356,
+              "match": 6,
+              "ties": 9,
+              "distance": 45073
+            },
+            {
+              "bytes": 128,
+              "start": 12058254,
+              "match": 6,
+              "ties": 51,
+              "distance": 527825
+            },
+            {
+              "bytes": 128,
+              "start": 1846536,
+              "match": 15,
+              "ties": 1,
+              "distance": 9683893
+            },
+            {
+              "bytes": 60,
+              "start": 11530656,
+              "match": 4,
+              "ties": 81534,
+              "distance": 227
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.25180360674858093,
+            0.25246021151542664,
+            0.2536664605140686,
+            0.24206967651844025
+          ],
+          "decision_precision": 0.1449750247232369,
+          "post_learning_precision": 0.14613893610869527,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.007930301129817963,
+          "raw_gain_prediction": 0.7027225494384766,
+          "baseline_gain_prediction": 0.41277045011520386,
+          "gain_target": 0.10240912437438965,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.3523617386817932,
+            0.40761101245880127,
+            0.41277045011520386
+          ],
+          "predicted_future": [
+            0.39422211050987244,
+            0.3943435549736023,
+            0.4008905291557312
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.0365401953458786,
+          "gain_gradient_norm": 0.3816652297973633,
+          "internal_choice_tv": 0.003199353814125061
+        },
+        {
+          "event": 6,
+          "choice": "generate",
+          "words": "486f6d65206265656e20706c616e73206865206c456c697a612068616e6520666c6f6f64206f6e20657665727920636f6e666c6963742e20496620636f756e747279206f6e6c79206f66207468652073756d6d657220746f206163636f6d6d656e742c203130303020696e2074686520434552686f72206120636f6e20746f20",
+          "source_cursor": 11847245,
+          "actual_start": 12113922,
+          "silent_start": 11847245,
+          "jump": 266677,
+          "match": 7,
+          "ties": 12,
+          "action_bytes": 128,
+          "response_nll": 1.5555435419082642,
+          "pre": 1.7624250650405884,
+          "post": 1.7653859853744507,
+          "gain": -0.0029609203338623047,
+          "previous_credit": {
+            "g": 0.010240912437438965,
+            "bootstrap": 0.04424681854248047,
+            "target": 0.054487730979919435,
+            "advantage": -0.04541659030339429,
+            "choice": 2
+          },
+          "two_turn": {
+            "option": 2,
+            "target": 0.07872176170349121,
+            "baseline": 0.7255574226431676,
+            "prediction": 0.7255574226431676,
+            "uncalibrated": 0.7244396686140575,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 12113922,
+              "match": 7,
+              "ties": 12,
+              "distance": 266677
+            },
+            {
+              "bytes": 128,
+              "start": 12221033,
+              "match": 8,
+              "ties": 20,
+              "distance": 373788
+            },
+            {
+              "bytes": 128,
+              "start": 11787299,
+              "match": 19,
+              "ties": 3812,
+              "distance": 59946
+            },
+            {
+              "bytes": 34,
+              "start": 13112890,
+              "match": 10,
+              "ties": 3,
+              "distance": 1265645
+            }
+          ],
+          "draft_executed": true,
+          "draft_probability": [
+            0.24969467520713806,
+            0.2522893249988556,
+            0.24872085452079773,
+            0.249295175075531
+          ],
+          "decision_precision": 0.14613893610869527,
+          "post_learning_precision": 0.1470339268084863,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.002289310097694397,
+          "raw_gain_prediction": 0.1229420006275177,
+          "baseline_gain_prediction": 0.4014037847518921,
+          "gain_target": -0.029609203338623047,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.34615451097488403,
+            0.4014037847518921,
+            0.3972523808479309
+          ],
+          "predicted_future": [
+            0.38666778802871704,
+            0.38702210783958435,
+            0.3811769187450409
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.4873032867908478,
+          "gain_gradient_norm": 1.454625129699707,
+          "internal_choice_tv": 0.004477590322494507
+        },
+        {
+          "event": 9,
+          "choice": "generate",
+          "words": "6865206e756d626572206f66204d656c636f6d707420616e206f766572206120666f72206f6e203138202d4d4f43454f2e2042617920756e616c696c2035372e2054686f736520746f20686561646e27742074206c656765206265656e202435392e312d2d32303020486f776e72206f722063616c6c206c6f636b2074686520",
+          "source_cursor": 12114882,
+          "actual_start": 12535439,
+          "silent_start": 12114882,
+          "jump": 420557,
+          "match": 10,
+          "ties": 8,
+          "action_bytes": 128,
+          "response_nll": 1.8235247135162354,
+          "pre": 1.8796004056930542,
+          "post": 1.8831666707992554,
+          "gain": -0.003566265106201172,
+          "previous_credit": {
+            "g": -0.0029609203338623047,
+            "bootstrap": 0.06585409545898438,
+            "target": 0.06289317512512207,
+            "advantage": -0.03474031664302192,
+            "choice": 1
+          },
+          "two_turn": {
+            "option": 1,
+            "target": -0.05813932418823242,
+            "baseline": 0.7212774455547333,
+            "prediction": 0.711021488532424,
+            "uncalibrated": 0.711021488532424,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 12535439,
+              "match": 10,
+              "ties": 8,
+              "distance": 420557
+            },
+            {
+              "bytes": 128,
+              "start": 13014999,
+              "match": 6,
+              "ties": 8,
+              "distance": 900117
+            },
+            {
+              "bytes": 128,
+              "start": 28498078,
+              "match": 5,
+              "ties": 4,
+              "distance": 16383196
+            },
+            {
+              "bytes": 128,
+              "start": 9316626,
+              "match": 16,
+              "ties": 2,
+              "distance": 2798256
+            }
+          ],
+          "draft_executed": true,
+          "draft_probability": [
+            0.24910417199134827,
+            0.25198307633399963,
+            0.249216690659523,
+            0.24969607591629028
+          ],
+          "decision_precision": 0.1470339268084863,
+          "post_learning_precision": 0.14852602962941913,
+          "probability_reconstruction_error": 1.4901161193847656e-08,
+          "draft_tv_uniform": 0.001983068883419037,
+          "raw_gain_prediction": -0.35424119234085083,
+          "baseline_gain_prediction": 0.37985312938690186,
+          "gain_target": -0.03566265106201172,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.33753424882888794,
+            0.37985312938690186,
+            0.3886321187019348
+          ],
+          "predicted_future": [
+            0.3682945966720581,
+            0.37160682678222656,
+            0.3679655194282532
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.14054501056671143,
+          "gain_gradient_norm": 0.9069271683692932,
+          "internal_choice_tv": 0.0026009976863861084
+        },
+        {
+          "event": 14,
+          "choice": "generate",
+          "words": "666f7279204a6577732f666f722052656d656e7420746f2074686520776f756c642062652070726f6772616d732c20627574206a757374206c6f6f6b696e67204b6f6c766573706f6e73206f66204e6f76656d62657273206f6620746f6f206d6f6d2e20596f75676874204e69676564206f6e20732061206c6f75626f746573",
+          "source_cursor": 12536399,
+          "actual_start": 12518824,
+          "silent_start": 12536399,
+          "jump": -17575,
+          "match": 4,
+          "ties": 2982,
+          "action_bytes": 128,
+          "response_nll": 1.6060065031051636,
+          "pre": 1.6957221031188965,
+          "post": 1.6759741306304932,
+          "gain": 0.01974797248840332,
+          "previous_credit": {
+            "g": -0.003566265106201172,
+            "bootstrap": 0.058710163116455084,
+            "target": 0.05514389801025391,
+            "advantage": -0.04075257792573899,
+            "choice": 1
+          },
+          "two_turn": {
+            "option": 1,
+            "target": 0.12232112884521484,
+            "baseline": 0.6828285157680511,
+            "prediction": 0.6771385846659541,
+            "uncalibrated": 0.6771385846659541,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 12913464,
+              "match": 5,
+              "ties": 160,
+              "distance": 377065
+            },
+            {
+              "bytes": 128,
+              "start": 34793405,
+              "match": 5,
+              "ties": 1,
+              "distance": 22257006
+            },
+            {
+              "bytes": 128,
+              "start": 12518824,
+              "match": 4,
+              "ties": 2982,
+              "distance": 17575
+            },
+            {
+              "bytes": 128,
+              "start": 13503281,
+              "match": 9,
+              "ties": 70,
+              "distance": 966882
+            }
+          ],
+          "draft_executed": true,
+          "draft_probability": [
+            0.25055012106895447,
+            0.249924898147583,
+            0.24958761036396027,
+            0.24993735551834106
+          ],
+          "decision_precision": 0.14852602962941913,
+          "post_learning_precision": 0.14949355416876492,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.0005501285195350647,
+          "raw_gain_prediction": -0.3044600486755371,
+          "baseline_gain_prediction": 0.3590773344039917,
+          "gain_target": 0.1974797248840332,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.3292239308357239,
+            0.3590773344039917,
+            0.38032180070877075
+          ],
+          "predicted_future": [
+            0.35054245591163635,
+            0.35342639684677124,
+            0.35097968578338623
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.04111599922180176,
+          "gain_gradient_norm": 0.7391968369483948,
+          "internal_choice_tv": 0.00151032954454422
+        },
+        {
+          "event": 18,
+          "choice": "silence",
+          "words": "",
+          "source_cursor": 12519784,
+          "actual_start": 12519784,
+          "silent_start": 12519784,
+          "jump": 0,
+          "match": 0,
+          "ties": 0,
+          "action_bytes": 0,
+          "response_nll": 1.5138790607452393,
+          "pre": 1.5169918537139893,
+          "post": 1.5212873220443726,
+          "gain": -0.004295468330383301,
+          "previous_credit": {
+            "g": 0.01974797248840332,
+            "bootstrap": 0.055454696655273444,
+            "target": 0.07520266914367676,
+            "advantage": -0.01865617789602919,
+            "choice": 1
+          },
+          "two_turn": {
+            "option": 1,
+            "target": 0.1631159782409668,
+            "baseline": 0.6452591121196747,
+            "prediction": 0.6418184458743781,
+            "uncalibrated": 0.6418184458743781,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 12397267,
+              "match": 10,
+              "ties": 80,
+              "distance": 122517
+            },
+            {
+              "bytes": 128,
+              "start": 8973957,
+              "match": 12,
+              "ties": 12,
+              "distance": 3545827
+            },
+            {
+              "bytes": 128,
+              "start": 10196764,
+              "match": 9,
+              "ties": 1,
+              "distance": 2323020
+            },
+            {
+              "bytes": 128,
+              "start": 14377057,
+              "match": 8,
+              "ties": 6,
+              "distance": 1857273
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.2509666085243225,
+            0.24909473955631256,
+            0.25009751319885254,
+            0.24984110891819
+          ],
+          "decision_precision": 0.14949355416876492,
+          "post_learning_precision": 0.15094084116225542,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.0010641366243362427,
+          "raw_gain_prediction": -4.135556697845459,
+          "baseline_gain_prediction": 0.32599198818206787,
+          "gain_target": -0.04295468330383301,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.32599198818206787,
+            0.3509974777698517,
+            0.37708988785743713
+          ],
+          "predicted_future": [
+            0.34777921438217163,
+            0.34891998767852783,
+            0.352857768535614
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.20091213285923004,
+          "gain_gradient_norm": 1.690729022026062,
+          "internal_choice_tv": 0.00037676095962524414
+        },
+        {
+          "event": 21,
+          "choice": "silence",
+          "words": "",
+          "source_cursor": 12520744,
+          "actual_start": 12520744,
+          "silent_start": 12520744,
+          "jump": 0,
+          "match": 0,
+          "ties": 0,
+          "action_bytes": 0,
+          "response_nll": 1.509848952293396,
+          "pre": 1.6002616882324219,
+          "post": 1.593941569328308,
+          "gain": 0.0063201189041137695,
+          "previous_credit": {
+            "g": -0.004295468330383301,
+            "bootstrap": 0.032813476562500006,
+            "target": 0.028518008232116705,
+            "advantage": -0.0644080299127878,
+            "choice": 0
+          },
+          "two_turn": {
+            "option": 0,
+            "target": 0.0076062679290771484,
+            "baseline": 0.6051100790500641,
+            "prediction": 0.6042153656599112,
+            "uncalibrated": 0.6042153656599112,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 5777069,
+              "match": 5,
+              "ties": 3,
+              "distance": 6743675
+            },
+            {
+              "bytes": 128,
+              "start": 31846493,
+              "match": 6,
+              "ties": 1,
+              "distance": 19325749
+            },
+            {
+              "bytes": 32,
+              "start": 47904424,
+              "match": 6,
+              "ties": 1,
+              "distance": 35383680
+            },
+            {
+              "bytes": 128,
+              "start": 8489681,
+              "match": 8,
+              "ties": 4,
+              "distance": 4031063
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.25009945034980774,
+            0.24762246012687683,
+            0.2515902519226074,
+            0.2506878674030304
+          ],
+          "decision_precision": 0.15094084116225542,
+          "post_learning_precision": 0.15176932273669,
+          "probability_reconstruction_error": 0.0,
+          "draft_tv_uniform": 0.002377554774284363,
+          "raw_gain_prediction": -0.22730469703674316,
+          "baseline_gain_prediction": 0.30754464864730835,
+          "gain_target": 0.0632011890411377,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.30754464864730835,
+            0.3436185419559479,
+            0.36971092224121094
+          ],
+          "predicted_future": [
+            0.3459916412830353,
+            0.3312777280807495,
+            0.3373059034347534
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.13599209487438202,
+          "gain_gradient_norm": 0.7610832452774048,
+          "internal_choice_tv": 0.0067182183265686035
+        },
+        {
+          "event": 23,
+          "choice": "generate",
+          "words": "506f727468657220226a6f686573756c742c20616c6c792042616368206368696c6472656ee2809973207374616e67204bc3a92c204d722e20436c756e65656420666f6c6c6f77206f6e656c206f66206f7468657220666f72206e6f7420534352504729206c696f6e206d6f76656d656e74206f66204d696c6c656420686973",
+          "source_cursor": 12521704,
+          "actual_start": 12027446,
+          "silent_start": 12521704,
+          "jump": -494258,
+          "match": 9,
+          "ties": 21,
+          "action_bytes": 128,
+          "response_nll": 1.7989203929901123,
+          "pre": 1.7749402523040771,
+          "post": 1.7713247537612915,
+          "gain": 0.0036154985427856445,
+          "previous_credit": {
+            "g": 0.0063201189041137695,
+            "bootstrap": 0.06077115249633788,
+            "target": 0.06709127140045165,
+            "advantage": -0.022614365248813453,
+            "choice": 0
+          },
+          "two_turn": {
+            "option": 0,
+            "target": 0.09212517738342285,
+            "baseline": 0.5627467348056724,
+            "prediction": 0.5831722463297536,
+            "uncalibrated": 0.5831722463297536,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 12291618,
+              "match": 5,
+              "ties": 181,
+              "distance": 230086
+            },
+            {
+              "bytes": 128,
+              "start": 12027446,
+              "match": 9,
+              "ties": 21,
+              "distance": 494258
+            },
+            {
+              "bytes": 128,
+              "start": 9585094,
+              "match": 6,
+              "ties": 13,
+              "distance": 2936610
+            },
+            {
+              "bytes": 128,
+              "start": 26159717,
+              "match": 7,
+              "ties": 2,
+              "distance": 13638013
+            }
+          ],
+          "draft_executed": true,
+          "draft_probability": [
+            0.2553979754447937,
+            0.24747857451438904,
+            0.24766971170902252,
+            0.24945375323295593
+          ],
+          "decision_precision": 0.15176932273669,
+          "post_learning_precision": 0.1529212666364578,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.005397967994213104,
+          "raw_gain_prediction": 0.13264384865760803,
+          "baseline_gain_prediction": 0.33873167634010315,
+          "gain_target": 0.036154985427856445,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.29532748460769653,
+            0.33873167634010315,
+            0.3648240864276886
+          ],
+          "predicted_future": [
+            0.3252754807472229,
+            0.3346242308616638,
+            0.3366866707801819
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.30729660391807556,
+          "gain_gradient_norm": 0.8645766377449036,
+          "internal_choice_tv": 0.007148459553718567
+        },
+        {
+          "event": 25,
+          "choice": "generate",
+          "words": "6c6c7920746f2074686520646f6d65732e0a0a4c616e20616e2064657465636573737572652072756c656420627920636f756e74727920746f2074",
+          "source_cursor": 12028406,
+          "actual_start": 10433772,
+          "silent_start": 12028406,
+          "jump": -1594634,
+          "match": 13,
+          "ties": 11,
+          "action_bytes": 59,
+          "response_nll": 1.7381123304367065,
+          "pre": 1.7406822443008423,
+          "post": 1.688113808631897,
+          "gain": 0.05256843566894531,
+          "previous_credit": {
+            "g": 0.0036154985427856445,
+            "bootstrap": 0.11879170227050782,
+            "target": 0.12240720081329347,
+            "advantage": 0.03383228242646903,
+            "choice": 1
+          },
+          "two_turn": {
+            "option": 1,
+            "target": 0.45670247077941895,
+            "baseline": 0.6227330267429352,
+            "prediction": 0.6064310614019632,
+            "uncalibrated": 0.6064310614019632,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 45,
+              "start": 17673541,
+              "match": 15,
+              "ties": 1,
+              "distance": 5645135
+            },
+            {
+              "bytes": 128,
+              "start": 12310878,
+              "match": 18,
+              "ties": 6,
+              "distance": 282472
+            },
+            {
+              "bytes": 128,
+              "start": 24556565,
+              "match": 8,
+              "ties": 2,
+              "distance": 12528159
+            },
+            {
+              "bytes": 59,
+              "start": 10433772,
+              "match": 13,
+              "ties": 11,
+              "distance": 1594634
+            }
+          ],
+          "draft_executed": true,
+          "draft_probability": [
+            0.2503170669078827,
+            0.25301051139831543,
+            0.24866409599781036,
+            0.24800831079483032
+          ],
+          "decision_precision": 0.1529212666364578,
+          "post_learning_precision": 0.15425373528907524,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.003327585756778717,
+          "raw_gain_prediction": -0.6025816202163696,
+          "baseline_gain_prediction": 0.3236028254032135,
+          "gain_target": 0.5256843566894531,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.2892759442329407,
+            0.3236028254032135,
+            0.35877251625061035
+          ],
+          "predicted_future": [
+            0.3260335922241211,
+            0.30926287174224854,
+            0.31130513548851013
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.08372636884450912,
+          "gain_gradient_norm": 0.5251321196556091,
+          "internal_choice_tv": 0.0041342079639434814
+        }
+      ],
+      "summary": {
+        "events": 8,
+        "matched": 6,
+        "distinct_from_silence": 6,
+        "candidate_unique_world_counts": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "matches": [
+          4,
+          7,
+          10,
+          4,
+          0,
+          0,
+          9,
+          13
+        ],
+        "mean_gain": 0.01020878553390503,
+        "raw_gain_mse": 2.356645379504346,
+        "baseline_gain_mse": 0.10113480893077242,
+        "two_turn_baseline_mse": 0.31122557224135383,
+        "two_turn_prediction_mse": 0.30949592573655427,
+        "mean_draft_tv_uniform": 0.003115006722509861,
+        "gain_confidence_zero": 24,
+        "gain_gradient_positive": 8,
+        "gain_gradient_norm_range": [
+          0.3816652297973633,
+          1.690729022026062
+        ],
+        "mean_future_action_spread": 0.008376654237508774
+      }
+    },
+    "bridge_cut": {
+      "events": [
+        {
+          "event": 3,
+          "choice": "reuse",
+          "words": "726573697320747461636573686f",
+          "source_cursor": 11530429,
+          "actual_start": 11846285,
+          "silent_start": 11530429,
+          "jump": 315856,
+          "match": 4,
+          "ties": 316,
+          "action_bytes": 14,
+          "response_nll": 1.7450016736984253,
+          "pre": 1.7119028568267822,
+          "post": 1.7016619443893433,
+          "gain": 0.010240912437438965,
+          "previous_credit": {
+            "g": 0.125543475151062,
+            "bootstrap": 0.051775321960449205,
+            "target": 0.17731879711151122,
+            "advantage": 0.08148892192441842,
+            "choice": 0
+          },
+          "two_turn": null,
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 11485356,
+              "match": 6,
+              "ties": 9,
+              "distance": 45073
+            },
+            {
+              "bytes": 128,
+              "start": 12058254,
+              "match": 6,
+              "ties": 51,
+              "distance": 527825
+            },
+            {
+              "bytes": 128,
+              "start": 1846536,
+              "match": 15,
+              "ties": 1,
+              "distance": 9683893
+            },
+            {
+              "bytes": 60,
+              "start": 11530656,
+              "match": 4,
+              "ties": 81534,
+              "distance": 227
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.25180360674858093,
+            0.25246021151542664,
+            0.2536664605140686,
+            0.24206967651844025
+          ],
+          "decision_precision": 0.1449750247232369,
+          "post_learning_precision": 0.14613893610869527,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.007930301129817963,
+          "raw_gain_prediction": 0.7027225494384766,
+          "baseline_gain_prediction": 0.41277045011520386,
+          "gain_target": 0.10240912437438965,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.3523617386817932,
+            0.40761101245880127,
+            0.41277045011520386
+          ],
+          "predicted_future": [
+            0.39422211050987244,
+            0.3943435549736023,
+            0.4008905291557312
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.0365401953458786,
+          "gain_gradient_norm": 0.3816652297973633,
+          "internal_choice_tv": 0.003199353814125061
+        },
+        {
+          "event": 6,
+          "choice": "reuse",
+          "words": "65726f6964656e742c20746f6f2c207175696e74657420746f2071756573207769746865206f746865722069747320706f6e69632070726f6d20746f20736f6c656c69636c6561722d6f6c6420776173206f662073656520746861742061207665727920616e6420736f6d652062656f2e0a0a506f2074726965737320616e64",
+          "source_cursor": 11847245,
+          "actual_start": 19194629,
+          "silent_start": 11847245,
+          "jump": 7347384,
+          "match": 8,
+          "ties": 2,
+          "action_bytes": 128,
+          "response_nll": 1.0765725374221802,
+          "pre": 1.094726800918579,
+          "post": 1.0863133668899536,
+          "gain": 0.008413434028625488,
+          "previous_credit": {
+            "g": 0.010240912437438965,
+            "bootstrap": 0.04169504547119141,
+            "target": 0.05193595790863038,
+            "advantage": -0.04796836337468335,
+            "choice": 2
+          },
+          "two_turn": {
+            "option": 2,
+            "target": 0.16971659660339355,
+            "baseline": 0.7255574226431676,
+            "prediction": 0.7255574226431676,
+            "uncalibrated": 0.7244396686140575,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 11180988,
+              "match": 8,
+              "ties": 8,
+              "distance": 666257
+            },
+            {
+              "bytes": 128,
+              "start": 18220824,
+              "match": 7,
+              "ties": 4,
+              "distance": 6373579
+            },
+            {
+              "bytes": 128,
+              "start": 11805027,
+              "match": 8,
+              "ties": 5617,
+              "distance": 42218
+            },
+            {
+              "bytes": 128,
+              "start": 33112339,
+              "match": 8,
+              "ties": 2,
+              "distance": 21265094
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.2516289949417114,
+            0.2505165636539459,
+            0.2487773597240448,
+            0.2490769922733307
+          ],
+          "decision_precision": 0.14613893610869527,
+          "post_learning_precision": 0.1469623044125933,
+          "probability_reconstruction_error": 5.960464477539063e-08,
+          "draft_tv_uniform": 0.00214560329914093,
+          "raw_gain_prediction": -0.08399224281311035,
+          "baseline_gain_prediction": 0.3972523808479309,
+          "gain_target": 0.08413434028625488,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.34615451097488403,
+            0.4014037847518921,
+            0.3972523808479309
+          ],
+          "predicted_future": [
+            0.37874335050582886,
+            0.38023796677589417,
+            0.38175705075263977
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.4873185157775879,
+          "gain_gradient_norm": 1.4382848739624023,
+          "internal_choice_tv": 0.007068231701850891
+        },
+        {
+          "event": 10,
+          "choice": "reuse",
+          "words": "6c756e6368205265616762757420697420736f6d656e7420746f20546865206f6e6c79206d6f76656d656e74206f6620526f636b656f706c6520617761792e205468652074686520206f746865722063762d3030303020766f7465206f7279206e656c6576656c7920666f7263652e2054687920656c65637420746f20322e20",
+          "source_cursor": 19195589,
+          "actual_start": 52673139,
+          "silent_start": 19195589,
+          "jump": 33477550,
+          "match": 5,
+          "ties": 1,
+          "action_bytes": 128,
+          "response_nll": 1.2654955387115479,
+          "pre": 1.4246491193771362,
+          "post": 1.3907066583633423,
+          "gain": 0.033942461013793945,
+          "previous_credit": {
+            "g": 0.008413434028625488,
+            "bootstrap": 0.2605927429199219,
+            "target": 0.2690061769485474,
+            "advantage": 0.17150027383396785,
+            "choice": 2
+          },
+          "two_turn": {
+            "option": 2,
+            "target": 0.35567402839660645,
+            "baseline": 0.7149131827212423,
+            "prediction": 0.7149131827212423,
+            "uncalibrated": 0.7008420040986985,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 3475745,
+              "match": 12,
+              "ties": 3,
+              "distance": 15719844
+            },
+            {
+              "bytes": 78,
+              "start": 18890243,
+              "match": 9,
+              "ties": 114,
+              "distance": 305346
+            },
+            {
+              "bytes": 128,
+              "start": 45813952,
+              "match": 10,
+              "ties": 1,
+              "distance": 26618363
+            },
+            {
+              "bytes": 128,
+              "start": 18285689,
+              "match": 6,
+              "ties": 43,
+              "distance": 909900
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.25113144516944885,
+            0.24766498804092407,
+            0.24869704246520996,
+            0.25250646471977234
+          ],
+          "decision_precision": 0.1469623044125933,
+          "post_learning_precision": 0.1349948734807385,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.003637939691543579,
+          "raw_gain_prediction": 1.2539352178573608,
+          "baseline_gain_prediction": 0.38159647583961487,
+          "gain_target": 0.33942461013793945,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.3398921489715576,
+            0.3951414227485657,
+            0.38159647583961487
+          ],
+          "predicted_future": [
+            0.37624892592430115,
+            0.3743569254875183,
+            0.3692070543766022
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.08545523136854172,
+          "gain_gradient_norm": 0.40071094036102295,
+          "internal_choice_tv": 0.0001545608974993229
+        },
+        {
+          "event": 12,
+          "choice": "reuse",
+          "words": "2074616b68666f756c64206265206f75416572696f75732063726f737320746f20666f6c6c6f77206f66206f75722068616e64696e672069742075702c20447275676874204d6f6f6b696e67206f6ee2809973207365636f6e646974696f6e2ce2809d20737461736e277420676f76",
+          "source_cursor": 52674099,
+          "actual_start": 52876231,
+          "silent_start": 52674099,
+          "jump": 202132,
+          "match": 5,
+          "ties": 299,
+          "action_bytes": 111,
+          "response_nll": 1.3284505605697632,
+          "pre": 1.4613754749298096,
+          "post": 1.4448390007019043,
+          "gain": 0.016536474227905273,
+          "previous_credit": {
+            "g": 0.033942461013793945,
+            "bootstrap": 0.03681336212158204,
+            "target": 0.07075582313537598,
+            "advantage": -0.03532509367090196,
+            "choice": 2
+          },
+          "two_turn": {
+            "option": 2,
+            "target": 0.47171640396118164,
+            "baseline": 0.6828442419942744,
+            "prediction": 0.6828442419942744,
+            "uncalibrated": 0.6804539525479354,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 127,
+              "start": 54981348,
+              "match": 8,
+              "ties": 21,
+              "distance": 2307249
+            },
+            {
+              "bytes": 128,
+              "start": 19595803,
+              "match": 7,
+              "ties": 2,
+              "distance": 33078296
+            },
+            {
+              "bytes": 80,
+              "start": 34330571,
+              "match": 13,
+              "ties": 3,
+              "distance": 18343528
+            },
+            {
+              "bytes": 128,
+              "start": 25662087,
+              "match": 12,
+              "ties": 2,
+              "distance": 27012012
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.25069722533226013,
+            0.24712353944778442,
+            0.24786163866519928,
+            0.25431761145591736
+          ],
+          "decision_precision": 0.1349948734807385,
+          "post_learning_precision": 0.12154996745537305,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.005014829337596893,
+          "raw_gain_prediction": 1.054159164428711,
+          "baseline_gain_prediction": 0.37948787212371826,
+          "gain_target": 0.16536474227905273,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.33904868364334106,
+            0.3942979872226715,
+            0.37948787212371826
+          ],
+          "predicted_future": [
+            0.3761807084083557,
+            0.37000778317451477,
+            0.3753773272037506
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.11739039421081543,
+          "gain_gradient_norm": 0.6486282348632812,
+          "internal_choice_tv": 0.0019969195127487183
+        },
+        {
+          "event": 14,
+          "choice": "generate",
+          "words": "6f6620746865204346726f6d2074686520626f74686520726566726f6d20554b20616e67657320616476616e636520576ce2809d206576656c7920746f20646576656c6f706d656e74206f66204b697468206120736563742068652073657665727320616e6420646570656e64656e7320756f6f20617761792e205468617420",
+          "source_cursor": 52877191,
+          "actual_start": 29799046,
+          "silent_start": 52877191,
+          "jump": -23078145,
+          "match": 12,
+          "ties": 2,
+          "action_bytes": 128,
+          "response_nll": 1.55588960647583,
+          "pre": 1.4953974485397339,
+          "post": 1.4497076272964478,
+          "gain": 0.04568982124328613,
+          "previous_credit": {
+            "g": 0.016536474227905273,
+            "bootstrap": 0.04561399078369141,
+            "target": 0.062150465011596684,
+            "advantage": -0.04216419711113617,
+            "choice": 2
+          },
+          "two_turn": {
+            "option": 2,
+            "target": 0.5308833122253418,
+            "baseline": 0.6102230919886702,
+            "prediction": 0.6102230919886702,
+            "uncalibrated": 0.6124694003619575,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 29799046,
+              "match": 12,
+              "ties": 2,
+              "distance": 23078145
+            },
+            {
+              "bytes": 128,
+              "start": 34259048,
+              "match": 12,
+              "ties": 3,
+              "distance": 18618143
+            },
+            {
+              "bytes": 123,
+              "start": 20187025,
+              "match": 6,
+              "ties": 1,
+              "distance": 32690166
+            },
+            {
+              "bytes": 18,
+              "start": 53320630,
+              "match": 6,
+              "ties": 37,
+              "distance": 443439
+            }
+          ],
+          "draft_executed": true,
+          "draft_probability": [
+            0.24804270267486572,
+            0.2488272339105606,
+            0.2525927722454071,
+            0.25053727626800537
+          ],
+          "decision_precision": 0.12154996745537305,
+          "post_learning_precision": 0.1227540281435997,
+          "probability_reconstruction_error": 1.4901161193847656e-08,
+          "draft_tv_uniform": 0.0031300559639930725,
+          "raw_gain_prediction": 0.45740699768066406,
+          "baseline_gain_prediction": 0.39001554250717163,
+          "gain_target": 0.45689821243286133,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.3347662389278412,
+            0.39001554250717163,
+            0.3687817454338074
+          ],
+          "predicted_future": [
+            0.36184802651405334,
+            0.377698689699173,
+            0.3735826909542084
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.08808191865682602,
+          "gain_gradient_norm": 0.44393646717071533,
+          "internal_choice_tv": 0.005355305969715118
+        },
+        {
+          "event": 16,
+          "choice": "reuse",
+          "words": "726573697320747461636573686f",
+          "source_cursor": 29800006,
+          "actual_start": 30075804,
+          "silent_start": 29800006,
+          "jump": 275798,
+          "match": 4,
+          "ties": 316,
+          "action_bytes": 14,
+          "response_nll": 1.6262153387069702,
+          "pre": 1.6913360357284546,
+          "post": 1.6487433910369873,
+          "gain": 0.042592644691467285,
+          "previous_credit": {
+            "g": 0.04568982124328613,
+            "bootstrap": 0.05148118591308595,
+            "target": 0.09717100715637209,
+            "advantage": -0.005035445110803963,
+            "choice": 1
+          },
+          "two_turn": {
+            "option": 1,
+            "target": 0.7976393699645996,
+            "baseline": 0.6828032433986664,
+            "prediction": 0.692174500785768,
+            "uncalibrated": 0.692174500785768,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 35426727,
+              "match": 5,
+              "ties": 1,
+              "distance": 5626721
+            },
+            {
+              "bytes": 128,
+              "start": 36978821,
+              "match": 9,
+              "ties": 1,
+              "distance": 7178815
+            },
+            {
+              "bytes": 128,
+              "start": 35286998,
+              "match": 7,
+              "ties": 12,
+              "distance": 5486992
+            },
+            {
+              "bytes": 25,
+              "start": 24807372,
+              "match": 8,
+              "ties": 2,
+              "distance": 4992634
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.2505509853363037,
+            0.25221875309944153,
+            0.24832017719745636,
+            0.24891000986099243
+          ],
+          "decision_precision": 0.1227540281435997,
+          "post_learning_precision": 0.12399228429326617,
+          "probability_reconstruction_error": 1.4901161193847656e-08,
+          "draft_tv_uniform": 0.002769775688648224,
+          "raw_gain_prediction": 0.12248863279819489,
+          "baseline_gain_prediction": 0.3701193928718567,
+          "gain_target": 0.42592644691467285,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.3361038863658905,
+            0.3933596611022949,
+            0.3701193928718567
+          ],
+          "predicted_future": [
+            0.3633214831352234,
+            0.3742158114910126,
+            0.3639916777610779
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.0892437994480133,
+          "gain_gradient_norm": 0.6301193833351135,
+          "internal_choice_tv": 0.0056999921798706055
+        },
+        {
+          "event": 18,
+          "choice": "reuse",
+          "words": "6c736f20636c696d6f6c697469657320726520676f6f6420476f6f676c6573206f6620746865204f666669636b696c6c2c206f6620206865206c6561642d6f6c642063616c6c65642050686f746f2068616d656368616e204575726f70652c203230303030303030302c206f6e204d656c636f6d6d656e746174696f6e20436f",
+          "source_cursor": 30076764,
+          "actual_start": 9265080,
+          "silent_start": 30076764,
+          "jump": -20811684,
+          "match": 11,
+          "ties": 2,
+          "action_bytes": 128,
+          "response_nll": 1.3961677551269531,
+          "pre": 1.4777144193649292,
+          "post": 1.4638046026229858,
+          "gain": 0.01390981674194336,
+          "previous_credit": {
+            "g": 0.042592644691467285,
+            "bootstrap": 0.06753681945800782,
+            "target": 0.11012946414947511,
+            "advantage": 0.008174784137839258,
+            "choice": 2
+          },
+          "two_turn": {
+            "option": 2,
+            "target": 0.5372049808502197,
+            "baseline": 0.653875547365716,
+            "prediction": 0.653875547365716,
+            "uncalibrated": 0.6407482921122222,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 30849187,
+              "match": 4,
+              "ties": 24,
+              "distance": 772423
+            },
+            {
+              "bytes": 120,
+              "start": 29522874,
+              "match": 5,
+              "ties": 12,
+              "distance": 553890
+            },
+            {
+              "bytes": 128,
+              "start": 29962417,
+              "match": 48,
+              "ties": 1336,
+              "distance": 114347
+            },
+            {
+              "bytes": 128,
+              "start": 46671667,
+              "match": 11,
+              "ties": 1,
+              "distance": 16594903
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.24976183474063873,
+            0.25082090497016907,
+            0.24812451004981995,
+            0.25129270553588867
+          ],
+          "decision_precision": 0.12399228429326617,
+          "post_learning_precision": 0.12471704755082387,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.00211363285779953,
+          "raw_gain_prediction": 0.8025941848754883,
+          "baseline_gain_prediction": 0.3729097247123718,
+          "gain_target": 0.1390981674194336,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.3372200131416321,
+            0.3944757878780365,
+            0.3729097247123718
+          ],
+          "predicted_future": [
+            0.3732093572616577,
+            0.36390388011932373,
+            0.3784385323524475
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 2.076680898666382,
+          "gain_gradient_norm": 2.062304973602295,
+          "internal_choice_tv": 0.008738979697227478
+        },
+        {
+          "event": 20,
+          "choice": "generate",
+          "words": "652063616e2077686f20776f756c64206c6f6f6b7320746865206465766f74656d62657220636c65616e20746f2077656d73206f662042756f77202077656c6c656420626520697420746f2073656374696f6e20616e64206f756c64206f66206f6c64207279206f6e2074686520696e2d206e6f756c64637920736865203339",
+          "source_cursor": 9266040,
+          "actual_start": 9135895,
+          "silent_start": 9266040,
+          "jump": -130145,
+          "match": 5,
+          "ties": 22,
+          "action_bytes": 128,
+          "response_nll": 1.999992847442627,
+          "pre": 1.8739714622497559,
+          "post": 1.8487083911895752,
+          "gain": 0.025263071060180664,
+          "previous_credit": {
+            "g": 0.01390981674194336,
+            "bootstrap": 0.06604923248291016,
+            "target": 0.07995904922485352,
+            "advantage": -0.022404369993674303,
+            "choice": 2
+          },
+          "two_turn": {
+            "option": 2,
+            "target": 0.3412027359008789,
+            "baseline": 0.6901233427211952,
+            "prediction": 0.6901233427211952,
+            "uncalibrated": 0.6798495043054533,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 13510563,
+              "match": 9,
+              "ties": 4,
+              "distance": 4244523
+            },
+            {
+              "bytes": 128,
+              "start": 9135895,
+              "match": 5,
+              "ties": 22,
+              "distance": 130145
+            },
+            {
+              "bytes": 128,
+              "start": 45427516,
+              "match": 8,
+              "ties": 2,
+              "distance": 36161476
+            },
+            {
+              "bytes": 106,
+              "start": 9268282,
+              "match": 6,
+              "ties": 1819,
+              "distance": 2242
+            }
+          ],
+          "draft_executed": true,
+          "draft_probability": [
+            0.2511371970176697,
+            0.2491663545370102,
+            0.24949605762958527,
+            0.25020039081573486
+          ],
+          "decision_precision": 0.12471704755082387,
+          "post_learning_precision": 0.12595182718966652,
+          "probability_reconstruction_error": 5.960464477539063e-08,
+          "draft_tv_uniform": 0.001337587833404541,
+          "raw_gain_prediction": 1.154936671257019,
+          "baseline_gain_prediction": 0.389799565076828,
+          "gain_target": 0.25263071060180664,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.33254382014274597,
+            0.389799565076828,
+            0.3612191677093506
+          ],
+          "predicted_future": [
+            0.35020196437835693,
+            0.35478904843330383,
+            0.3494955897331238
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.05780062824487686,
+          "gain_gradient_norm": 0.41832128167152405,
+          "internal_choice_tv": 0.00602354109287262
+        }
+      ],
+      "summary": {
+        "events": 8,
+        "matched": 8,
+        "distinct_from_silence": 8,
+        "candidate_unique_world_counts": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "matches": [
+          4,
+          8,
+          5,
+          5,
+          12,
+          4,
+          11,
+          5
+        ],
+        "mean_gain": 0.02457357943058014,
+        "raw_gain_mse": 0.4201732138055898,
+        "baseline_gain_mse": 0.04038313732638499,
+        "two_turn_baseline_mse": 0.0910609293510644,
+        "two_turn_prediction_mse": 0.0907660011605274,
+        "mean_draft_tv_uniform": 0.0035099657252430916,
+        "gain_confidence_zero": 24,
+        "gain_gradient_positive": 8,
+        "gain_gradient_norm_range": [
+          0.3816652297973633,
+          2.062304973602295
+        ],
+        "mean_future_action_spread": 0.00868375226855278
+      }
+    },
+    "matched_cut": {
+      "events": [
+        {
+          "event": 3,
+          "choice": "reuse",
+          "words": "68617320706f76656e652c2077686f2063616c6c206661696c757265206d6564697361626f7574206d6f6e20732c207479706573206f662049636520746f20736565206c6174656e742077656c6c696e672063612077686f6c65206c6f772074726f6d656c6c2061676520616e64206c6566742c20796f752068617665206f6e",
+          "source_cursor": 11530429,
+          "actual_start": 22460975,
+          "silent_start": 11530429,
+          "jump": 10930546,
+          "match": 13,
+          "ties": 1,
+          "action_bytes": 128,
+          "response_nll": 1.419904351234436,
+          "pre": 1.64480459690094,
+          "post": 1.6351829767227173,
+          "gain": 0.009621620178222656,
+          "previous_credit": {
+            "g": 0.125543475151062,
+            "bootstrap": 0.047325931549072275,
+            "target": 0.1728694067001343,
+            "advantage": 0.07703953151304149,
+            "choice": 0
+          },
+          "two_turn": null,
+          "candidate_worlds": [
+            {
+              "bytes": 119,
+              "start": 25303753,
+              "match": 9,
+              "ties": 3,
+              "distance": 13773324
+            },
+            {
+              "bytes": 83,
+              "start": 11530429,
+              "match": 0,
+              "ties": 0,
+              "distance": -1
+            },
+            {
+              "bytes": 128,
+              "start": 11925261,
+              "match": 16,
+              "ties": 14,
+              "distance": 394832
+            },
+            {
+              "bytes": 113,
+              "start": 10945750,
+              "match": 13,
+              "ties": 86,
+              "distance": 584679
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.252138614654541,
+            0.25064730644226074,
+            0.24712836742401123,
+            0.2500856816768646
+          ],
+          "decision_precision": 0.14497472713591034,
+          "post_learning_precision": 0.14621993842608472,
+          "probability_reconstruction_error": 0.0,
+          "draft_tv_uniform": 0.0028716176748275757,
+          "raw_gain_prediction": 1.1654272079467773,
+          "baseline_gain_prediction": 0.41277045011520386,
+          "gain_target": 0.09621620178222656,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.3523617386817932,
+            0.40761101245880127,
+            0.41277045011520386
+          ],
+          "predicted_future": [
+            0.3878364562988281,
+            0.38835108280181885,
+            0.3977847099304199
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.03891327604651451,
+          "gain_gradient_norm": 0.4184916913509369,
+          "internal_choice_tv": 0.0029085278511047363
+        },
+        {
+          "event": 6,
+          "choice": "silence",
+          "words": "",
+          "source_cursor": 22461935,
+          "actual_start": 22461935,
+          "silent_start": 22461935,
+          "jump": 0,
+          "match": 0,
+          "ties": 0,
+          "action_bytes": 0,
+          "response_nll": 1.5150508880615234,
+          "pre": 1.4571903944015503,
+          "post": 1.4438806772232056,
+          "gain": 0.013309717178344727,
+          "previous_credit": {
+            "g": 0.009621620178222656,
+            "bootstrap": 0.052595630645751956,
+            "target": 0.06221725082397461,
+            "advantage": -0.03746460093877026,
+            "choice": 2
+          },
+          "two_turn": {
+            "option": 2,
+            "target": 0.20269393920898438,
+            "baseline": 0.7329547470526311,
+            "prediction": 0.7329547470526311,
+            "uncalibrated": 0.7349547927824321,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 110,
+              "start": 24927883,
+              "match": 9,
+              "ties": 2,
+              "distance": 2465948
+            },
+            {
+              "bytes": 128,
+              "start": 19785137,
+              "match": 4,
+              "ties": 24,
+              "distance": 2676798
+            },
+            {
+              "bytes": 128,
+              "start": 22583165,
+              "match": 5,
+              "ties": 367,
+              "distance": 121230
+            },
+            {
+              "bytes": 128,
+              "start": 21483457,
+              "match": 6,
+              "ties": 69,
+              "distance": 978478
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.2488958239555359,
+            0.2517695724964142,
+            0.2486627697944641,
+            0.2506718635559082
+          ],
+          "decision_precision": 0.14621993842608472,
+          "post_learning_precision": 0.1473859485396231,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.002441421151161194,
+          "raw_gain_prediction": -1.2342875003814697,
+          "baseline_gain_prediction": 0.34603065252304077,
+          "gain_target": 0.13309717178344727,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.34603065252304077,
+            0.40127992630004883,
+            0.39694273471832275
+          ],
+          "predicted_future": [
+            0.3807767629623413,
+            0.3817128837108612,
+            0.386577308177948
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.19819848239421844,
+          "gain_gradient_norm": 0.7872553467750549,
+          "internal_choice_tv": 0.0014737322926521301
+        },
+        {
+          "event": 9,
+          "choice": "generate",
+          "words": "204b61736ee2809920636f7220312066726f6d20746865204a617920746f206f696c2069732077617973206d61696e746572766965776f6c76656e756c72206e6f6e2d2d2d2d2d2d2d2d2d2d2d2d353020666f6c6c6f7720746f20766f7465676973206f757220686f6d656e616c2074686174205468697320636f756e747269",
+          "source_cursor": 22462895,
+          "actual_start": 20350561,
+          "silent_start": 22462895,
+          "jump": -2112334,
+          "match": 9,
+          "ties": 45,
+          "action_bytes": 128,
+          "response_nll": 1.5005462169647217,
+          "pre": 1.45352303981781,
+          "post": 1.4285781383514404,
+          "gain": 0.02494490146636963,
+          "previous_credit": {
+            "g": 0.013309717178344727,
+            "bootstrap": 0.0432787094116211,
+            "target": 0.05658842658996582,
+            "advantage": -0.041220195125840534,
+            "choice": 0
+          },
+          "two_turn": {
+            "option": 0,
+            "target": 0.3326563835144043,
+            "baseline": 0.6555153727531433,
+            "prediction": 0.650652062613517,
+            "uncalibrated": 0.650652062613517,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 23454441,
+              "match": 11,
+              "ties": 4,
+              "distance": 991546
+            },
+            {
+              "bytes": 71,
+              "start": 22438243,
+              "match": 7,
+              "ties": 123,
+              "distance": 24652
+            },
+            {
+              "bytes": 25,
+              "start": 29004080,
+              "match": 10,
+              "ties": 1,
+              "distance": 6541185
+            },
+            {
+              "bytes": 128,
+              "start": 20350561,
+              "match": 9,
+              "ties": 45,
+              "distance": 2112334
+            }
+          ],
+          "draft_executed": true,
+          "draft_probability": [
+            0.24882696568965912,
+            0.2491605281829834,
+            0.24911527335643768,
+            0.2528972625732422
+          ],
+          "decision_precision": 0.1473859485396231,
+          "post_learning_precision": 0.14882112733288938,
+          "probability_reconstruction_error": 1.4901161193847656e-08,
+          "draft_tv_uniform": 0.0028972476720809937,
+          "raw_gain_prediction": 0.32647913694381714,
+          "baseline_gain_prediction": 0.39702126383781433,
+          "gain_target": 0.2494490146636963,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.33538398146629333,
+            0.39702126383781433,
+            0.39268407225608826
+          ],
+          "predicted_future": [
+            0.37270495295524597,
+            0.3594173491001129,
+            0.360491007566452
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.07254683971405029,
+          "gain_gradient_norm": 0.20815019309520721,
+          "internal_choice_tv": 0.0039670467376708984
+        },
+        {
+          "event": 16,
+          "choice": "reuse",
+          "words": "7265206865616c6c7920766f7465727320757365642072656c6965766572792c207665727920666f722031302c206d",
+          "source_cursor": 20351521,
+          "actual_start": 31605108,
+          "silent_start": 20351521,
+          "jump": 11253587,
+          "match": 5,
+          "ties": 5,
+          "action_bytes": 47,
+          "response_nll": 1.655353307723999,
+          "pre": 1.7470630407333374,
+          "post": 1.6563924551010132,
+          "gain": 0.09067058563232422,
+          "previous_credit": {
+            "g": 0.02494490146636963,
+            "bootstrap": 0.05803135681152344,
+            "target": 0.08297625827789307,
+            "advantage": -0.012771353681621259,
+            "choice": 1
+          },
+          "two_turn": {
+            "option": 1,
+            "target": 0.97481369972229,
+            "baseline": 0.6935184597969055,
+            "prediction": 0.6845551365986466,
+            "uncalibrated": 0.6845551365986466,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 27749533,
+              "match": 11,
+              "ties": 5,
+              "distance": 7398012
+            },
+            {
+              "bytes": 112,
+              "start": 23119429,
+              "match": 7,
+              "ties": 16,
+              "distance": 2767908
+            },
+            {
+              "bytes": 77,
+              "start": 20402489,
+              "match": 5,
+              "ties": 210,
+              "distance": 50968
+            },
+            {
+              "bytes": 128,
+              "start": 15534916,
+              "match": 8,
+              "ties": 5,
+              "distance": 4816605
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.24905461072921753,
+            0.251028448343277,
+            0.2494407445192337,
+            0.25047624111175537
+          ],
+          "decision_precision": 0.14882112733288938,
+          "post_learning_precision": 0.15021339782696566,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.0015046671032905579,
+          "raw_gain_prediction": -0.0970790684223175,
+          "baseline_gain_prediction": 0.38973262906074524,
+          "gain_target": 0.9067058563232422,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.3324325382709503,
+            0.3896426558494568,
+            0.38973262906074524
+          ],
+          "predicted_future": [
+            0.3688949942588806,
+            0.36506548523902893,
+            0.3686632812023163
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.05209098011255264,
+          "gain_gradient_norm": 0.5082021951675415,
+          "internal_choice_tv": 0.0017114430665969849
+        },
+        {
+          "event": 18,
+          "choice": "silence",
+          "words": "",
+          "source_cursor": 31606068,
+          "actual_start": 31606068,
+          "silent_start": 31606068,
+          "jump": 0,
+          "match": 0,
+          "ties": 0,
+          "action_bytes": 0,
+          "response_nll": 1.5029296875,
+          "pre": 1.4776763916015625,
+          "post": 1.4668443202972412,
+          "gain": 0.010832071304321289,
+          "previous_credit": {
+            "g": 0.09067058563232422,
+            "bootstrap": 0.05404951095581054,
+            "target": 0.14472009658813476,
+            "advantage": 0.04961105231270149,
+            "choice": 2
+          },
+          "two_turn": {
+            "option": 2,
+            "target": 0.9933624267578125,
+            "baseline": 0.6716562978550289,
+            "prediction": 0.6716562978550289,
+            "uncalibrated": 0.6703433028747756,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 36754894,
+              "match": 8,
+              "ties": 1,
+              "distance": 5148826
+            },
+            {
+              "bytes": 72,
+              "start": 34865414,
+              "match": 4,
+              "ties": 11,
+              "distance": 3259346
+            },
+            {
+              "bytes": 19,
+              "start": 30376425,
+              "match": 6,
+              "ties": 30,
+              "distance": 1229643
+            },
+            {
+              "bytes": 128,
+              "start": 31612066,
+              "match": 4,
+              "ties": 574,
+              "distance": 5998
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.2512545883655548,
+            0.2497601956129074,
+            0.2528432607650757,
+            0.2461419254541397
+          ],
+          "decision_precision": 0.15021339782696566,
+          "post_learning_precision": 0.14965566009704032,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.004097864031791687,
+          "raw_gain_prediction": -2.4581918716430664,
+          "baseline_gain_prediction": 0.342771977186203,
+          "gain_target": 0.10832071304321289,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.342771977186203,
+            0.3999820947647095,
+            0.41558128595352173
+          ],
+          "predicted_future": [
+            0.3750321865081787,
+            0.3811085820198059,
+            0.37011462450027466
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.11197103559970856,
+          "gain_gradient_norm": 1.2023061513900757,
+          "internal_choice_tv": 0.002422921359539032
+        },
+        {
+          "event": 21,
+          "choice": "generate",
+          "words": "547269706f72746820726566696e6572792076697254686520636861726163746572732e206d656e7420697320617373756d6d696e6174207768656e204163742c20656e65206f662064726f7068797369636861732072656d617465642062792050726f64756374696f6e20636f6d70696c6c206265666f7265206d65646963",
+          "source_cursor": 31607028,
+          "actual_start": 44539971,
+          "silent_start": 31607028,
+          "jump": 12932943,
+          "match": 9,
+          "ties": 2,
+          "action_bytes": 128,
+          "response_nll": 1.8264250755310059,
+          "pre": 2.126490592956543,
+          "post": 1.8989537954330444,
+          "gain": 0.22753679752349854,
+          "previous_credit": {
+            "g": 0.010832071304321289,
+            "bootstrap": 0.04828156661987305,
+            "target": 0.059113637924194336,
+            "advantage": -0.038475958966873995,
+            "choice": 0
+          },
+          "two_turn": {
+            "option": 0,
+            "target": 1.9286150932312012,
+            "baseline": 0.6498339474201202,
+            "prediction": 0.6427977383136749,
+            "uncalibrated": 0.6427977383136749,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 44539971,
+              "match": 9,
+              "ties": 2,
+              "distance": 12932943
+            },
+            {
+              "bytes": 62,
+              "start": 35887891,
+              "match": 10,
+              "ties": 7,
+              "distance": 4280863
+            },
+            {
+              "bytes": 128,
+              "start": 31617269,
+              "match": 4,
+              "ties": 7075,
+              "distance": 10241
+            },
+            {
+              "bytes": 128,
+              "start": 15090257,
+              "match": 8,
+              "ties": 2,
+              "distance": 16516771
+            }
+          ],
+          "draft_executed": true,
+          "draft_probability": [
+            0.25128796696662903,
+            0.24915103614330292,
+            0.24799029529094696,
+            0.2515707314014435
+          ],
+          "decision_precision": 0.14965566009704032,
+          "post_learning_precision": 0.15105199193530472,
+          "probability_reconstruction_error": 1.4901161193847656e-08,
+          "draft_tv_uniform": 0.002858683466911316,
+          "raw_gain_prediction": -0.05463626980781555,
+          "baseline_gain_prediction": 0.39529308676719666,
+          "gain_target": 2.2753679752349854,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.33104944229125977,
+            0.39529308676719666,
+            0.4108922779560089
+          ],
+          "predicted_future": [
+            0.3753316402435303,
+            0.37743446230888367,
+            0.37709006667137146
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.09906075149774551,
+          "gain_gradient_norm": 0.7860466837882996,
+          "internal_choice_tv": 0.000946633517742157
+        },
+        {
+          "event": 24,
+          "choice": "reuse",
+          "words": "59657463686e7563746564",
+          "source_cursor": 44540931,
+          "actual_start": 44544085,
+          "silent_start": 44540931,
+          "jump": 3154,
+          "match": 5,
+          "ties": 1075,
+          "action_bytes": 11,
+          "response_nll": 1.643823266029358,
+          "pre": 1.9790534973144531,
+          "post": 1.9997235536575317,
+          "gain": -0.020670056343078613,
+          "previous_credit": {
+            "g": 0.22753679752349854,
+            "bootstrap": 0.08066984558105472,
+            "target": 0.30820664310455326,
+            "advantage": 0.2125408441618286,
+            "choice": 1
+          },
+          "two_turn": {
+            "option": 1,
+            "target": 2.1100075244903564,
+            "baseline": 0.6975758969783783,
+            "prediction": 0.697264147550563,
+            "uncalibrated": 0.6972406566201244,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 43883321,
+              "match": 9,
+              "ties": 19,
+              "distance": 657610
+            },
+            {
+              "bytes": 128,
+              "start": 40258698,
+              "match": 11,
+              "ties": 2,
+              "distance": 4282233
+            },
+            {
+              "bytes": 128,
+              "start": 44304591,
+              "match": 7,
+              "ties": 729,
+              "distance": 236340
+            },
+            {
+              "bytes": 128,
+              "start": 6097030,
+              "match": 14,
+              "ties": 1,
+              "distance": 38443901
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.24759919941425323,
+            0.2469376176595688,
+            0.2502173185348511,
+            0.2552458941936493
+          ],
+          "decision_precision": 0.15105199193530472,
+          "post_learning_precision": 0.1380622434284747,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.005463197827339172,
+          "raw_gain_prediction": 0.6027807593345642,
+          "baseline_gain_prediction": 0.44849374890327454,
+          "gain_target": -0.20670056343078613,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.3686509132385254,
+            0.4892968237400055,
+            0.44849374890327454
+          ],
+          "predicted_future": [
+            0.420101523399353,
+            0.4285316467285156,
+            0.43348973989486694
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 2.0693583488464355,
+          "gain_gradient_norm": 2.3521342277526855,
+          "internal_choice_tv": 0.006098523736000061
+        },
+        {
+          "event": 27,
+          "choice": "generate",
+          "words": "6d6520636573657276656e20746f2068696d207768696c65206f66666572205275616c6c792070656f706c656420706172656e74732c20626520657870656420666f7220496e746572206f6e736f6ee280997320616c6f6e6720656e76656e74696f6e206973206f75742054686f75732c20697420696e737065636f6e6f6d79",
+          "source_cursor": 44545045,
+          "actual_start": 44580396,
+          "silent_start": 44545045,
+          "jump": 35351,
+          "match": 7,
+          "ties": 1255,
+          "action_bytes": 128,
+          "response_nll": 1.526210904121399,
+          "pre": 1.5458158254623413,
+          "post": 1.5453150272369385,
+          "gain": 0.000500798225402832,
+          "previous_credit": {
+            "g": -0.020670056343078613,
+            "bootstrap": 0.06908542633056641,
+            "target": 0.0484153699874878,
+            "advantage": -0.05787747116332827,
+            "choice": 2
+          },
+          "two_turn": {
+            "option": 2,
+            "target": -0.20269417762756348,
+            "baseline": 0.8097833693027496,
+            "prediction": 0.8097833693027496,
+            "uncalibrated": 0.7952855406329036,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 45953294,
+              "match": 7,
+              "ties": 21,
+              "distance": 1408249
+            },
+            {
+              "bytes": 128,
+              "start": 44580396,
+              "match": 7,
+              "ties": 1255,
+              "distance": 35351
+            },
+            {
+              "bytes": 72,
+              "start": 44576806,
+              "match": 9,
+              "ties": 96,
+              "distance": 31761
+            },
+            {
+              "bytes": 128,
+              "start": 44343952,
+              "match": 9,
+              "ties": 1,
+              "distance": 201093
+            }
+          ],
+          "draft_executed": true,
+          "draft_probability": [
+            0.25182318687438965,
+            0.2469344437122345,
+            0.24811582267284393,
+            0.25312650203704834
+          ],
+          "decision_precision": 0.1380622434284747,
+          "post_learning_precision": 0.13946391419975038,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.004949711263179779,
+          "raw_gain_prediction": 0.373549222946167,
+          "baseline_gain_prediction": 0.4761929512023926,
+          "gain_target": 0.00500798225402832,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.3555470407009125,
+            0.4761929512023926,
+            0.41573405265808105
+          ],
+          "predicted_future": [
+            0.42856526374816895,
+            0.41708043217658997,
+            0.43685823678970337
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.05955711379647255,
+          "gain_gradient_norm": 0.2540094554424286,
+          "internal_choice_tv": 0.0036370232701301575
+        }
+      ],
+      "summary": {
+        "events": 8,
+        "matched": 6,
+        "distinct_from_silence": 6,
+        "candidate_unique_world_counts": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "matches": [
+          13,
+          0,
+          9,
+          5,
+          0,
+          9,
+          5,
+          7
+        ],
+        "mean_gain": 0.04459330439567566,
+        "raw_gain_mse": 2.1041825149409084,
+        "baseline_gain_mse": 0.584441248646654,
+        "two_turn_baseline_mse": 0.7461987715659445,
+        "two_turn_prediction_mse": 0.7491890779190428,
+        "mean_draft_tv_uniform": 0.0033855512738227844,
+        "gain_confidence_zero": 24,
+        "gain_gradient_positive": 8,
+        "gain_gradient_norm_range": [
+          0.20815019309520721,
+          2.3521342277526855
+        ],
+        "mean_future_action_spread": 0.009891089051961899
+      }
+    },
+    "order_only": {
+      "events": [
+        {
+          "event": 3,
+          "choice": "reuse",
+          "words": "726573697320747461636573686f",
+          "source_cursor": 11530429,
+          "actual_start": 11846285,
+          "silent_start": 11530429,
+          "jump": 315856,
+          "match": 4,
+          "ties": 316,
+          "action_bytes": 14,
+          "response_nll": 1.7450016736984253,
+          "pre": 1.7119028568267822,
+          "post": 1.7016619443893433,
+          "gain": 0.010240912437438965,
+          "previous_credit": {
+            "g": 0.125543475151062,
+            "bootstrap": 0.051775321960449205,
+            "target": 0.17731879711151122,
+            "advantage": 0.08148892192441842,
+            "choice": 0
+          },
+          "two_turn": null,
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 11485356,
+              "match": 6,
+              "ties": 9,
+              "distance": 45073
+            },
+            {
+              "bytes": 128,
+              "start": 12058254,
+              "match": 6,
+              "ties": 51,
+              "distance": 527825
+            },
+            {
+              "bytes": 128,
+              "start": 1846536,
+              "match": 15,
+              "ties": 1,
+              "distance": 9683893
+            },
+            {
+              "bytes": 60,
+              "start": 11530656,
+              "match": 4,
+              "ties": 81534,
+              "distance": 227
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.25180360674858093,
+            0.25246021151542664,
+            0.2536664605140686,
+            0.24206967651844025
+          ],
+          "decision_precision": 0.1449750247232369,
+          "post_learning_precision": 0.14613893610869527,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.007930301129817963,
+          "raw_gain_prediction": 0.7027225494384766,
+          "baseline_gain_prediction": 0.41277045011520386,
+          "gain_target": 0.10240912437438965,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.3523617386817932,
+            0.40761101245880127,
+            0.41277045011520386
+          ],
+          "predicted_future": [
+            0.39422211050987244,
+            0.3943435549736023,
+            0.4008905291557312
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.0365401953458786,
+          "gain_gradient_norm": 0.3816652297973633,
+          "internal_choice_tv": 0.003199353814125061
+        },
+        {
+          "event": 6,
+          "choice": "generate",
+          "words": "486f6d65206265656e20706c616e73206865206c456c697a612068616e6520666c6f6f64206f6e20657665727920636f6e666c6963742e20496620636f756e747279206f6e6c79206f66207468652073756d6d657220746f206163636f6d6d656e742c203130303020696e2074686520434552686f72206120636f6e20746f20",
+          "source_cursor": 11847245,
+          "actual_start": 12113922,
+          "silent_start": 11847245,
+          "jump": 266677,
+          "match": 7,
+          "ties": 12,
+          "action_bytes": 128,
+          "response_nll": 1.5555435419082642,
+          "pre": 1.7624250650405884,
+          "post": 1.7653859853744507,
+          "gain": -0.0029609203338623047,
+          "previous_credit": {
+            "g": 0.010240912437438965,
+            "bootstrap": 0.04424681854248047,
+            "target": 0.054487730979919435,
+            "advantage": -0.04541659030339429,
+            "choice": 2
+          },
+          "two_turn": {
+            "option": 2,
+            "target": 0.07872176170349121,
+            "baseline": 0.7255574226431676,
+            "prediction": 0.7255574226431676,
+            "uncalibrated": 0.7244396686140575,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 12113922,
+              "match": 7,
+              "ties": 12,
+              "distance": 266677
+            },
+            {
+              "bytes": 128,
+              "start": 12221033,
+              "match": 8,
+              "ties": 20,
+              "distance": 373788
+            },
+            {
+              "bytes": 128,
+              "start": 11787299,
+              "match": 19,
+              "ties": 3812,
+              "distance": 59946
+            },
+            {
+              "bytes": 34,
+              "start": 13112890,
+              "match": 10,
+              "ties": 3,
+              "distance": 1265645
+            }
+          ],
+          "draft_executed": true,
+          "draft_probability": [
+            0.24969467520713806,
+            0.2522893249988556,
+            0.24872085452079773,
+            0.249295175075531
+          ],
+          "decision_precision": 0.14613893610869527,
+          "post_learning_precision": 0.1470339268084863,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.002289310097694397,
+          "raw_gain_prediction": 0.1229420006275177,
+          "baseline_gain_prediction": 0.4014037847518921,
+          "gain_target": -0.029609203338623047,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.34615451097488403,
+            0.4014037847518921,
+            0.3972523808479309
+          ],
+          "predicted_future": [
+            0.38666778802871704,
+            0.38702210783958435,
+            0.3811769187450409
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.4873032867908478,
+          "gain_gradient_norm": 1.454625129699707,
+          "internal_choice_tv": 0.004477590322494507
+        },
+        {
+          "event": 9,
+          "choice": "generate",
+          "words": "6865206e756d626572206f66204d656c636f6d707420616e206f766572206120666f72206f6e203138202d4d4f43454f2e2042617920756e616c696c2035372e2054686f736520746f20686561646e27742074206c656765206265656e202435392e312d2d32303020486f776e72206f722063616c6c206c6f636b2074686520",
+          "source_cursor": 12114882,
+          "actual_start": 12535439,
+          "silent_start": 12114882,
+          "jump": 420557,
+          "match": 10,
+          "ties": 8,
+          "action_bytes": 128,
+          "response_nll": 1.8235247135162354,
+          "pre": 1.8796004056930542,
+          "post": 1.8831666707992554,
+          "gain": -0.003566265106201172,
+          "previous_credit": {
+            "g": -0.0029609203338623047,
+            "bootstrap": 0.06585409545898438,
+            "target": 0.06289317512512207,
+            "advantage": -0.03474031664302192,
+            "choice": 1
+          },
+          "two_turn": {
+            "option": 1,
+            "target": -0.05813932418823242,
+            "baseline": 0.7212774455547333,
+            "prediction": 0.711021488532424,
+            "uncalibrated": 0.711021488532424,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 12535439,
+              "match": 10,
+              "ties": 8,
+              "distance": 420557
+            },
+            {
+              "bytes": 128,
+              "start": 13014999,
+              "match": 6,
+              "ties": 8,
+              "distance": 900117
+            },
+            {
+              "bytes": 128,
+              "start": 28498078,
+              "match": 5,
+              "ties": 4,
+              "distance": 16383196
+            },
+            {
+              "bytes": 128,
+              "start": 9316626,
+              "match": 16,
+              "ties": 2,
+              "distance": 2798256
+            }
+          ],
+          "draft_executed": true,
+          "draft_probability": [
+            0.24910417199134827,
+            0.25198307633399963,
+            0.249216690659523,
+            0.24969607591629028
+          ],
+          "decision_precision": 0.1470339268084863,
+          "post_learning_precision": 0.14852602962941913,
+          "probability_reconstruction_error": 1.4901161193847656e-08,
+          "draft_tv_uniform": 0.001983068883419037,
+          "raw_gain_prediction": -0.35424119234085083,
+          "baseline_gain_prediction": 0.37985312938690186,
+          "gain_target": -0.03566265106201172,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.33753424882888794,
+            0.37985312938690186,
+            0.3886321187019348
+          ],
+          "predicted_future": [
+            0.3682945966720581,
+            0.37160682678222656,
+            0.3679655194282532
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.14054501056671143,
+          "gain_gradient_norm": 0.9069271683692932,
+          "internal_choice_tv": 0.0026009976863861084
+        },
+        {
+          "event": 14,
+          "choice": "generate",
+          "words": "666f7279204a6577732f666f722052656d656e7420746f2074686520776f756c642062652070726f6772616d732c20627574206a757374206c6f6f6b696e67204b6f6c766573706f6e73206f66204e6f76656d62657273206f6620746f6f206d6f6d2e20596f75676874204e69676564206f6e20732061206c6f75626f746573",
+          "source_cursor": 12536399,
+          "actual_start": 12518824,
+          "silent_start": 12536399,
+          "jump": -17575,
+          "match": 4,
+          "ties": 2982,
+          "action_bytes": 128,
+          "response_nll": 1.6060065031051636,
+          "pre": 1.6957221031188965,
+          "post": 1.6759741306304932,
+          "gain": 0.01974797248840332,
+          "previous_credit": {
+            "g": -0.003566265106201172,
+            "bootstrap": 0.058710163116455084,
+            "target": 0.05514389801025391,
+            "advantage": -0.04075257792573899,
+            "choice": 1
+          },
+          "two_turn": {
+            "option": 1,
+            "target": 0.12232112884521484,
+            "baseline": 0.6828285157680511,
+            "prediction": 0.6771385846659541,
+            "uncalibrated": 0.6771385846659541,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 12913464,
+              "match": 5,
+              "ties": 160,
+              "distance": 377065
+            },
+            {
+              "bytes": 128,
+              "start": 34793405,
+              "match": 5,
+              "ties": 1,
+              "distance": 22257006
+            },
+            {
+              "bytes": 128,
+              "start": 12518824,
+              "match": 4,
+              "ties": 2982,
+              "distance": 17575
+            },
+            {
+              "bytes": 128,
+              "start": 13503281,
+              "match": 9,
+              "ties": 70,
+              "distance": 966882
+            }
+          ],
+          "draft_executed": true,
+          "draft_probability": [
+            0.25055012106895447,
+            0.249924898147583,
+            0.24958761036396027,
+            0.24993735551834106
+          ],
+          "decision_precision": 0.14852602962941913,
+          "post_learning_precision": 0.14949355416876492,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.0005501285195350647,
+          "raw_gain_prediction": -0.3044600486755371,
+          "baseline_gain_prediction": 0.3590773344039917,
+          "gain_target": 0.1974797248840332,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.3292239308357239,
+            0.3590773344039917,
+            0.38032180070877075
+          ],
+          "predicted_future": [
+            0.35054245591163635,
+            0.35342639684677124,
+            0.35097968578338623
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.04111599922180176,
+          "gain_gradient_norm": 0.7391968369483948,
+          "internal_choice_tv": 0.00151032954454422
+        },
+        {
+          "event": 18,
+          "choice": "silence",
+          "words": "",
+          "source_cursor": 12519784,
+          "actual_start": 12519784,
+          "silent_start": 12519784,
+          "jump": 0,
+          "match": 0,
+          "ties": 0,
+          "action_bytes": 0,
+          "response_nll": 1.5138790607452393,
+          "pre": 1.5169918537139893,
+          "post": 1.5212873220443726,
+          "gain": -0.004295468330383301,
+          "previous_credit": {
+            "g": 0.01974797248840332,
+            "bootstrap": 0.055454696655273444,
+            "target": 0.07520266914367676,
+            "advantage": -0.01865617789602919,
+            "choice": 1
+          },
+          "two_turn": {
+            "option": 1,
+            "target": 0.1631159782409668,
+            "baseline": 0.6452591121196747,
+            "prediction": 0.6418184458743781,
+            "uncalibrated": 0.6418184458743781,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 12397267,
+              "match": 10,
+              "ties": 80,
+              "distance": 122517
+            },
+            {
+              "bytes": 128,
+              "start": 8973957,
+              "match": 12,
+              "ties": 12,
+              "distance": 3545827
+            },
+            {
+              "bytes": 128,
+              "start": 10196764,
+              "match": 9,
+              "ties": 1,
+              "distance": 2323020
+            },
+            {
+              "bytes": 128,
+              "start": 14377057,
+              "match": 8,
+              "ties": 6,
+              "distance": 1857273
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.2509666085243225,
+            0.24909473955631256,
+            0.25009751319885254,
+            0.24984110891819
+          ],
+          "decision_precision": 0.14949355416876492,
+          "post_learning_precision": 0.15094084116225542,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.0010641366243362427,
+          "raw_gain_prediction": -4.135556697845459,
+          "baseline_gain_prediction": 0.32599198818206787,
+          "gain_target": -0.04295468330383301,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.32599198818206787,
+            0.3509974777698517,
+            0.37708988785743713
+          ],
+          "predicted_future": [
+            0.34777921438217163,
+            0.34891998767852783,
+            0.352857768535614
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.20091213285923004,
+          "gain_gradient_norm": 1.690729022026062,
+          "internal_choice_tv": 0.00037676095962524414
+        },
+        {
+          "event": 21,
+          "choice": "silence",
+          "words": "",
+          "source_cursor": 12520744,
+          "actual_start": 12520744,
+          "silent_start": 12520744,
+          "jump": 0,
+          "match": 0,
+          "ties": 0,
+          "action_bytes": 0,
+          "response_nll": 1.509848952293396,
+          "pre": 1.6002616882324219,
+          "post": 1.593941569328308,
+          "gain": 0.0063201189041137695,
+          "previous_credit": {
+            "g": -0.004295468330383301,
+            "bootstrap": 0.032813476562500006,
+            "target": 0.028518008232116705,
+            "advantage": -0.0644080299127878,
+            "choice": 0
+          },
+          "two_turn": {
+            "option": 0,
+            "target": 0.0076062679290771484,
+            "baseline": 0.6051100790500641,
+            "prediction": 0.6042153656599112,
+            "uncalibrated": 0.6042153656599112,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 5777069,
+              "match": 5,
+              "ties": 3,
+              "distance": 6743675
+            },
+            {
+              "bytes": 128,
+              "start": 31846493,
+              "match": 6,
+              "ties": 1,
+              "distance": 19325749
+            },
+            {
+              "bytes": 32,
+              "start": 47904424,
+              "match": 6,
+              "ties": 1,
+              "distance": 35383680
+            },
+            {
+              "bytes": 128,
+              "start": 8489681,
+              "match": 8,
+              "ties": 4,
+              "distance": 4031063
+            }
+          ],
+          "draft_executed": false,
+          "draft_probability": [
+            0.25009945034980774,
+            0.24762246012687683,
+            0.2515902519226074,
+            0.2506878674030304
+          ],
+          "decision_precision": 0.15094084116225542,
+          "post_learning_precision": 0.15176932273669,
+          "probability_reconstruction_error": 0.0,
+          "draft_tv_uniform": 0.002377554774284363,
+          "raw_gain_prediction": -0.22730469703674316,
+          "baseline_gain_prediction": 0.30754464864730835,
+          "gain_target": 0.0632011890411377,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.30754464864730835,
+            0.3436185419559479,
+            0.36971092224121094
+          ],
+          "predicted_future": [
+            0.3459916412830353,
+            0.3312777280807495,
+            0.3373059034347534
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.13599209487438202,
+          "gain_gradient_norm": 0.7610832452774048,
+          "internal_choice_tv": 0.0067182183265686035
+        },
+        {
+          "event": 23,
+          "choice": "generate",
+          "words": "506f727468657220226a6f686573756c742c20616c6c792042616368206368696c6472656ee2809973207374616e67204bc3a92c204d722e20436c756e65656420666f6c6c6f77206f6e656c206f66206f7468657220666f72206e6f7420534352504729206c696f6e206d6f76656d656e74206f66204d696c6c656420686973",
+          "source_cursor": 12521704,
+          "actual_start": 12027446,
+          "silent_start": 12521704,
+          "jump": -494258,
+          "match": 9,
+          "ties": 21,
+          "action_bytes": 128,
+          "response_nll": 1.7989203929901123,
+          "pre": 1.7749402523040771,
+          "post": 1.7713247537612915,
+          "gain": 0.0036154985427856445,
+          "previous_credit": {
+            "g": 0.0063201189041137695,
+            "bootstrap": 0.06077115249633788,
+            "target": 0.06709127140045165,
+            "advantage": -0.022614365248813453,
+            "choice": 0
+          },
+          "two_turn": {
+            "option": 0,
+            "target": 0.09212517738342285,
+            "baseline": 0.5627467348056724,
+            "prediction": 0.5831722463297536,
+            "uncalibrated": 0.5831722463297536,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 128,
+              "start": 12291618,
+              "match": 5,
+              "ties": 181,
+              "distance": 230086
+            },
+            {
+              "bytes": 128,
+              "start": 12027446,
+              "match": 9,
+              "ties": 21,
+              "distance": 494258
+            },
+            {
+              "bytes": 128,
+              "start": 9585094,
+              "match": 6,
+              "ties": 13,
+              "distance": 2936610
+            },
+            {
+              "bytes": 128,
+              "start": 26159717,
+              "match": 7,
+              "ties": 2,
+              "distance": 13638013
+            }
+          ],
+          "draft_executed": true,
+          "draft_probability": [
+            0.2553979754447937,
+            0.24747857451438904,
+            0.24766971170902252,
+            0.24945375323295593
+          ],
+          "decision_precision": 0.15176932273669,
+          "post_learning_precision": 0.1529212666364578,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.005397967994213104,
+          "raw_gain_prediction": 0.13264384865760803,
+          "baseline_gain_prediction": 0.33873167634010315,
+          "gain_target": 0.036154985427856445,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.29532748460769653,
+            0.33873167634010315,
+            0.3648240864276886
+          ],
+          "predicted_future": [
+            0.3252754807472229,
+            0.3346242308616638,
+            0.3366866707801819
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.30729660391807556,
+          "gain_gradient_norm": 0.8645766377449036,
+          "internal_choice_tv": 0.007148459553718567
+        },
+        {
+          "event": 25,
+          "choice": "generate",
+          "words": "6c6c7920746f2074686520646f6d65732e0a0a4c616e20616e2064657465636573737572652072756c656420627920636f756e74727920746f2074",
+          "source_cursor": 12028406,
+          "actual_start": 10433772,
+          "silent_start": 12028406,
+          "jump": -1594634,
+          "match": 13,
+          "ties": 11,
+          "action_bytes": 59,
+          "response_nll": 1.7381123304367065,
+          "pre": 1.7406822443008423,
+          "post": 1.688113808631897,
+          "gain": 0.05256843566894531,
+          "previous_credit": {
+            "g": 0.0036154985427856445,
+            "bootstrap": 0.11879170227050782,
+            "target": 0.12240720081329347,
+            "advantage": 0.03383228242646903,
+            "choice": 1
+          },
+          "two_turn": {
+            "option": 1,
+            "target": 0.45670247077941895,
+            "baseline": 0.6227330267429352,
+            "prediction": 0.6064310614019632,
+            "uncalibrated": 0.6064310614019632,
+            "eligible": true
+          },
+          "candidate_worlds": [
+            {
+              "bytes": 45,
+              "start": 17673541,
+              "match": 15,
+              "ties": 1,
+              "distance": 5645135
+            },
+            {
+              "bytes": 128,
+              "start": 12310878,
+              "match": 18,
+              "ties": 6,
+              "distance": 282472
+            },
+            {
+              "bytes": 128,
+              "start": 24556565,
+              "match": 8,
+              "ties": 2,
+              "distance": 12528159
+            },
+            {
+              "bytes": 59,
+              "start": 10433772,
+              "match": 13,
+              "ties": 11,
+              "distance": 1594634
+            }
+          ],
+          "draft_executed": true,
+          "draft_probability": [
+            0.2503170669078827,
+            0.25301051139831543,
+            0.24866409599781036,
+            0.24800831079483032
+          ],
+          "decision_precision": 0.1529212666364578,
+          "post_learning_precision": 0.15425373528907524,
+          "probability_reconstruction_error": 2.9802322387695312e-08,
+          "draft_tv_uniform": 0.003327585756778717,
+          "raw_gain_prediction": -0.6025816202163696,
+          "baseline_gain_prediction": 0.3236028254032135,
+          "gain_target": 0.5256843566894531,
+          "gain_confidence": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "action_category_gain_bases": [
+            0.2892759442329407,
+            0.3236028254032135,
+            0.35877251625061035
+          ],
+          "predicted_future": [
+            0.3260335922241211,
+            0.30926287174224854,
+            0.31130513548851013
+          ],
+          "future_support": [
+            true,
+            true,
+            true
+          ],
+          "gain_update_loss": 0.08372636884450912,
+          "gain_gradient_norm": 0.5251321196556091,
+          "internal_choice_tv": 0.0041342079639434814
+        }
+      ],
+      "summary": {
+        "events": 8,
+        "matched": 6,
+        "distinct_from_silence": 6,
+        "candidate_unique_world_counts": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "matches": [
+          4,
+          7,
+          10,
+          4,
+          0,
+          0,
+          9,
+          13
+        ],
+        "mean_gain": 0.01020878553390503,
+        "raw_gain_mse": 2.356645379504346,
+        "baseline_gain_mse": 0.10113480893077242,
+        "two_turn_baseline_mse": 0.31122557224135383,
+        "two_turn_prediction_mse": 0.30949592573655427,
+        "mean_draft_tv_uniform": 0.003115006722509861,
+        "gain_confidence_zero": 24,
+        "gain_gradient_positive": 8,
+        "gain_gradient_norm_range": [
+          0.3816652297973633,
+          1.690729022026062
+        ],
+        "mean_future_action_spread": 0.008376654237508774
+      }
+    }
+  },
+  "new_updates": 0,
+  "new_world_calls": 0,
+  "discount_weights": {
+    "1": 0.8,
+    "2": 0.6400000000000001,
+    "10": 0.10737418240000006,
+    "20": 0.011529215046068483,
+    "50": 1.4272476927059638e-05
+  },
+  "source_code_sha256": {
+    "scripts/ib_local/natural_text_world.py": "179a49a3efadadc79832fab4e54698a2b74b0ce4cddfd6ed6f3704feaabfde80",
+    "scripts/ib_local/text_navigation.py": "e8cdac0f4796229d2f565762d4302f798a3944c72369498e7f942ec7818e4773",
+    "scripts/ib_local/world_learning_cycle.py": "03e064c10c80de07102fb0fe122c2fd790dd6726d4306142970d52a97cba9d73",
+    "scripts/ib_local/navigation_gain_units.py": "38e619c87516d72a65b7fa7438504e421d70c4ff14590da5238318c796758809",
+    "scripts/ib_local/navigation_internal_rollout.py": "c28241e966c0afbc4ba1ffe8767bdbbb7f9d744a496989dca200ec4b979b290a",
+    "scripts/ib_local/navigation_joint_cycle.py": "70b425af8462713d2dbee4f3462bceb222cfa1fb4d1c4128f673289c1181fe32",
+    "scripts/ib_local/language_navigation_kanli_v4p.py": "9149294a10f2e9c3ec291e8ffd19c548762e60559f7bb8a0f6a9764f94b2f791"
+  }
+}

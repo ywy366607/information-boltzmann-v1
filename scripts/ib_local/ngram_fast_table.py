@@ -116,9 +116,13 @@ class ByteNgramFastTable:
 
     def __post_init__(self):
         n = len(self.orders) * self.heads * (1 << self.slots_log2)
-        shapes = dict(rows=((n, 256), np.float32), count=((n,), np.int64),
-                      tag=((n,), np.uint16), err=((n,), np.float32))
-        for name, (shape, dtype) in shapes.items():
+        if self.storage is not None:
+            self.storage = Path(self.storage)
+            self.storage.mkdir(parents=True, exist_ok=True)
+            # A new table must never truncate an existing live table.
+            if any((self.storage / f'{name}.npy').exists() for name in self._array_specs(n)):
+                raise FileExistsError(f'fast-table arrays already exist: {self.storage}')
+        for name, (shape, dtype) in self._array_specs(n).items():
             if self.storage is None:
                 array = np.zeros(shape, dtype=dtype)
             else:
@@ -126,6 +130,17 @@ class ByteNgramFastTable:
                 array = np.lib.format.open_memmap(self.storage / f"{name}.npy", mode="w+",
                                                   dtype=dtype, shape=shape)
             setattr(self, name, array)
+
+    def _array_specs(self, n):
+        return dict(rows=((n, 256), np.float32), count=((n,), np.int64),
+                    tag=((n,), np.uint16), err=((n,), np.float32))
+
+    def flush(self):
+        """Publish dirty mapped pages at checkpoint boundaries, not per byte."""
+        for name in self._array_specs(len(self.count)):
+            array = getattr(self, name)
+            if isinstance(array, np.memmap):
+                array.flush()
 
     @property
     def nbytes(self) -> int:

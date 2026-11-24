@@ -83,40 +83,9 @@ def sha256_file(path):
     return digest.hexdigest()
 
 
-def build(checkpoint, device='cuda', *, table_storage=None, allow_external_archive=False):
-    with gzip.open(checkpoint, 'rb') as stream:
-        state = torch.load(stream, map_location='cpu', weights_only=False)
-    cfg = state['config']
-    if cfg.get('causal_archive') is not None and not allow_external_archive:
-        raise ValueError('use the mother continuation loader to restore the bound external causal archive')
-    root = Path('data/ib_owt_10000')
-    offset = json.loads((root/'tokenizer.json').read_text())['offset']
-    if 'source_raw_bounds' in cfg:
-        bounds = cfg['source_raw_bounds']
-        window = cfg['topic_window']
-    elif cfg.get('stage') == 'causal water in the complete real OWT reply loop':
-        bounds = cfg['source']['source_raw_bounds']
-        # The first saved reply-run schema used the fixed 4096-byte world
-        # but only stored its size in the ancestor configuration. Admit that
-        # known schema without requiring the ancestor checkpoint to exist.
-        window = cfg['source'].get('topic_window', 4096)
-    else:
-        raise ValueError('unknown real-language checkpoint world contract')
-    train = np.load(root/'train.npy', mmap_mode='r')
-    raw = np.asarray(train[bounds[0]:min(bounds[1], len(train))])
-    source = decoded_world_bytes(raw, offset)
-    del train, raw
-    world = ReplyTopicWorld(source, window=window, seed=cfg['seed'])
-    base = TableGDN(GatedDeltaNetLM(256, 128, 4, 4, 'decay_then_delta', 256, 4, 32.,
-                                   decay_init='log_timescale'), True).to(device)
-    optimizer = torch.optim.AdamW(base.parameters(), lr=3e-4, foreach=True)
-    model = attach_imagination(WoodObservationBody(base))
-    optimizer.add_param_group(dict(params=[p for n,p in model.named_parameters()
-                                          if not n.startswith('body.')], lr=3e-4))
-    engine = WaterReplyEngine(model, optimizer, state['engine']['recurrent'].to(device),
-        RetrievedCreditTable(orders=(0,), heads=1, slots_log2=1), world,
-        state['engine']['pending'], np.random.default_rng(cfg['seed']), 'active',
-        32, state['engine']['response_bytes'], state['engine']['holdout_bytes'], capture=False)
+def configure_components(engine, cfg):
+    """One component graph shared by native birth and complete-state restoration."""
+    model = engine.model
     if cfg.get('wood_memory_features') == 14:
         # Reconstruct the known optional F input before strict state/optimizer
         # restore. Legacy checkpoints take the unchanged branch above.
@@ -224,11 +193,153 @@ def build(checkpoint, device='cuda', *, table_storage=None, allow_external_archi
             raise ValueError('unknown generative relation schema')
         from scripts.ib_local.navigation_generative_cycle import configure_generative_cycle
         configure_generative_cycle(engine)
+    if cfg.get('shared_relation_basis') is not None:
+        spec=cfg['shared_relation_basis']
+        if spec.get('schema')!=1 or spec.get('features')!=[4,5]:
+            raise ValueError('unknown shared causal mechanism coordinates')
+        from scripts.ib_local.shared_relation_basis import configure_shared_relation_basis
+        configure_shared_relation_basis(engine)
+    if cfg.get('joint_relation_update') is not None:
+        if cfg['joint_relation_update'].get('schema')!=1:
+            raise ValueError('unknown joint relation update schema')
+        engine.joint_relation_update_schema=model.joint_relation_update_schema=1
+        revision=cfg['joint_relation_update'].get('implementation_revision',1)
+        if revision not in (1,2,3,4):raise ValueError('unknown joint relation implementation revision')
+        engine.joint_relation_update_revision=model.joint_relation_update_revision=revision
+        if revision>=3:
+            from scripts.ib_local.relation_evidence import configure_support_ids
+            configure_support_ids(engine)
+    if cfg.get('content_question') is not None:
+        if cfg['content_question'].get('schema') != 1:
+            raise ValueError('unknown content-conditioned question scope')
+        from scripts.ib_local.question_language_port import configure_content_question
+        configure_content_question(engine)
+    if cfg.get('body_growth') is not None:
+        from scripts.ib_local.navigation_body_growth import configure_body_growth
+        configure_body_growth(engine, cfg['body_growth'], initialize=False)
+    if cfg.get('variable_expression') is not None:
+        from scripts.ib_local.variable_expression import configure_variable_expression
+        configure_variable_expression(engine, initialize=False)
+    if cfg.get('past_present_coevolution') is not None:
+        from scripts.ib_local.past_present_coevolution import configure_coevolution
+        configure_coevolution(engine, cfg['past_present_coevolution'], initialize=False)
+    if cfg.get('adaptive_dynamics') is not None:
+        from scripts.ib_local.adaptive_hamiltonian import configure as configure_adaptive
+        split_theta = bool(cfg.get('adaptive_dynamics_split_theta'))
+        configure_adaptive(engine, initialize=False, split_theta=split_theta)
+    if cfg.get('contact_momentum') is not None:
+        if cfg['contact_momentum']['schema'] != 1:
+            raise ValueError('unknown contact momentum schema')
+        from scripts.ib_local.contact_momentum import configure as configure_contact
+        configure_contact(engine, initialize=False)
+    if cfg.get('learnable_precision_scales') is not None:
+        from scripts.ib_local.learnable_precision_scales import configure as configure_scales
+        configure_scales(engine, cfg['learnable_precision_scales'], initialize=False)
+    if cfg.get('learnable_alif_rhythm') is not None:
+        r_cfg = cfg['learnable_alif_rhythm']
+        if r_cfg.get('schema') != 1:
+            raise ValueError('unknown learnable alif rhythm schema')
+        from scripts.ib_local.learnable_alif_rhythm import configure as configure_rhythm_learn
+        configure_rhythm_learn(
+            engine, initialize=False,
+            **{k: v for k, v in r_cfg.items() if k != 'schema'},
+        )
+    if cfg.get('phase_space_boltzmann') is not None:
+        pb_cfg = cfg['phase_space_boltzmann']
+        if pb_cfg.get('schema') != 1:
+            raise ValueError('unknown phase_space_boltzmann schema')
+        from scripts.ib_local.phase_space_boltzmann import configure as configure_psb
+        configure_psb(
+            engine, initialize=False,
+            **{k: v for k, v in pb_cfg.items() if k != 'schema'},
+        )
+    if cfg.get('root_latent_planning') is not None:
+        rlp_cfg = cfg['root_latent_planning']
+        if rlp_cfg.get('schema') != 1:
+            raise ValueError('unknown root_latent_planning schema')
+        from scripts.ib_local.root_latent_planning import configure as configure_rlp
+        configure_rlp(engine, **{k: v for k, v in rlp_cfg.items() if k != 'schema'})
+    if cfg.get('hnet_chunking') is not None:
+        h_cfg = cfg['hnet_chunking']
+        if h_cfg.get('schema') != 1:
+            raise ValueError('unknown hnet_chunking schema')
+        from scripts.ib_local.hnet_chunking import configure as configure_hnet
+        configure_hnet(
+            engine, initialize=False,
+            **{k: v for k, v in h_cfg.items() if k != 'schema'},
+        )
+    if cfg.get('gaze_pointer') is not None:
+        g_cfg = cfg['gaze_pointer']
+        if g_cfg.get('schema') not in (1, 2):
+            raise ValueError('unknown gaze_pointer schema')
+        from scripts.ib_local.gaze_pointer import configure as configure_gaze
+        configure_gaze(
+            engine, initialize=False,
+            **{k: v for k, v in g_cfg.items() if k != 'schema'},
+        )
+    if cfg.get('alif_executive') is not None:
+        pb = int(cfg['alif_executive'].get('piece_bytes', 0) or 0)
+        if pb > int(getattr(engine.model, 'max_chunk', 0)):
+            engine.model.max_chunk = pb
+        if pb > 640 and hasattr(engine.model, 'memory'):
+            engine.model.memory.max_commit_chunk = max(int(getattr(engine.model.memory, 'max_commit_chunk', 0)), pb)
+    return engine
+
+
+def build(checkpoint, device='cuda', *, table_storage=None, allow_external_archive=False):
+    from scripts.ib_local.compressed_checkpoint import checkpoint_stream
+    with checkpoint_stream(checkpoint) as stream:
+        state = torch.load(stream, map_location='cpu', weights_only=False)
+    cfg = state['config']
+    if cfg.get('causal_archive') is not None and not allow_external_archive:
+        raise ValueError('use the mother continuation loader to restore the bound external causal archive')
+    root = Path('data/ib_owt_10000')
+    offset = json.loads((root/'tokenizer.json').read_text())['offset']
+    if 'source_raw_bounds' in cfg:
+        bounds = cfg['source_raw_bounds']
+        window = cfg['topic_window']
+    elif cfg.get('stage') == 'causal water in the complete real OWT reply loop':
+        bounds = cfg['source']['source_raw_bounds']
+        # The first saved reply-run schema used the fixed 4096-byte world
+        # but only stored its size in the ancestor configuration. Admit that
+        # known schema without requiring the ancestor checkpoint to exist.
+        window = cfg['source'].get('topic_window', 4096)
+    else:
+        raise ValueError('unknown real-language checkpoint world contract')
+    train = np.load(root/'train.npy', mmap_mode='r')
+    raw = np.asarray(train[bounds[0]:min(bounds[1], len(train))])
+    source = decoded_world_bytes(raw, offset)
+    del train, raw
+    if cfg.get('natural_text_corpus') is not None:
+        from scripts.ib_local.natural_text_world import extended_source
+        source = extended_source(source, cfg['natural_text_corpus'])
+    world = ReplyTopicWorld(source, window=window, seed=cfg['seed'])
+    if cfg.get('native_body') is not None:
+        from scripts.ib_local.native_navigation_body import construct_engine
+        engine = construct_engine(cfg, world, device=device, restoring=True,
+            response_bytes=state['engine']['response_bytes'],
+            holdout_bytes=state['engine']['holdout_bytes'])
+        model, optimizer = engine.model, engine.optimizer
+    else:
+        base = TableGDN(GatedDeltaNetLM(256, 128, 4, 4, 'decay_then_delta', 256, 4, 32.,
+                                       decay_init='log_timescale'), True).to(device)
+        optimizer = torch.optim.AdamW(base.parameters(), lr=3e-4, foreach=True)
+        model = attach_imagination(WoodObservationBody(base))
+        optimizer.add_param_group(dict(params=[p for n,p in model.named_parameters()
+                                              if not n.startswith('body.')], lr=3e-4))
+        engine = WaterReplyEngine(model, optimizer, state['engine']['recurrent'].to(device),
+            RetrievedCreditTable(orders=(0,), heads=1, slots_log2=1), world,
+            state['engine']['pending'], np.random.default_rng(cfg['seed']), 'active',
+            32, state['engine']['response_bytes'], state['engine']['holdout_bytes'], capture=False)
+    configure_components(engine, cfg)
     state['engine'] = to_device(state['engine'], device)
     # This state came from a private torch.load and is discarded below; the
     # table may safely own its loaded arrays, avoiding a full duplicate.
     table_dir = None if table_storage is None else Path(table_storage) / uuid.uuid4().hex
     restore(engine, state, take_table_ownership=True, table_storage=table_dir)
+    if cfg.get('body_growth') is not None or cfg.get('native_body') is not None:
+        from scripts.ib_local.navigation_body_growth import validate_pending_participation
+        validate_pending_participation(engine)
     engine.device = next(model.parameters()).device
     source_meta = dict(checkpoint=str(checkpoint), sha256=sha256_file(checkpoint),
         cycle=state['cycle'], world_source_bytes=len(source),

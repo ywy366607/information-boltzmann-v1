@@ -1,0 +1,155 @@
+{
+  "checkpoint": "D:\\information-boltzmann-v1\\scratch\\cgb_wood_policy_use_16rounds_20261120\\natural\\run\\body\\last.pt.gz",
+  "checkpoint_sha256": "d673ffaa3168b153fcd853ad6af76f9567fa73336dc44ed129ebdd780e31a729",
+  "cycle": 2601,
+  "gpu": "NVIDIA GeForce GTX 1650",
+  "parameters": 29672448,
+  "backbone": {
+    "vocab_size": 256,
+    "d": 256,
+    "layers": 32,
+    "heads": 8,
+    "recurrence": "decay_then_delta",
+    "mlp_hidden": 768,
+    "conv_kernel": 4,
+    "content_budget": 32.0,
+    "decay_init": "log_timescale"
+  },
+  "optimizer_updates": 0,
+  "world_calls": 0,
+  "ngram": {
+    "bytes": 8192,
+    "table_mib": 230.5625,
+    "ram": {
+      "seconds": 0.15051030000017818,
+      "output_sha256": "434cc99fa00617c799bf8e23b1fb39d55f458bf0bf44bd3ee173faa1926acfd4"
+    },
+    "mmap": {
+      "seconds": 0.19298559999992904,
+      "output_sha256": "434cc99fa00617c799bf8e23b1fb39d55f458bf0bf44bd3ee173faa1926acfd4"
+    },
+    "arrays_equal": true
+  },
+  "completed": true,
+  "scope": "trained 32-layer backbone forward/backward; separate full-cycle and handoff equivalence tests",
+  "timing": "one warmup then median of three synchronized repetitions; no optimizer update",
+  "rows": [
+    {
+      "length": 128,
+      "name": "full_states",
+      "seconds_median": 0.20163060000004407,
+      "peak_mib": 393.6162109375,
+      "gradient_max_abs_error": 0.0,
+      "gpu_cache_peak_mib": 0.0,
+      "host_cache_peak_mib": 0.0,
+      "disk_written_mib": 0.0
+    },
+    {
+      "length": 128,
+      "name": "block16_device",
+      "seconds_median": 0.2118254000001798,
+      "peak_mib": 273.7236328125,
+      "gradient_max_abs_error": 0.0,
+      "gpu_cache_peak_mib": 0.0,
+      "host_cache_peak_mib": 0.0,
+      "disk_written_mib": 0.0
+    },
+    {
+      "length": 128,
+      "name": "block16_disk",
+      "seconds_median": 0.6861563999998452,
+      "peak_mib": 247.52294921875,
+      "gradient_max_abs_error": 0.0,
+      "gpu_cache_peak_mib": 0.0,
+      "host_cache_peak_mib": 0.0,
+      "disk_written_mib": 157.90625
+    },
+    {
+      "length": 128,
+      "name": "block16_tiered128",
+      "seconds_median": 0.23112609999998313,
+      "peak_mib": 272.123046875,
+      "gradient_max_abs_error": 0.0,
+      "gpu_cache_peak_mib": 127.951171875,
+      "host_cache_peak_mib": 11.205078125,
+      "disk_written_mib": 0.0
+    },
+    {
+      "length": 128,
+      "name": "block16_tiered",
+      "seconds_median": 0.21063589999994292,
+      "peak_mib": 273.7236328125,
+      "gradient_max_abs_error": 0.0,
+      "gpu_cache_peak_mib": 137.90625,
+      "host_cache_peak_mib": 0.0,
+      "disk_written_mib": 0.0
+    },
+    {
+      "length": 480,
+      "name": "full_states",
+      "seconds_median": 0.2069817999999941,
+      "peak_mib": 1140.8408203125,
+      "gradient_max_abs_error": 0.0,
+      "gpu_cache_peak_mib": 0.0,
+      "host_cache_peak_mib": 0.0,
+      "disk_written_mib": 0.0
+    },
+    {
+      "length": 480,
+      "name": "block16_device",
+      "seconds_median": 0.22338340000010248,
+      "peak_mib": 659.8408203125,
+      "gradient_max_abs_error": 0.0,
+      "gpu_cache_peak_mib": 0.0,
+      "host_cache_peak_mib": 0.0,
+      "disk_written_mib": 0.0
+    },
+    {
+      "length": 480,
+      "name": "block16_disk",
+      "seconds_median": 1.2928785999999945,
+      "peak_mib": 252.21875,
+      "gradient_max_abs_error": 0.0,
+      "gpu_cache_peak_mib": 0.0,
+      "host_cache_peak_mib": 0.0,
+      "disk_written_mib": 588.625
+    },
+    {
+      "length": 480,
+      "name": "block16_tiered128",
+      "seconds_median": 0.9108028000000559,
+      "peak_mib": 355.27734375,
+      "gradient_max_abs_error": 0.0,
+      "gpu_cache_peak_mib": 127.99609375,
+      "host_cache_peak_mib": 128.0,
+      "disk_written_mib": 311.53515625
+    },
+    {
+      "length": 480,
+      "name": "block16_tiered",
+      "seconds_median": 0.22667089999981727,
+      "peak_mib": 659.8408203125,
+      "gradient_max_abs_error": 0.0,
+      "gpu_cache_peak_mib": 511.75,
+      "host_cache_peak_mib": 1.875,
+      "disk_written_mib": 0.0
+    }
+  ],
+  "source_sha256": {
+    "scripts/ib_local/gdn_fused.py": "e5649c5f391f3f643dc452f162c0a09a7697c490a08b33dec492abec079fdebb",
+    "scripts/native_policy_activation_storage.py": "8ae0b356cc624a2b1d8d453efdacf583c354c069fe4a3f1747ddd7dc4b2776ab",
+    "scripts/ib_local/ngram_fast_table.py": "352159da2cc1a764697f2579917995841a811b60d1458125fc18f0a42b92440c",
+    "scripts/ib_local/retrieved_table_credit.py": "68588fdc4d7749671552b2e4bad30631e56ce178167d753ca63d6a11508e4eca",
+    "scripts/benchmark_native_activation_storage.py": "40be3ecd947435bab7f7a42e949912f3d0dd01604dad9c40f28222d48fcc8a50",
+    "scripts/ib_local/run_mother_continuation.py": "c859674399752c6d6f894ff5f3083697ac95410b40a8bd57c25f01eb2156e926",
+    "scripts/ib_local/autonomous_runtime.py": "d05678840719c7d0d343d156d408c6f819037cd59d0e9005439b5e84c1969720"
+  },
+  "validation": {
+    "tests": "91",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "117.702",
+    "artifact": "scratch/storage_benchmark_20261122/tests.xml"
+  }
+}

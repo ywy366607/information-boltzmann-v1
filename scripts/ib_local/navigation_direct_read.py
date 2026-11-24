@@ -56,14 +56,44 @@ def replay_error(replay,record):
 
 def causal_prefix(engine,targets,own,record):
     """Differentiable one-byte replay of the bounded action, no old graph."""
-    state=engine.recurrent.detach()
+    from scripts.ib_local.variable_expression import read_route_scope
+    from scripts.ib_local.adaptive_hamiltonian import bridge_state
+    route = (getattr(engine, '_selected_handover', None)
+             if own and record.get('choice') == 1 else None)
+    if getattr(engine,'policy_replay_backend','one_byte')=='batched_guarded':
+        count=max(own,1)
+        ids=torch.cat((targets.new_tensor([[engine.pending]]),targets[:,:max(own-1,0)]),1)
+        values=record['probs'][:count] if own else [record['boundary_probability']]
+        logp=torch.as_tensor(np.log(np.maximum(np.stack(values),1e-6)),device=engine.device)[None]
+        from scripts.ib_local.variable_expression import budget_scope
+        remaining=(1-torch.arange(count,device=engine.device)[None]/engine.max_utterance
+                   if getattr(engine,'variable_expression_schema',None)==1 and own else None)
+        with budget_scope(engine.model,remaining), read_route_scope(engine,route,0,count):
+            out=engine.model.predict_observed(ids,bridge_state(engine.model,engine.recurrent.detach()),logp)
+        expected=record.get('expected_byte_logp',record.get('byte_logp'))
+        if own and expected is not None and len(expected)==own:
+            actual=out[0][0].log_softmax(-1).gather(1,targets[0,:own,None]).flatten()
+            error=float((actual.detach()-actual.new_tensor(expected)).abs().max())
+            if error<=1e-3:
+                engine._batched_replay_hits=getattr(engine,'_batched_replay_hits',0)+1
+                return out[3],out[0]
+            del out,actual
+        elif not own:
+            return out[3],out[0]
+        # A discrete top-k boundary may move with GEMM rounding. Preserve the
+        # original one-byte path, with the same strict replay tolerance.
+        engine._batched_replay_fallbacks=getattr(engine,'_batched_replay_fallbacks',0)+1
+    state=bridge_state(engine.model,engine.recurrent.detach())
     logits,features=[],[]
     for i in range(max(own,1)):
         byte=engine.pending if i==0 else int(targets[0,i-1])
         probability=record['probs'][i] if own else record['boundary_probability']
         ids=torch.tensor([[byte]],device=engine.device)
         logp=torch.as_tensor(np.log(np.maximum(probability,1e-6)),device=engine.device)[None,None]
-        out=engine.model.predict_observed(ids,state,logp)
+        from scripts.ib_local.variable_expression import budget_scope
+        remaining=(1-i/engine.max_utterance if getattr(engine,'variable_expression_schema',None)==1 and own else None)
+        with budget_scope(engine.model,remaining), read_route_scope(engine,route,i,1):
+            out=engine.model.predict_observed(ids,state,logp)
         logits.append(out[0]);state=out[1];features.append(out[3])
     return torch.cat(features),torch.cat(logits,dim=1)
 
@@ -73,7 +103,10 @@ def observer_reads(engine):
     if engine.observer_mode=='full':
         yield
         return
-    if engine.settlement_kind not in ('continuation_joint', 'world_stream'):
+    if engine.settlement_kind not in ('continuation_joint', 'world_stream',
+                                      'coefficient_information_v1', 'targeted_use_v1',
+                                      'finite_targeted_use_v2', 'finite_event_targeted_use_v3',
+                                      'finite_relation_use_v4', 'finite_relation_use_v5'):
         raise ValueError('omitted witness reads require actual joint-continuation settlement')
     owned='witness_nll' in vars(engine);old=engine.witness_nll
     def unscored():

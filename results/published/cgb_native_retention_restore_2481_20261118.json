@@ -1,0 +1,94 @@
+{
+  "cycle": 2481,
+  "source": "F:\\cgb_native_retention_2473_20261118\\apply\\body\\last.pt.gz",
+  "source_sha256": "b574e457ba0cca18f7aed6d7a291468f8b7eb443e285cf105226878f9210916d",
+  "source_unchanged": true,
+  "optimizer_updates": 0,
+  "world_calls": 0,
+  "engine": "PastPresentEngine",
+  "model": "QuestionContextBody",
+  "native_retention_feedback_mode": "apply",
+  "configured_feedback": {
+    "schema": 1,
+    "mode": "apply",
+    "adopted_at_cycle": 2473,
+    "signal": "finite removal from coevolving workset and deep read on arrived external bytes",
+    "units": "10*nats/byte",
+    "actor_reward_unchanged": true
+  },
+  "runtime_methods": {
+    "objective": {
+      "file": "D:\\information-boltzmann-v1\\scripts\\ib_local\\navigation_bfss_dynamics.py",
+      "line": 17
+    },
+    "advance": {
+      "file": "D:\\information-boltzmann-v1\\scripts\\ib_local\\navigation_question_context.py",
+      "line": 49
+    },
+    "step": {
+      "file": "D:\\information-boltzmann-v1\\scripts\\ib_local\\past_present_coevolution.py",
+      "line": 213
+    }
+  },
+  "retention": {
+    "enabled": true,
+    "rule": "utility",
+    "read_credit_enabled": true,
+    "read_credit_rule": "adam",
+    "capacity": 4096,
+    "occupied": 2226,
+    "preference_nonzero": 52,
+    "replacement_slot": 2226,
+    "statistics": {
+      "read_credit_count": {
+        "nonzero": 2225,
+        "total": 40218672.0,
+        "minimum": 0.0,
+        "median": 2728.0,
+        "mean": 9819.01171875,
+        "maximum": 137512.0
+      },
+      "read_credit_steps": {
+        "nonzero": 2225,
+        "total": 1708332.0,
+        "minimum": 0.0,
+        "median": 183.0,
+        "mean": 417.0732421875,
+        "maximum": 4277.0
+      },
+      "read_credit_mean": {
+        "nonzero": 2225,
+        "total": -1.854864672221538,
+        "minimum": -0.06084583327174187,
+        "median": 0.0,
+        "mean": -0.00045284782036658644,
+        "maximum": 0.048047035932540894
+      },
+      "retention_utility_steps": {
+        "nonzero": 52,
+        "total": 128.0,
+        "minimum": 0.0,
+        "median": 0.0,
+        "mean": 0.03125,
+        "maximum": 6.0
+      },
+      "retention_utility_first": {
+        "nonzero": 52,
+        "total": -0.006279617510017488,
+        "minimum": -0.0028312874492257833,
+        "median": 0.0,
+        "mean": -1.5331097436566132e-06,
+        "maximum": 0.000918750767596066
+      },
+      "retention_utility_second": {
+        "nonzero": 52,
+        "total": 2.6223188785978735e-06,
+        "minimum": 0.0,
+        "median": 0.0,
+        "mean": 6.40214569970184e-10,
+        "maximum": 4.6584946744587796e-07
+      }
+    }
+  },
+  "scope": "Persisted evidence and actual runtime entry points, not a future-use experiment."
+}

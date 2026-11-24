@@ -1,0 +1,25 @@
+{
+  "cycle": 2594,
+  "checks": [
+    {
+      "observed": "generate",
+      "alternative": "reuse",
+      "mse": {
+        "prior": 1.5854516889498076,
+        "copy_factual": 0.4011657024888884,
+        "full_residual": 0.47907842222200997
+      }
+    },
+    {
+      "observed": "reuse",
+      "alternative": "generate",
+      "mse": {
+        "prior": 1.0690550918045898,
+        "copy_factual": 0.4011657024888884,
+        "full_residual": 0.4790784321851977
+      }
+    }
+  ],
+  "world_calls": 0,
+  "optimizer_updates": 0
+}

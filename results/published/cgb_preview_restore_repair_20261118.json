@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "source_cycle": 2437,
+  "source_checkpoint": "C:/Users/85750/.codex/cgb_value_contract_repair_20261118_claude/body/last.pt.gz",
+  "source_checkpoint_sha256": "51380bcc2671eeb867414374fbc2af1afd47f4c147c85e6b954fcfd09e5e80c8",
+  "main_body_cycle": 2401,
+  "defect": "Restored C2 configuration returned before rebuilding non-tensor identity_preview_revision; generic continuation also omitted explicit saved identity-preview configuration.",
+  "model_reproduction": {
+    "report": "results/published/cgb_use_context_2437_20261118.json",
+    "expected_reorder_max_error": 0.004937287420034409,
+    "total_utility_reorder_max_error": 0.04937276244163513,
+    "fixed_outcome_reorder_error": 1.1920928955078125e-7,
+    "candidate_4_5_order_reversed": true,
+    "optimizer_updates": 0,
+    "world_calls": 0
+  },
+  "lean": {
+    "file": "lean/CGBAxioms/reviews/NativePreviewRestoreContract.lean",
+    "theorems": 10,
+    "compile_exit_code": 0,
+    "scope": "Actual configuration branch counterexample, runtime rehydration, payload preservation, idempotence, keyed lookup and measured rank-reversal facts; not a learning-benefit proof."
+  },
+  "fixed_model": {
+    "report": "results/published/cgb_use_context_identity_fixed_2437_20261118.json",
+    "declared_identity_preview_revision": 1,
+    "runtime_identity_preview_revision": 1,
+    "expected_reorder_max_error": 0.0,
+    "total_utility_reorder_max_error": 0.0,
+    "fixed_outcome_reorder_error": 0.0,
+    "same_candidate_order": true,
+    "optimizer_updates": 0,
+    "world_calls": 0,
+    "comparison_scope": "Each report holds its own candidate set fixed across fact reorder; corrected production mode also changes finite candidate admission, so candidate indices across the two reports are not action identities."
+  },
+  "tests": {
+    "production_order_restore_test_failed_before_fix": true,
+    "affected_tests_passed": 23,
+    "digest_and_runtime_tests_passed": 5,
+    "total_passed": 28
+  },
+  "learning_comparison": {
+    "status": "completed_mixed_outcome",
+    "report": "results/published/cgb_preview_restore_comparison_20261118.json",
+    "work": "E:/cgb_preview_nvme_comparison_20261118",
+    "external_cycles_per_arm": 32,
+    "optimizer_updates_per_arm": 128,
+    "external_bytes_per_arm": 30720,
+    "legacy_complete_checkpoint_cycle": 2469,
+    "fixed_complete_checkpoint_cycle": 2469,
+    "execution_and_material_checks_passed": 74,
+    "interrupted_G_prefix_events_rechecked": 8,
+    "interrupted_G_prefix_exact": true,
+    "legacy_final_fixed_query_mean_score": -1.247421565465629,
+    "fixed_final_fixed_query_mean_score": -1.242032803595066,
+    "fixed_minus_legacy_mean_score": 0.00538876187056303,
+    "fixed_better_query_count": 40,
+    "common_query_count": 64,
+    "legacy_mean_actual_finite_U": 0.004654213320463896,
+    "fixed_mean_actual_finite_U": 0.0019267417956143618,
+    "gain_content_confidence_all_zero_both_arms": true,
+    "legacy_internal_events": 21,
+    "fixed_internal_events": 50,
+    "legacy_cross_relation_reused_facts": 23,
+    "fixed_cross_relation_reused_facts": 28,
+    "long_term_use_improvement_established": false,
+    "interpretation": "Relative retention improved on common old queries, but own-route immediate use was lower and learned gain confidence remained zero. Changed routes are not identical-context causal contrasts.",
+    "prior_failures": "C/E temporary storage exhausted, then G-drive continuation was stopped by user for slow IO. User subsequently reauthorized NVMe continuation after cache cleanup. Logs retained; failed prefixes not counted twice.",
+    "main_body_promoted": false,
+    "automatic_additional_training": false
+  }
+}

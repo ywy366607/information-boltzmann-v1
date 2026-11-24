@@ -1,0 +1,344 @@
+{
+  "scope": "fixed 512-cycle milestone, complete persistent natural-text body; no mother API or QA/SFT",
+  "source_main_metrics": "F:\\cgb_continual_learning_20261116\\body\\metrics.jsonl",
+  "first_cycle": 362,
+  "last_cycle": 512,
+  "initial_validation_at_cycle": 361,
+  "initial_validation": {
+    "owt_nll": 1.5953291654586792,
+    "mother_nll": 1.3256098255515099,
+    "bytes_each": 8192,
+    "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+    "fineweb_nll": 1.5750627666711807,
+    "language_contribution": {
+      "owt": {
+        "bytes": 8192,
+        "full_nll": 1.5953291654586792,
+        "table_prior_nll": 1.7156842201948166,
+        "learned_table_mix_without_decoder_nll": 1.6368120983242989,
+        "full_gain_over_table": 0.12035505473613739,
+        "decoder_residual_gain": 0.04148293286561966,
+        "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+      },
+      "fineweb": {
+        "bytes": 8192,
+        "full_nll": 1.5750627666711807,
+        "table_prior_nll": 1.6911823004484177,
+        "learned_table_mix_without_decoder_nll": 1.6185783967375755,
+        "full_gain_over_table": 0.11611953377723694,
+        "decoder_residual_gain": 0.043515630066394806,
+        "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+      }
+    }
+  },
+  "validation_curve": [
+    {
+      "cycle": 384,
+      "validation": {
+        "owt_nll": 1.5812200978398323,
+        "mother_nll": 1.3185973763465881,
+        "bytes_each": 8192,
+        "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+        "fineweb_nll": 1.5610821843147278,
+        "language_contribution": {
+          "owt": {
+            "bytes": 8192,
+            "full_nll": 1.5812200978398323,
+            "table_prior_nll": 1.7093411907553673,
+            "learned_table_mix_without_decoder_nll": 1.6318733915686607,
+            "full_gain_over_table": 0.12812109291553497,
+            "decoder_residual_gain": 0.05065329372882843,
+            "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+          },
+          "fineweb": {
+            "bytes": 8192,
+            "full_nll": 1.5610821843147278,
+            "table_prior_nll": 1.6845047622919083,
+            "learned_table_mix_without_decoder_nll": 1.6147863194346428,
+            "full_gain_over_table": 0.12342257797718048,
+            "decoder_residual_gain": 0.05370413511991501,
+            "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+          }
+        }
+      }
+    },
+    {
+      "cycle": 512,
+      "validation": {
+        "owt_nll": 1.5515854433178902,
+        "mother_nll": 1.3070989772677422,
+        "bytes_each": 8192,
+        "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+        "fineweb_nll": 1.5383846387267113,
+        "language_contribution": {
+          "owt": {
+            "bytes": 8192,
+            "full_nll": 1.5515854433178902,
+            "table_prior_nll": 1.6853998005390167,
+            "learned_table_mix_without_decoder_nll": 1.610108144581318,
+            "full_gain_over_table": 0.13381435722112656,
+            "decoder_residual_gain": 0.058522701263427734,
+            "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+          },
+          "fineweb": {
+            "bytes": 8192,
+            "full_nll": 1.5383846387267113,
+            "table_prior_nll": 1.6666404977440834,
+            "learned_table_mix_without_decoder_nll": 1.5998897552490234,
+            "full_gain_over_table": 0.12825585901737213,
+            "decoder_residual_gain": 0.061505116522312164,
+            "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+          }
+        }
+      }
+    }
+  ],
+  "actual_external_bytes": 144960,
+  "actual_optimizer_updates": 604,
+  "complete_loop": {
+    "events": 151,
+    "source_bytes": {
+      "inherited_prefix": 83520,
+      "natural_append": 61440
+    },
+    "choices": {
+      "silence": 37,
+      "generate": 65,
+      "reuse": 49
+    },
+    "real_next_boundary_vs_unchanged": {
+      "events": 136,
+      "real_error": 0.4038966638583909,
+      "control_error": 0.6038893668994527,
+      "better": 103,
+      "worse": 33
+    },
+    "real_next_boundary_vs_other_action": {
+      "events": 136,
+      "real_error": 0.4038966638583909,
+      "control_error": 0.41177672460017833,
+      "better": 83,
+      "worse": 53
+    },
+    "next_return_vs_base": {
+      "events": 151,
+      "real_error": 1.1123207764640115,
+      "control_error": 1.1193561940502668,
+      "better": 83,
+      "worse": 63
+    },
+    "channel_units": [
+      "head4_predictability",
+      "head32_predictability",
+      "joined",
+      "learning_progress"
+    ],
+    "wood_used_error": [
+      0.12343364188650743,
+      0.03578406038058277,
+      0.05609877694774097,
+      0.8128351029106925
+    ],
+    "wood_base_error": [
+      0.12343364188650743,
+      0.03578406038058277,
+      0.056098776947728524,
+      0.8247183569244785
+    ],
+    "episodic_real_error": [
+      0.1458061493305728,
+      0.04930372637184275,
+      0.06038813162338776,
+      4.866837549260212
+    ],
+    "episodic_shuffled_error": [
+      0.1458722278608632,
+      0.04961206376504903,
+      0.06042125504130257,
+      4.995768579874316
+    ],
+    "internal_choice_tv": 0.009783122047091163,
+    "reused_unknown_events": 44,
+    "unknown_real_revisions": 136,
+    "actual_read_credit_records": 52251,
+    "actual_read_credit_participations": 2454240,
+    "stale_read_credits": 0,
+    "question_transition_steps": 0.0005044915081907976,
+    "delayed_actor_events": 151,
+    "expression_mean_bytes": 86.82781456953643,
+    "budget_stop_events": 61,
+    "coevolution_valid": 8.0,
+    "coevolution_retained": 0.9337748344370861,
+    "coevolution_rms": 0.3411415223254273
+  },
+  "selection_effects": {
+    "one_loop": {
+      "events": 151,
+      "horizon": 1,
+      "discount": 0.8,
+      "skipped": {},
+      "mean_actual_return": 0.06185901559741292,
+      "estimator": "baseline-centered ordinary importance contrast; no clipping or self-normalization",
+      "scope": "one-off draw substitution with unchanged beliefs/learning machinery; actual-state distribution",
+      "fire": {
+        "mean_lift": 0.0005796206587497584,
+        "full_blocks": 1,
+        "positive_blocks": 1,
+        "block_means": [
+          0.0010480075021862237
+        ],
+        "uncertainty": "block stability only; no iid significance claim",
+        "uniform_target_ess": 121.42492599374289,
+        "maximum_weight": 2.9547157845484953,
+        "expected_maximally_coupled_choice_changes": 27.744389760405834,
+        "admissible_counts": {
+          "3": 151
+        }
+      },
+      "draft": {
+        "mean_lift": 0.0002746364034355821,
+        "full_blocks": 1,
+        "positive_blocks": 1,
+        "block_means": [
+          0.0002247394406741366
+        ],
+        "uncertainty": "block stability only; no iid significance claim",
+        "uniform_target_ess": 150.8401095386712,
+        "maximum_weight": 1.1034720150402288,
+        "expected_maximally_coupled_choice_changes": 1.8603739830460995,
+        "admissible_counts": {
+          "4": 151
+        }
+      },
+      "both": {
+        "mean_lift": 0.0007003769169682864,
+        "full_blocks": 1,
+        "positive_blocks": 1,
+        "block_means": [
+          0.0011166343935135107
+        ],
+        "uncertainty": "block stability only; no iid significance claim",
+        "uniform_target_ess": 121.87882338378817,
+        "maximum_weight": 2.9238129445226684
+      },
+      "interaction": {
+        "mean_lift": 0.00015388014521705386,
+        "full_blocks": 1,
+        "positive_blocks": 1,
+        "block_means": [
+          0.0001561125493468494
+        ],
+        "uncertainty": "block stability only; no iid significance claim"
+      },
+      "imagination": {
+        "events": 151,
+        "mean_lift": 0.0003781313636721496,
+        "full_blocks": 1,
+        "positive_blocks": 1,
+        "block_means": [
+          0.00043957330312317545
+        ],
+        "target": "same learned habit, current imagination offset removed",
+        "target_ess": 132.3684297783044,
+        "maximum_weight": 2.491724235017257,
+        "expected_maximally_coupled_choice_changes": 22.796835241382272
+      },
+      "draft_imagination_interaction": {
+        "events": 151,
+        "mean_lift": 0.00011725156237668268,
+        "full_blocks": 1,
+        "positive_blocks": 1,
+        "block_means": [
+          0.00011778135089610288
+        ],
+        "target": "same learned habit, current imagination offset removed"
+      }
+    },
+    "two_loops": {
+      "events": 150,
+      "horizon": 2,
+      "discount": 0.8,
+      "skipped": {
+        "future_not_observed": 1
+      },
+      "mean_actual_return": 0.11169219112396239,
+      "estimator": "baseline-centered ordinary importance contrast; no clipping or self-normalization",
+      "scope": "one-off draw substitution with unchanged beliefs/learning machinery; actual-state distribution",
+      "fire": {
+        "mean_lift": -0.0035399492573016354,
+        "full_blocks": 1,
+        "positive_blocks": 0,
+        "block_means": [
+          -0.0031231679594924708
+        ],
+        "uncertainty": "block stability only; no iid significance claim",
+        "uniform_target_ess": 120.62485892692742,
+        "maximum_weight": 2.9547157845484953,
+        "expected_maximally_coupled_choice_changes": 27.559358871786955,
+        "admissible_counts": {
+          "3": 150
+        }
+      },
+      "draft": {
+        "mean_lift": 0.00020929969498782597,
+        "full_blocks": 1,
+        "positive_blocks": 1,
+        "block_means": [
+          8.081760554511018e-05
+        ],
+        "uncertainty": "block stability only; no iid significance claim",
+        "uniform_target_ess": 149.84011155679028,
+        "maximum_weight": 1.1034720150402288,
+        "expected_maximally_coupled_choice_changes": 1.8464310221886044,
+        "admissible_counts": {
+          "4": 150
+        }
+      },
+      "both": {
+        "mean_lift": -0.003334847704586439,
+        "full_blocks": 1,
+        "positive_blocks": 0,
+        "block_means": [
+          -0.002994898254542959
+        ],
+        "uncertainty": "block stability only; no iid significance claim",
+        "uniform_target_ess": 121.07489919298673,
+        "maximum_weight": 2.9238129445226684
+      },
+      "interaction": {
+        "mean_lift": 4.198142272629231e-06,
+        "full_blocks": 1,
+        "positive_blocks": 0,
+        "block_means": [
+          -4.745209940440209e-05
+        ],
+        "uncertainty": "block stability only; no iid significance claim"
+      },
+      "imagination": {
+        "events": 150,
+        "mean_lift": -0.0012843760724677938,
+        "full_blocks": 1,
+        "positive_blocks": 0,
+        "block_means": [
+          -0.001649837647344897
+        ],
+        "target": "same learned habit, current imagination offset removed",
+        "target_ess": 131.61743785158092,
+        "maximum_weight": 2.491724235017257,
+        "expected_maximally_coupled_choice_changes": 22.570311756951025
+      },
+      "draft_imagination_interaction": {
+        "events": 150,
+        "mean_lift": 4.445240763133889e-06,
+        "full_blocks": 1,
+        "positive_blocks": 0,
+        "block_means": [
+          -3.414038733593316e-05
+        ],
+        "target": "same learned habit, current imagination offset removed"
+      }
+    }
+  },
+  "decision": "continue current BudgetedAdamW and full loop; language improves on both fixed sources; planning multiplier not established, retain further blocks instead of inflating planner weight",
+  "original_target_cycle": 10417
+}

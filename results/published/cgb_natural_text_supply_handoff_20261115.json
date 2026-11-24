@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "created_at": 1794709243.80669,
+  "status": "resumed_and_verified",
+  "individual_id": "mengli-851f47bb4a72b46c",
+  "branch_id": "joint-world-cycle-real-cuda-20261113-02",
+  "source_cycle": 5791,
+  "source_sha256": "c628818628844a9e13f6bb35f28682869950ecbabec892615abfb854cda9037d",
+  "target_cycle": 15773,
+  "remaining_cycles": 9982,
+  "before": {
+    "text_events": 248,
+    "external_bytes": 238080,
+    "natural_append_bytes": 19200
+  },
+  "supply": {
+    "action": "preserve actual cursor and free suffix navigation; no forced chapter migration",
+    "source_prefix_bytes": 40128875,
+    "first_append_cycle": 5676,
+    "append_event_cycles": [
+      5676,
+      5679,
+      5680,
+      5681,
+      5712,
+      5713,
+      5721,
+      5722,
+      5723,
+      5734,
+      5735,
+      5736,
+      5737,
+      5738,
+      5739,
+      5740,
+      5770,
+      5771,
+      5772,
+      5779
+    ],
+    "new_accounting": "actual response and holdout source bytes per committed event",
+    "decision": "latest data supersedes the zero-append snapshot at 5668"
+  },
+  "validation": {
+    "origin_cycle": 5543,
+    "every": 128,
+    "bytes_each": 8192,
+    "next_cycle": 5799
+  },
+  "fixed_validation_5771": {
+    "owt_nll": 1.3821910172700882,
+    "mother_nll": 1.154226504266262,
+    "bytes_each": 8192,
+    "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+    "fineweb_nll": 1.4046249836683273
+  },
+  "unchanged": [
+    "individual weights and Adam",
+    "S/P and all memories",
+    "seen bitmap and RNG",
+    "pending credit and actual suffix policy",
+    "losses and architecture",
+    "no caregiver APIs"
+  ],
+  "admission": "27 CPU interface/continuity tests passed; existing Deslice check passed",
+  "checks": [
+    "actual delivered FineWeb bytes recorded per committed event",
+    "same identity and next cycle",
+    "fixed validation follows stage clock after restore"
+  ],
+  "verified_at": 1794709535.7963762,
+  "guard": "results\\cgb_grown_body_20261114\\stage_text_10m_source_accounting\\status.json",
+  "actual_resume": {
+    "first_cycle": 5792,
+    "first_start": 1624798,
+    "previous_turn_start": 1623838,
+    "note": "first input continues at preceding actual cursor; no forced destination or state reset",
+    "first_source_bytes": {
+      "inherited_prefix": 960,
+      "natural_append": 0
+    },
+    "verified_through_cycle": 5803,
+    "caregiver_provider_calls": 0
+  },
+  "fixed_validation_5791": {
+    "owt_nll": 1.3662932142615318,
+    "mother_nll": 1.1348945908248425,
+    "bytes_each": 8192,
+    "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+    "fineweb_nll": 1.4122449457645416
+  },
+  "fixed_validation_5799": {
+    "owt_nll": 1.38213449716568,
+    "mother_nll": 1.1164375394582748,
+    "bytes_each": 8192,
+    "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+    "fineweb_nll": 1.4072891473770142
+  }
+}

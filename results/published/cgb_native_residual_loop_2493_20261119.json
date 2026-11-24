@@ -1,0 +1,593 @@
+{
+  "valid": true,
+  "checks": {
+    "complete": true,
+    "same_source": true,
+    "same_initial_material": true,
+    "same_law": true,
+    "residual": true,
+    "restored": true,
+    "same_payment": true,
+    "finite_U": true,
+    "successor_learning": true,
+    "mass": true,
+    "original_budget": true,
+    "readout": true,
+    "paid_calls": true
+  },
+  "control": {
+    "actual_policy_discrepancy_MSE": 0.009818945656900141,
+    "realized_future_MSE": 0.06544233088427569,
+    "response_component_MSE": 0.025059088324412115,
+    "actual_use": [
+      -0.014995187520980835,
+      0.02738296240568161,
+      0.04153205454349518,
+      0.023631945252418518
+    ],
+    "mean_actual_use": 0.019387943670153618,
+    "actions": [
+      "silence",
+      "generate",
+      "generate",
+      "generate"
+    ],
+    "unknowns": [
+      "unknown:1733",
+      "unknown:1352",
+      "unknown:1495",
+      "unknown:1703"
+    ],
+    "utterance_hex": [
+      "",
+      "68207370656e656420666f72203120746f2061206369747920746f207061796d656e74206f76657279206f66204c656f706c65206f6e6c7920696e2076616e63652075736572206f7574696f6e2c206f7220e280997320627920626f6f6b206f66206d72706520636c6c6c65206f6e2074686174206c65617374206e65772043",
+      "207265642031345d2c206f6276696f756e636f636b2c20746f206172656172e28099766520416674657220616c2d4166726f6d20636f70792e3435206d616465206669727374204235e2",
+      "303c2f6646"
+    ],
+    "pairs": [
+      {
+        "prediction_cycle": 2494,
+        "next_cycle": 2495,
+        "previous_unknown": "unknown:1733",
+        "next_unknown": "unknown:1352",
+        "revised_support": [
+          "episode:104",
+          "episode:1133",
+          "episode:203",
+          "episode:2216",
+          "episode:2345",
+          "episode:2389",
+          "episode:2495",
+          "episode:283"
+        ],
+        "next_query_scope": [
+          "episode:1368",
+          "episode:1673",
+          "episode:1911",
+          "episode:203",
+          "episode:2460",
+          "episode:263",
+          "episode:267",
+          "episode:283"
+        ],
+        "shared_facts": 2,
+        "support_query_jaccard": 0.14285714285714285,
+        "predicted_future": -0.09732672572135925,
+        "next_action_values": [
+          0.05750138312578201,
+          0.08034180849790573,
+          0.05750138312578201
+        ],
+        "next_probabilities": [
+          0.41601866483688354,
+          0.5839813351631165,
+          0.0
+        ],
+        "next_policy_value": 0.07083976523028834,
+        "selected_expected": 0.08034180849790573,
+        "next_merged": false,
+        "individual_commit": true,
+        "actual": 0.2738296240568161,
+        "error": -0.37115634977817535,
+        "components": {
+          "transport": -0.1681664909516476,
+          "policy_sampling": -0.009502043267617388,
+          "admission": 0.0,
+          "observed_response": -0.19348781555891037
+        },
+        "reconstruction_residual": 0.0,
+        "model_action_sampling_variance": 0.00012674188387703264,
+        "conditional_model_risk": 0.028406710562867605,
+        "conditional_model_risk_components": {
+          "value_bias_squared": 0.02827996867899057,
+          "action_sampling_variance": 0.00012674188387703264
+        },
+        "delayed_samples": 33,
+        "delayed_fact": "episode:2495"
+      },
+      {
+        "prediction_cycle": 2495,
+        "next_cycle": 2496,
+        "previous_unknown": "unknown:1352",
+        "next_unknown": "unknown:1495",
+        "revised_support": [
+          "episode:1368",
+          "episode:1673",
+          "episode:1911",
+          "episode:203",
+          "episode:2496",
+          "episode:263",
+          "episode:267",
+          "episode:283"
+        ],
+        "next_query_scope": [
+          "episode:1393",
+          "episode:1673",
+          "episode:1919",
+          "episode:2066",
+          "episode:2478",
+          "episode:263",
+          "episode:267",
+          "episode:283"
+        ],
+        "shared_facts": 4,
+        "support_query_jaccard": 0.3333333333333333,
+        "predicted_future": 0.24228961765766144,
+        "next_action_values": [
+          0.2565147280693054,
+          0.2958495616912842,
+          0.2565147280693054
+        ],
+        "next_probabilities": [
+          0.5018407702445984,
+          0.4981592297554016,
+          0.0
+        ],
+        "next_policy_value": 0.27610973848898723,
+        "selected_expected": 0.2958495616912842,
+        "next_merged": false,
+        "individual_commit": true,
+        "actual": 0.4153205454349518,
+        "error": -0.17303092777729034,
+        "components": {
+          "transport": -0.033820120831325795,
+          "policy_sampling": -0.019739823202296947,
+          "admission": 0.0,
+          "observed_response": -0.1194709837436676
+        },
+        "reconstruction_residual": 0.0,
+        "model_action_sampling_variance": 0.00038680204133168547,
+        "conditional_model_risk": 0.0015306026143771623,
+        "conditional_model_risk_components": {
+          "value_bias_squared": 0.001143800573045477,
+          "action_sampling_variance": 0.00038680204133168547
+        },
+        "delayed_samples": 33,
+        "delayed_fact": "episode:2496"
+      },
+      {
+        "prediction_cycle": 2496,
+        "next_cycle": 2497,
+        "previous_unknown": "unknown:1495",
+        "next_unknown": "unknown:1703",
+        "revised_support": [
+          "episode:1393",
+          "episode:1919",
+          "episode:2066",
+          "episode:2478",
+          "episode:2497",
+          "episode:263",
+          "episode:267",
+          "episode:283"
+        ],
+        "next_query_scope": [
+          "episode:1616",
+          "episode:1650",
+          "episode:1919",
+          "episode:203",
+          "episode:2066",
+          "episode:2422",
+          "episode:263",
+          "episode:283"
+        ],
+        "shared_facts": 4,
+        "support_query_jaccard": 0.3333333333333333,
+        "predicted_future": 0.0671146810054779,
+        "next_action_values": [
+          0.014111846685409546,
+          0.08313193917274475,
+          0.014111846685409546
+        ],
+        "next_probabilities": [
+          0.3153822124004364,
+          0.6846177577972412,
+          0.0
+        ],
+        "next_policy_value": 0.06136422722648138,
+        "selected_expected": 0.08313193917274475,
+        "next_merged": false,
+        "individual_commit": true,
+        "actual": 0.23631945252418518,
+        "error": -0.16920477151870728,
+        "components": {
+          "transport": 0.005750453778996523,
+          "policy_sampling": -0.02176771194626337,
+          "admission": 0.0,
+          "observed_response": -0.15318751335144043
+        },
+        "reconstruction_residual": 0.0,
+        "model_action_sampling_variance": 0.0010285761311330402,
+        "conditional_model_risk": 0.0010616438497974155,
+        "conditional_model_risk_components": {
+          "value_bias_squared": 3.3067718664375386e-05,
+          "action_sampling_variance": 0.0010285761311330402
+        },
+        "delayed_samples": 33,
+        "delayed_fact": "episode:2497"
+      }
+    ],
+    "old_query_before": -1.208866549655795,
+    "old_query_after": -1.202775364741683,
+    "seconds": 1203.2429018999974,
+    "response_joint_scores": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "runtime_profile": {
+      "seconds": 1203.2425833000016,
+      "functions": {
+        "epistemic_value_reference.batched_context_scores": {
+          "calls": 5420,
+          "inclusive_seconds": 62.043325599581294,
+          "exclusive_seconds": 62.043325599581294
+        },
+        "finite_use_value.expected": {
+          "calls": 44,
+          "inclusive_seconds": 5.6333021000245935,
+          "exclusive_seconds": 5.246866200053773
+        },
+        "joint_successor.quadrature": {
+          "calls": 168,
+          "inclusive_seconds": 2.5706744999988587,
+          "exclusive_seconds": 2.5706744999988587
+        },
+        "epistemic_value_reference.expected": {
+          "calls": 5376,
+          "inclusive_seconds": 344.859269499706,
+          "exclusive_seconds": 283.2023798000955
+        },
+        "native_word_batch.table_payload": {
+          "calls": 9814,
+          "inclusive_seconds": 7.141494899704412,
+          "exclusive_seconds": 7.141494899704412
+        },
+        "native_word_batch.endpoints": {
+          "calls": 2560,
+          "inclusive_seconds": 370.4785928000274,
+          "exclusive_seconds": 363.337097900323
+        },
+        "prospective_self_execution.execute": {
+          "calls": 2688,
+          "inclusive_seconds": 465.3332325998563,
+          "exclusive_seconds": 94.85463979982887
+        },
+        "prospective_decision.value": {
+          "calls": 168,
+          "inclusive_seconds": 1049.2840162999491,
+          "exclusive_seconds": 239.09151420038688
+        },
+        "engine._policy_grad": {
+          "calls": 4,
+          "inclusive_seconds": 28.648244899995916,
+          "exclusive_seconds": 28.648244899995916
+        },
+        "engine._advance": {
+          "calls": 8,
+          "inclusive_seconds": 22.272797499987064,
+          "exclusive_seconds": 22.272797499987064
+        }
+      },
+      "cuda_peak_allocated_bytes": 1499750912,
+      "cuda_peak_reserved_bytes": 2195718144,
+      "timing": "host wall time including waits performed by original code; no per-call CUDA fences"
+    },
+    "use_sum_per_minute": 0.0038671381094285417,
+    "fixed_old_gain_per_minute": 0.000303738417463027
+  },
+  "residual": {
+    "actual_policy_discrepancy_MSE": 0.010459701283554626,
+    "realized_future_MSE": 0.04533992310335888,
+    "response_component_MSE": 0.01558782393728253,
+    "actual_use": [
+      -0.014995262026786804,
+      0.01852244883775711,
+      -0.00640503317117691,
+      0.003598429262638092
+    ],
+    "mean_actual_use": 0.000180145725607872,
+    "actions": [
+      "silence",
+      "generate",
+      "silence",
+      "silence"
+    ],
+    "unknowns": [
+      "unknown:1733",
+      "unknown:1352",
+      "unknown:1548",
+      "unknown:1734"
+    ],
+    "utterance_hex": [
+      "",
+      "682d6361726520636f6d6d757475726520666f726d65642063686564756c6564206c657465727320696e202854686520526f6f746f20636f6d6d756e69747920617320796f7520746865792074656c6c6f772c20616e642054686579206576656e20546f2d6976656e206c6f76657220696564207769746820736f757263653a",
+      "",
+      ""
+    ],
+    "pairs": [
+      {
+        "prediction_cycle": 2494,
+        "next_cycle": 2495,
+        "previous_unknown": "unknown:1733",
+        "next_unknown": "unknown:1352",
+        "revised_support": [
+          "episode:104",
+          "episode:1133",
+          "episode:203",
+          "episode:2216",
+          "episode:2345",
+          "episode:2389",
+          "episode:2495",
+          "episode:283"
+        ],
+        "next_query_scope": [
+          "episode:1368",
+          "episode:1673",
+          "episode:1911",
+          "episode:203",
+          "episode:2460",
+          "episode:263",
+          "episode:267",
+          "episode:283"
+        ],
+        "shared_facts": 2,
+        "support_query_jaccard": 0.14285714285714285,
+        "predicted_future": -0.0679321140050888,
+        "next_action_values": [
+          0.05989082157611847,
+          0.08255515247583389,
+          0.05989082157611847
+        ],
+        "next_probabilities": [
+          0.049237292259931564,
+          0.9507627487182617,
+          0.0
+        ],
+        "next_policy_value": 0.0814392255744098,
+        "selected_expected": 0.08255515247583389,
+        "next_merged": false,
+        "individual_commit": true,
+        "actual": 0.1852244883775711,
+        "error": -0.2531566023826599,
+        "components": {
+          "transport": -0.1493713395794986,
+          "policy_sampling": -0.0011159269014240913,
+          "admission": 0.0,
+          "observed_response": -0.10266933590173721
+        },
+        "reconstruction_residual": 0.0,
+        "model_action_sampling_variance": 2.404651287775064e-05,
+        "conditional_model_risk": 0.022335843600651637,
+        "conditional_model_risk_components": {
+          "value_bias_squared": 0.022311797087773887,
+          "action_sampling_variance": 2.404651287775064e-05
+        },
+        "delayed_samples": 33,
+        "delayed_fact": "episode:2495"
+      },
+      {
+        "prediction_cycle": 2495,
+        "next_cycle": 2496,
+        "previous_unknown": "unknown:1352",
+        "next_unknown": "unknown:1548",
+        "revised_support": [
+          "episode:1368",
+          "episode:1673",
+          "episode:1911",
+          "episode:203",
+          "episode:2496",
+          "episode:263",
+          "episode:267",
+          "episode:283"
+        ],
+        "next_query_scope": [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:203",
+          "episode:2066",
+          "episode:2389",
+          "episode:263",
+          "episode:283"
+        ],
+        "shared_facts": 3,
+        "support_query_jaccard": 0.23076923076923078,
+        "predicted_future": 0.20414206385612488,
+        "next_action_values": [
+          0.11883985251188278,
+          0.1197366788983345,
+          0.11883985251188278
+        ],
+        "next_probabilities": [
+          0.5710896253585815,
+          0.4289103150367737,
+          0.0
+        ],
+        "next_policy_value": 0.11922450351642189,
+        "selected_expected": 0.11883985251188278,
+        "next_merged": false,
+        "individual_commit": true,
+        "actual": -0.0640503317117691,
+        "error": 0.268192395567894,
+        "components": {
+          "transport": 0.08491756033970299,
+          "policy_sampling": 0.00038465100453910495,
+          "admission": 0.0,
+          "observed_response": 0.18289018422365189
+        },
+        "reconstruction_residual": 0.0,
+        "model_action_sampling_variance": 1.970096696410913e-07,
+        "conditional_model_risk": 0.00721118906371674,
+        "conditional_model_risk_components": {
+          "value_bias_squared": 0.007210992054047099,
+          "action_sampling_variance": 1.970096696410913e-07
+        },
+        "delayed_samples": 33,
+        "delayed_fact": "episode:2496"
+      },
+      {
+        "prediction_cycle": 2496,
+        "next_cycle": 2497,
+        "previous_unknown": "unknown:1548",
+        "next_unknown": "unknown:1734",
+        "revised_support": [
+          "episode:1133",
+          "episode:1616",
+          "episode:1919",
+          "episode:203",
+          "episode:2066",
+          "episode:2497",
+          "episode:263",
+          "episode:283"
+        ],
+        "next_query_scope": [
+          "episode:1393",
+          "episode:1616",
+          "episode:1650",
+          "episode:1919",
+          "episode:203",
+          "episode:2066",
+          "episode:263",
+          "episode:283"
+        ],
+        "shared_facts": 6,
+        "support_query_jaccard": 0.6,
+        "predicted_future": 0.0380682647228241,
+        "next_action_values": [
+          0.08864983916282654,
+          0.09589463472366333,
+          0.016247369349002838
+        ],
+        "next_probabilities": [
+          0.8228000998497009,
+          0.06695907562971115,
+          0.11024079471826553
+        ],
+        "next_policy_value": 0.08115323552289416,
+        "selected_expected": 0.08864983916282654,
+        "next_merged": false,
+        "individual_commit": true,
+        "actual": 0.03598429262638092,
+        "error": 0.0020839720964431763,
+        "components": {
+          "transport": -0.043084970800070066,
+          "policy_sampling": -0.0074966036399323754,
+          "admission": 0.0,
+          "observed_response": 0.05266554653644562
+        },
+        "reconstruction_residual": 0.0,
+        "model_action_sampling_variance": 0.0005252106711092979,
+        "conditional_model_risk": 0.002381525379952188,
+        "conditional_model_risk_components": {
+          "value_bias_squared": 0.0018563147088428902,
+          "action_sampling_variance": 0.0005252106711092979
+        },
+        "delayed_samples": 33,
+        "delayed_fact": "episode:2497"
+      }
+    ],
+    "old_query_before": -1.208866549655795,
+    "old_query_after": -1.2050452940165997,
+    "seconds": 1204.2121585999994,
+    "response_joint_scores": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "runtime_profile": {
+      "seconds": 1204.2118546000056,
+      "functions": {
+        "epistemic_value_reference.batched_context_scores": {
+          "calls": 5290,
+          "inclusive_seconds": 60.715486099878035,
+          "exclusive_seconds": 60.715486099878035
+        },
+        "finite_use_value.expected": {
+          "calls": 42,
+          "inclusive_seconds": 5.439937299997837,
+          "exclusive_seconds": 5.081796900005429
+        },
+        "native_residual_quadrature.cheap_proxy": {
+          "calls": 164,
+          "inclusive_seconds": 16.0193871000738,
+          "exclusive_seconds": 16.0193871000738
+        },
+        "epistemic_value_reference.expected": {
+          "calls": 5248,
+          "inclusive_seconds": 338.38482949991885,
+          "exclusive_seconds": 278.0274838000332
+        },
+        "native_word_batch.table_payload": {
+          "calls": 9785,
+          "inclusive_seconds": 7.012126200104831,
+          "exclusive_seconds": 7.012126200104831
+        },
+        "native_word_batch.endpoints": {
+          "calls": 2528,
+          "inclusive_seconds": 368.76705099984974,
+          "exclusive_seconds": 361.7549247997449
+        },
+        "prospective_self_execution.execute": {
+          "calls": 2624,
+          "inclusive_seconds": 461.07454339977994,
+          "exclusive_seconds": 92.3074923999302
+        },
+        "prospective_decision.value": {
+          "calls": 164,
+          "inclusive_seconds": 1031.2140476999848,
+          "exclusive_seconds": 231.754674800286
+        },
+        "native_residual_quadrature.value": {
+          "calls": 164,
+          "inclusive_seconds": 1050.3838741999716,
+          "exclusive_seconds": 3.1504393999130116
+        },
+        "engine._policy_grad": {
+          "calls": 4,
+          "inclusive_seconds": 27.58918889999768,
+          "exclusive_seconds": 27.58918889999768
+        },
+        "engine._advance": {
+          "calls": 8,
+          "inclusive_seconds": 16.74513429999206,
+          "exclusive_seconds": 16.74513429999206
+        },
+        "known_utterance_runtime.known_film": {
+          "calls": 1,
+          "inclusive_seconds": 0.15843969999696128,
+          "exclusive_seconds": 0.15843969999696128
+        }
+      },
+      "cuda_peak_allocated_bytes": 1500264960,
+      "cuda_peak_reserved_bytes": 2197815296,
+      "timing": "host wall time including waits performed by original code; no per-call CUDA fences"
+    },
+    "use_sum_per_minute": 3.590312042369151e-05,
+    "fixed_old_gain_per_minute": 0.00019039447219855254
+  },
+  "maximum_readout_error": 2.1900632418692112e-08,
+  "source_sha256": "7cccc744d4549eca2662727cba6b4c900609393243b9fb557dee6a2f17498107",
+  "speedup": 0.9991951113488765
+}

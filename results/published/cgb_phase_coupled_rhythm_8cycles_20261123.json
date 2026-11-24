@@ -1,0 +1,148 @@
+{
+  "validation": {
+    "path": "D:\\information-boltzmann-v1\\data\\cgb_natural_text_20261115\\validation.bin",
+    "sha256": "b09c3879960cab5b5bbe3d3282059d472d7ee140925c58d7550b7fedebfbee93",
+    "starts": [
+      0,
+      95629,
+      191258,
+      286887
+    ],
+    "bytes_per_segment": 2048,
+    "total_scored_bytes": 8192
+  },
+  "evaluations": {
+    "origin_2813": {
+      "checkpoint": "E:\\mengli-native-supply-completed-20261122\\original\\last.pt.gz",
+      "cycle": 2813,
+      "load_seconds": 13.739,
+      "mean_nll": 1.5830430808561182,
+      "segment_nll": [
+        1.3903414943077124,
+        1.800905565661104,
+        1.5558654951087618,
+        1.5850597683468948
+      ],
+      "config_has_phase_rhythm": false
+    },
+    "strict8_baseline": {
+      "checkpoint": "D:\\mengli-throughput-20261123\\strict8_baseline\\body\\last.pt.gz",
+      "cycle": 2821,
+      "load_seconds": 10.991,
+      "mean_nll": 1.5802493863505767,
+      "segment_nll": [
+        1.3795427330414611,
+        1.8042416164040773,
+        1.5448851908587997,
+        1.5923280050979685
+      ],
+      "config_has_phase_rhythm": false
+    },
+    "phase8_rhythm": {
+      "checkpoint": "D:\\mengli-throughput-20261123\\phase8_rhythm\\body\\last.pt.gz",
+      "cycle": 2821,
+      "load_seconds": 10.933,
+      "mean_nll": 1.5822514876792049,
+      "segment_nll": [
+        1.3966878346326297,
+        1.7961841883964027,
+        1.5467958048483794,
+        1.5893381228394077
+      ],
+      "config_has_phase_rhythm": true,
+      "restored_phase_rhythm_verified": true,
+      "restored_phase_rhythm_summary": {
+        "schema": 1,
+        "cycles": 8,
+        "theta_phase": 5.693786683039871,
+        "swr_pressure": 0.795544446860281,
+        "surprise_ema": 1.6884899831863402,
+        "surprise_var": 0.10497106916091462,
+        "gamma_cycles": 6,
+        "theta_cycles": 2,
+        "swr_fires": 2,
+        "surprise_preemptions": 1,
+        "internal_preemptions": 0,
+        "theme_holds": 6,
+        "theme_revisions": 2,
+        "poll_skips": 12,
+        "teacher_skips": 6,
+        "swr_skips": 12,
+        "active_unknown": "unknown:1924",
+        "last_event": {
+          "cycle": 8,
+          "regime": "gamma",
+          "theta_open": false,
+          "swr_open": false,
+          "theme_held": true,
+          "proposal_budget": 1,
+          "response_nll": 1.5254260301589966,
+          "surprise_z": 0.0,
+          "kinetic": 0.44749768543988466,
+          "delta_phi": 1.4035810369666804,
+          "theta_phase": 5.693786683039871,
+          "theta_wrapped_next": false,
+          "swr_pressure": 0.795544446860281,
+          "surprise_preempt_next": false,
+          "swr_measured": 0,
+          "swr_skipped": 2,
+          "mid_poll_skipped": 2,
+          "teacher_skipped": true
+        }
+      }
+    }
+  },
+  "gains_vs_origin": {
+    "strict8_baseline": {
+      "nll_improvement": 0.0027936945055415663,
+      "segment_improvements": [
+        0.010798761266251233,
+        -0.0033360507429733843,
+        0.010980304249962103,
+        -0.007268236751073687
+      ]
+    },
+    "phase8_rhythm": {
+      "nll_improvement": 0.0007915931769133522,
+      "segment_improvements": [
+        -0.006346340324917321,
+        0.004721377264701232,
+        0.009069690260382401,
+        -0.0042783544925129036
+      ]
+    }
+  },
+  "phase_minus_strict_nll_gain": -0.002002101328628214,
+  "strict8_baseline_run": {
+    "cycles": 8,
+    "updates": 32,
+    "external_bytes": 7680,
+    "self_bytes": 522,
+    "life_seconds": 115.11504299999797,
+    "seconds_per_cycle": 14.389380374999746,
+    "bytes_per_second": 66.7158678818383,
+    "checkpoint_commit_seconds": 2.426663999998709,
+    "total_seconds": 117.54206889999841,
+    "peak_gpu_bytes": 2316845568,
+    "old_facts_start": -1.137590211816132,
+    "old_facts_end": -1.1320759980008006,
+    "old_facts_delta": 0.005514213815331459
+  },
+  "phase8_rhythm_run": {
+    "cycles": 8,
+    "updates": 32,
+    "external_bytes": 7680,
+    "self_bytes": 401,
+    "life_seconds": 72.68619709999984,
+    "seconds_per_cycle": 9.08577463749998,
+    "bytes_per_second": 105.65967551492685,
+    "checkpoint_commit_seconds": 2.547246099999029,
+    "total_seconds": 75.23372759999984,
+    "peak_gpu_bytes": 2129101312,
+    "old_facts_start": -1.137590211816132,
+    "old_facts_end": -1.1337818065658212,
+    "old_facts_delta": 0.003808405250310898
+  },
+  "speedup_phase_vs_strict": 1.5837263138368016,
+  "speedup_phase_vs_initial_32s_per_cycle": 3.5455424864977636
+}

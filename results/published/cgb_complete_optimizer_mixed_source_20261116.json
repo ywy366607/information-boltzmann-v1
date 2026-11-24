@@ -1,0 +1,242 @@
+{
+  "schema": 1,
+  "pipeline_status": "stopped_between_arms",
+  "main_written": false,
+  "scope": "prequential predictions and executed loop paths; no scalar pooling across incompatible outcome channels",
+  "arms": {
+    "budgeted": {
+      "events": 96,
+      "phases": {
+        "stable_owt": {
+          "events": 32,
+          "source_bytes": {
+            "inherited_prefix": 21120,
+            "natural_append": 9600
+          },
+          "choices": {
+            "silence": 5,
+            "generate": 16,
+            "reuse": 11
+          },
+          "real_next_boundary_vs_unchanged": {
+            "events": 31,
+            "real_error": 0.3349683219867368,
+            "control_error": 0.47267686287241595,
+            "better": 24,
+            "worse": 7
+          },
+          "real_next_boundary_vs_other_action": {
+            "events": 31,
+            "real_error": 0.3349683219867368,
+            "control_error": 0.35348481540718385,
+            "better": 23,
+            "worse": 8
+          },
+          "next_return_vs_base": {
+            "events": 32,
+            "real_error": 1.6708951036001065,
+            "control_error": 1.70282952731949,
+            "better": 19,
+            "worse": 8
+          },
+          "channel_units": [
+            "head4_predictability",
+            "head32_predictability",
+            "joined",
+            "learning_progress"
+          ],
+          "wood_used_error": [
+            0.17291315228067106,
+            0.049647623835454624,
+            0.05950105272313835,
+            1.2176038966645137
+          ],
+          "wood_base_error": [
+            0.17291315228067106,
+            0.049647623835454624,
+            0.05950105272313522,
+            1.31573414538434
+          ],
+          "episodic_real_error": [
+            0.20036833508129348,
+            0.058722723041228164,
+            0.06487911455610826,
+            4.710986727499403
+          ],
+          "episodic_shuffled_error": [
+            0.19807138271789881,
+            0.058695464243101014,
+            0.06488960734066238,
+            4.818741331226192
+          ],
+          "internal_choice_tv": 0.014993782388046384,
+          "reused_unknown_events": 4,
+          "unknown_real_revisions": 31,
+          "actual_read_credit_records": 8096,
+          "actual_read_credit_participations": 529232,
+          "stale_read_credits": 0,
+          "question_transition_steps": 0.0016015540039688858,
+          "delayed_actor_events": 32,
+          "expression_mean_bytes": 104.65625,
+          "budget_stop_events": 16,
+          "coevolution_valid": 8.0,
+          "coevolution_retained": 1.125,
+          "coevolution_rms": 0.34238627925515175
+        },
+        "new_fineweb": {
+          "events": 32,
+          "source_bytes": {
+            "inherited_prefix": 22080,
+            "natural_append": 8640
+          },
+          "choices": {
+            "silence": 5,
+            "generate": 13,
+            "reuse": 14
+          },
+          "real_next_boundary_vs_unchanged": {
+            "events": 30,
+            "real_error": 0.4476416918138663,
+            "control_error": 0.6646339456240337,
+            "better": 20,
+            "worse": 10
+          },
+          "real_next_boundary_vs_other_action": {
+            "events": 30,
+            "real_error": 0.4476416918138663,
+            "control_error": 0.42737285246451695,
+            "better": 13,
+            "worse": 17
+          },
+          "next_return_vs_base": {
+            "events": 32,
+            "real_error": 0.903438447208106,
+            "control_error": 0.8819580568476788,
+            "better": 12,
+            "worse": 17
+          },
+          "channel_units": [
+            "head4_predictability",
+            "head32_predictability",
+            "joined",
+            "learning_progress"
+          ],
+          "wood_used_error": [
+            0.1216239099339873,
+            0.034743064086228514,
+            0.0025857843320434646,
+            0.4511004070964191
+          ],
+          "wood_base_error": [
+            0.1216239099339873,
+            0.034743064086228514,
+            0.00258578433204093,
+            0.5293684167272659
+          ],
+          "episodic_real_error": [
+            0.1598475380635591,
+            0.06513735940507104,
+            0.0011470405095241286,
+            6.692652691359399
+          ],
+          "episodic_shuffled_error": [
+            0.16067138097878342,
+            0.06423212292429525,
+            0.0011542963046639633,
+            6.8538753694083425
+          ],
+          "internal_choice_tv": 0.013877637567929924,
+          "reused_unknown_events": 7,
+          "unknown_real_revisions": 30,
+          "actual_read_credit_records": 9637,
+          "actual_read_credit_participations": 527872,
+          "stale_read_credits": 0,
+          "question_transition_steps": 0.0001490189420270127,
+          "delayed_actor_events": 32,
+          "expression_mean_bytes": 102.0,
+          "budget_stop_events": 10,
+          "coevolution_valid": 8.0,
+          "coevolution_retained": 0.46875,
+          "coevolution_rms": 0.33961653243750334
+        },
+        "revisit_owt": {
+          "events": 32,
+          "source_bytes": {
+            "inherited_prefix": 22080,
+            "natural_append": 8640
+          },
+          "choices": {
+            "silence": 7,
+            "generate": 16,
+            "reuse": 9
+          },
+          "real_next_boundary_vs_unchanged": {
+            "events": 30,
+            "real_error": 0.47754981766144433,
+            "control_error": 0.6609012121955554,
+            "better": 20,
+            "worse": 10
+          },
+          "real_next_boundary_vs_other_action": {
+            "events": 30,
+            "real_error": 0.47754981766144433,
+            "control_error": 0.5040271073579788,
+            "better": 17,
+            "worse": 13
+          },
+          "next_return_vs_base": {
+            "events": 32,
+            "real_error": 0.39126779378565096,
+            "control_error": 0.4026709213352925,
+            "better": 12,
+            "worse": 10
+          },
+          "channel_units": [
+            "head4_predictability",
+            "head32_predictability",
+            "joined",
+            "learning_progress"
+          ],
+          "wood_used_error": [
+            0.1166554015244401,
+            0.03863807212013626,
+            0.0004888652214897656,
+            0.2878131385578424
+          ],
+          "wood_base_error": [
+            0.1166554015244401,
+            0.03863807212013626,
+            0.0004888652214845024,
+            0.2862881724568549
+          ],
+          "episodic_real_error": [
+            0.14566785497629553,
+            0.053337832117051676,
+            0.0005932150246005218,
+            2.5222192489527515
+          ],
+          "episodic_shuffled_error": [
+            0.14361153511867997,
+            0.053783055475378205,
+            0.0005936806275238194,
+            2.475487535535649
+          ],
+          "internal_choice_tv": 0.00832386570982635,
+          "reused_unknown_events": 11,
+          "unknown_real_revisions": 30,
+          "actual_read_credit_records": 11298,
+          "actual_read_credit_participations": 522224,
+          "stale_read_credits": 0,
+          "question_transition_steps": 0.00017148665995492252,
+          "delayed_actor_events": 32,
+          "expression_mean_bytes": 90.96875,
+          "budget_stop_events": 14,
+          "coevolution_valid": 8.0,
+          "coevolution_retained": 0.25,
+          "coevolution_rms": 0.33686792105436325
+        }
+      },
+      "raw_report": "F:\\cgb_optimizer_complete_loop_20261116\\budgeted\\report.json"
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "pairs": [
+    {
+      "layer": 20,
+      "heads": [
+        4,
+        5
+      ],
+      "cycles": [
+        4.626401737332344,
+        2.3122873306274414
+      ],
+      "qualified_samples": 10,
+      "phase_concentration": 0.9791182010549513,
+      "changes": {
+        "within_quiet": {
+          "count": 10,
+          "median_abs_radians": 0.1964866891503334
+        },
+        "between_internal_to_external": {
+          "count": 2,
+          "median_abs_radians": 0.0
+        },
+        "between_internal_to_internal": {
+          "count": 2,
+          "median_abs_radians": 0.0
+        }
+      }
+    },
+    {
+      "layer": 24,
+      "heads": [
+        1,
+        2
+      ],
+      "cycles": [
+        2.3115273155272007,
+        1.1561657432466745
+      ],
+      "qualified_samples": 10,
+      "phase_concentration": 0.9921386171911457,
+      "changes": {
+        "within_quiet": {
+          "count": 10,
+          "median_abs_radians": 0.09807299450039864
+        },
+        "between_internal_to_external": {
+          "count": 3,
+          "median_abs_radians": 0.0
+        },
+        "between_internal_to_internal": {
+          "count": 3,
+          "median_abs_radians": 0.0
+        }
+      }
+    },
+    {
+      "layer": 25,
+      "heads": [
+        1,
+        7
+      ],
+      "cycles": [
+        1.1558734346181154,
+        4.626998797059059
+      ],
+      "qualified_samples": 74,
+      "phase_concentration": 0.9447068477415042,
+      "changes": {
+        "within_quiet": {
+          "count": 74,
+          "median_abs_radians": 0.29473765194416046
+        },
+        "between_internal_to_external": {
+          "count": 16,
+          "median_abs_radians": 0.0
+        },
+        "between_internal_to_internal": {
+          "count": 16,
+          "median_abs_radians": 0.0
+        },
+        "between_external_to_internal": {
+          "count": 10,
+          "median_abs_radians": 0.29473601281642914
+        },
+        "between_external_to_external": {
+          "count": 23,
+          "median_abs_radians": 0.2947377562522888
+        }
+      }
+    }
+  ],
+  "note": "Cycle counts cover the full integrated quiet time, not necessarily the qualified subset; no continuity across recording segments. Interevent gaps can include multiple actual operations and are not isolated interventions."
+}

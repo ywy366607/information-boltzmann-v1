@@ -1,0 +1,2613 @@
+{
+  "prehistory_cycles": [
+    2586,
+    2613
+  ],
+  "inputs": [
+    {
+      "path": "scratch\\cgb_wood_policy_use_16rounds_20261120\\natural\\run",
+      "sha256": "b54ebae54e0b699671daac3825797a108bbbc544d82888c22dc0b599b50cb7c7"
+    },
+    {
+      "path": "G:\\cgb_revisit_memory_crossing_2605_retry1",
+      "sha256": "715bf525cf689f2e26f221f27e226ac276f4b77f3566d5568ada5c574b88f25d"
+    },
+    {
+      "path": "D:\\cgb_speech_only_2605_20261121",
+      "sha256": "39167f1c556f039c0469f7bc38824f6077ea83ff2290f304746974a40bf80be6"
+    },
+    {
+      "path": "G:\\cgb_speech_growth_2613_20261121\\2741",
+      "sha256": "ac29404b7d4520b52ef80570f75d713b8808bb893d2ba9ae3313b80796b47ead"
+    },
+    {
+      "path": "D:\\cgb_reference_use_2741_pair_ssd",
+      "sha256": "0e99a3c76b163a31de6149f47c3f670cf20a70f4454d8f0e7e1d1a5abdc35794"
+    },
+    {
+      "path": "D:\\cgb_reference_use_2773_to_2787",
+      "sha256": "62b2eb33619b4610ef5f807e1a5f845eed771b14001dfc8540afa45e21965be3"
+    },
+    {
+      "path": "D:\\cgb_reference_cap_2741_20261121\\8",
+      "sha256": "2a5c205c5de388daa7f9378be8c26e4990c0238e6682ae5fcbdce408f1d75a1e"
+    }
+  ],
+  "trunk_alone": {
+    "rounds": 128,
+    "recalls": 51,
+    "known_previous": 17,
+    "scored": 17,
+    "positive": 13,
+    "score_stats": [
+      -0.030476689338684082,
+      0.03068709373474121,
+      0.04768101608051973,
+      0.25591588020324707
+    ],
+    "windows": {
+      "4": {
+        "0": {
+          "n": 32,
+          "covariance": -0.189453125,
+          "joint_counts": [
+            [
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              1,
+              3
+            ],
+            [
+              0,
+              2,
+              3
+            ],
+            [
+              1,
+              0,
+              10
+            ],
+            [
+              1,
+              1,
+              4
+            ],
+            [
+              2,
+              0,
+              7
+            ],
+            [
+              2,
+              1,
+              2
+            ],
+            [
+              2,
+              2,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            19,
+            9,
+            4
+          ],
+          "closest_root": [
+            -1.1250000000000002,
+            1.8666480653835098,
+            2.8284271247461903
+          ]
+        },
+        "2": {
+          "n": 31,
+          "covariance": -0.0031217481789802184,
+          "joint_counts": [
+            [
+              0,
+              0,
+              7
+            ],
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              0,
+              6
+            ],
+            [
+              1,
+              1,
+              5
+            ],
+            [
+              1,
+              2,
+              3
+            ],
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              2,
+              0,
+              4
+            ],
+            [
+              2,
+              1,
+              2
+            ],
+            [
+              3,
+              0,
+              2
+            ]
+          ],
+          "use_polynomial_counts": [
+            19,
+            8,
+            3,
+            1
+          ],
+          "closest_root": [
+            -0.16527922233036793,
+            2.662757279591997,
+            2.90657048701989
+          ]
+        }
+      },
+      "8": {
+        "0": {
+          "n": 16,
+          "covariance": -0.1953125,
+          "joint_counts": [
+            [
+              1,
+              0,
+              2
+            ],
+            [
+              1,
+              1,
+              2
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              2,
+              0,
+              1
+            ],
+            [
+              2,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              3,
+              1
+            ],
+            [
+              3,
+              0,
+              2
+            ],
+            [
+              3,
+              1,
+              2
+            ],
+            [
+              4,
+              0,
+              1
+            ],
+            [
+              4,
+              2,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            6,
+            5,
+            3,
+            2
+          ],
+          "closest_root": [
+            -0.0881949601072548,
+            1.5029138939550712,
+            1.8555102920345188
+          ]
+        },
+        "4": {
+          "n": 15,
+          "covariance": -0.5422222222222222,
+          "joint_counts": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              2,
+              3
+            ],
+            [
+              2,
+              1,
+              2
+            ],
+            [
+              2,
+              2,
+              1
+            ],
+            [
+              3,
+              0,
+              3
+            ],
+            [
+              3,
+              1,
+              2
+            ],
+            [
+              3,
+              2,
+              1
+            ],
+            [
+              4,
+              0,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            5,
+            4,
+            6
+          ],
+          "closest_root": [
+            -0.33333333333333337,
+            0.8498365855987975,
+            1.5811388300841898
+          ]
+        }
+      },
+      "16": {
+        "0": {
+          "n": 8,
+          "covariance": -1.28125,
+          "joint_counts": [
+            [
+              2,
+              5,
+              1
+            ],
+            [
+              3,
+              0,
+              1
+            ],
+            [
+              4,
+              1,
+              1
+            ],
+            [
+              4,
+              2,
+              1
+            ],
+            [
+              4,
+              5,
+              1
+            ],
+            [
+              5,
+              1,
+              1
+            ],
+            [
+              5,
+              3,
+              1
+            ],
+            [
+              7,
+              0,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            2,
+            2,
+            1,
+            1,
+            0,
+            2
+          ],
+          "closest_root": [
+            0.7771770194894203,
+            0.8848188915463768,
+            0.912444273082459
+          ]
+        },
+        "8": {
+          "n": 7,
+          "covariance": -0.5918367346938775,
+          "joint_counts": [
+            [
+              3,
+              2,
+              2
+            ],
+            [
+              3,
+              3,
+              1
+            ],
+            [
+              4,
+              4,
+              1
+            ],
+            [
+              5,
+              1,
+              1
+            ],
+            [
+              5,
+              2,
+              1
+            ],
+            [
+              6,
+              1,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            2,
+            3,
+            1,
+            1
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      },
+      "32": {
+        "0": {
+          "n": 4,
+          "covariance": -2.875,
+          "joint_counts": [
+            [
+              6,
+              6,
+              1
+            ],
+            [
+              7,
+              5,
+              1
+            ],
+            [
+              10,
+              4,
+              1
+            ],
+            [
+              11,
+              2,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            1,
+            1
+          ],
+          "closest_root": [
+            0.351807951824333,
+            0.720341736418543,
+            0.9690434193289008
+          ]
+        },
+        "16": {
+          "n": 3,
+          "covariance": -1.3333333333333333,
+          "joint_counts": [
+            [
+              5,
+              5,
+              1
+            ],
+            [
+              9,
+              3,
+              1
+            ],
+            [
+              9,
+              4,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      }
+    },
+    "edges": [
+      {
+        "cycle": 2636,
+        "id": "unknown:1780",
+        "recalled": true,
+        "prior_cycle": 2628,
+        "prior_episode": "episode:2640",
+        "score": 0.02456486225128174
+      },
+      {
+        "cycle": 2642,
+        "id": "unknown:1695",
+        "recalled": true,
+        "prior_cycle": 2623,
+        "prior_episode": "episode:2635",
+        "score": -0.030476689338684082
+      },
+      {
+        "cycle": 2658,
+        "id": "unknown:1819",
+        "recalled": true,
+        "prior_cycle": 2638,
+        "prior_episode": "episode:2650",
+        "score": 0.09233748912811279
+      },
+      {
+        "cycle": 2663,
+        "id": "unknown:1831",
+        "recalled": true,
+        "prior_cycle": 2660,
+        "prior_episode": "episode:2673",
+        "score": 0.06041407585144043
+      },
+      {
+        "cycle": 2674,
+        "id": "unknown:1787",
+        "recalled": true,
+        "prior_cycle": 2657,
+        "prior_episode": "episode:2670",
+        "score": 0.037279725074768066
+      },
+      {
+        "cycle": 2676,
+        "id": "unknown:1829",
+        "recalled": true,
+        "prior_cycle": 2656,
+        "prior_episode": "episode:2669",
+        "score": -0.02683478593826294
+      },
+      {
+        "cycle": 2686,
+        "id": "unknown:1844",
+        "recalled": true,
+        "prior_cycle": 2681,
+        "prior_episode": "episode:2694",
+        "score": 0.007419228553771973
+      },
+      {
+        "cycle": 2696,
+        "id": "unknown:1703",
+        "recalled": true,
+        "prior_cycle": 2675,
+        "prior_episode": "episode:2688",
+        "score": -0.02739506959915161
+      },
+      {
+        "cycle": 2697,
+        "id": "unknown:1805",
+        "recalled": true,
+        "prior_cycle": 2616,
+        "prior_episode": "episode:2627",
+        "score": 0.13630270957946777
+      },
+      {
+        "cycle": 2699,
+        "id": "unknown:1831",
+        "recalled": true,
+        "prior_cycle": 2663,
+        "prior_episode": "episode:2676",
+        "score": 0.25591588020324707
+      },
+      {
+        "cycle": 2708,
+        "id": "unknown:1815",
+        "recalled": true,
+        "prior_cycle": 2632,
+        "prior_episode": "episode:2644",
+        "score": 0.005143344402313232
+      },
+      {
+        "cycle": 2709,
+        "id": "unknown:1788",
+        "recalled": true,
+        "prior_cycle": 2614,
+        "prior_episode": "episode:2625",
+        "score": 0.03068709373474121
+      },
+      {
+        "cycle": 2726,
+        "id": "unknown:1843",
+        "recalled": true,
+        "prior_cycle": 2680,
+        "prior_episode": "episode:2693",
+        "score": 0.051782965660095215
+      },
+      {
+        "cycle": 2728,
+        "id": "unknown:1804",
+        "recalled": true,
+        "prior_cycle": 2615,
+        "prior_episode": "episode:2626",
+        "score": 0.07546371221542358
+      },
+      {
+        "cycle": 2731,
+        "id": "unknown:1844",
+        "recalled": true,
+        "prior_cycle": 2686,
+        "prior_episode": "episode:2699",
+        "score": 0.01785963773727417
+      },
+      {
+        "cycle": 2737,
+        "id": "unknown:1748",
+        "recalled": true,
+        "prior_cycle": 2698,
+        "prior_episode": "episode:2711",
+        "score": -0.0032009482383728027
+      },
+      {
+        "cycle": 2738,
+        "id": "unknown:1818",
+        "recalled": true,
+        "prior_cycle": 2637,
+        "prior_episode": "episode:2649",
+        "score": 0.10331404209136963
+      }
+    ]
+  },
+  "trunk_with_prehistory": {
+    "rounds": 128,
+    "recalls": 51,
+    "known_previous": 30,
+    "scored": 30,
+    "positive": 19,
+    "score_stats": [
+      -0.07193911075592041,
+      0.014456093311309814,
+      0.03580053051312764,
+      0.25591588020324707
+    ],
+    "windows": {
+      "4": {
+        "0": {
+          "n": 32,
+          "covariance": -0.333984375,
+          "joint_counts": [
+            [
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              1,
+              10
+            ],
+            [
+              0,
+              2,
+              4
+            ],
+            [
+              0,
+              4,
+              1
+            ],
+            [
+              1,
+              0,
+              3
+            ],
+            [
+              1,
+              1,
+              5
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              5
+            ],
+            [
+              2,
+              1,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            10,
+            16,
+            5,
+            0,
+            1
+          ],
+          "closest_root": [
+            -1.0000000000000022,
+            0.0,
+            2.000000000000002
+          ]
+        },
+        "2": {
+          "n": 31,
+          "covariance": -0.18210197710718,
+          "joint_counts": [
+            [
+              0,
+              0,
+              7
+            ],
+            [
+              0,
+              1,
+              4
+            ],
+            [
+              0,
+              2,
+              4
+            ],
+            [
+              0,
+              3,
+              1
+            ],
+            [
+              1,
+              0,
+              3
+            ],
+            [
+              1,
+              1,
+              3
+            ],
+            [
+              1,
+              2,
+              4
+            ],
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              2,
+              0,
+              2
+            ],
+            [
+              3,
+              0,
+              2
+            ]
+          ],
+          "use_polynomial_counts": [
+            14,
+            7,
+            8,
+            2
+          ],
+          "closest_root": [
+            -0.21555793884447366,
+            1.3838107400366733,
+            1.8418776471114118
+          ]
+        }
+      },
+      "8": {
+        "0": {
+          "n": 16,
+          "covariance": -0.4609375,
+          "joint_counts": [
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              2,
+              3
+            ],
+            [
+              0,
+              3,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              1,
+              3,
+              2
+            ],
+            [
+              2,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              2
+            ],
+            [
+              2,
+              3,
+              1
+            ],
+            [
+              2,
+              4,
+              1
+            ],
+            [
+              3,
+              0,
+              1
+            ],
+            [
+              4,
+              0,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            3,
+            2,
+            6,
+            4,
+            1
+          ],
+          "closest_root": [
+            0.014837910727945255,
+            0.7329437005114909,
+            1.2279050493659345
+          ]
+        },
+        "4": {
+          "n": 15,
+          "covariance": -0.8222222222222223,
+          "joint_counts": [
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2
+            ],
+            [
+              0,
+              4,
+              1
+            ],
+            [
+              1,
+              2,
+              3
+            ],
+            [
+              2,
+              1,
+              3
+            ],
+            [
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              3,
+              1
+            ],
+            [
+              3,
+              1,
+              1
+            ],
+            [
+              4,
+              0,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            1,
+            5,
+            5,
+            3,
+            1
+          ],
+          "closest_root": [
+            -0.25655498770432866,
+            0.0,
+            1.2565549877043287
+          ]
+        }
+      },
+      "16": {
+        "0": {
+          "n": 8,
+          "covariance": -1.84375,
+          "joint_counts": [
+            [
+              0,
+              3,
+              1
+            ],
+            [
+              1,
+              6,
+              1
+            ],
+            [
+              2,
+              4,
+              1
+            ],
+            [
+              2,
+              6,
+              1
+            ],
+            [
+              3,
+              2,
+              1
+            ],
+            [
+              3,
+              6,
+              1
+            ],
+            [
+              4,
+              2,
+              1
+            ],
+            [
+              6,
+              1,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            1,
+            2,
+            1,
+            1,
+            0,
+            3
+          ],
+          "closest_root": [
+            0.661873672472479,
+            0.7814000278022476,
+            0.8514196478920378
+          ]
+        },
+        "8": {
+          "n": 7,
+          "covariance": -1.4081632653061225,
+          "joint_counts": [
+            [
+              0,
+              5,
+              1
+            ],
+            [
+              1,
+              4,
+              1
+            ],
+            [
+              2,
+              4,
+              1
+            ],
+            [
+              3,
+              4,
+              1
+            ],
+            [
+              3,
+              5,
+              1
+            ],
+            [
+              4,
+              2,
+              1
+            ],
+            [
+              5,
+              2,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            0,
+            2,
+            0,
+            3,
+            2
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      },
+      "32": {
+        "0": {
+          "n": 4,
+          "covariance": -2.625,
+          "joint_counts": [
+            [
+              3,
+              9,
+              1
+            ],
+            [
+              4,
+              8,
+              1
+            ],
+            [
+              6,
+              8,
+              1
+            ],
+            [
+              8,
+              5,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            2,
+            1
+          ],
+          "closest_root": [
+            0.41964337760708076,
+            0.6062907292071996,
+            0.8392867552141612
+          ]
+        },
+        "16": {
+          "n": 3,
+          "covariance": -2.3333333333333335,
+          "joint_counts": [
+            [
+              1,
+              9,
+              1
+            ],
+            [
+              5,
+              8,
+              1
+            ],
+            [
+              6,
+              6,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      }
+    },
+    "edges": [
+      {
+        "cycle": 2614,
+        "id": "unknown:1788",
+        "recalled": true,
+        "prior_cycle": 2589,
+        "prior_episode": "episode:2599",
+        "score": -0.01523733139038086
+      },
+      {
+        "cycle": 2633,
+        "id": "unknown:1802",
+        "recalled": true,
+        "prior_cycle": 2611,
+        "prior_episode": "episode:2622",
+        "score": -0.019073843955993652
+      },
+      {
+        "cycle": 2636,
+        "id": "unknown:1780",
+        "recalled": true,
+        "prior_cycle": 2628,
+        "prior_episode": "episode:2640",
+        "score": 0.02456486225128174
+      },
+      {
+        "cycle": 2639,
+        "id": "unknown:1739",
+        "recalled": true,
+        "prior_cycle": 2591,
+        "prior_episode": "episode:2601",
+        "score": 0.24061942100524902
+      },
+      {
+        "cycle": 2642,
+        "id": "unknown:1695",
+        "recalled": true,
+        "prior_cycle": 2623,
+        "prior_episode": "episode:2635",
+        "score": -0.030476689338684082
+      },
+      {
+        "cycle": 2657,
+        "id": "unknown:1787",
+        "recalled": true,
+        "prior_cycle": 2601,
+        "prior_episode": "episode:2612",
+        "score": -0.07193911075592041
+      },
+      {
+        "cycle": 2658,
+        "id": "unknown:1819",
+        "recalled": true,
+        "prior_cycle": 2638,
+        "prior_episode": "episode:2650",
+        "score": 0.09233748912811279
+      },
+      {
+        "cycle": 2663,
+        "id": "unknown:1831",
+        "recalled": true,
+        "prior_cycle": 2660,
+        "prior_episode": "episode:2673",
+        "score": 0.06041407585144043
+      },
+      {
+        "cycle": 2668,
+        "id": "unknown:1799",
+        "recalled": true,
+        "prior_cycle": 2607,
+        "prior_episode": "episode:2618",
+        "score": -0.0002913475036621094
+      },
+      {
+        "cycle": 2674,
+        "id": "unknown:1787",
+        "recalled": true,
+        "prior_cycle": 2657,
+        "prior_episode": "episode:2670",
+        "score": 0.037279725074768066
+      },
+      {
+        "cycle": 2675,
+        "id": "unknown:1703",
+        "recalled": true,
+        "prior_cycle": 2588,
+        "prior_episode": "episode:2598",
+        "score": -0.03265881538391113
+      },
+      {
+        "cycle": 2676,
+        "id": "unknown:1829",
+        "recalled": true,
+        "prior_cycle": 2656,
+        "prior_episode": "episode:2669",
+        "score": -0.02683478593826294
+      },
+      {
+        "cycle": 2677,
+        "id": "unknown:1774",
+        "recalled": true,
+        "prior_cycle": 2605,
+        "prior_episode": "episode:2616",
+        "score": 0.07497608661651611
+      },
+      {
+        "cycle": 2686,
+        "id": "unknown:1844",
+        "recalled": true,
+        "prior_cycle": 2681,
+        "prior_episode": "episode:2694",
+        "score": 0.007419228553771973
+      },
+      {
+        "cycle": 2687,
+        "id": "unknown:1797",
+        "recalled": true,
+        "prior_cycle": 2602,
+        "prior_episode": "episode:2613",
+        "score": 0.029742836952209473
+      },
+      {
+        "cycle": 2696,
+        "id": "unknown:1703",
+        "recalled": true,
+        "prior_cycle": 2675,
+        "prior_episode": "episode:2688",
+        "score": -0.02739506959915161
+      },
+      {
+        "cycle": 2697,
+        "id": "unknown:1805",
+        "recalled": true,
+        "prior_cycle": 2616,
+        "prior_episode": "episode:2627",
+        "score": 0.13630270957946777
+      },
+      {
+        "cycle": 2699,
+        "id": "unknown:1831",
+        "recalled": true,
+        "prior_cycle": 2663,
+        "prior_episode": "episode:2676",
+        "score": 0.25591588020324707
+      },
+      {
+        "cycle": 2702,
+        "id": "unknown:1704",
+        "recalled": true,
+        "prior_cycle": 2604,
+        "prior_episode": "episode:2615",
+        "score": 0.10592669248580933
+      },
+      {
+        "cycle": 2708,
+        "id": "unknown:1815",
+        "recalled": true,
+        "prior_cycle": 2632,
+        "prior_episode": "episode:2644",
+        "score": 0.005143344402313232
+      },
+      {
+        "cycle": 2709,
+        "id": "unknown:1788",
+        "recalled": true,
+        "prior_cycle": 2614,
+        "prior_episode": "episode:2625",
+        "score": 0.03068709373474121
+      },
+      {
+        "cycle": 2711,
+        "id": "unknown:1796",
+        "recalled": true,
+        "prior_cycle": 2600,
+        "prior_episode": "episode:2611",
+        "score": 0.011052548885345459
+      },
+      {
+        "cycle": 2716,
+        "id": "unknown:1790",
+        "recalled": true,
+        "prior_cycle": 2603,
+        "prior_episode": "episode:2614",
+        "score": -0.0626421570777893
+      },
+      {
+        "cycle": 2724,
+        "id": "unknown:1800",
+        "recalled": true,
+        "prior_cycle": 2608,
+        "prior_episode": "episode:2619",
+        "score": -0.0021528005599975586
+      },
+      {
+        "cycle": 2726,
+        "id": "unknown:1843",
+        "recalled": true,
+        "prior_cycle": 2680,
+        "prior_episode": "episode:2693",
+        "score": 0.051782965660095215
+      },
+      {
+        "cycle": 2728,
+        "id": "unknown:1804",
+        "recalled": true,
+        "prior_cycle": 2615,
+        "prior_episode": "episode:2626",
+        "score": 0.07546371221542358
+      },
+      {
+        "cycle": 2731,
+        "id": "unknown:1844",
+        "recalled": true,
+        "prior_cycle": 2686,
+        "prior_episode": "episode:2699",
+        "score": 0.01785963773727417
+      },
+      {
+        "cycle": 2735,
+        "id": "unknown:1596",
+        "recalled": true,
+        "prior_cycle": 2613,
+        "prior_episode": "episode:2624",
+        "score": 0.005116462707519531
+      },
+      {
+        "cycle": 2737,
+        "id": "unknown:1748",
+        "recalled": true,
+        "prior_cycle": 2698,
+        "prior_episode": "episode:2711",
+        "score": -0.0032009482383728027
+      },
+      {
+        "cycle": 2738,
+        "id": "unknown:1818",
+        "recalled": true,
+        "prior_cycle": 2637,
+        "prior_episode": "episode:2649",
+        "score": 0.10331404209136963
+      }
+    ]
+  },
+  "reference_46": {
+    "rounds": 46,
+    "recalls": 17,
+    "known_previous": 11,
+    "scored": 11,
+    "positive": 7,
+    "score_stats": [
+      -0.0661550760269165,
+      0.019602298736572266,
+      0.024612713943828236,
+      0.1666315793991089
+    ],
+    "windows": {
+      "4": {
+        "0": {
+          "n": 11,
+          "covariance": -0.04132231404958677,
+          "joint_counts": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              4
+            ],
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              1,
+              0,
+              2
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            3,
+            6,
+            2
+          ],
+          "closest_root": [
+            -0.6339745962155614,
+            0.0,
+            1.6339745962155614
+          ]
+        },
+        "2": {
+          "n": 11,
+          "covariance": -0.13223140495867766,
+          "joint_counts": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              4
+            ],
+            [
+              0,
+              2,
+              2
+            ],
+            [
+              1,
+              0,
+              2
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              3,
+              1,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            3,
+            6,
+            2
+          ],
+          "closest_root": [
+            -0.6339745962155614,
+            0.0,
+            1.6339745962155614
+          ]
+        }
+      },
+      "8": {
+        "0": {
+          "n": 5,
+          "covariance": 0.4,
+          "joint_counts": [
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              3,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              3,
+              3,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            2,
+            1,
+            2
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "4": {
+          "n": 5,
+          "covariance": -0.24,
+          "joint_counts": [
+            [
+              0,
+              3,
+              1
+            ],
+            [
+              1,
+              1,
+              3
+            ],
+            [
+              1,
+              3,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            3,
+            0,
+            2
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      },
+      "16": {
+        "0": {
+          "n": 2,
+          "covariance": -0.5,
+          "joint_counts": [
+            [
+              1,
+              5,
+              1
+            ],
+            [
+              3,
+              4,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            1
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "8": {
+          "n": 2,
+          "covariance": 0.0,
+          "joint_counts": [
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              1,
+              4,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            0,
+            0,
+            1,
+            1
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      }
+    },
+    "edges": [
+      {
+        "cycle": 2742,
+        "id": "unknown:1703",
+        "recalled": true,
+        "prior_cycle": 2696,
+        "prior_episode": "episode:2709",
+        "score": 0.015720486640930176
+      },
+      {
+        "cycle": 2746,
+        "id": "unknown:1860",
+        "recalled": true,
+        "prior_cycle": 2707,
+        "prior_episode": "episode:2720",
+        "score": 0.1666315793991089
+      },
+      {
+        "cycle": 2748,
+        "id": "unknown:1861",
+        "recalled": true,
+        "prior_cycle": 2710,
+        "prior_episode": "episode:2723",
+        "score": -0.044118523597717285
+      },
+      {
+        "cycle": 2753,
+        "id": "unknown:1739",
+        "recalled": true,
+        "prior_cycle": 2639,
+        "prior_episode": "episode:2651",
+        "score": -0.02816694974899292
+      },
+      {
+        "cycle": 2760,
+        "id": "unknown:1703",
+        "recalled": true,
+        "prior_cycle": 2742,
+        "prior_episode": "episode:2755",
+        "score": 0.09717857837677002
+      },
+      {
+        "cycle": 2763,
+        "id": "unknown:1659",
+        "recalled": true,
+        "prior_cycle": 2684,
+        "prior_episode": "episode:2697",
+        "score": -0.0661550760269165
+      },
+      {
+        "cycle": 2767,
+        "id": "unknown:1596",
+        "recalled": true,
+        "prior_cycle": 2735,
+        "prior_episode": "episode:2748",
+        "score": -0.04021620750427246
+      },
+      {
+        "cycle": 2769,
+        "id": "unknown:1805",
+        "recalled": true,
+        "prior_cycle": 2697,
+        "prior_episode": "episode:2710",
+        "score": 0.019602298736572266
+      },
+      {
+        "cycle": 2770,
+        "id": "unknown:1836",
+        "recalled": true,
+        "prior_cycle": 2666,
+        "prior_episode": "episode:2679",
+        "score": 0.06956851482391357
+      },
+      {
+        "cycle": 2780,
+        "id": "unknown:1885",
+        "recalled": true,
+        "prior_cycle": 2752,
+        "prior_episode": "episode:2766",
+        "score": 0.043340086936950684
+      },
+      {
+        "cycle": 2786,
+        "id": "unknown:1845",
+        "recalled": true,
+        "prior_cycle": 2682,
+        "prior_episode": "episode:2695",
+        "score": 0.03735506534576416
+      }
+    ]
+  },
+  "cap8_46": {
+    "rounds": 46,
+    "recalls": 17,
+    "known_previous": 11,
+    "scored": 11,
+    "positive": 7,
+    "score_stats": [
+      -0.0661550760269165,
+      0.019602298736572266,
+      0.024612713943828236,
+      0.1666315793991089
+    ],
+    "windows": {
+      "4": {
+        "0": {
+          "n": 11,
+          "covariance": -0.04132231404958677,
+          "joint_counts": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              4
+            ],
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              1,
+              0,
+              2
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            3,
+            6,
+            2
+          ],
+          "closest_root": [
+            -0.6339745962155614,
+            0.0,
+            1.6339745962155614
+          ]
+        },
+        "2": {
+          "n": 11,
+          "covariance": -0.13223140495867766,
+          "joint_counts": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              4
+            ],
+            [
+              0,
+              2,
+              2
+            ],
+            [
+              1,
+              0,
+              2
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              3,
+              1,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            3,
+            6,
+            2
+          ],
+          "closest_root": [
+            -0.6339745962155614,
+            0.0,
+            1.6339745962155614
+          ]
+        }
+      },
+      "8": {
+        "0": {
+          "n": 5,
+          "covariance": 0.4,
+          "joint_counts": [
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              3,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              3,
+              3,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            2,
+            1,
+            2
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "4": {
+          "n": 5,
+          "covariance": -0.24,
+          "joint_counts": [
+            [
+              0,
+              3,
+              1
+            ],
+            [
+              1,
+              1,
+              3
+            ],
+            [
+              1,
+              3,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            3,
+            0,
+            2
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      },
+      "16": {
+        "0": {
+          "n": 2,
+          "covariance": -0.5,
+          "joint_counts": [
+            [
+              1,
+              5,
+              1
+            ],
+            [
+              3,
+              4,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            1
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "8": {
+          "n": 2,
+          "covariance": 0.0,
+          "joint_counts": [
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              1,
+              4,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            0,
+            0,
+            1,
+            1
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      }
+    },
+    "edges": [
+      {
+        "cycle": 2742,
+        "id": "unknown:1703",
+        "recalled": true,
+        "prior_cycle": 2696,
+        "prior_episode": "episode:2709",
+        "score": 0.015720486640930176
+      },
+      {
+        "cycle": 2746,
+        "id": "unknown:1860",
+        "recalled": true,
+        "prior_cycle": 2707,
+        "prior_episode": "episode:2720",
+        "score": 0.1666315793991089
+      },
+      {
+        "cycle": 2748,
+        "id": "unknown:1861",
+        "recalled": true,
+        "prior_cycle": 2710,
+        "prior_episode": "episode:2723",
+        "score": -0.044118523597717285
+      },
+      {
+        "cycle": 2753,
+        "id": "unknown:1739",
+        "recalled": true,
+        "prior_cycle": 2639,
+        "prior_episode": "episode:2651",
+        "score": -0.02816694974899292
+      },
+      {
+        "cycle": 2760,
+        "id": "unknown:1703",
+        "recalled": true,
+        "prior_cycle": 2742,
+        "prior_episode": "episode:2755",
+        "score": 0.09717857837677002
+      },
+      {
+        "cycle": 2763,
+        "id": "unknown:1659",
+        "recalled": true,
+        "prior_cycle": 2684,
+        "prior_episode": "episode:2697",
+        "score": -0.0661550760269165
+      },
+      {
+        "cycle": 2767,
+        "id": "unknown:1596",
+        "recalled": true,
+        "prior_cycle": 2735,
+        "prior_episode": "episode:2748",
+        "score": -0.04021620750427246
+      },
+      {
+        "cycle": 2769,
+        "id": "unknown:1805",
+        "recalled": true,
+        "prior_cycle": 2697,
+        "prior_episode": "episode:2710",
+        "score": 0.019602298736572266
+      },
+      {
+        "cycle": 2770,
+        "id": "unknown:1836",
+        "recalled": true,
+        "prior_cycle": 2666,
+        "prior_episode": "episode:2679",
+        "score": 0.06956851482391357
+      },
+      {
+        "cycle": 2780,
+        "id": "unknown:1885",
+        "recalled": true,
+        "prior_cycle": 2752,
+        "prior_episode": "episode:2766",
+        "score": 0.043340086936950684
+      },
+      {
+        "cycle": 2786,
+        "id": "unknown:1845",
+        "recalled": true,
+        "prior_cycle": 2682,
+        "prior_episode": "episode:2695",
+        "score": 0.03735506534576416
+      }
+    ]
+  },
+  "cap8_64": {
+    "rounds": 64,
+    "recalls": 25,
+    "known_previous": 18,
+    "scored": 18,
+    "positive": 12,
+    "score_stats": [
+      -0.0661550760269165,
+      0.027138054370880127,
+      0.029564271370569866,
+      0.1666315793991089
+    ],
+    "windows": {
+      "4": {
+        "0": {
+          "n": 16,
+          "covariance": -0.1171875,
+          "joint_counts": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              2,
+              4
+            ],
+            [
+              1,
+              0,
+              2
+            ],
+            [
+              1,
+              1,
+              2
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            3,
+            8,
+            5
+          ],
+          "closest_root": [
+            -0.5999999999999998,
+            0.0,
+            1.5999999999999996
+          ]
+        },
+        "2": {
+          "n": 15,
+          "covariance": -0.16444444444444445,
+          "joint_counts": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              2,
+              4
+            ],
+            [
+              1,
+              0,
+              2
+            ],
+            [
+              1,
+              1,
+              2
+            ],
+            [
+              3,
+              1,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            3,
+            8,
+            4
+          ],
+          "closest_root": [
+            -0.5,
+            0.0,
+            1.5
+          ]
+        }
+      },
+      "8": {
+        "0": {
+          "n": 8,
+          "covariance": 0.15625,
+          "joint_counts": [
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              3,
+              2
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              2,
+              2
+            ],
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              3,
+              3,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            2,
+            2,
+            4
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "4": {
+          "n": 7,
+          "covariance": -0.3469387755102041,
+          "joint_counts": [
+            [
+              0,
+              3,
+              1
+            ],
+            [
+              0,
+              4,
+              1
+            ],
+            [
+              1,
+              1,
+              3
+            ],
+            [
+              1,
+              3,
+              2
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            3,
+            0,
+            3,
+            1
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      },
+      "16": {
+        "0": {
+          "n": 4,
+          "covariance": -0.625,
+          "joint_counts": [
+            [
+              1,
+              5,
+              1
+            ],
+            [
+              1,
+              6,
+              1
+            ],
+            [
+              2,
+              3,
+              1
+            ],
+            [
+              3,
+              4,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "8": {
+          "n": 3,
+          "covariance": 0.3333333333333333,
+          "joint_counts": [
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              1,
+              4,
+              1
+            ],
+            [
+              2,
+              5,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      },
+      "32": {
+        "0": {
+          "n": 2,
+          "covariance": 0.0,
+          "joint_counts": [
+            [
+              3,
+              9,
+              1
+            ],
+            [
+              4,
+              9,
+              1
+            ]
+          ],
+          "use_polynomial_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2
+          ],
+          "closest_root": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      }
+    },
+    "edges": [
+      {
+        "cycle": 2742,
+        "id": "unknown:1703",
+        "recalled": true,
+        "prior_cycle": 2696,
+        "prior_episode": "episode:2709",
+        "score": 0.015720486640930176
+      },
+      {
+        "cycle": 2746,
+        "id": "unknown:1860",
+        "recalled": true,
+        "prior_cycle": 2707,
+        "prior_episode": "episode:2720",
+        "score": 0.1666315793991089
+      },
+      {
+        "cycle": 2748,
+        "id": "unknown:1861",
+        "recalled": true,
+        "prior_cycle": 2710,
+        "prior_episode": "episode:2723",
+        "score": -0.044118523597717285
+      },
+      {
+        "cycle": 2753,
+        "id": "unknown:1739",
+        "recalled": true,
+        "prior_cycle": 2639,
+        "prior_episode": "episode:2651",
+        "score": -0.02816694974899292
+      },
+      {
+        "cycle": 2760,
+        "id": "unknown:1703",
+        "recalled": true,
+        "prior_cycle": 2742,
+        "prior_episode": "episode:2755",
+        "score": 0.09717857837677002
+      },
+      {
+        "cycle": 2763,
+        "id": "unknown:1659",
+        "recalled": true,
+        "prior_cycle": 2684,
+        "prior_episode": "episode:2697",
+        "score": -0.0661550760269165
+      },
+      {
+        "cycle": 2767,
+        "id": "unknown:1596",
+        "recalled": true,
+        "prior_cycle": 2735,
+        "prior_episode": "episode:2748",
+        "score": -0.04021620750427246
+      },
+      {
+        "cycle": 2769,
+        "id": "unknown:1805",
+        "recalled": true,
+        "prior_cycle": 2697,
+        "prior_episode": "episode:2710",
+        "score": 0.019602298736572266
+      },
+      {
+        "cycle": 2770,
+        "id": "unknown:1836",
+        "recalled": true,
+        "prior_cycle": 2666,
+        "prior_episode": "episode:2679",
+        "score": 0.06956851482391357
+      },
+      {
+        "cycle": 2780,
+        "id": "unknown:1885",
+        "recalled": true,
+        "prior_cycle": 2752,
+        "prior_episode": "episode:2766",
+        "score": 0.043340086936950684
+      },
+      {
+        "cycle": 2786,
+        "id": "unknown:1845",
+        "recalled": true,
+        "prior_cycle": 2682,
+        "prior_episode": "episode:2695",
+        "score": 0.03735506534576416
+      },
+      {
+        "cycle": 2788,
+        "id": "unknown:1815",
+        "recalled": true,
+        "prior_cycle": 2708,
+        "prior_episode": "episode:2721",
+        "score": -0.009693384170532227
+      },
+      {
+        "cycle": 2790,
+        "id": "unknown:1804",
+        "recalled": true,
+        "prior_cycle": 2728,
+        "prior_episode": "episode:2741",
+        "score": 0.07069391012191772
+      },
+      {
+        "cycle": 2793,
+        "id": "unknown:1912",
+        "recalled": true,
+        "prior_cycle": 2792,
+        "prior_episode": "episode:2808",
+        "score": 0.07918930053710938
+      },
+      {
+        "cycle": 2796,
+        "id": "unknown:1829",
+        "recalled": true,
+        "prior_cycle": 2676,
+        "prior_episode": "episode:2689",
+        "score": 0.1300463080406189
+      },
+      {
+        "cycle": 2800,
+        "id": "unknown:1762",
+        "recalled": true,
+        "prior_cycle": 2745,
+        "prior_episode": "episode:2759",
+        "score": 0.03467381000518799
+      },
+      {
+        "cycle": 2801,
+        "id": "unknown:1891",
+        "recalled": true,
+        "prior_cycle": 2761,
+        "prior_episode": "episode:2775",
+        "score": -0.06031334400177002
+      },
+      {
+        "cycle": 2804,
+        "id": "unknown:1889",
+        "recalled": true,
+        "prior_cycle": 2757,
+        "prior_episode": "episode:2771",
+        "score": 0.016820430755615234
+      }
+    ]
+  },
+  "added_trunk_links": [
+    {
+      "cycle": 2614,
+      "id": "unknown:1788",
+      "recalled": true,
+      "prior_cycle": 2589,
+      "prior_episode": "episode:2599",
+      "score": -0.01523733139038086
+    },
+    {
+      "cycle": 2633,
+      "id": "unknown:1802",
+      "recalled": true,
+      "prior_cycle": 2611,
+      "prior_episode": "episode:2622",
+      "score": -0.019073843955993652
+    },
+    {
+      "cycle": 2639,
+      "id": "unknown:1739",
+      "recalled": true,
+      "prior_cycle": 2591,
+      "prior_episode": "episode:2601",
+      "score": 0.24061942100524902
+    },
+    {
+      "cycle": 2657,
+      "id": "unknown:1787",
+      "recalled": true,
+      "prior_cycle": 2601,
+      "prior_episode": "episode:2612",
+      "score": -0.07193911075592041
+    },
+    {
+      "cycle": 2668,
+      "id": "unknown:1799",
+      "recalled": true,
+      "prior_cycle": 2607,
+      "prior_episode": "episode:2618",
+      "score": -0.0002913475036621094
+    },
+    {
+      "cycle": 2675,
+      "id": "unknown:1703",
+      "recalled": true,
+      "prior_cycle": 2588,
+      "prior_episode": "episode:2598",
+      "score": -0.03265881538391113
+    },
+    {
+      "cycle": 2677,
+      "id": "unknown:1774",
+      "recalled": true,
+      "prior_cycle": 2605,
+      "prior_episode": "episode:2616",
+      "score": 0.07497608661651611
+    },
+    {
+      "cycle": 2687,
+      "id": "unknown:1797",
+      "recalled": true,
+      "prior_cycle": 2602,
+      "prior_episode": "episode:2613",
+      "score": 0.029742836952209473
+    },
+    {
+      "cycle": 2702,
+      "id": "unknown:1704",
+      "recalled": true,
+      "prior_cycle": 2604,
+      "prior_episode": "episode:2615",
+      "score": 0.10592669248580933
+    },
+    {
+      "cycle": 2711,
+      "id": "unknown:1796",
+      "recalled": true,
+      "prior_cycle": 2600,
+      "prior_episode": "episode:2611",
+      "score": 0.011052548885345459
+    },
+    {
+      "cycle": 2716,
+      "id": "unknown:1790",
+      "recalled": true,
+      "prior_cycle": 2603,
+      "prior_episode": "episode:2614",
+      "score": -0.0626421570777893
+    },
+    {
+      "cycle": 2724,
+      "id": "unknown:1800",
+      "recalled": true,
+      "prior_cycle": 2608,
+      "prior_episode": "episode:2619",
+      "score": -0.0021528005599975586
+    },
+    {
+      "cycle": 2735,
+      "id": "unknown:1596",
+      "recalled": true,
+      "prior_cycle": 2613,
+      "prior_episode": "episode:2624",
+      "score": 0.005116462707519531
+    }
+  ],
+  "held_out_tracker": "unknown:1831"
+}

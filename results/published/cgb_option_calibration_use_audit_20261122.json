@@ -1,0 +1,144 @@
+{
+  "schema": 1,
+  "report": "F:\\mengli-option-calibration-use-20261122\\report.json",
+  "choices": [
+    {
+      "option": 0,
+      "name": "silence",
+      "original_probability": 0.6014012640398173,
+      "alternative_probability": 0.6062645567280874,
+      "delta_probability": 0.004863292688270127,
+      "G2": -0.00997311994433403,
+      "delta_C_contribution": -4.850220130452066e-05,
+      "local_payment_P2": -0.026709124445915222,
+      "self_bytes": 0,
+      "external_bytes": 1920,
+      "world_starts": [
+        39246144,
+        39247104
+      ],
+      "suffix_matches": [
+        0,
+        0
+      ],
+      "actions": [
+        "silence",
+        "silence"
+      ],
+      "matching_checks": 18
+    },
+    {
+      "option": 1,
+      "name": "generate",
+      "original_probability": 0.2071357732091038,
+      "alternative_probability": 0.2152388669310046,
+      "delta_probability": 0.008103093721900795,
+      "G2": -5.02951443195343e-05,
+      "delta_C_contribution": -4.0754626817771284e-07,
+      "local_payment_P2": 0.0015323638916015627,
+      "self_bytes": 256,
+      "external_bytes": 1920,
+      "world_starts": [
+        20781664,
+        19201091
+      ],
+      "suffix_matches": [
+        9,
+        13
+      ],
+      "actions": [
+        "generate",
+        "reuse"
+      ],
+      "matching_checks": 18
+    },
+    {
+      "option": 2,
+      "name": "reuse",
+      "original_probability": 0.19146296275107885,
+      "alternative_probability": 0.17849657634090785,
+      "delta_probability": -0.012966386410171005,
+      "G2": 0.010391432791948318,
+      "delta_C_contribution": -0.000134739332935724,
+      "local_payment_P2": -0.004883383214473724,
+      "self_bytes": 256,
+      "external_bytes": 1920,
+      "world_starts": [
+        39280858,
+        39279048
+      ],
+      "suffix_matches": [
+        7,
+        7
+      ],
+      "actions": [
+        "reuse",
+        "reuse"
+      ],
+      "matching_checks": 18
+    }
+  ],
+  "native_teacher_alignment": [
+    {
+      "options": [
+        1
+      ],
+      "teacher": {
+        "key": "17273d4dffd9353a786287502fcc48e3b5dbf15e7648088fde10aa33dd566676",
+        "predicted": -0.04013090580701828,
+        "native": -0.18926401436328888,
+        "priority": 0.11213892246087198,
+        "error": -0.1491331085562706,
+        "root_key": "53217ce91394fce2312787e9b01cba3ee1ba291e0eda1e30fa478cf28adc8deb",
+        "mass": 0.870849609375
+      },
+      "match": {
+        "call": 3,
+        "point": 0,
+        "persistent": -0.04013090580701828,
+        "action_plan_old": -0.21999290585517883,
+        "action_plan_calibrated": -0.1309957504272461,
+        "delta": 0.08899715542793274,
+        "persistent_error": 0.1491331085562706,
+        "lifted_error": 0.23813026398420334,
+        "teacher_mse_improvement": -0.03446533855752998
+      }
+    },
+    {
+      "options": [
+        0
+      ],
+      "teacher": {
+        "key": "2a2850f888c4742cfdbbbcf7b5e6ca24d858e7811fb7da099e16bb802a44d660",
+        "predicted": 0.07434441149234772,
+        "native": -0.11101529002189636,
+        "priority": 0.008330198212206597,
+        "error": -0.18535970151424408,
+        "root_key": "277cee960ce68c4f3010bc90aede6fff18e8bd82b4eccaa237b3da2f7e4cc636",
+        "mass": 0.06787109375
+      },
+      "match": {
+        "call": 0,
+        "point": 3,
+        "persistent": 0.07434441149234772,
+        "action_plan_old": -0.0282999649643898,
+        "action_plan_calibrated": -0.043098628520965576,
+        "delta": -0.014798663556575775,
+        "persistent_error": 0.18535970151424408,
+        "lifted_error": 0.1705610379576683,
+        "teacher_mse_improvement": 0.005267151276252491
+      }
+    }
+  ],
+  "original_C": 0.0004935551667826428,
+  "connected_C": 0.00030990608627422044,
+  "delta_C": -0.0001836490805084224,
+  "original_C_retained_fraction": 0.6279056671504774,
+  "direct_q_patch_delta_C": 0,
+  "optimizer_updates": 24,
+  "complete_external_rounds": 6,
+  "actual_complete_external_bytes": 5760,
+  "provider_calls": 0,
+  "source_sha256": "d673ffaa3168b153fcd853ad6af76f9567fa73336dc44ed129ebdd780e31a729",
+  "decision": "retain original persistent route; keep q-basis and root lift as measured research variants"
+}

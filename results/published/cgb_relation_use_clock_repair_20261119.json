@@ -1,0 +1,69 @@
+{
+  "valid": true,
+  "source_sha256": "b574e457ba0cca18f7aed6d7a291468f8b7eb443e285cf105226878f9210916d",
+  "cycle": 2481,
+  "schema": 2,
+  "reward": "finite_relation_use_v5",
+  "clock": {
+    "before_support_mismatches": 16,
+    "after_support_mismatches": 0,
+    "before_expected_difference": 0.024842679500579834,
+    "after_expected_difference": 0.0,
+    "cases": 16,
+    "after_successor_mismatches": 0
+  },
+  "next_release": {
+    "observe": [
+      "episode:2482"
+    ],
+    "apply": [
+      "episode:2369"
+    ]
+  },
+  "raw_encoded_U_error": 0.0,
+  "persisted_then_reread": true,
+  "production_body_audit_updates": 0,
+  "world_calls": 0,
+  "source_unchanged": true,
+  "validation": {
+    "related_suite": {
+      "passed": 28,
+      "seconds": 85.69
+    },
+    "final_retention_suite": {
+      "passed": 9,
+      "seconds": 32.06,
+      "overlap": 6
+    },
+    "lean": {
+      "theorems": 14,
+      "exit_code": 0
+    },
+    "full_restore_schemas": [
+      1,
+      2
+    ]
+  },
+  "source_hashes": {
+    "scripts/ib_local/causal_relation_program.py": "30f972cd7b1fded00b222ebdced0c7f557091de911c0a1a55add26eb3634b0c1",
+    "scripts/ib_local/generative_relations.py": "288bced62650d8f7c2137062e5defa1d122e99233e5fb04eb92258e304eb7c22",
+    "scripts/ib_local/relation_retention_use.py": "2d88c45864794da3d28260d490c0236faa18a8df52715abcbfb8f2249f42ce8d",
+    "scripts/ib_local/finite_use_value.py": "b0f124fed0c0771b419f5b13c751890fff867dd5bd27bf21c189812eab9c4860",
+    "scripts/ib_local/navigation_settlement.py": "6dc855ae575af84f484c4ea7f54ce3d9be33c20def4ebee4b9831dafc59811d9",
+    "scripts/ib_local/navigation_direct_read.py": "888e9a2a8560b0f0c2360a10bed384f15311f55497e47f41de0361b7776a6a8e",
+    "scripts/ib_local/run_mother_continuation.py": "1de3c1b00bfef38a0f0894cd994fac19498e149f5ef7a3a7ccb03441641633df",
+    "scripts/run_native_preview_restore_comparison.py": "456039582ec7b86bce7cf64f0929e923de9ae36d3cc878ca2c3736d9e79d64c0",
+    "scripts/summarize_native_relation_retention.py": "c25ea9262b4c5595a7575c4b09426780c38e60a5f768c5edc21c16f2018ef3ce",
+    "scripts/audit_native_relation_use_clock.py": "46e4ec88fa00d897d63911694f90a197349dd52563d0eb3cbf170ec6090bc49b",
+    "scripts/audit_native_relation_use_admission.py": "fde0469eb5a468a63e06e4d5c1f942996c8642187fd822e0900c4060cb4f8619",
+    "scripts/audit_native_relation_use_restore.py": "295d496bd30c25a9c9fbbf2fcd8bfd8a8f2e52504d9d83ab4f663daecc3afc1b",
+    "tests/test_relation_retention_use.py": "5d4afeaa451b68809fb63d1286088c2d304e125f7aee19eb24cc341dcb3f7c1e",
+    "lean/CGBAxioms/reviews/NativeRelationRetentionUse.lean": "a55278e86c764ace8f89fbd2533df33b9d103fd47a12160ec82d6bc2bdb2e2ac"
+  },
+  "evidence": [
+    "cgb_relation_use_clock_before_2481_20261119.json",
+    "cgb_relation_use_clock_after_2481_20261119.json",
+    "cgb_relation_use_admission_fixed_2481_20261119.json"
+  ],
+  "next_research": "same complete U: delayed contribution -> finite retention -> reuse -> later frozen response; then align Wood continuation with actual actor boundary"
+}

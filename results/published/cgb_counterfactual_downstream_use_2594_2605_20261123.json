@@ -1,0 +1,91 @@
+{
+  "acquisition": 2594,
+  "revisit": 2605,
+  "chart": "same saved generate2594 terminal parameters across all methods",
+  "baseline_later_score": -1.1983264684677124,
+  "checks": [
+    {
+      "observed": "generate",
+      "alternative": "reuse",
+      "method": "prior",
+      "later_score": -1.2329896688461304,
+      "later_gain": -0.03466320037841797,
+      "old_query_gain": 0.012892939150333405
+    },
+    {
+      "observed": "generate",
+      "alternative": "reuse",
+      "method": "copy_factual",
+      "later_score": -1.126791000366211,
+      "later_gain": 0.07153546810150146,
+      "old_query_gain": 0.0033328235149383545
+    },
+    {
+      "observed": "generate",
+      "alternative": "reuse",
+      "method": "full_residual",
+      "later_score": -1.1231483221054077,
+      "later_gain": 0.07517814636230469,
+      "old_query_gain": 0.003776080906391144
+    },
+    {
+      "observed": "generate",
+      "alternative": "reuse",
+      "method": "native_U",
+      "later_score": -1.2224401235580444,
+      "later_gain": -0.02411365509033203,
+      "old_query_gain": 0.013646841049194336
+    },
+    {
+      "observed": "generate",
+      "alternative": "reuse",
+      "method": "actual_alternative_evidence",
+      "later_score": -1.154676914215088,
+      "later_gain": 0.04364955425262451,
+      "old_query_gain": 0.007338784635066986
+    },
+    {
+      "observed": "reuse",
+      "alternative": "generate",
+      "method": "prior",
+      "later_score": -1.2335412502288818,
+      "later_gain": -0.035214781761169434,
+      "old_query_gain": 0.01371399313211441
+    },
+    {
+      "observed": "reuse",
+      "alternative": "generate",
+      "method": "copy_factual",
+      "later_score": -1.1635855436325073,
+      "later_gain": 0.03474092483520508,
+      "old_query_gain": 0.007771983742713928
+    },
+    {
+      "observed": "reuse",
+      "alternative": "generate",
+      "method": "full_residual",
+      "later_score": -1.1689010858535767,
+      "later_gain": 0.029425382614135742,
+      "old_query_gain": 0.0065271928906440735
+    },
+    {
+      "observed": "reuse",
+      "alternative": "generate",
+      "method": "native_U",
+      "later_score": -1.2277493476867676,
+      "later_gain": -0.029422879219055176,
+      "old_query_gain": 0.015062503516674042
+    },
+    {
+      "observed": "reuse",
+      "alternative": "generate",
+      "method": "actual_alternative_evidence",
+      "later_score": -1.1429516077041626,
+      "later_gain": 0.055374860763549805,
+      "old_query_gain": 0.0033520907163619995
+    }
+  ],
+  "semantics": "hypothetical alternative evidence passed through real revise/mechanism and original old-query scoring; real later reuse-trajectory contact is common evaluation material; not a new behavioral branch",
+  "world_calls": 0,
+  "optimizer_updates": 0
+}

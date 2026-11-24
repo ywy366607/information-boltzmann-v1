@@ -1,0 +1,274 @@
+{
+  "schema": 1,
+  "purpose": "mathematics-first phase mapping and deduplication; static source audit",
+  "new_training_updates": 0,
+  "new_world_calls": 0,
+  "roles": {
+    "wood": [
+      {
+        "path": "scripts/ib_local/latent_action_planner.py",
+        "sha256": "e312c253b5c288f6c7fe6ee21c6005411a845813a2003b74df6de0051c9c4c0a",
+        "symbols": [
+          {
+            "symbol": "packet",
+            "line": 79,
+            "end_line": 89
+          },
+          {
+            "symbol": "features",
+            "line": 92,
+            "end_line": 98
+          },
+          {
+            "symbol": "predict",
+            "line": 121,
+            "end_line": 152
+          },
+          {
+            "symbol": "value",
+            "line": 258,
+            "end_line": 377
+          }
+        ]
+      },
+      {
+        "path": "scripts/ib_local/native_amortized_decision.py",
+        "sha256": "b4220b82f5e1cba0417c53f468bd05cbc948284ba1a612baca6872bad73cf1a6",
+        "symbols": [
+          {
+            "symbol": "recipe",
+            "line": 54,
+            "end_line": 115
+          },
+          {
+            "symbol": "features",
+            "line": 118,
+            "end_line": 125
+          },
+          {
+            "symbol": "predict",
+            "line": 140,
+            "end_line": 175
+          }
+        ]
+      }
+    ],
+    "fire": [
+      {
+        "path": "scripts/ib_local/conditional_actor_reference.py",
+        "sha256": "3cf8ce589d0a7148fbc7bd2f8ed2fc3b1fefe2afaa3556c7fb269ecd2b4008a8",
+        "symbols": [
+          {
+            "symbol": "encoded_view",
+            "line": 23,
+            "end_line": 39
+          },
+          {
+            "symbol": "evaluate",
+            "line": 42,
+            "end_line": 60
+          }
+        ]
+      },
+      {
+        "path": "scripts/ib_local/autonomous_cycle.py",
+        "sha256": "04a7382615d24facff566045196be60fe2aeed17a2100ce440dbf6d8008ee880",
+        "symbols": [
+          {
+            "symbol": "poll",
+            "line": 33,
+            "end_line": 69
+          },
+          {
+            "symbol": "take_boundary",
+            "line": 72,
+            "end_line": 86
+          },
+          {
+            "symbol": "add_boundary_credit",
+            "line": 89,
+            "end_line": 96
+          }
+        ]
+      }
+    ],
+    "earth": [
+      {
+        "path": "scripts/ib_local/past_present_coevolution.py",
+        "sha256": "6a3eaecb4604fda3a195c6247cd87da6e4bb759740c65047dd9b333feb4a6d0d",
+        "symbols": [
+          {
+            "symbol": "PastPresentField.exchange",
+            "line": 76,
+            "end_line": 121
+          }
+        ]
+      },
+      {
+        "path": "scripts/ib_local/adaptive_hamiltonian.py",
+        "sha256": "ac16cdfba586df43cb62aa4efaa22b1b128a7356866bbff14d7b4dc6f9b97d4b",
+        "symbols": [
+          {
+            "symbol": "quiet",
+            "line": 47,
+            "end_line": 62
+          },
+          {
+            "symbol": "AdaptiveHamiltonian.quiet",
+            "line": 137,
+            "end_line": 192
+          }
+        ]
+      },
+      {
+        "path": "scripts/ib_local/navigation_joint_cycle.py",
+        "sha256": "4060de4c08d3047b5b1587362e4b4156ad19bfec3f178bd8325089b62dad7420",
+        "symbols": [
+          {
+            "symbol": "JointCycleMixin.continue_internal",
+            "line": 197,
+            "end_line": 249
+          }
+        ]
+      }
+    ],
+    "metal": [
+      {
+        "path": "scripts/ib_local/world_learning_cycle.py",
+        "sha256": "49e94e23548aa529461762350d14df33343dbb659043496bc9d6d17fbc10c85a",
+        "symbols": [
+          {
+            "symbol": "world_cycle_step",
+            "line": 75,
+            "end_line": 258
+          }
+        ]
+      },
+      {
+        "path": "scripts/ib_local/finite_use_value.py",
+        "sha256": "6650c4f279d62b2f3a87db2c36537984085ccc416b0029d10c120f3cb08cbf23",
+        "symbols": [
+          {
+            "symbol": "begin",
+            "line": 68,
+            "end_line": 96
+          },
+          {
+            "symbol": "observed",
+            "line": 100,
+            "end_line": 139
+          },
+          {
+            "symbol": "verify_commit",
+            "line": 143,
+            "end_line": 174
+          }
+        ]
+      },
+      {
+        "path": "scripts/ib_local/optimizer_policy.py",
+        "sha256": "a3bd71a6da92c2a6f4e95dbcaebb08f60b4108473beddbc2fe27918a07adf2bc",
+        "symbols": [
+          {
+            "symbol": "configure",
+            "line": 9,
+            "end_line": 29
+          }
+        ]
+      }
+    ],
+    "water": [
+      {
+        "path": "scripts/ib_local/causal_archive.py",
+        "sha256": "8315af988a83eb20eb87fbaf125dafd77fa27ef3e99a1ab7b1a69e2e4fc7e6d7",
+        "symbols": []
+      },
+      {
+        "path": "scripts/ib_local/causal_relation_program.py",
+        "sha256": "7a84645585e99d0e2e1f6c03d4a177105e2dffd6e1915be9497750b82a000ece",
+        "symbols": [
+          {
+            "symbol": "revise",
+            "line": 128,
+            "end_line": 181
+          }
+        ]
+      },
+      {
+        "path": "scripts/ib_local/persistent_rhythm.py",
+        "sha256": "aaee24c1f5788e2410385df3492a6cef01fd5fe13f9474279b56c33b28b979e2",
+        "symbols": [
+          {
+            "symbol": "read_plans",
+            "line": 41,
+            "end_line": 81
+          }
+        ]
+      }
+    ],
+    "interphase": [
+      {
+        "path": "scripts/ib_local/persistent_rhythm.py",
+        "sha256": "aaee24c1f5788e2410385df3492a6cef01fd5fe13f9474279b56c33b28b979e2",
+        "symbols": [
+          {
+            "symbol": "ExternalTask._run",
+            "line": 171,
+            "end_line": 199
+          },
+          {
+            "symbol": "ExternalTask.resume",
+            "line": 201,
+            "end_line": 228
+          },
+          {
+            "symbol": "_poll_inside",
+            "line": 116,
+            "end_line": 140
+          }
+        ]
+      },
+      {
+        "path": "scripts/ib_local/autonomous_runtime.py",
+        "sha256": "d05678840719c7d0d343d156d408c6f819037cd59d0e9005439b5e84c1969720",
+        "symbols": [
+          {
+            "symbol": "run",
+            "line": 14,
+            "end_line": 162
+          }
+        ]
+      }
+    ]
+  },
+  "existing_trace_clock_audit": {
+    "path": "scratch\\native_signal_admission_2401_20261117\\body\\autonomous_events.jsonl",
+    "sha256": "d1b160bb4b9877e803dad05f37b2dde93108c2651d34c15c6a88f4af98da5948",
+    "rows": 2935,
+    "kinds": {
+      "release": 1000,
+      "external": 1000,
+      "internal": 935
+    },
+    "recorded_seconds_sum": 11442.373062099534,
+    "handoff_rows": 0,
+    "interpretation": "This historical file can verify its own event schema. Handoff overlap is a current source-level accounting issue, assessed separately."
+  },
+  "inherit": [
+    "CGB.Generation.BodyCausalCarrier.merged_history_preserves_read_and_successor",
+    "CGB.ConservedMemory.observable_test_preserved",
+    "GenerationHoldCorrect",
+    "reviews/causal_tag_compression_20261108.lean",
+    "CGB_NATIVE_TOPOLOGY_FINAL_ACCEPTANCE_20261117.md",
+    "CGB_PERSISTENT_MULTIRATE_HANDOFF_20261120.md",
+    "CGB_WOOD_POLICY_REALIZATION_20261120.md"
+  ],
+  "verification": {
+    "source_hashes_and_ast_symbol_lines": "passed",
+    "symbol_checks": 27,
+    "existing_declarations_checked": 2,
+    "new_lean_proofs": 0,
+    "new_training_updates": 0,
+    "new_world_calls": 0
+  }
+}

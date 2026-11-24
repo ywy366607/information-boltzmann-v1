@@ -1,0 +1,513 @@
+{
+  "valid": true,
+  "checks": {
+    "compressed.budget": true,
+    "compressed.mode": true,
+    "compressed.epistemic": true,
+    "compressed.reward": true,
+    "compressed.payment": true,
+    "compressed.delayed_identity": true,
+    "compressed.metadata": true,
+    "compressed.foreign_keys": true,
+    "identified.budget": true,
+    "identified.mode": true,
+    "identified.epistemic": true,
+    "identified.reward": true,
+    "identified.payment": true,
+    "identified.delayed_identity": true,
+    "identified.metadata": true,
+    "identified.foreign_keys": true,
+    "same_source": true,
+    "same_initial_queries": true
+  },
+  "arms": {
+    "compressed": {
+      "cycle": 2473,
+      "updates": 16,
+      "bytes": 3840,
+      "seconds": 170.03496999997878,
+      "merged_events": 0,
+      "cold_events": 0,
+      "merge_branch_exercised": false,
+      "internal_events": 0,
+      "choices": [
+        "generate",
+        "silence",
+        "generate",
+        "generate"
+      ],
+      "gains": [
+        -0.026705823838710785,
+        0.031937576830387115,
+        0.014066830277442932,
+        -0.02066890150308609
+      ],
+      "gain_distribution": {
+        "min": -0.026705823838710785,
+        "median": -0.003301035612821579,
+        "mean": -0.00034257955849170685,
+        "max": 0.031937576830387115
+      },
+      "common_queries": {
+        "before": {
+          "score": {
+            "min": -2.154616355895996,
+            "median": -1.1001412868499756,
+            "mean": -1.1830259747803211,
+            "max": -0.6379510164260864
+          },
+          "mse": {
+            "min": 0.09439477324485779,
+            "median": 0.6434296369552612,
+            "mean": 0.8272761426633224,
+            "max": 2.600039005279541
+          }
+        },
+        "after": {
+          "score": {
+            "min": -2.138878345489502,
+            "median": -1.096421480178833,
+            "mean": -1.1830614656209946,
+            "max": -0.6343556642532349
+          },
+          "mse": {
+            "min": 0.0991838127374649,
+            "median": 0.6322000622749329,
+            "mean": 0.8275788826867938,
+            "max": 2.593569040298462
+          }
+        }
+      },
+      "checkpoint": "E:\\cgb_event_credit_2469_20261118\\compressed\\body\\last.pt.gz",
+      "checkpoint_sha256": "5d46e85bafb8640d4bd0ce4efe80ff282f7f4ee7a204da1d53c7fe0ffafa9ded",
+      "actual_chain": [
+        {
+          "cycle": 2470,
+          "merged": false,
+          "gain": -0.026705823838710785,
+          "committed": true,
+          "committed_score_error": 0.0,
+          "event_identity": "episode:2470",
+          "unknown": {
+            "identity": "unknown:1293",
+            "committed": true,
+            "version_before": 5,
+            "version_after": 6,
+            "support": 8,
+            "observed_episode": 2470,
+            "meaning": "observed mechanism constraint, not equality to an inverse-query answer",
+            "dependent_relations": 6,
+            "propagation": "new unknown version; dependents re-execute on next use; pending snapshots unchanged"
+          },
+          "delayed_fact": "episode:2469",
+          "transition_samples": 33
+        },
+        {
+          "cycle": 2471,
+          "merged": false,
+          "gain": 0.031937576830387115,
+          "committed": true,
+          "committed_score_error": 0.0,
+          "event_identity": "episode:2471",
+          "unknown": {
+            "identity": "unknown:1279",
+            "committed": true,
+            "version_before": 4,
+            "version_after": 5,
+            "support": 8,
+            "observed_episode": 2471,
+            "meaning": "observed mechanism constraint, not equality to an inverse-query answer",
+            "dependent_relations": 3,
+            "propagation": "new unknown version; dependents re-execute on next use; pending snapshots unchanged"
+          },
+          "delayed_fact": "episode:2470",
+          "transition_samples": 33
+        },
+        {
+          "cycle": 2472,
+          "merged": false,
+          "gain": 0.014066830277442932,
+          "committed": true,
+          "committed_score_error": 0.0,
+          "event_identity": "episode:2472",
+          "unknown": {
+            "identity": "unknown:1722",
+            "committed": true,
+            "version_before": 0,
+            "version_after": 1,
+            "support": 8,
+            "observed_episode": 2472,
+            "meaning": "observed mechanism constraint, not equality to an inverse-query answer",
+            "dependent_relations": 2,
+            "propagation": "new unknown version; dependents re-execute on next use; pending snapshots unchanged"
+          },
+          "delayed_fact": "episode:2471",
+          "transition_samples": 33
+        },
+        {
+          "cycle": 2473,
+          "merged": false,
+          "gain": -0.02066890150308609,
+          "committed": true,
+          "committed_score_error": 0.0,
+          "event_identity": "episode:2473",
+          "unknown": {
+            "identity": "unknown:1653",
+            "committed": true,
+            "version_before": 2,
+            "version_after": 3,
+            "support": 8,
+            "observed_episode": 2473,
+            "meaning": "observed mechanism constraint, not equality to an inverse-query answer",
+            "dependent_relations": 6,
+            "propagation": "new unknown version; dependents re-execute on next use; pending snapshots unchanged"
+          },
+          "delayed_fact": "episode:2472",
+          "transition_samples": 33
+        }
+      ],
+      "next_real_error_decomposition": [
+        {
+          "prediction_cycle": 2470,
+          "next_cycle": 2471,
+          "predicted_future": 0.0,
+          "next_action_values": [
+            0.37508487701416016,
+            0.3813059329986572,
+            0.37508487701416016
+          ],
+          "next_probabilities": [
+            0.6498486995697021,
+            0.35015133023262024,
+            0.0
+          ],
+          "next_policy_value": 0.37726319922098384,
+          "selected_expected": 0.37508487701416016,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.31937576830387115,
+          "error": -0.31937576830387115,
+          "components": {
+            "transport": -0.37726319922098384,
+            "policy_sampling": 0.0021783222068236796,
+            "admission": 0.0,
+            "observed_response": 0.055709108710289
+          },
+          "reconstruction_residual": 0.0,
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2470"
+        },
+        {
+          "prediction_cycle": 2471,
+          "next_cycle": 2472,
+          "predicted_future": 0.08761575818061829,
+          "next_action_values": [
+            0.055309511721134186,
+            0.0609578862786293,
+            0.055309511721134186
+          ],
+          "next_probabilities": [
+            0.4285261332988739,
+            0.5714737772941589,
+            0.0
+          ],
+          "next_policy_value": 0.058537404720022446,
+          "selected_expected": 0.0609578862786293,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.14066830277442932,
+          "error": -0.053052544593811035,
+          "components": {
+            "transport": 0.02907835346059584,
+            "policy_sampling": -0.0024204815586068573,
+            "admission": 0.0,
+            "observed_response": -0.07971041649580002
+          },
+          "reconstruction_residual": 0.0,
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2471"
+        },
+        {
+          "prediction_cycle": 2472,
+          "next_cycle": 2473,
+          "predicted_future": 0.04364786297082901,
+          "next_action_values": [
+            -0.039938777685165405,
+            -0.0199997890740633,
+            -0.039938777685165405
+          ],
+          "next_probabilities": [
+            0.3409811556339264,
+            0.6590188145637512,
+            0.0
+          ],
+          "next_policy_value": -0.026798607856808432,
+          "selected_expected": -0.0199997890740633,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.2066890150308609,
+          "error": 0.2503368780016899,
+          "components": {
+            "transport": 0.07044647082763744,
+            "policy_sampling": -0.006798818782745131,
+            "admission": 0.0,
+            "observed_response": 0.1866892259567976
+          },
+          "reconstruction_residual": 0.0,
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2472"
+        }
+      ]
+    },
+    "identified": {
+      "cycle": 2473,
+      "updates": 16,
+      "bytes": 3840,
+      "seconds": 180.27672630001325,
+      "merged_events": 0,
+      "cold_events": 0,
+      "merge_branch_exercised": false,
+      "internal_events": 0,
+      "choices": [
+        "generate",
+        "silence",
+        "generate",
+        "generate"
+      ],
+      "gains": [
+        -0.026705823838710785,
+        0.031937576830387115,
+        0.014066830277442932,
+        -0.02066890150308609
+      ],
+      "gain_distribution": {
+        "min": -0.026705823838710785,
+        "median": -0.003301035612821579,
+        "mean": -0.00034257955849170685,
+        "max": 0.031937576830387115
+      },
+      "common_queries": {
+        "before": {
+          "score": {
+            "min": -2.154616355895996,
+            "median": -1.1001412868499756,
+            "mean": -1.1830259747803211,
+            "max": -0.6379510164260864
+          },
+          "mse": {
+            "min": 0.09439477324485779,
+            "median": 0.6434296369552612,
+            "mean": 0.8272761426633224,
+            "max": 2.600039005279541
+          }
+        },
+        "after": {
+          "score": {
+            "min": -2.138878345489502,
+            "median": -1.096421480178833,
+            "mean": -1.1830614656209946,
+            "max": -0.6343556642532349
+          },
+          "mse": {
+            "min": 0.0991838127374649,
+            "median": 0.6322000622749329,
+            "mean": 0.8275788826867938,
+            "max": 2.593569040298462
+          }
+        }
+      },
+      "checkpoint": "E:\\cgb_event_credit_2469_20261118\\identified\\body\\last.pt.gz",
+      "checkpoint_sha256": "e9f817bcd3dd5f13b6edead2e5c317fab98f681bdf56544237d32e738e75e0a6",
+      "actual_chain": [
+        {
+          "cycle": 2470,
+          "merged": false,
+          "gain": -0.026705823838710785,
+          "committed": true,
+          "committed_score_error": 0.0,
+          "event_identity": "episode:2470",
+          "unknown": {
+            "identity": "unknown:1293",
+            "committed": true,
+            "version_before": 5,
+            "version_after": 6,
+            "support": 8,
+            "observed_episode": 2470,
+            "meaning": "observed mechanism constraint, not equality to an inverse-query answer",
+            "dependent_relations": 6,
+            "propagation": "new unknown version; dependents re-execute on next use; pending snapshots unchanged"
+          },
+          "delayed_fact": "episode:2469",
+          "transition_samples": 33
+        },
+        {
+          "cycle": 2471,
+          "merged": false,
+          "gain": 0.031937576830387115,
+          "committed": true,
+          "committed_score_error": 0.0,
+          "event_identity": "episode:2471",
+          "unknown": {
+            "identity": "unknown:1279",
+            "committed": true,
+            "version_before": 4,
+            "version_after": 5,
+            "support": 8,
+            "observed_episode": 2471,
+            "meaning": "observed mechanism constraint, not equality to an inverse-query answer",
+            "dependent_relations": 3,
+            "propagation": "new unknown version; dependents re-execute on next use; pending snapshots unchanged"
+          },
+          "delayed_fact": "episode:2470",
+          "transition_samples": 33
+        },
+        {
+          "cycle": 2472,
+          "merged": false,
+          "gain": 0.014066830277442932,
+          "committed": true,
+          "committed_score_error": 0.0,
+          "event_identity": "episode:2472",
+          "unknown": {
+            "identity": "unknown:1722",
+            "committed": true,
+            "version_before": 0,
+            "version_after": 1,
+            "support": 8,
+            "observed_episode": 2472,
+            "meaning": "observed mechanism constraint, not equality to an inverse-query answer",
+            "dependent_relations": 2,
+            "propagation": "new unknown version; dependents re-execute on next use; pending snapshots unchanged"
+          },
+          "delayed_fact": "episode:2471",
+          "transition_samples": 33
+        },
+        {
+          "cycle": 2473,
+          "merged": false,
+          "gain": -0.02066890150308609,
+          "committed": true,
+          "committed_score_error": 0.0,
+          "event_identity": "episode:2473",
+          "unknown": {
+            "identity": "unknown:1653",
+            "committed": true,
+            "version_before": 2,
+            "version_after": 3,
+            "support": 8,
+            "observed_episode": 2473,
+            "meaning": "observed mechanism constraint, not equality to an inverse-query answer",
+            "dependent_relations": 6,
+            "propagation": "new unknown version; dependents re-execute on next use; pending snapshots unchanged"
+          },
+          "delayed_fact": "episode:2472",
+          "transition_samples": 33
+        }
+      ],
+      "next_real_error_decomposition": [
+        {
+          "prediction_cycle": 2470,
+          "next_cycle": 2471,
+          "predicted_future": 0.0,
+          "next_action_values": [
+            0.37508487701416016,
+            0.3813059329986572,
+            0.37508487701416016
+          ],
+          "next_probabilities": [
+            0.6498486995697021,
+            0.35015133023262024,
+            0.0
+          ],
+          "next_policy_value": 0.37726319922098384,
+          "selected_expected": 0.37508487701416016,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.31937576830387115,
+          "error": -0.31937576830387115,
+          "components": {
+            "transport": -0.37726319922098384,
+            "policy_sampling": 0.0021783222068236796,
+            "admission": 0.0,
+            "observed_response": 0.055709108710289
+          },
+          "reconstruction_residual": 0.0,
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2470"
+        },
+        {
+          "prediction_cycle": 2471,
+          "next_cycle": 2472,
+          "predicted_future": 0.08761575818061829,
+          "next_action_values": [
+            0.055309511721134186,
+            0.0609578862786293,
+            0.055309511721134186
+          ],
+          "next_probabilities": [
+            0.4285261332988739,
+            0.5714737772941589,
+            0.0
+          ],
+          "next_policy_value": 0.058537404720022446,
+          "selected_expected": 0.0609578862786293,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": 0.14066830277442932,
+          "error": -0.053052544593811035,
+          "components": {
+            "transport": 0.02907835346059584,
+            "policy_sampling": -0.0024204815586068573,
+            "admission": 0.0,
+            "observed_response": -0.07971041649580002
+          },
+          "reconstruction_residual": 0.0,
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2471"
+        },
+        {
+          "prediction_cycle": 2472,
+          "next_cycle": 2473,
+          "predicted_future": 0.04364786297082901,
+          "next_action_values": [
+            -0.039938777685165405,
+            -0.0199997890740633,
+            -0.039938777685165405
+          ],
+          "next_probabilities": [
+            0.3409811556339264,
+            0.6590188145637512,
+            0.0
+          ],
+          "next_policy_value": -0.026798607856808432,
+          "selected_expected": -0.0199997890740633,
+          "next_merged": false,
+          "individual_commit": true,
+          "actual": -0.2066890150308609,
+          "error": 0.2503368780016899,
+          "components": {
+            "transport": 0.07044647082763744,
+            "policy_sampling": -0.006798818782745131,
+            "admission": 0.0,
+            "observed_response": 0.1866892259567976
+          },
+          "reconstruction_residual": 0.0,
+          "delayed_samples": 33,
+          "delayed_fact": "episode:2472"
+        }
+      ]
+    }
+  },
+  "same_recorded_outputs": {
+    "choice": true,
+    "choice_probability": true,
+    "world": true,
+    "utterance_hex": true,
+    "metal_g": true
+  },
+  "merge_branch_exercised": false,
+  "finding": "No natural merge in either arm. This is a normal-path paired control, not real-body evidence that repaired merged events improve use.",
+  "interface_verification": "Two production fixtures force merges and check payment, shared U, SSD identity, later DECISION labels and foreign keys; distinct from natural exposure.",
+  "remaining": "Continuation still mixes recalled actions, not the actual next actor distribution. Event credit repair does not resolve that separate whole-transition mismatch.",
+  "new_training_or_world_calls_by_summary": 0
+}

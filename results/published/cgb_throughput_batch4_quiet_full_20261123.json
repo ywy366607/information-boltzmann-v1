@@ -1,0 +1,269 @@
+{
+  "reference": "D:\\mengli-throughput-20261123\\batch1_exact_speedup",
+  "candidate": "D:\\mengli-throughput-20261123\\batch4_quiet_full",
+  "actual_ports": {
+    "cycle": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "choice": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "utterance_hex": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "external_bytes": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "self_bytes": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "updates": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "metal_g": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "response_nll": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "continuation_nll": {
+      "leaves": 2,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "world": {
+      "leaves": 46,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "pre_outcome_gain": {
+      "leaves": 12,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "joint_language_search": {
+      "leaves": 46,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "shared_unknown": {
+      "leaves": 228,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    }
+  },
+  "checkpoint": {
+    "model": {
+      "leaves": 705,
+      "different": 268,
+      "shape_differences": [],
+      "max_abs": 5.960464477539063e-08,
+      "examples": [
+        "/body.base.layers.14.mlp.up.weight",
+        "/body.base.layers.28.mlp.gate.weight",
+        "/body.base.layers.10.k_proj.weight",
+        "/body.base.layers.15.mlp.up.weight",
+        "/body.base.layers.6.v_proj.weight",
+        "/body.base.layers.31.q_proj.weight",
+        "/body.base.layers.22.k_proj.weight",
+        "/body.base.layers.2.v_proj.weight",
+        "/body.base.layers.27.q_proj.weight",
+        "/body.base.layers.29.beta_proj.weight",
+        "/body.base.layers.29.v_proj.weight",
+        "/body.base.layers.5.o_proj.weight"
+      ]
+    },
+    "optimizer": {
+      "leaves": 5382,
+      "different": 1712,
+      "shape_differences": [],
+      "max_abs": 4.470348358154297e-08,
+      "examples": [
+        "/state/0/budget_energy",
+        "/state/0/exp_avg_sq",
+        "/state/0/exp_avg",
+        "/state/0/budget_gate",
+        "/state/1/exp_avg",
+        "/state/2/exp_avg",
+        "/state/3/budget_energy",
+        "/state/3/exp_avg",
+        "/state/4/exp_avg_sq",
+        "/state/4/exp_avg",
+        "/state/4/budget_gate",
+        "/state/4/budget_phase"
+      ]
+    },
+    "table": {
+      "leaves": 20,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "world": {
+      "leaves": 12,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "torch_rng": {
+      "leaves": 1,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "cuda_rng": {
+      "leaves": 1,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "numpy_rng": {
+      "leaves": 5,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "python_rng": {
+      "leaves": 627,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "cycle": {
+      "leaves": 1,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    }
+  },
+  "carried": {
+    "recurrent": {
+      "leaves": 1,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "bfss_momenta": {
+      "leaves": 32,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "internal_pending": {
+      "leaves": 813,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "causal_use_pending": {
+      "leaves": 1,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "native_value_bank": {
+      "leaves": 5509,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "latent_action_bank": {
+      "leaves": 4033,
+      "different": 0,
+      "shape_differences": [],
+      "max_abs": 0.0,
+      "examples": []
+    },
+    "autonomous_eligibility": {
+      "leaves": 1,
+      "different": 1,
+      "shape_differences": [],
+      "max_abs": 1.6689300537109375e-06,
+      "examples": [
+        "/0"
+      ]
+    }
+  },
+  "old_fact_scores": {
+    "leaves": 520,
+    "different": 12,
+    "shape_differences": [],
+    "max_abs": 1.1920928955078125e-07,
+    "examples": [
+      "/1/queries/0/mse",
+      "/1/queries/2/mse",
+      "/1/queries/3/mse",
+      "/1/queries/6/mse",
+      "/1/queries/17/mse",
+      "/1/queries/18/mse",
+      "/1/queries/20/mse",
+      "/1/queries/21/mse",
+      "/1/queries/22/score",
+      "/1/queries/22/mse",
+      "/1/mean_mse",
+      "/1/mean_score"
+    ]
+  },
+  "timing": {
+    "reference_seconds": 50.624107299998286,
+    "candidate_seconds": 34.14386299999751,
+    "reference_profile": "D:\\mengli-throughput-20261123\\replay_reference_ready\\runtime_profile.json",
+    "speedup": 1.4826707598962068,
+    "candidate_peak_gpu_bytes": 2314707968
+  },
+  "audit_seconds": 11.975726600001508
+}

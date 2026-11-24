@@ -1,0 +1,507 @@
+{
+  "status": "numeric_and_lean_checks_passed",
+  "reference_complex": {
+    "vertices": 280,
+    "edges": 976,
+    "faces": 1621,
+    "harmonic_dimension": 62,
+    "existing_dirac_recomputed": false,
+    "reused_harmonic_basis_residuals": {
+      "boundary": 1.2217454153397311e-14,
+      "coboundary": 3.8782670651327233e-14,
+      "orthonormality": 4.8504603111787503e-14
+    }
+  },
+  "native_call": {
+    "call_id": 11,
+    "event": 1,
+    "update_clock": 0,
+    "relation": [
+      213,
+      4
+    ],
+    "port": "mother",
+    "fact_id": "episode:203",
+    "evidence_row": 0,
+    "original_query_shape": [
+      1,
+      4
+    ],
+    "original_design_shape": [
+      8,
+      4
+    ],
+    "exact_message_coordinate": {
+      "index": 20,
+      "numerator": 13187995220015908133655,
+      "denominator": 590295810358705651712
+    },
+    "native_message_l2": 38.939663288815794,
+    "fp64_row_sum_vs_original_fp32_max_abs": 2.244914932170161e-06
+  },
+  "candidate": {
+    "name": "allocate one pooled fact among its recorded unknown owners, then shared-witness edge restriction",
+    "owners": [
+      [
+        "unknown:1293",
+        "mother"
+      ],
+      [
+        "unknown:1643",
+        "condition"
+      ]
+    ],
+    "allocations": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "native_pooled_message_same_exact": true,
+    "delta_edges": [
+      343,
+      732
+    ],
+    "delta_coefficients": [
+      1,
+      -1
+    ],
+    "curl_witness": {
+      "triangle": [
+        [
+          95,
+          2
+        ],
+        [
+          213,
+          4
+        ],
+        [
+          237,
+          5
+        ]
+      ],
+      "triangle_index": 590,
+      "boundary": [
+        [
+          733,
+          1
+        ],
+        [
+          345,
+          -1
+        ],
+        [
+          343,
+          1
+        ]
+      ],
+      "integer_difference": 1
+    },
+    "hodge_of_attribution_difference": {
+      "gradient": 0.5999999999999991,
+      "curl": 0.4,
+      "harmonic": 1.5197698155010416e-30
+    },
+    "harmonic_projection_coefficient_norm": 1.7434275525533237e-15,
+    "verdict": "not identifiable for full Hodge decomposition; these are representation witnesses, NOT measured native activity"
+  },
+  "exact_star_annihilation": {
+    "receiver": [
+      213,
+      4
+    ],
+    "incident_edges": [
+      343,
+      732,
+      733,
+      734
+    ],
+    "clique": [
+      [
+        95,
+        2
+      ],
+      [
+        213,
+        4
+      ],
+      [
+        229,
+        5
+      ],
+      [
+        237,
+        5
+      ],
+      [
+        265,
+        4
+      ]
+    ],
+    "cut_sizes": [
+      245,
+      1,
+      5,
+      1,
+      1
+    ],
+    "face_ids": [
+      589,
+      590,
+      591,
+      592,
+      593,
+      594,
+      1202,
+      1203,
+      1204,
+      1350
+    ],
+    "certificates": [
+      {
+        "edge": 343,
+        "scale": 5,
+        "coefficients": [
+          -1,
+          1,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "edge": 732,
+        "scale": 5,
+        "coefficients": [
+          0,
+          -1,
+          1,
+          0,
+          0,
+          3,
+          -1,
+          -1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "edge": 733,
+        "scale": 5,
+        "coefficients": [
+          0,
+          -1,
+          0,
+          1,
+          0,
+          -1,
+          3,
+          -1,
+          -1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "edge": 734,
+        "scale": 5,
+        "coefficients": [
+          -1,
+          -2,
+          -1,
+          -1,
+          0,
+          -1,
+          -1,
+          3,
+          0,
+          -1,
+          -1,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "statement": "Every unit on these four edges lies exactly in im(B1.T)+im(B2), hence no harmonic covector reads it. Applies to this reference complex, not all body activity."
+  },
+  "branch_scope": {
+    "counts": {
+      "matches": 174,
+      "pending_or_different_scope": 2
+    },
+    "mismatches": [
+      {
+        "call_id": 947,
+        "relation": [
+          9,
+          1
+        ],
+        "stored_uses": [
+          [
+            "unknown:1100",
+            "condition"
+          ],
+          [
+            "unknown:1394",
+            "action"
+          ],
+          [
+            "unknown:1401",
+            "condition"
+          ],
+          [
+            "unknown:1402",
+            "condition"
+          ],
+          [
+            "unknown:1406",
+            "condition"
+          ],
+          [
+            "unknown:1410",
+            "condition"
+          ],
+          [
+            "unknown:1413",
+            "condition"
+          ],
+          [
+            "unknown:1432",
+            "mother"
+          ]
+        ],
+        "reference_uses": [
+          [
+            "unknown:1017",
+            "condition"
+          ],
+          [
+            "unknown:1402",
+            "condition"
+          ],
+          [
+            "unknown:1485",
+            "action"
+          ],
+          [
+            "unknown:1487",
+            "condition"
+          ],
+          [
+            "unknown:1495",
+            "condition"
+          ],
+          [
+            "unknown:1501",
+            "condition"
+          ],
+          [
+            "unknown:1572",
+            "condition"
+          ],
+          [
+            "unknown:1659",
+            "condition"
+          ]
+        ]
+      },
+      {
+        "call_id": 950,
+        "relation": [
+          9,
+          1
+        ],
+        "stored_uses": [
+          [
+            "unknown:1100",
+            "condition"
+          ],
+          [
+            "unknown:1394",
+            "action"
+          ],
+          [
+            "unknown:1401",
+            "condition"
+          ],
+          [
+            "unknown:1402",
+            "condition"
+          ],
+          [
+            "unknown:1406",
+            "condition"
+          ],
+          [
+            "unknown:1410",
+            "condition"
+          ],
+          [
+            "unknown:1413",
+            "condition"
+          ],
+          [
+            "unknown:1432",
+            "mother"
+          ]
+        ],
+        "reference_uses": [
+          [
+            "unknown:1017",
+            "condition"
+          ],
+          [
+            "unknown:1402",
+            "condition"
+          ],
+          [
+            "unknown:1485",
+            "action"
+          ],
+          [
+            "unknown:1487",
+            "condition"
+          ],
+          [
+            "unknown:1495",
+            "condition"
+          ],
+          [
+            "unknown:1501",
+            "condition"
+          ],
+          [
+            "unknown:1572",
+            "condition"
+          ],
+          [
+            "unknown:1659",
+            "condition"
+          ]
+        ]
+      }
+    ]
+  },
+  "historical_origin_candidate": [
+    {
+      "fact_id": "episode:203",
+      "origin": null,
+      "status": "origin_not_in_retained_history"
+    },
+    {
+      "fact_id": "episode:1133",
+      "origin": [
+        169,
+        4
+      ],
+      "status": "outside_reference_complex"
+    },
+    {
+      "fact_id": "episode:1616",
+      "origin": [
+        150,
+        3
+      ],
+      "status": "outside_reference_complex"
+    },
+    {
+      "fact_id": "episode:1919",
+      "origin": [
+        219,
+        5
+      ],
+      "status": "outside_reference_complex"
+    },
+    {
+      "fact_id": "episode:1977",
+      "origin": [
+        193,
+        2
+      ],
+      "status": "outside_reference_complex"
+    },
+    {
+      "fact_id": "episode:2216",
+      "origin": [
+        213,
+        4
+      ],
+      "status": "same_relation"
+    },
+    {
+      "fact_id": "episode:267",
+      "origin": null,
+      "status": "origin_not_in_retained_history"
+    },
+    {
+      "fact_id": "episode:283",
+      "origin": null,
+      "status": "origin_not_in_retained_history"
+    }
+  ],
+  "actual_hodge_activity_measured": false,
+  "body_updates": 0,
+  "world_calls": 0,
+  "next_step": "Step 1/2 incomplete for a physical edge field: retain the certified complex, reject attribution as full-Hodge measurement, and use exact star certificates to constrain any successor mapping.",
+  "lean": {
+    "path": "lean\\CGBAxioms\\reviews\\NativeMessageMeasurementActual2401.lean",
+    "sha256": "fe8d8615769d36f416282209de65c41be30bb70c7b3f37e0311463e7d952afc0",
+    "status": "passed",
+    "exit_code": 0,
+    "command": "lake env lean reviews/NativeMessageMeasurementActual2401.lean",
+    "trust": "native_decide for finite actual integer data; ordinary kernel-checked algebraic annihilation and nonzero-message proofs"
+  },
+  "sources": [
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\signal_admission_2401_20261117\\pair_observed_observations\\operations.jsonl.gz",
+      "sha256": "11badca1cfe2c9b9e942b444a913434259b9b0d18e6460a718d6d39aa111fdd0"
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\work\\signal_admission_2401_20261117\\pair_observed_observations\\tensors.bin",
+      "sha256": "0adcda4d7a4117abf0989f1f1063ac12c2a3439105e5e23fb9559b21d0fb0240"
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\body\\causal_archive_511e944037da1e9128b452aba47402f5da5f8bb688919b97f896d0582dded02a.sqlite",
+      "sha256": "511e944037da1e9128b452aba47402f5da5f8bb688919b97f896d0582dded02a"
+    },
+    {
+      "path": "C:\\Users\\85750\\.codex\\cgb_native_topology_20261116\\body\\metrics.jsonl",
+      "sha256": "4644ab9c483ed4f377b063f13e5555bd566883fe65187aaae3026f6d2875977e"
+    },
+    {
+      "path": "D:\\information-boltzmann-v1\\results\\published\\cgb_native_harmonic_observability_2401_20261117.npz",
+      "sha256": "faa640a8cf24146fad47aa118ffc0c28480cef52d7f7616ae7d1c6958e6ccc40"
+    },
+    {
+      "path": "D:\\information-boltzmann-v1\\results\\published\\cgb_native_dowker_measurement_2401_20261117.json",
+      "sha256": "f10b25e10c891377755a464f648c7edd809e71abda3dfa949b82896c625eacd3"
+    }
+  ],
+  "implementation_sha256": "ee4621955c0bcd485509b1c12a35adf6ede1250ef5ecc3d936a95905add4018b"
+}

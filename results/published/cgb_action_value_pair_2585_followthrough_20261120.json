@@ -1,0 +1,103 @@
+{
+  "source_report": "cgb_action_value_pair_2585_20261120.json",
+  "valid": true,
+  "unit_comparison": "ranks only",
+  "segment_generate_advantage": [
+    0.0026503975869687224,
+    0.007535143341861783,
+    0.008372847430827335,
+    0.00404385846267985
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "world_positions": [
+        20066279,
+        17042644
+      ],
+      "unknowns": [
+        "unknown:82",
+        "unknown:82"
+      ],
+      "common_queries": [
+        "episode:105",
+        "episode:139",
+        "episode:71",
+        "episode:72",
+        "episode:75",
+        "episode:91",
+        "episode:94",
+        "episode:98"
+      ],
+      "silence_queries": [
+        "episode:105",
+        "episode:139",
+        "episode:71",
+        "episode:72",
+        "episode:75",
+        "episode:91",
+        "episode:94",
+        "episode:98"
+      ],
+      "generate_queries": [
+        "episode:105",
+        "episode:139",
+        "episode:71",
+        "episode:72",
+        "episode:75",
+        "episode:91",
+        "episode:94",
+        "episode:98"
+      ],
+      "U_difference": 0.021678362041711807,
+      "shared_query_component": 0.021678362041711807,
+      "distinct_query_component": 0.0,
+      "interpretation": "exact accounting of realized scores; components scored at each branch own settlement parameters"
+    },
+    {
+      "step": 2,
+      "world_positions": [
+        20067239,
+        14673547
+      ],
+      "unknowns": [
+        "unknown:1787",
+        "unknown:1787"
+      ],
+      "common_queries": [
+        "episode:203",
+        "episode:283"
+      ],
+      "silence_queries": [
+        "episode:1133",
+        "episode:1977",
+        "episode:203",
+        "episode:2345",
+        "episode:2465",
+        "episode:2508",
+        "episode:2557",
+        "episode:283"
+      ],
+      "generate_queries": [
+        "episode:1974",
+        "episode:203",
+        "episode:2066",
+        "episode:2237",
+        "episode:2435",
+        "episode:2478",
+        "episode:267",
+        "episode:283"
+      ],
+      "U_difference": -0.03245634585618973,
+      "shared_query_component": -0.0052084848284721375,
+      "distinct_query_component": -0.02724786102771759,
+      "interpretation": "exact accounting of realized scores; components scored at each branch own settlement parameters"
+    }
+  ],
+  "first_step_generate_advantage": 0.021678362041711807,
+  "discounted_second_step_difference": -0.025965076684951786,
+  "final_P2_difference": -0.004286714643239979,
+  "final_G2_difference": 0.005650561705584423,
+  "scope": "one matched two-transition realization, four prespecified validation segments",
+  "next": "one independent complete boundary matched pair; preserve reward and assessment read-only"
+}

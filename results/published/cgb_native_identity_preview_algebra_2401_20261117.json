@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "actual_call_id": 11,
+  "fact_ids": [
+    "mother:1:episode:203",
+    "mother:1:episode:1133",
+    "mother:1:episode:1616",
+    "mother:1:episode:1919",
+    "mother:1:episode:1977",
+    "mother:1:episode:2216",
+    "mother:1:episode:267",
+    "mother:1:episode:283"
+  ],
+  "actual_shape": {
+    "x": [
+      8,
+      4
+    ],
+    "y": [
+      8,
+      128
+    ],
+    "query": [
+      1,
+      4
+    ],
+    "noise": [
+      128
+    ]
+  },
+  "results": [
+    {
+      "dtype": "torch.float64",
+      "mean_max_abs": 1.4210854715202004e-14,
+      "hypothesis_max_abs": 1.426636586643326e-14,
+      "gradient_max_abs": [
+        1.6431300764452317e-14,
+        3.686287386450715e-17,
+        1.9984014443252818e-15
+      ],
+      "noise_permutation_max_abs": 0.0,
+      "retained_fact_noise_max_abs": 0.0
+    },
+    {
+      "dtype": "torch.float32",
+      "mean_max_abs": 3.814697265625e-06,
+      "hypothesis_max_abs": 5.125999450683594e-06,
+      "gradient_max_abs": [
+        2.1219253540039062e-05,
+        1.2922100722789764e-08,
+        1.519918441772461e-06
+      ],
+      "noise_permutation_max_abs": 0.0,
+      "retained_fact_noise_max_abs": 0.0
+    }
+  ],
+  "record_sha256": "39688281b39f056e4bc3b272fc17272d0acdd0c5692f9c624e802d209b1d1220",
+  "implementation_sha256": "d07ca62b431d1b256720e673229e9db9bffe53923b78529ef80c38c9300a01d4"
+}

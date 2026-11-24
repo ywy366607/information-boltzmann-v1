@@ -2,6 +2,7 @@
 
 The reference in bfss_gdn_capture remains the CPU and audit implementation.
 Only already observed input projections are consumed; no learning rule changes.
+Length T is runtime data, so all observed window lengths share one binary.
 """
 from __future__ import annotations
 
@@ -10,8 +11,8 @@ import triton
 import triton.language as tl
 
 
-@triton.jit
-def _capture(kp, vp, ap, bp, sp, pp, so, po, co, T: tl.constexpr,
+@triton.jit(do_not_specialize=['T'])
+def _capture(kp, vp, ap, bp, sp, pp, so, po, co, T,
              D: tl.constexpr, BUDGET: tl.constexpr):
     bh = tl.program_id(0)
     z = tl.arange(0, D)

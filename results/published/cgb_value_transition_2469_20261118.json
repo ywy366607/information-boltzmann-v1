@@ -1,0 +1,99 @@
+{
+  "source": "E:\\cgb_epistemic_value_test_2469_20261118\\context\\events.jsonl",
+  "pairs": [
+    {
+      "prediction_cycle": 2470,
+      "next_cycle": 2471,
+      "predicted_future": 0.07059813290834427,
+      "next_action_values": [
+        0.3033306300640106,
+        0.30838918685913086,
+        0.33625543117523193
+      ],
+      "next_probabilities": [
+        0.5563433170318604,
+        0.30475151538848877,
+        0.13890519738197327
+      ],
+      "next_policy_value": 0.3094456679500759,
+      "selected_expected": 0.33625543117523193,
+      "next_merged": true,
+      "individual_commit": false,
+      "actual": 0.0,
+      "error": 0.07059813290834427,
+      "components": {
+        "transport": -0.23884753504173162,
+        "policy_sampling": -0.026809763225156047,
+        "admission": 0.33625543117523193,
+        "observed_response": 0.0
+      },
+      "reconstruction_residual": 0.0,
+      "delayed_samples": 33,
+      "delayed_fact": "episode:2470"
+    },
+    {
+      "prediction_cycle": 2471,
+      "next_cycle": 2472,
+      "predicted_future": -0.1056722104549408,
+      "next_action_values": [
+        0.03336748108267784,
+        0.015175030566751957,
+        0.021306397393345833
+      ],
+      "next_probabilities": [
+        0.28148820996284485,
+        0.3453677296638489,
+        0.3731440305709839
+      ],
+      "next_policy_value": 0.022583873375650876,
+      "selected_expected": 0.021306397393345833,
+      "next_merged": true,
+      "individual_commit": false,
+      "actual": 0.0,
+      "error": -0.1056722104549408,
+      "components": {
+        "transport": -0.12825608383059167,
+        "policy_sampling": 0.001277475982305043,
+        "admission": 0.021306397393345833,
+        "observed_response": 0.0
+      },
+      "reconstruction_residual": 0.0,
+      "delayed_samples": 32,
+      "delayed_fact": null
+    },
+    {
+      "prediction_cycle": 2472,
+      "next_cycle": 2473,
+      "predicted_future": 0.12509819865226746,
+      "next_action_values": [
+        0.016754355281591415,
+        0.05008171871304512,
+        0.05508257448673248
+      ],
+      "next_probabilities": [
+        0.28598669171333313,
+        0.337200403213501,
+        0.3768129050731659
+      ],
+      "next_policy_value": 0.04243492329369081,
+      "selected_expected": 0.016754355281591415,
+      "next_merged": false,
+      "individual_commit": true,
+      "actual": -0.17079398036003113,
+      "error": 0.2958921790122986,
+      "components": {
+        "transport": 0.08266327535857665,
+        "policy_sampling": 0.025680568012099392,
+        "admission": 0.0,
+        "observed_response": 0.18754833564162254
+      },
+      "reconstruction_residual": 0.0,
+      "delayed_samples": 32,
+      "delayed_fact": null
+    }
+  ],
+  "equation": "preview-actual = transport + policy_sampling + admission + observed_response",
+  "measurement": "actual coupled learning/world trajectory; no new training or world calls",
+  "admission_role": "retrospective observed branch, never supplied as a pre-world feature",
+  "squared_error_attribution": "components add as signed errors; their squares include cross terms"
+}

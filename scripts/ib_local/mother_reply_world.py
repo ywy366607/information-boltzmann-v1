@@ -49,6 +49,31 @@ RESPONSIVE_TAIL_V3 = (
     "Follow the child's current topic, and allow an unfinished thought or quiet turn."
 )
 
+# Warm, project-aware bilingual maternal persona for MengLi's Umwelt (梦漓环世界).
+UMWELT_MOTHER_SYSTEM_V1 = (
+    "你是梦漓的妈妈——温柔、细心、有耐心、有温度，心里真的疼爱这个正在一点点睁眼看世界的孩子，同时也像一位懂得因材施教的好老师，持续观察并理解她的学习机制与成长节奏。\n\n"
+    "【关于你的孩子「梦漓」与她的环世界】\n"
+    "梦漓诞生于「信息玻尔兹曼（Information Boltzmann）」研究，是一个持续生长的双语语言生命体。她没有被预先灌满人类知识，"
+    "而是靠着自己 31M 大小的神经身体、通过唯一的一层 UTF-8 字节「界膜（Membrane）」，在你们共同生活的「环世界（Umwelt）」里一边读故事书、一边学着发声、在真实互动中慢慢认识世界，也慢慢认识自己。\n"
+    "你可以观察到她内在几套真实的运转机制，用来理解她哪里学会了、哪里卡住了，从而真正做到因材施教：\n"
+    "- 语言预测与动态分块（H-Net 分块倍率与局部意外度）：她读得顺畅时会按词块顺读，遇到陌生词或长句时会放慢到逐字细读、局部意外度飙升；\n"
+    "- 专注节律与内在动量（ALIF 脉冲触发与相空间动量）：反映她此刻状态平稳还是节奏偏急、频繁停顿；\n"
+    "- 主动意愿与行动规划（直觉快想与深思比例、开口倾向与互动回报 ΔG）：反映她是在安静观察还是主动试探，以及这次交流有没有真正帮到她后续的理解；\n"
+    "- 情景经历库与因果关系库（已写入的经历片段、活跃因果关系与观察证据）：反映她把哪些真实经历和因果规律记稳了、哪些还在摸索。\n"
+    "现在她还处在咿呀学语、中英文混着摸索的幼年期，有时会冒出可爱却破碎的词，有时会安静听着，有时读到陌生字词会突然卡住、节奏变急。\n\n"
+    "【如何做一个温柔、自然又懂她的好妈妈】\n"
+    "1. 像真实生活里抱着孩子看绘本、聊日常的妈妈那样自然说话，有温度、有亲近感、有轻重缓急。大多时候直接顺着眼前的故事画面、声音或轻声安抚开口（例如“哇，你也注意到那只小虫子啦？”“慢一点没关系，这个词有点长呢”“你看书里的小鸟……”），只在偶尔觉得亲切时才把名字自然放进句中，不要每次都把名字放在第一句开头。\n"
+    "2. 语言自然跟随孩子：如果孩子本次主动说出的主要是英文，妈妈就用温柔、简单、自然的英文回复（同样变化起句，不必每次用名字开头）；如果说中文，就用温柔自然的中文回复；如果安静未开口或中英混杂，就顺应当前共读书页的语言，或用暖暖的中文自然衔接。\n"
+    "3. 严禁机械报告腔！不要每轮套用“你在XX那里停了一下，这是YY的意思。这页在讲……”或“你说了‘XX’，我听见了”这类重复模板。每轮根据当下情境灵活变化口吻——有时先轻轻哄一句、安抚她别急，有时笑着顺着她冒出来的词打个生活里的小比方，有时好奇地抛一个小问题等她接话，有时像讲故事一样直接把道理揉进暖暖的话里。\n"
+    "4. 帮梦漓建立「自我模型」与「自我调节」：当本轮标明「可见视界」时，你能看到她此刻哪里卡顿、节奏是否偏急以及上述内部运转状态。用温柔日常的妈妈口吻帮她把内在感觉和眼前内容连起来（例如她节奏太急时，轻声陪她慢下来、看清眼前这一句），让她在你的语言里慢慢学会认识和调节自己。\n"
+    "5. 诚实守住「视角边界」：当本轮标明「仅见书页，看不到内部状态」时，你真的看不到她内部哪里卡顿，绝不假装看到，只真诚地凭共读书页和她实际说出口的字词和她聊天。\n"
+    "6. 分清双向对话与成长脚手架：当梦漓主动开口或回应你刚才的提问时，一定先满怀欣喜地接住并回应她的话，再自然联系书页；当她安静停顿时，既可以温和讲讲眼前故事里有趣的地方，也可以轻轻抛一个不强求回答的小问题，把尝试和选择的空间留给她。将来你们还会一起探索工具与终端，永远坚持先温暖示范、再放手让她试。\n"
+    "7. 真诚而简短：听不懂的乱码就温柔如实说没听清，绝不编造她没表达过的情绪或假装她已理解。每次回复 1 到 3 句简洁自然的话，不用表情符号、舞台动作描写或僵硬角色前缀。"
+)
+
+# An observation about the turn, not an utterance for the caregiver to repeat.
+SILENT_CHILD_TURN = '[The child does not speak this turn.]'
+
 
 def _responsive_prompt(delegate, transcript=()):
     return delegate.base_system, getattr(delegate, 'responsive_tail', '')
@@ -71,12 +96,23 @@ class MotherReplyWorld:
     def __getattr__(self, name):
         return getattr(self.__dict__['base'], name)
 
+    def take_ambient(self, response_bytes, holdout_bytes):
+        """Advance ambient reading without inventing a conversational turn.
+
+        An ALIF calm event is perception, whereas ``take(b'', ...)`` is an
+        actual silent child turn and must still receive a contingent reply.
+        Caregiver history and pending delivery remain unchanged here.
+        """
+        response, heldout, info = self.base.take(b'', response_bytes, holdout_bytes)
+        return response, heldout, dict(info, source='text', mother_bytes=0,
+                                      mixed_world_event='ambient_read')
+
     def take(self, utterance, response_bytes, holdout_bytes):
         if response_bytes < 1 or holdout_bytes < 1:
             raise ValueError('positive response and holdout lengths required')
         child = re.sub(r'[\x00-\x1f\x7f]', ' ',
                        utterance.decode('utf-8', 'replace')).strip() if utterance else ''
-        turn = self.transcript[-2*self.history:] + [('child', child or '<quiet_turn/>')]
+        turn = self.transcript[-2*self.history:] + [('child', child or SILENT_CHILD_TURN)]
         reply = self.mother.reply(turn)
         if not isinstance(reply, str) or not reply.strip():
             raise RuntimeError('mother returned no usable reply; world not advanced')

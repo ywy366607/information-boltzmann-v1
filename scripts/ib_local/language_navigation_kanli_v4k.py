@@ -24,6 +24,9 @@ class LatentDraftEngine(FilmEngine):
 
     @torch.no_grad()
     def _film(self, words, table):
+        if getattr(self,'variable_expression_schema',None)==1:
+            from scripts.ib_local.variable_expression import film
+            return film(self,words,table)
         # Only replay the proposed action; no unused imagined-reply sampling.
         byte = self.pending
         self.decision.start(self.recurrent)

@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MengLiVitalSigns",
+  "description": "Flat measured telemetry. Missing or null means unmeasured; zero remains zero. Metadata identifies the source, not inferred liveness.",
+  "type": "object",
+  "properties": {
+    "cycle": { "type": ["integer", "null"] },
+    "choice": { "type": ["string", "null"], "enum": ["generate", "silence", "reuse", null] },
+    "child_text": { "type": ["string", "null"] },
+    "mother_reply": { "type": ["string", "null"] },
+    "spoke": { "type": ["boolean", "null"] },
+    "metal_g": { "type": ["number", "null"] },
+    "settlement_kind": { "type": ["string", "null"] },
+    "s_state_norm": { "type": ["number", "null"], "description": "Only an explicitly measured S norm; never inferred from gradients." },
+    "p_momentum_norm": { "type": ["number", "null"], "description": "Only an explicitly measured P norm; not question magnitude or gradients." },
+    "q_invariant_norm": { "type": ["number", "null"], "description": "Only an explicitly measured Q norm; no conservation claim is implied." },
+    "layer_gradient_norms": {
+      "type": ["array", "null"],
+      "items": { "type": ["number", "null"], "minimum": 0 },
+      "description": "Layer-wise gradient norms. These are not S/P/Q measurements."
+    },
+    "active_relations": { "type": ["integer", "null"], "minimum": 0 },
+    "relation_capacity": { "type": ["integer", "null"], "minimum": 0 },
+    "unknown_identity": { "type": ["string", "null"] },
+    "current_evidence_count": { "type": ["integer", "null"], "minimum": 0 },
+    "mother_prequential_mse": { "type": ["number", "null"] },
+    "question_norm": { "type": ["number", "null"], "description": "Explicit question-vector norm; not question_weight_step." },
+    "expected_gain": { "type": ["number", "null"] },
+    "candidate_count": { "type": ["integer", "null"], "minimum": 0 },
+    "provider_hit_rate": { "type": ["number", "null"], "minimum": 0, "maximum": 1, "description": "Provider KV hit rate, not the shared reply cache hit rate." },
+    "latency_seconds": { "type": ["number", "null"], "minimum": 0 },
+    "cache_hit_tokens": { "type": ["integer", "null"], "minimum": 0 },
+    "cache_miss_tokens": { "type": ["integer", "null"], "minimum": 0 },
+    "prompt_tokens": { "type": ["integer", "null"], "minimum": 0, "description": "Total prompt tokens, including cached input; do not add cache hits again." },
+    "completion_tokens": { "type": ["integer", "null"], "minimum": 0 },
+    "turn_in_segment": { "type": ["integer", "null"] },
+    "rollover_occurred": { "type": ["boolean", "null"] },
+    "reply_usage": { "$ref": "#/definitions/usage" },
+    "summary_usage": { "$ref": "#/definitions/usage" },
+    "metadata": {
+      "type": ["object", "null"],
+      "properties": {
+        "run_id": { "type": ["string", "null"] },
+        "arm": { "type": ["string", "null"] },
+        "source_checkpoint": { "type": ["string", "null"] },
+        "metrics_source": { "type": ["string", "null"] },
+        "service_status": { "type": ["string", "null"] },
+        "training_status": { "type": ["string", "null"] }
+      }
+    }
+  },
+  "definitions": {
+    "usage": {
+      "type": ["object", "null"],
+      "description": "Separate actual reply/summary usage, with provider measurements distinct from token estimates. No implicit zero or billing calculation.",
+      "properties": {
+        "prompt_tokens": { "type": ["integer", "null"], "minimum": 0 },
+        "completion_tokens": { "type": ["integer", "null"], "minimum": 0 },
+        "cache_hit_tokens": { "type": ["integer", "null"], "minimum": 0 },
+        "cache_miss_tokens": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    }
+  }
+}

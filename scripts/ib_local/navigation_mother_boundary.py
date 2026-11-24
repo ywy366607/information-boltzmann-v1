@@ -11,15 +11,34 @@ from scripts.ib_local.navigation_momentum_wood import decision_momentum_read
 from scripts.ib_local.navigation_relation_wood import local_relation
 
 
+FOREGROUND_SOURCES = ('mother', 'parent', 'tool', 'object')
+BOOK_SOURCES = ('text', 'chinese_storybook', 'matched', 'topic', 'parent_reply')
+
+
 def mother_boundary_feature(features, own, response_len, info):
-    """Feature immediately after actual mother bytes, before ambient bytes."""
-    count = info.get('mother_bytes', 0) if info.get('source') == 'mother' else 0
-    if not isinstance(count, int) or count <= 0 or count >= response_len:
+    """Actual reply boundary: unified across caregiver, parent, tool, dynamic object, and book sources."""
+    src = info.get('source')
+    is_book = src in BOOK_SOURCES
+    if is_book:
+        count = info.get('navigation_response_bytes', 0)
+    elif src in FOREGROUND_SOURCES:
+        count = info.get('mother_bytes', 0)
+    else:
+        count = 0
+    if not isinstance(count, int) or count <= 0 or count > response_len or (count == response_len and not is_book):
         return None
     index = own + count
     if not 0 <= index < len(features):
         return None
     return features[index].detach().clone()
+
+
+def mother_question_context(engine, source, context):
+    p = decision_momentum_read(engine.model, engine.bfss_momenta, source)
+    base = next_boundary_prediction(engine.model, source, source)
+    base = base + engine.model.momentum_to_boundary(p) + context
+    correction = engine.model.mother_from_boundary(base)
+    return context + correction, correction
 
 
 class MotherBoundaryEngine(ShadowPreviewEngine):
@@ -40,12 +59,9 @@ class MotherBoundaryEngine(ShadowPreviewEngine):
         # Before drafting, predict what silence might elicit using the same
         # shared transition. The correction conditions the existing q port.
         source = h[None]
-        p = decision_momentum_read(self.model, self.bfss_momenta, source)
-        base = next_boundary_prediction(self.model, source, source)
-        base = base + self.model.momentum_to_boundary(p) + context
-        correction = self.model.mother_from_boundary(base)
+        result, correction = mother_question_context(self, source, context)
         self._mother_question_correction = correction.detach().clone()
-        return context + correction
+        return result
 
     def _outcome_loss(self, source, action, long):
         loss, diag = super()._outcome_loss(source, action, long)

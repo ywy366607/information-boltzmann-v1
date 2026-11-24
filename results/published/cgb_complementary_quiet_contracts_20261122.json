@@ -1,0 +1,138 @@
+{
+  "schema": 1,
+  "cycle": 2537,
+  "source_sha256": {
+    "scripts/quiet_force_jet.py": "7cc28883ed985f18c86f0f2a4c9028fba7ba3fea370737811226065313ee72d9",
+    "scripts/ib_local/navigation_generative_cycle.py": "3688ee5868cf139fbf7408d6f3df21eecc2ff2777b0214e4350181064e130ea6",
+    "scripts/ib_local/navigation_joint_cycle.py": "a937b0f4cabcb3cb71faeb8fcace35f658fb655883cdaeea26252c8db6c89e1d",
+    "scripts/audit_joint_target_coordinates.py": "0a095ef5cc6a14ec3b888abd88615c8da80c543e155a2a2e4d9108f6b51d2ae3",
+    "scripts/benchmark_prepared_quiet.py": "2878bce6871805ae01c0f0482fbc821186c47a2233e7a830aa8b8ad279c938eb",
+    "tests/test_quiet_force_jet.py": "81548e1d80f57db7f70d8d83f85eab2710d58e3ce0b377f8b6acd1f0af6fff9b",
+    "lean/CGBAxioms/reviews/NativeComplementaryReadoutAndPairs.lean": "a70e2f2678f9ecd7bb1e29886fa8106f29a5760dd1d8a52764330cb2c9c68952",
+    "docs/information_boltzmann/CGB_COMPLEMENTARY_READOUT_AND_PREPARED_QUIET_20261122.md": "89abbd8d2d0a176c8ae656c2f3e313b41979c258f053a33301e6ab244cd2b005"
+  },
+  "joint_readout": {
+    "samples": 8,
+    "joint_ranks": [
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256
+    ],
+    "packet_ranks": [
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256
+    ],
+    "max_reconstruction_error": 8.124056982694583e-14,
+    "feature_condition_range": [
+      2554.569889539551,
+      16081.008346233135
+    ]
+  },
+  "benchmark": {
+    "device": "cuda",
+    "cycle": 2537,
+    "results": {
+      "reference_rejected": {
+        "seconds": [
+          0.02318920000016078,
+          0.022868000000016764,
+          0.021963099999993574
+        ],
+        "median_seconds": 0.022868000000016764,
+        "peak_mib": 260.51953125,
+        "max_errors": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "prepared_rejected": {
+        "seconds": [
+          0.019689300000209187,
+          0.01958699999977398,
+          0.01979940000001079
+        ],
+        "median_seconds": 0.019689300000209187,
+        "peak_mib": 260.64990234375,
+        "max_errors": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "reference_accepted": {
+        "seconds": [
+          0.6129801999995834,
+          0.6147997999996733,
+          0.610635000000002
+        ],
+        "median_seconds": 0.6129801999995834,
+        "peak_mib": 973.14599609375,
+        "max_errors": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "prepared_accepted": {
+        "seconds": [
+          0.32409350000034465,
+          0.3254813000003196,
+          0.32592529999965336
+        ],
+        "median_seconds": 0.3254813000003196,
+        "peak_mib": 515.814453125,
+        "max_errors": [
+          0.0,
+          0.0,
+          2.384185791015625e-07,
+          1.1920928955078125e-07,
+          0.0,
+          7.450580596923828e-09
+        ]
+      }
+    },
+    "equal_accept_reject_expected_speedup": 1.8421273422435922,
+    "scope": "frozen complete 32-layer internal proposal/commit port; actual selection frequency belongs to life trace",
+    "source_sha256": "6f772f80a434abba4cf83643fe4c62527ea18818218818829da0d0c0c98c7279",
+    "training_updates": 0,
+    "world_calls": 0
+  },
+  "validation": {
+    "lean_theorems": 5,
+    "lean_command": "lake env lean reviews/NativeComplementaryReadoutAndPairs.lean",
+    "lean_exit_code": 0,
+    "related_checks_passed": 42,
+    "final_focused_checks_passed": 16,
+    "related_junit": "scratch/cgb_math_contracts_20261122/quiet_jet_checks.xml"
+  },
+  "production": {
+    "default_cuda": true,
+    "cpu_opt_in": true,
+    "ephemeral_proposal_excluded_from_checkpoint": true,
+    "forward_original_reduction": true,
+    "lazy_eligibility": true
+  },
+  "natural_training_updates": 0,
+  "world_calls": 0
+}

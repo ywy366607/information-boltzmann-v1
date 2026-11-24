@@ -26,7 +26,7 @@ def matrix_view(layer, packed):
 
 
 @torch.no_grad()
-def observed_momentum(layer, x, packed_before, momentum):
+def observed_momentum(layer, x, packed_before, momentum, *, contact=None, layer_index=None, impedance=None):
     """Replay actual inputs once, returning (S_after, P_after, corrections).
 
     P is kicked by the pre-admission delta innovation, as specified by the
@@ -56,6 +56,9 @@ def observed_momentum(layer, x, packed_before, momentum):
     k = F.normalize(k, dim=-1)
     alpha = layer.retention(normalized)
     beta = layer.beta_proj(normalized).sigmoid()
+    if contact is not None:
+        return contact.observe(layer_index, k, v, alpha, beta, s, p,
+                               impedance, layer.content_budget)
     if (x.is_cuda and s.dtype == torch.float32 and layer.dk == layer.dv and
             os.environ.get('CGB_MOMENTUM_BACKEND', 'fused') != 'reference'):
         from scripts.ib_local.bfss_momentum_fused import capture
@@ -80,6 +83,23 @@ def quiet_packed(base, recurrent, momenta, *, dt, frequency, coupling, steps):
     """Evolve only S and P; leave convolution and all other state untouched."""
     if type(steps) is not int or steps < 0 or len(momenta) != len(base.layers):
         raise ValueError('invalid fixed internal budget or number of layers')
+    adaptive = getattr(base, '_adaptive_quiet', None)
+    if adaptive is not None:
+        return adaptive.quiet(base, recurrent, momenta, dt=dt, steps=steps, capture=True)
+    first=base.layers[0]
+    if first.conv_kernel and all(layer.recurrence=='decay_then_delta' and not layer.share_size
+            and (layer.matrix_size,layer.heads,layer.dk,layer.dv)==
+                (first.matrix_size,first.heads,first.dk,first.dv) for layer in base.layers):
+        # Layer is a batch axis here: forces couple heads within a layer only.
+        # All 32 layers evolve in shared batched GEMMs, not 32 launch sequences.
+        result=recurrent.clone()
+        s=result[...,:first.matrix_size].reshape(len(base.layers),recurrent.shape[1],
+                                               first.heads,first.dk,first.dv)
+        p=torch.stack(momenta)
+        for _ in range(steps):
+            s,p=quiet_step(s,p,dt=dt,frequency=frequency,coupling=coupling)
+        result[...,:first.matrix_size]=s.flatten(2)
+        return result,list(p.unbind(0))
     result, next_p = recurrent.clone(), []
     for i, (layer, momentum) in enumerate(zip(base.layers, momenta)):
         s, p = matrix_view(layer, result[i]).clone(), momentum.clone()

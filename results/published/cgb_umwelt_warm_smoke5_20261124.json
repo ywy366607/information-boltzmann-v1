@@ -1,0 +1,257 @@
+{
+  "schema": 1,
+  "source": {
+    "path": "D:\\mengli-umwelt-phase2-30min-20261124\\body\\last.pt.gz",
+    "sha256": "9f793c0c1476eb1e42c6d7984be14604d9c5720c7462322ce32c2c1379976bf3",
+    "cycle": 3258
+  },
+  "output": {
+    "checkpoint": "D:\\mengli-umwelt-warm-smoke5-20261124\\body\\last.pt.gz",
+    "sha256": "75cb169b6603567cbe4d7e0e7350bbadbb9b3619ecfa9bf237cf1a38d107cac6",
+    "cycle": 3268
+  },
+  "config": {
+    "schema": 1,
+    "branch_id": "mengli-umwelt-warm-smoke5-20261124",
+    "mother_enabled": true,
+    "mother_harness_url": "http://127.0.0.1:8902",
+    "mother_cooldown": 3,
+    "mother_max_gap": 6,
+    "mirror_ratio": 0.7,
+    "chinese_corpus": "D:\\information-boltzmann-v1\\data\\cgb_chinese_stories_20261124\\train.bin",
+    "chinese_mix_ratio": 0.5,
+    "restored_prior_port_state": false
+  },
+  "timing": {
+    "life_seconds": 151.876,
+    "save_seconds": 2.456,
+    "peak_vram_gib": 2.5282,
+    "run_external_bytes": 41600,
+    "bytes_per_second": 273.91,
+    "run_calm_pieces": 20,
+    "run_executive_spikes": 10,
+    "mean_calm_seconds": 1.6088,
+    "mean_exec_seconds": 11.6834
+  },
+  "unified_port": {
+    "ambient_reads": 20,
+    "sidecar_reads": 10,
+    "spike_turns": 10,
+    "mother_turns": 5,
+    "mother_responsive_turns": 5,
+    "mother_proactive_turns": 0,
+    "explicit_addressed_turns": 0,
+    "mirror_visible_turns": 3,
+    "book_only_turns": 2,
+    "parent_turns": 0,
+    "tool_turns": 0,
+    "ambient_fallback_turns": 5,
+    "mother_present": true,
+    "active_interlocutor": "mother",
+    "awaiting_reply_from": null,
+    "care_stage": "infant_direct_modeling",
+    "care_plan_version": 2,
+    "stage_transitions": [
+      {
+        "turn": 4,
+        "kind": "mother_autonomous_reflection",
+        "stage": "infant_direct_modeling",
+        "version": 2
+      }
+    ],
+    "summary_version": 0,
+    "provider_hit_rate": 0.7249445949273577,
+    "usage_totals": {
+      "reply_usage": {
+        "prompt_tokens": 12183,
+        "completion_tokens": 541,
+        "cache_hit_tokens": 8832,
+        "cache_miss_tokens": 3351,
+        "total_tokens": 12724
+      },
+      "summary_usage": null,
+      "source_counts": {
+        "api": 6,
+        "local": 0,
+        "shared": 0
+      },
+      "api_calls": 6,
+      "failures": 0
+    }
+  },
+  "hnet": {
+    "schema": 1,
+    "enc_layers": 4,
+    "dec_layers": 4,
+    "target_ratio": 4.0,
+    "ratio_loss_weight": 0.25,
+    "min_seq_len": 32,
+    "router_scale": 6.0,
+    "router_thresh": 0.08943039923906326,
+    "calibrated": true,
+    "calls": 4606,
+    "last_boundary_rate": 0.26888737082481384,
+    "last_compression_ratio": 3.719029188156128,
+    "mean_boundary_rate_ema": 0.27874189615249634,
+    "effective_compression_ema": 3.5875482437448585,
+    "last_ratio_loss": 1.0289664268493652,
+    "residual_weight_rms": 0.016507672145962715,
+    "wiener_mean_gate": 0.03559792786836624
+  },
+  "flux_trajectory": [],
+  "dialogue_samples": [
+    {
+      "cycle": 3259,
+      "life_seconds": 20.71,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "book_only",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 1,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "",
+      "child_text": "“I did way you can fro",
+      "reply_text": "梦漓，妈妈听到你在试着说英文呢，虽然有点碎碎的，但妈妈听出来你在努力表达啦。是不是想说“I did it”呀？就像书里那只大象，试了新的肥皂，终于不痒了，高兴得想喊一声“我做到啦”。",
+      "metal_g": 0.014291858300566673,
+      "cache_hit_tokens": 0,
+      "cache_miss_tokens": 1223,
+      "turn_hit_rate": 0.0,
+      "provider_hit_rate": 0.0,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 3260,
+      "life_seconds": 35.76,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "mirror_visible",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 1,
+      "utterance_kind": "babble",
+      "mirror_excerpt": "的双胞胎。他们建造沙堡、收集贝壳、追逐海浪",
+      "child_text": "亷作品进于",
+      "reply_text": "梦漓，慢慢来，不着急，妈妈陪着你。刚才读到“双胞胎”那里有点陌生对不对？就像两个长得一模一样的小人儿一起玩——书里这对双胞胎就在海边堆沙堡、捡贝壳呢。",
+      "metal_g": 0.016714375466108322,
+      "cache_hit_tokens": 1280,
+      "cache_miss_tokens": 271,
+      "turn_hit_rate": 0.8252740167633784,
+      "provider_hit_rate": 0.46142754145638065,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 3263,
+      "life_seconds": 78.21,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "mirror_visible",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 1,
+      "utterance_kind": "babble",
+      "mirror_excerpt": "棵树皮很厚的大树。蒂姆想爬树。他把手放在树",
+      "child_text": "看到",
+      "reply_text": "梦漓说“看到”啦，是不是看到那只小萤火虫了？莉莉把它捧在手心里，高兴得跑去找妈妈，就像你看到喜欢的东西也想让妈妈看看一样。",
+      "metal_g": 0.010783359408378601,
+      "cache_hit_tokens": 1536,
+      "cache_miss_tokens": 365,
+      "turn_hit_rate": 0.8079957916885849,
+      "provider_hit_rate": 0.6023529411764705,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 3266,
+      "life_seconds": 125.07,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "book_only",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 1,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "",
+      "child_text": "何澳",
+      "reply_text": "梦漓冒出“何澳”这个音，妈妈没太听清，不过没关系。你看，书里这只小鸟一开始也害怕飞过云，蒂姆轻轻跟它说别怕、抓紧就好，小鸟就慢慢安心下来了。",
+      "metal_g": 0.0022735297679901123,
+      "cache_hit_tokens": 1920,
+      "cache_miss_tokens": 192,
+      "turn_hit_rate": 0.9090909090909091,
+      "provider_hit_rate": 0.7059313215400624,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 3268,
+      "life_seconds": 151.88,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "mirror_visible",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 2,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "起飞，飞入云端。能够与家人一起踏上冒险之旅",
+      "child_text": "好的强受独他的梦想就很多备本嚏蒂姆，题所有绡只假公只劲",
+      "reply_text": "梦漓一下子说了好多呀，妈妈听到你念到“蒂姆”和“假”了。书里莉莉也正糊涂着呢——妈妈告诉她那只狗是“假”的，就像玩具狗，看着像真的，其实不会动。",
+      "metal_g": 0.0025834962725639343,
+      "cache_hit_tokens": 2048,
+      "cache_miss_tokens": 525,
+      "turn_hit_rate": 0.795958025650991,
+      "provider_hit_rate": 0.7249445949273577,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    }
+  ],
+  "evaluation": {
+    "checkpoint": "D:\\mengli-umwelt-warm-smoke5-20261124\\body\\last.pt.gz",
+    "cycle": 3268,
+    "load_seconds": 10.021,
+    "fresh_8192_nll": {
+      "mean_nll": 1.7035041134804487,
+      "segment_nll": [
+        1.7364600598812103,
+        1.786009468138218,
+        1.6671826615929604,
+        1.6243642643094063
+      ]
+    },
+    "classic_8192_nll": {
+      "mean_nll": 1.5931312497705221,
+      "segment_nll": [
+        1.4269449710845947,
+        1.8156999424099922,
+        1.5792362540960312,
+        1.5506438314914703
+      ]
+    },
+    "combined_16384_mean_nll": 1.6483176816254854,
+    "fresh_64_facts": {
+      "mean_score": -0.4025405098218471,
+      "mean_mse": 0.09861961830756627
+    },
+    "scale_diagnostics": {
+      "relation_ridge": 0.11223664879798889,
+      "relation_ridge_gate": 0.8541008234024048,
+      "relation_ridge_lr": 0.0003,
+      "memory_temperature": 0.1998376101255417,
+      "memory_temperature_gate": 0.6662889122962952,
+      "memory_temperature_lr": 0.0003
+    },
+    "optimizer_mean_gate": 0.2153801145592122,
+    "optimizer_alive_frac": 0.791497975708502,
+    "alif_restored": {
+      "v": 0.0,
+      "a": 2.2691394551379225,
+      "executive_spikes": 371,
+      "calm_pieces": 937,
+      "total_external_bytes": 1855360,
+      "total_learned_bytes": 1855360,
+      "pending_spike": false
+    }
+  },
+  "restore_exact": true
+}

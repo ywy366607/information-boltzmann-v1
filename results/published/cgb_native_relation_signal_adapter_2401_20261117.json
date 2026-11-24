@@ -1,0 +1,72 @@
+{
+  "cycle": 2401,
+  "selected_storage_bytes": 4671204,
+  "actual_relation": {
+    "identity": 9,
+    "generation": 1,
+    "version": 47,
+    "binding": {
+      "identity": "unknown:1659",
+      "port": "condition"
+    }
+  },
+  "observed_target_fact": "episode:283",
+  "candidate_batch": 3,
+  "operation_counts": {
+    "_bound_evidence_design": 4,
+    "log_score": 1,
+    "mechanism": 4,
+    "overlap_consensus": 1,
+    "posterior": 4,
+    "revise": 2
+  },
+  "exact_output_equality": {
+    "mother": true,
+    "direct": true,
+    "mediated": true,
+    "consensus": true,
+    "score": true,
+    "revised": true
+  },
+  "exact_gradient_equality": {
+    "encoder.weight": true,
+    "relation_basis.log_noise": true,
+    "relation_basis.condition.weight": true,
+    "relation_basis.condition.bias": true,
+    "relation_basis.action.weight": true,
+    "relation_basis.gate.weight": true,
+    "relation_basis.gate.bias": true,
+    "relation_basis.mother.weight": true,
+    "long_predictor.0.weight": true,
+    "long_predictor.0.bias": true,
+    "long_predictor.2.weight": true,
+    "long_predictor.2.bias": true,
+    "momentum_to_boundary.weight": true,
+    "mother_from_boundary.weight": true
+  },
+  "rng_unchanged": true,
+  "functional_version_unchanged": true,
+  "temporary_evidence_equal": true,
+  "complete_functional_state_equal": true,
+  "original_relation_state_unchanged": true,
+  "parameters_unchanged": true,
+  "evidence_message_reconstruction_max_error": 8.8222479863731e-06,
+  "native_fp32_correction_reexecution_max_error": 0.0,
+  "final_mean_minus_base_vs_captured_correction_max_error": 1.1920928955078125e-07,
+  "source_sha256": "6d36cae0d39e41ae5dc0b84c84916733e3c09ed634b68a2d0d04f07c588e09b7",
+  "source_unchanged": true,
+  "all_weights_materialized": false,
+  "whole_event_equivalence": false,
+  "whole_event_note": "This checks real current relation operators only, not an entire living/learning event.",
+  "role": "observer numerical audit, not activity/synchronization/utility evidence",
+  "optimizer_updates": 0,
+  "world_calls": 0,
+  "implementation_sha256": {
+    "scripts/native_relation_signals.py": "0ecf688a8e5434057f8477e4791355158e5e458e989c5a1ed5fb33b7c44b5baa",
+    "scripts/native_topology_observer.py": "49eae0a61c881abdcc19ae431f11229476f5fd9c122cc25bd091d73f27201c74",
+    "scripts/audit_native_signal_observability.py": "5793704e29641ee789fab9491550b515163bdbc84e503b32854be00bdf5894fd",
+    "scripts/audit_native_harmonic_observability.py": "e0029481f993ff224c90cd74b4d9a19a656e257311de192c86e364f3e97afd62",
+    "scripts/audit_native_relation_signal_adapter.py": "37c04fd9e0f959d2d446c576d3199b8654ff8c0e803504ef70f03831de1abd6d",
+    "tests/test_native_relation_signals.py": "4f7fda2d3a6efb89b17c5358f704cc0f89ae133aa41393baa0fb180cb17be652"
+  }
+}

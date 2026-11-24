@@ -1,0 +1,301 @@
+{
+  "cycle": 2473,
+  "event": "episode:2473",
+  "source_checkpoint": "E:\\cgb_event_credit_2469_20261118\\identified\\body\\last.pt.gz",
+  "source_sha256": "e9f817bcd3dd5f13b6edead2e5c317fab98f681bdf56544237d32e738e75e0a6",
+  "source_unchanged": true,
+  "world_calls": 0,
+  "optimizer_updates": 0,
+  "event_credit_mode": "identified",
+  "score_scope": "same pre-event local Q and actual raw event, all re-encoded in current coordinates",
+  "queries": [
+    "episode:1133",
+    "episode:1616",
+    "episode:203",
+    "episode:2066",
+    "episode:2237",
+    "episode:2464",
+    "episode:263",
+    "episode:283"
+  ],
+  "old_supports": [
+    "episode:1133",
+    "episode:1616",
+    "episode:203",
+    "episode:2066",
+    "episode:2237",
+    "episode:2464",
+    "episode:263",
+    "episode:283"
+  ],
+  "default": {
+    "released": "episode:2464",
+    "supports": [
+      "episode:1133",
+      "episode:1616",
+      "episode:203",
+      "episode:2066",
+      "episode:2237",
+      "episode:2473",
+      "episode:263",
+      "episode:283"
+    ],
+    "mean_score": -1.0581445693969727,
+    "mean_gain": -0.02063615620136261,
+    "per_query_gain": [
+      0.09975337982177734,
+      -0.038075923919677734,
+      -0.005163311958312988,
+      -0.020146489143371582,
+      -0.022309064865112305,
+      -0.051111817359924316,
+      -0.10219264030456543,
+      -0.025843381881713867
+    ],
+    "selected_by_production": true
+  },
+  "best_on_same_Q": {
+    "released": "episode:1133",
+    "supports": [
+      "episode:1616",
+      "episode:203",
+      "episode:2066",
+      "episode:2237",
+      "episode:2464",
+      "episode:2473",
+      "episode:263",
+      "episode:283"
+    ],
+    "mean_score": -1.0359678268432617,
+    "mean_gain": 0.001540645956993103,
+    "per_query_gain": [
+      0.07468187808990479,
+      -0.0365523099899292,
+      0.045910418033599854,
+      0.006373167037963867,
+      0.00398707389831543,
+      -0.02604043483734131,
+      -0.10032349824905396,
+      0.04428887367248535
+    ],
+    "selected_by_production": false
+  },
+  "candidates": [
+    {
+      "released": "episode:1133",
+      "supports": [
+        "episode:1616",
+        "episode:203",
+        "episode:2066",
+        "episode:2237",
+        "episode:2464",
+        "episode:2473",
+        "episode:263",
+        "episode:283"
+      ],
+      "mean_score": -1.0359678268432617,
+      "mean_gain": 0.001540645956993103,
+      "per_query_gain": [
+        0.07468187808990479,
+        -0.0365523099899292,
+        0.045910418033599854,
+        0.006373167037963867,
+        0.00398707389831543,
+        -0.02604043483734131,
+        -0.10032349824905396,
+        0.04428887367248535
+      ],
+      "selected_by_production": false
+    },
+    {
+      "released": "episode:1616",
+      "supports": [
+        "episode:1133",
+        "episode:203",
+        "episode:2066",
+        "episode:2237",
+        "episode:2464",
+        "episode:2473",
+        "episode:263",
+        "episode:283"
+      ],
+      "mean_score": -1.0545423030853271,
+      "mean_gain": -0.01703396439552307,
+      "per_query_gain": [
+        0.049112677574157715,
+        -0.01098334789276123,
+        0.0200120210647583,
+        -0.007881760597229004,
+        -0.03793442249298096,
+        -0.07820439338684082,
+        -0.06898319721221924,
+        -0.001409292221069336
+      ],
+      "selected_by_production": false
+    },
+    {
+      "released": "episode:2066",
+      "supports": [
+        "episode:1133",
+        "episode:1616",
+        "episode:203",
+        "episode:2237",
+        "episode:2464",
+        "episode:2473",
+        "episode:263",
+        "episode:283"
+      ],
+      "mean_score": -1.0545868873596191,
+      "mean_gain": -0.017078474164009094,
+      "per_query_gain": [
+        0.09581196308135986,
+        -0.0041081905364990234,
+        0.013721704483032227,
+        -0.01475679874420166,
+        -0.16585218906402588,
+        -0.05650138854980469,
+        -0.03424513339996338,
+        0.029302239418029785
+      ],
+      "selected_by_production": false
+    },
+    {
+      "released": "episode:2464",
+      "supports": [
+        "episode:1133",
+        "episode:1616",
+        "episode:203",
+        "episode:2066",
+        "episode:2237",
+        "episode:2473",
+        "episode:263",
+        "episode:283"
+      ],
+      "mean_score": -1.0581445693969727,
+      "mean_gain": -0.02063615620136261,
+      "per_query_gain": [
+        0.09975337982177734,
+        -0.038075923919677734,
+        -0.005163311958312988,
+        -0.020146489143371582,
+        -0.022309064865112305,
+        -0.051111817359924316,
+        -0.10219264030456543,
+        -0.025843381881713867
+      ],
+      "selected_by_production": true
+    },
+    {
+      "released": "episode:2237",
+      "supports": [
+        "episode:1133",
+        "episode:1616",
+        "episode:203",
+        "episode:2066",
+        "episode:2464",
+        "episode:2473",
+        "episode:263",
+        "episode:283"
+      ],
+      "mean_score": -1.061240553855896,
+      "mean_gain": -0.02373214066028595,
+      "per_query_gain": [
+        0.09064269065856934,
+        -0.03694415092468262,
+        0.01059877872467041,
+        -0.16863512992858887,
+        -0.011973738670349121,
+        -0.06144702434539795,
+        0.0067746639251708984,
+        -0.018873214721679688
+      ],
+      "selected_by_production": false
+    },
+    {
+      "released": "episode:263",
+      "supports": [
+        "episode:1133",
+        "episode:1616",
+        "episode:203",
+        "episode:2066",
+        "episode:2237",
+        "episode:2464",
+        "episode:2473",
+        "episode:283"
+      ],
+      "mean_score": -1.083916187286377,
+      "mean_gain": -0.04640789330005646,
+      "per_query_gain": [
+        -0.028032779693603516,
+        -0.08235752582550049,
+        -0.02091085910797119,
+        -0.05139303207397461,
+        -0.007590174674987793,
+        -0.15569567680358887,
+        0.0023910999298095703,
+        -0.027674198150634766
+      ],
+      "selected_by_production": false
+    },
+    {
+      "released": "episode:283",
+      "supports": [
+        "episode:1133",
+        "episode:1616",
+        "episode:203",
+        "episode:2066",
+        "episode:2237",
+        "episode:2464",
+        "episode:2473",
+        "episode:263"
+      ],
+      "mean_score": -1.1001538038253784,
+      "mean_gain": -0.06264544278383255,
+      "per_query_gain": [
+        0.11791539192199707,
+        -0.013447880744934082,
+        -0.48392462730407715,
+        0.013489842414855957,
+        -0.03190255165100098,
+        -0.0780106782913208,
+        -0.026338636875152588,
+        0.001055598258972168
+      ],
+      "selected_by_production": false
+    },
+    {
+      "released": "episode:203",
+      "supports": [
+        "episode:1133",
+        "episode:1616",
+        "episode:2066",
+        "episode:2237",
+        "episode:2464",
+        "episode:2473",
+        "episode:263",
+        "episode:283"
+      ],
+      "mean_score": -1.108190894126892,
+      "mean_gain": -0.07068247348070145,
+      "per_query_gain": [
+        0.0980912446975708,
+        -0.013472199440002441,
+        0.022501230239868164,
+        -0.023536205291748047,
+        -0.023876190185546875,
+        -0.07877641916275024,
+        -0.041020870208740234,
+        -0.5053703784942627
+      ],
+      "selected_by_production": false
+    }
+  ],
+  "best_minus_default": 0.022176742553710938,
+  "interpretation": "Tests alignment of geometric release and the current local score. Not proof of a long-term retention objective, and not a change to live U.",
+  "memory_retention": {
+    "consolidation_enabled": true,
+    "consolidation_rule": "utility",
+    "read_credit_enabled": true,
+    "read_credit_rule": "adam"
+  }
+}

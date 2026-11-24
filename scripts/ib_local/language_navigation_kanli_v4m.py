@@ -26,6 +26,12 @@ class WoodObservationBody(LiveSigregBody):
             mask = score_mask.reshape(-1).to(token.dtype)
             language = (token*mask).sum()/mask.sum().clamp_min(1)
         loss = loss + 9.*language
+        hnet = getattr(getattr(self, 'body', None), 'hnet_chunker', None)
+        if hnet is not None:
+            r_loss = hnet.pop_ratio_loss()
+            if r_loss is not None and hnet.ratio_loss_weight > 0.0:
+                loss = loss + (10.0 * hnet.ratio_loss_weight) * r_loss
+                diag['hnet_ratio_loss'] = r_loss.detach()
         if score_mask is not None:
             own = int((score_mask[0] == 0).sum())
             with torch.no_grad():

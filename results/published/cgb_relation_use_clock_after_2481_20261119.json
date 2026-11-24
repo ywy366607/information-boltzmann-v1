@@ -1,0 +1,4596 @@
+{
+  "cycle": 2481,
+  "source_sha256": "b574e457ba0cca18f7aed6d7a291468f8b7eb443e285cf105226878f9210916d",
+  "source_unchanged": true,
+  "schema": 2,
+  "settlement_kind": "finite_relation_use_v5",
+  "state": {
+    "identity": 182,
+    "generation": 3,
+    "binding": null
+  },
+  "schedule": [
+    {
+      "kind": "release",
+      "admission": {
+        "selected": "external",
+        "probability": [
+          0.5105496644973755,
+          0.4894503355026245
+        ]
+      },
+      "internal": null,
+      "choices": 1,
+      "internal_steps": 0,
+      "eligible_logp": -0.6722673773765564,
+      "eligibility_norm": 0.9454456567764282,
+      "new_world_evidence": false,
+      "external_bytes": 0,
+      "updates": 0,
+      "boundary_clocks_unchanged": true,
+      "event": 3174
+    }
+  ],
+  "world_calls": 0,
+  "optimizer_updates": 0,
+  "max_expected_difference": 0.0,
+  "support_mismatches": [],
+  "successor_mismatches": [],
+  "arms": {
+    "observe": {
+      "raw_expected": [
+        0.03804820030927658,
+        0.03972221910953522,
+        0.03774455934762955,
+        0.0382344052195549,
+        0.03851787745952606,
+        0.04251404106616974,
+        0.0372438058257103,
+        0.038966402411460876
+      ],
+      "old_moments": [],
+      "cases": [
+        {
+          "candidate": 0,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": -0.00027251243591308594,
+              "episode:1321": -0.007512450218200684,
+              "episode:1368": 0.014302611351013184,
+              "episode:1616": 0.01852881908416748,
+              "episode:1650": 0.007364034652709961,
+              "episode:203": 0.06462907791137695,
+              "episode:283": 0.052446961402893066,
+              "episode:841": -0.004618048667907715
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                -0.0007512450218200682,
+                5.643690828094355e-08,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0018528819084167477,
+                3.4331713665380935e-07,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0007364034652709959,
+                5.4229006366313166e-08,
+                1
+              ],
+              [
+                "episode:203",
+                0.006462907791137694,
+                4.176917711674836e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 0,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.0041577816009521484,
+              "episode:1321": -0.00063323974609375,
+              "episode:1368": 0.0021691322326660156,
+              "episode:1616": 0.009591817855834961,
+              "episode:1650": 0.013752341270446777,
+              "episode:203": 0.022348880767822266,
+              "episode:283": 0.03605329990386963,
+              "episode:841": 0.03168010711669922
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                -6.332397460937499e-05,
+                4.0099257603287734e-10,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0009591817855834959,
+                9.200296977951447e-08,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0013752341270446774,
+                1.8912689041883386e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.002234888076782226,
+                4.994724715743364e-07,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 1,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.0056231021881103516,
+              "episode:1321": 0.03889501094818115,
+              "episode:1368": 0.034294962882995605,
+              "episode:1616": -0.0020793676376342773,
+              "episode:1650": 0.0031557083129882812,
+              "episode:203": 0.05583000183105469,
+              "episode:283": 0.039141058921813965,
+              "episode:841": 0.01475214958190918
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                0.0038895010948181144,
+                1.512821876659133e-06,
+                1
+              ],
+              [
+                "episode:1616",
+                -0.00020793676376342767,
+                4.323769772440759e-09,
+                1
+              ],
+              [
+                "episode:1650",
+                0.00031557083129882805,
+                9.958494956663352e-09,
+                1
+              ],
+              [
+                "episode:203",
+                0.005583000183105468,
+                3.1169891044555727e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 1,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": -0.0005762577056884766,
+              "episode:1321": 0.01986992359161377,
+              "episode:1368": 0.02417445182800293,
+              "episode:1616": 0.0018297433853149414,
+              "episode:1650": 0.010024309158325195,
+              "episode:203": 0.012363195419311523,
+              "episode:283": 0.029584050178527832,
+              "episode:841": 0.06457352638244629
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                0.0019869923591613763,
+                3.948138635365698e-07,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0001829743385314941,
+                3.347960856103785e-09,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0010024309158325193,
+                1.0048677410168247e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.0012363195419311521,
+                1.5284860097608556e-07,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 2,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 6.99758529663086e-05,
+              "episode:1321": -0.007325530052185059,
+              "episode:1368": 0.01700758934020996,
+              "episode:1616": 0.015081286430358887,
+              "episode:1650": 0.006698131561279297,
+              "episode:203": 0.06361305713653564,
+              "episode:283": 0.05206882953643799,
+              "episode:841": -0.003958225250244141
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                -0.0007325530052185057,
+                5.3663390545466475e-08,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0015081286430358883,
+                2.274452003945273e-07,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0006698131561279295,
+                4.486496641220587e-08,
+                1
+              ],
+              [
+                "episode:203",
+                0.006361305713653563,
+                4.046621038256152e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 2,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.003491520881652832,
+              "episode:1321": -0.0004907846450805664,
+              "episode:1368": 0.003542184829711914,
+              "episode:1616": 0.00740361213684082,
+              "episode:1650": 0.01528465747833252,
+              "episode:203": 0.020243406295776367,
+              "episode:283": 0.0347214937210083,
+              "episode:841": 0.033231377601623535
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                -4.907846450805663e-05,
+                2.4086956784685777e-10,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0007403612136840819,
+                5.4813472672776744e-08,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0015284657478332516,
+                2.3362075422994642e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.0020243406295776365,
+                4.0979549845587864e-07,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 3,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.0002429485321044922,
+              "episode:1321": -0.004354238510131836,
+              "episode:1368": 0.014174938201904297,
+              "episode:1616": 0.01715850830078125,
+              "episode:1650": 0.007863998413085938,
+              "episode:203": 0.0650637149810791,
+              "episode:283": 0.050995826721191406,
+              "episode:841": -0.003591299057006836
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                -0.0004354238510131835,
+                1.8959393003115127e-08,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0017158508300781246,
+                2.9441440710797934e-07,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0007863998413085936,
+                6.18424710410182e-08,
+                1
+              ],
+              [
+                "episode:203",
+                0.006506371498107909,
+                4.233287007139101e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 3,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.0036922693252563477,
+              "episode:1321": -0.0003961324691772461,
+              "episode:1368": 0.0029143095016479492,
+              "episode:1616": 0.009200811386108398,
+              "episode:1650": 0.012132644653320312,
+              "episode:203": 0.023046016693115234,
+              "episode:283": 0.036859989166259766,
+              "episode:841": 0.03517615795135498
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                -3.9613246917724604e-05,
+                1.5692093313646198e-10,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0009200811386108396,
+                8.465493016274203e-08,
+                1
+              ],
+              [
+                "episode:1650",
+                0.001213264465332031,
+                1.4720106628374208e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.0023046016693115227,
+                5.311188854193465e-07,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 4,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.006638646125793457,
+              "episode:1321": 0.01349794864654541,
+              "episode:1368": 0.0398557186126709,
+              "episode:1616": -0.0018161535263061523,
+              "episode:1650": 0.0027527809143066406,
+              "episode:203": 0.05456101894378662,
+              "episode:283": 0.041970133781433105,
+              "episode:841": 0.0076024532318115234
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                0.0013497948646545408,
+                1.8219461766477722e-07,
+                1
+              ],
+              [
+                "episode:1616",
+                -0.0001816153526306152,
+                3.298413631114275e-09,
+                1
+              ],
+              [
+                "episode:1650",
+                0.000275278091430664,
+                7.577802762170911e-09,
+                1
+              ],
+              [
+                "episode:203",
+                0.005456101894378661,
+                2.976904788184245e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 4,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": -0.0006622076034545898,
+              "episode:1321": 0.005015730857849121,
+              "episode:1368": 0.025558829307556152,
+              "episode:1616": 0.0035390853881835938,
+              "episode:1650": 0.01984989643096924,
+              "episode:203": 0.009283185005187988,
+              "episode:283": 0.027261853218078613,
+              "episode:841": 0.05684220790863037
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                0.000501573085784912,
+                2.5157556038379903e-08,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0003539085388183593,
+                1.2525125384854629e-08,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0019849896430969233,
+                3.9401838832020567e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.0009283185005187986,
+                8.617752384054719e-08,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 5,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": -0.0023975372314453125,
+              "episode:1321": -0.0015118122100830078,
+              "episode:1368": 0.0002827644348144531,
+              "episode:1616": 0.05890774726867676,
+              "episode:1650": 0.010264396667480469,
+              "episode:203": 0.06455385684967041,
+              "episode:283": 0.0580061674118042,
+              "episode:841": -0.0075566768646240234
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                -0.00015118122100830076,
+                2.2855761585560708e-09,
+                1
+              ],
+              [
+                "episode:1616",
+                0.005890774726867674,
+                3.4701226882702973e-06,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0010264396667480466,
+                1.0535783894738424e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.00645538568496704,
+                4.167200434167743e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 5,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.013374567031860352,
+              "episode:1321": 0.010760188102722168,
+              "episode:1368": 0.0006196498870849609,
+              "episode:1616": 0.03926384449005127,
+              "episode:1650": 0.011486172676086426,
+              "episode:203": 0.03510236740112305,
+              "episode:283": 0.0403895378112793,
+              "episode:841": 0.006274104118347168
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                0.0010760188102722165,
+                1.1578164800596379e-07,
+                1
+              ],
+              [
+                "episode:1616",
+                0.003926384449005126,
+                1.541649484138931e-06,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0011486172676086423,
+                1.3193216274487453e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.003510236740112304,
+                1.2321761971634272e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 6,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.0005953311920166016,
+              "episode:1321": -0.008861780166625977,
+              "episode:1368": 0.02294301986694336,
+              "episode:1616": 0.010359883308410645,
+              "episode:1650": 0.006645917892456055,
+              "episode:203": 0.059599876403808594,
+              "episode:283": 0.05201363563537598,
+              "episode:841": -0.0033910274505615234
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                -0.0008861780166625975,
+                7.853114772160559e-08,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0010359883308410642,
+                1.0732718216388558e-07,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0006645917892456054,
+                4.416822463326757e-08,
+                1
+              ],
+              [
+                "episode:203",
+                0.005959987640380858,
+                3.5521452673492637e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 6,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.0029833316802978516,
+              "episode:1321": 0.0020906925201416016,
+              "episode:1368": 0.006017446517944336,
+              "episode:1616": 0.004797935485839844,
+              "episode:1650": 0.02355670928955078,
+              "episode:203": 0.015201807022094727,
+              "episode:283": 0.030657529830932617,
+              "episode:841": 0.031002044677734375
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                0.0002090692520141601,
+                4.370995213776045e-09,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0004797935485839843,
+                2.3020184926281237e-08,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0023556709289550776,
+                5.549185525524086e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.0015201807022094723,
+                2.3109493673700874e-07,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 7,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.0038499832153320312,
+              "episode:1321": 0.025496840476989746,
+              "episode:1368": 0.027500510215759277,
+              "episode:1616": 0.0004990100860595703,
+              "episode:1650": 0.005015850067138672,
+              "episode:203": 0.05942130088806152,
+              "episode:283": 0.042551636695861816,
+              "episode:841": 0.008890151977539062
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                0.002549684047698974,
+                6.500888743090633e-07,
+                1
+              ],
+              [
+                "episode:1616",
+                4.990100860595702e-05,
+                2.4901106598918e-10,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0005015850067138671,
+                2.515875189601504e-08,
+                1
+              ],
+              [
+                "episode:203",
+                0.005942130088806151,
+                3.5308909992295442e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 7,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 8.058547973632812e-05,
+              "episode:1321": 0.012733697891235352,
+              "episode:1368": 0.016501307487487793,
+              "episode:1616": 0.0012366771697998047,
+              "episode:1650": 0.010193705558776855,
+              "episode:203": 0.01557016372680664,
+              "episode:283": 0.0323026180267334,
+              "episode:841": 0.05718886852264404
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "observe",
+            "moments": [
+              [
+                "episode:1321",
+                0.0012733697891235349,
+                1.621470619852518e-07,
+                1
+              ],
+              [
+                "episode:1616",
+                0.00012366771697998045,
+                1.5293704223040563e-09,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0010193705558776854,
+                1.0391163301903826e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.0015570163726806637,
+                2.4242999847956546e-07,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        }
+      ]
+    },
+    "apply": {
+      "raw_expected": [
+        0.03804820030927658,
+        0.03972221910953522,
+        0.03774455934762955,
+        0.0382344052195549,
+        0.03851787745952606,
+        0.04251404106616974,
+        0.0372438058257103,
+        0.038966402411460876
+      ],
+      "old_moments": [],
+      "cases": [
+        {
+          "candidate": 0,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": -0.00027251243591308594,
+              "episode:1321": -0.007512450218200684,
+              "episode:1368": 0.014302611351013184,
+              "episode:1616": 0.01852881908416748,
+              "episode:1650": 0.007364034652709961,
+              "episode:203": 0.06462907791137695,
+              "episode:283": 0.052446961402893066,
+              "episode:841": -0.004618048667907715
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                -0.0007512450218200682,
+                5.643690828094355e-08,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0018528819084167477,
+                3.4331713665380935e-07,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0007364034652709959,
+                5.4229006366313166e-08,
+                1
+              ],
+              [
+                "episode:203",
+                0.006462907791137694,
+                4.176917711674836e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 0,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.0041577816009521484,
+              "episode:1321": -0.00063323974609375,
+              "episode:1368": 0.0021691322326660156,
+              "episode:1616": 0.009591817855834961,
+              "episode:1650": 0.013752341270446777,
+              "episode:203": 0.022348880767822266,
+              "episode:283": 0.03605329990386963,
+              "episode:841": 0.03168010711669922
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                -6.332397460937499e-05,
+                4.0099257603287734e-10,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0009591817855834959,
+                9.200296977951447e-08,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0013752341270446774,
+                1.8912689041883386e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.002234888076782226,
+                4.994724715743364e-07,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 1,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.0056231021881103516,
+              "episode:1321": 0.03889501094818115,
+              "episode:1368": 0.034294962882995605,
+              "episode:1616": -0.0020793676376342773,
+              "episode:1650": 0.0031557083129882812,
+              "episode:203": 0.05583000183105469,
+              "episode:283": 0.039141058921813965,
+              "episode:841": 0.01475214958190918
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                0.0038895010948181144,
+                1.512821876659133e-06,
+                1
+              ],
+              [
+                "episode:1616",
+                -0.00020793676376342767,
+                4.323769772440759e-09,
+                1
+              ],
+              [
+                "episode:1650",
+                0.00031557083129882805,
+                9.958494956663352e-09,
+                1
+              ],
+              [
+                "episode:203",
+                0.005583000183105468,
+                3.1169891044555727e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 1,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": -0.0005762577056884766,
+              "episode:1321": 0.01986992359161377,
+              "episode:1368": 0.02417445182800293,
+              "episode:1616": 0.0018297433853149414,
+              "episode:1650": 0.010024309158325195,
+              "episode:203": 0.012363195419311523,
+              "episode:283": 0.029584050178527832,
+              "episode:841": 0.06457352638244629
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                0.0019869923591613763,
+                3.948138635365698e-07,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0001829743385314941,
+                3.347960856103785e-09,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0010024309158325193,
+                1.0048677410168247e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.0012363195419311521,
+                1.5284860097608556e-07,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 2,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 6.99758529663086e-05,
+              "episode:1321": -0.007325530052185059,
+              "episode:1368": 0.01700758934020996,
+              "episode:1616": 0.015081286430358887,
+              "episode:1650": 0.006698131561279297,
+              "episode:203": 0.06361305713653564,
+              "episode:283": 0.05206882953643799,
+              "episode:841": -0.003958225250244141
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                -0.0007325530052185057,
+                5.3663390545466475e-08,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0015081286430358883,
+                2.274452003945273e-07,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0006698131561279295,
+                4.486496641220587e-08,
+                1
+              ],
+              [
+                "episode:203",
+                0.006361305713653563,
+                4.046621038256152e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 2,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.003491520881652832,
+              "episode:1321": -0.0004907846450805664,
+              "episode:1368": 0.003542184829711914,
+              "episode:1616": 0.00740361213684082,
+              "episode:1650": 0.01528465747833252,
+              "episode:203": 0.020243406295776367,
+              "episode:283": 0.0347214937210083,
+              "episode:841": 0.033231377601623535
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                -4.907846450805663e-05,
+                2.4086956784685777e-10,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0007403612136840819,
+                5.4813472672776744e-08,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0015284657478332516,
+                2.3362075422994642e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.0020243406295776365,
+                4.0979549845587864e-07,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 3,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.0002429485321044922,
+              "episode:1321": -0.004354238510131836,
+              "episode:1368": 0.014174938201904297,
+              "episode:1616": 0.01715850830078125,
+              "episode:1650": 0.007863998413085938,
+              "episode:203": 0.0650637149810791,
+              "episode:283": 0.050995826721191406,
+              "episode:841": -0.003591299057006836
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                -0.0004354238510131835,
+                1.8959393003115127e-08,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0017158508300781246,
+                2.9441440710797934e-07,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0007863998413085936,
+                6.18424710410182e-08,
+                1
+              ],
+              [
+                "episode:203",
+                0.006506371498107909,
+                4.233287007139101e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 3,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.0036922693252563477,
+              "episode:1321": -0.0003961324691772461,
+              "episode:1368": 0.0029143095016479492,
+              "episode:1616": 0.009200811386108398,
+              "episode:1650": 0.012132644653320312,
+              "episode:203": 0.023046016693115234,
+              "episode:283": 0.036859989166259766,
+              "episode:841": 0.03517615795135498
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                -3.9613246917724604e-05,
+                1.5692093313646198e-10,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0009200811386108396,
+                8.465493016274203e-08,
+                1
+              ],
+              [
+                "episode:1650",
+                0.001213264465332031,
+                1.4720106628374208e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.0023046016693115227,
+                5.311188854193465e-07,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 4,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.006638646125793457,
+              "episode:1321": 0.01349794864654541,
+              "episode:1368": 0.0398557186126709,
+              "episode:1616": -0.0018161535263061523,
+              "episode:1650": 0.0027527809143066406,
+              "episode:203": 0.05456101894378662,
+              "episode:283": 0.041970133781433105,
+              "episode:841": 0.0076024532318115234
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                0.0013497948646545408,
+                1.8219461766477722e-07,
+                1
+              ],
+              [
+                "episode:1616",
+                -0.0001816153526306152,
+                3.298413631114275e-09,
+                1
+              ],
+              [
+                "episode:1650",
+                0.000275278091430664,
+                7.577802762170911e-09,
+                1
+              ],
+              [
+                "episode:203",
+                0.005456101894378661,
+                2.976904788184245e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 4,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": -0.0006622076034545898,
+              "episode:1321": 0.005015730857849121,
+              "episode:1368": 0.025558829307556152,
+              "episode:1616": 0.0035390853881835938,
+              "episode:1650": 0.01984989643096924,
+              "episode:203": 0.009283185005187988,
+              "episode:283": 0.027261853218078613,
+              "episode:841": 0.05684220790863037
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                0.000501573085784912,
+                2.5157556038379903e-08,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0003539085388183593,
+                1.2525125384854629e-08,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0019849896430969233,
+                3.9401838832020567e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.0009283185005187986,
+                8.617752384054719e-08,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 5,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": -0.0023975372314453125,
+              "episode:1321": -0.0015118122100830078,
+              "episode:1368": 0.0002827644348144531,
+              "episode:1616": 0.05890774726867676,
+              "episode:1650": 0.010264396667480469,
+              "episode:203": 0.06455385684967041,
+              "episode:283": 0.0580061674118042,
+              "episode:841": -0.0075566768646240234
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                -0.00015118122100830076,
+                2.2855761585560708e-09,
+                1
+              ],
+              [
+                "episode:1616",
+                0.005890774726867674,
+                3.4701226882702973e-06,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0010264396667480466,
+                1.0535783894738424e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.00645538568496704,
+                4.167200434167743e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 5,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.013374567031860352,
+              "episode:1321": 0.010760188102722168,
+              "episode:1368": 0.0006196498870849609,
+              "episode:1616": 0.03926384449005127,
+              "episode:1650": 0.011486172676086426,
+              "episode:203": 0.03510236740112305,
+              "episode:283": 0.0403895378112793,
+              "episode:841": 0.006274104118347168
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                0.0010760188102722165,
+                1.1578164800596379e-07,
+                1
+              ],
+              [
+                "episode:1616",
+                0.003926384449005126,
+                1.541649484138931e-06,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0011486172676086423,
+                1.3193216274487453e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.003510236740112304,
+                1.2321761971634272e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 6,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.0005953311920166016,
+              "episode:1321": -0.008861780166625977,
+              "episode:1368": 0.02294301986694336,
+              "episode:1616": 0.010359883308410645,
+              "episode:1650": 0.006645917892456055,
+              "episode:203": 0.059599876403808594,
+              "episode:283": 0.05201363563537598,
+              "episode:841": -0.0033910274505615234
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                -0.0008861780166625975,
+                7.853114772160559e-08,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0010359883308410642,
+                1.0732718216388558e-07,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0006645917892456054,
+                4.416822463326757e-08,
+                1
+              ],
+              [
+                "episode:203",
+                0.005959987640380858,
+                3.5521452673492637e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 6,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.0029833316802978516,
+              "episode:1321": 0.0020906925201416016,
+              "episode:1368": 0.006017446517944336,
+              "episode:1616": 0.004797935485839844,
+              "episode:1650": 0.02355670928955078,
+              "episode:203": 0.015201807022094727,
+              "episode:283": 0.030657529830932617,
+              "episode:841": 0.031002044677734375
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                0.0002090692520141601,
+                4.370995213776045e-09,
+                1
+              ],
+              [
+                "episode:1616",
+                0.0004797935485839843,
+                2.3020184926281237e-08,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0023556709289550776,
+                5.549185525524086e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.0015201807022094723,
+                2.3109493673700874e-07,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 7,
+          "hypothesis": 0,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 0.0038499832153320312,
+              "episode:1321": 0.025496840476989746,
+              "episode:1368": 0.027500510215759277,
+              "episode:1616": 0.0004990100860595703,
+              "episode:1650": 0.005015850067138672,
+              "episode:203": 0.05942130088806152,
+              "episode:283": 0.042551636695861816,
+              "episode:841": 0.008890151977539062
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                0.002549684047698974,
+                6.500888743090633e-07,
+                1
+              ],
+              [
+                "episode:1616",
+                4.990100860595702e-05,
+                2.4901106598918e-10,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0005015850067138671,
+                2.515875189601504e-08,
+                1
+              ],
+              [
+                "episode:203",
+                0.005942130088806151,
+                3.5308909992295442e-06,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        },
+        {
+          "candidate": 7,
+          "hypothesis": 1,
+          "operation": "share",
+          "support": [
+            "event:-1:-1",
+            "episode:1321",
+            "episode:1345",
+            "episode:1368",
+            "episode:1616",
+            "episode:1650",
+            "episode:203",
+            "episode:267"
+          ],
+          "trace": {
+            "scope": "relation:182:3",
+            "revision": 0,
+            "old_ids": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1368",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841"
+            ],
+            "retained": [
+              "episode:1251",
+              "episode:1321",
+              "episode:1616",
+              "episode:1650",
+              "episode:203",
+              "episode:283",
+              "episode:841",
+              "event:-1:-1"
+            ],
+            "released": [
+              "episode:1368"
+            ],
+            "consumed": [],
+            "benefits": {
+              "episode:1251": 8.058547973632812e-05,
+              "episode:1321": 0.012733697891235352,
+              "episode:1368": 0.016501307487487793,
+              "episode:1616": 0.0012366771697998047,
+              "episode:1650": 0.010193705558776855,
+              "episode:203": 0.01557016372680664,
+              "episode:283": 0.0323026180267334,
+              "episode:841": 0.05718886852264404
+            },
+            "selection": {
+              "identities": [
+                "episode:1251",
+                "episode:1321",
+                "episode:1368",
+                "episode:1616",
+                "episode:1650",
+                "episode:203",
+                "episode:283",
+                "episode:841"
+              ],
+              "geometric": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "priority": [
+                0.4195842742919922,
+                0.3595733642578125,
+                0.31790709495544434,
+                0.5049524307250977,
+                0.37793874740600586,
+                0.4278242588043213,
+                0.42645859718322754,
+                0.318758487701416
+              ],
+              "biases": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "released": "episode:1368",
+              "geometric_released": "episode:1368",
+              "consumed_revision": 0
+            }
+          },
+          "after": {
+            "scope": "relation:182:3",
+            "revision": 1,
+            "mode": "apply",
+            "moments": [
+              [
+                "episode:1321",
+                0.0012733697891235349,
+                1.621470619852518e-07,
+                1
+              ],
+              [
+                "episode:1616",
+                0.00012366771697998045,
+                1.5293704223040563e-09,
+                1
+              ],
+              [
+                "episode:1650",
+                0.0010193705558776854,
+                1.0391163301903826e-07,
+                1
+              ],
+              [
+                "episode:203",
+                0.0015570163726806637,
+                2.4242999847956546e-07,
+                1
+              ],
+              [
+                "event:-1:-1",
+                0.0,
+                0.0,
+                0
+              ]
+            ],
+            "last_event": "event:-1:-1",
+            "betas": [
+              0.9,
+              0.999
+            ],
+            "eps": 1e-08
+          }
+        }
+      ]
+    }
+  },
+  "source_hashes": {
+    "D:\\information-boltzmann-v1\\scripts\\audit_native_relation_use_clock.py": "46e4ec88fa00d897d63911694f90a197349dd52563d0eb3cbf170ec6090bc49b",
+    "scripts\\ib_local\\causal_relation_program.py": "30f972cd7b1fded00b222ebdced0c7f557091de911c0a1a55add26eb3634b0c1",
+    "scripts\\ib_local\\generative_relations.py": "288bced62650d8f7c2137062e5defa1d122e99233e5fb04eb92258e304eb7c22",
+    "scripts\\ib_local\\relation_retention_use.py": "2d88c45864794da3d28260d490c0236faa18a8df52715abcbfb8f2249f42ce8d"
+  },
+  "checks": {
+    "neutral_old_use": true,
+    "identical_supports": true,
+    "identical_successor_moments": true,
+    "immediate_expected_parity": true,
+    "source_unchanged": true
+  }
+}

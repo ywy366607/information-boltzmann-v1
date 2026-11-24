@@ -1,0 +1,200 @@
+{
+  "schema": 1,
+  "family": "fixed original menu: logits(alpha)=original_logits+alpha*precision*critic_increment",
+  "interval": [
+    0,
+    1
+  ],
+  "cases": [
+    {
+      "unknown": "unknown:1797",
+      "legal": [
+        0,
+        1,
+        2
+      ],
+      "logit_direction": [
+        -0.04272894082836861,
+        -0.03455255451808863,
+        0.061222629153933304
+      ],
+      "pairs": [
+        {
+          "actions": [
+            0,
+            1
+          ],
+          "outcome_difference": -0.009922824800014496,
+          "logit_slope_difference": -0.008176386310279983,
+          "order_product": 8.113284885414524e-05
+        },
+        {
+          "actions": [
+            0,
+            2
+          ],
+          "outcome_difference": -0.02036455273628235,
+          "logit_slope_difference": -0.10395156998230191,
+          "order_product": 0.0021169272289239325
+        },
+        {
+          "actions": [
+            1,
+            2
+          ],
+          "outcome_difference": -0.010441727936267853,
+          "logit_slope_difference": -0.09577518367202192,
+          "order_product": 0.001000058410949336
+        }
+      ],
+      "comonotone": true,
+      "strictly_positive_pairs": 3,
+      "monotonicity": "pairwise covariance sign applies at every strength in [0,1]",
+      "actor_order_crossings": [
+        {
+          "actions": [
+            1,
+            2
+          ],
+          "strength": 0.8215082502721157
+        }
+      ],
+      "curve": [
+        {
+          "strength": 0.0,
+          "probability": [
+            0.6014012640398173,
+            0.2071357732091038,
+            0.19146296275107885
+          ],
+          "C": 0.0004935551667826428,
+          "derivative": 0.00029352384979434683
+        },
+        {
+          "strength": 0.25,
+          "probability": [
+            0.5981326036945291,
+            0.20643150993055182,
+            0.19543588637491913
+          ],
+          "C": 0.0005674736983114037,
+          "derivative": 0.0002978257754955874
+        },
+        {
+          "strength": 0.5,
+          "probability": [
+            0.5948206804733986,
+            0.20570853556603785,
+            0.19947078396056356
+          ],
+          "C": 0.0006424686350257844,
+          "derivative": 0.00030213466425919877
+        },
+        {
+          "strength": 0.75,
+          "probability": [
+            0.5914654806800306,
+            0.2049667411306179,
+            0.2035677781893514
+          ],
+          "C": 0.0007185413938378828,
+          "derivative": 0.0003064479109421905
+        },
+        {
+          "strength": 1.0,
+          "probability": [
+            0.5880670184068766,
+            0.20420602683928063,
+            0.20772695475384273
+          ],
+          "C": 0.0007956927296891684,
+          "derivative": 0.0003107628251364645
+        }
+      ]
+    },
+    {
+      "unknown": "unknown:1788",
+      "legal": [
+        0,
+        1
+      ],
+      "logit_direction": [
+        -0.04023759255873926,
+        -0.028334506846640437,
+        0.0
+      ],
+      "pairs": [
+        {
+          "actions": [
+            0,
+            1
+          ],
+          "outcome_difference": -0.007039414718747139,
+          "logit_slope_difference": -0.011903085712098822,
+          "order_product": 8.379075676025721e-05
+        }
+      ],
+      "comonotone": true,
+      "strictly_positive_pairs": 1,
+      "monotonicity": "pairwise covariance sign applies at every strength in [0,1]",
+      "actor_order_crossings": [],
+      "curve": [
+        {
+          "strength": 0.0,
+          "probability": [
+            0.5878706183719792,
+            0.4121293816280208,
+            0.0
+          ],
+          "C": 0.00033642974741029453,
+          "derivative": 2.030072018036465e-05
+        },
+        {
+          "strength": 0.25,
+          "probability": [
+            0.5871494641396204,
+            0.41285053586037973,
+            0.0
+          ],
+          "C": 0.00034150625112804755,
+          "derivative": 2.0311295954173938e-05
+        },
+        {
+          "strength": 0.5,
+          "probability": [
+            0.5864279357667243,
+            0.4135720642332758,
+            0.0
+          ],
+          "C": 0.0003465853885762066,
+          "derivative": 2.03217899939272e-05
+        },
+        {
+          "strength": 0.75,
+          "probability": [
+            0.5857060361591746,
+            0.4142939638408253,
+            0.0
+          ],
+          "C": 0.0003516671392990494,
+          "derivative": 2.0332202122170496e-05
+        },
+        {
+          "strength": 1.0,
+          "probability": [
+            0.5849837682291356,
+            0.4150162317708645,
+            0.0
+          ],
+          "C": 0.0003567514827966452,
+          "derivative": 2.0342532162696995e-05
+        }
+      ]
+    }
+  ],
+  "training_change": "none; evaluation only",
+  "existing_derivative": "GenerationRoutingCredit.softmax_read_direction_deriv",
+  "new_binding": "NativeValueDeformationOrder covariance pairs and exact crossing",
+  "world_calls_added": 0,
+  "optimizer_updates_added": 0
+}

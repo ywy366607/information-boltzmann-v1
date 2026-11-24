@@ -1,0 +1,281 @@
+{
+  "schema": 1,
+  "source": {
+    "path": "D:\\mengli-umwelt-yoneda-smoke5-20261124\\body\\last.pt.gz",
+    "sha256": "fda5d6f6dfbfa3cc467894555e1440b363492bb7699de7896a38950f1b4a5eb1",
+    "cycle": 3276
+  },
+  "output": {
+    "checkpoint": "D:\\mengli-umwelt-closedloop-profile-20261124\\body\\last.pt.gz",
+    "sha256": "f92e15c388f68aca5cd6e98bcb1fb63381f1e01383727b45df9901939eda9be9",
+    "cycle": 3286
+  },
+  "config": {
+    "schema": 1,
+    "branch_id": "mengli-umwelt-closedloop-profile-20261124",
+    "mother_enabled": true,
+    "mother_harness_url": "http://127.0.0.1:8902",
+    "mother_cooldown": 1,
+    "mother_max_gap": 3,
+    "mirror_ratio": 0.7,
+    "chinese_corpus": "D:\\information-boltzmann-v1\\data\\cgb_chinese_stories_20261124\\train.bin",
+    "chinese_mix_ratio": 0.5,
+    "restored_prior_port_state": true
+  },
+  "timing": {
+    "life_seconds": 124.083,
+    "save_seconds": 2.625,
+    "peak_vram_gib": 2.4771,
+    "run_external_bytes": 33600,
+    "bytes_per_second": 270.79,
+    "run_calm_pieces": 15,
+    "run_executive_spikes": 10,
+    "mean_calm_seconds": 1.2163,
+    "mean_exec_seconds": 10.5613
+  },
+  "unified_port": {
+    "ambient_reads": 47,
+    "sidecar_reads": 23,
+    "spike_turns": 28,
+    "mother_turns": 9,
+    "mother_responsive_turns": 3,
+    "mother_proactive_turns": 6,
+    "book_navigation_turns": 13,
+    "explicit_addressed_turns": 0,
+    "mirror_visible_turns": 6,
+    "book_only_turns": 3,
+    "parent_turns": 0,
+    "tool_turns": 0,
+    "ambient_fallback_turns": 19,
+    "mother_present": true,
+    "active_floor": "book",
+    "last_book_source": "text",
+    "active_interlocutor": "mother",
+    "awaiting_reply_from": null,
+    "turns_since_name_call": 12,
+    "care_stage": "infant_direct_modeling",
+    "care_plan_version": 2,
+    "stage_transitions": [
+      {
+        "turn": 4,
+        "kind": "mother_autonomous_reflection",
+        "stage": "infant_direct_modeling",
+        "version": 2
+      }
+    ],
+    "gaze_pointer": {
+      "schema": 2,
+      "d_model": 256,
+      "d_gaze": 64,
+      "param_count": 115010,
+      "step_count": 10,
+      "boundary_steps": 10,
+      "target_to_action_norm": 1.158543,
+      "baseline_g": -0.051798,
+      "mean_entropy": 0.6931,
+      "known_objects": [
+        "book",
+        "mother"
+      ],
+      "target_counts": {
+        "book": 6,
+        "mother": 4
+      },
+      "target_g_ema": {
+        "book": -0.06008,
+        "mother": 0.000989
+      },
+      "last_decision": {
+        "target_id": "mother",
+        "probs": {
+          "book": 0.4971,
+          "mother": 0.5029
+        },
+        "habit_logits": {
+          "book": -0.0081,
+          "mother": 0.0037
+        },
+        "causal_values": {
+          "book": -0.1837,
+          "mother": -0.18384
+        },
+        "entropy": 0.6931,
+        "num_candidates": 2,
+        "sampled": true
+      }
+    },
+    "summary_version": 0,
+    "provider_hit_rate": 0.8542038595596362,
+    "usage_totals": {
+      "reply_usage": {
+        "prompt_tokens": 23526,
+        "completion_tokens": 590,
+        "cache_hit_tokens": 20096,
+        "cache_miss_tokens": 3430,
+        "total_tokens": 24116
+      },
+      "summary_usage": null,
+      "source_counts": {
+        "api": 9,
+        "local": 1,
+        "shared": 0
+      },
+      "api_calls": 9,
+      "failures": 0
+    }
+  },
+  "hnet": {
+    "schema": 1,
+    "enc_layers": 4,
+    "dec_layers": 4,
+    "target_ratio": 4.0,
+    "ratio_loss_weight": 0.25,
+    "min_seq_len": 32,
+    "router_scale": 6.0,
+    "router_thresh": 0.08654595911502838,
+    "calibrated": true,
+    "calls": 4789,
+    "last_boundary_rate": 0.20744679868221283,
+    "last_compression_ratio": 4.8205132484436035,
+    "mean_boundary_rate_ema": 0.23893411457538605,
+    "effective_compression_ema": 4.185254172586938,
+    "last_ratio_loss": 0.9379304647445679,
+    "residual_weight_rms": 0.016657544299960136,
+    "wiener_mean_gate": 0.10675708577036858
+  },
+  "flux_trajectory": [],
+  "dialogue_samples": [
+    {
+      "cycle": 3279,
+      "life_seconds": 40.05,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "mirror_visible",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 2,
+      "utterance_kind": "silent",
+      "mirror_excerpt": "加入了他。他们都坐在一排，叽叽喳喳地唱着歌",
+      "child_text": "",
+      "reply_text": "读到“叽叽喳喳”卡了一下吧，别急，就是小鸟们挤成一排唱歌，吵吵闹闹的样子。你看，这颗星星亮亮的，照到哪儿，哪儿的人心里就暖起来。",
+      "metal_g": 0.023622997105121613,
+      "cache_hit_tokens": 2432,
+      "cache_miss_tokens": 378,
+      "turn_hit_rate": 0.8654804270462634,
+      "provider_hit_rate": 0.8126984126984127,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 3281,
+      "life_seconds": 62.28,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "book_only",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 2,
+      "utterance_kind": "silent",
+      "mirror_excerpt": "",
+      "child_text": "",
+      "reply_text": "本尼把东西晒干，嘴里的苦味就没了，真聪明呀。水手们排成一排走路还唱歌，一定特别整齐。",
+      "metal_g": -0.0027121566236019135,
+      "cache_hit_tokens": 2816,
+      "cache_miss_tokens": 218,
+      "turn_hit_rate": 0.9281476598549769,
+      "provider_hit_rate": 0.8338259243621449,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 3284,
+      "life_seconds": 99.88,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "mirror_visible",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 2,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "here to San Fransisco,\" says Poseidon spokesman Peter MacLaggan.",
+      "child_text": "at Pach, if invimlity of his alized involves, whoff those with 4848, sother a",
+      "reply_text": "I hear you, sweetie — that was a tricky bit with the long name in it. This page is about a big machine that cleans salty seawater so we can drink it, like a giant strainer.",
+      "metal_g": -0.010339837521314621,
+      "cache_hit_tokens": 2944,
+      "cache_miss_tokens": 386,
+      "turn_hit_rate": 0.8840840840840841,
+      "provider_hit_rate": 0.8422321563112161,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 3286,
+      "life_seconds": 124.08,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "perspective_mode": "mirror_visible",
+      "care_stage": "infant_direct_modeling",
+      "care_plan_version": 2,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "Maui! The landfill on Maui is a great example of kuleana (respon",
+      "child_text": "ch is sopriated ry working said. Tho",
+      "reply_text": "I'm listening, honey — you're working so hard on these long words. This page is about trash that piles up and the dirty water that seeps out of it, like a messy puddle we'd want to clean up.",
+      "metal_g": -0.04552020877599716,
+      "cache_hit_tokens": 3328,
+      "cache_miss_tokens": 289,
+      "turn_hit_rate": 0.9200995299972353,
+      "provider_hit_rate": 0.8542038595596362,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    }
+  ],
+  "evaluation": {
+    "checkpoint": "D:\\mengli-umwelt-closedloop-profile-20261124\\body\\last.pt.gz",
+    "cycle": 3286,
+    "load_seconds": 11.922,
+    "fresh_8192_nll": {
+      "mean_nll": 1.6767244804650545,
+      "segment_nll": [
+        1.6970348730683327,
+        1.7574920654296875,
+        1.650864638388157,
+        1.601506344974041
+      ]
+    },
+    "classic_8192_nll": {
+      "mean_nll": 1.58126668818295,
+      "segment_nll": [
+        1.4277423918247223,
+        1.7874042317271233,
+        1.5625160783529282,
+        1.5474040508270264
+      ]
+    },
+    "combined_16384_mean_nll": 1.6289955843240023,
+    "fresh_64_facts": {
+      "mean_score": -0.4004516175482422,
+      "mean_mse": 0.09516713602351956
+    },
+    "scale_diagnostics": {
+      "relation_ridge": 0.11263976991176605,
+      "relation_ridge_gate": 0.6157251000404358,
+      "relation_ridge_lr": 0.0003,
+      "memory_temperature": 0.2002463936805725,
+      "memory_temperature_gate": 0.5407053828239441,
+      "memory_temperature_lr": 0.0003
+    },
+    "optimizer_mean_gate": 0.15133995989788024,
+    "optimizer_alive_frac": 0.42168522267206476,
+    "alif_restored": {
+      "v": 0.0,
+      "a": 2.2177951036004906,
+      "executive_spikes": 389,
+      "calm_pieces": 964,
+      "total_external_bytes": 1915840,
+      "total_learned_bytes": 1915840,
+      "pending_spike": false
+    }
+  },
+  "restore_exact": true
+}

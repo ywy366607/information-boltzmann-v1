@@ -1,0 +1,34 @@
+{
+  "cycle": 2594,
+  "scope": "same frozen decision menu, two actual replies, only observed branch conditions predictions",
+  "checks": [
+    {
+      "observed": "generate",
+      "alternative": "reuse",
+      "weights": [
+        0.9934417009353638,
+        0.006558331660926342
+      ],
+      "mse": {
+        "prior": 1.5854516889498076,
+        "shared_posterior": 1.752784406289802,
+        "full_residual": 0.47907842222200997
+      }
+    },
+    {
+      "observed": "reuse",
+      "alternative": "generate",
+      "weights": [
+        0.9459449648857117,
+        0.05405498668551445
+      ],
+      "mse": {
+        "prior": 1.0690550918045898,
+        "shared_posterior": 1.1938897209585195,
+        "full_residual": 0.4790784321851977
+      }
+    }
+  ],
+  "world_calls": 0,
+  "optimizer_updates": 0
+}

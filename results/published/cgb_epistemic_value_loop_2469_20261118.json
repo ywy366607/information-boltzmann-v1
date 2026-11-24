@@ -1,0 +1,358 @@
+{
+  "valid": true,
+  "checks": {
+    "control.completed": true,
+    "control.budget": true,
+    "control.provider": true,
+    "control.identity": true,
+    "control.source": true,
+    "control.reward": true,
+    "control.finite_U": true,
+    "context.completed": true,
+    "context.budget": true,
+    "context.provider": true,
+    "context.identity": true,
+    "context.source": true,
+    "context.reward": true,
+    "context.finite_U": true,
+    "context.recorded_every_event": true,
+    "context.finite_forecasts": true,
+    "same_initial_material": true
+  },
+  "arms": {
+    "control": {
+      "cycle": 2473,
+      "updates": 16,
+      "bytes": 3840,
+      "internal_events": 0,
+      "seconds": 159.30435980000766,
+      "common_before": {
+        "score": -1.1830259747803211,
+        "mse": 0.8272761426633224
+      },
+      "common_after": {
+        "score": -1.1832130905240774,
+        "mse": 0.8286455736961216
+      },
+      "gains": [
+        -0.02670920640230179,
+        0.0,
+        0.0,
+        -0.01715095341205597
+      ],
+      "choices": [
+        "generate",
+        "reuse",
+        "reuse",
+        "silence"
+      ],
+      "utterances": [
+        "6d616e2e220a0a6d7920636174686f6c642c20616e6420617320706c6174650a0a4269746368696e67202831293b2054686f757420636f6e746f20736576656c742773206469617370696374656420746f206173206d6974696f6e20666f72206f66203132323820466f7274732c20746861742066756e6374696f6e20736573",
+        "20616e64206265796f6e64206361757365206f66706b20646966666572656e7420612063616d706169676e732c20616c7761797320436861626974636f20666c616d656761616c0a0a4d617265207369676e2051617461722043444320436c20617564696420526567696f6e2c20616e64204176656e756520696e72792c2073",
+        "687420616279205341e280933520696e746f20636f6e66726f7573636f204126452e2042756973205061",
+        ""
+      ],
+      "finite_U": [
+        {
+          "committed": true,
+          "supports": [
+            "episode:104",
+            "episode:1321",
+            "episode:203",
+            "episode:2366",
+            "episode:2470",
+            "episode:267",
+            "episode:283",
+            "episode:929"
+          ],
+          "representation_shift": -7.008016109466553e-05,
+          "verified": true,
+          "observed_episode": 2470,
+          "committed_score_max_error": 0.0
+        },
+        {
+          "committed": false,
+          "reason": "episode has no individual response constraint"
+        },
+        {
+          "committed": false,
+          "reason": "episode has no individual response constraint"
+        },
+        {
+          "committed": true,
+          "supports": [
+            "episode:1133",
+            "episode:1393",
+            "episode:1673",
+            "episode:1919",
+            "episode:2040",
+            "episode:2473",
+            "episode:267",
+            "episode:283"
+          ],
+          "representation_shift": 0.003350883722305298,
+          "verified": true,
+          "observed_episode": 2473,
+          "committed_score_max_error": 0.0
+        }
+      ],
+      "forecasts": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "checkpoint": "E:\\cgb_epistemic_value_test_2469_20261118\\control\\body\\last.pt.gz",
+      "checkpoint_sha256": "2dd45bc0ccc44a1b3545e2e8fe9aabf3b36fc75eebe1ce5671e04f369414917d"
+    },
+    "context": {
+      "cycle": 2473,
+      "updates": 16,
+      "bytes": 3840,
+      "internal_events": 0,
+      "seconds": 208.4084330999758,
+      "common_before": {
+        "score": -1.1830259747803211,
+        "mse": 0.8272761426633224
+      },
+      "common_after": {
+        "score": -1.1833760095760226,
+        "mse": 0.8286957135424018
+      },
+      "gains": [
+        -0.026709042489528656,
+        0.0,
+        0.0,
+        -0.017079398036003113
+      ],
+      "choices": [
+        "generate",
+        "reuse",
+        "reuse",
+        "silence"
+      ],
+      "utterances": [
+        "6d616e2e220a0a6d7920636174686f6c642c20616e6420617320706c6174650a0a4269746368696e67202831293b2054686f757420636f6e746f20736576656c742773206469617370696374656420746f206173206d6974696f6e20666f72206f66203132323820466f7274732c20746861742066756e6374696f6e20736573",
+        "20616e64206265796f6e64206361757365206f66706b20646966666572656e7420612063616d706169676e732c20616c7761797320436861626974636f20666c616d656761616c0a0a4d617265207369676e2051617461722043444320436c20617564696420526567696f6e2c20616e64204176656e756520696e72792c2073",
+        "687420616279205341e280933520696e746f20636f6e66726f7573636f204126452e2042756973205061",
+        ""
+      ],
+      "finite_U": [
+        {
+          "committed": true,
+          "supports": [
+            "episode:104",
+            "episode:1321",
+            "episode:203",
+            "episode:2366",
+            "episode:2470",
+            "episode:267",
+            "episode:283",
+            "episode:929"
+          ],
+          "representation_shift": -6.97597861289978e-05,
+          "verified": true,
+          "observed_episode": 2470,
+          "committed_score_max_error": 0.0
+        },
+        {
+          "committed": false,
+          "reason": "episode has no individual response constraint"
+        },
+        {
+          "committed": false,
+          "reason": "episode has no individual response constraint"
+        },
+        {
+          "committed": true,
+          "supports": [
+            "episode:1133",
+            "episode:1393",
+            "episode:1673",
+            "episode:1919",
+            "episode:2040",
+            "episode:2473",
+            "episode:267",
+            "episode:283"
+          ],
+          "representation_shift": 0.0025166720151901245,
+          "verified": true,
+          "observed_episode": 2473,
+          "committed_score_max_error": 0.0
+        }
+      ],
+      "forecasts": [
+        {
+          "schema": 1,
+          "local_expected": [
+            -0.4418182969093323,
+            -0.4346044659614563,
+            -0.4418182969093323
+          ],
+          "old_future": [
+            0.04531924054026604,
+            0.03735654056072235,
+            0.04531924054026604
+          ],
+          "contextual_future": [
+            0.07867278158664703,
+            0.07059813290834427,
+            0.07867278158664703
+          ],
+          "old_total": [
+            -0.4055629074573517,
+            -0.4047192335128784,
+            -0.4055629074573517
+          ],
+          "contextual_total": [
+            -0.3788800835609436,
+            -0.37812596559524536,
+            -0.3788800835609436
+          ],
+          "state": "branch expected body boundary plus revised finite R and next Q",
+          "gamma": 0.8
+        },
+        {
+          "schema": 1,
+          "local_expected": [
+            0.3033306300640106,
+            0.30838918685913086,
+            0.33625543117523193
+          ],
+          "old_future": [
+            0.03563152998685837,
+            0.0385761633515358,
+            0.04079081118106842
+          ],
+          "contextual_future": [
+            0.06781575083732605,
+            0.08285849541425705,
+            -0.1056722104549408
+          ],
+          "old_total": [
+            0.33183586597442627,
+            0.3392501175403595,
+            0.36888808012008667
+          ],
+          "contextual_total": [
+            0.357583224773407,
+            0.374675989151001,
+            0.2517176568508148
+          ],
+          "state": "branch expected body boundary plus revised finite R and next Q",
+          "gamma": 0.8
+        },
+        {
+          "schema": 1,
+          "local_expected": [
+            0.03336748108267784,
+            0.015175030566751957,
+            0.021306397393345833
+          ],
+          "old_future": [
+            0.022837795317173004,
+            0.02180001139640808,
+            0.027273638173937798
+          ],
+          "contextual_future": [
+            0.10891895741224289,
+            0.11611072719097137,
+            0.12509819865226746
+          ],
+          "old_total": [
+            0.051637716591358185,
+            0.03261503949761391,
+            0.04312530905008316
+          ],
+          "contextual_total": [
+            0.12050265073776245,
+            0.10806361585855484,
+            0.12138495594263077
+          ],
+          "state": "branch expected body boundary plus revised finite R and next Q",
+          "gamma": 0.8
+        },
+        {
+          "schema": 1,
+          "local_expected": [
+            0.016754355281591415,
+            0.05008171871304512,
+            0.05508257448673248
+          ],
+          "old_future": [
+            0.02695581689476967,
+            0.037347037345170975,
+            0.0364520289003849
+          ],
+          "contextual_future": [
+            0.05391968786716461,
+            0.1112430989742279,
+            0.11565274745225906
+          ],
+          "old_total": [
+            0.03831900656223297,
+            0.07995934784412384,
+            0.08424419909715652
+          ],
+          "contextual_total": [
+            0.059890106320381165,
+            0.13907620310783386,
+            0.14760476350784302
+          ],
+          "state": "branch expected body boundary plus revised finite R and next Q",
+          "gamma": 0.8
+        }
+      ],
+      "checkpoint": "E:\\cgb_epistemic_value_test_2469_20261118\\context\\body\\last.pt.gz",
+      "checkpoint_sha256": "1bfe92baaec9c78e1197e4cb59d42b330cf81002ab8405777da5dda97c8afbd2"
+    }
+  },
+  "changed_choices": 0,
+  "changed_utterances": 0,
+  "same_world_records": [
+    true,
+    true,
+    true,
+    true
+  ],
+  "choice_probability_tv": [
+    0.00011211633682250977,
+    0.11416743695735931,
+    0.008023202419281006,
+    0.043169260025024414
+  ],
+  "within_context_changed_value_argmax": 2,
+  "next_real_settlement_errors": [
+    {
+      "prediction_cycle": 2470,
+      "target_cycle": 2471,
+      "actual_next_target": 0.0,
+      "next_individual_U": false,
+      "old": 0.03735654056072235,
+      "contextual": 0.07059813290834427,
+      "old_squared_error": 0.0013955111226648942,
+      "contextual_squared_error": 0.004984096370144242
+    },
+    {
+      "prediction_cycle": 2471,
+      "target_cycle": 2472,
+      "actual_next_target": 0.0,
+      "next_individual_U": false,
+      "old": 0.04079081118106842,
+      "contextual": -0.1056722104549408,
+      "old_squared_error": 0.0016638902768095765,
+      "contextual_squared_error": 0.011166616062433299
+    },
+    {
+      "prediction_cycle": 2472,
+      "target_cycle": 2473,
+      "actual_next_target": -0.17079398036003113,
+      "next_individual_U": true,
+      "old": 0.027273638173937798,
+      "contextual": 0.12509819865226746,
+      "old_squared_error": 0.03923078151171783,
+      "contextual_squared_error": 0.08755218160064615
+    }
+  ],
+  "scope": "four-event complete-loop integration; path-specific returns retained separately; common old material compared"
+}

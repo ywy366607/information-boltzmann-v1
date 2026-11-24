@@ -69,42 +69,87 @@ class TableGDN(nn.Module):
             nn.init.constant_(self.mix.bias, math.log(math.expm1(0.5)))
 
     def initial_state(self, batch, device=None):
-        return self.base.initial_state(batch, device=device)
+        state = self.base.initial_state(batch, device=device)
+        if hasattr(self, 'coevolution'):
+            state = torch.cat((state, state.new_zeros(*state.shape[:-1],
+                               self.coevolution.state_size)), -1)
+        return state
 
     def forward(self, ids, targets, state, table_logp):
         logits, next_state, diagnostics = self.predict(ids, state, table_logp)
         loss = F.cross_entropy(logits.reshape(-1, self.base.vocab_size), targets.reshape(-1))
         return loss, next_state, diagnostics
 
-    def predict(self, ids, state, table_logp):
+    def predict(self, ids, state, table_logp, *, decode=True):
+        if not decode and torch.is_grad_enabled():
+            raise ValueError('state-only execution is for known no-gradient payloads')
         base = self.base
+        skip_diagnostics = getattr(self, '_decode_no_diagnostics', False) and not torch.is_grad_enabled()
         h = base.source.embedding(ids)
         diagnostics, states = {}, []
+        field = getattr(self, 'coevolution', None)
+        if field is not None:
+            incoming, field_keys, field_bias = field.prepare(self._coev_owner(), *ids.shape)
         if getattr(base, "self_oracle", False):
             from scripts.ib_local.self_state import marker_letter_mask
             mask = marker_letter_mask(ids)
             for layer in base.layers:
                 layer.write_mask = mask
+        hnet = getattr(self, 'hnet_chunker', None)
+        hnet_active = (hnet is not None and hnet.active_for(ids.shape[1]))
+        hnet_pack = None
+        core_start = hnet.enc_layers if hnet_active else -1
+        core_end = (base.num_layers - hnet.dec_layers) if hnet_active else -1
+        if hnet is not None and not hnet_active:
+            hnet._pending_ratio_loss = None
         for index, layer in enumerate(base.layers):
+            if hnet_active and index == core_start:
+                p_b, b_mask, r_loss = hnet.route(h)
+                hnet._pending_ratio_loss = r_loss if torch.is_grad_enabled() else None
+                hnet_pack = hnet.chunk(h, p_b, b_mask, incoming=(incoming if field is not None else None))
+                h = hnet_pack['x_chunk']
+                if field is not None:
+                    incoming = hnet_pack['incoming_chunk']
+                if not skip_diagnostics:
+                    diagnostics["hnet_boundary_rate"] = b_mask.detach().mean()
+                    diagnostics["hnet_ratio_loss"] = r_loss.detach()
+            elif hnet_active and index == core_end:
+                h, inc_up = hnet.dechunk(h, hnet_pack, incoming_chunk=(incoming if field is not None else None))
+                if field is not None:
+                    incoming = inc_up
+                hnet_pack = None
             if self.use_table and index == self.inject_layer:
                 f = table_logp - table_logp.mean(-1, keepdim=True)
                 key = self.key_norm(self.table_key(f))
                 gate = torch.sigmoid((self.query_norm(h) * key).sum(-1, keepdim=True)
                                      / math.sqrt(base.d))
                 h = h + gate * self.table_value(f)
-                diagnostics["table_gate_mean"] = gate.detach().mean()
-            h, next_state, layer_diag = layer(h, state[index])
+                if not skip_diagnostics:
+                    diagnostics["table_gate_mean"] = gate.detach().mean()
+            packed = state[index]
+            if field is not None:
+                h, incoming, work_diag = field.exchange(layer, h, incoming,
+                    packed[:, layer.state_size:], field_keys, field_bias)
+                packed = packed[:, :layer.state_size]
+            h, next_state, layer_diag = layer(h, packed)
+            if field is not None:
+                next_state = torch.cat((next_state, incoming[:, -1].flatten(1)), -1)
+                layer_diag.update(work_diag)
             states.append(next_state)
             for key_name, value in layer_diag.items():
                 diagnostics[f"l{index}_{key_name}"] = value
+        if not decode:
+            return None, torch.stack(states, 0), diagnostics
         h = base.final_norm(h)
         logits = base.decoder(h)
         if self.use_table:
             weight = F.softplus(self.mix(h))
             logits = logits + weight * table_logp
-            diagnostics["table_weight_mean"] = weight.detach().mean()
-        diagnostics["alpha_mean"] = torch.stack(
-            [diagnostics[f"l{i}_alpha_mean"] for i in range(base.num_layers)]).mean()
+            if not skip_diagnostics:
+                diagnostics["table_weight_mean"] = weight.detach().mean()
+        if not skip_diagnostics:
+            diagnostics["alpha_mean"] = torch.stack(
+                [diagnostics[f"l{i}_alpha_mean"] for i in range(base.num_layers)]).mean()
         return logits, torch.stack(states, 0), diagnostics
 
 

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>梦漓 · 深色背景对比</title>
+<style>
+:root { color-scheme: dark; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif; color: #eee; background: #090909; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+header, footer { max-width: 1420px; margin: auto; padding: 32px 32px 24px; }
+.eyebrow { color: #949494; font-size: 11px; letter-spacing: .2em; margin: 0 0 12px; }
+h1 { margin: 0 0 10px; font-size: 26px; font-weight: 450; letter-spacing: .06em; }
+.description { color: #b0b0b0; font-size: 14px; line-height: 1.8; margin: 0; }
+.choices { display: flex; gap: 12px; margin-top: 23px; flex-wrap: wrap; }
+button { font: inherit; cursor: pointer; }
+.choice { background: #111; color: #ddd; border: 1px solid #333; border-radius: 12px; padding: 13px 18px; text-align: left; min-width: 210px; }
+.choice.active { border-color: #c4d7c6; background: #191b1a; }
+.choice small { display: block; color: #999; font-size: 11px; margin-top: 7px; }
+button:focus-visible { outline: 2px solid #ddd; outline-offset: 4px; }
+#canvas { max-width: 1420px; margin: auto; padding: 0 32px; }
+.sample {
+  --base: #151517; --sidebar: #1b1b1c; --input: #2c2c2e; --layer: #232324; --bubble: #2c2c2e;
+  --ink: #e7e7e9; --muted: #a7a7af; --line: #343438; --mist: rgba(143,185,151,.07); --thread: rgba(187,211,186,.11);
+  display: grid; grid-template-columns: 170px minmax(0,1fr) 310px; min-height: 640px;
+  border: 1px solid #353538; border-radius: 18px; overflow: hidden;
+  background: var(--base); color: var(--ink);
+}
+.sample[data-theme="green"] { --base: #0e1b17; --sidebar: #111f19; --input: #1c2c24; --layer: #17261f; --bubble: #24392d; --line: #2a3a31; --muted: #a8b7af; }
+nav { padding: 23px 14px; background: var(--sidebar); border-right: 1px solid var(--line); font-size: 13px; }
+.brand { font-weight: 550; padding: 0 8px 26px; letter-spacing: .03em; }
+.nav-item { padding: 12px 11px; color: var(--muted); border-radius: 8px; }
+.nav-item.selected { background: var(--layer); color: var(--ink); }
+.reading { position: relative; isolation: isolate; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+.topbar { min-height: 60px; padding: 20px 26px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+.ribbons { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; background: radial-gradient(ellipse at 91% 5%,var(--mist),transparent 55%); }
+.ribbons::before, .ribbons::after { content: ''; position: absolute; border: 1px solid var(--thread); transform: rotate(-27deg); box-shadow: 0 0 60px var(--mist),inset 0 0 60px var(--mist); }
+.ribbons::before { width: 480px; height: 620px; right: -370px; top: -200px; border-radius: 48% 52% 61% 39% / 57% 37% 63% 43%; }
+.ribbons::after { width: 530px; height: 680px; right: -390px; top: -220px; border-radius: 62% 38% 46% 54% / 44% 58% 42% 56%; opacity: .5; }
+.sample[data-theme="official"] .ribbons { display: none; }
+.article { padding: 35px 30px; max-width: 750px; }
+.article h2 { font-size: 24px; font-weight: 450; margin: 0 0 18px; }
+.article p { font-size: 15px; line-height: 2; margin: 0 0 18px; }
+.article .secondary { color: var(--muted); font-size: 13px; }
+blockquote { margin: 30px 0 0; padding: 2px 0 2px 20px; border-left: 1px solid #58836b; font-family: 'Songti SC',SimSun,serif; font-size: 20px; line-height: 2; }
+.composer { margin: auto 22px 24px; border: 1px solid var(--line); border-radius: 17px; background: var(--input); padding: 18px 20px; min-height: 108px; }
+.composer p { margin: 0 0 24px; font-size: 14px; color: var(--muted); }
+.composer-bottom { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; }
+.side { position: relative; overflow: hidden; border-left: 1px solid var(--line); padding: 24px; background: var(--base); }
+.side .small { color: var(--muted); font-size: 10px; letter-spacing: .14em; }
+.side h2 { margin: 29px 0 22px; font-size: 22px; font-weight: 550; position: relative; z-index: 1; }
+.side p { font-size: 13px; line-height: 1.9; color: var(--muted); position: relative; z-index: 1; }
+.side .statement { margin-top: 60px; font-size: 17px; color: var(--ink); }
+.core { position: absolute; width: 290px; height: 290px; top: 52px; right: -23px; opacity: .75; pointer-events: none; }
+.core svg { width: 100%; height: 100%; }
+.side details { position: relative; z-index: 1; border-top: 1px solid var(--line); padding-top: 18px; margin-top: 30px; color: var(--muted); font-size: 12px; }
+.side summary { cursor: pointer; }
+.side details p { font-size: 12px; }
+footer { padding-top: 22px; color: #aaa; font-size: 13px; line-height: 1.9; }
+#current { margin: 0 0 6px; color: #ddd; }
+.source { color: #86868a; font-size: 11px; }
+@media (max-width: 1050px) { .sample { grid-template-columns: 120px minmax(0,1fr) 250px; } .side { padding: 20px; } .core { right: -58px; } }
+@media (max-width: 760px) { header,footer { padding: 25px 20px; } #canvas { padding: 0 16px; } .choices { gap: 8px; } .choice { min-width: 0; flex: 1 1 150px; font-size: 13px; padding: 12px; } .sample { grid-template-columns: minmax(0,1fr); } nav { display: none; } .side { border-left: 0; border-top: 1px solid var(--line); min-height: 400px; } .article { padding: 26px 22px; } .reading { min-height: 580px; } .core { right: 0; } h1 { font-size: 23px; } }
+</style>
+</head>
+<body>
+<header>
+  <p class="eyebrow">MENG LI / DARK SURFACES</p>
+  <h1>底色归于安静，玉绿留在光里</h1>
+  <p class="description">生命核统一用你选定的玉绿。切换下面三项，比较底色、输入区、侧栏，以及微绿的光带。</p>
+  <div class="choices" role="group" aria-label="深色背景方案">
+    <button class="choice" data-mode="green" aria-pressed="false">01 · 现在的墨绿<small>主底 #0e1b17 · 当前工作台配色</small></button>
+    <button class="choice" data-mode="official" aria-pressed="false">02 · 官方深色<small>主底 #151517 · 官方中性灰黑</small></button>
+    <button class="choice active" data-mode="glow" aria-pressed="true">03 · 官方深色 ＋ 玉绿微光<small>中性灰黑底 · 保留微绿光带与膜形</small></button>
+  </div>
+</header>
+<div id="canvas">
+<section class="sample" data-theme="glow" aria-label="静态界面配色样稿">
+  <nav><div class="brand">梦漓 MengLi</div><div class="nav-item">工作区</div><div class="nav-item selected">妈妈</div><div class="nav-item">梦漓</div><div class="nav-item">生命体征</div></nav>
+  <div class="reading">
+    <div class="ribbons"></div>
+    <div class="topbar">阅读区 · 配色样稿</div>
+    <div class="article">
+      <h2>在语言里，慢慢长大。</h2>
+      <p>这里用相同的文字与布局，只比较深色背景。正文不跟着光带染色，输入区和侧栏保留一点明度层次。</p>
+      <p>绿色不必铺满整页。它可以只在边缘轻轻亮起，像开场生命核散出的光，留一点呼吸的余地。</p>
+      <p class="secondary">主文字、辅助文字、边界与输入区，都可以在同一画面里比较。</p>
+      <blockquote>从今往后<br>带着我的祝福<br>活下去！</blockquote>
+    </div>
+    <div class="composer"><p>输入区的底色与边界示意</p><div class="composer-bottom"><span>＋</span><span>静态样稿 · 不会发送内容</span></div></div>
+  </div>
+  <aside class="side">
+    <div class="small">MENGLI / JADE LIGHT</div><h2>生命体征</h2>
+    <div class="core" aria-hidden="true"></div>
+    <p>留住的经历，与此刻的状态。</p>
+    <p class="statement">同一枚玉绿生命核。</p>
+    <details><summary>看看颜色分层</summary><p>浅绿内膜 #c7f2bf<br>青玉中膜 #78d7aa<br>深绿外膜 #449775</p></details>
+  </aside>
+</section>
+</div>
+<footer>
+  <p id="current">当前：官方深色 ＋ 玉绿微光。底色中性，绿色只留在光带与生命核里。</p>
+  这是独立背景样稿，底色还没应用到工作台。告诉我选 01、02 或 03 即可。<br>
+  <span class="source">官方色值取自本机 DeepSeek Harness 0.2.2-rc.1：主底 #151517，侧栏 #1b1b1c，输入/次层 #2c2c2e。</span>
+</footer>
+<script>
+const labels = {
+  green: '当前：现在的墨绿。页面底色、侧栏与输入区都带绿。',
+  official: '当前：官方深色。中性灰黑背景，没有额外光带；玉绿生命核仍保留。',
+  glow: '当前：官方深色 ＋ 玉绿微光。底色中性，绿色只留在光带与生命核里。',
+};
+document.querySelectorAll('[data-mode]').forEach(button => button.onclick = () => {
+  document.querySelector('.sample').dataset.theme = button.dataset.mode;
+  document.querySelectorAll('[data-mode]').forEach(item => { const selected = item === button; item.classList.toggle('active', selected); item.setAttribute('aria-pressed', String(selected)); });
+  document.getElementById('current').textContent = labels[button.dataset.mode];
+});
+const ns = 'http://www.w3.org/2000/svg';
+function el(tag, attrs = {}) { const node = document.createElementNS(ns, tag); Object.entries(attrs).forEach(([name,value])=>node.setAttribute(name,value)); return node; }
+const svg = el('svg',{viewBox:'0 0 320 320'}), defs = el('defs'), gradient = el('radialGradient',{id:'jade'});
+[['0%','#234a3a','.28'],['36%','#234a3a','.25'],['62%','#397657','.18'],['81%','#398967','.14'],['100%','#398967','0']].forEach(([offset,color,opacity])=>gradient.appendChild(el('stop',{offset,'stop-color':color,'stop-opacity':opacity})));
+defs.appendChild(gradient); svg.appendChild(defs); svg.appendChild(el('circle',{cx:160,cy:160,r:152,fill:'url(#jade)'}));
+const paths = ['#c7f2bf','#78d7aa','#449775'].map((stroke,index)=>{const path=el('path',{fill:index===0?'#c7f2bf':'none','fill-opacity':'.025',stroke,'stroke-opacity':[.78,.55,.36][index],'stroke-width':1,'vector-effect':'non-scaling-stroke'});svg.appendChild(path);return path;});
+const mark = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none"><g stroke="#c7f2bf" stroke-linecap="round" stroke-linejoin="round"><path d="M113 36C101 21 83 17 66 24C42 33 25 57 27 85C29 113 50 137 75 138C102 139 125 118 131 94C136 73 131 56 122 45" stroke-width="2.4"/><path d="M61 30C42 44 33 65 36 85C39 109 55 126 76 130C94 133 112 123 122 106" stroke-width="1.2" opacity=".36"/><path d="M75 120C65 106 69 92 80 80C89 70 95 55 94 40" stroke-width="2.5"/><path d="M79 83C62 83 49 71 47 55C63 53 79 63 79 83Z" stroke-width="1.9"/><path d="M85 73C83 57 93 45 110 42C110 58 101 70 85 73Z" stroke-width="1.9"/><path d="M79 82C72 72 64 65 56 61M86 72C92 61 100 52 109 43" stroke-width="1.1" opacity=".5"/></g><ellipse cx="75" cy="119" rx="2.6" ry="3.4" fill="#d5a57a"/></svg>`;
+svg.appendChild(el('image',{x:116,y:116,width:88,height:88,href:'data:image/svg+xml,'+encodeURIComponent(mark)})); document.querySelector('.core').appendChild(svg);
+let phase=0,last=0,frame=0; const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+function draw() { const breath=Math.sin(phase); paths.forEach((path,index)=>{const points=[];for(let i=0;i<=96;i++){const angle=i/96*Math.PI*2;const r=103+index*14+breath*7+Math.sin(angle*3+phase*.43+index)*7+Math.cos(angle*2-phase*.31+index*.7)*6;points.push(`${i?'L':'M'}${(160+Math.cos(angle)*r).toFixed(2)},${(160+Math.sin(angle)*r*.94).toFixed(2)}`);}path.setAttribute('d',points.join(' ')+'Z');}); }
+function tick(time){frame=0;if(document.hidden||reduced.matches)return;phase+=last?Math.min((time-last)/1000,.05)*.65:0;last=time;draw();frame=requestAnimationFrame(tick);}
+function wake(){last=0;if(!frame&&!reduced.matches&&!document.hidden)frame=requestAnimationFrame(tick);}
+document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0;}else wake();});draw();wake();
+</script>
+</body>
+</html>

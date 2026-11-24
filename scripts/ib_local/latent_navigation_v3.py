@@ -107,18 +107,52 @@ class ExperienceMemory(TransitionMemory):
         owns the distinction between imagined and actually observed states.
         """
         q = F.normalize(latent, dim=-1)
-        keys = F.normalize(encoder(self.source), dim=-1)
+        # A draft has fixed parameters and facts. Only its query evolves.
+        # The decoder owns/refreshes these projections at every start; never
+        # use them in differentiable training or general memory reads.
+        cached = getattr(self, '_decode_projection_cache', None) if not torch.is_grad_enabled() else None
+        if cached is None:
+            from scripts.ib_local.preview_runtime import encoder_read, tensor_key
+            def _proj():
+                enc_src = encoder(self.source)
+                enc_long = encoder(self.long_successor)
+                return (F.normalize(enc_src, dim=-1),
+                        encoder(self.action), enc_long, enc_src,
+                        F.normalize(enc_long - enc_src, dim=-1))
+            cached = encoder_read(encoder, 'preview_memory_projection',
+                (id(self), *(tensor_key(t) for t in (self.source, self.action, self.long_successor))),
+                _proj, anchors=(self,))
+        keys = cached[0]
         if latent.ndim != 2 or latent.shape[-1] != keys.shape[-1]:
             raise ValueError('expected [queries, latent_width] encoded states')
         occupied = self.occupied if eligible is None else self.occupied & eligible
-        scores = (q @ keys.T).masked_fill(~occupied, -1e4)
+        raw_scores = q @ keys.T
+        pb = getattr(self, '_phase_boltzmann', None)
+        if pb is not None and pb.enable_momentum_read:
+            vel_keys = (cached[4] if len(cached) >= 5 else
+                        cached[3] if len(cached) == 4 else
+                        F.normalize(cached[2] - encoder(self.source), dim=-1))
+            raw_scores = raw_scores + pb.memory_velocity_bonus(vel_keys)
+        scores = raw_scores.masked_fill(~occupied, -1e4)
         from scripts.ib_local.experience_consolidation import consolidates_reads
-        if consolidates_reads(self):
+        replay_slots = getattr(self, '_replay_read_slots', None)
+        if replay_slots is not None:
+            if replay_slots.shape != (len(scores), self.topk):
+                raise ValueError('recorded read route must match the replayed query positions')
+            slots = replay_slots
+            selected = scores.gather(-1, slots)
+        elif consolidates_reads(self):
             from scripts.ib_local.experience_consolidation import select_read_slots
             selected, slots = select_read_slots(self, scores)
         else:
             selected, slots = scores.topk(self.topk, dim=-1)
         valid = occupied[slots]
+        excluded = getattr(self, '_retention_excluded', None)
+        if excluded is not None:
+            slot, version = excluded
+            valid = valid & ~((slots == slot) & (self.read_credit_version[slots] == version))
+        from scripts.ib_local.native_replay_batch import exclude_reads
+        valid = exclude_reads(self, slots, valid)
         from scripts.ib_local.navigation_read_credit import read_logits
         logits = read_logits(self, selected, slots, valid)
         if null_logit is None:
@@ -135,14 +169,18 @@ class ExperienceMemory(TransitionMemory):
             weights = combined.softmax(-1)[...,:-1] * valid
         # The injected value recalls the experienced action-state; predictors
         # can use the observed successor independently through long_value.
-        action = (weights[..., None] * encoder(self.action)[slots]).sum(-2)
-        successor = (weights[..., None] * encoder(self.long_successor)[slots]).sum(-2)
+        actions, successors = cached[1], cached[2]
+        action = (weights[..., None] * actions[slots]).sum(-2)
+        successor = (weights[..., None] * successors[slots]).sum(-2)
         return TransitionRead(action, successor, slots, weights)
 
     @torch.no_grad()
     def commit(self, features, encoder, read=None):
         """Advance actual byte time and pending contexts, without episode writes."""
-        if features.ndim != 2 or features.shape[1] != self.width or not 0 < len(features) <= self.long:
+        # A variable utterance is self-heard in the same first chunk. Keep the
+        # pending queue at its original horizon; only the finite input is larger.
+        limit = max(self.long + getattr(self, 'max_utterance', 0), int(getattr(self, 'max_commit_chunk', 0)))
+        if features.ndim != 2 or features.shape[1] != self.width or not 0 < len(features) <= limit:
             raise ValueError('bounded observed feature chunk required')
         next_clock = self.clock + len(features)
         if int(next_clock) < int(self.clock):

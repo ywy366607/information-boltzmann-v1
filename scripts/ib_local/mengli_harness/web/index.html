@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="zh-CN" data-ds-dark-theme="true">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>梦漓 MengLi — 连续工作台</title>
+  <link id="mengli-intro-styles" rel="stylesheet" href="/intro.css" />
+  <link rel="stylesheet" href="/life.css" />
+  <script defer src="/intro.js"></script>
+  <script defer src="/family.js"></script>
+  <style>
+    :root {
+      --dsh-bg-base: #0b0d11;
+      --dsh-bg-layer1: #12151c;
+      --dsh-bg-layer2: #181d26;
+      --dsh-bg-layer3: #1f2532;
+      --dsh-border: rgba(255, 255, 255, 0.08);
+      --dsh-border-hover: rgba(255, 255, 255, 0.16);
+      --dsh-text-primary: #f0f3f6;
+      --dsh-text-secondary: #969faf;
+      --dsh-text-muted: #626b7a;
+      
+      --dsh-brand: #3b82f6;
+      --dsh-brand-glow: rgba(59, 130, 246, 0.25);
+      --dsh-green: #10b981;
+      --dsh-green-glow: rgba(16, 185, 129, 0.2);
+      --dsh-purple: #a855f7;
+      --dsh-purple-glow: rgba(168, 85, 247, 0.2);
+      --dsh-orange: #f59e0b;
+      
+      --dsh-radius-sm: 6px;
+      --dsh-radius-md: 10px;
+      --dsh-radius-lg: 14px;
+      --dsh-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      --dsh-font-mono: "JetBrains Mono", "SF Mono", Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--dsh-bg-base);
+      color: var(--dsh-text-primary);
+      font-family: var(--dsh-font-sans);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Navigation Bar */
+    header {
+      height: 54px;
+      background: var(--dsh-bg-layer1);
+      border-bottom: 1px solid var(--dsh-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .dsh-logo {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--dsh-brand), var(--dsh-purple));
+      border-radius: var(--dsh-radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 14px;
+      color: #fff;
+      box-shadow: 0 0 12px var(--dsh-brand-glow);
+    }
+    .brand-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--dsh-text-muted);
+      font-weight: normal;
+      background: var(--dsh-bg-layer2);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--dsh-border);
+    }
+    .header-status {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+    }
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--dsh-bg-layer2);
+      border: 1px solid var(--dsh-border);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-family: var(--dsh-font-mono);
+      font-size: 12px;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--dsh-text-muted);
+    }
+    .pulse-dot.is-online {
+      background: var(--dsh-green);
+      box-shadow: 0 0 8px var(--dsh-green);
+      animation: pulse 1.8s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Main Workspace Layout */
+    .workspace {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Left: Training Dialogue Flow */
+    .dialogue-pane {
+      flex: 1.15;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--dsh-border);
+      background: var(--dsh-bg-base);
+      min-width: 0;
+    }
+    .pane-header {
+      padding: 12px 20px;
+      background: var(--dsh-bg-layer1);
+      border-bottom: 1px solid var(--dsh-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .pane-header .title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--dsh-text-primary);
+    }
+
+    /* Compaction Memory Card */
+    .memory-card {
+      margin: 16px 20px 8px;
+      background: var(--dsh-bg-layer2);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      border-left: 4px solid var(--dsh-brand);
+      border-radius: var(--dsh-radius-md);
+      padding: 14px 18px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .memory-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--dsh-brand);
+      font-size: 13px;
+    }
+    .memory-body {
+      color: var(--dsh-text-secondary);
+      font-size: 12.5px;
+    }
+
+    /* Dialogue Stream */
+    .dialogue-stream {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .dialogue-turn {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: 88%;
+      animation: fadeIn 0.25s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .turn-child {
+      align-self: flex-start;
+    }
+    .turn-mother {
+      align-self: flex-end;
+    }
+    .bubble {
+      padding: 12px 16px;
+      border-radius: var(--dsh-radius-lg);
+      font-size: 13.5px;
+      line-height: 1.55;
+      position: relative;
+    }
+    .bubble-child {
+      background: var(--dsh-bg-layer2);
+      border: 1px solid var(--dsh-border);
+      border-top-left-radius: 4px;
+      color: var(--dsh-text-primary);
+    }
+    .bubble-mother {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-top-right-radius: 4px;
+      color: #e6fcf5;
+    }
+    .bubble-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 11px;
+      font-family: var(--dsh-font-mono);
+      gap: 12px;
+    }
+    .tag {
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .tag-generate { background: rgba(168, 85, 247, 0.2); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .tag-silence { background: rgba(100, 116, 139, 0.2); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.3); }
+    .tag-reuse { background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .tag-deepseek { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    /* Right: Training Dashboard */
+    .dashboard-pane {
+      flex: 0.85;
+      background: var(--dsh-bg-layer1);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      border-left: 1px solid var(--dsh-border);
+      min-width: 0;
+    }
+    .dash-content {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .dash-section-title {
+      font-size: 11.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--dsh-text-muted);
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .dash-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .card {
+      background: var(--dsh-bg-layer2);
+      border: 1px solid var(--dsh-border);
+      border-radius: var(--dsh-radius-md);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: border-color 0.2s;
+    }
+    .card:hover {
+      border-color: var(--dsh-border-hover);
+    }
+    .card-label {
+      font-size: 11.5px;
+      color: var(--dsh-text-secondary);
+    }
+    .card-val {
+      font-size: 20px;
+      font-weight: 700;
+      font-family: var(--dsh-font-mono);
+      color: #fff;
+    }
+    .card-val.cyan { color: #38bdf8; }
+    .card-val.green { color: var(--dsh-green); }
+    .card-val.purple { color: #c084fc; }
+    .card-val.orange { color: var(--dsh-orange); }
+    .card-sub {
+      font-size: 11px;
+      color: var(--dsh-text-muted);
+    }
+
+    /* Progress bar */
+    .bar-bg {
+      background: var(--dsh-bg-layer3);
+      height: 6px;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .bar-fg {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    .bar-bg[data-unmeasured="true"] { visibility: hidden; }
+    .bar-fg { border-radius: 0 4px 4px 0; }
+    .card-val { color: var(--dsh-text-primary) !important; }
+    .layer-row span { color: var(--dsh-text-secondary) !important; }
+    .bubble, .memory-body { white-space: pre-wrap; overflow-wrap: anywhere; }
+    #stream-source { font-size: 11px; overflow-wrap: anywhere; }
+    #summary-meta { max-width: 60%; overflow-wrap: anywhere; }
+    .memory-header { gap: 12px; align-items: flex-start; }
+    #tok-ledger { overflow-wrap: anywhere; text-align: right; white-space: pre-line; }
+    .pane-header .title { min-width: 0; }
+    @media (forced-colors: active) {
+      .bar-fg { background: Highlight !important; forced-color-adjust: none; }
+    }
+
+    /* Layer Bars */
+    .layer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      font-family: var(--dsh-font-mono);
+      margin-top: 6px;
+      color: var(--dsh-text-secondary);
+    }
+  </style>
+  <link rel="stylesheet" href="/family.css" />
+</head>
+<body data-family-view="care">
+  <div class="family-background" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <header>
+    <div class="brand-section">
+      <div class="dsh-logo mengli-brand-mark"><img src="/mengli-mark.svg" width="28" height="28" alt="" /></div>
+      <div class="brand-title">
+        <span id="life-name">梦漓</span> <span class="mengli-wordmark">MENG LI</span>
+        <span class="brand-subtitle" id="life-reading">妈妈世界 · 连续工作台</span>
+      </div>
+    </div>
+    <div class="header-status">
+      <button id="intro-replay" class="intro-replay" type="button" hidden aria-label="重播梦漓开场，不重启会话">再看开场</button>
+      <div class="status-pill">
+        <div class="pulse-dot" id="service-dot" aria-hidden="true"></div>
+        <span id="service-status" role="status">服务 未测 / 训练 未测</span>
+      </div>
+      <div class="status-pill">
+        <span>RUN: <strong style="color:var(--dsh-brand);" id="hdr-run">未测 / ARM 未测</strong></span>
+      </div>
+      <div class="status-pill">
+        <span>CYCLE: <strong style="color:#fff;" id="hdr-cycle">未测</strong></span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="family-tabs" aria-label="家庭工作区">
+    <button type="button" data-view="care" aria-selected="true">和梦漓交流</button>
+    <button type="button" data-view="mother" aria-selected="false">和妈妈商量 · DS</button>
+    <button type="button" data-view="plan" aria-selected="false">育儿计划</button>
+    <button type="button" data-view="vitals" aria-selected="false">记录与用量</button>
+    <span id="care-mode" role="status">照护已暂停</span>
+  </nav>
+  <div class="family-notice" id="family-notice" role="status" hidden></div>
+  <div class="workspace">
+    <section class="mother-workspace" id="mother-panel" aria-label="官方 DS 妈妈工作区" hidden>
+      <div class="pane-header"><span>家长 ↔ 妈妈 · 官方会话 / 工具 / Goal Loop</span><a id="mother-open" target="_blank" rel="noopener noreferrer" hidden>独立打开完整工作区 ↗</a></div>
+      <p id="mother-loading">正在连接官方 DS 工作区；不会自动启动目标或调用模型。</p>
+      <iframe id="mother-frame" title="妈妈的环世界协作窗" referrerpolicy="no-referrer"></iframe>
+    </section>
+    <section class="family-plan-panel" id="family-plan-panel" aria-label="育儿计划" hidden>
+      <h2>和妈妈共同安排照料</h2>
+      <p>这里保存的是照护安排，不是梦漓的内在目标。与妈妈商量的建议，保存后才会生效。</p>
+      <form id="plan-form">
+        <label for="care-plan">当前育儿计划</label>
+        <textarea id="care-plan" rows="12" maxlength="16000" placeholder="希望怎样陪伴、当前话题、约定与需要留意的事…"></textarea>
+        <div class="family-actions"><button type="submit">保存计划</button><span id="plan-version">版本 0 · 下一完整轮生效</span></div>
+      </form>
+      <p>持续目标、工具执行与 Goal Loop 在「和妈妈商量」的原生工作区中设置。</p>
+      <button type="button" data-view="mother">去和妈妈商量 →</button>
+    </section>
+    <!-- Left: Dialogue River -->
+    <div class="dialogue-pane">
+      <div class="pane-header">
+        <div class="title">
+          <span id="stream-source">Checkpoint 未测 / 指标来源 未测</span>
+        </div>
+        <div style="font-size:12px; color:var(--dsh-text-muted);" id="stream-turn-count">
+          正在加载训练记录...
+        </div>
+      </div>
+
+      <!-- Mother's Caregiver Compaction Memory -->
+      <div class="memory-card" id="summary-card">
+        <div class="memory-header">
+          <span>妈妈的经历摘要</span>
+          <span style="font-size:11px; font-family:var(--dsh-font-mono); color:var(--dsh-text-muted);" id="summary-meta">版本 未测 / 会话 未测</span>
+        </div>
+        <div class="memory-body" id="summary-text">未测</div>
+      </div>
+
+      <details class="care-archive" id="care-archive" hidden><summary>续接前已保存的妈妈对话</summary><div id="care-history"></div></details>
+      <!-- Chat Stream -->
+      <div class="dialogue-stream" id="dialogue-stream" aria-label="梦漓的连续交流">
+        <!-- Bubbles dynamically rendered here -->
+      </div>
+      <form class="parent-composer" id="parent-form">
+        <label for="parent-text">对梦漓说 · 家长身份</label>
+        <textarea id="parent-text" rows="2" placeholder="先暂停妈妈并接管，再对梦漓说话" disabled></textarea>
+        <div class="family-actions"><span id="input-capacity">实际送达受身体字节容量限制</span><button id="parent-send" type="submit" disabled>发送给梦漓</button></div>
+        <p id="delivery-status">文字只在真实交付并完整保存后标为已提交；梦漓可以沉默。</p>
+      </form>
+    </div>
+    <aside class="family-controls" aria-label="照护控制">
+      <h2>同一个梦漓</h2>
+      <p id="family-binding">正在读取续接绑定…</p>
+      <button id="body-load" type="button">连接续接体 · 不推进轮次</button>
+      <div class="family-actions"><button id="care-takeover" type="button">暂停妈妈 · 我来陪伴</button><button id="care-resume" type="button">恢复妈妈照护</button></div>
+      <button id="care-step" type="button" disabled>妈妈照护一轮</button>
+      <p>自动照护由妈妈的 Goal Loop 使用真实工具推进。暂停会等当前轮完整保存，再交出控制权。</p>
+      <details><summary>三方交流怎样分开</summary><p>和妈妈商量的话不会直接喂给梦漓。接管后，你的发言记为家长；妈妈恢复时会读到真实交流记录，不会把它当成自己的话。</p></details>
+      <p class="family-binding" id="family-checkpoint"></p>
+    </aside>
+
+    <!-- Right: Vital Signs & Training Dashboard -->
+    <div class="dashboard-pane">
+      <div class="dash-content">
+        <!-- Section: Causal & Wood -->
+        <div>
+          <div class="dash-section-title">
+            <span>⚡ 认知探索与因果网络 (Water & Wood)</span>
+          </div>
+          <div class="dash-grid">
+            <div class="card">
+              <div class="card-label">未决因果目标 (Open Void)</div>
+              <div class="card-val purple" id="card-void">未测</div>
+              <div class="card-sub">当前向妈妈主动探寻的关系端口</div>
+            </div>
+            <div class="card">
+              <div class="card-label">活跃关系槽位 (Causal Slots)</div>
+              <div class="card-val cyan" id="card-relations">未测</div>
+              <div class="bar-bg" data-unmeasured="true"><div class="bar-fg" id="bar-relations" style="width:0; background:var(--dsh-brand);"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Earth & Continuous Momentum -->
+        <div>
+          <div class="dash-section-title">
+            <span>神经状态实测与学习诊断</span>
+          </div>
+          <div class="dash-grid">
+            <div class="card">
+              <div class="card-label">P 动量范数（仅实测）</div>
+              <div class="card-val green" id="card-momentum">未测</div>
+              <div class="card-sub" id="state-norms">S 未测 / Q 未测</div>
+            </div>
+            <div class="card">
+              <div class="card-label">结算收益 (Metal Gain g)</div>
+              <div class="card-val orange" id="card-gain">未测</div>
+              <div class="card-sub">外部真实后果反馈增益</div>
+            </div>
+          </div>
+          <!-- Layer breakdown -->
+          <div class="card" style="margin-top:12px;">
+            <div class="card-label">逐层梯度范数（条长相对本轮最大值）</div>
+            <div class="layer-row"><span>Layer 1</span><span id="l1-val">未测</span></div>
+            <div class="bar-bg" data-unmeasured="true"><div class="bar-fg" id="l1-bar" style="background:var(--dsh-brand);"></div></div>
+            <div class="layer-row"><span>Layer 2</span><span id="l2-val">未测</span></div>
+            <div class="bar-bg" data-unmeasured="true"><div class="bar-fg" id="l2-bar" style="background:var(--dsh-brand);"></div></div>
+            <div class="layer-row"><span>Layer 3</span><span id="l3-val">未测</span></div>
+            <div class="bar-bg" data-unmeasured="true"><div class="bar-fg" id="l3-bar" style="background:var(--dsh-brand);"></div></div>
+            <div class="layer-row"><span>Layer 4</span><span id="l4-val">未测</span></div>
+            <div class="bar-bg" data-unmeasured="true"><div class="bar-fg" id="l4-bar" style="background:var(--dsh-brand);"></div></div>
+          </div>
+        </div>
+
+        <!-- Section: DeepSeek Ecosystem & Cache -->
+        <div>
+          <div class="dash-section-title">
+            <span>🌐 提供商前缀缓存生态 (DeepSeek KV Cache)</span>
+          </div>
+          <div class="dash-grid">
+            <div class="card">
+              <div class="card-label">Prefix Cache 命中率</div>
+              <div class="card-val green" id="card-hitrate">未测</div>
+              <div class="bar-bg" data-unmeasured="true"><div class="bar-fg" id="bar-hitrate" style="background:var(--dsh-brand);"></div></div>
+            </div>
+            <div class="card">
+              <div class="card-label">端到端 API 延迟</div>
+              <div class="card-val cyan" id="card-latency">未测</div>
+              <div class="card-sub">DeepSeek 官方接口耗时</div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:12px;">
+            <div class="card-label">提供商实测 Token 分账（非共享回复缓存）</div>
+            <div class="layer-row"><span>Cache Hit Tokens</span><span id="tok-hit" style="color:var(--dsh-green);">未测</span></div>
+            <div class="layer-row"><span>Cache Miss Tokens</span><span id="tok-miss" style="color:var(--dsh-orange);">未测</span></div>
+            <div class="layer-row"><span>Completion Tokens</span><span id="tok-out" style="color:#fff;">未测</span></div>
+            <div class="layer-row"><span>普通应答 / 摘要</span><span id="tok-ledger">未测 / 未测</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const UNMEASURED = '未测';
+    const byId = id => document.getElementById(id);
+    const measured = value => typeof value === 'number' && Number.isFinite(value);
+    const display = value => value == null ? UNMEASURED
+      : typeof value === 'object' ? JSON.stringify(value)
+      : value === '' ? '（空）' : String(value);
+    const fixed = (value, digits = 4, suffix = '') => measured(value)
+      ? value.toFixed(digits) + suffix : UNMEASURED;
+    const count = value => measured(value) ? value.toLocaleString() : UNMEASURED;
+    const setText = (id, value) => { byId(id).textContent = value; };
+
+    function setBar(id, ratio, label) {
+      const bar = byId(id);
+      const known = measured(ratio);
+      bar.style.width = (known ? Math.max(0, Math.min(1, ratio)) * 100 : 0) + '%';
+      bar.parentElement.dataset.unmeasured = String(!known);
+      bar.parentElement.title = label;
+      bar.parentElement.setAttribute('role', 'img');
+      bar.parentElement.setAttribute('aria-label', label);
+    }
+
+    function usageLine(usage) {
+      if (usage == null) return UNMEASURED;
+      return `输入 ${count(usage.prompt_tokens)}（命中 ${count(usage.cache_hit_tokens)} / 未命中 ${count(usage.cache_miss_tokens)}）/ 输出 ${count(usage.completion_tokens)}`;
+    }
+
+    function renderVitals(v) {
+      if (typeof window !== 'undefined') {
+        window.__mengliLife = v.life ?? null;
+        window.MengliIntro?.updateLife(window.__mengliLife);
+        window.MengliFamily?.updateLife(window.__mengliLife);
+      }
+      const metadata = v.metadata ?? {};
+      const meta = key => metadata[key] ?? v[key];
+      const service = meta('service_status');
+      const training = meta('training_status');
+      setText('service-status', `服务 ${display(service)} / 训练 ${display(training)}`);
+      byId('service-dot').classList.toggle('is-online', ['online', 'ready', 'running', 'live'].includes(service));
+      setText('hdr-run', `${display(meta('run_id'))} / ARM ${display(meta('arm'))}`);
+      setText('stream-source', `Checkpoint ${display(meta('source_checkpoint'))} / 指标来源 ${display(meta('metrics_source'))}`);
+      setText('hdr-cycle', measured(v.cycle) ? '#' + v.cycle
+        : measured(v.life?.source?.cycle) ? '存档 #' + v.life.source.cycle : UNMEASURED);
+      setText('card-void', display(v.unknown_identity));
+      setText('card-relations', `${count(v.active_relations)} / ${count(v.relation_capacity)}`);
+      setBar('bar-relations', measured(v.active_relations) && measured(v.relation_capacity) && v.relation_capacity > 0
+        ? v.active_relations / v.relation_capacity : null,
+        `活跃关系 ${count(v.active_relations)}，容量 ${count(v.relation_capacity)}`);
+      setText('card-momentum', fixed(v.p_momentum_norm));
+      setText('state-norms', `S ${fixed(v.s_state_norm)} / Q ${fixed(v.q_invariant_norm)}`);
+      setText('card-gain', fixed(v.metal_g));
+      const hit = measured(v.provider_hit_rate) ? v.provider_hit_rate * 100 : null;
+      setText('card-hitrate', fixed(hit, 1, '%'));
+      setBar('bar-hitrate', v.provider_hit_rate, `提供商 KV 命中率 ${fixed(hit, 1, '%')}`);
+      setText('card-latency', fixed(v.latency_seconds, 2, ' s'));
+      setText('tok-hit', count(v.cache_hit_tokens));
+      setText('tok-miss', count(v.cache_miss_tokens));
+      setText('tok-out', count(v.completion_tokens));
+      setText('tok-ledger', `应答 ${usageLine(v.reply_usage)}\n摘要 ${usageLine(v.summary_usage)}`);
+
+      const norms = Array.isArray(v.layer_gradient_norms) ? v.layer_gradient_norms : [];
+      const maxNorm = Math.max(0, ...norms.filter(measured));
+      ['l1', 'l2', 'l3', 'l4'].forEach((id, index) => {
+        const value = norms[index];
+        const label = measured(value) ? value.toExponential(2) : UNMEASURED;
+        setText(id + '-val', label);
+        setBar(id + '-bar', measured(value) ? (maxNorm > 0 ? value / maxNorm : 0) : null,
+          `Layer ${index + 1} 梯度范数 ${label}，相对本轮最大值`);
+      });
+    }
+
+    function element(tag, className, text) {
+      const node = document.createElement(tag);
+      node.className = className;
+      if (text != null) node.textContent = text;
+      return node;
+    }
+
+    function appendBubble(stream, side, name, tag, tagClass, text) {
+      const turn = element('div', 'dialogue-turn turn-' + side);
+      const bubble = element('div', 'bubble bubble-' + side);
+      const metadata = element('div', 'bubble-meta');
+      metadata.append(element('span', '', name), element('span', 'tag ' + tagClass, tag));
+      bubble.append(metadata, element('div', '', display(text)));
+      turn.append(bubble);
+      stream.append(turn);
+    }
+
+    function renderSession(session) {
+      if (typeof window !== 'undefined' && window.MengliFamily?.ownsStream) return;
+      const turns = Array.isArray(session.turns) ? session.turns : [];
+      setText('stream-turn-count', `已提交 ${count(session.total_turns)} 轮 / 显示 ${turns.length} 条记录`);
+      setText('summary-text', display(session.summary));
+      byId('summary-card').hidden = session.summary == null;
+      const sessionId = session.session_ref?.session_id ?? session.session_ref;
+      setText('summary-meta', `版本 ${display(session.summary_version)} / 会话 ${display(sessionId)}`);
+      const stream = byId('dialogue-stream');
+      const atBottom = stream.scrollHeight - stream.scrollTop - stream.clientHeight < 40;
+      stream.replaceChildren();
+      turns.forEach(turn => {
+        const choice = ['generate', 'silence', 'reuse'].includes(turn.choice) ? turn.choice : 'unknown';
+        const childTag = `${display(turn.choice)} / C${display(turn.cycle)}`;
+        if (turn.role != null) {
+          const content = Array.isArray(turn.content)
+            ? turn.content.filter(block => block.type === 'text').map(block => block.text).join('')
+            : turn.content;
+          if (turn.role === 'user') {
+            appendBubble(stream, 'child', '梦漓 (MengLi)', childTag, 'tag-' + choice, content);
+          } else if (turn.role === 'assistant') {
+            appendBubble(stream, 'mother', '妈妈 (Mother)', '回应', 'tag-deepseek', content);
+          }
+        } else {
+          appendBubble(stream, 'child', '梦漓 (MengLi)', childTag, 'tag-' + choice, turn.child_text);
+          if (turn.mother_reply != null) {
+            appendBubble(stream, 'mother', '妈妈 (Mother)', '回应', 'tag-deepseek', turn.mother_reply);
+          }
+        }
+      });
+      if (atBottom) stream.scrollTop = stream.scrollHeight;
+    }
+
+    async function readJSON(url) {
+      const response = await fetch(url, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
+      return response.json();
+    }
+
+    let refreshing = false;
+    async function refreshDashboard() {
+      if (refreshing) return;
+      refreshing = true;
+      try {
+        const [vitals, session] = await Promise.allSettled([
+          readJSON('/api/vitals'), readJSON('/api/session'),
+        ]);
+        renderVitals(vitals.status === 'fulfilled' ? vitals.value
+          : { metadata: { service_status: 'offline', training_status: null } });
+        if (session.status === 'fulfilled') renderSession(session.value);
+        else {
+          renderSession({});
+          setText('stream-turn-count', '会话读取失败');
+        }
+      } finally {
+        refreshing = false;
+      }
+    }
+
+    setInterval(refreshDashboard, 2000);
+    refreshDashboard();
+  </script>
+</body>
+</html>

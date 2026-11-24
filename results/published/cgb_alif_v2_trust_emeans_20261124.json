@@ -1,0 +1,200 @@
+{
+  "schema": 1,
+  "mode": "equal_wallclock_600s",
+  "source": "E:\\mengli-wallclock-10min-20261123\\strict_10min\\body\\last.pt.gz",
+  "source_sha256": "1a848983905e07768dfe0e24f3720959a877b472a15aa765955f1f48213f11b3",
+  "source_cycle": 2897,
+  "end_cycle": 2927,
+  "budget_seconds": 600.0,
+  "life_seconds": 606.9673803000042,
+  "save_seconds": 2.7707805000027292,
+  "checkpoint": "C:\\mengli-alif-v2-600s-20261124\\body\\last.pt.gz",
+  "checkpoint_sha256": "0a0eda70dad6b7af92230ab2849eaeb6d66385237178ff97dbf6a0be8287cd7b",
+  "restore_exact": true,
+  "peak_vram_gib": 2.2770538330078125,
+  "total_updates": 211,
+  "bytes_per_second": 119.41333645339475,
+  "mean_calm_piece_seconds": 1.2571226439559013,
+  "mean_exec_spike_seconds": 16.41493387666633,
+  "mean_metal_g": -0.005491479982932409,
+  "pre_outcome_gain_mse": 0.06930633643239514,
+  "alif_diagnostics": {
+    "schema": 1,
+    "v": 0.0,
+    "a": 2.2303319955018406,
+    "threshold": 3.1188153957267484,
+    "pending_spike": false,
+    "executive_spikes": 30,
+    "calm_pieces": 91,
+    "total_external_bytes": 72480,
+    "total_learned_bytes": 72480,
+    "byte_conservation_exact": true,
+    "effective_960b_blocks": 75.5,
+    "executive_duty_cycle": 0.3973509933774834,
+    "inter_spike_pieces": [
+      3,
+      3,
+      3,
+      2,
+      4,
+      2,
+      3,
+      3,
+      2,
+      5,
+      2,
+      3,
+      4,
+      2,
+      4,
+      4,
+      3,
+      4,
+      4,
+      6,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      2,
+      3,
+      2
+    ],
+    "mean_inter_spike_pieces": 3.1379310344827585,
+    "max_inter_spike_pieces": 6,
+    "min_inter_spike_pieces": 2,
+    "preempt_causes": {
+      "initial": 1,
+      "sensory": 0,
+      "burst": 24,
+      "kinetic": 0,
+      "epistemic": 1,
+      "rheobase": 4
+    },
+    "params": {
+      "piece_bytes": 480,
+      "burst_window": 64,
+      "lam_v": 0.84,
+      "lam_a": 0.78,
+      "theta0": 1.0,
+      "beta": 0.95,
+      "delta0": 0.2,
+      "i_max": 1.85,
+      "w_sens": 0.35,
+      "w_burst": 0.22,
+      "w_kin": 12.0,
+      "w_epi": 0.18,
+      "ema_decay": 0.85,
+      "workset_refresh_pieces": 2,
+      "hippocampal_anchor_scale": 0.0
+    }
+  },
+  "encoder_subspace_metric": {
+    "schema": 1,
+    "damping": 0.25,
+    "drift_budget": 0.0001,
+    "post_step": true,
+    "applications": 91,
+    "pass_throughs": 1,
+    "trust_region_clamps": 90,
+    "refreshes": 29,
+    "last_vector_count": 13077,
+    "last_trace": 2100.60595703125,
+    "last_protected_dims": 8.59520149230957,
+    "last_lambda": 19.350228315892387,
+    "last_raw_step_norm": 0.007927635684609413,
+    "last_proj_step_norm": 0.003597842762246728,
+    "last_raw_drift": 0.04077925905585289,
+    "last_proj_drift": 0.00010000001202570274,
+    "last_drift_reduction": 0.002452227292524829
+  },
+  "emeans_alif_reservoir": {
+    "schema": 1,
+    "n_clusters": 64,
+    "active_clusters": 64,
+    "non_empty_clusters": 64,
+    "top_clusters": 6,
+    "k_max": 8,
+    "total_queries": 53,
+    "mean_woken": 248.28301886792454,
+    "mean_spiked": 8.0,
+    "revivals": 0,
+    "tick": 53
+  },
+  "evaluation": {
+    "checkpoint": "C:\\mengli-alif-v2-600s-20261124\\body\\last.pt.gz",
+    "cycle": 2927,
+    "load_seconds": 39.374,
+    "fresh_8192_nll": {
+      "mean_nll": 1.700230997055769,
+      "segment_nll": [
+        1.766357809305191,
+        1.7798320949077606,
+        1.6124283894896507,
+        1.6423056945204735
+      ]
+    },
+    "classic_8192_nll": {
+      "mean_nll": 1.5965412948280573,
+      "segment_nll": [
+        1.4396434277296066,
+        1.805213376879692,
+        1.564630165696144,
+        1.5766782090067863
+      ]
+    },
+    "combined_16384_mean_nll": 1.6483861459419131,
+    "fresh_64_facts": {
+      "mean_score": -1.1722579272463918,
+      "mean_mse": 0.8154356074519455
+    },
+    "scale_diagnostics": {
+      "relation_ridge": 0.10054471343755722,
+      "relation_ridge_gate": 0.6245080232620239,
+      "relation_ridge_lr": 0.0003,
+      "memory_temperature": 0.20113837718963623,
+      "memory_temperature_gate": 0.0,
+      "memory_temperature_lr": 0.0003
+    },
+    "optimizer_mean_gate": 0.146035010131685,
+    "optimizer_alive_frac": 0.5145804151279766,
+    "alif_restored": {
+      "v": 0.0,
+      "a": 2.2303319955018406,
+      "executive_spikes": 30,
+      "calm_pieces": 91,
+      "total_external_bytes": 72480,
+      "total_learned_bytes": 72480,
+      "pending_spike": false
+    }
+  },
+  "references_from_same_2897": {
+    "origin_2897": {
+      "combined_16384_nll": 1.6412674635648727,
+      "fresh_64_facts_score": -1.1219594003632665,
+      "fresh_64_facts_mse": 0.7657257358077914
+    },
+    "strict_600s": {
+      "life_seconds": 607.6920491000055,
+      "external_bytes": 34560,
+      "bytes_per_second": 56.870910276320885,
+      "combined_16384_nll": 1.6427902588620782,
+      "fresh_8192_nll": 1.6995326075702906,
+      "classic_8192_nll": 1.5860479101538658,
+      "fresh_64_facts_score": -1.0312234312295914,
+      "fresh_64_facts_mse": 0.6570531369652599
+    },
+    "option4_600s": {
+      "life_seconds": 628.8164319999996,
+      "external_bytes": 84480,
+      "bytes_per_second": 134.34763422340092,
+      "combined_16384_nll": 1.7254903446882963,
+      "fresh_8192_nll": 1.7940364312380552,
+      "classic_8192_nll": 1.6569442581385374,
+      "fresh_64_facts_score": -1.2886278415098786,
+      "fresh_64_facts_mse": 1.019746678415686
+    }
+  }
+}

@@ -1,0 +1,443 @@
+{
+  "schema": 1,
+  "first_cycle": 897,
+  "last_cycle": 1152,
+  "events": 256,
+  "source": "F:\\cgb_continual_learning_20261116\\body\\metrics.jsonl",
+  "main_written": false,
+  "model_updates": 0,
+  "world_calls": 0,
+  "loop": {
+    "events": 256,
+    "shared_unknown_lineage": {
+      "scope": "current logged window; real selected/dependent reads versus prior real revisions",
+      "capability_claim": false,
+      "observed_selected_reactivations": 63,
+      "observed_cross_relation_dependents": 389,
+      "version_regressions": [],
+      "longest_selected_gaps": [
+        {
+          "identity": "unknown:563",
+          "cycle": 1074,
+          "previous_selected_cycle": 921,
+          "selected_gap_external_bytes": 146880,
+          "relation_before": 152,
+          "relation_now": 152,
+          "actual_version": 8,
+          "prior_revision": 8
+        },
+        {
+          "identity": "unknown:702",
+          "cycle": 1131,
+          "previous_selected_cycle": 982,
+          "selected_gap_external_bytes": 143040,
+          "relation_before": 151,
+          "relation_now": 174,
+          "actual_version": 1,
+          "prior_revision": 1
+        },
+        {
+          "identity": "unknown:698",
+          "cycle": 1124,
+          "previous_selected_cycle": 978,
+          "selected_gap_external_bytes": 140160,
+          "relation_before": 157,
+          "relation_now": 175,
+          "actual_version": 1,
+          "prior_revision": 1
+        }
+      ],
+      "interpretation": "selected-use gaps are not inactivity durations; version consistency is not predictive benefit"
+    },
+    "source_bytes": {
+      "inherited_prefix": 178560,
+      "natural_append": 67200
+    },
+    "choices": {
+      "silence": 96,
+      "generate": 99,
+      "reuse": 61
+    },
+    "real_next_boundary_vs_unchanged": {
+      "events": 228,
+      "real_error": 0.5659657896806797,
+      "control_error": 0.9355235357948563,
+      "better": 171,
+      "worse": 57
+    },
+    "real_next_boundary_vs_other_action": {
+      "events": 228,
+      "real_error": 0.5659657896806797,
+      "control_error": 0.5641675898968651,
+      "better": 110,
+      "worse": 118
+    },
+    "next_return_vs_base": {
+      "events": 256,
+      "real_error": 0.6465309984333791,
+      "control_error": 0.6422951785135893,
+      "better": 21,
+      "worse": 38
+    },
+    "channel_units": [
+      "head4_predictability",
+      "head32_predictability",
+      "joined",
+      "learning_progress"
+    ],
+    "wood_used_error": [
+      0.09549886388598594,
+      0.027375709629801404,
+      0.03796332514904039,
+      0.3635134306607366
+    ],
+    "wood_base_error": [
+      0.09558194028990386,
+      0.027375709629801404,
+      0.03796319148423066,
+      0.36361709541909626
+    ],
+    "episodic_real_error": [
+      0.10875459470092985,
+      0.047289521626606046,
+      0.039216263574910655,
+      5.255795732846143
+    ],
+    "episodic_shuffled_error": [
+      0.10850515962955609,
+      0.04725749637269813,
+      0.039248711069110605,
+      5.3093516578128614
+    ],
+    "internal_choice_tv": 0.004117234772820666,
+    "reused_unknown_events": 78,
+    "unknown_real_revisions": 228,
+    "actual_read_credit_records": 178598,
+    "actual_read_credit_participations": 4097696,
+    "stale_read_credits": 0,
+    "question_transition_steps": 0.0003029544331027978,
+    "delayed_actor_events": 256,
+    "expression_mean_bytes": 71.4140625,
+    "budget_stop_events": 80,
+    "coevolution_valid": 8.0,
+    "coevolution_retained": 0.28125,
+    "coevolution_rms": 0.36769930785521865
+  },
+  "two_event_selection": {
+    "events": 256,
+    "horizon": 2,
+    "discount": 0.8,
+    "skipped": {
+      "future_not_observed": 1
+    },
+    "mean_actual_return": 0.07948359134607018,
+    "estimator": "baseline-centered ordinary importance contrast; no clipping or self-normalization",
+    "scope": "one-off draw substitution with unchanged beliefs/learning machinery; actual-state distribution",
+    "fire": {
+      "mean_lift": 0.004104823984771032,
+      "full_blocks": 2,
+      "positive_blocks": 2,
+      "block_means": [
+        0.003837420981828157,
+        0.004372226987713906
+      ],
+      "uncertainty": "block stability only; no iid significance claim",
+      "uniform_target_ess": 200.22465909017794,
+      "maximum_weight": 3.5095929585002557,
+      "expected_maximally_coupled_choice_changes": 48.39104660824637,
+      "admissible_counts": {
+        "3": 254,
+        "2": 2
+      }
+    },
+    "draft": {
+      "mean_lift": -6.4224091175254e-05,
+      "full_blocks": 2,
+      "positive_blocks": 0,
+      "block_means": [
+        -0.0001054907987580555,
+        -2.295738359245252e-05
+      ],
+      "uncertainty": "block stability only; no iid significance claim",
+      "uniform_target_ess": 255.76243470650323,
+      "maximum_weight": 1.1130709225499766,
+      "expected_maximally_coupled_choice_changes": 2.9173461416640047,
+      "admissible_counts": {
+        "4": 256
+      }
+    },
+    "both": {
+      "mean_lift": 0.004057051485777217,
+      "full_blocks": 2,
+      "positive_blocks": 2,
+      "block_means": [
+        0.0038537777581279806,
+        0.004260325213426454
+      ],
+      "uncertainty": "block stability only; no iid significance claim",
+      "uniform_target_ess": 200.26649744949086,
+      "maximum_weight": 3.3303016361266793
+    },
+    "interaction": {
+      "mean_lift": -1.6451592181440144e-05,
+      "full_blocks": 2,
+      "positive_blocks": 1,
+      "block_means": [
+        -0.0001218475750578793,
+        8.894439069499901e-05
+      ],
+      "uncertainty": "block stability only; no iid significance claim"
+    },
+    "imagination": {
+      "events": 256,
+      "mean_lift": 0.002799514750574608,
+      "full_blocks": 2,
+      "positive_blocks": 2,
+      "block_means": [
+        0.0035041536191260827,
+        0.002094875882023133
+      ],
+      "target": "same learned habit, current imagination offset removed",
+      "target_ess": 231.8080577726072,
+      "maximum_weight": 2.80042103644093,
+      "expected_maximally_coupled_choice_changes": 31.480451212402794
+    },
+    "draft_imagination_interaction": {
+      "events": 256,
+      "mean_lift": -6.392455073072499e-05,
+      "full_blocks": 2,
+      "positive_blocks": 0,
+      "block_means": [
+        -7.994679456057084e-05,
+        -4.790230690087912e-05
+      ],
+      "target": "same learned habit, current imagination offset removed"
+    }
+  },
+  "action_discrimination": {
+    "events": 228,
+    "mean_control_minus_real": -0.0017981997838145808,
+    "paired_standard_deviation": 0.13914388871012107,
+    "standardized_paired_margin": -0.012923311260624435,
+    "real_better": 110,
+    "real_worse": 118,
+    "scope": "Mean paired advantage divided by per-event paired standard deviation; not an iid significance test."
+  },
+  "change_prediction": {
+    "events": 228,
+    "mean_control_minus_real": 0.36955774611417663,
+    "paired_standard_deviation": 0.4987798714638836,
+    "standardized_paired_margin": 0.7409235361273718,
+    "real_better": 171,
+    "real_worse": 57,
+    "scope": "Mean paired advantage divided by per-event paired standard deviation; not an iid significance test."
+  },
+  "momentum_norm_by_layer": [
+    {
+      "layer": 1,
+      "mean": 4.732465459965169,
+      "standard_deviation": 0.9487729983955375
+    },
+    {
+      "layer": 2,
+      "mean": 2.588860772550106,
+      "standard_deviation": 0.16763238599876934
+    },
+    {
+      "layer": 3,
+      "mean": 1.9000741583295166,
+      "standard_deviation": 0.10356800516368671
+    },
+    {
+      "layer": 4,
+      "mean": 1.7206391631625593,
+      "standard_deviation": 0.05694069864426517
+    },
+    {
+      "layer": 5,
+      "mean": 1.6472760746255517,
+      "standard_deviation": 0.1738488379064617
+    },
+    {
+      "layer": 6,
+      "mean": 0.7803383613936603,
+      "standard_deviation": 0.06657541896970995
+    },
+    {
+      "layer": 7,
+      "mean": 6.020135341212153,
+      "standard_deviation": 0.30141644748294927
+    },
+    {
+      "layer": 8,
+      "mean": 1.2411047599744052,
+      "standard_deviation": 0.18966967257744016
+    },
+    {
+      "layer": 9,
+      "mean": 2.208348762243986,
+      "standard_deviation": 0.25837693084135216
+    },
+    {
+      "layer": 10,
+      "mean": 2.0651644775643945,
+      "standard_deviation": 0.15756823598550945
+    },
+    {
+      "layer": 11,
+      "mean": 3.0237462809309363,
+      "standard_deviation": 0.39473912769720987
+    },
+    {
+      "layer": 12,
+      "mean": 1.6668500690720975,
+      "standard_deviation": 0.07454615016296905
+    },
+    {
+      "layer": 13,
+      "mean": 2.8295707092620432,
+      "standard_deviation": 0.4290108502219032
+    },
+    {
+      "layer": 14,
+      "mean": 1.644755456596613,
+      "standard_deviation": 0.5323200492662287
+    },
+    {
+      "layer": 15,
+      "mean": 1.578789914958179,
+      "standard_deviation": 0.24092822201043695
+    },
+    {
+      "layer": 16,
+      "mean": 1.6593041033484042,
+      "standard_deviation": 0.32395853053364626
+    },
+    {
+      "layer": 17,
+      "mean": 1.0140613103285432,
+      "standard_deviation": 0.09011143258712864
+    },
+    {
+      "layer": 18,
+      "mean": 2.240826765075326,
+      "standard_deviation": 0.7103600871699751
+    },
+    {
+      "layer": 19,
+      "mean": 1.9702929193153977,
+      "standard_deviation": 0.38638717624040797
+    },
+    {
+      "layer": 20,
+      "mean": 1.9757036659866571,
+      "standard_deviation": 0.18561115184741983
+    },
+    {
+      "layer": 21,
+      "mean": 6.955538751557469,
+      "standard_deviation": 0.2409250261972273
+    },
+    {
+      "layer": 22,
+      "mean": 5.523863658308983,
+      "standard_deviation": 0.1988965736754767
+    },
+    {
+      "layer": 23,
+      "mean": 0.9010451047215611,
+      "standard_deviation": 0.062465872279755086
+    },
+    {
+      "layer": 24,
+      "mean": 2.694215439260006,
+      "standard_deviation": 0.15330763763112742
+    },
+    {
+      "layer": 25,
+      "mean": 3.9349637338891625,
+      "standard_deviation": 0.6790137114888728
+    },
+    {
+      "layer": 26,
+      "mean": 2.988959767855704,
+      "standard_deviation": 0.2822044710949294
+    },
+    {
+      "layer": 27,
+      "mean": 1.9270530440844595,
+      "standard_deviation": 0.2016175762735435
+    },
+    {
+      "layer": 28,
+      "mean": 4.539930108934641,
+      "standard_deviation": 1.0803703110825111
+    },
+    {
+      "layer": 29,
+      "mean": 3.611180425621569,
+      "standard_deviation": 0.6452397498942082
+    },
+    {
+      "layer": 30,
+      "mean": 2.6283404920250177,
+      "standard_deviation": 0.3057268387578008
+    },
+    {
+      "layer": 31,
+      "mean": 1.8460876252502203,
+      "standard_deviation": 0.38758491585456645
+    },
+    {
+      "layer": 32,
+      "mean": 2.1567648430354893,
+      "standard_deviation": 0.1913504998788476
+    }
+  ],
+  "mean_quiet_state_change": 0.1714098749216646,
+  "observed_content_correction_max": 0.0,
+  "momentum_read_action_tv_mean": 0.003152953956487181,
+  "wood_confidence_positive_fraction": [
+    0.18359375,
+    0.0,
+    0.38671875,
+    0.0
+  ],
+  "direct_gain_alpha_positive_fraction": [
+    0.86328125,
+    0.0,
+    0.0
+  ],
+  "navigation_matched": 150,
+  "generated_events": 99,
+  "generated_handover": 19,
+  "generated_budget_stops": 80,
+  "fixed_validation": {
+    "owt_nll": 1.4865300580859184,
+    "mother_nll": 1.2942447438836098,
+    "bytes_each": 8192,
+    "scope": "fixed cold sidecars; no gradient or live-state reset; no navigation during sidecar",
+    "fineweb_nll": 1.4869866892695427,
+    "language_contribution": {
+      "owt": {
+        "bytes": 8192,
+        "full_nll": 1.4865300580859184,
+        "table_prior_nll": 1.636296346783638,
+        "learned_table_mix_without_decoder_nll": 1.5462523102760315,
+        "full_gain_over_table": 0.14976628869771957,
+        "decoder_residual_gain": 0.05972225219011307,
+        "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+      },
+      "fineweb": {
+        "bytes": 8192,
+        "full_nll": 1.4869866892695427,
+        "table_prior_nll": 1.623912900686264,
+        "learned_table_mix_without_decoder_nll": 1.5480736568570137,
+        "full_gain_over_table": 0.13692621141672134,
+        "decoder_residual_gain": 0.06108696758747101,
+        "scope": "same observed history and complete state/reads; normalized table prior; no extra model forward"
+      }
+    }
+  },
+  "scope": "Actual online prequential predictions and logged randomization contrasts; numerical activity is separate from causal usefulness."
+}
