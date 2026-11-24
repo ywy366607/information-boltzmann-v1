@@ -39,6 +39,7 @@ from scripts.ib_local.body_mirror import (
     STAGE_INFANT,
     build_five_element_reflection_dossier,
     capture_body_mirror,
+    classify_utterance,
     clean_utf8_excerpt,
     format_caregiver_turn,
     parse_mother_reflection,
@@ -271,9 +272,10 @@ class UnifiedWorldPort:
             user_plan_text=user_plan_text,
         )
 
-        # Rolling shared storybook page seen by both MengLi and Mother (bounded 512B).
+        # Rolling shared storybook page seen by both MengLi and Mother (2048B covers full 1280-1600B calm pieces
+        # so `stumble_excerpt` stays aligned with the exact same story page in `capture_body_mirror`).
         self.shared_page_bytes = bytearray()
-        self.shared_page_cap = 512
+        self.shared_page_cap = 2048
 
         # Scheduling & channel state.
         self.ambient_reads = 0
@@ -326,11 +328,25 @@ class UnifiedWorldPort:
         from scripts.ib_local import gaze_pointer as _gp
         return self._engine_ref.model.gaze_pointer if _gp.enabled(self._engine_ref) else None
 
-    def _gaze_candidates(self) -> list[tuple[str, bytes]]:
+    def _gaze_candidates(self, *, child_vocal: bool = True) -> list[tuple[str, bytes]]:
+        # During silent reading, respect `mother_cooldown` so Mother lets MengLi read quietly
+        # instead of monologuing every 15s; when MengLi speaks (`child_vocal=True`), Mother is always responsive.
+        quiet_mother_cooldown = (
+            (not child_vocal)
+            and self.mother_cooldown > 0
+            and self.spikes_since_mother < self.mother_cooldown
+            and self.awaiting_reply_from != 'mother'
+        )
         out: list[tuple[str, bytes]] = []
         for oid, meta in self.presence_roster.items():
+            if oid == 'mother' and quiet_mother_cooldown:
+                continue
             intro = f'[来自:{meta.get("label", oid)}] {meta.get("description", "")}'.encode('utf-8')
             out.append((oid, intro))
+        if not out:
+            for oid, meta in self.presence_roster.items():
+                intro = f'[来自:{meta.get("label", oid)}] {meta.get("description", "")}'.encode('utf-8')
+                out.append((oid, intro))
         return out
 
     def prepare_gaze_candidates(self, utterance: bytes) -> tuple[list[tuple[str, bytes]] | None, dict]:
@@ -342,6 +358,7 @@ class UnifiedWorldPort:
         self._poll_inbox()
         utterance_bytes = bytes(utterance) if utterance else b''
         child_clean = clean_utf8_excerpt(utterance_bytes, max_chars=180)
+        child_vocal = (classify_utterance(utterance_bytes)['kind'] != 'silent')
         if (
             self._participant_queue
             or self._tool_demo_queue
@@ -354,7 +371,7 @@ class UnifiedWorldPort:
         nll_ema = float(alif_st.get('nll_ema', 0.0) or 0.0)
         nll_last = float(alif_st.get('last_piece_nll', 0.0) or 0.0)
         nll_norm = (nll_last - nll_ema) if (nll_ema > 0.0 and nll_last > 0.0) else 0.0
-        return self._gaze_candidates(), dict(
+        return self._gaze_candidates(child_vocal=child_vocal), dict(
             stumble_ratio=self._current_stumble_ratio(),
             nll_norm=nll_norm,
             last_speaker=self.active_interlocutor,
@@ -702,6 +719,8 @@ class UnifiedWorldPort:
         self.spike_turns += 1
         utterance_bytes = bytes(utterance) if utterance else b''
         child_clean = clean_utf8_excerpt(utterance_bytes, max_chars=180)
+        child_vocal = (classify_utterance(utterance_bytes)['kind'] != 'silent')
+        child_display = child_clean or ('[咿呀声]' if child_vocal else '')
         cycle_num = int(self._cycle_hint or self.spike_turns)
 
         # Priority 1: Live human parent or guest input (immediate preemption, ZERO book jump).
@@ -791,7 +810,7 @@ class UnifiedWorldPort:
                 nll_norm = (nll_last - nll_ema) if (nll_ema > 0.0 and nll_last > 0.0) else 0.0
                 gaze_decision = gp.select_target(
                     self._engine_ref,
-                    candidates=self._gaze_candidates(),
+                    candidates=self._gaze_candidates(child_vocal=child_vocal),
                     utterance_bytes=utterance_bytes,
                     stumble_ratio=self._current_stumble_ratio(),
                     nll_norm=nll_norm,
@@ -951,7 +970,7 @@ class UnifiedWorldPort:
         # or fallback presence/floor rules when GazeObjectPointer is disabled.
         if gaze_target is not None:
             if gaze_target == 'mother' and self.caregiver is not None and self.mother_present:
-                if child_clean:
+                if child_vocal:
                     trig = 'child_replied' if self.awaiting_reply_from == 'mother' else 'child_spoke'
                     trigger_pair = (trig, 'gaze_mother_speak')
                 else:
@@ -1081,7 +1100,7 @@ class UnifiedWorldPort:
                 mirror_trigger_cause=snapshot.trigger_cause if perspective_mode == 'mirror_visible' else '',
                 mother_bytes=said_len,
                 mother_reply=reply,
-                child_text=child_clean,
+                child_text=child_display,
                 caregiver_prompt_tokens=api_usage.get('prompt_tokens'),
                 caregiver_cache_hit_tokens=api_usage.get('cache_hit_tokens'),
                 caregiver_cache_miss_tokens=api_usage.get('cache_miss_tokens'),

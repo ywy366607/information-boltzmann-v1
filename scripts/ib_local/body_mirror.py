@@ -333,7 +333,21 @@ def capture_body_mirror(
     stability_cue = '，'.join(stability_parts) if stability_parts else '当前状态平稳'
 
     utt = classify_utterance(utterance_bytes)
-    book_excerpt = clean_utf8_excerpt(recent_book_bytes, max_chars=220)
+    full_book = clean_utf8_excerpt(recent_book_bytes, max_chars=0)
+    if stumble_excerpt and full_book:
+        pos = full_book.rfind(stumble_excerpt)
+        if pos < 0 and len(stumble_excerpt) >= 12:
+            pos = full_book.rfind(stumble_excerpt[:16])
+        if pos >= 0:
+            half_ctx = max(40, (220 - len(stumble_excerpt)) // 2)
+            start = max(0, pos - half_ctx)
+            end = min(len(full_book), start + 220)
+            start = max(0, end - 220)
+            book_excerpt = full_book[start:end].strip()
+        else:
+            book_excerpt = full_book[-220:].lstrip()
+    else:
+        book_excerpt = full_book[-220:].lstrip()
     five_obs = _extract_five_element_observables(engine)
     five_elements_cue = _format_compact_five_elements(five_obs, g_list)
 

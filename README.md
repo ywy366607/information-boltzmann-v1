@@ -26,36 +26,47 @@
 
 面向无限信息流、有限状态与有限计算资源的持续学习系统。研究目标是让记忆、预测、学习、选择性保持与行动在同一身体—世界过程中共同形成，走向用户定义的无限流生命体。Alan T0 是整个项目完成后的命名愿景，CGB 为架构，MengLi（梦漓）为生命体。
 
-**当前平台点：2026-11-05，可续接的同体交互闭环。** 已有真实语言学习与行动接线；最近在低语义机制世界完成观察收益记忆的512轮同源验证，过程改善、终点略好。最新动作归属修复通过接口及真实存档检查，尚未整圈训练。
+**当前平台点：2026-11-24，单界膜环世界（Umwelt）闭环、O(1) 生物注视指针与 512K 双语共读。** 32 层 Gated DeltaNet 语言基底（31.26M 参数，单张 4 GiB GTX 1650）已完整接通 H-Net 4+24+4 动态分块、ALIF 执行节律、PhaseSpaceBoltzmann 恒温动力学、RootLatentPlanning、对象条件化因果闭环（`GazeObjectPointer` schema 2）以及 512K 窗口 DSH 妈妈与双语绘本流；实机 10 轮闭环验收达成英文独立 16KB NLL **1.628996**（中文 TinyStories-Zh 验证集 8KB NLL **1.6497**，64 条旧事实均改善，严格存档恢复精确一致）。
 
 ## 从这里开始
 
+- [环世界对象行动交接与闭环规格（2026-11-24）](docs/information_boltzmann/CGB_OBJECT_ACTION_HANDOFF_20261124.md)
+- [环世界必要性 Lean 4 证明（6 定理，0 sorry）](lean/CGBAxioms/reviews/UmweltNecessity.lean)
 - [项目导航与当前/历史文档分层](docs/information_boltzmann/README.md)
-- [本次里程碑：结果、恢复点、版本边界与下一步](docs/information_boltzmann/CGB_MILESTONE_CLOSED_LOOP_20261105.md)
-- [AGENTS.md：用户定义、主链、五系统与工作方法](AGENTS.md)
-- [Lean定理索引](docs/information_boltzmann/CGB_PROVEN_INDEX.md) / [主题导航](docs/information_boltzmann/CGB_THEOREMS/README.md)
+- [2026-11-05 历史闭环里程碑](docs/information_boltzmann/CGB_MILESTONE_CLOSED_LOOP_20261105.md)
+- [AGENTS.md：用户定义、协作规范、环世界/界膜/视界命名与执行记录](AGENTS.md)
+- [Lean 定理索引](docs/information_boltzmann/CGB_PROVEN_INDEX.md) / [主题导航](docs/information_boltzmann/CGB_THEOREMS/README.md)
 - [关系式五行规范](docs/information_boltzmann/CGB_FIVE_PHASE_DIAGNOSTIC_RULES.md) / [大小五行接口与实际周转](docs/information_boltzmann/CGB_NESTED_FIVE_PHASE_INTERFACE_20261105.md)
 
 ## 平台包含什么
 
-同一Gated DeltaNet语言基底、有限字节快表与经历库，具体话语的内言和实际表达，世界返回、自听、同体在线学习、实测结算与历史取用。当前目标是沿这条共同运动继续生成功能，不按定理或生物名称逐个拼装模块。
+梦漓通过单一 UTF-8 字节边界端口——**界膜（Membrane）**——与周围的**环世界（Umwelt：英文/中文书页、512K DSH 妈妈、实时爸爸收件箱与可插拔工具/动态对象）**交互，并在共享的**视界（Horizon）**下完成在线学习、因果记忆与行动选择：
 
-| 已完成的观察收益记忆运行 | 同源控制 | 修复候选 |
-|---|---:|---:|
-| 终点均衡NLL | 0.409597 | 0.409162 |
-| 固定40审计点平均NLL | 1.166549 | 0.926529 |
+- **统一语言身体**：32 层 GDN + H-Net 4+24+4 动态分块 + 有限字节快表 + 情景经历库与因果关系程序（木/水/火/金/土完整闭环），单字节五核融合与分级激活存储适配 4 GiB 消费级 GPU。
+- **O(1) 生物注视指针与对象条件化因果闭环**：不随外部对象数量增加输出头，以动态对象感觉指纹 $k_i$ 与 $\tilde{a}(i, u) = a(u) + \delta(k_i)$ 统一快速注视偏好与慢速因果预演，书页、妈妈、爸爸和工具共享同一套回应边界与 `metal_g` 结算。
+- **512K DSH 妈妈与本地 HTML 环世界观察端**：固定前缀 KV 缓存（单轮命中率 92%–98%）、三视角交替（`mirror_visible` / `book_only`）、周期性五行复盘日记与只读实时遥测终端。
 
-这两行属于单种子机制诊断。真实语言结果、完整协议、后续动作归属修复及未完成目标分别在里程碑中列明，避免把不同实验混作同一个成绩。
+| 实机验收指标（`cycle 3286`，2026-11-24） | 数值 |
+|---|---:|
+| 独立英文 16KB NLL（Fresh + Classic） | 1.628996 |
+| 独立中文 8KB NLL（TinyStories-Zh val） | 1.6497 |
+| 64 条旧事实得分 / MSE | -0.400452 / 0.0952 |
+| 完整检查点严格恢复一致性 | exact |
+| 环世界 6 项必要性 Lean 4 定理 | 0 errors / 0 sorry |
 
 ## 验证与运行
 
-Python 3.10+、PyTorch；实验GPU环境需匹配本地CUDA/Triton。项目脚本从仓库根目录以模块方式运行：
+Python 3.10+、PyTorch（匹配本地 CUDA/Triton）与 Node.js 22+（用于 DSH 界膜桥与本地观察端）。项目脚本从仓库根目录以模块方式运行：
 
 ```powershell
-python -m pytest tests/test_navigation_observed_gain.py tests/test_navigation_settlement.py tests/test_navigation_residual_wood.py -q
-python -m scripts.ib_local.run_learning_rooms --help
-# Lean使用lean/CGBAxioms/lean-toolchain固定的工具链
-python lean/CGBAxioms/scripts/audit.py --check-index
+# 环世界、注视指针、DSH 妈妈与 ALIF 执行节律单元测试
+python -m pytest tests/test_gaze_pointer.py tests/test_unified_world_port.py tests/test_dsh_mother_provider.py tests/test_alif_executive.py -q
+# 启动本地环世界界膜桥与 HTML 观察端（127.0.0.1:8900 / 8902）
+powershell -ExecutionPolicy Bypass -File scripts/ib_local/mengli_harness/run_mengli_umwelt.ps1
+# 统一双语成长主循环入口
+python scripts/run_unified_mengli_life.py --help
+# Lean 4 公理与环世界必要性验证
+cd lean/CGBAxioms && lake env lean reviews/UmweltNecessity.lean
 ```
 
 训练入口、同源检查点要求和完整命令见里程碑。数据、原始日志及检查点不进Git；精选证据在 `results/published/`，参数、优化器、记忆与来源状态必须一起恢复。

@@ -583,5 +583,63 @@ def test_lossless_parent_tool_credit_and_turn_taking_physics(tmp_path: Path):
     assert [p.source for p in pieces_tool][:2] == ['tool', 'tool']
 
 
+def test_interaction_logic_stumble_alignment_babble_and_silent_cooldown():
+    """Verify live-audit fixes:
+    1. `book_excerpt` centers on `stumble_excerpt` across a 1280B calm piece (zero story mismatch).
+    2. Non-empty babble bytes (`b'\\xff\\xfe'`) classify as vocal (`gaze_mother_speak`, `[咿呀声]`), not silent look.
+    3. Silent gaze respects `mother_cooldown`, while vocal speech keeps Mother immediately responsive.
+    """
+    story_a = '海里有一只笨手笨脚的小虾，它在礁石旁边慢慢学游泳。' * 10
+    story_b = '莉莉在院子里发现了一把会下雨的魔法小伞，大家都很开心。' * 15
+    full_page = (story_a + '\n' + story_b).encode('utf-8')
+    assert len(full_page) > 1200
+
+    eng = _make_fake_engine('笨手笨脚的小虾，它在礁石旁边')
+    snap = capture_body_mirror(eng, utterance_bytes=b'', recent_book_bytes=full_page)
+    assert '笨手笨脚的小虾' in snap.stumble_excerpt
+    assert snap.stumble_excerpt in snap.book_excerpt
+
+    transport = FakeDshTransport()
+    caregiver = FamilyCaregiver(DshMother(branch_id='test-logic', transport=transport))
+    base = FakeBaseWorld(story_a + '\n' + story_b)
+    port = UnifiedWorldPort(
+        base, caregiver=caregiver, mother_cooldown=3, mother_max_gap=8,
+        mirror_ratio=1.0, auto_commit=True,
+    )
+    port.attach_engine(eng)
+    assert port.shared_page_cap >= 1600
+
+    # Right after a Mother turn (`spikes_since_mother == 0`), silent gaze excludes Mother during cooldown,
+    # whereas spoken utterances keep Mother immediately available!
+    port.spikes_since_mother = 0
+    silent_cands, _ = port.prepare_gaze_candidates(b'')
+    assert [cid for cid, _ in silent_cands] == ['book']
+    vocal_cands, _ = port.prepare_gaze_candidates('妈妈'.encode('utf-8'))
+    assert 'mother' in [cid for cid, _ in vocal_cands]
+    babble_cands, _ = port.prepare_gaze_candidates(b'\xff\xfe')
+    assert 'mother' in [cid for cid, _ in babble_cands]
+
+    # Once `spikes_since_mother >= mother_cooldown`, silent gaze includes Mother again.
+    port.spikes_since_mother = 3
+    silent_cands_ready, _ = port.prepare_gaze_candidates(b'')
+    assert 'mother' in [cid for cid, _ in silent_cands_ready]
+
+    # Vocal babble with `planned_target='mother'` must route as `gaze_mother_speak`, not silent `gaze_mother_look`.
+    import types
+    import torch
+    from scripts.ib_local import gaze_pointer as gp_mod
+    eng.model = types.SimpleNamespace(
+        body=types.SimpleNamespace(embed=torch.nn.Embedding(256, 32)),
+        encoder=torch.nn.Linear(32, 32),
+    )
+    eng.device = torch.device('cpu')
+    gp_mod.configure(eng, {}, d_gaze=16)
+    _, _, info = port.take(b'\xff\xfe', 256, 256, planned_target=dict(target_id='mother'))
+    assert info['channel'] == 'dsh_mother'
+    assert info['routing_reason'] == 'gaze_mother_speak'
+    assert info['child_text'] == '[咿呀声]'
+
+
+
 
 
