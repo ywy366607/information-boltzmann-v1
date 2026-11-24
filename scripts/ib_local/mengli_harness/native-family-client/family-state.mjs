@@ -92,7 +92,15 @@ export function projectFamilyHistory(history, cache = new Map()) {
 
 function isNonTrivialEvent(event) {
   const ch = event.umwelt?.channel;
-  if (ch) return ch !== 'storybook_spike_fallback' && ch !== 'book_navigation';
+  if (ch) {
+    return (
+      ch !== 'storybook_spike_fallback'
+      && ch !== 'book_navigation'
+      && ch !== 'read_aloud_solo'
+      && ch !== 'self_evolution'
+      && ch !== 'inner_monologue'
+    );
+  }
   return event.observation?.kind !== 'natural_text_reply';
 }
 
@@ -102,6 +110,7 @@ function actorDisplayLabel(event, caregiver) {
   if (caregiver === 'parent' || ch === 'live_participant') return sp && sp !== 'parent' ? sp : '爸爸';
   if (ch === 'tool' || ch === 'dynamic_object') return sp || '工具';
   if (ch === 'book_addressed') return '书页 · 检索';
+  if (ch === 'mother_quiet_presence') return '妈妈 · 安静陪伴（书页）';
   return '妈妈';
 }
 
