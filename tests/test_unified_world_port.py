@@ -225,8 +225,9 @@ def test_priority_preemption_and_parent_observation_sync(tmp_path: Path):
     resp, cont, info = port.take(b'apple', 256, 256)
     assert info['channel'] == 'live_participant'
     assert info['speaker'] == '爸爸'
-    assert '梦漓，你看苹果为什么会掉下来？' in bytes(resp[:info['mother_bytes']]).decode('utf-8')
-    assert '[来自:' not in bytes(resp[:info['mother_bytes']]).decode('utf-8')
+    assert '爸爸：梦漓，你看苹果为什么会掉下来？' in bytes(resp[:info['mother_bytes']]).decode('utf-8')
+    assert '[在场]' in bytes(resp[:info['envelope_prefix_bytes']]).decode('utf-8')
+    assert info['envelope_prefix_bytes'] > len('爸爸：'.encode('utf-8'))
     port.commit_pending_turn(metal_g=0.01)
     assert len(transport.parent_observations) == 1
     assert transport.parent_observations[0]['caregiver'] == 'parent'
@@ -236,6 +237,7 @@ def test_priority_preemption_and_parent_observation_sync(tmp_path: Path):
     resp2, cont2, info2 = port.take(b'please [tool:calc 2+3]', 256, 256)
     assert info2['channel'] == 'tool'
     assert '[工具:calc] 2+3=5' in bytes(resp2[:info2['mother_bytes']]).decode('utf-8')
+    assert info2['envelope_prefix_bytes'] == len('[工具:calc] '.encode('utf-8'))
     port.commit_pending_turn(metal_g=0.02)
 
     # 3. Next spike with vocal call to Mother routes to existing DSH Mother, carrying the tool note!
@@ -244,7 +246,8 @@ def test_priority_preemption_and_parent_observation_sync(tmp_path: Path):
     assert info3['channel'] == 'dsh_mother'
     assert info3['routing_reason'] == 'vocal_call_mother'
     assert 'calc' in transport.prepared_packets[-1]
-    assert '妈妈：' not in bytes(resp3[:info3['mother_bytes']]).decode('utf-8', 'ignore')
+    assert '妈妈：' in bytes(resp3[:info3['envelope_prefix_bytes']]).decode('utf-8')
+    assert info3['envelope_prefix_bytes'] == len('妈妈：'.encode('utf-8'))
     assert '[来自:书页]' not in bytes(resp3).decode('utf-8', 'ignore')
     port.commit_pending_turn(metal_g=0.03)
     assert port.mother_turns == 1
@@ -433,12 +436,12 @@ def test_yoneda_bidirectional_mother_proactive_and_dynamic_objects(tmp_path: Pat
     assert '[起句节奏]' in transport.prepared_packets[-1]
     assert port.turns_since_name_call >= 1
 
-    # 4. Vocal call (`妈妈你看`) always routes to Mother (`vocal_call_mother`, pure natural language, zero prefix).
+    # 4. Vocal call (`妈妈你看`) always routes to Mother with loss-masked `妈妈：` identity header.
     resp1, _, info1 = port.take('妈妈你看'.encode('utf-8'), 256, 256)
     assert info1['channel'] == 'dsh_mother'
     assert info1['routing_reason'] == 'vocal_call_mother'
-    assert '[来自:' not in bytes(resp1[:info1['mother_bytes']]).decode('utf-8')
-    assert '妈妈：' not in bytes(resp1[:info1['mother_bytes']]).decode('utf-8')
+    assert bytes(resp1[:info1['envelope_prefix_bytes']]).decode('utf-8').endswith('妈妈：')
+    assert info1['envelope_prefix_bytes'] >= len('妈妈：'.encode('utf-8'))
 
     # 5. Explicit addressing `@书页` navigates book directly (Mother stays out of the way, zero markup tag).
     resp3, _, info3 = port.take('@书页 gravity'.encode('utf-8'), 256, 256)
@@ -674,6 +677,55 @@ def test_utf8_tail_alignment_bilingual_page_reset_and_strict_coherent(tmp_path: 
     assert classify_utterance('莉莉讶偼'.encode('utf-8'))['kind'] == 'fragments'
     assert classify_utterance('[来自:书页] 汤姆'.encode('utf-8'))['kind'] == 'fragments'
     assert classify_utterance('自行车非常兴奋'.encode('utf-8'))['kind'] == 'coherent'
+
+
+def test_loss_masked_identity_card_separates_identical_hello_without_table_echo():
+    """Verify:
+    1. Mom saying '你好' and Dad saying '你好' have distinct loss-masked identity headers (`妈妈：` vs `爸爸：`)
+       and identical message content, with `[在场] 角色(描述)` identity cards on entry.
+    2. Masked prefix bytes are READ-ONLY for the Fast Table (`frozen_table_logp`), so repeated `妈妈：`
+       headers never pollute n-gram Fast Table counts!
+    """
+    from scripts.ib_local.navigation_live_witness import frozen_table_logp
+    from scripts.ib_local.ngram_fast_table import ByteNgramFastTable
+
+    transport = FakeDshTransport()
+    caregiver = FamilyCaregiver(DshMother(branch_id='test-idcard', transport=transport))
+    base = FakeBaseWorld('Apples fall to Earth. ' * 200)
+    port = UnifiedWorldPort(base, caregiver=caregiver, mother_cooldown=0, auto_commit=True)
+    port.attach_engine(_make_fake_engine())
+
+    # Dad says '你好' (first entry -> includes `[在场] ...；爸爸(爸爸实时陪伴与对话)\n爸爸：`).
+    port.enqueue_participant('你好', speaker='爸爸', role='parent')
+    resp_dad, _, info_dad = port.take(b'', 256, 256)
+    prefix_dad = bytes(resp_dad[:info_dad['envelope_prefix_bytes']]).decode('utf-8')
+    body_dad = bytes(resp_dad[info_dad['envelope_prefix_bytes']:info_dad['mother_bytes']]).decode('utf-8')
+    assert '[在场]' in prefix_dad and '爸爸(爸爸实时陪伴与对话)' in prefix_dad and prefix_dad.endswith('爸爸：')
+    assert body_dad == '你好\n'
+
+    # Mother replies (starts with loss-masked `妈妈：`).
+    port.force_next_mother()
+    resp_mom, _, info_mom = port.take(b'', 256, 256)
+    prefix_mom = bytes(resp_mom[:info_mom['envelope_prefix_bytes']]).decode('utf-8')
+    assert prefix_mom == '妈妈：'
+
+    # Verify Fast Table read-only masking: feeding `妈妈：你好` with masked prefix leaves `妈妈：` unseen!
+    table = ByteNgramFastTable()
+    seq = np.frombuffer('妈妈：你好'.encode('utf-8'), dtype=np.uint8)
+    mask_len = len('妈妈：'.encode('utf-8'))
+    before_p = float(np.exp(frozen_table_logp(table, np.concatenate((np.array([10], np.uint8), seq[:mask_len])))[-1, seq[mask_len - 1]]))
+    # Simulate world_learning_cycle read-only head + credit-only tail
+    _ = np.exp(frozen_table_logp(table, np.concatenate((np.array([10], np.uint8), seq[:mask_len]))))
+    table.run(np.concatenate((seq[mask_len - 1:mask_len], seq[mask_len:])))
+    after_p = float(np.exp(frozen_table_logp(table, np.concatenate((np.array([10], np.uint8), seq[:mask_len])))[-1, seq[mask_len - 1]]))
+    # Masked prefix receives ZERO Fast-Table counts (prob does not rise; compare unmasked table which memorizes it!)
+    assert after_p <= before_p + 1e-6
+    unmasked = ByteNgramFastTable()
+    for _ in range(3):
+        unmasked.run(np.concatenate((np.array([10], np.uint8), seq)))
+    unmasked_p = float(np.exp(frozen_table_logp(unmasked, np.concatenate((np.array([10], np.uint8), seq[:mask_len])))[-1, seq[mask_len - 1]]))
+    assert unmasked_p > 3.0 * after_p
+
 
 
 

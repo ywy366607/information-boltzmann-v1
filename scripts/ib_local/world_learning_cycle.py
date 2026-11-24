@@ -207,9 +207,11 @@ def world_cycle_step(engine, directions, age_ablate=False):
     pending = engine.pending
     first_diag, outcome_diag = None, {}
     utterance_probs = np.asarray(record['probs'], np.float32).reshape(-1, 256)
+    env_mask_end = max(0, int(info.get('envelope_prefix_bytes', 0)))
     for index, piece in enumerate(pieces):
         chunk = external[piece.start:piece.end]
         action_tail = utterance[-1] if index == 0 and own else pending
+        masked_in_piece = max(0, min(piece.end, env_mask_end) - piece.start)
         # The frozen pre-update table is queried on the future suffix BEFORE
         # any byte of that suffix is committed to the live table.
         probe_raw, old_logp = None, None
@@ -219,8 +221,22 @@ def world_cycle_step(engine, directions, age_ablate=False):
             prefix = np.concatenate((np.array([action_tail], np.uint8), chunk, suffix[:-1]))
             old_logp = torch.as_tensor(frozen_table_logp(engine.table, prefix)[len(chunk):],
                                       device=engine.device)[None]
-        _, chunk_probs, _ = engine.table.run_credit(
-            np.concatenate((np.array([action_tail], np.uint8), chunk)), max_window=len(chunk))
+        if masked_in_piece > 0:
+            # Identity-card / speaker-header prefix bytes are READ-ONLY for the Fast Table
+            # (GDN still sees them in full, while Fast Table never memorizes role prefixes).
+            head_seq = np.concatenate((np.array([action_tail], np.uint8), chunk[:masked_in_piece]))
+            head_probs = np.exp(frozen_table_logp(engine.table, head_seq)).astype(np.float32, copy=False)
+            if masked_in_piece < len(chunk):
+                _, tail_probs, _ = engine.table.run_credit(
+                    np.concatenate((chunk[masked_in_piece - 1:masked_in_piece], chunk[masked_in_piece:])),
+                    max_window=len(chunk) - masked_in_piece,
+                )
+                chunk_probs = np.concatenate((head_probs, tail_probs), axis=0)
+            else:
+                chunk_probs = head_probs
+        else:
+            _, chunk_probs, _ = engine.table.run_credit(
+                np.concatenate((np.array([action_tail], np.uint8), chunk)), max_window=len(chunk))
         heard_probs.append(chunk_probs)
         if index == 0:
             raw = np.concatenate((np.array([pending], np.uint8),
@@ -231,7 +247,8 @@ def world_cycle_step(engine, directions, age_ablate=False):
         ids, target, logp = engine._inputs(raw, probs)
         mask = torch.ones_like(target, dtype=torch.float32)
         if index == 0:
-            mask[:, :own] = 0
+            skip_n = own + (masked_in_piece if (own + masked_in_piece) < target.shape[1] else 0)
+            mask[:, :skip_n] = 0
             # Finish the independent draft gradient before building the live
             # text graph. Both still read the same pre-update parameters.
             if engine.mode != 'silence':
@@ -241,6 +258,10 @@ def world_cycle_step(engine, directions, age_ablate=False):
                 if policy_error > 1e-3:
                     raise RuntimeError(f'sampled world-cycle policy replay differs: {policy_error}')
                 actor_norm = float(torch.stack([g.norm() for g in actor if g is not None]).norm())
+        else:
+            skip_n = masked_in_piece if masked_in_piece < target.shape[1] else 0
+            if skip_n > 0:
+                mask[:, :skip_n] = 0
         from scripts.ib_local.question_language_port import observation_scope
         from scripts.ib_local.native_retention_feedback import measure as measure_retention
         # Scope only the actual first prefix. Speculative drafts and their
@@ -251,12 +272,17 @@ def world_cycle_step(engine, directions, age_ablate=False):
                     ids, target, engine.recurrent, logp, directions, score_mask=mask)
                 measure_retention(engine, ids, target, engine.recurrent, logp, diag, mask)
         else:
-            loss, next_state, features, diag = engine.model.objective(
-                ids, target, engine.recurrent, logp, directions)
-            measure_retention(engine, ids, target, engine.recurrent, logp, diag)
+            if skip_n > 0:
+                loss, next_state, features, diag = engine.model.objective(
+                    ids, target, engine.recurrent, logp, directions, score_mask=mask)
+                measure_retention(engine, ids, target, engine.recurrent, logp, diag, mask)
+            else:
+                loss, next_state, features, diag = engine.model.objective(
+                    ids, target, engine.recurrent, logp, directions)
+                measure_retention(engine, ids, target, engine.recurrent, logp, diag)
         timeline.append(features.detach())
         ce = F.cross_entropy(diag['logits'][0].detach(), target[0], reduction='none').cpu().numpy()
-        errors.append(ce[own:] if index == 0 else ce)
+        errors.append(ce[skip_n:] if skip_n < len(ce) else ce)
         if index == 0:
             first_diag = diag
             if engine.prev is not None:

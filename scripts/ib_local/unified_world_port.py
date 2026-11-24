@@ -506,8 +506,11 @@ class UnifiedWorldPort:
         self._roster_dirty_notice = self._format_roster_notice()
 
     def _format_roster_notice(self) -> str:
-        items = [f'{meta["label"]}' for meta in self.presence_roster.values()]
-        return '[在场] ' + ', '.join(items)
+        items = []
+        for meta in self.presence_roster.values():
+            desc = str(meta.get('description') or '').strip()
+            items.append(f'{meta["label"]}({desc})' if desc else str(meta['label']))
+        return '[在场] ' + '；'.join(items)
 
     def _parse_explicit_target(self, child_text: str) -> tuple[str, str] | None:
         """Parse optional explicit addressing (`@妈妈`, `@书页`, `@工具:calc`, `@obj_id`) from MengLi's stream."""
@@ -659,25 +662,32 @@ class UnifiedWorldPort:
         return name, out or 'ok'
 
     def _pack_prefix_bytes(self, text: str, ambient: np.ndarray, response_bytes: int,
-                           *, source_label: str | None = None) -> tuple[np.ndarray, int]:
+                           *, source_label: str | None = None) -> tuple[np.ndarray, int, int]:
+        """Pack speaker/tool identity prefix + utterance + ambient tail.
+
+        Returns `(response, said_len, prefix_mask_len)` where `prefix_mask_len` marks the
+        leading identity-card / speaker-header bytes (`[在场] ...\\n` + `妈妈：`/`爸爸：`/`[工具:...] `)
+        so `world_learning_cycle` feeds them into GDN hidden state for instant role separation
+        (even when Mom and Dad say identical words like '你好') while masking them out of
+        both neural LM loss and Fast-Table writes so MengLi never echoes role headers.
+        """
         body = text.strip()
-        prefix_lines = []
+        prefix_text = ''
         if self._roster_dirty_notice:
-            prefix_lines.append(self._roster_dirty_notice)
+            prefix_text += self._roster_dirty_notice + '\n'
             self._roster_dirty_notice = None
         if self.envelope_tags and source_label:
-            # Human speakers (妈妈 / 爸爸) and storybook pages flow as pure, prefix-free natural language
-            # (empirical probe on cycle 3787 proved 86.7%-90.0% internal separability without prefixes,
-            # while prefixes slightly hurt separation and risk echoing). Keep compact tags for tools/objects only.
-            if source_label not in ('妈妈', '爸爸', '书页'):
-                body = f'[{source_label}] {body}'
-        prefix_lines.append(body)
-        full = '\n'.join(prefix_lines) + '\n'
+            if source_label in ('妈妈', '爸爸'):
+                prefix_text += f'{source_label}：'
+            elif source_label != '书页':
+                prefix_text += f'[{source_label}] '
+        full = prefix_text + body + '\n'
+        prefix_mask_len = min(len(prefix_text.encode('utf-8')), response_bytes)
         said = np.frombuffer(full.encode('utf-8')[:response_bytes], dtype=np.uint8)
         rem = response_bytes - len(said)
         tail = ambient[:rem] if rem > 0 else np.empty((0,), dtype=np.uint8)
         response = np.concatenate((said, tail))
-        return response, int(len(said))
+        return response, int(len(said)), int(prefix_mask_len)
 
     def _current_stumble_ratio(self) -> float:
         alif_st = getattr(self._engine_ref, 'alif_executive_state', None) if self._engine_ref is not None else None
@@ -771,14 +781,15 @@ class UnifiedWorldPort:
             role = msg['role']
             raw_text = msg['text']
             delivered_text = f'[{speaker}] {raw_text}'
+            if 'parent' not in self.presence_roster:
+                self.presence_roster['parent'] = dict(kind='parent', label=speaker, description='爸爸实时陪伴与对话')
+                self._roster_dirty_notice = self._format_roster_notice()
             ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
-            response, said_len = self._pack_prefix_bytes(
+            response, said_len, env_prefix_len = self._pack_prefix_bytes(
                 raw_text, ambient, response_bytes, source_label=speaker,
             )
             self._record_shared_page(heldout)
-            if 'parent' not in self.presence_roster:
-                self.presence_roster['parent'] = dict(kind='parent', label=speaker, description='爸爸实时陪伴与对话')
-            self._observe_gaze_object('parent', delivered_text.encode('utf-8'))
+            self._observe_gaze_object('parent', f'{speaker}：{raw_text}'.encode('utf-8'))
             self.active_interlocutor = 'parent'
             self.awaiting_reply_from = 'parent'
             self.active_floor = 'parent'
@@ -815,6 +826,7 @@ class UnifiedWorldPort:
                 active_floor=self.active_floor,
                 book_excerpt=clean_utf8_excerpt(bytes(self.shared_page_bytes), max_chars=220),
                 mother_bytes=said_len,
+                envelope_prefix_bytes=env_prefix_len,
                 mother_reply=delivered_text,
                 child_text=child_clean,
                 ambient_match=int(info.get('match', 0)),
@@ -873,9 +885,11 @@ class UnifiedWorldPort:
             self.spikes_since_mother += 1
             self.book_navigation_turns += 1
             self.ambient_fallback_turns += 1
+            env_prefix_len = 0
             if self.envelope_tags and self._roster_dirty_notice:
                 tag = np.frombuffer((self._roster_dirty_notice + '\n').encode('utf-8'), dtype=np.uint8)
                 self._roster_dirty_notice = None
+                env_prefix_len = min(int(len(tag)), response_bytes)
                 resp = np.concatenate((tag, resp[:max(0, response_bytes - len(tag))]))
             return resp, cont, dict(
                 info,
@@ -884,6 +898,7 @@ class UnifiedWorldPort:
                 speaker='book',
                 target_object_id='book',
                 navigation_response_bytes=int(len(resp)),
+                envelope_prefix_bytes=env_prefix_len,
                 explicit_target='book',
                 routing_reason='explicit_book',
                 active_floor=self.active_floor,
@@ -930,7 +945,7 @@ class UnifiedWorldPort:
             src_label = f'工具:{obj_name}' if obj_kind == 'tool' else obj_name
             delivered_text = f'[{src_label}] {obj_out}'
             ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
-            response, said_len = self._pack_prefix_bytes(
+            response, said_len, env_prefix_len = self._pack_prefix_bytes(
                 obj_out, ambient, response_bytes, source_label=src_label,
             )
             self._record_shared_page(heldout)
@@ -955,6 +970,7 @@ class UnifiedWorldPort:
                 routing_reason=(('gaze_tool' if obj_kind == 'tool' else 'gaze_object') if via_gaze else ('explicit_tool' if obj_kind == 'tool' else 'explicit_object')),
                 active_floor=self.active_floor,
                 mother_bytes=said_len,
+                envelope_prefix_bytes=env_prefix_len,
                 mother_reply=delivered_text,
                 child_text=child_clean,
                 ambient_match=int(info.get('match', 0)),
@@ -983,9 +999,11 @@ class UnifiedWorldPort:
             self.active_floor = 'book'
             self.awaiting_reply_from = None
             self.spikes_since_mother += 1
+            env_prefix_len = 0
             if self.envelope_tags and self._roster_dirty_notice:
                 tag = np.frombuffer((self._roster_dirty_notice + '\n').encode('utf-8'), dtype=np.uint8)
                 self._roster_dirty_notice = None
+                env_prefix_len = min(int(len(tag)), response_bytes)
                 ambient = np.concatenate((tag, ambient[:max(0, response_bytes - len(tag))]))
             ch_name = 'reply_to_parent' if (on_parent_floor or self.active_interlocutor == 'parent') else 'call_parent'
             r_reason = (
@@ -1000,6 +1018,7 @@ class UnifiedWorldPort:
                 speaker=parent_label,
                 target_object_id='parent',
                 navigation_response_bytes=int(len(ambient)),
+                envelope_prefix_bytes=env_prefix_len,
                 explicit_target=explicit_target,
                 gaze_decision=gaze_decision,
                 routing_reason=r_reason,
@@ -1075,11 +1094,11 @@ class UnifiedWorldPort:
 
             # Strict Yoneda hygiene: talking to Mother NEVER triggers a hidden book jump!
             ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
-            response, said_len = self._pack_prefix_bytes(
+            response, said_len, env_prefix_len = self._pack_prefix_bytes(
                 reply, ambient, response_bytes, source_label='妈妈',
             )
             self._record_shared_page(heldout)
-            self._observe_gaze_object('mother', reply.encode('utf-8'))
+            self._observe_gaze_object('mother', f'妈妈：{reply}'.encode('utf-8'))
 
             self._pending_commit = dict(
                 kind='mother',
@@ -1142,6 +1161,7 @@ class UnifiedWorldPort:
                 mirror_excerpt=snapshot.stumble_excerpt if perspective_mode == 'mirror_visible' else '',
                 mirror_trigger_cause=snapshot.trigger_cause if perspective_mode == 'mirror_visible' else '',
                 mother_bytes=said_len,
+                envelope_prefix_bytes=env_prefix_len,
                 mother_reply=reply,
                 child_text=child_display,
                 caregiver_prompt_tokens=api_usage.get('prompt_tokens'),
@@ -1172,9 +1192,11 @@ class UnifiedWorldPort:
         self.awaiting_reply_from = None
         self.consecutive_social_turns = 0
         self.ambient_fallback_turns += 1
+        env_prefix_len = 0
         if self.envelope_tags and self._roster_dirty_notice:
             tag = np.frombuffer((self._roster_dirty_notice + '\n').encode('utf-8'), dtype=np.uint8)
             self._roster_dirty_notice = None
+            env_prefix_len = min(int(len(tag)), response_bytes)
             resp = np.concatenate((tag, resp[:max(0, response_bytes - len(tag))]))
         return resp, cont, dict(
             info,
@@ -1183,6 +1205,7 @@ class UnifiedWorldPort:
             speaker='book',
             target_object_id='book',
             navigation_response_bytes=int(len(resp)),
+            envelope_prefix_bytes=env_prefix_len,
             routing_reason=routing_reason,
             gaze_decision=gaze_decision,
             active_floor=self.active_floor,
