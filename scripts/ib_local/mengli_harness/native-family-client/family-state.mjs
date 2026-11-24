@@ -93,15 +93,22 @@ export function projectFamilyHistory(history, cache = new Map()) {
 function isNonTrivialEvent(event) {
   const ch = event.umwelt?.channel;
   if (ch) {
-    return (
-      ch !== 'storybook_spike_fallback'
-      && ch !== 'book_navigation'
-      && ch !== 'read_aloud_solo'
-      && ch !== 'self_evolution'
-      && ch !== 'inner_monologue'
-    );
+    // Keep MengLi's real vocal expressions (including self-talk `inner_monologue` & `read_aloud_solo`)
+    // visible in the MengLi stream; only hide silent routine book/evolution pulses with no speech.
+    if (ch === 'storybook_spike_fallback' || ch === 'book_navigation' || ch === 'self_evolution') return false;
+    return true;
   }
   return event.observation?.kind !== 'natural_text_reply';
+}
+
+function mengliActionLabel(event) {
+  const ch = event.umwelt?.channel;
+  const mode = event.umwelt?.interaction_mode;
+  if (ch === 'inner_monologue' || mode === 'inner_monologue') return '梦漓 · 自言自语';
+  if (ch === 'read_aloud_solo' || mode === 'read_aloud_solo') return '梦漓 · 自读出声';
+  if (mode === 'self_talk_observing_mother') return '梦漓 · 看着妈妈自言自语';
+  if (mode === 'call_book_and_pause' || mode === 'call_mother_and_pause') return '梦漓 · 自言自语';
+  return '梦漓';
 }
 
 function actorDisplayLabel(event, caregiver) {
@@ -110,12 +117,12 @@ function actorDisplayLabel(event, caregiver) {
   if (caregiver === 'parent' || ch === 'live_participant') return sp && sp !== 'parent' ? sp : '爸爸';
   if (ch === 'tool' || ch === 'dynamic_object') return sp || '工具';
   if (ch === 'book_addressed') return '书页 · 检索';
+  if (ch === 'read_aloud_solo') return '书页';
   if (ch === 'mother_quiet_presence') return '妈妈 · 安静陪伴（书页）';
   return '妈妈';
 }
 
-// Stable native Chat identities: only non-trivial Umwelt interactions enter the main stream.
-// Routine book-reading fallback pulses stay in the Membrane Trajectory view instead of spamming chat.
+// Stable native Chat identities: show real MengLi utterances (including self-talk) and social replies.
 export function projectFamilyEvents(events, cache = new Map()) {
   const nodes = [];
   for (const event of events) {
@@ -124,11 +131,12 @@ export function projectFamilyEvents(events, cache = new Map()) {
     const time = typeof event.time === 'number' ? event.time : undefined;
     const caregiver = event.actor ?? event.caregiver;
     const observed = event.observation;
+    const actionLabel = mengliActionLabel(event);
     const replyLabel = actorDisplayLabel(event, caregiver);
     const umwelt = event.umwelt ?? null;
-    const versionSig = umwelt ? `${umwelt.channel}:${umwelt.perspective_mode ?? ''}:${(umwelt.mirror_excerpt ?? '').length}:${(umwelt.book_excerpt ?? '').length}` : 'v0';
+    const versionSig = umwelt ? `${umwelt.channel}:${umwelt.interaction_mode ?? ''}:${umwelt.perspective_mode ?? ''}:${(umwelt.mirror_excerpt ?? '').length}:${(umwelt.book_excerpt ?? '').length}` : 'v0';
     for (const [part, text, label, assistant] of [
-      ['action', event.utterance?.text, '梦漓', true],
+      ['action', event.utterance?.text, actionLabel, true],
       ['input', event.delivered?.text ?? observed?.text, replyLabel, false],
     ]) {
       if (!text) continue;
