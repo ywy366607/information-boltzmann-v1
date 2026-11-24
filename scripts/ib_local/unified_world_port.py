@@ -1524,6 +1524,7 @@ class UnifiedWorldPort:
                 self._roster_dirty_notice = None
                 env_prefix_len = min(int(len(tag)), response_bytes)
                 resp = np.concatenate((tag, resp[:max(0, response_bytes - len(tag))]))
+            page_preview = clean_utf8_excerpt(bytes(resp[env_prefix_len:]), max_chars=240)
             return resp, cont, self._finalize_membrane_event(
                 dict(
                     info,
@@ -1537,6 +1538,8 @@ class UnifiedWorldPort:
                     routing_reason='explicit_book',
                     active_floor=self.active_floor,
                     mother_bytes=0,
+                    text_reply=page_preview,
+                    book_excerpt=page_preview,
                     child_text=child_clean,
                 ),
                 speaker_id='book',
@@ -1851,6 +1854,7 @@ class UnifiedWorldPort:
                 ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
                 self._record_shared_page(ambient)
                 self._record_shared_page(heldout)
+                quiet_preview = clean_utf8_excerpt(bytes(ambient), max_chars=240)
                 return ambient, heldout, self._finalize_membrane_event(
                     dict(
                         {k: v for k, v in info.items() if k != 'text_reply'},
@@ -1871,7 +1875,8 @@ class UnifiedWorldPort:
                         care_stage=self.care_plan_tracker.stage,
                         care_plan_version=int(plan['version']),
                         utterance_kind=snapshot.utterance_kind,
-                        book_excerpt=snapshot.book_excerpt,
+                        book_excerpt=(snapshot.book_excerpt or quiet_preview),
+                        text_reply=quiet_preview,
                         mirror_excerpt=snapshot.stumble_excerpt if perspective_mode == 'mirror_visible' else '',
                         mirror_trigger_cause=snapshot.trigger_cause if perspective_mode == 'mirror_visible' else '',
                         mother_bytes=0,
@@ -1986,6 +1991,7 @@ class UnifiedWorldPort:
                 )]
             if mother_out == 'parent':
                 mother_action_caused = False
+            turned_preview = clean_utf8_excerpt(bytes(ambient), max_chars=240) if mother_out == 'book' else ''
             return response, heldout, self._finalize_membrane_event(
                 dict(
                     {k: v for k, v in info.items() if k != 'text_reply'},
@@ -2008,7 +2014,8 @@ class UnifiedWorldPort:
                     care_stage=self.care_plan_tracker.stage,
                     care_plan_version=int(plan['version']),
                     utterance_kind=snapshot.utterance_kind,
-                    book_excerpt=snapshot.book_excerpt,
+                    book_excerpt=(turned_preview or snapshot.book_excerpt),
+                    text_reply=(turned_preview if (mother_out == 'book' and not reply) else ''),
                     mirror_excerpt=snapshot.stumble_excerpt if perspective_mode == 'mirror_visible' else '',
                     mirror_trigger_cause=snapshot.trigger_cause if perspective_mode == 'mirror_visible' else '',
                     mother_bytes=said_len,
@@ -2069,6 +2076,7 @@ class UnifiedWorldPort:
             and bool(gaze_decision.get('sampled', False))
         )
         book_action_caused = bool(is_navigation or gaze_chose_book)
+        page_preview = clean_utf8_excerpt(bytes(resp[env_prefix_len:]), max_chars=240)
         return resp, cont, self._finalize_membrane_event(
             dict(
                 info,
@@ -2085,6 +2093,8 @@ class UnifiedWorldPort:
                 gaze_decision=gaze_decision,
                 active_floor=self.active_floor,
                 mother_bytes=0,
+                text_reply=page_preview,
+                book_excerpt=page_preview,
                 child_text=child_clean,
             ),
             speaker_id='book',

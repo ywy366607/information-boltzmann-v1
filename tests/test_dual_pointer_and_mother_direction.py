@@ -266,6 +266,8 @@ def test_read_aloud_solo_does_not_jump_book_while_book_search_does():
     )
     assert info_solo['interaction_mode'] == 'read_aloud_solo'
     assert info_solo['channel'] == 'read_aloud_solo'
+    assert bool(info_solo.get('text_reply'))
+    assert bool(info_solo.get('book_excerpt'))
     assert len(base.navigate_calls) == 0
     assert base.passive_calls == 1
     assert len(cg.calls) == 0
@@ -279,6 +281,7 @@ def test_read_aloud_solo_does_not_jump_book_while_book_search_does():
     )
     assert info_s['interaction_mode'] == 'book_search'
     assert info_s['channel'] == 'book_navigation'
+    assert '月亮' in (info_s.get('text_reply') or '')
     assert len(base.navigate_calls) == 1
     assert '月亮' in bytes(resp_s).decode('utf-8', errors='ignore')
 
