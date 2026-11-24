@@ -703,11 +703,17 @@ def test_loss_masked_identity_card_separates_identical_hello_without_table_echo(
     assert '[在场]' in prefix_dad and '爸爸(爸爸实时陪伴与对话)' in prefix_dad and prefix_dad.endswith('爸爸：')
     assert body_dad == '你好\n'
 
-    # Mother replies (starts with loss-masked `妈妈：`).
+    # Mother replies (starts with loss-masked `妈妈：`, AND marks `书页：` right where the book resumes!).
     port.force_next_mother()
     resp_mom, _, info_mom = port.take(b'', 256, 256)
     prefix_mom = bytes(resp_mom[:info_mom['envelope_prefix_bytes']]).decode('utf-8')
     assert prefix_mom == '妈妈：'
+    spans = info_mom['envelope_mask_spans']
+    assert len(spans) == 2
+    assert spans[0] == (0, len('妈妈：'.encode('utf-8')))
+    s_b, e_b = spans[1]
+    assert s_b == info_mom['mother_bytes']
+    assert bytes(resp_mom[s_b:e_b]).decode('utf-8') == '书页：'
 
     # Verify Fast Table read-only masking: feeding `妈妈：你好` with masked prefix leaves `妈妈：` unseen!
     table = ByteNgramFastTable()

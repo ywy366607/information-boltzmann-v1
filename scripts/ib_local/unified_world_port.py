@@ -662,14 +662,14 @@ class UnifiedWorldPort:
         return name, out or 'ok'
 
     def _pack_prefix_bytes(self, text: str, ambient: np.ndarray, response_bytes: int,
-                           *, source_label: str | None = None) -> tuple[np.ndarray, int, int]:
-        """Pack speaker/tool identity prefix + utterance + ambient tail.
+                           *, source_label: str | None = None) -> tuple[np.ndarray, int, int, list[tuple[int, int]]]:
+        """Pack speaker/tool identity prefix + utterance + book-resume marker + ambient tail.
 
-        Returns `(response, said_len, prefix_mask_len)` where `prefix_mask_len` marks the
-        leading identity-card / speaker-header bytes (`[在场] ...\\n` + `妈妈：`/`爸爸：`/`[工具:...] `)
-        so `world_learning_cycle` feeds them into GDN hidden state for instant role separation
-        (even when Mom and Dad say identical words like '你好') while masking them out of
-        both neural LM loss and Fast-Table writes so MengLi never echoes role headers.
+        Returns `(response, said_len, prefix_mask_len, mask_spans)` where `mask_spans` lists
+        every `[start, end)` identity-card / transition-header span (`[在场] ...\\n` + `妈妈：`/`爸爸：`/
+        `[工具:...] ` at turn start, PLUS `书页：` right where the book resumes after a speaker/tool
+        finishes). All spans enter GDN hidden state in full while being masked out of BOTH neural LM
+        loss and Fast-Table writes.
         """
         body = text.strip()
         prefix_text = ''
@@ -684,10 +684,22 @@ class UnifiedWorldPort:
         full = prefix_text + body + '\n'
         prefix_mask_len = min(len(prefix_text.encode('utf-8')), response_bytes)
         said = np.frombuffer(full.encode('utf-8')[:response_bytes], dtype=np.uint8)
-        rem = response_bytes - len(said)
-        tail = ambient[:rem] if rem > 0 else np.empty((0,), dtype=np.uint8)
+        said_len = int(len(said))
+        mask_spans: list[tuple[int, int]] = []
+        if prefix_mask_len > 0:
+            mask_spans.append((0, prefix_mask_len))
+        rem = response_bytes - said_len
+        if rem > 0:
+            book_tag = np.frombuffer('书页：'.encode('utf-8'), dtype=np.uint8) if self.envelope_tags else np.empty((0,), dtype=np.uint8)
+            if len(book_tag) > 0 and rem > len(book_tag) + 4:
+                tail = np.concatenate((book_tag, ambient[:rem - len(book_tag)]))
+                mask_spans.append((said_len, said_len + int(len(book_tag))))
+            else:
+                tail = ambient[:rem]
+        else:
+            tail = np.empty((0,), dtype=np.uint8)
         response = np.concatenate((said, tail))
-        return response, int(len(said)), int(prefix_mask_len)
+        return response, said_len, int(prefix_mask_len), mask_spans
 
     def _current_stumble_ratio(self) -> float:
         alif_st = getattr(self._engine_ref, 'alif_executive_state', None) if self._engine_ref is not None else None
@@ -785,7 +797,7 @@ class UnifiedWorldPort:
                 self.presence_roster['parent'] = dict(kind='parent', label=speaker, description='爸爸实时陪伴与对话')
                 self._roster_dirty_notice = self._format_roster_notice()
             ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
-            response, said_len, env_prefix_len = self._pack_prefix_bytes(
+            response, said_len, env_prefix_len, env_mask_spans = self._pack_prefix_bytes(
                 raw_text, ambient, response_bytes, source_label=speaker,
             )
             self._record_shared_page(heldout)
@@ -827,6 +839,7 @@ class UnifiedWorldPort:
                 book_excerpt=clean_utf8_excerpt(bytes(self.shared_page_bytes), max_chars=220),
                 mother_bytes=said_len,
                 envelope_prefix_bytes=env_prefix_len,
+                envelope_mask_spans=env_mask_spans,
                 mother_reply=delivered_text,
                 child_text=child_clean,
                 ambient_match=int(info.get('match', 0)),
@@ -945,7 +958,7 @@ class UnifiedWorldPort:
             src_label = f'工具:{obj_name}' if obj_kind == 'tool' else obj_name
             delivered_text = f'[{src_label}] {obj_out}'
             ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
-            response, said_len, env_prefix_len = self._pack_prefix_bytes(
+            response, said_len, env_prefix_len, env_mask_spans = self._pack_prefix_bytes(
                 obj_out, ambient, response_bytes, source_label=src_label,
             )
             self._record_shared_page(heldout)
@@ -971,6 +984,7 @@ class UnifiedWorldPort:
                 active_floor=self.active_floor,
                 mother_bytes=said_len,
                 envelope_prefix_bytes=env_prefix_len,
+                envelope_mask_spans=env_mask_spans,
                 mother_reply=delivered_text,
                 child_text=child_clean,
                 ambient_match=int(info.get('match', 0)),
@@ -1094,7 +1108,7 @@ class UnifiedWorldPort:
 
             # Strict Yoneda hygiene: talking to Mother NEVER triggers a hidden book jump!
             ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
-            response, said_len, env_prefix_len = self._pack_prefix_bytes(
+            response, said_len, env_prefix_len, env_mask_spans = self._pack_prefix_bytes(
                 reply, ambient, response_bytes, source_label='妈妈',
             )
             self._record_shared_page(heldout)
@@ -1162,6 +1176,7 @@ class UnifiedWorldPort:
                 mirror_trigger_cause=snapshot.trigger_cause if perspective_mode == 'mirror_visible' else '',
                 mother_bytes=said_len,
                 envelope_prefix_bytes=env_prefix_len,
+                envelope_mask_spans=env_mask_spans,
                 mother_reply=reply,
                 child_text=child_display,
                 caregiver_prompt_tokens=api_usage.get('prompt_tokens'),

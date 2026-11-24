@@ -207,11 +207,21 @@ def world_cycle_step(engine, directions, age_ablate=False):
     pending = engine.pending
     first_diag, outcome_diag = None, {}
     utterance_probs = np.asarray(record['probs'], np.float32).reshape(-1, 256)
-    env_mask_end = max(0, int(info.get('envelope_prefix_bytes', 0)))
+    raw_spans = info.get('envelope_mask_spans')
+    if isinstance(raw_spans, (list, tuple)) and raw_spans:
+        env_mask_spans = [(int(s), int(e)) for s, e in raw_spans if int(e) > int(s)]
+    else:
+        env_mask_end = max(0, int(info.get('envelope_prefix_bytes', 0)))
+        env_mask_spans = [(0, env_mask_end)] if env_mask_end > 0 else []
     for index, piece in enumerate(pieces):
         chunk = external[piece.start:piece.end]
         action_tail = utterance[-1] if index == 0 and own else pending
-        masked_in_piece = max(0, min(piece.end, env_mask_end) - piece.start)
+        # Compute leading masked identity-header bytes in this piece (covers both piece 0 `妈妈：`
+        # and the exact piece boundary where `书页：` resumes after a speaker/tool finishes!).
+        masked_in_piece = 0
+        for sp_s, sp_e in env_mask_spans:
+            if sp_s <= piece.start < sp_e:
+                masked_in_piece = max(masked_in_piece, min(piece.end, sp_e) - piece.start)
         # The frozen pre-update table is queried on the future suffix BEFORE
         # any byte of that suffix is committed to the live table.
         probe_raw, old_logp = None, None

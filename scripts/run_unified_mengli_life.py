@@ -118,8 +118,8 @@ def main():
 
     # Champion H-Net + ALIF + PSB + RLP defaults.
     parser.add_argument('--piece-bytes', type=int, default=1600)
-    parser.add_argument('--gpu-act-mb', type=int, default=1024,
-                        help='Tiered GPU activation budget in MiB (1024 MiB leaves safe WDDM headroom on 4 GiB GPUs)')
+    parser.add_argument('--gpu-act-mb', type=int, default=768,
+                        help='Tiered GPU activation budget in MiB (768 MiB leaves safe WDDM/commit headroom on 4 GiB GPUs)')
     parser.add_argument('--calm-lr-scale', type=float, default=-1.0)
     parser.add_argument('--extra-hippocampal-steps', type=int, default=-1)
     parser.add_argument('--hnet-target-ratio', type=float, default=4.0)
@@ -272,12 +272,14 @@ def main():
         restored_prior_port_state=restored_prior,
     )
 
-    # Activation storage hooks identical to champion runner (configurable GPU budget for 4 GiB WDDM headroom).
+    # Activation storage hooks identical to champion runner (bounded GPU & host commit for 4 GiB Windows WDDM).
     activation_options = dict(
         mode='tiered',
         gpu_budget_bytes=int(args.gpu_act_mb) * 1024 * 1024,
-        host_budget_bytes=1024 * 1024 * 1024,
+        host_budget_bytes=512 * 1024 * 1024,
     )
+    if getattr(engine, 'native_replay_batch_size', 0) > 4:
+        engine.native_replay_batch_size = 4
     world_act_dir = temp_dir / 'world'
     policy_act_dir = temp_dir / 'policy'
     original_policy = engine._policy_grad
