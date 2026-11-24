@@ -95,6 +95,16 @@ class SidecarCorpusStream:
         self.seen = np.zeros(len(self.data), dtype=bool)
         self.sha256 = hashlib.sha256(raw).hexdigest()
         self.cursor = int(cursor) % len(self.data)
+        self.hybrid_index = None
+        idx_prefix = self.path.parent / 'hybrid_gemma2_index'
+        if idx_prefix.with_suffix('.npz').exists() and idx_prefix.with_suffix('.json').exists():
+            try:
+                from scripts.ib_local.book_semantic_index import HybridBookIndex
+                cand_idx = HybridBookIndex.load(idx_prefix, raw)
+                if not cand_idx.corpus_sha256 or cand_idx.corpus_sha256 == self.sha256:
+                    self.hybrid_index = cand_idx
+            except Exception:
+                self.hybrid_index = None
 
     def _align_utf8_start(self, pos: int) -> int:
         """Advance past at most 3 UTF-8 continuation bytes (0x80..0xBF) so slices never split a character."""
@@ -183,28 +193,45 @@ class SidecarCorpusStream:
         return resp, cont, info
 
     def take(self, utterance: bytes, response_bytes: int, holdout_bytes: int) -> tuple[np.ndarray, np.ndarray, dict]:
-        """Navigate the Chinese/sidecar storybook by utterance keywords (or continue sequentially)."""
+        """Navigate the Chinese/sidecar storybook via Hybrid EmbeddingGemma-2 + e-means + IDF search."""
         if response_bytes < 1 or holdout_bytes < 1:
             raise ValueError('positive response and holdout lengths required')
         query_text = clean_utf8_excerpt(utterance, max_chars=96) if utterance else ''
-        candidates: list[str] = []
-        if query_text:
-            cjk_runs = _CJK_RUN_RE.findall(query_text)
-            for run in sorted(cjk_runs, key=len, reverse=True):
-                if len(run) >= 2:
-                    candidates.append(run[:4])
-                    if len(run) > 2:
-                        candidates.append(run[:2])
-                elif len(run) == 1:
-                    candidates.append(run)
-            for word in sorted(re.findall(r'[a-zA-Z]{3,}', query_text), key=len, reverse=True):
-                candidates.append(word)
+
+        if query_text and self.hybrid_index is not None:
+            hit = self.hybrid_index.search(query_text, cursor=self.cursor)
+            if hit is not None:
+                resp, cont, actual_start, prior_resp, prior_hold = self._slice_from(
+                    int(hit['start']), response_bytes, holdout_bytes,
+                )
+                return resp, cont, dict(
+                    start=int(actual_start),
+                    anchor=int(hit['start']),
+                    match=1,
+                    matched_term=str(hit.get('matched_term') or ''),
+                    retrieval_method=str(hit.get('method') or 'hybrid_gemma2_emeans_idf'),
+                    retrieval_score=float(hit.get('score', 0.0)),
+                    retrieval_semantic_cos=float(hit.get('semantic_cos', 0.0)),
+                    navigation_response_bytes=int(len(resp)),
+                    response_previously_seen_bytes=prior_resp,
+                    holdout_previously_seen_bytes=prior_hold,
+                    holdout_position_fresh=(prior_hold == 0),
+                    source='chinese_storybook',
+                    sidecar_corpus=self.path.name,
+                    sidecar_cursor=int(self.cursor),
+                )
+            return self.take_ambient(response_bytes, holdout_bytes)
+
+        # Fallback lexical search (when no prebuilt index exists): slide over ALL 2-4 char
+        # CJK n-grams & 3+ char English words — NEVER search noisy single characters!
+        from scripts.ib_local.book_semantic_index import extract_lexical_terms
+        candidates = extract_lexical_terms(query_text) if query_text else []
 
         hit_pos = -1
         matched_term = ''
         n = len(self._raw_bytes)
         search_from = (self.cursor + 1) % n
-        for term in candidates[:6]:
+        for term in candidates[:12]:
             needle = term.encode('utf-8')
             pos = self._raw_bytes.find(needle, search_from)
             if pos < 0:
@@ -215,7 +242,6 @@ class SidecarCorpusStream:
                 break
 
         if hit_pos >= 0:
-            # Back up slightly to the nearest prior newline or period so the passage starts cleanly.
             win_start = max(0, hit_pos - 96)
             prefix = self._raw_bytes[win_start:hit_pos]
             nl = prefix.rfind(b'\n')
@@ -232,6 +258,7 @@ class SidecarCorpusStream:
                 anchor=int(hit_pos),
                 match=1,
                 matched_term=matched_term,
+                retrieval_method='sliding_ngram_fallback',
                 navigation_response_bytes=int(len(resp)),
                 response_previously_seen_bytes=prior_resp,
                 holdout_previously_seen_bytes=prior_hold,
@@ -526,6 +553,9 @@ class UnifiedWorldPort:
         self.dialogue_reads = 0
         self.event_ledger: list[dict] = []
         self.event_ledger_cap: int = 64
+        self._base_hybrid_index = None
+        self._base_hybrid_offset = 0
+        self._base_hybrid_checked = False
 
         # Open Yoneda / Presence Roster & Membrane protocol settings:
         #   - Any external object (person, tool, book) can join/leave dynamically.
@@ -1005,6 +1035,86 @@ class UnifiedWorldPort:
             return self.sidecar.take_ambient(response_bytes, holdout_bytes)
         return self.base.take(b'', response_bytes, holdout_bytes)
 
+    def _ensure_base_hybrid_index(self):
+        """Lazily attach a prebuilt HybridBookIndex for the English natural-text book if present."""
+        if self._base_hybrid_checked:
+            return self._base_hybrid_index
+        self._base_hybrid_checked = True
+        inner = getattr(self.base, 'base', self.base)
+        data = getattr(inner, 'data', None)
+        if not isinstance(data, np.ndarray) or len(data) < 65536 or not hasattr(inner, 'seen'):
+            return None
+        manifest = getattr(self.base, 'source_manifest', None)
+        train_path = None
+        if isinstance(manifest, dict) and manifest.get('train_path'):
+            train_path = Path(manifest['train_path'])
+        else:
+            cand = Path(__file__).resolve().parents[2] / 'data' / 'cgb_natural_text_20261115' / 'train.bin'
+            if cand.exists():
+                train_path = cand
+        if train_path is None or not train_path.exists():
+            return None
+        idx_prefix = train_path.parent / 'hybrid_gemma2_index'
+        if not (idx_prefix.with_suffix('.npz').exists() and idx_prefix.with_suffix('.json').exists()):
+            return None
+        try:
+            raw_train = train_path.read_bytes()
+            if len(data) >= len(raw_train):
+                tail = data[-len(raw_train):].tobytes()
+                if hashlib.sha256(tail).hexdigest() == hashlib.sha256(raw_train).hexdigest():
+                    from scripts.ib_local.book_semantic_index import HybridBookIndex
+                    self._base_hybrid_index = HybridBookIndex.load(idx_prefix, raw_train)
+                    self._base_hybrid_offset = int(len(data) - len(raw_train))
+        except Exception:
+            self._base_hybrid_index = None
+        return self._base_hybrid_index
+
+    def _navigate_base_hybrid(self, query_clean: str, response_bytes: int, holdout_bytes: int):
+        """Navigate the English book via Hybrid EmbeddingGemma-2 + e-means + IDF with noise gating."""
+        idx = self._ensure_base_hybrid_index()
+        if idx is None:
+            return None
+        inner = getattr(self.base, 'base', self.base)
+        req = int(response_bytes) + int(holdout_bytes)
+        cur_rel = max(0, int(getattr(inner, 'cursor', 0)) - self._base_hybrid_offset)
+        hit = idx.search(query_clean, cursor=cur_rel)
+        if hit is None:
+            # Below relevance threshold (garbled/1-char noise) -> calm sequential read, zero random jump.
+            resp, cont, info = self.base.take(b'', response_bytes, holdout_bytes)
+            info = dict(info, match=0, retrieval_method='hybrid_gated_continue')
+            return resp, cont, info
+        start = self._base_hybrid_offset + int(hit['start'])
+        n = int(len(inner.data))
+        if start + req > n:
+            start = max(self._base_hybrid_offset, n - req)
+        # Keep exact base-world cursor/seen/anchor bookkeeping intact.
+        end = start + req
+        prior_resp = int(inner.seen[start:start + response_bytes].sum())
+        prior_hold = int(inner.seen[start + response_bytes:end].sum())
+        inner.seen[start:end] = True
+        inner.anchor = int(start)
+        inner.offset = req % max(1, int(getattr(inner, 'window', req)))
+        inner.cursor = int(end)
+        if hasattr(inner, 'moves'):
+            inner.moves = int(inner.moves) + 1
+        resp = inner.data[start:start + response_bytes].copy()
+        cont = inner.data[start + response_bytes:end].copy()
+        info = dict(
+            start=int(start),
+            anchor=int(start),
+            match=1,
+            matched_term=str(hit.get('matched_term') or ''),
+            retrieval_method=str(hit.get('method') or 'hybrid_gemma2_emeans_idf'),
+            retrieval_score=float(hit.get('score', 0.0)),
+            retrieval_semantic_cos=float(hit.get('semantic_cos', 0.0)),
+            response_previously_seen_bytes=prior_resp,
+            holdout_previously_seen_bytes=prior_hold,
+            holdout_position_fresh=(prior_hold == 0),
+            navigation_response_bytes=int(len(resp)),
+            source='matched',
+        )
+        return resp, cont, info
+
     def _navigate_book(self, query_bytes: bytes, query_clean: str, response_bytes: int, holdout_bytes: int):
         """Navigate the active storybook (Chinese TinyStories or English FineWeb) strictly as `Hom(MengLi, Book)`."""
         prev_src = self.last_book_source
@@ -1017,7 +1127,11 @@ class UnifiedWorldPort:
                 if self.last_book_source != prev_src:
                     self.shared_page_bytes.clear()
                 return resp, cont, info
-        resp, cont, info = self.base.take(query_bytes, response_bytes, holdout_bytes)
+        hybrid_res = self._navigate_base_hybrid(query_clean, response_bytes, holdout_bytes)
+        if hybrid_res is not None:
+            resp, cont, info = hybrid_res
+        else:
+            resp, cont, info = self.base.take(query_bytes, response_bytes, holdout_bytes)
         self.last_book_source = 'text'
         if self.last_book_source != prev_src:
             self.shared_page_bytes.clear()
