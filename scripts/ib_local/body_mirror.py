@@ -392,9 +392,9 @@ def format_caregiver_turn(
         raise ValueError(f'unknown trigger_kind: {trigger_kind}')
 
     trigger_label = {
-        'child_spoke': '[情境: 孩子主动叫你/向你开口，先温柔接住她说的话，再自然联系眼前书页]',
+        'child_spoke': '[情境: 孩子刚向你开口，顺着她的字词或眼前的故事画面自然搭话，每次换不同的生活口吻]',
         'child_replied': '[情境: 孩子回应了你上一轮的话，顺着你们的对话自然接下去]',
-        'mother_proactive': '[情境: 孩子安静读书时停顿下来，你可以轻声聊聊眼前故事或卡顿处，也可以抛一个不强求回答的小问题]',
+        'mother_proactive': '[情境: 孩子安静读书时停顿下来，你可以轻声聊聊眼前故事里有趣的细节或卡顿处，也可以抛一个不强求回答的小好奇]',
     }[trigger_kind]
 
     lines = [trigger_label]

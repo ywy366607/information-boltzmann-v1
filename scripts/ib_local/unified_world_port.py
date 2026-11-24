@@ -295,6 +295,7 @@ class UnifiedWorldPort:
         self.consecutive_social_turns: int = 0
         self.max_consecutive_social_turns: int = 3
         self.turns_since_name_call: int = 3
+        self.recent_mother_openings: list[str] = []
         self._roster_dirty_notice: str | None = None
         self._dynamic_objects: dict[str, Callable[[str], str]] = {}
 
@@ -1071,11 +1072,31 @@ class UnifiedWorldPort:
                 recent_metal_g=self.recent_metal_g,
             )
             extra_note = '；'.join(self._pending_tool_notes) if self._pending_tool_notes else None
-            opening_cue = (
-                '直接顺着眼前的故事画面、声音或轻声安抚接话，略去称呼。'
-                if (self.mother_turns > 0 and self.turns_since_name_call < 3)
-                else None
+            # Dynamic anti-cliché opening rotator (KV-cache-safe tail cue):
+            # breaks long-context self-imitation ("我听着呢。" / "I hear you, honey —" / name-lock).
+            style_rot = (
+                '直接从眼前故事里的画面、声音或动作切入，像指着绘本随口聊起来。',
+                '先用一个轻巧的生活小比方或感叹开场，把刚才的词和故事自然连起来。',
+                '像日常聊天一样轻声抛一个不强求回答的小好奇，再顺口讲一两句。',
+                '直接接住刚才冒出的字词或卡顿点，换个自然轻快的开头，别用套话垫句。',
             )
+            cue_parts = []
+            if self.mother_turns > 0 and self.turns_since_name_call < 3:
+                cue_parts.append('本轮略去称呼')
+            recent_stems = list(self.recent_mother_openings[-4:])
+            stale = []
+            for st_txt in recent_stems:
+                low_s = st_txt.lower()
+                if (any(k in st_txt for k in ('我听着呢', '我听到了', '我听到你', '嗯，我听'))
+                        or any(k in low_s for k in ('i hear you', "i'm listening", "i'm right here", 'good try'))
+                        or recent_stems.count(st_txt) >= 2):
+                    if st_txt not in stale:
+                        stale.append(st_txt)
+            if stale:
+                cue_parts.append(f'最近几轮刚用过“{"/".join(stale[:2])}”，本轮换全新的自然起句，直接说内容')
+            if cue_parts or self.mother_turns > 0:
+                cue_parts.append(style_rot[self.mother_turns % len(style_rot)])
+            opening_cue = '；'.join(cue_parts) if cue_parts else None
             packet = format_caregiver_turn(
                 snapshot,
                 perspective_mode=perspective_mode,
@@ -1098,13 +1119,17 @@ class UnifiedWorldPort:
                 raise RuntimeError('mother returned no usable reply; world not advanced')
             reply = reply.strip()
 
-            # Track name-opening cadence so Mother varies openings naturally (zero white-bear lock).
+            # Track name-opening & cliché-opening cadence so Mother varies openings naturally.
             if _NAME_OPENING_RE.search(reply[:14]):
                 self.turns_since_name_call = 0
             elif ('梦漓' in reply) or ('mengli' in reply.lower()):
                 self.turns_since_name_call = min(self.turns_since_name_call, 1)
             else:
                 self.turns_since_name_call += 1
+            first_clause = re.split(r'[。！？!?\n—–-]', reply, maxsplit=1)[0].strip()[:14]
+            if first_clause:
+                self.recent_mother_openings.append(first_clause)
+                del self.recent_mother_openings[:-6]
 
             # Strict Yoneda hygiene: talking to Mother NEVER triggers a hidden book jump!
             ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)

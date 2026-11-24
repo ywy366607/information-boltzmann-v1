@@ -47,8 +47,13 @@ DEFAULT_CHAMPION = Path('D:/mengli-alif-hnet-1600b-flux-30min-20261124/body/last
 DEFAULT_HARNESS_URL = 'http://127.0.0.1:8902'
 
 
-def _restore_unified_state_if_present(port, base_world) -> bool:
-    """Restore any inherited DSH/unified state carried inside `base_world.retained`."""
+def _restore_unified_state_if_present(port, base_world, *, skip_dsh_session: bool = False) -> bool:
+    """Restore any inherited DSH/unified state carried inside `base_world.retained`.
+
+    When `skip_dsh_session=True` (`--fresh-mother-session`), restores the port's
+    storybook cursor and developmental plan while starting a clean DSH Mother
+    conversation session (breaking any accumulated long-context opening lock-in).
+    """
     retained = getattr(base_world, 'retained', None)
     if not isinstance(retained, dict):
         return False
@@ -57,6 +62,9 @@ def _restore_unified_state_if_present(port, base_world) -> bool:
         return False
     merged = base_world.state_dict()
     merged.update(retained)
+    if skip_dsh_session:
+        merged.pop('mother_provider_state', None)
+        merged.pop('mother_transcript', None)
     port.load_state_dict(merged)
     return True
 
@@ -247,7 +255,9 @@ def main():
         user_plan_text=args.care_plan,
         respond_on_child_speech=(not args.book_floor_default),
     )
-    restored_prior = False if args.fresh_mother_session else _restore_unified_state_if_present(port, base_world)
+    restored_prior = _restore_unified_state_if_present(
+        port, base_world, skip_dsh_session=args.fresh_mother_session,
+    )
     port.attach_engine(engine)
     engine.world = port
     config['mother_mode'] = 'real'

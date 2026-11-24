@@ -77,7 +77,10 @@ export class DeepSeekChatAdapter extends LlmAdapter {
       return { role: message.role, content: message.content.map(block => block.text).join('') };
     });
     if (options.system) messages.unshift({ role: 'system', content: options.system });
-    const maxTokens = options.maxTokens ?? (options.purpose === 'compaction' ? 1536 : options.purpose === 'reflection' ? 600 : 120);
+    const isConversation = !options.purpose || options.purpose === 'conversation';
+    const enableThinking = isConversation && process.env.MENGLI_MOTHER_THINKING === '1';
+    const baseMaxTokens = options.maxTokens ?? (options.purpose === 'compaction' ? 1536 : options.purpose === 'reflection' ? 600 : 120);
+    const maxTokens = enableThinking ? Math.max(baseMaxTokens, 1024) : baseMaxTokens;
     const contextBudget = options.contextWindow ?? this.contextWindowFor(options.sessionId);
     const headroom = contextBudget >= 131072 ? 4096 : contextBudget >= 32768 ? 2048 : 1024;
     const estimated = messages.reduce((sum, message) => sum + this.tokenMeter.estimateMessage({
@@ -88,7 +91,9 @@ export class DeepSeekChatAdapter extends LlmAdapter {
     }
     const body = {
       model: options.model, messages, temperature: options.temperature ?? 0.7,
-      max_tokens: maxTokens, stream: false, thinking: { type: 'disabled' },
+      max_tokens: maxTokens, stream: false,
+      thinking: { type: enableThinking ? 'enabled' : 'disabled' },
+      ...(isConversation && !enableThinking ? { frequency_penalty: 0.4, presence_penalty: 0.3 } : {}),
     };
     const url = 'https://api.deepseek.com/chat/completions';
     const key = createHash('sha256').update(JSON.stringify({ namespace: 'mengli-chat-wire-v1', transport: url, body })).digest('hex');
