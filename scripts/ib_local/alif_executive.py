@@ -494,9 +494,10 @@ def _span_masked_table_probs(table, pending: int, chunk: np.ndarray, spans: list
         nonlocal prev_byte
         if e <= s:
             return
+        from scripts.ib_local.language_action import read_only_live_probs
         seg = chunk[s:e]
         seq = np.concatenate((np.array([prev_byte], np.uint8), seg[:-1]))
-        p = np.exp(frozen_table_logp(table, seq)).astype(np.float32, copy=False)
+        p = read_only_live_probs(table, seq, advance_history=True)
         parts.append(p)
         prev_byte = int(seg[-1])
 

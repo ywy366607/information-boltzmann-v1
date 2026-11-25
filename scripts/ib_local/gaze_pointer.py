@@ -554,23 +554,27 @@ class GazeObjectPointer(nn.Module):
         ]
         recency = torch.tensor(rec_rows, device=dev, dtype=torch.float32)  # [M, 2]
 
-        causal_prior_obj = torch.zeros(len(ids), device=dev, dtype=torch.float32)
-        causal_map = None
-        if causal_values:
-            raw_vals = [float(causal_values.get(cid, 0.0)) for cid in ids]
-            if all(math.isfinite(v) for v in raw_vals):
-                mean_v = sum(raw_vals) / float(len(raw_vals))
-                centered = [max(-2.0, min(2.0, (v - mean_v) * self.causal_prior_scale)) for v in raw_vals]
-                causal_prior_obj = torch.tensor(centered, device=dev, dtype=torch.float32)
-                causal_map = {cid: round(raw_vals[i], 5) for i, cid in enumerate(ids)}
+        def _build_prior(vals_dict: dict[str, float] | None, include_null: bool) -> tuple[torch.Tensor, dict[str, float] | None]:
+            n_tot = len(ids) + (1 if include_null else 0)
+            if not vals_dict:
+                return torch.zeros(n_tot, device=dev, dtype=torch.float32), None
+            raw_vals = [float(vals_dict.get(cid, 0.0)) for cid in ids]
+            if not all(math.isfinite(v) for v in raw_vals):
+                return torch.zeros(n_tot, device=dev, dtype=torch.float32), None
+            # Include `'none'` at explicit baseline 0.0 inside the centering set so even when
+            # only 1 external object is in scene (e.g. solo book reading), Wood's epistemic prior
+            # genuinely distinguishes `book` from `none` instead of collapsing to `[0.0, 0.0]`.
+            all_vals = raw_vals + ([0.0] if include_null else [])
+            mean_v = sum(all_vals) / float(len(all_vals))
+            centered = [max(-2.0, min(2.0, (v - mean_v) * self.causal_prior_scale)) for v in all_vals]
+            return (
+                torch.tensor(centered, device=dev, dtype=torch.float32),
+                {cid: round(raw_vals[i], 5) for i, cid in enumerate(ids)},
+            )
 
-        obs_prior_obj = causal_prior_obj
-        if observe_causal_values:
-            raw_obs = [float(observe_causal_values.get(cid, 0.0)) for cid in ids]
-            if all(math.isfinite(v) for v in raw_obs):
-                mean_o = sum(raw_obs) / float(len(raw_obs))
-                centered_o = [max(-2.0, min(2.0, (v - mean_o) * self.causal_prior_scale)) for v in raw_obs]
-                obs_prior_obj = torch.tensor(centered_o, device=dev, dtype=torch.float32)
+        out_prior_full, causal_map = _build_prior(causal_values, bool(allow_null_out))
+        obs_vals_eff = observe_causal_values if observe_causal_values is not None else causal_values
+        in_prior_full, _ = _build_prior(obs_vals_eff, bool(allow_null_in))
 
         # 1) OUT channel (`send_target`): active whenever MengLi speaks; `'none'` when silent.
         out_ids = list(ids) + (['none'] if allow_null_out else [])
@@ -584,12 +588,11 @@ class GazeObjectPointer(nn.Module):
             out_entropy = 0.0
         else:
             out_obj_logits = self._compute_habit_logits(h, u, ctx, keys, recency, obj_states=obj_states)
-            if allow_null_out:
-                out_habit = torch.cat((out_obj_logits, dual.out_null_logit.reshape(1)), dim=0)
-                out_causal_prior = torch.cat((causal_prior_obj, torch.zeros(1, device=dev, dtype=torch.float32)), dim=0)
-            else:
-                out_habit = out_obj_logits
-                out_causal_prior = causal_prior_obj
+            out_habit = (
+                torch.cat((out_obj_logits, dual.out_null_logit.reshape(1)), dim=0)
+                if allow_null_out else out_obj_logits
+            )
+            out_causal_prior = out_prior_full
             out_total = out_habit + out_causal_prior
             out_probs_t = F.softmax(out_total, dim=-1)
             out_probs_np = out_probs_t.detach().cpu().numpy().astype(np.float64)
@@ -604,12 +607,11 @@ class GazeObjectPointer(nn.Module):
         # 2) IN channel (`observe_target`): always selects who MengLi actively observes (`O ∪ {∅}`).
         in_ids = list(ids) + (['none'] if allow_null_in else [])
         in_obj_logits = self._compute_observe_logits(h, u, ctx, keys, recency, obj_states=obj_states)
-        if allow_null_in:
-            in_habit = torch.cat((in_obj_logits, dual.in_null_logit.reshape(1)), dim=0)
-            in_causal_prior = torch.cat((obs_prior_obj, torch.zeros(1, device=dev, dtype=torch.float32)), dim=0)
-        else:
-            in_habit = in_obj_logits
-            in_causal_prior = obs_prior_obj
+        in_habit = (
+            torch.cat((in_obj_logits, dual.in_null_logit.reshape(1)), dim=0)
+            if allow_null_in else in_obj_logits
+        )
+        in_causal_prior = in_prior_full
         in_total = in_habit + in_causal_prior
         in_probs_t = F.softmax(in_total, dim=-1)
         in_probs_np = in_probs_t.detach().cpu().numpy().astype(np.float64)
@@ -815,7 +817,17 @@ class GazeObjectPointer(nn.Module):
             and boundary_context.get('model') is not None
         )
 
-        if (pending is None or not g_valid) and not has_boundary:
+        # Even when an un-scored internal turn (`in == 'none'`) has `g_valid == False`,
+        # keep symmetric Active-Inference entropy regularization active on dual-channel
+        # decisions (with ZERO reward/advantage) to prevent one-way dark-room collapse.
+        dual_entropy_only = (
+            pending is not None
+            and bool(pending.get('dual_channel'))
+            and (not g_valid)
+            and bool(pending.get('out_sampled') or pending.get('in_sampled'))
+        )
+
+        if (pending is None or (not g_valid and not dual_entropy_only)) and not has_boundary:
             return None
 
         dev = self.device
@@ -835,10 +847,11 @@ class GazeObjectPointer(nn.Module):
         pending_other_update = None
 
         with torch.enable_grad():
-            if pending is not None and g_valid:
-                steps = int(self.step_count.item())
-                base_g = float(self.baseline_g.item()) if steps > 0 else g_val
-                gaze_adv = max(-0.25, min(0.25, g_val - base_g))
+            if pending is not None and (g_valid or dual_entropy_only):
+                if g_valid:
+                    steps = int(self.step_count.item())
+                    base_g = float(self.baseline_g.item()) if steps > 0 else g_val
+                    gaze_adv = max(-0.25, min(0.25, g_val - base_g))
                 if pending.get('dual_channel'):
                     dual = self._dual()
                     ent_terms = []
@@ -855,7 +868,9 @@ class GazeObjectPointer(nn.Module):
                         o_logits = o_h + pending['out_causal_prior']
                         o_lp = F.log_softmax(o_logits, dim=-1)
                         o_ent = -(o_lp.exp() * o_lp).sum()
-                        total_loss = total_loss - (gaze_adv * o_lp[int(pending['out_idx'])]) - (self.entropy_coef * o_ent)
+                        if g_valid:
+                            total_loss = total_loss - (gaze_adv * o_lp[int(pending['out_idx'])])
+                        total_loss = total_loss - (self.entropy_coef * o_ent)
                         ent_terms.append(float(o_ent.item()))
                     if pending.get('in_sampled') and pending.get('in_idx') is not None:
                         i_obj = self._compute_observe_logits(
@@ -869,7 +884,9 @@ class GazeObjectPointer(nn.Module):
                         i_logits = i_h + pending['in_causal_prior']
                         i_lp = F.log_softmax(i_logits, dim=-1)
                         i_ent = -(i_lp.exp() * i_lp).sum()
-                        total_loss = total_loss - (gaze_adv * i_lp[int(pending['in_idx'])]) - (self.entropy_coef * i_ent)
+                        if g_valid:
+                            total_loss = total_loss - (gaze_adv * i_lp[int(pending['in_idx'])])
+                        total_loss = total_loss - (self.entropy_coef * i_ent)
                         ent_terms.append(float(i_ent.item()))
                     entropy_val = (sum(ent_terms) / len(ent_terms)) if ent_terms else 0.0
                 else:
@@ -1024,6 +1041,10 @@ class GazeObjectPointer(nn.Module):
                 if dual_has_grad:
                     torch.nn.utils.clip_grad_norm_(dual_params, 1.0)
                     self._dual_opt.step()
+                    with torch.no_grad():
+                        dual_m = self._dual()
+                        dual_m.in_null_logit.clamp_(-3.0, 1.5)
+                        dual_m.out_null_logit.clamp_(-3.0, 1.5)
                 if other_has_grad and self._other_opt is not None:
                     torch.nn.utils.clip_grad_norm_(other_params, 1.0)
                     self._other_opt.step()

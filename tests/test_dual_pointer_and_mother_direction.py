@@ -640,3 +640,61 @@ def test_self_cons_holdout_exclusion_and_scale_invariance():
     with patch.object(parent_cls, '_outcome_loss', return_value=(torch.zeros(()), dict(outcome_error=0.0))):
         _, diag = stub._outcome_loss(torch.randn(d_in), torch.randn(d_in), torch.randn(d_in))
     assert diag['internal_transition_samples'] == 2
+
+
+def test_active_inference_solo_epistemic_prior_and_dark_room_anti_collapse():
+    engine = _make_fake_engine()
+    gp: GazeObjectPointer = engine.model.gaze_pointer
+    solo_cands = [('book', 'Once upon a time'.encode('utf-8'))]
+
+    # 1. Single-object solo phase MUST preserve Wood's epistemic prior vs `'none'` (baseline 0.0)!
+    with torch.no_grad():
+        gp._dual().in_null_logit.fill_(0.0)
+    dec_pos = gp.select_interaction(
+        engine, candidates=solo_cands, utterance_bytes=b'',
+        observe_causal_values=dict(book=1.2), allow_null_in=True,
+    )
+    assert dec_pos['observe_probs']['book'] > dec_pos['observe_probs']['none'] + 0.15
+
+    # 2. Symmetric entropy exploration under `evidence_available=False` pulls inflated `in_null_logit`
+    #    back toward exploration with ZERO fake reward (`advantage is None`)!
+    with torch.no_grad():
+        gp._dual().in_null_logit.fill_(1.4)
+    before_null = float(gp._dual().in_null_logit.item())
+    for _ in range(5):
+        gp.select_interaction(
+            engine, candidates=solo_cands, utterance_bytes=b'hi',
+            observe_causal_values=dict(book=0.0), allow_null_in=True,
+        )
+        rec = gp.settle_credit(0.0, evidence_available=False)
+        assert rec is not None and rec['advantage'] is None
+    after_null = float(gp._dual().in_null_logit.item())
+    assert after_null < before_null
+    assert -3.0 <= after_null <= 1.5
+
+
+def test_read_only_live_probs_matches_peek_and_never_writes_counts():
+    from scripts.ib_local.language_action import peek, read_only_live_probs
+    from scripts.ib_local.retrieved_table_credit import RetrievedCreditTable
+
+    table = RetrievedCreditTable(orders=(1, 2, 4), heads=2, slots_log2=10)
+    seed = np.frombuffer(b'Once upon a time a little bird sang softly.', dtype=np.uint8)
+    table.run_credit(seed, max_window=len(seed) - 1)
+
+    rows_before = table.rows.copy()
+    count_before = table.count.copy()
+    tag_before = table.tag.copy()
+    err_before = table.err.copy()
+
+    header = np.frombuffer('妈妈：'.encode('utf-8'), dtype=np.uint8)
+    action_tail = int(seed[-1])
+    seq = np.concatenate((np.array([action_tail], np.uint8), header[:-1]))
+    expected_p0 = peek(table, action_tail)
+    probs = read_only_live_probs(table, seq, advance_history=True)
+
+    assert probs.shape == (len(seq), 256)
+    assert float(np.max(np.abs(probs[0] - expected_p0))) < 1e-7
+    assert np.array_equal(table.rows, rows_before)
+    assert np.array_equal(table.count, count_before)
+    assert np.array_equal(table.tag, tag_before)
+    assert np.array_equal(table.err, err_before)

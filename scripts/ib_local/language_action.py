@@ -54,6 +54,31 @@ def peek(table, byte):
                  1 << table.slots_log2, table.prior_weight, table.err_floor)
 
 
+def read_only_live_probs(table, seq, *, advance_history: bool = True) -> np.ndarray:
+    """Read live-context Fast Table probabilities across a masked header without writing counts.
+
+    Starts from `table.history` (so `out[0]` matches `peek(table, seq[0])` bit-for-bit),
+    never modifies `rows/count/tag/err`, and optionally advances the 8-byte sliding
+    `table.history` register so subsequent unmasked bytes see continuous context.
+    """
+    arr = np.ascontiguousarray(seq, dtype=np.uint8)
+    n = len(arr)
+    out = np.empty((n, 256), dtype=np.float32)
+    if n == 0:
+        return out
+    orders = np.asarray(table.orders, np.int64)
+    slots = 1 << table.slots_log2
+    hist = np.uint64(table.history)
+    for i in range(n):
+        b = int(arr[i])
+        out[i] = _peek(b, hist, table.rows, table.count, table.tag, table.err,
+                       orders, table.heads, slots, table.prior_weight, table.err_floor)
+        hist = ((hist << np.uint64(8)) | np.uint64(b)) & MASK64
+    if advance_history:
+        table.history = int(hist)
+    return out
+
+
 class TextChoiceWorld:
     """Two disk-backed streams, bounded reads and two cursors; no future previews.
 
