@@ -28,6 +28,22 @@ STAGE_EMERGING = 'emerging_scaffolded'
 STAGE_REFLECTIVE = 'reflective_inquiry'
 
 STAGE_ORDER = (STAGE_INFANT, STAGE_EMERGING, STAGE_REFLECTIVE)
+MIRROR_VERSION = 'v2_evidence_compact'
+
+FORM_LABELS: dict[str, str] = {
+    'silent': '沉默',
+    'babble': '零散字符',
+    'fragments': '短片段',
+    'coherent': '较长表达',
+    'extended': '较长表达',
+}
+
+_COMMON_SHORT_EN = frozenset({
+    'a', 'i', 'am', 'an', 'as', 'at', 'be', 'by', 'do', 'go', 'he', 'hi',
+    'if', 'in', 'is', 'it', 'me', 'my', 'no', 'of', 'oh', 'ok', 'on', 'or',
+    'so', 'to', 'up', 'us', 'we',
+})
+_TOKEN_RE = re.compile(r'[A-Za-z0-9]+|[\u4e00-\u9fff]{2,}')
 
 
 CARE_PLANS: dict[str, str] = {
@@ -73,12 +89,12 @@ def clean_utf8_excerpt(raw: bytes | str, max_chars: int = 160) -> str:
 
 
 def classify_utterance(raw: bytes | str) -> dict:
-    """Classify MengLi's actual output without assuming comprehension."""
+    """Classify MengLi's literal surface form (UTF-8 integrity + length) without claiming comprehension."""
     if isinstance(raw, (bytes, bytearray, memoryview)):
         b = bytes(raw)
         stripped = b.strip()
         if not stripped:
-            return dict(kind='silent', text='', valid_utf8_ratio=1.0, word_units=0, byte_len=0)
+            return dict(kind='silent', form_label='沉默', text='', valid_utf8_ratio=1.0, word_units=0, byte_len=0)
         decoded_rep = stripped.decode('utf-8', 'replace')
         rep_count = decoded_rep.count('\ufffd')
         total_chars = max(1, len(decoded_rep))
@@ -89,19 +105,31 @@ def classify_utterance(raw: bytes | str) -> dict:
         text = _SPACE_RE.sub(' ', _CONTROL_RE.sub(' ', str(raw))).strip()
         byte_len = len(text.encode('utf-8'))
         if not text:
-            return dict(kind='silent', text='', valid_utf8_ratio=1.0, word_units=0, byte_len=0)
+            return dict(kind='silent', form_label='沉默', text='', valid_utf8_ratio=1.0, word_units=0, byte_len=0)
         valid_ratio = 1.0
 
     ascii_words = _ASCII_WORD_RE.findall(text)
     cjk_chars = sum(len(m) for m in _CJK_RUN_RE.findall(text))
-    # Count 2 CJK chars ≈ 1 recognizable lexical unit alongside >=3-letter ASCII words.
+    # Count 2 CJK chars ≈ 1 lexical unit alongside >=3-letter ASCII runs.
     word_units = len(ascii_words) + (cjk_chars // 2)
 
     has_markup = ('[' in text) or (']' in text)
+    # Surface-form check for ASCII-heavy spans: reject clipped-start or noisy fragments
+    # (e.g. "perience. Fe frent ..." or "that meetions for spost, sa") from extended form.
+    ascii_heavy = (len(ascii_words) > 0 and cjk_chars < 6)
+    ascii_clean = True
+    if ascii_heavy:
+        raw_tokens = re.findall(r"[A-Za-z]+(?:'[A-Za-z]+)?", text)
+        orphan_short = [t for t in raw_tokens if len(t) <= 2 and t.lower() not in _COMMON_SHORT_EN]
+        starts_clipped = bool(re.match(r'^[^A-Za-z0-9\u4e00-\u9fff]|^[a-z]{2,}\.\s+[A-Z]', text))
+        ends_clipped = bool(re.search(r'(?:,\s*[a-z]{1,2}|:\s*[a-z]{1,2})$', text))
+        if orphan_short or starts_clipped or ends_clipped:
+            ascii_clean = False
+
     if not text:
         kind = 'babble'
     elif (valid_ratio >= 0.95 and not has_markup
-          and (word_units >= 4 or (cjk_chars >= 6 and len(text) >= 6))):
+          and ((cjk_chars >= 6 and len(text) >= 6) or (word_units >= 4 and ascii_clean))):
         kind = 'coherent'
     elif valid_ratio >= 0.72 and (word_units >= 1 or cjk_chars >= 2):
         kind = 'fragments'
@@ -110,6 +138,7 @@ def classify_utterance(raw: bytes | str) -> dict:
 
     return dict(
         kind=kind,
+        form_label=FORM_LABELS.get(kind, '短片段'),
         text=text[:180],
         valid_utf8_ratio=round(float(valid_ratio), 4),
         word_units=int(word_units),
@@ -367,6 +396,290 @@ def capture_body_mirror(
     )
 
 
+def _extract_lexical_terms(text: str) -> list[str]:
+    """Extract normalized >=3-letter ASCII tokens and 2-char CJK bigrams for literal follow-up tracking."""
+    if not text:
+        return []
+    seen: list[str] = []
+    for tok in re.findall(r'[A-Za-z]{3,}', text.lower()):
+        if tok not in seen:
+            seen.append(tok)
+    for run in _CJK_RUN_RE.findall(text):
+        if len(run) >= 2:
+            for i in range(len(run) - 1):
+                bg = run[i:i + 2]
+                if bg not in seen:
+                    seen.append(bg)
+    return seen
+
+
+def _read_archived_slot_text(engine, slot: int) -> str | None:
+    """Return literal stored utterance text for a hot memory slot ONLY if actually recorded in ExactUtteranceTable."""
+    if engine is None or slot < 0:
+        return None
+    model = getattr(engine, 'model', None)
+    ret = getattr(model, 'retrieval', None) if model is not None else None
+    if ret is None:
+        return None
+    words = getattr(ret, 'words', None)
+    counts = getattr(ret, 'word_count', None)
+    if words is None or counts is None:
+        return None
+    try:
+        cap = int(counts.shape[0])
+        if slot >= cap:
+            return None
+        wc = int(counts[slot].item())
+        if wc <= 0:
+            return None
+        raw = bytes(words[slot, :wc].detach().cpu().tolist())
+        cleaned = clean_utf8_excerpt(raw, max_chars=48)
+        return cleaned if cleaned else None
+    except Exception:
+        return None
+
+
+def build_learning_trace(
+    engine,
+    row: dict,
+    *,
+    cycle: int = 0,
+    prev_trace: dict | None = None,
+) -> dict:
+    """Build one shared 5-stage factual learning trace for BOTH Mother and the Web UI.
+
+    Strictly read-only and strictly factual:
+      1. situation: heard/read context, send/observe targets, perspective boundary
+      2. expression_choice: literal utterance, surface form, and pathway push (habit / Wood / episodic / water)
+      3. memory_recall: top weighted episodic slots, age in bytes, archive episode id, and literal text ONLY when stored
+      4. response_revision: actual reply, ΔG, slot retention feedback (+ / -), causal commit status
+      5. followup: literal lexical continuity against the immediately preceding trace
+    """
+    world = row.get('world') if isinstance(row.get('world'), dict) else {}
+    gaze = world.get('gaze_decision') if isinstance(world.get('gaze_decision'), dict) else {}
+    send_t = world.get('send_target_id') or row.get('send_target_id') or gaze.get('send_target') or 'none'
+    obs_t = world.get('observe_target_id') or row.get('observe_target_id') or gaze.get('observe_target') or 'none'
+    mode = world.get('interaction_mode') or row.get('interaction_mode') or gaze.get('interaction_mode') or ''
+    persp = world.get('perspective_mode') or None
+    channel = world.get('channel') or 'unknown'
+    stumble = str(world.get('mirror_excerpt') or '')[:64]
+    book_ex = str(world.get('book_excerpt') or '')[:100]
+
+    raw_utt = str(world.get('child_text') or '').strip()
+    if raw_utt in ('(silent)', '[咿呀声]'):
+        utt_cls = classify_utterance(b'' if raw_utt == '(silent)' else b'\xff')
+    else:
+        utt_cls = classify_utterance(raw_utt)
+
+    wood_tv = row.get('wood_policy_tv')
+    epi_tv = row.get('episodic_policy_tv')
+    water_tv = row.get('water_direct_choice_tv')
+    push_parts = []
+    if isinstance(wood_tv, (int, float)) and math.isfinite(wood_tv) and wood_tv > 1e-4:
+        push_parts.append(f'木前瞻TV={wood_tv:.4f}')
+    if isinstance(epi_tv, (int, float)) and math.isfinite(epi_tv) and epi_tv > 1e-4:
+        push_parts.append(f'情景记忆TV={epi_tv:.4f}')
+    if isinstance(water_tv, (int, float)) and math.isfinite(water_tv) and water_tv > 1e-5:
+        push_parts.append(f'水直连TV={water_tv:.4f}')
+    obs_prior = gaze.get('observe_causal_prior') if isinstance(gaze.get('observe_causal_prior'), dict) else None
+    if obs_prior:
+        prior_str = '/'.join(f'{k}:{v:+.3f}' for k, v in obs_prior.items())
+        push_parts.append(f'视线木先验({prior_str})')
+
+    # Stage 3: Memory recall (only real active weighted slots; text ONLY when stored in ExactUtteranceTable)
+    slots = row.get('episodic_read_slots') or []
+    weights = row.get('episodic_read_weights') or []
+    mem = getattr(getattr(engine, 'model', None), 'memory', None) if engine is not None else None
+    arch = getattr(engine, 'causal_archive', None) if engine is not None else None
+    hot_map = getattr(arch, 'hot', None) if arch is not None else None
+    mem_clock = None
+    if mem is not None and getattr(mem, 'clock', None) is not None:
+        try:
+            mem_clock = int(mem.clock.item()) if hasattr(mem.clock, 'item') else int(mem.clock)
+        except Exception:
+            mem_clock = None
+
+    top_slots = []
+    for s_val, w_val in zip(slots, weights):
+        if not isinstance(w_val, (int, float)) or w_val <= 0.01:
+            continue
+        slot_i = int(s_val)
+        age_b = None
+        if mem is not None and mem_clock is not None and getattr(mem, 'last_write', None) is not None:
+            try:
+                lw = int(mem.last_write[slot_i].item())
+                if lw > 0:
+                    age_b = max(0, mem_clock - lw)
+            except Exception:
+                age_b = None
+        ep_id = None
+        if isinstance(hot_map, dict) and str(slot_i) in hot_map:
+            ep_id = hot_map[str(slot_i)].get('id')
+        stored_txt = _read_archived_slot_text(engine, slot_i)
+        top_slots.append(dict(
+            slot=slot_i,
+            weight=round(float(w_val), 3),
+            episode_id=ep_id,
+            age_bytes=age_b,
+            text=stored_txt,
+        ))
+        if len(top_slots) >= 3:
+            break
+
+    # Stage 4: Response & Revision (actual reply + retention feedback + causal commit)
+    reply_txt = str(world.get('mother_reply') or world.get('text_reply') or '').strip()[:140]
+    metal_g = row.get('metal_g')
+    metal_g_f = round(float(metal_g), 4) if isinstance(metal_g, (int, float)) and math.isfinite(metal_g) else None
+    resp_nll = row.get('response_nll')
+    resp_nll_f = round(float(resp_nll), 3) if isinstance(resp_nll, (int, float)) and math.isfinite(resp_nll) else None
+
+    rc_obs = (((row.get('read_credit') or {}).get('response') or {}).get('retention_feedback') or {}).get('observations') or []
+    pos_obs = [o for o in rc_obs if isinstance(o, dict) and isinstance(o.get('benefit'), (int, float)) and o['benefit'] > 0]
+    neg_obs = [o for o in rc_obs if isinstance(o, dict) and isinstance(o.get('benefit'), (int, float)) and o['benefit'] < 0]
+    best_fb = None
+    if pos_obs:
+        b = max(pos_obs, key=lambda o: float(o['benefit']))
+        best_fb = dict(slot=int(b['slot']), age_bytes=b.get('age_bytes'), benefit=round(float(b['benefit']), 5))
+    worst_fb = None
+    if neg_obs:
+        w = min(neg_obs, key=lambda o: float(o['benefit']))
+        worst_fb = dict(slot=int(w['slot']), age_bytes=w.get('age_bytes'), benefit=round(float(w['benefit']), 5))
+
+    ut = row.get('use_transport') if isinstance(row.get('use_transport'), dict) else {}
+    causal_committed = bool(ut.get('committed', False))
+    causal_unknown = ut.get('unknown') if isinstance(ut.get('unknown'), str) else None
+
+    # Stage 5: Follow-up lexical continuity vs immediately previous trace
+    cur_terms = _extract_lexical_terms(raw_utt if raw_utt not in ('(silent)', '[咿呀声]') else '')
+    reused_self: list[str] = []
+    reused_reply: list[str] = []
+    followup_status = 'quiet' if not cur_terms else 'new_attempt'
+    if cur_terms and isinstance(prev_trace, dict):
+        prev_u = str((prev_trace.get('expression_choice') or {}).get('utterance_text') or '')
+        prev_r = str((prev_trace.get('response_revision') or {}).get('reply_text') or '')
+        prev_u_terms = set(_extract_lexical_terms(prev_u))
+        prev_r_terms = set(_extract_lexical_terms(prev_r))
+        reused_self = [t for t in cur_terms if t in prev_u_terms][:3]
+        reused_reply = [t for t in cur_terms if t in prev_r_terms][:3]
+        if reused_reply:
+            followup_status = 'echoed_reply'
+        elif reused_self:
+            followup_status = 'continued_self'
+
+    return dict(
+        cycle=int(cycle),
+        mirror_version=MIRROR_VERSION,
+        situation=dict(
+            channel=str(channel),
+            send_target=str(send_t),
+            observe_target=str(obs_t),
+            interaction_mode=str(mode),
+            perspective_mode=persp,
+            stumble_excerpt=stumble,
+            book_excerpt=book_ex,
+        ),
+        expression_choice=dict(
+            utterance_text=raw_utt[:100],
+            form_label=utt_cls['form_label'],
+            prior_status=gaze.get('prior_status'),
+            observe_probs=(gaze.get('observe_probs') if isinstance(gaze.get('observe_probs'), dict) else None),
+            observe_causal_prior=obs_prior,
+            wood_policy_tv=(round(float(wood_tv), 5) if isinstance(wood_tv, (int, float)) and math.isfinite(wood_tv) else None),
+            episodic_policy_tv=(round(float(epi_tv), 5) if isinstance(epi_tv, (int, float)) and math.isfinite(epi_tv) else None),
+            water_direct_choice_tv=(round(float(water_tv), 5) if isinstance(water_tv, (int, float)) and math.isfinite(water_tv) else None),
+            push_summary='，'.join(push_parts) if push_parts else '习惯主导',
+        ),
+        memory_recall=dict(
+            top_slots=top_slots,
+            warmed_relations=(row.get('causal_archive') or {}).get('warmed_relations') if isinstance(row.get('causal_archive'), dict) else None,
+            loaded_episodes=(row.get('causal_archive') or {}).get('loaded_episodes') if isinstance(row.get('causal_archive'), dict) else None,
+        ),
+        response_revision=dict(
+            reply_text=reply_txt,
+            metal_g=metal_g_f,
+            response_nll=resp_nll_f,
+            slot_feedback=dict(pos=len(pos_obs), neg=len(neg_obs), best=best_fb, worst=worst_fb),
+            causal_committed=causal_committed,
+            causal_unknown=causal_unknown,
+        ),
+        followup=dict(
+            status=followup_status,
+            reused_from_self=reused_self,
+            reused_from_reply=reused_reply,
+        ),
+    )
+
+
+def format_prev_trace_for_mother(prev_trace: dict | None, current_utterance: str = '') -> str:
+    """Format a compact 1-line factual summary of the previous turn's outcome & current carry-over."""
+    if not isinstance(prev_trace, dict):
+        return ''
+    ec = prev_trace.get('expression_choice') or {}
+    rr = prev_trace.get('response_revision') or {}
+    mr = prev_trace.get('memory_recall') or {}
+    parts = []
+    prev_u = str(ec.get('utterance_text') or '').strip()
+    if prev_u:
+        parts.append(f'上轮「{prev_u[:24]}」')
+    g = rr.get('metal_g')
+    if isinstance(g, (int, float)):
+        parts.append(f'ΔG={g:+.4f}')
+    fb = rr.get('slot_feedback') or {}
+    pos_n, neg_n = int(fb.get('pos') or 0), int(fb.get('neg') or 0)
+    if pos_n or neg_n:
+        parts.append(f'经历反馈+{pos_n}/-{neg_n}')
+    top_slots = mr.get('top_slots') or []
+    txt_slots = [f'槽{s["slot"]}「{s["text"][:16]}」' for s in top_slots if s.get('text')]
+    if txt_slots:
+        parts.append('取用' + ','.join(txt_slots[:2]))
+    elif top_slots:
+        parts.append(f'取用槽{top_slots[0]["slot"]}(w={top_slots[0]["weight"]:.2f})')
+    # Live lexical carry-over between previous turn and THIS current utterance
+    cur_terms = _extract_lexical_terms(current_utterance)
+    if cur_terms:
+        prev_r_terms = set(_extract_lexical_terms(str(rr.get('reply_text') or '')))
+        prev_u_terms = set(_extract_lexical_terms(prev_u))
+        hit_r = [t for t in cur_terms if t in prev_r_terms][:2]
+        hit_u = [t for t in cur_terms if t in prev_u_terms][:2]
+        if hit_r:
+            parts.append(f'本轮承接回应词「{"/".join(hit_r)}」')
+        elif hit_u:
+            parts.append(f'本轮延续自词「{"/".join(hit_u)}」')
+    return '｜'.join(parts)
+
+
+def format_trace_for_reflection(trace: dict) -> str:
+    """One crisp factual evidence line per turn for Mother's 16-turn reflection dossier."""
+    cyc = trace.get('cycle', '?')
+    sit = trace.get('situation') or {}
+    ec = trace.get('expression_choice') or {}
+    mr = trace.get('memory_recall') or {}
+    rr = trace.get('response_revision') or {}
+    fu = trace.get('followup') or {}
+
+    persp = '可见' if sit.get('perspective_mode') == 'mirror_visible' else ('仅书页' if sit.get('perspective_mode') == 'book_only' else '-')
+    tgt = f'{sit.get("send_target", "-")}→{sit.get("observe_target", "-")}'
+    utt = ec.get('utterance_text') or '（静）'
+    form = ec.get('form_label') or ''
+    rep = str(rr.get('reply_text') or '')[:32]
+    g = rr.get('metal_g')
+    g_s = f'ΔG={g:+.4f}' if isinstance(g, (int, float)) else 'ΔG=-'
+    fb = rr.get('slot_feedback') or {}
+    fb_s = f'槽+{fb.get("pos", 0)}/-{fb.get("neg", 0)}' if (fb.get('pos') or fb.get('neg')) else ''
+    top_slots = mr.get('top_slots') or []
+    mem_s = ''
+    if top_slots:
+        s0 = top_slots[0]
+        mem_s = f'忆槽{s0["slot"]}「{s0["text"][:14]}」' if s0.get('text') else f'忆槽{s0["slot"]}'
+    fu_map = {'echoed_reply': '承回应', 'continued_self': '续自词', 'new_attempt': '新试', 'quiet': '静'}
+    fu_s = fu_map.get(fu.get('status', ''), '')
+    reused = (fu.get('reused_from_reply') or fu.get('reused_from_self') or [])
+    if reused:
+        fu_s += f'({"/".join(reused[:2])})'
+    extras = ' '.join(x for x in (g_s, fb_s, mem_s, fu_s) if x)
+    return f'  #{cyc} [{persp}|{tgt}|{form}] 梦漓「{utt[:36]}」→ 回「{rep}」｜{extras}'
+
+
 def format_caregiver_turn(
     snapshot: BodyMirrorSnapshot,
     *,
@@ -379,94 +692,86 @@ def format_caregiver_turn(
     include_book_excerpt: bool = True,
     allow_mother_directives: bool = False,
     has_parent: bool = False,
+    prev_trace: dict | None = None,
+    current_gaze: dict | None = None,
+    turn_number: int = 0,
 ) -> str:
-    """Format the tail-only ``user/message`` packet for the existing DSH Mother.
+    """Format an economical, factual tail-only ``user/message`` packet for DSH Mother.
 
-    Supports orthogonal `(u, out, in)` interaction semantics:
-      - `(spoke, mother, mother)` + `include_book_excerpt=False`: pure face-to-face chat
-        without forcing a storybook page into Mother's prompt.
-      - `(spoke, mother, book)` + `include_book_excerpt=True`: shared co-reading over the page.
-      - `(spoke, none, mother)`: MengLi murmured to herself while looking at Mother.
-      - `(silent, none, mother)`: MengLi quietly looked up at Mother without speaking.
-
-    Never mutates ``system_prompt`` or earlier turns, keeping DeepSeek server-side
-    prefix KV cache hits intact.
+    Never mutates ``system_prompt`` or earlier turns, keeping DeepSeek prefix KV cache hits
+    intact while slashing repetitive per-turn instruction tokens by >60%.
     """
     if perspective_mode not in ('mirror_visible', 'book_only'):
         raise ValueError(f'unknown perspective_mode: {perspective_mode}')
     if trigger_kind not in ('child_spoke', 'child_replied', 'mother_proactive'):
         raise ValueError(f'unknown trigger_kind: {trigger_kind}')
 
+    # 1) Compact single-line situation + perspective header (strictly honest perspective boundary).
+    vis_tag = '可见视界' if perspective_mode == 'mirror_visible' else '仅见书页，看不到内部状态'
     if send_target == 'mother' and observe_target == 'mother' and not include_book_excerpt:
-        if trigger_kind == 'child_replied':
-            trigger_label = '[情境: 孩子正看着你接续刚才的聊天，这是面对面的日常对话，顺着她的话自然聊下去即可，不必硬提书页]'
-        else:
-            trigger_label = '[情境: 孩子把注意力从书页移开，直接看着你说话，这是你们面对面的日常聊天，顺着她的话自然聊下去即可]'
+        sit_txt = '面对面聊天（未看书页），接续刚才对话' if trigger_kind == 'child_replied' else '面对面聊天（未看书页），直接看着你开口'
     elif send_target == 'none' and observe_target == 'mother':
-        if snapshot.utterance_kind == 'silent':
-            trigger_label = '[情境: 孩子安静抬头看着你，没有开口；你可以温柔闲聊两句、关心她，也可以用「@翻书:关键词」带她看一页书，或回复「@安静陪伴」静静陪着她]'
-        else:
-            trigger_label = '[情境: 孩子一边看着你一边小声自言自语；你可以轻声温和搭一句，也可以回复「@安静陪伴」先不打断她]'
+        sit_txt = '安静抬头看你未开口' if snapshot.utterance_kind == 'silent' else '看着你小声自言自语'
     elif send_target == 'mother' and observe_target == 'book':
-        trigger_label = '[情境: 孩子一边看着眼前书页一边向你开口，你们正在共读，顺着她的话或眼前书页自然接下去]'
+        sit_txt = '边看书页边向你开口'
     else:
-        trigger_label = {
-            'child_spoke': '[情境: 孩子刚向你开口，按她的实际表达自然搭话，每次换不同的生活口吻]',
-            'child_replied': '[情境: 孩子回应了你上一轮的话，顺着你们的对话自然接下去]',
-            'mother_proactive': '[情境: 孩子安静读书时停顿下来，你可以轻声聊两句日常或眼前有趣的地方，也可以抛一个不强求回答的小好奇]',
+        sit_txt = {
+            'child_spoke': '共读中向你开口',
+            'child_replied': '共读中回应你上轮的话',
+            'mother_proactive': '安静读书停顿',
         }[trigger_kind]
+    lines = [f'[{vis_tag}｜{sit_txt}]']
 
-    lines = [trigger_label]
-    if include_book_excerpt:
-        if perspective_mode == 'mirror_visible':
-            lines.append('[视角: 可见共读书页与孩子此刻状态]')
-        else:
-            lines.append('[视角: 仅见共读书页，看不到孩子内部状态]')
-    else:
-        if perspective_mode == 'mirror_visible':
-            lines.append('[视角: 面对面聊天（当前未看书页），可见孩子此刻状态]')
-        else:
-            lines.append('[视角: 面对面聊天（当前未看书页），看不到孩子内部状态]')
-
+    # 2) Shared storybook excerpt (capped compactly at 150 chars to save tokens).
     if include_book_excerpt and snapshot.book_excerpt:
-        lines.append(f'[共读书页] {snapshot.book_excerpt}')
+        lines.append(f'[书页] {snapshot.book_excerpt[:150]}')
 
+    # 3) Factual bodily mirror + previous-turn learning outcome (ONLY in mirror_visible!).
     if perspective_mode == 'mirror_visible':
-        lines.append(
-            f'[状态镜映] {snapshot.stumble_cue}；{snapshot.trigger_cue}；{snapshot.stability_cue}。'
-        )
-        if snapshot.five_elements_cue:
-            lines.append(f'[内部运转与记忆库] {snapshot.five_elements_cue}')
+        mirror_parts = []
+        if snapshot.stumble_excerpt:
+            mirror_parts.append(f'卡顿「{snapshot.stumble_excerpt[:56]}」({snapshot.burst_ratio:.2f}x)')
+        if snapshot.stability_cue:
+            mirror_parts.append(snapshot.stability_cue)
+        if isinstance(current_gaze, dict):
+            op = current_gaze.get('observe_probs') or current_gaze.get('probs')
+            if isinstance(op, dict) and op:
+                p_str = '/'.join(f'{k}:{int(round(100 * v))}%' for k, v in op.items())
+                mirror_parts.append(f'视线({p_str})')
+        if mirror_parts:
+            lines.append('[视界] ' + '｜'.join(mirror_parts))
+        prev_line = format_prev_trace_for_mother(prev_trace, snapshot.utterance_text)
+        if prev_line:
+            lines.append(f'[学习链] {prev_line}')
 
     if extra_note:
-        lines.append(f'[现场动态] {extra_note.strip()}')
+        lines.append(f'[现场] {extra_note.strip()}')
 
+    # 4) Actual utterance (honest literal form; never overclaim comprehension).
     if snapshot.utterance_kind == 'silent':
-        lines.append('[本次表达] （安静未开口）')
+        lines.append('[梦漓] （安静未开口）')
     elif snapshot.utterance_kind == 'babble':
         shown = snapshot.utterance_text or '零散字符'
-        lines.append(f'[本次表达] （尚不成句的牙牙学语）{shown}')
+        lines.append(f'[梦漓] （零散字符）{shown}')
     else:
-        lines.append(f'[本次表达] {snapshot.utterance_text}')
+        lines.append(f'[梦漓] {snapshot.utterance_text}')
 
-    # Bilingual mirror cue: when child speaks predominantly English, nudge Mother to reply in warm English.
+    # 5) Bilingual mirror cue only when predominantly English.
     if snapshot.utterance_text:
         en_chars = sum(1 for ch in snapshot.utterance_text if 'a' <= ch.lower() <= 'z')
         cjk_chars = sum(len(m) for m in _CJK_RUN_RE.findall(snapshot.utterance_text))
         if en_chars >= 6 and en_chars > cjk_chars * 3:
-            lines.append('[语言跟随] 孩子本轮主要在说英文，请用温柔、简单、自然的英文回应。')
+            lines.append('[语言] 本轮偏英文，请用温柔简短英文回应。')
 
-    if allow_mother_directives:
-        dir_cue = (
-            '[行动指向] 默认直接对梦漓说话；如需主动翻书找某段故事，行首写「@翻书:关键词」空格后再接口语；'
-            '若此刻安静陪着更好、不想打断，只回复「@安静陪伴」'
-        )
-        if has_parent:
-            dir_cue += '；若要转头对爸爸说，行首写「@对爸爸」空格后再接口语'
-        lines.append(dir_cue)
-
+    # 6) Economical directives & anti-repetition cue (only emit when actually needed!).
+    cue_items = []
+    if allow_mother_directives and (has_parent or turn_number == 0 or (turn_number % 8 == 0)):
+        d_txt = '可用@翻书:词 或 @安静陪伴' + (' 或 @对爸爸' if has_parent else '') + '；纯口语无括号动作'
+        cue_items.append(d_txt)
     if opening_cue:
-        lines.append(f'[起句节奏] {opening_cue.strip()}')
+        cue_items.append(opening_cue.strip())
+    if cue_items:
+        lines.append('[提示] ' + '；'.join(cue_items))
 
     return '\n'.join(lines)
 
@@ -641,34 +946,44 @@ def build_five_element_reflection_dossier(
     recent_stumbles: Iterable[str] = (),
     recent_flux: dict | None = None,
     presence_labels: Iterable[str] = (),
+    recent_traces: Iterable[dict] = (),
 ) -> str:
-    """Build a rich, factual Five-Element + Causal Bank + Episode Recall reflection dossier."""
+    """Build an evidence-anchored, compact reflection dossier for Mother (zero semantic overclaiming)."""
     obs = _extract_five_element_observables(engine)
     kinds = list(recent_kinds)
-    kind_counts = {k: kinds.count(k) for k in ('silent', 'babble', 'fragments', 'coherent')}
+    form_counts = {
+        '沉默': kinds.count('silent'),
+        '零散字符': kinds.count('babble'),
+        '短片段': kinds.count('fragments'),
+        '较长表达': kinds.count('coherent') + kinds.count('extended'),
+    }
     mg = [float(x) for x in recent_metal_g if isinstance(x, (int, float)) and math.isfinite(x)]
     mv_g = [float(x) for x in mirror_g if isinstance(x, (int, float)) and math.isfinite(x)]
     bo_g = [float(x) for x in book_only_g if isinstance(x, (int, float)) and math.isfinite(x)]
-    stumbles = [s for s in recent_stumbles if s][-5:]
+    stumbles = [s for s in recent_stumbles if s][-4:]
+    traces = [t for t in recent_traces if isinstance(t, dict)][-14:]
 
     lines = [
-        f'[阶段性育儿复盘与“梦漓模型”更新 · 第 {cycle} 轮 / 累计妈妈互动 {mother_turns} 轮]',
-        '请作为梦漓的妈妈，结合你前面完整的陪伴记忆与下面最新的内部机制运转、因果关系库、情景经历调用及成长实测数据，像了解学生的老师那样更新你心中的「梦漓模型」，并决定是否微调下一阶段的育儿计划。',
-        f'- 当前发育阶段：{care_stage}（计划 v{plan_version}）',
-        f'- 当前在场对象：{", ".join(presence_labels) if presence_labels else "书页, 妈妈"}',
-        f'- 梦漓各核心模块运转实测：',
-        f'  · 语言预测与动态分块（H-Net）：动态压缩比={obs.get("hnet_ratio", "未知")}x，近期阅读均损 NLL_ema={obs.get("nll_ema", "未知")}',
-        f'  · 专注节律与内在动量（ALIF / 相空间）：动量波动 z_kin={obs.get("fire_z_kin", "未知")}，自由能压力={obs.get("fire_pressure", "未知")}，停顿触发分布={obs.get("alif_causes", {})}',
-        f'  · 主动意愿与行动规划：直觉快想占比={obs.get("wood_fast_rate", "未知")}（决策次数={obs.get("wood_decisions", "未知")}），近期表达形态分布={kind_counts}',
-        f'  · 情景经历库与互动回报：经历库占用={obs.get("memory_occupied", "未知")}/{obs.get("memory_capacity", "未知")}（累计写入={obs.get("episodes_committed", "未知")}），近期平均 ΔG={(round(sum(mg)/len(mg), 4) if mg else "未知")}',
-        f'  · 因果关系库：活跃因果关系={obs.get("causal_active_relations", "未知")}/{obs.get("causal_capacity", "未知")}，累计因果证据={obs.get("causal_evidence_total", "未知")}，归档关系={obs.get("archive_relations", "未知")}',
-        f'- 双视角表现：可见视界平均 ΔG={(round(sum(mv_g)/len(mv_g), 4) if mv_g else "暂无")}（{len(mv_g)}轮） vs 仅见书页平均 ΔG={(round(sum(bo_g)/len(bo_g), 4) if bo_g else "暂无")}（{len(bo_g)}轮）',
+        f'[阶段性复盘 · 第 {cycle} 轮 / 妈妈累计 {mother_turns} 轮 / 镜映 {MIRROR_VERSION}]',
+        '请严格依据下面最近十余轮的真实交互证据链更新「梦漓模型」：每条判断须标出近期轮次号(#轮次)；旧画像中近16轮缺乏新证据的说法请直接删去，如实记录破碎或未接住的反例。',
+        f'- 阶段/在场：{care_stage}(v{plan_version})｜{", ".join(presence_labels) if presence_labels else "书页, 妈妈"}',
+        f'- 字面形态计数（仅按字数与UTF-8完整度，不代表成句或理解）：{form_counts}',
+        (
+            f'- 内部运转：H-Net={obs.get("hnet_ratio", "-")}x, NLL_ema={obs.get("nll_ema", "-")}｜'
+            f'火z_kin={obs.get("fire_z_kin", "-")}｜木快想={obs.get("wood_fast_rate", "-")}｜'
+            f'经历库={obs.get("memory_occupied", "-")}/{obs.get("memory_capacity", "-")}(写{obs.get("episodes_committed", "-")})｜'
+            f'因果库={obs.get("causal_active_relations", "-")}({obs.get("causal_evidence_total", "-")}证)'
+        ),
+        (
+            f'- 互动回报：近期均ΔG={(round(sum(mg)/len(mg), 4) if mg else "-")}｜'
+            f'可见视界={(round(sum(mv_g)/len(mv_g), 4) if mv_g else "-")}({len(mv_g)}轮) vs '
+            f'仅书页={(round(sum(bo_g)/len(bo_g), 4) if bo_g else "-")}({len(bo_g)}轮)'
+        ),
     ]
     if recent_flux:
         lines.append(
-            f'- 最近客观通量探针：英文16KB NLL={recent_flux.get("combined_16384_nll")}，'
-            f'中文8KB NLL={recent_flux.get("chinese_8192_nll")}，'
-            f'64旧事实MSE={recent_flux.get("fresh_64_facts_mse")}'
+            f'- 固定探针：英16KB={recent_flux.get("combined_16384_nll")}｜'
+            f'中8KB={recent_flux.get("chinese_8192_nll")}｜64旧事实MSE={recent_flux.get("fresh_64_facts_mse")}'
         )
     from scripts.ib_local import gaze_pointer as _gp
     gp_diag = _gp.diagnostics(engine)
@@ -677,22 +992,24 @@ def build_five_element_reflection_dossier(
         g_ema = gp_diag.get('target_g_ema') or {}
         for tid, cnt in sorted(gp_diag['target_counts'].items()):
             ge = g_ema.get(tid)
-            ge_s = f'(均ΔG={ge:+.4f})' if isinstance(ge, (int, float)) else ''
-            parts.append(f'{tid}:{cnt}次{ge_s}')
-        lines.append(f'- 对象指向分布（视线自主选择，熵={gp_diag.get("mean_entropy")}）：' + '，'.join(parts))
+            ge_s = f'(ΔG={ge:+.4f})' if isinstance(ge, (int, float)) else ''
+            parts.append(f'{tid}:{cnt}{ge_s}')
+        lines.append(f'- 对象指向(熵={gp_diag.get("mean_entropy")})：' + '，'.join(parts))
+    if traces:
+        lines.append('- 最近真实轨迹证据链（原话/回应/回报/经历槽/承接）：')
+        for tr in traces:
+            lines.append(format_trace_for_reflection(tr))
     if stumbles:
-        lines.append('- 最近典型卡顿片段：' + ' / '.join(f'「{s[:48]}」' for s in stumbles))
+        lines.append('- 近期卡顿：' + ' / '.join(f'「{s[:42]}」' for s in stumbles))
     if prior_mengli_model:
-        lines.append(f'- 你上一阶段的梦漓模型：{prior_mengli_model}')
-    lines.append(f'- 当前生效育儿计划：{current_plan_text[:320]}')
+        lines.append(f'- 上期画像（缺乏本期轮次证据的旧结论应淘汰）：{prior_mengli_model[:360]}')
+    lines.append(f'- 当前计划(v{plan_version})：{current_plan_text[:280]}')
     lines.append(
-        '请严格只返回一个 JSON 对象（不要加多余解释），字段如下：\n'
-        '{\n'
-        '  "mengli_model": "你对梦漓当前学习进程、表达性格与主要薄弱点的事实性画像（2到3句中文）",\n'
-        '  "progress_note": "记入育儿手记的本阶段进展与发现（2到3句中文）",\n'
-        '  "update_plan": true或false,\n'
-        '  "new_care_plan": "仅当 update_plan 为 true 时填写：面向接下来约16轮的具体中文育儿计划（150字内，严守视角边界、动态脚手架与简洁回复总纲）"\n'
-        '}'
+        '严格只返回JSON：\n'
+        '{"mengli_model":"2-3句中文，每条判断带#轮次依据，含正例与反例，淘汰无近期证据的旧印象",'
+        '"progress_note":"2句中文记录本阶段真实变化与未接住处",'
+        '"update_plan":true或false,'
+        '"new_care_plan":"仅update_plan为true时填，140字内中文计划，保留@翻书:词/@安静陪伴与纯口语要求"}'
     )
     return '\n'.join(lines)
 

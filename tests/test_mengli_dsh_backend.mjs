@@ -269,3 +269,33 @@ test('usage normalization counts provider cache tokens disjointly, preserving ge
   });
   assert.equal(normalizeUsage({ prompt_tokens: 100, completion_tokens: 2, prompt_cache_hit_tokens: 30 }).inputTokens, 70);
 });
+
+test('economical window downsizing forks, compacts under inherited ceiling, and switches to smaller budget', async t => {
+  const f = await fixture(t);
+  const r = f.runtime;
+  const bigSettings = {
+    model: 'deepseek-flash', temperature: 0.7, max_tokens: 120,
+    context_tokens: 32768, headroom_tokens: 2048, retain_tokens: 6144, summary_tokens: 1024,
+  };
+  const smallSettings = {
+    model: 'deepseek-flash', temperature: 0.7, max_tokens: 120,
+    context_tokens: 8192, headroom_tokens: 1024, retain_tokens: 2048, summary_tokens: 512,
+  };
+  // Seed enough turns (~7500 heuristic tokens) so 32K holds them easily, while 8K must compact on fork.
+  const longTurns = Array.from({ length: 18 }, (_, i) => ({
+    input: `child turn ${i}: ` + 'word '.repeat(220),
+    delivered: `mother reply ${i}: ` + 'gentle '.repeat(120),
+  }));
+  const init = await r.restore(restore('big-branch', longTurns, bigSettings));
+  assert.equal(init.checkpoint_ref.summary_version, 0);
+  const resized = await r.restore({
+    branch_id: 'small-branch',
+    checkpoint_ref: init.checkpoint_ref,
+    settings: smallSettings,
+  });
+  assert.equal(resized.checkpoint_ref.summary_version, 1);
+  assert.equal(resized.telemetry.meter.context_tokens, 8192);
+  // Next normal turn succeeds cleanly under the smaller 8K budget without CONTEXT_BUDGET error.
+  const next = await turn(r, 'small-branch', resized.checkpoint_ref, 'after-shrink', 'hello after shrink');
+  assert.equal(next.checkpoint_ref.summary_version, 1);
+});

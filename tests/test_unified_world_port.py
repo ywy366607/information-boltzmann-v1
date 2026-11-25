@@ -111,10 +111,10 @@ class FakeDshTransport:
         if operation == 'prepare':
             packet = payload['transcript']
             self.prepared_packets.append(packet)
-            is_mirror = '[状态镜映]' in packet
+            is_mirror = '[视界]' in packet
             reply = (
                 '梦漓，刚才在苹果落地那儿停了一下，那是地球的引力把它拉下来的，你觉得神奇吗？'
-                if (is_mirror and '[起句节奏]' not in packet) else
+                if (is_mirror and '本轮略去称呼' not in packet) else
                 '刚才在苹果落地那儿停了一下，那是地球的引力把它拉下来的。'
                 if is_mirror else
                 '我们一起看看这一页讲了什么吧，地球会轻轻拉住苹果往下落。'
@@ -147,7 +147,7 @@ class FakeDshTransport:
             self.pending = None
             return dict(checkpoint_ref=ref, usage_totals=self._usage_totals())
         if operation == 'reflect':
-            assert '语言预测与动态分块' in payload['dossier'] and '因果关系库' in payload['dossier']
+            assert 'H-Net=' in payload['dossier'] and '因果库=' in payload['dossier'] and 'coherent' not in payload['dossier']
             raw = json.dumps(dict(
                 mengli_model='梦漓表达活跃，能抓住中文高频词，但遇长英文术语时节奏偏急。',
                 progress_note='本阶段中文流畅度提升明显，可见视界下对卡顿提醒响应更稳。',
@@ -280,8 +280,8 @@ def test_deepseek_kv_cache_prefix_invariance_and_stage_hysteresis():
     # Exact deterministic 7/3 mirror_visible vs book_only split across 10 turns.
     assert port.mirror_visible_turns == 7
     assert port.book_only_turns == 3
-    mirror_packets = [p for p in transport.prepared_packets if '[状态镜映]' in p]
-    book_only_packets = [p for p in transport.prepared_packets if '仅见共读书页' in p]
+    mirror_packets = [p for p in transport.prepared_packets if '[视界]' in p]
+    book_only_packets = [p for p in transport.prepared_packets if '仅见书页' in p]
     assert len(mirror_packets) == 7
     assert len(book_only_packets) == 3
     for p in book_only_packets:
@@ -428,12 +428,12 @@ def test_yoneda_bidirectional_mother_proactive_and_dynamic_objects(tmp_path: Pat
     assert port.turns_since_name_call == 0  # Mock reply started with '梦漓，...'
 
     # 3. On Social Floor (`active_floor == 'mother'`), unaddressed reply routes to Mother (`child_replied`)
-    #    AND receives the KV-cache-safe `[起句节奏]` anti-name-lock cue!
+    #    AND receives the KV-cache-safe `[提示] 本轮略去称呼` anti-name-lock cue!
     _, _, info2 = port.take('为什么掉下来'.encode('utf-8'), 256, 256)
     assert info2['channel'] == 'dsh_mother'
     assert info2['trigger_kind'] == 'child_replied'
     assert info2['routing_reason'] == 'social_floor_reply'
-    assert '[起句节奏]' in transport.prepared_packets[-1]
+    assert '[提示]' in transport.prepared_packets[-1] and '本轮略去称呼' in transport.prepared_packets[-1]
     assert port.turns_since_name_call >= 1
 
     # 4. Vocal call (`妈妈你看`) always routes to Mother with loss-masked `妈妈：` identity header.
@@ -466,12 +466,12 @@ def test_yoneda_bidirectional_mother_proactive_and_dynamic_objects(tmp_path: Pat
     assert pro['trigger_kind'] == 'mother_proactive'
     assert port.active_floor == 'mother'
     assert port.awaiting_reply_from == 'mother'
-    assert '[情境: 孩子安静读书时停顿下来' in transport.prepared_packets[-1]
+    assert '安静读书停顿' in transport.prepared_packets[-1]
 
     _, _, ans = port.take('看到'.encode('utf-8'), 256, 256)
     assert ans['channel'] == 'dsh_mother'
     assert ans['trigger_kind'] == 'child_replied'
-    assert '[情境: 孩子回应了你上一轮的话' in transport.prepared_packets[-1]
+    assert '回应你上轮的话' in transport.prepared_packets[-1]
 
     # 8. Solo reading when Mother leaves scene -> active speech navigates book instead.
     port.leave_scene('mother')
@@ -504,10 +504,10 @@ def test_five_element_mirror_and_autonomous_mother_reflection(tmp_path: Path):
         port.take('苹果落地'.encode('utf-8'), 256, 256)
         port.commit_pending_turn(metal_g=0.015)
 
-    # Verify per-turn mirror includes concrete internal module & memory bank snapshot.
-    assert '[内部运转与记忆库]' in transport.prepared_packets[-1]
-    assert '因果关系库16条(42条证据)' in transport.prepared_packets[-1]
-    assert '情景经历库64/64' in transport.prepared_packets[-1]
+    # Verify compact per-turn mirror stays economical while reflection dossier carries full module counts.
+    assert '[视界]' in transport.prepared_packets[-1]
+    assert 'gravity pulls apples' in transport.prepared_packets[-1]
+    assert len(transport.prepared_packets[-1]) < 450
 
     # Trigger periodic autonomous Mother reflection -> writes mother_notes.md and updates plan ONCE!
     notes = tmp_path / 'mother_notes.md'
@@ -738,6 +738,110 @@ def test_loss_masked_identity_card_separates_identical_hello_without_table_echo(
     assert _strip_stage_directions('（轻声笑）ed di，你像在敲小鼓点呢。') == 'ed di，你像在敲小鼓点呢。'
     assert _strip_stage_directions('*smiles warmly* Look at that little boat!') == 'Look at that little boat!'
     assert _strip_stage_directions('慢一点没关系（摸摸头），咱们一起看。') == '慢一点没关系，咱们一起看。'
+
+
+def test_honest_form_classifier_shared_learning_trace_and_economical_mirror():
+    """Verify:
+    1. Clipped/noisy ASCII strings are NOT labeled coherent and get literal form_label.
+    2. `build_learning_trace` builds all 5 factual stages, reads ExactUtteranceTable ONLY when present,
+       and tracks literal lexical continuity without fabricating text for latent-only slots.
+    3. `format_caregiver_turn` is compact & perspective-honest, and `build_five_element_reflection_dossier`
+       never emits the misleading `coherent` label while citing `#cycle` trace evidence.
+    """
+    from scripts.ib_local.body_mirror import (
+        build_five_element_reflection_dossier,
+        build_learning_trace,
+        capture_body_mirror,
+        classify_utterance,
+        format_caregiver_turn,
+    )
+    import torch
+    from scripts.ib_local.navigation_retrieval import ExactUtteranceTable
+
+    c1 = classify_utterance('perience. Fe frent most nodes for as')
+    c2 = classify_utterance('that meetions for spost, sa')
+    assert c1['kind'] == 'fragments' and c1['form_label'] == '短片段'
+    assert c2['kind'] == 'fragments' and c2['form_label'] == '短片段'
+    c3 = classify_utterance('the mouse ran away quickly')
+    assert c3['form_label'] == '较长表达'
+
+    # Engine stub with ExactUtteranceTable: slot 7 has real stored text; slot 3 has NO text.
+    ret = ExactUtteranceTable(capacity=16, max_utterance=32)
+    ret.write(7, b'the mouse', merged=False, keep=True)
+    mem = SimpleNamespace(
+        clock=torch.tensor(50000),
+        last_write=torch.zeros(16, dtype=torch.long),
+        occupied=torch.ones(16, dtype=torch.bool),
+        episodes=torch.tensor(42),
+    )
+    mem.last_write[7] = 10000
+    mem.last_write[3] = 45000
+    eng = _make_fake_engine('drillship')
+    eng.model = SimpleNamespace(
+        retrieval=ret,
+        memory=mem,
+        body=SimpleNamespace(hnet_chunker=SimpleNamespace(last_compression_ratio=3.8)),
+        phase_boltzmann=SimpleNamespace(diagnostics=lambda: dict(live_z_kin=0.2, last_pressure=0.4)),
+    )
+    eng.causal_archive = SimpleNamespace(hot={'7': {'id': 701}, '3': {'id': 301}})
+
+    row1 = dict(
+        metal_g=0.0085,
+        response_nll=1.55,
+        wood_policy_tv=0.0052,
+        episodic_policy_tv=0.0061,
+        water_direct_choice_tv=0.0001,
+        episodic_read_slots=[7, 3, 0],
+        episodic_read_weights=[0.75, 0.25, 0.0],
+        read_credit=dict(response=dict(retention_feedback=dict(observations=[
+            dict(slot=7, age_bytes=40000, benefit=0.012),
+            dict(slot=3, age_bytes=5000, benefit=-0.004),
+        ]))),
+        use_transport=dict(committed=True, unknown='unknown:42'),
+        world=dict(
+            channel='dsh_mother',
+            send_target_id='mother',
+            observe_target_id='mother',
+            interaction_mode='face_to_face_chat',
+            perspective_mode='mirror_visible',
+            child_text='the mouse',
+            mother_reply='一只小老鼠跑出来啦，mouse 说得很清楚！',
+            mirror_excerpt='drillship',
+            gaze_decision=dict(prior_status='evaluated', observe_probs=dict(book=0.2, mother=0.7, none=0.1),
+                               observe_causal_prior=dict(book=-0.01, mother=0.04, none=-0.03)),
+        ),
+    )
+    tr1 = build_learning_trace(eng, row1, cycle=6820)
+    assert tr1['memory_recall']['top_slots'][0]['text'] == 'the mouse'
+    assert tr1['memory_recall']['top_slots'][0]['episode_id'] == 701
+    assert tr1['memory_recall']['top_slots'][1]['text'] is None  # never fabricated!
+    assert tr1['response_revision']['slot_feedback']['pos'] == 1
+    assert tr1['response_revision']['slot_feedback']['neg'] == 1
+
+    # Turn 2 echoes 'mouse' -> followup detects continuity!
+    row2 = copy.deepcopy(row1)
+    row2['world']['child_text'] = 'mouse run'
+    tr2 = build_learning_trace(eng, row2, cycle=6821, prev_trace=tr1)
+    assert tr2['followup']['status'] == 'echoed_reply'
+    assert 'mouse' in tr2['followup']['reused_from_reply']
+
+    snap = capture_body_mirror(eng, utterance_bytes=b'mouse run', recent_book_bytes=b'The mouse ran.', recent_metal_g=[0.01, 0.02, 0.01])
+    pkt_vis = format_caregiver_turn(snap, perspective_mode='mirror_visible', prev_trace=tr1, turn_number=3)
+    pkt_book = format_caregiver_turn(snap, perspective_mode='book_only', prev_trace=tr1, turn_number=3)
+    assert len(pkt_vis) < 420
+    assert '[视界]' in pkt_vis and '[学习链]' in pkt_vis and 'mouse' in pkt_vis
+    assert '[视界]' not in pkt_book and '[学习链]' not in pkt_book
+
+    dossier = build_five_element_reflection_dossier(
+        eng, cycle=6821, mother_turns=1200, care_stage='emerging_scaffolded', plan_version=53,
+        current_plan_text='温柔陪伴', prior_mengli_model='旧画像',
+        recent_kinds=['fragments', 'coherent', 'silent'], recent_metal_g=[0.01],
+        recent_traces=[tr1, tr2],
+    )
+    assert 'coherent' not in dossier
+    assert '较长表达' in dossier
+    assert '#6820' in dossier and '#6821' in dossier and 'the mouse' in dossier
+
 
 
 

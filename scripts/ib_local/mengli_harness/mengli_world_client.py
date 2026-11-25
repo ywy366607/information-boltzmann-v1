@@ -27,10 +27,10 @@ SETTINGS_32K = dict(model='deepseek-flash', temperature=.7, max_tokens=120,
                     retain_tokens=6144, summary_tokens=1024)
 SETTINGS_64K = dict(model='deepseek-flash', temperature=.7, max_tokens=120,
                     context_tokens=65536, headroom_tokens=2048,
-                    retain_tokens=None, summary_tokens=1024)
+                    retain_tokens=8192, summary_tokens=1024)
 SETTINGS_128K = dict(model='deepseek-flash', temperature=.7, max_tokens=120,
                      context_tokens=131072, headroom_tokens=4096,
-                     retain_tokens=None, summary_tokens=1536)
+                     retain_tokens=16384, summary_tokens=1536)
 SETTINGS_256K = dict(model='deepseek-flash', temperature=.7, max_tokens=120,
                      context_tokens=262144, headroom_tokens=4096,
                      retain_tokens=None, summary_tokens=2048)
@@ -274,13 +274,14 @@ class DshMother:
             if saved.get('schema') != 1:
                 raise ValueError('incompatible saved DSH caregiver settings')
             saved_s = saved.get('settings')
-            window_upgrade_only = (
+            window_resize_only = (
                 isinstance(saved_s, dict)
-                and int(self.settings.get('context_tokens', 0)) > int(saved_s.get('context_tokens', 0))
-                and {k: v for k, v in saved_s.items() if k != 'context_tokens'}
-                    == {k: v for k, v in self.settings.items() if k != 'context_tokens'}
+                and int(self.settings.get('context_tokens', 0)) != int(saved_s.get('context_tokens', 0))
+                and self.settings.get('model') == saved_s.get('model')
+                and self.settings.get('temperature') == saved_s.get('temperature')
+                and self.settings.get('max_tokens') == saved_s.get('max_tokens')
             )
-            if saved_s != self.settings and not window_upgrade_only:
+            if saved_s != self.settings and not window_resize_only:
                 raise ValueError('incompatible saved DSH caregiver settings')
             if state.get('policy') != self.policy:
                 raise ValueError('caregiver policy differs from saved DSH world')

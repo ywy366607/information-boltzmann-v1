@@ -218,6 +218,7 @@ export function projectUmweltTrajectory(events) {
       hitRate,
       externalBytes: event.observation?.external_bytes ?? event.row?.external_bytes ?? null,
       motherBytes: event.observation?.mother_bytes ?? null,
+      learningTrace: u.learning_trace ?? null,
     });
   }
   return items.reverse();

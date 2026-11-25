@@ -19,6 +19,7 @@ import math
 import os
 from pathlib import Path
 import shutil
+import signal
 import sys
 import time
 
@@ -257,16 +258,17 @@ def main():
     chosen_settings = dict(settings_map[int(args.context_tokens)])
     saved_dsh_policy = (retained.get('mother_provider_state') or {}).get('policy')
     chosen_policy = args.mother_policy
-    # If resuming an older session without --fresh-mother-session, match its stored DSH settings & policy,
-    # while permitting a clean upward context_tokens expansion (e.g. 256K -> 512K) on the new branch.
+    # If resuming an older session without --fresh-mother-session, preserve its model/temp/max_tokens/policy
+    # while permitting a clean upward OR downward --context-tokens profile resize (e.g. 512K -> 64K for cost).
     if not args.fresh_mother_session and isinstance(saved_dsh_settings, dict):
-        merged_settings = dict(saved_dsh_settings)
-        req_ctx = int(args.context_tokens)
-        if (req_ctx > int(saved_dsh_settings.get('context_tokens', 0))
-                and {k: v for k, v in saved_dsh_settings.items() if k != 'context_tokens'}
-                == {k: v for k, v in chosen_settings.items() if k != 'context_tokens'}):
-            merged_settings['context_tokens'] = req_ctx
-        chosen_settings = merged_settings
+        if int(args.context_tokens) == int(saved_dsh_settings.get('context_tokens', 0)):
+            chosen_settings = dict(saved_dsh_settings)
+        else:
+            resized = dict(settings_map[int(args.context_tokens)])
+            for k in ('model', 'temperature', 'max_tokens'):
+                if k in saved_dsh_settings:
+                    resized[k] = saved_dsh_settings[k]
+            chosen_settings = resized
         if isinstance(saved_dsh_policy, str) and saved_dsh_policy:
             chosen_policy = saved_dsh_policy
 
@@ -319,9 +321,11 @@ def main():
             endpoint_url=args.mother_harness_url,
             settings=dict(caregiver.automatic.settings),
         )
+    from scripts.ib_local.body_mirror import MIRROR_VERSION
     config['unified_world_port'] = dict(
         schema=1,
         branch_id=branch_id,
+        mirror_version=MIRROR_VERSION,
         mother_enabled=(not args.no_mother),
         mother_harness_url=(None if args.no_mother else args.mother_harness_url),
         mother_cooldown=int(args.mother_cooldown),
@@ -460,6 +464,13 @@ def main():
                 if b_owm else 'book=n/a'
             )
             print(f'  [3-MODEL @ {life_s:6.1f}s] {s_part} | {m_part} | {b_part}', flush=True)
+        # Immediately persist every FLUX validation point so early/cooperative stop never loses probe history.
+        try:
+            with (work / 'flux_trajectory.jsonl').open('a', encoding='utf-8') as ff:
+                ff.write(json.dumps(pt, ensure_ascii=False) + '\n')
+                ff.flush()
+        except Exception:
+            pass
         return pt
 
     flux_trajectory = []
@@ -577,6 +588,39 @@ def main():
         print(f'[UNIFIED] Bound live HTML dashboard -> {obs_path} (card={life_card_path.name})', flush=True)
 
     events_path = work / 'events.jsonl'
+    stop_request_json = work / 'stop_request.json'
+    stop_request_flag = work / 'STOP'
+    stop_reason: list[str] = []
+
+    def _on_stop_signal(signum, _frame):
+        if not stop_reason:
+            stop_reason.append(f'signal:{signum}')
+            print(f'\n[UNIFIED] Cooperative stop requested ({stop_reason[0]}); finishing current cycle and saving...', flush=True)
+
+    for _sig_name in ('SIGINT', 'SIGTERM'):
+        _sig = getattr(signal, _sig_name, None)
+        if _sig is not None:
+            try:
+                signal.signal(_sig, _on_stop_signal)
+            except Exception:
+                pass
+
+    def _check_cooperative_stop() -> str | None:
+        if stop_reason:
+            return stop_reason[0]
+        if stop_request_json.exists():
+            try:
+                req = json.loads(stop_request_json.read_text(encoding='utf-8'))
+                r = str(req.get('reason') or 'stop_request.json')
+            except Exception:
+                r = 'stop_request.json'
+            stop_reason.append(r)
+            return r
+        if stop_request_flag.exists():
+            stop_reason.append('STOP_file')
+            return 'STOP_file'
+        return None
+
     dialogue_log = []
     t_start = time.perf_counter()
     pause_seconds = 0.0
@@ -591,6 +635,8 @@ def main():
     try:
         with events_path.open('w', encoding='utf8') as ev_f, metrics_path.open('a', encoding='utf8') as met_f:
             while _life_elapsed() < float(args.budget_seconds):
+                if _check_cooperative_stop() is not None:
+                    break
                 if args.max_mother_turns > 0 and (port.mother_turns - start_mother_turns) >= args.max_mother_turns:
                     break
 
@@ -632,6 +678,7 @@ def main():
                         metal_g=row.get('metal_g'),
                         evidence_available=row.get('evidence_available', True),
                     )
+                    learning_trace = port.record_learning_trace(row, cycle=cycle)
                     if args.reflect_every_turns > 0 and commit_info and commit_info.get('committed') == 'mother':
                         try:
                             refl = port.maybe_reflect_and_adapt(
@@ -663,6 +710,7 @@ def main():
                     metric_row = _safe_json_value(dict(
                         row,
                         gaze_credit=(commit_info.get('gaze') if isinstance(commit_info, dict) else None),
+                        learning_trace=learning_trace,
                         cycle=int(cycle),
                         elapsed_seconds=round(_life_elapsed(), 3),
                         spoke=bool(row.get('self_bytes', 0)),
@@ -778,7 +826,18 @@ def main():
 
     t_save0 = time.perf_counter()
     ckpt_sha = _publish_live_checkpoint(last_exec_row)
-    _write_guard('completed')
+    stopped_early = bool(stop_reason)
+    _write_guard('stopped' if stopped_early else 'completed')
+    if stopped_early:
+        write_json(work / 'stop_receipt.json', dict(
+            status='stopped',
+            reason=stop_reason[0],
+            pid=os.getpid(),
+            checkpoint_cycle=int(cycle),
+            checkpoint_sha256=ckpt_sha,
+            stop_time=time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
+        ))
+        print(f'[UNIFIED] Cooperative stop saved complete checkpoint cyc={cycle} (sha={ckpt_sha[:12]}).', flush=True)
     save_seconds = time.perf_counter() - t_save0
     ckpt_path = body_dir / 'last.pt.gz'
 

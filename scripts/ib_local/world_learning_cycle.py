@@ -107,6 +107,7 @@ def _select_and_condition_target(engine, utterance: bytes, record: dict) -> dict
 
     causal_values = None
     observe_causal_values = None
+    null_causal_value = None
     state = getattr(engine, '_program_question_state', None)
     base_actions = getattr(engine, '_internal_action', None)
     base_src = getattr(engine, '_internal_source', None)
@@ -115,12 +116,14 @@ def _select_and_condition_target(engine, utterance: bytes, record: dict) -> dict
         and torch.is_tensor(base_actions)
         and torch.is_tensor(base_src)
         and selected < len(base_actions)
-        and len(candidates) >= 2
+        and len(candidates) >= 1
     )
     has_cond_weights = (
         float(gp.target_to_action.weight.detach().abs().max().item()) > 0.0
         or float(gp._dual().observe_to_action.weight.detach().abs().max().item()) > 0.0
     )
+    prior_status = 'unavailable_state' if not has_wood else 'unconditioned'
+    prior_error = None
     if has_wood and has_cond_weights:
         try:
             from scripts.ib_local.causal_relation_program import mechanism
@@ -132,23 +135,35 @@ def _select_and_condition_target(engine, utterance: bytes, record: dict) -> dict
             ridge = effective_ridge(model, engine.relation_ridge)
             raw_act = base_actions[selected:selected + 1]
             facts = use_queries(engine, state)
-            # Single vectorized batched evaluation for BOTH `out` and `in` candidates (O(1) calls!).
+            # One batched evaluation for every `out` object, every `in` object and the
+            # genuine null action (unconditioned a(u)); `'none'` is scored by the same
+            # consequence model instead of an arbitrary 0 baseline, so a single book
+            # in solo reading is compared against actually staying with herself.
             m_cands = len(candidates)
-            src_rows = base_src.reshape(1, -1).expand(2 * m_cands, -1)
             out_acts = [gp.condition_action(raw_act, cid, observe_id=None) for cid, _ in candidates]
             in_acts = [gp.condition_action(raw_act, None, observe_id=cid) for cid, _ in candidates]
-            cond_acts = torch.cat(out_acts + in_acts, dim=0)
+            cond_acts = torch.cat(out_acts + in_acts + [raw_act], dim=0)
+            src_rows = base_src.reshape(1, -1).expand(cond_acts.shape[0], -1)
             dist = mechanism(model, state, src_rows, cond_acts, ridge=ridge)
             if getattr(engine, 'causal_use_arm', None) == 'C2' and facts:
                 vals = finite_expected(engine, state, src_rows, cond_acts, dist, facts)
                 causal_values = {cid: float(vals[i].item()) * 10.0 for i, (cid, _) in enumerate(candidates)}
                 observe_causal_values = {cid: float(vals[m_cands + i].item()) * 10.0 for i, (cid, _) in enumerate(candidates)}
+                null_causal_value = float(vals[2 * m_cands].item()) * 10.0
+                prior_status = 'evaluated'
             else:
                 causal_values = {cid: 0.0 for cid, _ in candidates}
                 observe_causal_values = {cid: 0.0 for cid, _ in candidates}
-        except Exception:
+                null_causal_value = 0.0
+                prior_status = 'no_facts'
+        except Exception as error:
             causal_values = None
             observe_causal_values = None
+            null_causal_value = None
+            prior_status = 'error'
+            prior_error = f'{type(error).__name__}: {error}'[:240]
+    elif has_wood:
+        prior_status = 'unconditioned'
 
     gaze_dec = gp.select_interaction(
         engine,
@@ -156,11 +171,15 @@ def _select_and_condition_target(engine, utterance: bytes, record: dict) -> dict
         utterance_bytes=utterance,
         causal_values=causal_values,
         observe_causal_values=observe_causal_values,
+        null_causal_value=null_causal_value,
         stumble_ratio=float(meta.get('stumble_ratio', 1.0)),
         nll_norm=float(meta.get('nll_norm', 0.0)),
         last_speaker=meta.get('last_speaker'),
         awaiting_from=meta.get('awaiting_from'),
     )
+    gaze_dec['prior_status'] = prior_status
+    if prior_error:
+        gaze_dec['prior_error'] = prior_error
     chosen_id = gaze_dec['target_id']
     chosen_send = gaze_dec.get('send_target', chosen_id)
     chosen_obs = gaze_dec.get('observe_target', chosen_id)

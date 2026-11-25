@@ -36,8 +36,10 @@ import numpy as np
 from scripts.ib_local.body_mirror import (
     AdaptiveCarePlanTracker,
     BodyMirrorSnapshot,
+    MIRROR_VERSION,
     STAGE_INFANT,
     build_five_element_reflection_dossier,
+    build_learning_trace,
     capture_body_mirror,
     classify_utterance,
     clean_utf8_excerpt,
@@ -674,6 +676,7 @@ class UnifiedWorldPort:
         self.mirror_g: list[float] = []
         self.book_only_g: list[float] = []
         self.recent_stumbles: list[str] = []
+        self.recent_traces: list[dict] = []
         self.reflections_done = 0
         self.turns_since_reflection = 0
 
@@ -1762,22 +1765,8 @@ class UnifiedWorldPort:
                 recent_metal_g=self.recent_metal_g,
             )
             extra_note = '；'.join(self._pending_tool_notes) if self._pending_tool_notes else None
-            # Dynamic anti-cliché opening rotator (KV-cache-safe tail cue):
-            # matches whether this turn is co-reading or pure face-to-face chat.
-            if include_book_excerpt:
-                style_rot = (
-                    '直接从眼前书页里的画面、声音或动作切入，像指着绘本随口聊起来。',
-                    '先用一个轻巧的生活小比方或感叹开场，把刚才的词和书页自然连起来。',
-                    '像日常聊天一样轻声抛一个不强求回答的小好奇，再顺口讲一两句。',
-                    '按眼前真实情况自然回应：听得懂就接着聊，没听清就如实轻轻问一句，不要替孩子硬补没说过的词。',
-                )
-            else:
-                style_rot = (
-                    '顺着孩子此刻的话或神情自然接话，像日常面对面轻声聊天。',
-                    '聊一点轻松的日常小事、感受或好奇，不用硬往书页上扯。',
-                    '像平时陪伴一样温柔抛一个不强求回答的小问题，或分享一句心里话。',
-                    '按眼前真实情况自然回应：听得懂就接着聊，没听清就如实轻轻问一句，不要替孩子硬补没说过的词。',
-                )
+            # Economical anti-cliché cue: ONLY emit when recent openings actually repeated
+            # or name was just used — avoids repeating 100+ tokens of boilerplate every turn.
             cue_parts = []
             if self.mother_turns > 0 and self.turns_since_name_call < 3:
                 cue_parts.append('本轮略去称呼')
@@ -1791,10 +1780,7 @@ class UnifiedWorldPort:
                     if st_txt not in stale:
                         stale.append(st_txt)
             if stale:
-                cue_parts.append(f'最近几轮刚用过“{"/".join(stale[:2])}”，本轮换全新的自然起句，直接说内容')
-            if cue_parts or self.mother_turns > 0:
-                cue_parts.append(style_rot[self.mother_turns % len(style_rot)])
-                cue_parts.append('只说出口的纯口语，不写任何括号或星号舞台动作描写')
+                cue_parts.append(f'换新起句，避开“{"/".join(stale[:2])}”')
             opening_cue = '；'.join(cue_parts) if cue_parts else None
             packet = format_caregiver_turn(
                 snapshot,
@@ -1807,6 +1793,9 @@ class UnifiedWorldPort:
                 include_book_excerpt=include_book_excerpt,
                 allow_mother_directives=True,
                 has_parent=('parent' in self.presence_roster),
+                prev_trace=(self.recent_traces[-1] if self.recent_traces else None),
+                current_gaze=gaze_decision,
+                turn_number=self.mother_turns,
             )
             plan = self.care_plan_tracker.current_plan()
             turn = self.mother_transcript[-2 * self.history:] + [('child', packet)]
@@ -2181,6 +2170,15 @@ class UnifiedWorldPort:
                     plan_version=self.care_plan_tracker.version,
                     gaze=gaze_receipt)
 
+    def record_learning_trace(self, row: dict, *, cycle: int = 0) -> dict:
+        """Build and retain the shared 5-stage factual learning trace after each executed cycle."""
+        prev = self.recent_traces[-1] if self.recent_traces else None
+        trace = build_learning_trace(self._engine_ref, row, cycle=int(cycle), prev_trace=prev)
+        self.recent_traces.append(trace)
+        if len(self.recent_traces) > 24:
+            del self.recent_traces[:-24]
+        return trace
+
     def maybe_reflect_and_adapt(
         self,
         *,
@@ -2213,6 +2211,7 @@ class UnifiedWorldPort:
             recent_stumbles=self.recent_stumbles,
             recent_flux=recent_flux,
             presence_labels=[m['label'] for m in self.presence_roster.values()],
+            recent_traces=self.recent_traces[-16:],
         )
         res = auto.reflect(dossier)
         parsed = parse_mother_reflection(res.get('raw', ''))
@@ -2339,6 +2338,8 @@ class UnifiedWorldPort:
                 mother_quiet_turns=int(self.mother_quiet_turns),
                 mother_book_turns=int(self.mother_book_turns),
                 recent_metal_g=list(self.recent_metal_g),
+                recent_traces=copy.deepcopy(self.recent_traces[-24:]),
+                mirror_version=MIRROR_VERSION,
                 inbox_offset=int(self.inbox_offset),
                 sidecar_cursor=(None if self.sidecar is None else int(self.sidecar.cursor)),
                 english_sidecar_cursor=(None if self.english_sidecar is None else int(self.english_sidecar.cursor)),
@@ -2398,6 +2399,11 @@ class UnifiedWorldPort:
             self.mother_quiet_turns = int(uwp.get('mother_quiet_turns', 0))
             self.mother_book_turns = int(uwp.get('mother_book_turns', 0))
             self.recent_metal_g = [float(x) for x in uwp.get('recent_metal_g', [])]
+            raw_traces = uwp.get('recent_traces')
+            self.recent_traces = (
+                copy.deepcopy(raw_traces[-24:])
+                if isinstance(raw_traces, list) else []
+            )
             self.inbox_offset = int(uwp.get('inbox_offset', 0))
             if self.sidecar is not None and uwp.get('sidecar_cursor') is not None:
                 self.sidecar.cursor = int(uwp['sidecar_cursor']) % len(self.sidecar.data)

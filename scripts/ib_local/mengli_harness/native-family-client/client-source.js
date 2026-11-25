@@ -48,6 +48,12 @@ function apply(ctx) {
     .umwelt-traj-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 10px; font-size: 12.5px; line-height: 1.5; }
     .umwelt-traj-cell { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: 0.9; }
     .umwelt-traj-cell span { opacity: 0.55; margin-right: 6px; font-size: 11px; }
+    .umwelt-trace { margin-top: 2px; border-top: 1px dashed rgba(148,163,184,0.22); padding-top: 4px; font-size: 11.5px; color: var(--dsh-text-secondary, #9ca3af); }
+    .umwelt-trace > summary { cursor: pointer; user-select: none; opacity: 0.85; padding: 2px 0; }
+    .umwelt-trace[open] > summary { opacity: 1; color: var(--dsh-text-primary, #e5e7eb); }
+    .umwelt-trace-grid { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 3px 10px; margin: 6px 0 2px; line-height: 1.45; }
+    .umwelt-trace-grid dt { opacity: 0.65; font-weight: 600; }
+    .umwelt-trace-grid dd { margin: 0; color: var(--dsh-text-primary, #e5e7eb); word-break: break-word; }
     @media (max-width: 720px) { .umwelt-traj-body { grid-template-columns: 1fr; } }
   `;
   document.head.appendChild(umweltStyle);
@@ -76,7 +82,7 @@ function apply(ctx) {
     if (state?.management_session_id && sessionId !== state.management_session_id) return null;
     const run = async (name, body) => { setPending(true); try { await command(name, body); } finally { setPending(false); } };
     const busy = pending || !snapshot.connected;
-    const observedStatus = { running: '环世界运行中', completed: '已完成', complete: '已完成', stopped: '已保存停止', interrupted: '中断', failed: '失败', waiting_resources: '等待资源', unavailable: '观察不可用' };
+    const observedStatus = { running: '环世界运行中', completed: '已完成', complete: '已完成', stopped: '已保存停止', stopped_for_repair: '修复暂停', interrupted: '中断', failed: '失败', waiting_resources: '等待资源', unavailable: '观察不可用' };
     const label = !snapshot.connected ? '离线' : state?.live_steward ? '环世界 · 实时协作' : state?.read_only ? (observedStatus[state.observation?.status] ?? '观察中')
       : !state?.loaded ? '身体未连接' : state.mode === 'parent' ? '家长接管' : state.mode === 'mother' ? '妈妈陪读' : state.mode === 'pausing' ? '正在交接' : '已暂停';
     const items = (state?.read_only || state?.live_steward) ? [
@@ -166,7 +172,42 @@ function apply(ctx) {
                   it.hitRate !== null && h('span', null, `缓存 ${(it.hitRate * 100).toFixed(0)}%`))),
               h('div', { className: 'umwelt-traj-body' },
                 h('div', { className: 'umwelt-traj-cell', title: it.utterance || '（安静）' }, h('span', null, '梦漓'), it.utterance || '（安静）'),
-                h('div', { className: 'umwelt-traj-cell', title: it.reply }, h('span', null, it.isSocial ? '回应' : '书页'), it.reply || '—'))))));
+                h('div', { className: 'umwelt-traj-cell', title: it.reply }, h('span', null, it.isSocial ? '回应' : '书页'), it.reply || '—')),
+              it.learningTrace && h(LearningTraceDisclosure, { trace: it.learningTrace }))));
+  }
+  function LearningTraceDisclosure({ trace }) {
+    const sit = trace.situation ?? {};
+    const ec = trace.expression_choice ?? {};
+    const mr = trace.memory_recall ?? {};
+    const rr = trace.response_revision ?? {};
+    const fu = trace.followup ?? {};
+    const slots = (mr.top_slots ?? []).map(s => {
+      const age = typeof s.age_bytes === 'number' ? ` ${(s.age_bytes / 1000).toFixed(0)}KB前` : '';
+      const txt = s.text ? `「${s.text}」` : '（仅潜向量）';
+      return `槽${s.slot}(w=${s.weight}${age})${txt}`;
+    }).join('；') || '无高权重读取';
+    const fb = rr.slot_feedback ?? {};
+    const rev = [
+      typeof rr.metal_g === 'number' ? `ΔG=${rr.metal_g >= 0 ? '+' : ''}${rr.metal_g.toFixed(4)}` : null,
+      (fb.pos || fb.neg) ? `经历槽 +${fb.pos ?? 0}/-${fb.neg ?? 0}` : null,
+      rr.causal_committed ? `因果提交(${rr.causal_unknown || 'ok'})` : null,
+    ].filter(Boolean).join(' · ') || '—';
+    const fuMap = { echoed_reply: '承接上轮回应', continued_self: '延续自词', new_attempt: '新尝试', quiet: '静默' };
+    const reused = [...(fu.reused_from_reply ?? []), ...(fu.reused_from_self ?? [])];
+    const fuText = (fuMap[fu.status] || fu.status || '—') + (reused.length ? `（${reused.join(' / ')}）` : '');
+    return h('details', { className: 'umwelt-trace' },
+      h('summary', null, `学习过程 · ${ec.form_label || '记录'} · ${ec.push_summary || '习惯主导'}`),
+      h('dl', { className: 'umwelt-trace-grid' },
+        h('dt', null, '当前处境'),
+        h('dd', null, `${sit.send_target || 'none'} → ${sit.observe_target || 'none'}${sit.stumble_excerpt ? ` ｜ 卡顿「${sit.stumble_excerpt}」` : ''}`),
+        h('dt', null, '选择推动'),
+        h('dd', null, `${ec.push_summary || '习惯主导'}${ec.prior_status ? `（先验:${ec.prior_status}）` : ''}`),
+        h('dt', null, '经历取用'),
+        h('dd', null, slots),
+        h('dt', null, '回应与修订'),
+        h('dd', null, rev),
+        h('dt', null, '后来承接'),
+        h('dd', null, fuText)));
   }
   ctx.slots.inject('conversation.view', () => ctx.slots.register({
     name: 'conversation.view', id: 'umwelt-trajectory', order: 1, label: () => '界膜轨迹',

@@ -513,6 +513,7 @@ class GazeObjectPointer(nn.Module):
         utterance_bytes: bytes,
         causal_values: dict[str, float] | None = None,
         observe_causal_values: dict[str, float] | None = None,
+        null_causal_value: float | None = None,
         stumble_ratio: float = 1.0,
         nll_norm: float = 0.0,
         last_speaker: str | None = None,
@@ -559,12 +560,16 @@ class GazeObjectPointer(nn.Module):
             if not vals_dict:
                 return torch.zeros(n_tot, device=dev, dtype=torch.float32), None
             raw_vals = [float(vals_dict.get(cid, 0.0)) for cid in ids]
+            null_v = 0.0
+            if null_causal_value is not None and math.isfinite(float(null_causal_value)):
+                null_v = float(null_causal_value)
             if not all(math.isfinite(v) for v in raw_vals):
                 return torch.zeros(n_tot, device=dev, dtype=torch.float32), None
-            # Include `'none'` at explicit baseline 0.0 inside the centering set so even when
-            # only 1 external object is in scene (e.g. solo book reading), Wood's epistemic prior
-            # genuinely distinguishes `book` from `none` instead of collapsing to `[0.0, 0.0]`.
-            all_vals = raw_vals + ([0.0] if include_null else [])
+            # `'none'` enters the centering set with its own evaluated consequence value
+            # (unconditioned action through the same causal model), so with a single
+            # external object (solo book reading) Wood compares `book` against actually
+            # not pulling input, independent of the overall level of expected value.
+            all_vals = raw_vals + ([null_v] if include_null else [])
             mean_v = sum(all_vals) / float(len(all_vals))
             centered = [max(-2.0, min(2.0, (v - mean_v) * self.causal_prior_scale)) for v in all_vals]
             return (
@@ -574,7 +579,7 @@ class GazeObjectPointer(nn.Module):
 
         out_prior_full, causal_map = _build_prior(causal_values, bool(allow_null_out))
         obs_vals_eff = observe_causal_values if observe_causal_values is not None else causal_values
-        in_prior_full, _ = _build_prior(obs_vals_eff, bool(allow_null_in))
+        in_prior_full, observe_map = _build_prior(obs_vals_eff, bool(allow_null_in))
 
         # 1) OUT channel (`send_target`): active whenever MengLi speaks; `'none'` when silent.
         out_ids = list(ids) + (['none'] if allow_null_out else [])
@@ -667,6 +672,9 @@ class GazeObjectPointer(nn.Module):
             habit_logits=in_habit_map,
             send_habit_logits=send_habit_map,
             causal_values=causal_map,
+            observe_causal_values=observe_map,
+            null_causal_value=(None if null_causal_value is None or causal_map is None else round(float(null_causal_value), 5)),
+            observe_causal_prior={cid: round(float(in_prior_full[i].item()), 4) for i, cid in enumerate(in_ids)},
             entropy=round(float(self._pending['entropy']), 4),
             num_candidates=len(ids),
             sampled=bool(out_sampled or in_sampled),

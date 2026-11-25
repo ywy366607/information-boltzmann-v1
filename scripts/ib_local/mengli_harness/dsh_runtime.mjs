@@ -247,19 +247,41 @@ class DshRuntime {
       requireValue(typeof checkpoint_ref.session_id === 'string', 'INVALID_CHECKPOINT', 'Missing session identity');
       config = readJson(this.configFile(checkpoint_ref.session_id));
       requireValue(config, 'UNKNOWN_SESSION', 'Session does not belong to this harness data root', 404);
-      const windowUpgradeOnly = (
+      const windowResizeOnly = (
         config.owner_branch !== branch_id &&
-        resolved.context_tokens > config.settings.context_tokens &&
-        same({ ...config.settings, context_tokens: resolved.context_tokens }, resolved)
+        resolved.model === config.settings.model &&
+        resolved.temperature === config.settings.temperature &&
+        resolved.max_tokens === config.settings.max_tokens &&
+        resolved.context_tokens !== config.settings.context_tokens
       );
-      requireValue(same(config.settings, resolved) || windowUpgradeOnly, 'SETTINGS_MISMATCH', 'Restore settings differ from the stored session');
+      requireValue(same(config.settings, resolved) || windowResizeOnly, 'SETTINGS_MISMATCH', 'Restore settings differ from the stored session');
       const events = await this.events(checkpoint_ref.session_id);
       const prefix = validateRef(checkpoint_ref, events);
       const anotherBranch = config.owner_branch !== branch_id;
       const hasTail = events.slice(prefix.length).some(event => event.type !== 'session/end-seed');
-      if (hasTail || anotherBranch || windowUpgradeOnly) {
+      const oldContextTokens = config.settings.context_tokens;
+      let resizedCompacted = false;
+      if (hasTail || anotherBranch || windowResizeOnly) {
         config = { ...config, owner_branch: branch_id, settings: resolved };
         agent = await this.createSession(config, prefix, checkpoint_ref.session_id);
+        // When downsizing the context window (e.g. 512K -> 64K for economical KV-cache cycling),
+        // compact the inherited prefix ONCE under the old window ceiling so Mother's full memory
+        // is distilled without losing continuity or triggering CONTEXT_BUDGET.
+        if (windowResizeOnly && resolved.context_tokens < oldContextTokens) {
+          const measured = this.ctx.tokenMeter.measure(agent.session).totalTokens;
+          const targetThreshold = Math.floor(resolved.context_tokens * 0.8);
+          if (measured + resolved.max_tokens + resolved.headroom_tokens > targetThreshold) {
+            this.adapter.setContextWindow?.(agent.session.id, oldContextTokens);
+            this.calls.length = 0;
+            try {
+              await this.engines.get(agent.session.id).compactNow(agent, new AbortController().signal);
+              await this.ctx.sessions.flush(agent.session);
+              resizedCompacted = true;
+            } finally {
+              this.adapter.setContextWindow?.(agent.session.id, resolved.context_tokens);
+            }
+          }
+        }
       } else agent = await this.attach(checkpoint_ref.session_id, config);
     } else {
       requireValue(typeof migration?.system_prompt === 'string' && migration.system_prompt.length > 0,
@@ -277,6 +299,7 @@ class DshRuntime {
       bootstrap_hash: existing?.bootstrap_hash ?? hash(migration ?? null),
       usage_totals,
       last_telemetry: this.telemetry(agent) };
+    if (typeof resizedCompacted !== 'undefined' && resizedCompacted) this.account(state);
     this.save(state);
     return { checkpoint_ref: state.checkpoint_ref, telemetry: state.last_telemetry, usage_totals: state.usage_totals };
   }

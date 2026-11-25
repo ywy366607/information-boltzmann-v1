@@ -1,0 +1,1925 @@
+{
+  "schema": 1,
+  "source": {
+    "path": "D:\\mengli-umwelt-10h-v12c-20261125\\body\\last.pt.gz",
+    "sha256": "51a3a35db9742b3b18b4b394dadb084264e8d932a6c058bb7e12b76b60698a15",
+    "cycle": 6313
+  },
+  "output": {
+    "checkpoint": "D:\\mengli-en-ref-1h-20261125\\body\\last.pt.gz",
+    "sha256": "3c1891b3fe4cd77cc80442f227bc51f332feb7c126e223f9907fda9af769045e",
+    "cycle": 6596
+  },
+  "config": {
+    "schema": 1,
+    "branch_id": "mengli-en-ref-1h-20261125",
+    "mother_enabled": true,
+    "mother_harness_url": "http://127.0.0.1:8902",
+    "mother_cooldown": 3,
+    "mother_max_gap": 8,
+    "mirror_ratio": 0.7,
+    "chinese_corpus": "D:\\information-boltzmann-v1\\data\\cgb_chinese_stories_20261124\\train.bin",
+    "chinese_mix_ratio": 0.45,
+    "dialogue_demo_corpus": "D:\\information-boltzmann-v1\\data\\cgb_bilingual_dialogue_20261124\\dialogues.jsonl",
+    "dialogue_demo_ratio": 0.12,
+    "restored_prior_port_state": true
+  },
+  "timing": {
+    "life_seconds": 3601.069,
+    "save_seconds": 2.929,
+    "peak_vram_gib": 1.591,
+    "run_external_bytes": 482880,
+    "bytes_per_second": 134.09,
+    "run_calm_pieces": 537,
+    "run_executive_spikes": 283,
+    "mean_calm_seconds": 1.0972,
+    "mean_exec_seconds": 10.5465
+  },
+  "unified_port": {
+    "ambient_reads": 6490,
+    "sidecar_reads": 2687,
+    "spike_turns": 3338,
+    "mother_turns": 1145,
+    "mother_responsive_turns": 1014,
+    "mother_proactive_turns": 122,
+    "book_navigation_turns": 572,
+    "explicit_addressed_turns": 0,
+    "mirror_visible_turns": 801,
+    "book_only_turns": 344,
+    "parent_turns": 0,
+    "tool_turns": 0,
+    "ambient_fallback_turns": 1335,
+    "self_evolution_turns": 856,
+    "inner_monologue_turns": 677,
+    "mother_quiet_turns": 9,
+    "mother_book_turns": 6,
+    "mother_present": true,
+    "active_floor": "book",
+    "last_book_source": "text",
+    "active_interlocutor": "mother",
+    "awaiting_reply_from": null,
+    "turns_since_name_call": 1139,
+    "care_stage": "reflective_inquiry",
+    "care_plan_version": 51,
+    "stage_transitions": [
+      {
+        "turn": 4,
+        "kind": "mother_autonomous_reflection",
+        "stage": "infant_direct_modeling",
+        "version": 2
+      },
+      {
+        "turn": 11,
+        "kind": "developmental_transition",
+        "from_stage": "infant_direct_modeling",
+        "to_stage": "emerging_scaffolded",
+        "version": 3
+      },
+      {
+        "turn": 25,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 4
+      },
+      {
+        "turn": 30,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "infant_direct_modeling",
+        "version": 5
+      },
+      {
+        "turn": 41,
+        "kind": "developmental_transition",
+        "from_stage": "infant_direct_modeling",
+        "to_stage": "emerging_scaffolded",
+        "version": 6
+      },
+      {
+        "turn": 41,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 7
+      },
+      {
+        "turn": 48,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "infant_direct_modeling",
+        "version": 8
+      },
+      {
+        "turn": 73,
+        "kind": "mother_autonomous_reflection",
+        "stage": "infant_direct_modeling",
+        "version": 9
+      },
+      {
+        "turn": 81,
+        "kind": "developmental_transition",
+        "from_stage": "infant_direct_modeling",
+        "to_stage": "emerging_scaffolded",
+        "version": 10
+      },
+      {
+        "turn": 91,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 11
+      },
+      {
+        "turn": 98,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "infant_direct_modeling",
+        "version": 12
+      },
+      {
+        "turn": 104,
+        "kind": "developmental_transition",
+        "from_stage": "infant_direct_modeling",
+        "to_stage": "emerging_scaffolded",
+        "version": 13
+      },
+      {
+        "turn": 110,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 14
+      },
+      {
+        "turn": 139,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 15
+      },
+      {
+        "turn": 145,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 16
+      },
+      {
+        "turn": 155,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 17
+      },
+      {
+        "turn": 217,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 18
+      },
+      {
+        "turn": 224,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 19
+      },
+      {
+        "turn": 252,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 20
+      },
+      {
+        "turn": 262,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 21
+      },
+      {
+        "turn": 266,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 22
+      },
+      {
+        "turn": 278,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 23
+      },
+      {
+        "turn": 310,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 24
+      },
+      {
+        "turn": 313,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 25
+      },
+      {
+        "turn": 339,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 26
+      },
+      {
+        "turn": 384,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 27
+      },
+      {
+        "turn": 389,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 28
+      },
+      {
+        "turn": 390,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 29
+      },
+      {
+        "turn": 415,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 30
+      },
+      {
+        "turn": 431,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 31
+      },
+      {
+        "turn": 447,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 32
+      },
+      {
+        "turn": 463,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 33
+      },
+      {
+        "turn": 526,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 34
+      },
+      {
+        "turn": 622,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 35
+      },
+      {
+        "turn": 638,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 36
+      },
+      {
+        "turn": 654,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 37
+      },
+      {
+        "turn": 686,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 38
+      },
+      {
+        "turn": 702,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 39
+      },
+      {
+        "turn": 750,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 40
+      },
+      {
+        "turn": 766,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 41
+      },
+      {
+        "turn": 862,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 42
+      },
+      {
+        "turn": 869,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 43
+      },
+      {
+        "turn": 878,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 44
+      },
+      {
+        "turn": 886,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 45
+      },
+      {
+        "turn": 916,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 46
+      },
+      {
+        "turn": 942,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 47
+      },
+      {
+        "turn": 958,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 48
+      },
+      {
+        "turn": 974,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 49
+      },
+      {
+        "turn": 975,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 50
+      },
+      {
+        "turn": 990,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 51
+      }
+    ],
+    "gaze_pointer": {
+      "schema": 2,
+      "centered_target_v1": true,
+      "d_model": 256,
+      "d_gaze": 64,
+      "param_count": 115010,
+      "step_count": 2699,
+      "boundary_steps": 2462,
+      "target_to_action_norm": 14.771152,
+      "raw_fp_max_cos": 0.63032,
+      "rel_fp_max_cos": -0.9344,
+      "delta_unit_sep": 0.84214,
+      "baseline_g": 0.002429,
+      "mean_entropy": 0.5883,
+      "known_objects": [
+        "book",
+        "mother"
+      ],
+      "target_counts": {
+        "book": 1220,
+        "mother": 1120,
+        "none": 359
+      },
+      "target_g_ema": {
+        "book": -0.052358,
+        "mother": 0.006216,
+        "none": 0.0
+      },
+      "interaction_mode_counts": {
+        "quiet_reading": 165,
+        "co_reading_talk": 130,
+        "face_to_face_chat": 221,
+        "read_aloud_to_mother": 170,
+        "book_search": 210,
+        "call_book_and_pause": 250,
+        "self_talk_observing_mother": 115,
+        "quiet_self_evolution": 147,
+        "call_mother_and_pause": 109,
+        "read_aloud_solo": 173,
+        "look_at_mother": 38,
+        "inner_monologue": 212
+      },
+      "other_world_model": {},
+      "last_decision": {
+        "target_id": "mother",
+        "send_target": "mother",
+        "observe_target": "mother",
+        "interaction_mode": "face_to_face_chat",
+        "probs": {
+          "book": 0.001,
+          "mother": 0.952,
+          "none": 0.047
+        },
+        "send_probs": {
+          "book": 0.3113,
+          "mother": 0.4106,
+          "none": 0.2781
+        },
+        "observe_probs": {
+          "book": 0.001,
+          "mother": 0.952,
+          "none": 0.047
+        },
+        "habit_logits": {
+          "book": -3.7618,
+          "mother": 3.0946,
+          "none": 0.0849
+        },
+        "send_habit_logits": {
+          "book": -0.1586,
+          "mother": 0.1174,
+          "none": -0.2718
+        },
+        "causal_values": {
+          "book": -0.11795,
+          "mother": -0.11736
+        },
+        "entropy": 0.641,
+        "num_candidates": 2,
+        "sampled": true,
+        "dual_channel": true
+      }
+    },
+    "summary_version": 0,
+    "provider_hit_rate": 0.997488533781508,
+    "usage_totals": {
+      "reply_usage": {
+        "prompt_tokens": 150479428,
+        "completion_tokens": 48483,
+        "cache_hit_tokens": 150101504,
+        "cache_miss_tokens": 377924,
+        "total_tokens": 150527911
+      },
+      "summary_usage": null,
+      "source_counts": {
+        "api": 979,
+        "local": 9,
+        "shared": 4
+      },
+      "api_calls": 979,
+      "failures": 0
+    }
+  },
+  "hnet": {
+    "schema": 1,
+    "enc_layers": 4,
+    "dec_layers": 4,
+    "target_ratio": 4.0,
+    "ratio_loss_weight": 0.25,
+    "min_seq_len": 1,
+    "router_scale": 6.0,
+    "router_thresh": 0.028818337246775627,
+    "calibrated": true,
+    "calls": 46147,
+    "last_boundary_rate": 0.1812652051448822,
+    "last_compression_ratio": 5.516778469085693,
+    "mean_boundary_rate_ema": 0.23758406937122345,
+    "effective_compression_ema": 4.209036416652612,
+    "last_ratio_loss": 0.88477623462677,
+    "residual_weight_rms": 0.03258988633751869,
+    "wiener_mean_gate": 0.15096935629844666
+  },
+  "flux_trajectory": [
+    {
+      "life_seconds": 0.0,
+      "run_external_bytes": 0,
+      "cycle": 6313,
+      "combined_16384_nll": 1.620456025004387,
+      "fresh_8192_nll": 1.659915393218398,
+      "classic_8192_nll": 1.5809966567903757,
+      "chinese_8192_nll": 1.2228041039779782,
+      "fresh_64_facts_score": -0.40516008879058063,
+      "fresh_64_facts_mse": 0.1890268592396751,
+      "mother_turns": 1047,
+      "provider_hit_rate": 0.9972002344877114,
+      "other_world_model": {},
+      "recent_self_speech_nll": null,
+      "recent_self_cons_g": null,
+      "recent_mother_nll": null
+    },
+    {
+      "life_seconds": 917.72,
+      "run_external_bytes": 120640,
+      "cycle": 6384,
+      "combined_16384_nll": 1.6262647323310375,
+      "fresh_8192_nll": 1.6746644377708435,
+      "classic_8192_nll": 1.5778650268912315,
+      "chinese_8192_nll": 1.2248242311179638,
+      "fresh_64_facts_score": -0.40376606315840036,
+      "fresh_64_facts_mse": 0.18655072269029915,
+      "mother_turns": 1077,
+      "provider_hit_rate": 0.997291704402845,
+      "other_world_model": {},
+      "recent_self_speech_nll": 1.8407,
+      "recent_self_cons_g": 0.0,
+      "recent_mother_nll": 1.5298
+    },
+    {
+      "life_seconds": 1805.74,
+      "run_external_bytes": 244800,
+      "cycle": 6455,
+      "combined_16384_nll": 1.59953495208174,
+      "fresh_8192_nll": 1.6532111801207066,
+      "classic_8192_nll": 1.5458587240427732,
+      "chinese_8192_nll": 1.2421751599758863,
+      "fresh_64_facts_score": -0.40016429545357823,
+      "fresh_64_facts_mse": 0.18383601604728028,
+      "mother_turns": 1105,
+      "provider_hit_rate": 0.9973770192219158,
+      "other_world_model": {},
+      "recent_self_speech_nll": 1.7075,
+      "recent_self_cons_g": 0.0,
+      "recent_mother_nll": 1.4928
+    },
+    {
+      "life_seconds": 2705.29,
+      "run_external_bytes": 377280,
+      "cycle": 6535,
+      "combined_16384_nll": 1.61924459785223,
+      "fresh_8192_nll": 1.6802760064601898,
+      "classic_8192_nll": 1.5582131892442703,
+      "chinese_8192_nll": 1.2465631514787674,
+      "fresh_64_facts_score": -0.3863616631133482,
+      "fresh_64_facts_mse": 0.17588644661009312,
+      "mother_turns": 1118,
+      "provider_hit_rate": 0.997414921223056,
+      "other_world_model": {},
+      "recent_self_speech_nll": 1.8611,
+      "recent_self_cons_g": 0.0,
+      "recent_mother_nll": 1.4943
+    },
+    {
+      "life_seconds": 3601.07,
+      "run_external_bytes": 482880,
+      "cycle": 6596,
+      "combined_16384_nll": 1.5864762589335442,
+      "fresh_8192_nll": 1.6338191330432892,
+      "classic_8192_nll": 1.5391333848237991,
+      "chinese_8192_nll": 1.234344600699842,
+      "fresh_64_facts_score": -0.37808361428324133,
+      "fresh_64_facts_mse": 0.17188386531779543,
+      "mother_turns": 1145,
+      "provider_hit_rate": 0.997488533781508,
+      "other_world_model": {},
+      "recent_self_speech_nll": 1.9213,
+      "recent_self_cons_g": -0.0,
+      "recent_mother_nll": 1.4903
+    }
+  ],
+  "dialogue_samples": [
+    {
+      "cycle": 6471,
+      "life_seconds": 2037.67,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 118,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 118,
+          "mask_end": 127
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "silent",
+      "mirror_excerpt": "",
+      "child_text": "",
+      "reply_text": "你抬头看我，眼睛一眨不眨的，像刚刚走神到了别处。是又在心里闻那阵香味吗？",
+      "metal_g": 0.00946660852059722,
+      "cache_hit_tokens": 287488,
+      "cache_miss_tokens": 237,
+      "turn_hit_rate": 0.9991762968111912,
+      "provider_hit_rate": 0.9974019576310779,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6472,
+      "life_seconds": 2050.48,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 145,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 145,
+          "mask_end": 154
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "小雨：你好。 阿明：你好。 小雨：请问你旁边",
+      "child_text": "e scht sthmonsteamou. Mefics LEcuadion sui",
+      "reply_text": "This came out as a string of made-up sounds—\"scht sthmonsteamou.\" Your mouth is just humming along now, making music more than words.",
+      "metal_g": -0.001895844005048275,
+      "cache_hit_tokens": 287744,
+      "cache_miss_tokens": 313,
+      "turn_hit_rate": 0.9989134094988145,
+      "provider_hit_rate": 0.9974050428906952,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6473,
+      "life_seconds": 2067.62,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 130,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 130,
+          "mask_end": 139
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "吹动了树叶，让它们在空中跳舞。莉莉皱起眉头",
+      "child_text": "你的歌。你这句里",
+      "reply_text": "“你的歌”——这三个字说得多甜呀。刚那页里风把树叶吹得跳舞，莉莉还皱起了眉头呢。",
+      "metal_g": 0.024194175843149424,
+      "cache_hit_tokens": 288000,
+      "cache_miss_tokens": 369,
+      "turn_hit_rate": 0.9987203895009519,
+      "provider_hit_rate": 0.9974077252761188,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6474,
+      "life_seconds": 2087.63,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 103,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 103,
+          "mask_end": 112
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "",
+      "child_text": "赛人和好！",
+      "reply_text": "“赛人和好”——你是说比赛的人又和好了吗？这话听着心里真舒坦。",
+      "metal_g": 0.0453215460292995,
+      "cache_hit_tokens": 288384,
+      "cache_miss_tokens": 159,
+      "turn_hit_rate": 0.9994489556149343,
+      "provider_hit_rate": 0.9974118819855674,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6476,
+      "life_seconds": 2119.49,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 142,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 142,
+          "mask_end": 151
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "babble",
+      "mirror_excerpt": "认出这是她的鸟！她高兴极了，跑去拿。但当她",
+      "child_text": "[咿呀声]",
+      "reply_text": "这回只飘出一点轻轻的声响，没成字。刚那页里的姑娘认出了自己的小鸟，高兴得跑过去，多好啊。",
+      "metal_g": 0.021149732172489166,
+      "cache_hit_tokens": 288512,
+      "cache_miss_tokens": 316,
+      "turn_hit_rate": 0.9989059232484385,
+      "provider_hit_rate": 0.997414921223056,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6562,
+      "life_seconds": 3022.66,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 83
+        },
+        {
+          "offset": 144,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 144,
+          "mask_end": 153
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "silent",
+      "mirror_excerpt": "nearby Wissahickon Creek. It was in his Lower Rhenish accent, in",
+      "child_text": "",
+      "reply_text": "咱们进小狗那一页吧，让毛茸茸的陪你歇歇。",
+      "metal_g": 0.0006421087309718132,
+      "cache_hit_tokens": 288768,
+      "cache_miss_tokens": 372,
+      "turn_hit_rate": 0.9987134260219963,
+      "provider_hit_rate": 0.9974175601719164,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6564,
+      "life_seconds": 3055.94,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 165,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 165,
+          "mask_end": 174
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "uts; schoolmaster Christopher Dock held summer schools here; pea",
+      "child_text": "。 has states, the focus two social s",
+      "reply_text": "你这句里“focus”和“social”站了出来，像在说社会上要紧的事。刚那页还在讲学校和老师，也跟“social”有点沾边。",
+      "metal_g": 0.06072826776653528,
+      "cache_hit_tokens": 289152,
+      "cache_miss_tokens": 311,
+      "turn_hit_rate": 0.9989255967083877,
+      "provider_hit_rate": 0.9974206221456214,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6565,
+      "life_seconds": 3076.04,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 146,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 146,
+          "mask_end": 155
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "",
+      "child_text": "cipless of post-gravailable Rob. Departhat candu",
+      "reply_text": "你这句里“post”冒了头，后面又拧成一团，“Rob”还跟着。像是从哪个文件里漏出来的词，没头没尾。",
+      "metal_g": 0.010405675508081913,
+      "cache_hit_tokens": 289408,
+      "cache_miss_tokens": 268,
+      "turn_hit_rate": 0.9990748284290034,
+      "provider_hit_rate": 0.9974239765634222,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6566,
+      "life_seconds": 3096.2,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 157,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 157,
+          "mask_end": 166
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "幅度减少了 阿远：听说他是阿森纳队内薪水最",
+      "child_text": "religiously, Oerkeen i",
+      "reply_text": "你念到“religiously”了，这个词缀着“-ly”，从“religious”长出来的。前面“Oerkeen”我没认出来，像谁的名字。",
+      "metal_g": 0.018410593271255493,
+      "cache_hit_tokens": 289664,
+      "cache_miss_tokens": 333,
+      "turn_hit_rate": 0.9988517122590923,
+      "provider_hit_rate": 0.9974268690779345,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6568,
+      "life_seconds": 3128.24,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 140,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 140,
+          "mask_end": 149
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "蹑手蹑脚地走到灌木丛中，发现了一只昏昏欲睡",
+      "child_text": "a写的",
+      "reply_text": "“a写的”——听着像有谁写了点什么。这页里有人悄悄走进灌木丛，发现了一只打瞌睡的小家伙。",
+      "metal_g": 0.01745151448994875,
+      "cache_hit_tokens": 289920,
+      "cache_miss_tokens": 380,
+      "turn_hit_rate": 0.9986910093007234,
+      "provider_hit_rate": 0.9974294276439399,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6569,
+      "life_seconds": 3147.55,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 133,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 133,
+          "mask_end": 142
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "",
+      "child_text": "denter middle agai",
+      "reply_text": "\"middle\"和\"again\"—两个时间感的词撞在一起。你像是在说“中间”“又”，像故事绕回了某处。",
+      "metal_g": 0.013354159891605377,
+      "cache_hit_tokens": 290304,
+      "cache_miss_tokens": 216,
+      "turn_hit_rate": 0.9992565055762082,
+      "provider_hit_rate": 0.9974331208936895,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6570,
+      "life_seconds": 3167.68,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 118,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 118,
+          "mask_end": 127
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "顽固的驴子。有一天，驴子走在一块大广告牌附",
+      "child_text": "z所在",
+      "reply_text": "你就轻轻说了“所在”，像落到某个地方。书里正好有头倔驴站在大广告牌旁边。",
+      "metal_g": -0.0004560425877571106,
+      "cache_hit_tokens": 290432,
+      "cache_miss_tokens": 374,
+      "turn_hit_rate": 0.9987139192451325,
+      "provider_hit_rate": 0.9974357072111641,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6571,
+      "life_seconds": 3187.79,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 165,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 165,
+          "mask_end": 174
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "真相。她吃完午饭，感觉精力充沛，可以玩一整",
+      "child_text": "ensibilittle to use to enting",
+      "reply_text": "你这句里“use”和“to”挨在一块儿，清清亮亮的。“ensibilittle”又是个自己长出来的词。你嘴里的小词越造越多了。",
+      "metal_g": -0.0003021387383341789,
+      "cache_hit_tokens": 290816,
+      "cache_miss_tokens": 300,
+      "turn_hit_rate": 0.9989694829552481,
+      "provider_hit_rate": 0.9974388014129474,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6573,
+      "life_seconds": 3238.91,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 175,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 175,
+          "mask_end": 184
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "",
+      "child_text": "regulat by than key mperation of a can (Ornet few stage\" = i",
+      "reply_text": "你这句里“regulat”像“regulate”少了尾巴，“operation”也冒了出来。规矩和操作，又一对硬邦邦的词，手拉手站在你句子里。",
+      "metal_g": -0.00039420928806066513,
+      "cache_hit_tokens": 291072,
+      "cache_miss_tokens": 275,
+      "turn_hit_rate": 0.9990561083518965,
+      "provider_hit_rate": 0.997440291652605,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6574,
+      "life_seconds": 3260.98,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 151,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 151,
+          "mask_end": 160
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "testing using Ilford Multigrade IV RC Deluxe MGD.1M B&W Paper wh",
+      "child_text": "beate",
+      "reply_text": "你就轻轻说了“beate”，像“beat”多了个小尾巴。这页全在讲相纸和牌子名，读着像看一盒包装上的小字。",
+      "metal_g": -0.008687476627528667,
+      "cache_hit_tokens": 291328,
+      "cache_miss_tokens": 344,
+      "turn_hit_rate": 0.9988205929948709,
+      "provider_hit_rate": 0.9974430647355891,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6576,
+      "life_seconds": 3293.55,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 152,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 152,
+          "mask_end": 161
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "Kodak UNIFIX powder or solution and water) in subdued light. Lea",
+      "child_text": "eceglish other the colliority into do. We the ways sary is there understand trrap somethings\" cents: - Exckch grea",
+      "reply_text": "你这句里“understand”和“ways”都站住了，还带着“cents”，理解、办法、还有钱。脑袋里像开了个小集市。",
+      "metal_g": 0.010381902568042278,
+      "cache_hit_tokens": 291584,
+      "cache_miss_tokens": 444,
+      "turn_hit_rate": 0.9984795978467819,
+      "provider_hit_rate": 0.9974451455300675,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6577,
+      "life_seconds": 3311.46,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 148,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 148,
+          "mask_end": 157
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "上调宿舍的费用，学生现在在抗议呢！ 阿明：肯",
+      "child_text": "Photogh than 4; to seer light's unique hout Betstold 2016. F",
+      "reply_text": "你这句里“light's unique”连着站住了，还带个“2016”。光和独特，说得倒有点诗意，后面又冒出个怪词。",
+      "metal_g": -0.01207016408443451,
+      "cache_hit_tokens": 291968,
+      "cache_miss_tokens": 385,
+      "turn_hit_rate": 0.9986830988565193,
+      "provider_hit_rate": 0.9974476284425808,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6578,
+      "life_seconds": 3332.59,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 139,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 139,
+          "mask_end": 148
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "",
+      "child_text": "ering – organ: to a few federal further befor",
+      "reply_text": "你这句里“few”和“federal”挨着站，一个小一个大，挺有意思。“organ”也从后面探出半个头来。",
+      "metal_g": 0.006417853757739067,
+      "cache_hit_tokens": 292352,
+      "cache_miss_tokens": 221,
+      "turn_hit_rate": 0.9992446329633972,
+      "provider_hit_rate": 0.9974512281083437,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6579,
+      "life_seconds": 3349.02,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 173,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 173,
+          "mask_end": 182
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "“停止”时它不听。它失去了控制并偏离了轨",
+      "child_text": "iferrate east 125 Jamesation Americame Lawareastead, 17:2; finite enistrations on Torrently recies and by compresearchers com",
+      "reply_text": "你这句里“America”和“Law”冒了头，后面又缠成一串。这页正说一个东西失控、偏离了轨道，跟你嘴里这些散词倒有点像。",
+      "metal_g": -0.006252727471292019,
+      "cache_hit_tokens": 292480,
+      "cache_miss_tokens": 449,
+      "turn_hit_rate": 0.9984672053637571,
+      "provider_hit_rate": 0.9974532616589054,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6581,
+      "life_seconds": 3377.94,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 139,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 139,
+          "mask_end": 148
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "! Friend：I know, right? That was one crazy ordeal. Haylen：Ye",
+      "child_text": "哈喽，且不可能对。要",
+      "reply_text": "“哈喽”——你在打招呼呢，声音亮亮的。后面“不可能对”说得也利落。是跟故事里谁说话呀？",
+      "metal_g": -0.0005391547456383705,
+      "cache_hit_tokens": 292864,
+      "cache_miss_tokens": 365,
+      "turn_hit_rate": 0.9987552390793544,
+      "provider_hit_rate": 0.9974558651116634,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6582,
+      "life_seconds": 3392.54,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 115,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 115,
+          "mask_end": 124
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "",
+      "child_text": "本园时，蒂米说聪",
+      "reply_text": "“本园时，蒂米说”这几个字听清了，后面那个字我没认出。蒂米说了什么呀？",
+      "metal_g": 0.00892774946987629,
+      "cache_hit_tokens": 293248,
+      "cache_miss_tokens": 173,
+      "turn_hit_rate": 0.9994104034816867,
+      "provider_hit_rate": 0.9974597681840083,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6584,
+      "life_seconds": 3413.95,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 88,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 88,
+          "mask_end": 97
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "的数字。”汤姆苦苦思索。他猜测：“是三号吗",
+      "child_text": "，有一",
+      "reply_text": "“有一”——你又起头啦。有一个什么呢？我等你说下去。",
+      "metal_g": 0.025646326132118702,
+      "cache_hit_tokens": 293376,
+      "cache_miss_tokens": 330,
+      "turn_hit_rate": 0.998876427447856,
+      "provider_hit_rate": 0.9974625942493666,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6585,
+      "life_seconds": 3429.6,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 150,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 150,
+          "mask_end": 159
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "4th … Lobster Thermidor is an extravagant, indulgent, classica",
+      "child_text": "port. Bible The Uhi",
+      "reply_text": "你这句里“Bible”站得挺稳，后面“Uhi”我没认出来。这页正讲一道大菜龙虾，名字绕口，听着倒挺馋人。",
+      "metal_g": 0.004309858428314328,
+      "cache_hit_tokens": 293632,
+      "cache_miss_tokens": 403,
+      "turn_hit_rate": 0.9986294148655772,
+      "provider_hit_rate": 0.9974649198794091,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6586,
+      "life_seconds": 3446.09,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 111,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 111,
+          "mask_end": 120
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "babble",
+      "mirror_excerpt": "",
+      "child_text": "la",
+      "reply_text": "你就轻轻“la”了一声，像小鼓点敲了一下。这声听着倒有点想唱歌的意思。",
+      "metal_g": 0.002461410127580166,
+      "cache_hit_tokens": 294016,
+      "cache_miss_tokens": 217,
+      "turn_hit_rate": 0.9992624892517155,
+      "provider_hit_rate": 0.997468497952586,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6587,
+      "life_seconds": 3460.5,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 111,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 111,
+          "mask_end": 120
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "! 小青：嘿，小姐姐。你排球打的不错嘛。 阿哲",
+      "child_text": "ishould be ba",
+      "reply_text": "\"I should be\" —这句站得挺稳，每个词都听得清。你在说“我应该是”什么呢？",
+      "metal_g": -0.0074501000344753265,
+      "cache_hit_tokens": 294144,
+      "cache_miss_tokens": 391,
+      "turn_hit_rate": 0.998672483745565,
+      "provider_hit_rate": 0.9974708921830845,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6588,
+      "life_seconds": 3472.62,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 103,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 103,
+          "mask_end": 112
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "! 小青：嘿，小姐姐。你排球打的不错嘛。 阿哲",
+      "child_text": "圬园蕉。 然后，莉莉和",
+      "reply_text": "开头那个字我没认出，后面“然后，莉莉和”倒清楚了。莉莉和谁呀？",
+      "metal_g": -0.007090633735060692,
+      "cache_hit_tokens": 294528,
+      "cache_miss_tokens": 315,
+      "turn_hit_rate": 0.9989316348022507,
+      "provider_hit_rate": 0.9974737942574188,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6589,
+      "life_seconds": 3485.4,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 91,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 91,
+          "mask_end": 100
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "babble",
+      "mirror_excerpt": "! 小青：嘿，小姐姐。你排球打的不错嘛。 阿哲",
+      "child_text": "。蒂",
+      "reply_text": "你就轻轻说了一个“蒂”字，后面没收住。是想到蒂姆了吗？",
+      "metal_g": 0.009648358449339867,
+      "cache_hit_tokens": 294784,
+      "cache_miss_tokens": 362,
+      "turn_hit_rate": 0.9987734883752448,
+      "provider_hit_rate": 0.9974763738981084,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6592,
+      "life_seconds": 3522.75,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 155,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 155,
+          "mask_end": 164
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "",
+      "child_text": "e Begroune or bord oyarding agendin",
+      "reply_text": "你这句里“or”和“bord”站了出来，后面“agendin”像“agenda”的亲戚。你像是从哪份清单里顺手捞了几个词。",
+      "metal_g": 0.003485430032014847,
+      "cache_hit_tokens": 295040,
+      "cache_miss_tokens": 299,
+      "turn_hit_rate": 0.9989876040753168,
+      "provider_hit_rate": 0.9974793694088565,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6593,
+      "life_seconds": 3545.13,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 126,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 126,
+          "mask_end": 135
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "小川：唉，高以翔去世的事情你知道吧？ 阿月：",
+      "child_text": "ity. In onti",
+      "reply_text": "你轻轻念出“In”，后面那个词没成形。这一页说着叫人难过的事，读着心里沉甸甸的。",
+      "metal_g": 0.00893067242577672,
+      "cache_hit_tokens": 295296,
+      "cache_miss_tokens": 369,
+      "turn_hit_rate": 0.9987519659073614,
+      "provider_hit_rate": 0.9974818896910169,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6594,
+      "life_seconds": 3569.46,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 180,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 180,
+          "mask_end": 189
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "ratius.” 1. to dim [verb] [dimde, gedimd] ['dim-mun'] The lit",
+      "child_text": "it Davity, whi",
+      "reply_text": "你这句里“whi”像是“which”掉了一半，“Davity”倒像个人名又不太像。这页在解释“dim”这个词的读音，像一本字典在念自己。",
+      "metal_g": 0.01916566491127014,
+      "cache_hit_tokens": 295680,
+      "cache_miss_tokens": 302,
+      "turn_hit_rate": 0.9989796676824942,
+      "provider_hit_rate": 0.9974827848770784,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6595,
+      "life_seconds": 3584.17,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 173,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 173,
+          "mask_end": 182
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "",
+      "child_text": "hat you shave other seem or",
+      "reply_text": "你这句里“you”和“other”站住了，中间“shave”还冒了一下，刮胡子那个词。你像在说“你……别的……”，话还没拢齐。",
+      "metal_g": 0.0020014559850096703,
+      "cache_hit_tokens": 295936,
+      "cache_miss_tokens": 282,
+      "turn_hit_rate": 0.999047998433586,
+      "provider_hit_rate": 0.9974858720758012,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    },
+    {
+      "cycle": 6596,
+      "life_seconds": 3601.07,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 139,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 139,
+          "mask_end": 148
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 51,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "Sewal v. Hancock,” in Wroth and Zobel, II, 194-207. Leonard W.",
+      "child_text": "c的饹",
+      "reply_text": "你就轻轻冒出个“的饹”音，我没认准。这一页净是人名和页码，念着像在法庭上点名，挺闷的。",
+      "metal_g": 0.006532725878059864,
+      "cache_hit_tokens": 296192,
+      "cache_miss_tokens": 345,
+      "turn_hit_rate": 0.9988365701413314,
+      "provider_hit_rate": 0.997488533781508,
+      "caregiver_source": "api",
+      "summary_version": 0,
+      "stage_changed": false
+    }
+  ],
+  "evaluation": {
+    "checkpoint": "D:\\mengli-en-ref-1h-20261125\\body\\last.pt.gz",
+    "cycle": 6596,
+    "load_seconds": 13.534,
+    "fresh_8192_nll": {
+      "mean_nll": 1.6338191330432892,
+      "segment_nll": [
+        1.688882239162922,
+        1.7019941359758377,
+        1.5906243100762367,
+        1.5537758469581604
+      ]
+    },
+    "classic_8192_nll": {
+      "mean_nll": 1.5391333848237991,
+      "segment_nll": [
+        1.3538463339209557,
+        1.719010978937149,
+        1.5208580046892166,
+        1.5628182217478752
+      ]
+    },
+    "combined_16384_mean_nll": 1.5864762589335442,
+    "fresh_64_facts": {
+      "mean_score": -0.37808361428324133,
+      "mean_mse": 0.17188386531779543
+    },
+    "scale_diagnostics": {
+      "relation_ridge": 0.3900422751903534,
+      "relation_ridge_gate": 0.9470720887184143,
+      "relation_ridge_lr": 0.0003,
+      "memory_temperature": 0.20957283675670624,
+      "memory_temperature_gate": 0.5617647767066956,
+      "memory_temperature_lr": 0.0003
+    },
+    "optimizer_mean_gate": 0.07015544002497273,
+    "optimizer_alive_frac": 0.21558704453441296,
+    "alif_restored": {
+      "v": 0.0,
+      "a": 2.0621912601517614,
+      "executive_spikes": 3699,
+      "calm_pieces": 7407,
+      "total_external_bytes": 9123520,
+      "total_learned_bytes": 9123520,
+      "pending_spike": false
+    }
+  },
+  "restore_exact": true
+}

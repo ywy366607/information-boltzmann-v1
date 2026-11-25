@@ -1,0 +1,238 @@
+{
+  "schema": 1,
+  "snapshot_at": "2026-11-25T15:31:45.437081+08:00",
+  "work": "D:\\mengli-umwelt-v13-clean-20261125",
+  "cycle_range": [
+    6597,
+    6779
+  ],
+  "spikes": 183,
+  "life_seconds": 2626.826,
+  "external_bytes": 328960,
+  "reference_flux": [
+    {
+      "life_seconds": 0.0,
+      "run_external_bytes": 0,
+      "cycle": 6313,
+      "combined_16384_nll": 1.620456025004387,
+      "fresh_8192_nll": 1.659915393218398,
+      "classic_8192_nll": 1.5809966567903757,
+      "chinese_8192_nll": 1.2228041039779782,
+      "fresh_64_facts_score": -0.40516008879058063,
+      "fresh_64_facts_mse": 0.1890268592396751,
+      "mother_turns": 1047,
+      "provider_hit_rate": 0.9972002344877114,
+      "other_world_model": {},
+      "recent_self_speech_nll": null,
+      "recent_self_cons_g": null,
+      "recent_mother_nll": null
+    },
+    {
+      "life_seconds": 917.72,
+      "run_external_bytes": 120640,
+      "cycle": 6384,
+      "combined_16384_nll": 1.6262647323310375,
+      "fresh_8192_nll": 1.6746644377708435,
+      "classic_8192_nll": 1.5778650268912315,
+      "chinese_8192_nll": 1.2248242311179638,
+      "fresh_64_facts_score": -0.40376606315840036,
+      "fresh_64_facts_mse": 0.18655072269029915,
+      "mother_turns": 1077,
+      "provider_hit_rate": 0.997291704402845,
+      "other_world_model": {},
+      "recent_self_speech_nll": 1.8407,
+      "recent_self_cons_g": 0.0,
+      "recent_mother_nll": 1.5298
+    },
+    {
+      "life_seconds": 1805.74,
+      "run_external_bytes": 244800,
+      "cycle": 6455,
+      "combined_16384_nll": 1.59953495208174,
+      "fresh_8192_nll": 1.6532111801207066,
+      "classic_8192_nll": 1.5458587240427732,
+      "chinese_8192_nll": 1.2421751599758863,
+      "fresh_64_facts_score": -0.40016429545357823,
+      "fresh_64_facts_mse": 0.18383601604728028,
+      "mother_turns": 1105,
+      "provider_hit_rate": 0.9973770192219158,
+      "other_world_model": {},
+      "recent_self_speech_nll": 1.7075,
+      "recent_self_cons_g": 0.0,
+      "recent_mother_nll": 1.4928
+    },
+    {
+      "life_seconds": 2705.29,
+      "run_external_bytes": 377280,
+      "cycle": 6535,
+      "combined_16384_nll": 1.61924459785223,
+      "fresh_8192_nll": 1.6802760064601898,
+      "classic_8192_nll": 1.5582131892442703,
+      "chinese_8192_nll": 1.2465631514787674,
+      "fresh_64_facts_score": -0.3863616631133482,
+      "fresh_64_facts_mse": 0.17588644661009312,
+      "mother_turns": 1118,
+      "provider_hit_rate": 0.997414921223056,
+      "other_world_model": {},
+      "recent_self_speech_nll": 1.8611,
+      "recent_self_cons_g": 0.0,
+      "recent_mother_nll": 1.4943
+    },
+    {
+      "life_seconds": 3601.07,
+      "run_external_bytes": 482880,
+      "cycle": 6596,
+      "combined_16384_nll": 1.5864762589335442,
+      "fresh_8192_nll": 1.6338191330432892,
+      "classic_8192_nll": 1.5391333848237991,
+      "chinese_8192_nll": 1.234344600699842,
+      "fresh_64_facts_score": -0.37808361428324133,
+      "fresh_64_facts_mse": 0.17188386531779543,
+      "mother_turns": 1145,
+      "provider_hit_rate": 0.997488533781508,
+      "other_world_model": {},
+      "recent_self_speech_nll": 1.9213,
+      "recent_self_cons_g": -0.0,
+      "recent_mother_nll": 1.4903
+    }
+  ],
+  "live_flux_log": "C:\\Users\\85750\\.gemini\\antigravity\\brain\\b52ce350-543f-4727-bcda-4a922c34066a\\.system_generated\\tasks\\task-11850.log",
+  "live_flux_lines": [
+    "[FLUX @    0.0s | +     0B | mother=1145] 16KB_NLL=1.586476 cn_8KB=1.2343 64facts=-0.378084 mse=0.1719 hit=0.997488533781508",
+    "[FLUX @ 1804.4s | +214080B | mother=1225] 16KB_NLL=1.595755 cn_8KB=1.2295 64facts=-0.385873 mse=0.1740 hit=0.9976859397849862"
+  ],
+  "archive_first": {
+    "episodes": 6668,
+    "relations": 2775,
+    "references": 22064,
+    "disk_bytes": 175480832,
+    "record_bytes": 7692,
+    "budgets": {
+      "episodes": 65536,
+      "relations": 65536,
+      "max_bytes": 536870912
+    },
+    "warmed_relations": 1,
+    "loaded_episodes": 0,
+    "scans": 1
+  },
+  "archive_last": {
+    "episodes": 6851,
+    "relations": 2890,
+    "references": 22984,
+    "disk_bytes": 181178368,
+    "record_bytes": 7692,
+    "budgets": {
+      "episodes": 65536,
+      "relations": 65536,
+      "max_bytes": 536870912
+    },
+    "warmed_relations": 171,
+    "loaded_episodes": 3,
+    "scans": 183
+  },
+  "past_present_valid_counts": {
+    "8": 183
+  },
+  "read_feedback": {
+    "observations": 1856,
+    "distinct_slots": 515,
+    "positive": 928,
+    "negative": 928,
+    "changed_preferences": 1856,
+    "stale_sum": 0,
+    "max_age_bytes": 10813917,
+    "benefit_units": "10*nats/byte; response and heldout each counted"
+  },
+  "causal_commits": 116,
+  "resumed_unknowns": 28,
+  "solo": {
+    "n": 63,
+    "observe_counts": {
+      "none": 46,
+      "book": 17
+    },
+    "available_causal_values": 0
+  },
+  "choice_effects": {
+    "wood_policy_tv": {
+      "nonzero_turns": 183,
+      "mean_tv": 0.004579008612883547
+    },
+    "episodic_policy_tv": {
+      "nonzero_turns": 145,
+      "mean_tv": 0.005085419883819226
+    },
+    "water_direct_choice_tv": {
+      "nonzero_turns": 183,
+      "mean_tv": 0.00019586258287963973
+    }
+  },
+  "recent_mother_examples": [
+    {
+      "cycle": 6723,
+      "utterance": "出主面地",
+      "shape_classification": "fragments",
+      "mother_reply": "“出主面地”——这几个字我没拼出意思，像几个词头撞一块了。书里孩子正把平底锅拿给妈妈，想让她拿它做煎饼呢。"
+    },
+    {
+      "cycle": 6724,
+      "utterance": "perience. Fe frent most nodes for as",
+      "shape_classification": "coherent",
+      "mother_reply": "你这句里\"perience\"像\"experience\"砍了一刀，\"nodes\"又冒出来，网络里的小结。经验和节点，两个词都半成不成。"
+    },
+    {
+      "cycle": 6726,
+      "utterance": "that meetions for spost, sa",
+      "shape_classification": "coherent",
+      "mother_reply": "\"What meetions\"里\"that\"站住了，后面\"meetions\"像是\"mentions\"的亲戚。提起、说到，话头又冒了个尖。"
+    },
+    {
+      "cycle": 6727,
+      "utterance": "the mouse and togetherver 135-14rest oper",
+      "shape_classification": "coherent",
+      "mother_reply": "你这句开头“the mouse”说得清楚，一只老鼠冒出来啦。后面却没跟着它走，绕成了数字和怪音。"
+    },
+    {
+      "cycle": 6728,
+      "utterance": "oneshing: ap",
+      "shape_classification": "fragments",
+      "mother_reply": "\"oneshing\"又是个自己造的词，后面\"ap\"就像叹了一声。书里那毛线一碰就散下来，乱成一团，你嘴里这些词也有点像。"
+    },
+    {
+      "cycle": 6729,
+      "utterance": "并经",
+      "shape_classification": "fragments",
+      "mother_reply": "“并经”——这两个字连得紧。是“并且经过”的意思吗？还是想接着说下去的什么？"
+    },
+    {
+      "cycle": 6730,
+      "utterance": "",
+      "shape_classification": "silent",
+      "mother_reply": "你这么望着我，眼睛一眨不眨的，像在心里琢磨着那句话。刚那页说想跟着心里的冲动走，又记着别的，倒像个难题。"
+    },
+    {
+      "cycle": 6731,
+      "utterance": " management i",
+      "shape_classification": "fragments",
+      "mother_reply": "“management”—这个词清清楚楚，管理的意思。你嘴里常冒出这类管事的词，像个小当家的。"
+    }
+  ],
+  "findings": [
+    {
+      "code": "single_object_upstream_skip",
+      "file": "scripts/ib_local/world_learning_cycle.py",
+      "line": 118,
+      "condition": "len(candidates) >= 2 prevents evaluating book in solo scenes; downstream centering repair cannot receive a value",
+      "next": "Permit one external candidate, exercise real caller with book+null decision and verify finite prior and fallback telemetry before next continuation."
+    },
+    {
+      "code": "shape_label_read_as_semantic_coherence",
+      "file": "scripts/ib_local/body_mirror.py",
+      "line": 103,
+      "condition": "coherent depends on UTF-8 and lexical unit counts; dossier and Mother notes interpret it as semantic sentence progress",
+      "next": "Use literal shape descriptions and include recent dated utterance-response-next-attempt evidence."
+    }
+  ],
+  "execution": "Read-only CPU audit; no checkpoint loading, GPU experiments, Mother calls, training edits or process changes."
+}

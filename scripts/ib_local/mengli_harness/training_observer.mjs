@@ -184,6 +184,7 @@ export class TrainingObserver {
             response_nll: typeof row.response_nll === 'number' ? row.response_nll : null,
             cache_hit_tokens: cacheHit,
             cache_miss_tokens: cacheMiss,
+            learning_trace: row.learning_trace ?? null,
           },
           row: project(row),
         };

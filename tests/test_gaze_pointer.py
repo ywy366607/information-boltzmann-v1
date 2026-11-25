@@ -362,3 +362,74 @@ def test_centered_relative_fingerprints_break_anisotropy_cone_and_match_wood_sca
     assert abs(float(ptr.q_state.weight.mean().item()) - 0.123) < 1e-6
 
 
+def test_single_object_wood_valuation_reaches_selector_end_to_end(monkeypatch):
+    """Verify the real caller `_select_and_condition_target` evaluates Wood consequence values
+    even with ONE external candidate (`book` in solo reading), compares `book` against the
+    genuinely evaluated null action (`null_causal_value`), and records explicit `prior_status`/`prior_error`.
+    """
+    from scripts.ib_local import causal_relation_program as crp
+    from scripts.ib_local import causal_use_value as cuv
+    from scripts.ib_local import finite_use_value as fuv
+    from scripts.ib_local import learnable_precision_scales as lps
+    from scripts.ib_local.world_learning_cycle import _select_and_condition_target
+
+    torch.manual_seed(23)
+    d = 32
+    eng = _make_gaze_engine(d_model=d)
+    ptr = gp_mod.configure(eng, {}, d_gaze=16)
+    ptr.observe_object(eng, 'book', b'The little rabbit hopped across the sunny meadow.' * 3, fuse_body_state=False)
+    with torch.no_grad():
+        ptr._dual().observe_to_action.weight.fill_(0.25)
+        ptr.target_to_action.weight.fill_(0.2)
+
+    eng.world = SimpleNamespace(
+        prepare_gaze_candidates=lambda utt: ([('book', b'book')], dict(stumble_ratio=1.2, nll_norm=0.3)),
+    )
+    eng.relation_ridge = 0.1
+    eng.causal_use_arm = 'C2'
+    eng._program_question_state = SimpleNamespace(tag='solo_state')
+    eng._internal_source = torch.randn(1, d)
+    eng._internal_action = torch.randn(3, d)
+    eng._program_forecasts = dict(path={})
+
+    # Real batched contract: 3 rows = [out(book), in(book), null(raw_act)].
+    monkeypatch.setattr(lps, 'effective_ridge', lambda model, r: float(r))
+    monkeypatch.setattr(cuv, 'queries', lambda engine, st: [('fact_a',)])
+    captured_rows = {}
+
+    def fake_mechanism(model, state, src_rows, cond_acts, ridge=0.1):
+        captured_rows['n_rows'] = int(cond_acts.shape[0])
+        return dict(cond_acts=cond_acts.detach().clone())
+
+    def fake_finite_expected(engine, state, src_rows, cond_acts, dist, facts):
+        # Distinct values even when all negative: book (-0.02) clearly beats null (-0.08)!
+        # Using real null_causal_value instead of hardcoded 0.0 must give book > 0 and none < 0 prior!
+        return torch.tensor([-0.03, -0.02, -0.08], dtype=torch.float32)
+
+    monkeypatch.setattr(crp, 'mechanism', fake_mechanism)
+    monkeypatch.setattr(fuv, 'expected', fake_finite_expected)
+
+    dec = _select_and_condition_target(eng, b'rabbit', dict(choice=1))
+    assert dec is not None
+    assert captured_rows['n_rows'] == 3
+    assert dec['prior_status'] == 'evaluated'
+    assert 'prior_error' not in dec
+    assert dec['causal_values'] == {'book': -0.3}
+    assert dec['observe_causal_values'] == {'book': -0.2}
+    assert dec['null_causal_value'] == -0.8
+    assert dec['observe_causal_prior']['book'] > 0.0
+    assert dec['observe_causal_prior']['none'] < 0.0
+    assert dec['observe_probs']['book'] > dec['observe_probs']['none']
+
+    # Error path must be recorded explicitly instead of silently leaving null.
+    def boom(*args, **kwargs):
+        raise RuntimeError('simulated valuation error')
+
+    monkeypatch.setattr(fuv, 'expected', boom)
+    dec_err = _select_and_condition_target(eng, b'rabbit', dict(choice=1))
+    assert dec_err['prior_status'] == 'error'
+    assert 'RuntimeError: simulated valuation error' in dec_err['prior_error']
+    assert dec_err['causal_values'] is None
+
+
+

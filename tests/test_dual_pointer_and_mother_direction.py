@@ -235,11 +235,11 @@ def test_face_to_face_chat_vs_co_reading_packet_hygiene():
     assert info1['include_book_excerpt'] is False
     assert info1['mother_out'] == 'mengli'
     packet1 = cg.calls[0][-1][1]
-    assert '[共读书页]' not in packet1
+    assert '[书页]' not in packet1
     assert '面对面聊天' in packet1
-    assert '[行动指向]' in packet1
+    assert '[提示]' in packet1 and '@翻书' in packet1 and '@安静陪伴' in packet1
 
-    # 2. Genuine co-reading: (spoke, out='mother', in='book') -> [共读书页] INCLUDED!
+    # 2. Genuine co-reading: (spoke, out='mother', in='book') -> [书页] INCLUDED!
     resp2, cont2, info2 = port.take(
         '树梢上的露珠'.encode('utf-8'),
         256,
@@ -249,7 +249,7 @@ def test_face_to_face_chat_vs_co_reading_packet_hygiene():
     assert info2['interaction_mode'] == 'co_reading_talk'
     assert info2['include_book_excerpt'] is True
     packet2 = cg.calls[1][-1][1]
-    assert '[共读书页]' in packet2
+    assert '[书页]' in packet2
 
 
 def test_read_aloud_solo_does_not_jump_book_while_book_search_does():

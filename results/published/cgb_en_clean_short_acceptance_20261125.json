@@ -1,0 +1,534 @@
+{
+  "schema": 1,
+  "source": {
+    "path": "D:\\mengli-umwelt-10h-v12c-20261125\\body\\last.pt.gz",
+    "sha256": "51a3a35db9742b3b18b4b394dadb084264e8d932a6c058bb7e12b76b60698a15",
+    "cycle": 6313
+  },
+  "output": {
+    "checkpoint": "D:\\mengli-en-clean-accept-20261125\\body\\last.pt.gz",
+    "sha256": "0f0a21313ceaed302230c9044f38c9edb60e622d12e9b3d5b699167d68ccf53a",
+    "cycle": 6319
+  },
+  "config": {
+    "schema": 1,
+    "branch_id": "mengli-02b72b31a918563e171589c8",
+    "mother_enabled": false,
+    "mother_harness_url": null,
+    "mother_cooldown": 3,
+    "mother_max_gap": 8,
+    "mirror_ratio": 0.7,
+    "chinese_corpus": "D:\\information-boltzmann-v1\\data\\cgb_chinese_stories_20261124\\train.bin",
+    "chinese_mix_ratio": 0.45,
+    "dialogue_demo_corpus": "D:\\information-boltzmann-v1\\data\\cgb_bilingual_dialogue_20261124\\dialogues.jsonl",
+    "dialogue_demo_ratio": 0.12,
+    "restored_prior_port_state": true
+  },
+  "timing": {
+    "life_seconds": 61.561,
+    "save_seconds": 2.528,
+    "peak_vram_gib": 1.4874,
+    "run_external_bytes": 8640,
+    "bytes_per_second": 140.35,
+    "run_calm_pieces": 12,
+    "run_executive_spikes": 6,
+    "mean_calm_seconds": 1.233,
+    "mean_exec_seconds": 7.7799
+  },
+  "unified_port": {
+    "ambient_reads": 5965,
+    "sidecar_reads": 2482,
+    "spike_turns": 3061,
+    "mother_turns": 1047,
+    "mother_responsive_turns": 919,
+    "mother_proactive_turns": 119,
+    "book_navigation_turns": 556,
+    "explicit_addressed_turns": 0,
+    "mirror_visible_turns": 732,
+    "book_only_turns": 315,
+    "parent_turns": 0,
+    "tool_turns": 0,
+    "ambient_fallback_turns": 1289,
+    "self_evolution_turns": 723,
+    "inner_monologue_turns": 573,
+    "mother_quiet_turns": 9,
+    "mother_book_turns": 4,
+    "mother_present": false,
+    "active_floor": "book",
+    "last_book_source": "chinese_storybook",
+    "active_interlocutor": null,
+    "awaiting_reply_from": null,
+    "turns_since_name_call": 1041,
+    "care_stage": "reflective_inquiry",
+    "care_plan_version": 51,
+    "stage_transitions": [
+      {
+        "turn": 4,
+        "kind": "mother_autonomous_reflection",
+        "stage": "infant_direct_modeling",
+        "version": 2
+      },
+      {
+        "turn": 11,
+        "kind": "developmental_transition",
+        "from_stage": "infant_direct_modeling",
+        "to_stage": "emerging_scaffolded",
+        "version": 3
+      },
+      {
+        "turn": 25,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 4
+      },
+      {
+        "turn": 30,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "infant_direct_modeling",
+        "version": 5
+      },
+      {
+        "turn": 41,
+        "kind": "developmental_transition",
+        "from_stage": "infant_direct_modeling",
+        "to_stage": "emerging_scaffolded",
+        "version": 6
+      },
+      {
+        "turn": 41,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 7
+      },
+      {
+        "turn": 48,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "infant_direct_modeling",
+        "version": 8
+      },
+      {
+        "turn": 73,
+        "kind": "mother_autonomous_reflection",
+        "stage": "infant_direct_modeling",
+        "version": 9
+      },
+      {
+        "turn": 81,
+        "kind": "developmental_transition",
+        "from_stage": "infant_direct_modeling",
+        "to_stage": "emerging_scaffolded",
+        "version": 10
+      },
+      {
+        "turn": 91,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 11
+      },
+      {
+        "turn": 98,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "infant_direct_modeling",
+        "version": 12
+      },
+      {
+        "turn": 104,
+        "kind": "developmental_transition",
+        "from_stage": "infant_direct_modeling",
+        "to_stage": "emerging_scaffolded",
+        "version": 13
+      },
+      {
+        "turn": 110,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 14
+      },
+      {
+        "turn": 139,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 15
+      },
+      {
+        "turn": 145,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 16
+      },
+      {
+        "turn": 155,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 17
+      },
+      {
+        "turn": 217,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 18
+      },
+      {
+        "turn": 224,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 19
+      },
+      {
+        "turn": 252,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 20
+      },
+      {
+        "turn": 262,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 21
+      },
+      {
+        "turn": 266,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 22
+      },
+      {
+        "turn": 278,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 23
+      },
+      {
+        "turn": 310,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 24
+      },
+      {
+        "turn": 313,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 25
+      },
+      {
+        "turn": 339,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 26
+      },
+      {
+        "turn": 384,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 27
+      },
+      {
+        "turn": 389,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 28
+      },
+      {
+        "turn": 390,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 29
+      },
+      {
+        "turn": 415,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 30
+      },
+      {
+        "turn": 431,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 31
+      },
+      {
+        "turn": 447,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 32
+      },
+      {
+        "turn": 463,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 33
+      },
+      {
+        "turn": 526,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 34
+      },
+      {
+        "turn": 622,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 35
+      },
+      {
+        "turn": 638,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 36
+      },
+      {
+        "turn": 654,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 37
+      },
+      {
+        "turn": 686,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 38
+      },
+      {
+        "turn": 702,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 39
+      },
+      {
+        "turn": 750,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 40
+      },
+      {
+        "turn": 766,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 41
+      },
+      {
+        "turn": 862,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 42
+      },
+      {
+        "turn": 869,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 43
+      },
+      {
+        "turn": 878,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 44
+      },
+      {
+        "turn": 886,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 45
+      },
+      {
+        "turn": 916,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 46
+      },
+      {
+        "turn": 942,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 47
+      },
+      {
+        "turn": 958,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 48
+      },
+      {
+        "turn": 974,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 49
+      },
+      {
+        "turn": 975,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 50
+      },
+      {
+        "turn": 990,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 51
+      }
+    ],
+    "gaze_pointer": {
+      "schema": 2,
+      "centered_target_v1": true,
+      "d_model": 256,
+      "d_gaze": 64,
+      "param_count": 115010,
+      "step_count": 2555,
+      "boundary_steps": 2318,
+      "target_to_action_norm": 15.23267,
+      "raw_fp_max_cos": 0.75861,
+      "rel_fp_max_cos": -0.94989,
+      "delta_unit_sep": 0.84669,
+      "baseline_g": -0.004063,
+      "mean_entropy": 0.6539,
+      "known_objects": [
+        "book",
+        "mother"
+      ],
+      "target_counts": {
+        "book": 1167,
+        "mother": 1029,
+        "none": 359
+      },
+      "target_g_ema": {
+        "book": -0.005607,
+        "mother": 0.006932,
+        "none": 0.0
+      },
+      "interaction_mode_counts": {
+        "quiet_reading": 150,
+        "co_reading_talk": 123,
+        "face_to_face_chat": 181,
+        "read_aloud_to_mother": 141,
+        "book_search": 195,
+        "call_book_and_pause": 250,
+        "self_talk_observing_mother": 96,
+        "quiet_self_evolution": 147,
+        "call_mother_and_pause": 109,
+        "read_aloud_solo": 157,
+        "look_at_mother": 35,
+        "inner_monologue": 212
+      },
+      "other_world_model": {},
+      "last_decision": {
+        "target_id": "none",
+        "send_target": "none",
+        "observe_target": "none",
+        "interaction_mode": "inner_monologue",
+        "probs": {
+          "book": 0.2755,
+          "none": 0.7245
+        },
+        "send_probs": {
+          "book": 0.5416,
+          "none": 0.4584
+        },
+        "observe_probs": {
+          "book": 0.2755,
+          "none": 0.7245
+        },
+        "habit_logits": {
+          "book": -0.948,
+          "none": 0.0187
+        },
+        "send_habit_logits": {
+          "book": -0.0972,
+          "none": -0.2641
+        },
+        "causal_values": null,
+        "entropy": 0.6392,
+        "num_candidates": 1,
+        "sampled": true,
+        "dual_channel": true
+      }
+    },
+    "summary_version": null,
+    "provider_hit_rate": null,
+    "usage_totals": null
+  },
+  "hnet": {
+    "schema": 1,
+    "enc_layers": 4,
+    "dec_layers": 4,
+    "target_ratio": 4.0,
+    "ratio_loss_weight": 0.25,
+    "min_seq_len": 1,
+    "router_scale": 6.0,
+    "router_thresh": 0.029286513105034828,
+    "calibrated": true,
+    "calls": 43064,
+    "last_boundary_rate": 0.25,
+    "last_compression_ratio": 4.0,
+    "mean_boundary_rate_ema": 0.3099965453147888,
+    "effective_compression_ema": 3.2258424008710835,
+    "last_ratio_loss": 1.0,
+    "residual_weight_rms": 0.03183683007955551,
+    "wiener_mean_gate": 0.12856444908538833
+  },
+  "flux_trajectory": [],
+  "dialogue_samples": [],
+  "evaluation": {
+    "checkpoint": "D:\\mengli-en-clean-accept-20261125\\body\\last.pt.gz",
+    "cycle": 6319,
+    "load_seconds": 13.106,
+    "fresh_8192_nll": {
+      "mean_nll": 1.6547083854675293,
+      "segment_nll": [
+        1.7191592827439308,
+        1.7262472286820412,
+        1.593719020485878,
+        1.5797080099582672
+      ]
+    },
+    "classic_8192_nll": {
+      "mean_nll": 1.5664728749543428,
+      "segment_nll": [
+        1.3652128800749779,
+        1.767166182398796,
+        1.5348882600665092,
+        1.5986241772770882
+      ]
+    },
+    "combined_16384_mean_nll": 1.610590630210936,
+    "fresh_64_facts": {
+      "mean_score": -0.40180244389921427,
+      "mean_mse": 0.1874976047547534
+    },
+    "scale_diagnostics": {
+      "relation_ridge": 0.3259281814098358,
+      "relation_ridge_gate": 0.9671162962913513,
+      "relation_ridge_lr": 0.0003,
+      "memory_temperature": 0.20956124365329742,
+      "memory_temperature_gate": 0.0,
+      "memory_temperature_lr": 0.0003
+    },
+    "optimizer_mean_gate": 0.12994400435657388,
+    "optimizer_alive_frac": 0.34324392712550605,
+    "alif_restored": {
+      "v": 0.0,
+      "a": 2.193724325273741,
+      "executive_spikes": 3422,
+      "calm_pieces": 6882,
+      "total_external_bytes": 8649280,
+      "total_learned_bytes": 8649280,
+      "pending_spike": false
+    }
+  },
+  "restore_exact": true
+}
