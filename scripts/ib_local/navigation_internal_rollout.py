@@ -207,6 +207,10 @@ class InternalRolloutEngine(DirectReadGainEngine):
         # source/action. Do not count it again among the retained replay rows.
         if self._internal_label is not None and self.internal_pending is not None:
             valid[self.internal_pending['slot']] = False
+        excl = getattr(self, '_exclude_internal_slots', None)
+        if excl is not None and len(excl) > 0:
+            valid = valid.clone()
+            valid[excl.to(device=valid.device, dtype=torch.long)] = False
         slots = torch.nonzero(valid).flatten()
         # Fixed budget, use the existing replay RNG, all retained in snapshots.
         if len(slots) > self.replay_batch:

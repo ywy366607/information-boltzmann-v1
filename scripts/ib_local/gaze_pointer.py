@@ -147,6 +147,56 @@ def classify_interaction_mode(spoke: bool, send_target: str, observe_target: str
     return f'send_{out_t}_observe_{in_t}'
 
 
+class _OtherWorldModel(nn.Module):
+    """Per-object persistent latent Other/World boundary predictor & state-persistence gate.
+
+    Separates persistent conversational Others (`mother`, `parent`) from resetting World
+    streams (`book`) using O(1) object-conditioned parameters independent of object count M:
+      - `pred_in -> SiLU -> pred_out` (zero-init output): predicts latent boundary residual
+        `Δz(base_pred, z_obj, k_in, k_out)` with exact zero shock at initialization.
+      - `gate_net` (zero-init -> sigmoid(0)=0.5): learned per-object update gate
+        `g = σ(W_g [z_obj, z_actual, k_in] + b_g)` trained by exact 1-step BPTT so
+        persistent Others learn smooth state continuity while Books learn rapid refresh.
+      - `state_to_out_key`, `state_to_in_key` (zero-init): inject live persistent object
+        state `z_obj` into MengLi's `(out, in)` gaze queries without perturbing step 0.
+    """
+
+    def __init__(self, d_latent: int, d_gaze: int, device: torch.device):
+        super().__init__()
+        self.d_latent = int(d_latent)
+        self.d_gaze = int(d_gaze)
+        d_hidden = max(32, min(64, self.d_latent * 2))
+        self.pred_in = nn.Linear(
+            self.d_latent * 2 + self.d_gaze * 2, d_hidden, bias=True, device=device, dtype=torch.float32,
+        )
+        self.pred_out = nn.Linear(d_hidden, self.d_latent, bias=True, device=device, dtype=torch.float32)
+        self.gate_net = nn.Linear(
+            self.d_latent * 2 + self.d_gaze, self.d_latent, bias=True, device=device, dtype=torch.float32,
+        )
+        self.state_to_out_key = nn.Linear(self.d_latent, self.d_gaze, bias=False, device=device, dtype=torch.float32)
+        self.state_to_in_key = nn.Linear(self.d_latent, self.d_gaze, bias=False, device=device, dtype=torch.float32)
+
+        nn.init.zeros_(self.pred_out.weight)
+        nn.init.zeros_(self.pred_out.bias)
+        nn.init.zeros_(self.gate_net.weight)
+        nn.init.zeros_(self.gate_net.bias)
+        nn.init.zeros_(self.state_to_out_key.weight)
+        nn.init.zeros_(self.state_to_in_key.weight)
+
+    def predict_residual(
+        self,
+        base_pred: torch.Tensor,
+        z_obj: torch.Tensor,
+        k_in: torch.Tensor,
+        k_out: torch.Tensor,
+    ) -> torch.Tensor:
+        x = torch.cat((base_pred, z_obj, k_in, k_out), dim=-1)
+        return self.pred_out(F.silu(self.pred_in(x)))
+
+    def state_gate(self, z_prev: torch.Tensor, z_actual: torch.Tensor, k_in: torch.Tensor) -> torch.Tensor:
+        return torch.sigmoid(self.gate_net(torch.cat((z_prev, z_actual, k_in), dim=-1)))
+
+
 class _DualChannelHead(nn.Module):
     """Companion O(1) observation-pointer (`in`) + null-channel (`∅`) head.
 
@@ -188,6 +238,7 @@ class GazeObjectPointer(nn.Module):
         boundary_loss_weight: float = 0.25,
         fp_ema: float = 0.25,
         baseline_decay: float = 0.90,
+        enable_other_world: bool = False,
         device: torch.device | str = 'cpu',
     ):
         super().__init__()
@@ -199,6 +250,7 @@ class GazeObjectPointer(nn.Module):
         self.boundary_loss_weight = float(boundary_loss_weight)
         self.fp_ema = float(fp_ema)
         self.baseline_decay = float(baseline_decay)
+        self.enable_other_world = bool(enable_other_world)
 
         dev = torch.device(device)
         # Zero-init query, recency & target_to_action -> exact uniform curiosity & zero distortion at birth.
@@ -226,6 +278,12 @@ class GazeObjectPointer(nn.Module):
         dual = _DualChannelHead(self.d_model, self.d_gaze, dev)
         self.__dict__['_dual_channel'] = dual
         self._dual_opt = torch.optim.Adam(dual.parameters(), lr=self.lr)
+        # Companion per-object persistent Other/World latent state model (lazily sized to `encoder.out_features`).
+        self.__dict__['_other_world_model'] = None
+        self._other_opt: torch.optim.Optimizer | None = None
+        self.other_states: dict[str, torch.Tensor] = {}
+        self._other_prev_transitions: dict[str, tuple[torch.Tensor, torch.Tensor, torch.Tensor]] = {}
+        self.other_model_ema: dict[str, dict[str, float]] = {}
         self.fingerprints: dict[str, torch.Tensor] = {}
         self.fp_center: torch.Tensor | None = None
         self.fp_center_ema: float = 0.05
@@ -282,6 +340,32 @@ class GazeObjectPointer(nn.Module):
         if dual.out_null_logit.device != self.device:
             dual.to(self.device)
         return dual
+
+    def _ensure_other_world(self, d_latent: int) -> _OtherWorldModel:
+        owm: _OtherWorldModel | None = self.__dict__.get('_other_world_model')
+        if owm is None or int(owm.d_latent) != int(d_latent):
+            owm = _OtherWorldModel(int(d_latent), self.d_gaze, self.device)
+            self.__dict__['_other_world_model'] = owm
+            self._other_opt = torch.optim.Adam(owm.parameters(), lr=self.lr)
+        elif owm.pred_out.bias.device != self.device:
+            owm.to(self.device)
+        return owm
+
+    def _other_state_batch(self, ids: list[str]) -> torch.Tensor | None:
+        if not bool(getattr(self, 'enable_other_world', False)):
+            return None
+        owm: _OtherWorldModel | None = self.__dict__.get('_other_world_model')
+        if owm is None or not ids:
+            return None
+        d_lat = int(owm.d_latent)
+        rows = []
+        for cid in ids:
+            st = self.other_states.get(str(cid))
+            if st is not None and st.numel() == d_lat:
+                rows.append(st.to(device=self.device, dtype=torch.float32).reshape(d_lat))
+            else:
+                rows.append(torch.zeros(d_lat, device=self.device, dtype=torch.float32))
+        return torch.stack(rows, dim=0)  # [M, d_latent]
 
     def _compute_delta(
         self,
@@ -384,9 +468,16 @@ class GazeObjectPointer(nn.Module):
         ctx: torch.Tensor,
         keys: torch.Tensor,
         recency: torch.Tensor,
+        obj_states: torch.Tensor | None = None,
     ) -> torch.Tensor:
         q = self.q_state(h) + self.q_utt(u) + self.q_ctx(ctx)  # [d_g]
         k = self.k_proj(keys)                                   # [M, d_g]
+        owm: _OtherWorldModel | None = (
+            self.__dict__.get('_other_world_model')
+            if bool(getattr(self, 'enable_other_world', False)) else None
+        )
+        if owm is not None and obj_states is not None:
+            k = k + owm.state_to_out_key(obj_states.to(device=k.device, dtype=k.dtype))
         scores = torch.matmul(k, q) / math.sqrt(float(self.d_gaze))
         scores = scores + torch.matmul(recency, self.recency_weight)
         return scores
@@ -398,10 +489,17 @@ class GazeObjectPointer(nn.Module):
         ctx: torch.Tensor,
         keys: torch.Tensor,
         recency: torch.Tensor,
+        obj_states: torch.Tensor | None = None,
     ) -> torch.Tensor:
         dual = self._dual()
         q = dual.q_in_state(h) + dual.q_in_utt(u) + dual.q_in_ctx(ctx)  # [d_g]
         k = dual.k_in_proj(keys)                                        # [M, d_g]
+        owm: _OtherWorldModel | None = (
+            self.__dict__.get('_other_world_model')
+            if bool(getattr(self, 'enable_other_world', False)) else None
+        )
+        if owm is not None and obj_states is not None:
+            k = k + owm.state_to_in_key(obj_states.to(device=k.device, dtype=k.dtype))
         scores = torch.matmul(k, q) / math.sqrt(float(self.d_gaze))
         scores = scores + torch.matmul(recency, dual.recency_in)
         return scores
@@ -448,6 +546,7 @@ class GazeObjectPointer(nn.Module):
         ctx = torch.tensor([stumble_c, has_speech, nll_c, awaiting_flag], device=dev, dtype=torch.float32)
 
         keys = torch.stack([self.relative_fingerprint(cid) for cid in ids], dim=0)  # [M, d_model]
+        obj_states = self._other_state_batch(ids)
         rec_rows = [
             [1.0 if (last_speaker is not None and cid == last_speaker) else 0.0,
              1.0 if (awaiting_from is not None and cid == awaiting_from) else 0.0]
@@ -484,7 +583,7 @@ class GazeObjectPointer(nn.Module):
             send_habit_map = {'none': 0.0}
             out_entropy = 0.0
         else:
-            out_obj_logits = self._compute_habit_logits(h, u, ctx, keys, recency)
+            out_obj_logits = self._compute_habit_logits(h, u, ctx, keys, recency, obj_states=obj_states)
             if allow_null_out:
                 out_habit = torch.cat((out_obj_logits, dual.out_null_logit.reshape(1)), dim=0)
                 out_causal_prior = torch.cat((causal_prior_obj, torch.zeros(1, device=dev, dtype=torch.float32)), dim=0)
@@ -504,7 +603,7 @@ class GazeObjectPointer(nn.Module):
 
         # 2) IN channel (`observe_target`): always selects who MengLi actively observes (`O ∪ {∅}`).
         in_ids = list(ids) + (['none'] if allow_null_in else [])
-        in_obj_logits = self._compute_observe_logits(h, u, ctx, keys, recency)
+        in_obj_logits = self._compute_observe_logits(h, u, ctx, keys, recency, obj_states=obj_states)
         if allow_null_in:
             in_habit = torch.cat((in_obj_logits, dual.in_null_logit.reshape(1)), dim=0)
             in_causal_prior = torch.cat((obs_prior_obj, torch.zeros(1, device=dev, dtype=torch.float32)), dim=0)
@@ -546,6 +645,7 @@ class GazeObjectPointer(nn.Module):
             u=u.detach(),
             ctx=ctx.detach(),
             keys=keys.detach(),
+            obj_states=(None if obj_states is None else obj_states.detach()),
             recency=recency.detach(),
             out_causal_prior=(None if out_causal_prior is None else out_causal_prior.detach()),
             in_causal_prior=in_causal_prior.detach(),
@@ -724,11 +824,15 @@ class GazeObjectPointer(nn.Module):
         entropy_val = None
         g_val = float(metal_g) if g_valid else None
         boundary_mse_val = None
+        other_model_receipt = None
         target_id = (
             pending['target_id'] if pending is not None
             else str(boundary_context['actual_target_id']) if has_boundary
             else None
         )
+
+        # Deferred state update payload for `_OtherWorldModel` (applied after optimizer step).
+        pending_other_update = None
 
         with torch.enable_grad():
             if pending is not None and g_valid:
@@ -738,9 +842,11 @@ class GazeObjectPointer(nn.Module):
                 if pending.get('dual_channel'):
                     dual = self._dual()
                     ent_terms = []
+                    p_obj_states = pending.get('obj_states')
                     if pending.get('out_sampled') and pending.get('out_idx') is not None:
                         o_obj = self._compute_habit_logits(
                             pending['h'], pending['u'], pending['ctx'], pending['keys'], pending['recency'],
+                            obj_states=p_obj_states,
                         )
                         o_h = (
                             torch.cat((o_obj, dual.out_null_logit.reshape(1)), dim=0)
@@ -754,6 +860,7 @@ class GazeObjectPointer(nn.Module):
                     if pending.get('in_sampled') and pending.get('in_idx') is not None:
                         i_obj = self._compute_observe_logits(
                             pending['h'], pending['u'], pending['ctx'], pending['keys'], pending['recency'],
+                            obj_states=p_obj_states,
                         )
                         i_h = (
                             torch.cat((i_obj, dual.in_null_logit.reshape(1)), dim=0)
@@ -795,55 +902,175 @@ class GazeObjectPointer(nn.Module):
                     enc_tgt = model.encoder(tgt_m).detach()
                     # Match Wood's actual causal prior (`causal_relation_program.py`):
                     # `long_predictor(cat(z_s, z_a)) + mother_from_boundary(...)`.
-                    if hasattr(model, 'long_predictor'):
-                        z_s = model.encoder(src_m).detach()
-                        z_a = model.encoder(cond_m)
-                        base_pred = model.long_predictor(torch.cat((z_s, z_a), -1))
-                        if hasattr(model, 'mother_from_boundary'):
-                            pred = base_pred + model.mother_from_boundary(base_pred)
-                        else:
-                            pred = base_pred
-                    elif hasattr(model, 'internal_transition'):
-                        z_s = model.encoder(src_m).detach()
-                        z_a = model.encoder(cond_m)
-                        base_pred = z_s + model.internal_transition(torch.cat((z_s, z_a - z_s), -1))
-                        if hasattr(model, 'mother_from_boundary'):
-                            pred = base_pred + model.mother_from_boundary(base_pred)
-                        else:
-                            pred = base_pred
-                    else:
-                        pred = model.encoder(cond_m)
+                    def _base_boundary_pred(act_tensor_m: torch.Tensor) -> torch.Tensor:
+                        if hasattr(model, 'long_predictor'):
+                            z_s = model.encoder(src_m).detach()
+                            z_a = model.encoder(act_tensor_m)
+                            bp = model.long_predictor(torch.cat((z_s, z_a), -1))
+                            return bp + model.mother_from_boundary(bp) if hasattr(model, 'mother_from_boundary') else bp
+                        if hasattr(model, 'internal_transition'):
+                            z_s = model.encoder(src_m).detach()
+                            z_a = model.encoder(act_tensor_m)
+                            bp = z_s + model.internal_transition(torch.cat((z_s, z_a - z_s), -1))
+                            return bp + model.mother_from_boundary(bp) if hasattr(model, 'mother_from_boundary') else bp
+                        return model.encoder(act_tensor_m)
+
+                    pred = _base_boundary_pred(cond_m)
                     b_mse = F.mse_loss(pred.float(), enc_tgt.float()).to(device=dev, dtype=torch.float32)
                     boundary_mse_val = float(b_mse.item())
                     total_loss = total_loss + self.boundary_loss_weight * b_mse
 
+                    # Per-object persistent Other/World latent state prediction + 1-step BPTT gate learning (opt-in).
+                    eff_obs = (
+                        str(obs_tid)
+                        if bool(getattr(self, 'enable_other_world', False))
+                        and obs_tid not in (None, '', 'none') and str(obs_tid) in self.fingerprints
+                        else (
+                            tid
+                            if bool(getattr(self, 'enable_other_world', False))
+                            and tid not in (None, '', 'none') and tid in self.fingerprints
+                            else None
+                        )
+                    )
+                    if eff_obs is not None:
+                        d_lat = int(enc_tgt.shape[-1])
+                        owm = self._ensure_other_world(d_lat)
+                        dual = self._dual()
+                        k_in = dual.k_in_proj(self.relative_fingerprint(eff_obs)).detach().reshape(1, -1)
+                        k_out = (
+                            self.k_proj(self.relative_fingerprint(tid)).detach().reshape(1, -1)
+                            if tid not in (None, '', 'none') and tid in self.fingerprints
+                            else torch.zeros(1, self.d_gaze, device=dev, dtype=torch.float32)
+                        )
+                        prev_tr = self._other_prev_transitions.get(eff_obs)
+                        if prev_tr is not None and prev_tr[0].numel() == d_lat:
+                            z_pp, z_pa, k_prev = (t.to(device=dev, dtype=torch.float32) for t in prev_tr)
+                            gate_prev = owm.state_gate(z_pp, z_pa, k_prev)
+                            z_obj_for_pred = (1.0 - gate_prev) * z_pp + gate_prev * z_pa
+                        else:
+                            z_cur0 = self.other_states.get(eff_obs)
+                            if z_cur0 is not None and z_cur0.numel() == d_lat:
+                                z_obj_for_pred = z_cur0.to(device=dev, dtype=torch.float32).reshape(1, d_lat)
+                            else:
+                                z_obj_for_pred = torch.zeros(1, d_lat, device=dev, dtype=torch.float32)
+                        base_f = pred.detach().float().to(device=dev).reshape(1, d_lat)
+                        tgt_f = enc_tgt.detach().float().to(device=dev).reshape(1, d_lat)
+                        z_pred = base_f + owm.predict_residual(base_f, z_obj_for_pred, k_in, k_out)
+                        obj_mse = F.mse_loss(z_pred, tgt_f)
+                        total_loss = total_loss + self.boundary_loss_weight * obj_mse
+
+                        # Counterfactual action-conditioned sensitivity: how much MengLi's speech
+                        # shifts her prediction of this object's response boundary vs silence.
+                        action_shift_val = 0.0
+                        with torch.no_grad():
+                            if float((raw_act - src).norm().item()) > 1e-4:
+                                sil_scale = src.norm(dim=-1, keepdim=True).clamp_min(1.0)
+                                sil_cond = (src + self._compute_delta(tid, sil_scale, observe_id=obs_tid)).to(
+                                    device=enc_dev, dtype=enc_dt,
+                                )
+                                sil_base_f = _base_boundary_pred(sil_cond).float().to(device=dev).reshape(1, d_lat)
+                                sil_z_pred = sil_base_f + owm.predict_residual(
+                                    sil_base_f, z_obj_for_pred.detach(), k_in, k_out,
+                                )
+                                action_shift_val = float((z_pred.detach() - sil_z_pred).norm().item())
+
+                        pending_other_update = dict(
+                            obj_id=eff_obs,
+                            d_lat=d_lat,
+                            tgt_f=tgt_f.detach(),
+                            k_in=k_in.detach(),
+                            base_mse=float(b_mse.item()),
+                            pred_mse=float(obj_mse.item()),
+                            gain=float(b_mse.item()) - float(obj_mse.item()),
+                            action_shift=action_shift_val,
+                        )
+
             if total_loss.requires_grad:
-                # Restrict autograd strictly to GazeObjectPointer + companion `_dual_channel` params
+                # Restrict autograd strictly to GazeObjectPointer + `_dual_channel` + `_other_world_model`
                 # so frozen body modules (`encoder`, `long_predictor`, `mother_from_boundary`) never get `.grad`.
                 main_params = [p for p in self.parameters() if p.requires_grad]
                 dual_params = [p for p in self._dual().parameters() if p.requires_grad]
-                all_params = main_params + dual_params
+                owm_cur: _OtherWorldModel | None = (
+                    self.__dict__.get('_other_world_model')
+                    if bool(getattr(self, 'enable_other_world', False)) else None
+                )
+                other_params = [p for p in owm_cur.parameters() if p.requires_grad] if owm_cur is not None else []
+                all_params = main_params + dual_params + other_params
                 grads = torch.autograd.grad(total_loss, all_params, allow_unused=True)
                 self._opt.zero_grad(set_to_none=True)
                 self._dual_opt.zero_grad(set_to_none=True)
+                if self._other_opt is not None:
+                    self._other_opt.zero_grad(set_to_none=True)
                 main_has_grad = False
                 dual_has_grad = False
-                for p, g in zip(main_params, grads[:len(main_params)]):
+                other_has_grad = False
+                n_main = len(main_params)
+                n_dual = len(dual_params)
+                for p, g in zip(main_params, grads[:n_main]):
                     if g is not None:
                         p.grad = g.detach()
                         main_has_grad = True
-                for p, g in zip(dual_params, grads[len(main_params):]):
+                for p, g in zip(dual_params, grads[n_main:n_main + n_dual]):
                     if g is not None:
                         p.grad = g.detach()
                         dual_has_grad = True
+                for p, g in zip(other_params, grads[n_main + n_dual:]):
+                    if g is not None:
+                        p.grad = g.detach()
+                        other_has_grad = True
                 if main_has_grad:
                     torch.nn.utils.clip_grad_norm_(main_params, 1.0)
                     self._opt.step()
                 if dual_has_grad:
                     torch.nn.utils.clip_grad_norm_(dual_params, 1.0)
                     self._dual_opt.step()
+                if other_has_grad and self._other_opt is not None:
+                    torch.nn.utils.clip_grad_norm_(other_params, 1.0)
+                    self._other_opt.step()
 
         with torch.no_grad():
+            if pending_other_update is not None:
+                eff_obs = pending_other_update['obj_id']
+                d_lat = pending_other_update['d_lat']
+                owm = self._ensure_other_world(d_lat)
+                z_cur = self.other_states.get(eff_obs)
+                if z_cur is None or z_cur.numel() != d_lat:
+                    z_cur = torch.zeros(1, d_lat, device=dev, dtype=torch.float32)
+                else:
+                    z_cur = z_cur.to(device=dev, dtype=torch.float32).reshape(1, d_lat)
+                tgt_f = pending_other_update['tgt_f']
+                k_in = pending_other_update['k_in']
+                gate_now = owm.state_gate(z_cur, tgt_f, k_in)
+                z_next = (1.0 - gate_now) * z_cur + gate_now * tgt_f
+                self._other_prev_transitions[eff_obs] = (z_cur.detach(), tgt_f.detach(), k_in.detach())
+                self.other_states[eff_obs] = z_next.detach()
+                gate_mean = float(gate_now.mean().item())
+                prev_ema = self.other_model_ema.get(eff_obs)
+                if prev_ema is None:
+                    self.other_model_ema[eff_obs] = dict(
+                        count=1,
+                        base_mse=pending_other_update['base_mse'],
+                        pred_mse=pending_other_update['pred_mse'],
+                        gain=pending_other_update['gain'],
+                        gate_mean=gate_mean,
+                        action_shift=pending_other_update['action_shift'],
+                    )
+                else:
+                    a_ema = 0.1
+                    prev_ema['count'] = int(prev_ema.get('count', 0)) + 1
+                    prev_ema['base_mse'] = (1.0 - a_ema) * float(prev_ema['base_mse']) + a_ema * pending_other_update['base_mse']
+                    prev_ema['pred_mse'] = (1.0 - a_ema) * float(prev_ema['pred_mse']) + a_ema * pending_other_update['pred_mse']
+                    prev_ema['gain'] = (1.0 - a_ema) * float(prev_ema['gain']) + a_ema * pending_other_update['gain']
+                    prev_ema['gate_mean'] = (1.0 - a_ema) * float(prev_ema['gate_mean']) + a_ema * gate_mean
+                    prev_ema['action_shift'] = (1.0 - a_ema) * float(prev_ema['action_shift']) + a_ema * pending_other_update['action_shift']
+                other_model_receipt = dict(
+                    object_id=eff_obs,
+                    base_mse=round(pending_other_update['base_mse'], 6),
+                    pred_mse=round(pending_other_update['pred_mse'], 6),
+                    gain=round(pending_other_update['gain'], 6),
+                    gate_mean=round(gate_mean, 4),
+                    action_shift=round(pending_other_update['action_shift'], 5),
+                )
             if pending is not None and g_valid and entropy_val is not None:
                 steps = int(self.step_count.item())
                 if steps == 0:
@@ -872,6 +1099,7 @@ class GazeObjectPointer(nn.Module):
             evidence_available=bool(g_valid),
             advantage=(None if gaze_adv is None else round(gaze_adv, 6)),
             boundary_mse=(None if boundary_mse_val is None else round(boundary_mse_val, 6)),
+            other_model=other_model_receipt,
             entropy=(None if entropy_val is None else round(entropy_val, 4)),
             step_count=int(self.step_count.item()),
             boundary_steps=int(self.boundary_steps.item()),
@@ -914,9 +1142,29 @@ class GazeObjectPointer(nn.Module):
         self._load_opt(self._opt, payload)
 
     def export_dynamic_state(self) -> dict:
-        """Export exact fingerprints, global center, dual-channel head weights & bit-exact Adam state."""
+        """Export exact fingerprints, global center, dual-channel & optional Other/World weights + bit-exact Adam state."""
         dual = self._dual()
         dual_weights = {k: _tensor_to_b64(v) for k, v in dual.state_dict().items()}
+        owm: _OtherWorldModel | None = (
+            self.__dict__.get('_other_world_model')
+            if bool(getattr(self, 'enable_other_world', False)) else None
+        )
+        other_payload = {}
+        if owm is not None:
+            other_payload = dict(
+                other_world_v1=True,
+                other_model_d_latent=int(owm.d_latent),
+                other_model_weights_b64={k: _tensor_to_b64(v) for k, v in owm.state_dict().items()},
+                other_model_optimizer_state_b64=(
+                    None if self._other_opt is None else self._export_opt(self._other_opt)
+                ),
+                other_states_b64={k: _tensor_to_b64(v.detach().cpu().float()) for k, v in self.other_states.items()},
+                other_prev_transitions_b64={
+                    k: [_tensor_to_b64(t.detach().cpu().float()) for t in trip]
+                    for k, trip in self._other_prev_transitions.items()
+                },
+                other_model_ema=copy.deepcopy(self.other_model_ema),
+            )
         return dict(
             schema=2,
             centered_target_v1=True,
@@ -931,6 +1179,7 @@ class GazeObjectPointer(nn.Module):
             optimizer_state_b64=self._export_optimizer_state(),
             dual_weights_b64=dual_weights,
             dual_optimizer_state_b64=self._export_opt(self._dual_opt),
+            **other_payload,
         )
 
     def load_dynamic_state(self, state: dict | None) -> None:
@@ -970,6 +1219,26 @@ class GazeObjectPointer(nn.Module):
             dual.load_state_dict(restored_w, strict=False)
             if state.get('dual_optimizer_state_b64') is not None:
                 self._load_opt(self._dual_opt, state['dual_optimizer_state_b64'])
+        self.other_states = {}
+        self._other_prev_transitions = {}
+        self.other_model_ema = {}
+        if state.get('other_world_v1') and isinstance(state.get('other_model_weights_b64'), dict):
+            d_lat = int(state.get('other_model_d_latent') or 0)
+            if d_lat > 0:
+                owm = self._ensure_other_world(d_lat)
+                owm_w = {k: _b64_to_tensor(v, device=self.device) for k, v in state['other_model_weights_b64'].items()}
+                owm.load_state_dict(owm_w, strict=False)
+                if state.get('other_model_optimizer_state_b64') is not None and self._other_opt is not None:
+                    self._load_opt(self._other_opt, state['other_model_optimizer_state_b64'])
+                for k, payload in (state.get('other_states_b64') or {}).items():
+                    self.other_states[str(k)] = _b64_to_tensor(payload, device=self.device).float().detach()
+                for k, trip in (state.get('other_prev_transitions_b64') or {}).items():
+                    if isinstance(trip, list) and len(trip) == 3:
+                        self._other_prev_transitions[str(k)] = tuple(
+                            _b64_to_tensor(p, device=self.device).float().detach() for p in trip
+                        )
+                if isinstance(state.get('other_model_ema'), dict):
+                    self.other_model_ema = copy.deepcopy(state['other_model_ema'])
         if not state.get('centered_target_v1'):
             with torch.no_grad():
                 self.target_to_action.weight.zero_()
@@ -1022,6 +1291,10 @@ class GazeObjectPointer(nn.Module):
             target_counts=dict(self.target_counts),
             target_g_ema={k: round(float(v), 6) for k, v in self.target_g_ema.items()},
             interaction_mode_counts=dict(self.interaction_mode_counts),
+            other_world_model={
+                k: {mk: (int(mv) if mk == 'count' else round(float(mv), 5)) for mk, mv in v.items()}
+                for k, v in self.other_model_ema.items()
+            },
             last_decision=copy.deepcopy(self.last_decision),
         )
 
@@ -1046,12 +1319,14 @@ def configure(
     boundary_loss_weight: float = 0.25,
     fp_ema: float = 0.25,
     baseline_decay: float = 0.90,
+    enable_other_world: bool = False,
     initialize: bool = True,
 ) -> GazeObjectPointer:
     """Attach opt-in O(1) GazeObjectPointer cleanly to MengLi's model."""
     d_model, device = _resolve_model_dim_and_device(engine)
     if hasattr(engine.model, 'gaze_pointer') and isinstance(engine.model.gaze_pointer, GazeObjectPointer):
         mod = engine.model.gaze_pointer
+        mod.enable_other_world = bool(enable_other_world)
     else:
         mod = GazeObjectPointer(
             d_model,
@@ -1062,6 +1337,7 @@ def configure(
             boundary_loss_weight=boundary_loss_weight,
             fp_ema=fp_ema,
             baseline_decay=baseline_decay,
+            enable_other_world=enable_other_world,
             device=device,
         )
         engine.model.gaze_pointer = mod
@@ -1082,6 +1358,7 @@ def configure(
             boundary_loss_weight=float(boundary_loss_weight),
             fp_ema=float(fp_ema),
             baseline_decay=float(baseline_decay),
+            enable_other_world=bool(enable_other_world),
         )
     return mod
 

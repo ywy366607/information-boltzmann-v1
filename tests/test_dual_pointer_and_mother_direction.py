@@ -391,6 +391,7 @@ def test_gaze_pointer_dual_channel_selection_training_and_checkpoint_roundtrip()
     assert 'dual_optimizer_state_b64' in snap
 
     engine2 = _make_fake_engine()
+    engine2.model.gaze_pointer.enable_other_world = True
     engine2.model.load_state_dict(engine.model.state_dict(), strict=True)
     engine2.model.gaze_pointer.load_dynamic_state(snap)
 
@@ -451,3 +452,191 @@ def test_gaze_pointer_dual_channel_selection_training_and_checkpoint_roundtrip()
     assert r_obs is not None
     assert r_obs['boundary_mse'] is not None
     assert float((gp._dual().observe_to_action.weight.detach() - before_obs_w).abs().max().item()) > 0.0
+
+
+def test_other_world_model_persistent_state_bptt_and_roundtrip():
+    torch.manual_seed(7)
+    engine = _make_fake_engine()
+    gp: GazeObjectPointer = engine.model.gaze_pointer
+    assert gp.enable_other_world is False
+    candidates = [('book', 'Once upon a time'.encode('utf-8')), ('mother', '妈妈在这里陪你'.encode('utf-8'))]
+    for cid, intro in candidates:
+        gp.ensure_object(engine, cid, intro)
+
+    src = torch.randn(16)
+    act = src + 0.5 * torch.randn(16)
+    tgt_m = torch.ones(16) * 0.6
+
+    # Verify default OFF (`enable_other_world=False`) NEVER instantiates, updates, or affects selection!
+    r_off = gp.settle_credit(
+        0.02,
+        evidence_available=True,
+        boundary_context=dict(
+            model=engine.model, source=src, raw_action=act,
+            actual_target_id='mother', actual_observe_id='mother',
+            boundary_target=tgt_m, evidence_available=True,
+        ),
+    )
+    assert r_off is not None and r_off['other_model'] is None
+    assert gp.__dict__.get('_other_world_model') is None
+    assert gp.other_states == {}
+    assert gp.other_model_ema == {}
+    assert 'other_world_v1' not in gp.export_dynamic_state()
+
+    # Now enable opt-in candidate (`enable_other_world=True`): step 0 must be exact zero-shock!
+    gp.enable_other_world = True
+    r0 = gp.settle_credit(
+        0.02,
+        evidence_available=True,
+        boundary_context=dict(
+            model=engine.model, source=src, raw_action=act,
+            actual_target_id='mother', actual_observe_id='mother',
+            boundary_target=tgt_m, evidence_available=True,
+        ),
+    )
+    assert r0 is not None and r0['other_model'] is not None
+    assert r0['other_model']['object_id'] == 'mother'
+    assert abs(r0['other_model']['gain']) < 1e-6
+    assert abs(r0['other_model']['gate_mean'] - 0.5) < 0.05
+    assert r0['other_model']['action_shift'] > 0.0
+
+    # Train 25 steps on a smoothly evolving persistent Mother trajectory vs a distinct Book target.
+    # Verify `_OtherWorldModel` learns positive prequential MSE gain and updates `gate_net` via 1-step BPTT.
+    owm = gp.__dict__['_other_world_model']
+    assert owm is not None
+    gate_w0 = owm.gate_net.weight.detach().clone()
+    last_m_rec = None
+    last_b_rec = None
+    for step in range(25):
+        m_tgt = torch.ones(16) * (0.6 + 0.01 * (step % 3))
+        b_tgt = torch.ones(16) * (-0.5)
+        gp.select_interaction(engine, candidates=candidates, utterance_bytes=b'hi')
+        last_m_rec = gp.settle_credit(
+            0.03,
+            evidence_available=True,
+            boundary_context=dict(
+                model=engine.model, source=src, raw_action=act,
+                actual_target_id='mother', actual_observe_id='mother',
+                boundary_target=m_tgt, evidence_available=True,
+            ),
+        )
+        gp.select_interaction(engine, candidates=candidates, utterance_bytes=b'hi')
+        last_b_rec = gp.settle_credit(
+            0.01,
+            evidence_available=True,
+            boundary_context=dict(
+                model=engine.model, source=src, raw_action=act,
+                actual_target_id='book', actual_observe_id='book',
+                boundary_target=b_tgt, evidence_available=True,
+            ),
+        )
+    assert last_m_rec['other_model']['gain'] > 0.0
+    assert last_b_rec['other_model']['gain'] > 0.0
+    assert float((owm.gate_net.weight.detach() - gate_w0).abs().max().item()) > 0.0
+    assert engine.model.encoder.weight.grad is None
+
+    # Verify strict=True PyTorch state_dict compatibility & bit-exact export/reload!
+    assert not any('_other_world_model' in k for k in gp.state_dict().keys())
+    snap = gp.export_dynamic_state()
+    assert snap['other_world_v1'] is True
+    assert 'mother' in snap['other_states_b64'] and 'book' in snap['other_states_b64']
+
+    engine2 = _make_fake_engine()
+    engine2.model.gaze_pointer.enable_other_world = True
+    engine2.model.load_state_dict(engine.model.state_dict(), strict=True)
+    engine2.model.gaze_pointer.load_dynamic_state(snap)
+
+    # Next-step Adam update equivalence across `_other_world_model` (< 1e-6)!
+    b_next = dict(
+        model=engine.model, source=src, raw_action=act,
+        actual_target_id='mother', actual_observe_id='mother',
+        boundary_target=torch.ones(16) * 0.62, evidence_available=True,
+    )
+    r_a = gp.settle_credit(0.04, evidence_available=True, boundary_context=b_next)
+    r_b = engine2.model.gaze_pointer.settle_credit(0.04, evidence_available=True, boundary_context=dict(b_next, model=engine2.model))
+    assert abs(r_a['other_model']['pred_mse'] - r_b['other_model']['pred_mse']) < 1e-6
+    for (n1, p1), (n2, p2) in zip(
+        gp.__dict__['_other_world_model'].named_parameters(),
+        engine2.model.gaze_pointer.__dict__['_other_world_model'].named_parameters(),
+    ):
+        assert n1 == n2
+        assert float((p1 - p2).abs().max().item()) < 1e-6
+
+
+def test_clean_english_sidecar_routing_and_cursor_roundtrip(tmp_path):
+    en_bin = tmp_path / 'clean_en.bin'
+    en_bin.write_bytes(('Once upon a time a little bird sang in the sunny garden.\n' * 80).encode('utf-8'))
+    base = _FakeBaseWorld()
+    port = UnifiedWorldPort(base, caregiver=None, english_corpus=en_bin)
+    resp, cont, info = port.take_ambient(128, 128)
+    assert info['source'] == 'text'
+    assert b'little bird' in bytes(resp) or b'sunny garden' in bytes(resp)
+    st = port.state_dict()
+    assert st['mother_unified_port']['english_sidecar_cursor'] == port.english_sidecar.cursor
+    port2 = UnifiedWorldPort(_FakeBaseWorld(), caregiver=None, english_corpus=en_bin)
+    port2.load_state_dict(st)
+    assert port2.english_sidecar.cursor == port.english_sidecar.cursor
+
+
+def test_self_cons_holdout_exclusion_and_scale_invariance():
+    from scripts.ib_local.alif_executive import hippocampal_anchor_loss
+    from scripts.ib_local.navigation_internal_rollout import InternalRolloutEngine
+
+    # 1. Verify normalized consolidation MSE is 100% invariant to encoder scale shrinkage (`w *= 0.5`).
+    torch.manual_seed(11)
+    pred = torch.randn(16, 8)
+    tgt = torch.randn(16, 8)
+    raw_pre = float(torch.nn.functional.mse_loss(pred, tgt).item())
+    raw_shrunk = float(torch.nn.functional.mse_loss(0.5 * pred, 0.5 * tgt).item())
+    assert raw_pre - raw_shrunk > 0.1  # raw MSE fakes a gain under 0.5x scale shrinkage!
+    norm_pre = float(torch.nn.functional.mse_loss(
+        torch.nn.functional.normalize(pred, dim=-1), torch.nn.functional.normalize(tgt, dim=-1),
+    ).item())
+    norm_shrunk = float(torch.nn.functional.mse_loss(
+        torch.nn.functional.normalize(0.5 * pred, dim=-1), torch.nn.functional.normalize(0.5 * tgt, dim=-1),
+    ).item())
+    assert abs(norm_pre - norm_shrunk) < 1e-6  # scale-invariant normalized MSE yields exact 0.0 fake gain!
+
+    # 2. Verify `exclude_internal_slots` strictly excludes holdout slots from `hippocampal_anchor_loss`.
+    n_slots, d_in, d_lat = 20, 16, 8
+    mem = SimpleNamespace(
+        occupied=torch.ones(n_slots, dtype=torch.bool),
+        internal_valid=torch.ones(n_slots, dtype=torch.bool),
+        count=torch.ones(n_slots, dtype=torch.long),
+        internal_stamp=torch.ones(n_slots, dtype=torch.long),
+        last_write=torch.ones(n_slots, dtype=torch.long),
+        source=torch.randn(n_slots, d_in),
+        action=torch.randn(n_slots, d_in),
+        internal_next=torch.randn(n_slots, d_in),
+    )
+    model = SimpleNamespace(
+        encoder=nn.Linear(d_in, d_lat, bias=False),
+        long_predictor=nn.Linear(d_lat * 2, d_lat, bias=False),
+        memory=mem,
+    )
+    # Exclude ALL slots except 2 -> `internal_transition_samples` MUST equal 2!
+    excl = torch.arange(2, n_slots, dtype=torch.long)
+    eng = SimpleNamespace(
+        model=model,
+        replay_batch=32,
+        replay_rng=np.random.default_rng(0),
+        alif_executive_state=dict(piece_bytes=640),
+    )
+    loss, info = hippocampal_anchor_loss(eng, torch.randn(1, d_in), exclude_internal_slots=excl)
+    assert info['internal_transition_samples'] == 2
+    assert float(loss.item()) >= 0.0
+
+    # 3. Verify `InternalRolloutEngine._outcome_loss` also strictly respects `_exclude_internal_slots`.
+    from unittest.mock import patch
+    parent_cls = InternalRolloutEngine.__mro__[1]
+    stub = InternalRolloutEngine.__new__(InternalRolloutEngine)
+    stub.model = model
+    stub.device = torch.device('cpu')
+    stub.replay_batch = 32
+    stub.replay_rng = np.random.default_rng(0)
+    stub._internal_label = None
+    stub.internal_pending = None
+    stub._exclude_internal_slots = excl
+    with patch.object(parent_cls, '_outcome_loss', return_value=(torch.zeros(()), dict(outcome_error=0.0))):
+        _, diag = stub._outcome_loss(torch.randn(d_in), torch.randn(d_in), torch.randn(d_in))
+    assert diag['internal_transition_samples'] == 2

@@ -140,6 +140,8 @@ def main():
                         help='Optional Policy B: route unaddressed speech on Book Floor to book navigation even while Mother is present')
     parser.add_argument('--no-gaze-pointer', action='store_true',
                         help='Disable biological O(1) GazeObjectPointer (fall back to host presence/floor routing)')
+    parser.add_argument('--enable-other-world', action='store_true',
+                        help='Opt-in: enable persistent per-object stateful response predictor inside GazeObjectPointer (default OFF)')
     parser.add_argument('--care-plan', type=str, default=None,
                         help='Optional explicit user parenting plan overriding adaptive stage plans')
     parser.add_argument('--context-tokens', type=int, default=524288,
@@ -158,6 +160,8 @@ def main():
                         help='Optional append-only JSONL inbox for live parent/guest messages during the run')
     parser.add_argument('--chinese-corpus', type=Path, default=None,
                         help='Optional UTF-8 Chinese natural-text storybook file interleaved on calm reading')
+    parser.add_argument('--english-corpus', type=Path, default=None,
+                        help='Optional clean English prose/story .bin sidecar replacing noisy FineWeb book chunks')
     parser.add_argument('--chinese-mix-ratio', type=float, default=0.35,
                         help='Fraction of calm reading pieces drawn from --chinese-corpus when provided')
     parser.add_argument('--chinese-val-file', type=Path, default=None,
@@ -237,7 +241,7 @@ def main():
         ratio_loss_weight=args.hnet_ratio_weight,
     )
     if not args.no_gaze_pointer:
-        gaze_mod.configure(engine, config)
+        gaze_mod.configure(engine, config, enable_other_world=bool(args.enable_other_world))
 
     base_world = engine.world
     retained = getattr(base_world, 'retained', None) or {}
@@ -295,6 +299,7 @@ def main():
         inbox_path=args.inbox_file,
         sidecar_corpus=args.chinese_corpus,
         sidecar_mix_ratio=(args.chinese_mix_ratio if args.chinese_corpus is not None else 0.0),
+        english_corpus=args.english_corpus,
         dialogue_demo_corpus=args.dialogue_demo_corpus,
         dialogue_demo_ratio=(args.dialogue_demo_ratio if args.dialogue_demo_corpus is not None else 0.0),
         user_plan_text=args.care_plan,
@@ -363,6 +368,9 @@ def main():
     start_spikes = int(engine.alif_executive_state['executive_spikes'])
     start_calms = int(engine.alif_executive_state['calm_pieces'])
     start_mother_turns = int(port.mother_turns)
+    recent_self_nlls: list[float] = []
+    recent_self_cons_gs: list[float] = []
+    recent_mother_nlls: list[float] = []
 
     def _run_flux_probe(life_s: float) -> dict:
         from scripts.ib_local.wood_policy_measurement import segments, score
@@ -425,10 +433,33 @@ def main():
             mother_turns=int(port.mother_turns),
             provider_hit_rate=port.telemetry_summary().get('provider_hit_rate'),
         )
+        gp_diag = gaze_mod.diagnostics(engine) if gaze_mod.enabled(engine) else None
+        owm_ema = (gp_diag.get('other_world_model') if isinstance(gp_diag, dict) else None) or {}
+        pt['other_world_model'] = owm_ema
+        pt['recent_self_speech_nll'] = (round(float(np.mean(recent_self_nlls)), 4) if recent_self_nlls else None)
+        pt['recent_self_cons_g'] = (round(float(np.mean(recent_self_cons_gs)), 5) if recent_self_cons_gs else None)
+        pt['recent_mother_nll'] = (round(float(np.mean(recent_mother_nlls)), 4) if recent_mother_nlls else None)
         cn_str = '' if cn_res is None else f' cn_8KB={cn_res["mean_nll"]:.4f}'
         print(f'  [FLUX @ {life_s:6.1f}s | +{pt["run_external_bytes"]:6d}B | mother={port.mother_turns}] '
               f'16KB_NLL={comb:.6f}{cn_str} 64facts={pt["fresh_64_facts_score"]:.6f} '
               f'mse={pt["fresh_64_facts_mse"]:.4f} hit={pt["provider_hit_rate"]}', flush=True)
+        m_owm = owm_ema.get('mother') or {}
+        b_owm = owm_ema.get('book') or {}
+        if pt['recent_self_speech_nll'] is not None or m_owm or b_owm:
+            s_part = (
+                f'self_nll={pt["recent_self_speech_nll"]} cons_g={pt["recent_self_cons_g"]}'
+                if pt['recent_self_speech_nll'] is not None or pt['recent_self_cons_g'] is not None else 'self=n/a'
+            )
+            m_part = (
+                f'mother(nll={pt["recent_mother_nll"]} pred_mse={m_owm.get("pred_mse")} '
+                f'gain={m_owm.get("gain"):+.5f} gate={m_owm.get("gate_mean")} shift={m_owm.get("action_shift")})'
+                if m_owm else f'mother(nll={pt["recent_mother_nll"]})'
+            )
+            b_part = (
+                f'book(pred_mse={b_owm.get("pred_mse")} gain={b_owm.get("gain"):+.5f} gate={b_owm.get("gate_mean")})'
+                if b_owm else 'book=n/a'
+            )
+            print(f'  [3-MODEL @ {life_s:6.1f}s] {s_part} | {m_part} | {b_part}', flush=True)
         return pt
 
     flux_trajectory = []
@@ -619,8 +650,19 @@ def main():
                                 )
                         except Exception as refl_err:
                             print(f'  [MOTHER REFLECTION SKIPPED] {refl_err}', flush=True)
+                    if isinstance(row.get('self_speech_nll'), (int, float)) and math.isfinite(float(row['self_speech_nll'])):
+                        recent_self_nlls.append(float(row['self_speech_nll']))
+                        del recent_self_nlls[:-64]
+                    se_info = row.get('self_evolution')
+                    if isinstance(se_info, dict) and isinstance(se_info.get('self_cons_g'), (int, float)) and int(se_info.get('self_cons_samples', 0)) > 0:
+                        recent_self_cons_gs.append(float(se_info['self_cons_g']))
+                        del recent_self_cons_gs[:-64]
+                    if isinstance(row.get('mother_response_nll'), (int, float)) and float(row['mother_response_nll']) > 0:
+                        recent_mother_nlls.append(float(row['mother_response_nll']))
+                        del recent_mother_nlls[:-64]
                     metric_row = _safe_json_value(dict(
                         row,
+                        gaze_credit=(commit_info.get('gaze') if isinstance(commit_info, dict) else None),
                         cycle=int(cycle),
                         elapsed_seconds=round(_life_elapsed(), 3),
                         spoke=bool(row.get('self_bytes', 0)),

@@ -247,12 +247,29 @@ def _complete_self_evolution_beat(
         delayed, advantage = td.pop('actor'), td['advantage']
 
     # 2. Self-hearing (when MengLi spoke `u != b''`) + continuous Hamiltonian BFSS `(S, P)` self-evolution.
+    self_speech_nll = None
     if own > 0:
+        from scripts.ib_local.adaptive_hamiltonian import bridge_state
+        from scripts.ib_local.language_action import peek
+        from scripts.ib_local.question_language_port import observation_scope
+        last_b = int(utterance[-1])
+        p_last = peek(engine.table, last_b)
+        raw_full = np.concatenate((raw_self, np.array([last_b], np.uint8)))
+        probs_full = np.concatenate((utterance_probs, np.asarray(p_last, np.float32).reshape(1, 256)), axis=0)
+        ids_full = torch.as_tensor(raw_full[:-1].astype(np.int64), device=engine.device)[None]
+        logp_full = torch.as_tensor(np.log(np.maximum(probs_full, 1e-6)), device=engine.device)[None]
+        start_state = bridge_state(engine.model, engine.recurrent.detach())
         with torch.no_grad():
-            _, next_state, _, h_self, _ = engine.model.predict_observed(ids_s, engine.recurrent, logp_s)
+            logits_self, next_state, _, h_self, _ = engine.model.predict_observed(ids_s, start_state, logp_s)
+            self_speech_nll = float(F.cross_entropy(logits_self[0].float(), target_s[0]).item())
+            # Exact post-utterance action endpoint (`all_features[own]`, before BFSS quiet physics),
+            # while keeping `engine.recurrent = next_state` strictly before `engine.pending = utterance[-1]`.
+            with observation_scope(engine.model, own, own + 1):
+                _, _, _, h_full, _ = engine.model.predict_observed(ids_full, start_state, logp_full, decode=False)
         engine.recurrent = next_state.detach()
-        engine.pending = int(utterance[-1])
+        engine.pending = last_b
         feat_for_anchor = h_self.detach()
+        raw_action_for_gaze = h_full[own].detach().clone().reshape(-1)
     else:
         base_src = getattr(engine, '_expression_decision_source', None)
         if not torch.is_tensor(base_src):
@@ -261,28 +278,81 @@ def _complete_self_evolution_beat(
             feat_for_anchor = base_src.detach().reshape(1, -1)
         else:
             feat_for_anchor = torch.zeros(1, engine.model.encoder.in_features, device=engine.device)
+        raw_action_for_gaze = feat_for_anchor[-1].detach().clone()
 
     bfss_change = _step_quiet_physics(engine)
 
-    # 3. Outcome & hippocampal consolidation (populates `_wood_source/_action/_replay` cleanly).
+    # 3. Outcome & hippocampal consolidation (populates `_wood_source/_action/_replay` cleanly),
+    #    bracketed by a strictly disjoint held-out consolidation probe on real historical transitions.
     if getattr(engine, 'variable_expression_schema', None) == 1 and torch.is_tensor(
         getattr(engine, '_expression_decision_source', None)
     ):
         source = engine._expression_decision_source.reshape(-1).detach().clone()
     else:
         source = feat_for_anchor[0].detach().clone()
-    raw_action_for_gaze = feat_for_anchor[-1].detach().clone()
+    draft_raw_action_l2 = None
+    drafts = getattr(engine, '_draft_actions', None)
+    if drafts and record['choice'] < len(drafts):
+        draft_raw_action_l2 = float((drafts[record['choice']] - raw_action_for_gaze).norm().item())
     action = raw_action_for_gaze
     actual_send_id = info.get('send_target_id') or info.get('target_object_id')
     if _gp.enabled(engine):
         action = engine.model.gaze_pointer.condition_action(action, actual_send_id, observe_id='none')
-    long_vec = feat_for_anchor[-1].detach().clone()
+    long_vec = raw_action_for_gaze.detach().clone()
+
+    # Sample a strictly disjoint held-out slice of real internal transitions BEFORE updating weights.
+    # Excluded from BOTH `engine._outcome_loss` (InternalRolloutEngine) AND `hippocampal_anchor_loss`.
+    holdout_slots = None
+    enc_tgt_pre = None
+    self_cons_pre = None
+    self_cons_post = None
+    self_cons_fixed_pre = None
+    self_cons_fixed_post = None
+    self_cons_coord_shift = None
+    self_cons_norm_pre = None
+    self_cons_norm_post = None
+    self_cons_norm_g = 0.0
+    self_cons_g = 0.0
+    self_cons_samples = 0
+    if hasattr(memory, 'internal_valid') and hasattr(engine, 'replay_rng'):
+        from scripts.ib_local.navigation_internal_rollout import next_boundary_prediction
+        valid_int = (
+            memory.occupied & memory.internal_valid & (memory.count == 1)
+            & (memory.internal_stamp == memory.last_write)
+        )
+        pending_int = getattr(engine, 'internal_pending', None)
+        if isinstance(pending_int, dict) and 'slot' in pending_int:
+            valid_int = valid_int.clone()
+            valid_int[int(pending_int['slot'])] = False
+        all_int_slots = torch.nonzero(valid_int).flatten()
+        if len(all_int_slots) >= 24:
+            n_hold = min(16, len(all_int_slots) // 4)
+            picks = engine.replay_rng.choice(len(all_int_slots), n_hold, replace=False)
+            holdout_slots = all_int_slots[torch.as_tensor(picks, device=all_int_slots.device)]
+            self_cons_samples = int(len(holdout_slots))
+            with torch.no_grad():
+                h_src = memory.source[holdout_slots]
+                h_act = memory.action[holdout_slots]
+                h_nxt = memory.internal_next[holdout_slots]
+                pred_pre = next_boundary_prediction(engine.model, h_src, h_act)
+                enc_tgt_pre = engine.model.encoder(h_nxt).detach()
+                self_cons_pre = float(F.mse_loss(pred_pre, enc_tgt_pre).item())
+                self_cons_fixed_pre = self_cons_pre
+                self_cons_norm_pre = float(
+                    F.mse_loss(F.normalize(pred_pre, dim=-1, eps=1e-6), F.normalize(enc_tgt_pre, dim=-1, eps=1e-6)).item()
+                )
 
     engine.model._wood_nll = torch.zeros(2, device=engine.device)
     engine.model._near_outcome = long_vec
     engine._mother_boundary_target = None
-    outcome_loss, outcome_diag = engine._outcome_loss(source, action, long_vec)
-    anchor_loss, anchor_diag = hippocampal_anchor_loss(engine, feat_for_anchor)
+    engine._exclude_internal_slots = holdout_slots
+    try:
+        outcome_loss, outcome_diag = engine._outcome_loss(source, action, long_vec)
+        anchor_loss, anchor_diag = hippocampal_anchor_loss(
+            engine, feat_for_anchor, exclude_internal_slots=holdout_slots,
+        )
+    finally:
+        engine._exclude_internal_slots = None
     has_anchor = (
         anchor_diag['wood_replay_samples']
         + anchor_diag['internal_transition_samples']
@@ -314,9 +384,27 @@ def _complete_self_evolution_beat(
         norms.append(float(grad_sq ** 0.5))
         updates_done = 1
 
-    # 4. Advance episodic memory clock cleanly over this internal self-evolution horizon,
-    #    compute honest endogenous witness gain (`witness_pre - witness_post`), commit episode,
-    #    and close `causal_use_pending` / `native_amortized_decision` / `causal_use_transport`.
+    if holdout_slots is not None and self_cons_pre is not None and enc_tgt_pre is not None:
+        from scripts.ib_local.navigation_internal_rollout import next_boundary_prediction
+        with torch.no_grad():
+            h_src = memory.source[holdout_slots]
+            h_act = memory.action[holdout_slots]
+            h_nxt = memory.internal_next[holdout_slots]
+            pred_post = next_boundary_prediction(engine.model, h_src, h_act)
+            enc_tgt_post = engine.model.encoder(h_nxt).detach()
+            self_cons_post = float(F.mse_loss(pred_post, enc_tgt_post).item())
+            self_cons_fixed_post = float(F.mse_loss(pred_post, enc_tgt_pre).item())
+            self_cons_coord_shift = float(F.mse_loss(enc_tgt_post, enc_tgt_pre).item())
+            self_cons_norm_post = float(
+                F.mse_loss(F.normalize(pred_post, dim=-1, eps=1e-6), F.normalize(enc_tgt_post, dim=-1, eps=1e-6)).item()
+            )
+        self_cons_norm_g = float(self_cons_norm_pre - self_cons_norm_post)
+        rel_imp = self_cons_norm_g / max(float(self_cons_norm_pre), 0.05)
+        self_cons_g = float(max(-0.05, min(0.05, 0.05 * rel_imp)))
+
+    # 4. Advance episodic memory clock cleanly over this internal self-evolution horizon.
+    #    Keep `self_cons_g` strictly observation-only by default (`self_cons_credit_mode='observe'`)
+    #    so internal reward / credit assignment is NEVER silently altered.
     from scripts.ib_local.causal_use_value import settle as settle_use
     horizon = max(1, int(memory.long))
     if len(feat_for_anchor) >= horizon:
@@ -327,7 +415,18 @@ def _complete_self_evolution_beat(
     memory.commit(evo_feats, engine.model.encoder)
 
     witness_post = engine.witness_nll()
-    g = float(witness_pre - witness_post)
+    witness_g = float(witness_pre - witness_post)
+    credit_mode = str(getattr(engine, 'self_cons_credit_mode', 'observe'))
+    has_witness = len(getattr(engine, 'w_ids', ())) > 0
+    if has_witness:
+        g = witness_g
+        ev_avail = True
+    elif credit_mode == 'apply' and self_cons_samples > 0:
+        g = float(self_cons_g)
+        ev_avail = True
+    else:
+        g = witness_g
+        ev_avail = False
     if getattr(engine, 'causal_use_arm', None) == 'C2':
         slot, merged = memory.commit_experience(
             source, action, long_vec, long_vec, engine.model.encoder, utterance, 0.0, source_time,
@@ -359,6 +458,19 @@ def _complete_self_evolution_beat(
     memory.option[slot] = record['choice']
     memory.feeling[slot] = record['feeling']
 
+    # Update bodily interoception honestly for this internal self-evolution beat.
+    intero_surprise = (
+        float(self_speech_nll)
+        if self_speech_nll is not None
+        else float(self_cons_norm_post if self_cons_norm_post is not None else outcome_diag.get('outcome_error', 0.0))
+    )
+    engine.intero_raw = np.array([
+        intero_surprise,
+        100.0 * float(g),
+        float(outcome_diag.get('outcome_error', 0.0)),
+    ], dtype=np.float64)
+    engine.intero_stats.update(engine.intero_raw)
+
     option_receipt = bounded_reading_option.finish(engine, option)
     if _gp.enabled(engine):
         engine._gaze_boundary_context = dict(
@@ -368,7 +480,7 @@ def _complete_self_evolution_beat(
             actual_target_id=actual_send_id,
             actual_observe_id='none',
             boundary_target=None,
-            evidence_available=True,
+            evidence_available=ev_avail,
         )
 
     engine.prev = dict(
@@ -399,6 +511,8 @@ def _complete_self_evolution_beat(
         self_bytes=own,
         world=info,
         response_nll=0.0,
+        self_speech_nll=self_speech_nll,
+        draft_raw_action_l2=draft_raw_action_l2,
         mother_response_nll=None,
         ambient_response_nll=None,
         heldout_pre_nll=None,
@@ -410,12 +524,12 @@ def _complete_self_evolution_beat(
         joint_progress=None,
         witness_pre=witness_pre,
         witness_post=witness_post,
-        witness_g=g,
+        witness_g=witness_g,
         settlement_kind=engine.settlement_kind,
         settlement=g,
         metal_g=g,
         usable_signal=g,
-        evidence_available=True,
+        evidence_available=ev_avail,
         target_object_id=info.get('target_object_id'),
         send_target_id=info.get('send_target_id'),
         observe_target_id='none',
@@ -447,6 +561,18 @@ def _complete_self_evolution_beat(
         self_evolution=dict(
             bfss_state_change=float(bfss_change),
             self_heard_bytes=int(own),
+            self_speech_nll=self_speech_nll,
+            self_cons_credit_mode=credit_mode,
+            self_cons_pre=self_cons_pre,
+            self_cons_post=self_cons_post,
+            self_cons_fixed_pre=self_cons_fixed_pre,
+            self_cons_fixed_post=self_cons_fixed_post,
+            self_cons_coord_shift=self_cons_coord_shift,
+            self_cons_norm_pre=self_cons_norm_pre,
+            self_cons_norm_post=self_cons_norm_post,
+            self_cons_norm_g=float(self_cons_norm_g),
+            self_cons_g=float(self_cons_g),
+            self_cons_samples=int(self_cons_samples),
             **anchor_diag,
         ),
         **({'bounded_reading_option': option_receipt} if option_receipt is not None else {}),
@@ -515,6 +641,8 @@ def world_cycle_step(engine, directions, age_ablate=False):
     else:
         env_mask_end = max(0, int(info.get('envelope_prefix_bytes', 0)))
         env_mask_spans = [(0, env_mask_end)] if env_mask_end > 0 else []
+    self_speech_nll = None
+    draft_raw_action_l2 = None
     for index, piece in enumerate(pieces):
         chunk = external[piece.start:piece.end]
         action_tail = utterance[-1] if index == 0 and own else pending
@@ -596,6 +724,8 @@ def world_cycle_step(engine, directions, age_ablate=False):
                 measure_retention(engine, ids, target, engine.recurrent, logp, diag)
         timeline.append(features.detach())
         ce = F.cross_entropy(diag['logits'][0].detach(), target[0], reduction='none').cpu().numpy()
+        if index == 0 and own > 0:
+            self_speech_nll = float(ce[:own].mean())
         errors.append(ce[skip_n:] if skip_n < len(ce) else ce)
         if index == 0:
             first_diag = diag
@@ -625,6 +755,9 @@ def world_cycle_step(engine, directions, age_ablate=False):
             if getattr(engine,'variable_expression_schema',None)==1:
                 source=engine._expression_decision_source.reshape(-1)
             raw_action_for_gaze = action.detach().clone()
+            drafts = getattr(engine, '_draft_actions', None)
+            if drafts and record['choice'] < len(drafts):
+                draft_raw_action_l2 = float((drafts[record['choice']] - raw_action_for_gaze).norm().item())
             actual_target_id = info.get('send_target_id') or info.get('target_object_id')
             actual_observe_id = info.get('observe_target_id')
             from scripts.ib_local import gaze_pointer as _gp
@@ -768,6 +901,8 @@ def world_cycle_step(engine, directions, age_ablate=False):
         utterance_hex=utterance.hex(), utf8_valid=utf8, spoke=bool(own),
         truncated=record['truncated'], external_bytes=len(external), self_bytes=own,
         world=info, response_nll=float(nll[:len(response)].mean()),
+        self_speech_nll=self_speech_nll,
+        draft_raw_action_l2=draft_raw_action_l2,
         mother_response_nll=float(nll[:mother].mean()) if mother else None,
         ambient_response_nll=float(nll[mother:len(response)].mean()) if mother<len(response) else None,
         heldout_pre_nll=pre, heldout_post_nll=post,

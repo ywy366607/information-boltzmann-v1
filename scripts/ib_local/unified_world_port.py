@@ -136,8 +136,9 @@ def _is_vocal_parent_call(text: str) -> bool:
 class SidecarCorpusStream:
     """Contiguous UTF-8 sidecar storybook (e.g., Chinese corpus) with exact cursor, seen mask & keyword navigation."""
 
-    def __init__(self, path: str | Path, *, cursor: int = 0):
+    def __init__(self, path: str | Path, *, cursor: int = 0, source_name: str = 'chinese_storybook'):
         self.path = Path(path).resolve()
+        self.source_name = str(source_name or 'chinese_storybook')
         raw = self.path.read_bytes()
         if len(raw) < 2048:
             raise ValueError(f'sidecar corpus too small ({len(raw)} bytes): {self.path}')
@@ -237,7 +238,7 @@ class SidecarCorpusStream:
             response_previously_seen_bytes=prior_resp,
             holdout_previously_seen_bytes=prior_hold,
             holdout_position_fresh=(prior_hold == 0),
-            source='chinese_storybook',
+            source=self.source_name,
             sidecar_corpus=self.path.name,
             sidecar_cursor=int(self.cursor),
         )
@@ -267,7 +268,7 @@ class SidecarCorpusStream:
                     response_previously_seen_bytes=prior_resp,
                     holdout_previously_seen_bytes=prior_hold,
                     holdout_position_fresh=(prior_hold == 0),
-                    source='chinese_storybook',
+                    source=self.source_name,
                     sidecar_corpus=self.path.name,
                     sidecar_cursor=int(self.cursor),
                 )
@@ -314,7 +315,7 @@ class SidecarCorpusStream:
                 response_previously_seen_bytes=prior_resp,
                 holdout_previously_seen_bytes=prior_hold,
                 holdout_position_fresh=(prior_hold == 0),
-                source='chinese_storybook',
+                source=self.source_name,
                 sidecar_corpus=self.path.name,
                 sidecar_cursor=int(self.cursor),
             )
@@ -335,8 +336,9 @@ class MultiSourceEventStream:
         conflated with the consequences of MengLi's own actions.
     """
 
-    def __init__(self, path: str | Path, *, cursor: int = 0):
+    def __init__(self, path: str | Path, *, cursor: int = 0, source_name: str = 'chinese_storybook'):
         self.path = Path(path).resolve()
+        self.source_name = str(source_name or 'chinese_storybook')
         if not self.path.exists():
             raise FileNotFoundError(f'multi-source event corpus not found: {self.path}')
         # Store only lightweight byte offsets (~128 KB for 16k scenes instead of ~300 MB of Python dicts).
@@ -566,6 +568,7 @@ class UnifiedWorldPort:
         inbox_path: str | Path | None = None,
         sidecar_corpus: str | Path | None = None,
         sidecar_mix_ratio: float = 0.0,
+        english_corpus: str | Path | None = None,
         dialogue_demo_corpus: str | Path | None = None,
         dialogue_demo_ratio: float = 0.0,
         initial_stage: str = STAGE_INFANT,
@@ -597,6 +600,9 @@ class UnifiedWorldPort:
         self.inbox_offset = 0
         self.sidecar_mix_ratio = float(sidecar_mix_ratio) if sidecar_corpus is not None else 0.0
         self.sidecar = None if sidecar_corpus is None else SidecarCorpusStream(sidecar_corpus)
+        self.english_sidecar = (
+            None if english_corpus is None else SidecarCorpusStream(english_corpus, source_name='text')
+        )
         self.dialogue_demo_ratio = float(dialogue_demo_ratio) if dialogue_demo_corpus is not None else 0.0
         self.dialogue_demo = (
             None if dialogue_demo_corpus is None else MultiSourceEventStream(dialogue_demo_corpus)
@@ -1062,6 +1068,9 @@ class UnifiedWorldPort:
             resp, cont, info = self.sidecar.take_ambient(response_bytes, holdout_bytes)
             self.sidecar_reads += 1
             self.last_book_source = 'chinese_storybook'
+        elif self.english_sidecar is not None:
+            resp, cont, info = self.english_sidecar.take_ambient(response_bytes, holdout_bytes)
+            self.last_book_source = 'text'
         else:
             resp, cont, info = self.base.take(b'', response_bytes, holdout_bytes)
             self.last_book_source = 'text'
@@ -1092,6 +1101,8 @@ class UnifiedWorldPort:
         """Advance passive background storybook WITHOUT navigating on a social/tool utterance."""
         if self.sidecar is not None and self.last_book_source == 'chinese_storybook':
             return self.sidecar.take_ambient(response_bytes, holdout_bytes)
+        if self.english_sidecar is not None:
+            return self.english_sidecar.take_ambient(response_bytes, holdout_bytes)
         return self.base.take(b'', response_bytes, holdout_bytes)
 
     def _ensure_base_hybrid_index(self):
@@ -1186,11 +1197,14 @@ class UnifiedWorldPort:
                 if self.last_book_source != prev_src:
                     self.shared_page_bytes.clear()
                 return resp, cont, info
-        hybrid_res = self._navigate_base_hybrid(query_clean, response_bytes, holdout_bytes)
-        if hybrid_res is not None:
-            resp, cont, info = hybrid_res
+        if self.english_sidecar is not None:
+            resp, cont, info = self.english_sidecar.take(query_bytes, response_bytes, holdout_bytes)
         else:
-            resp, cont, info = self.base.take(query_bytes, response_bytes, holdout_bytes)
+            hybrid_res = self._navigate_base_hybrid(query_clean, response_bytes, holdout_bytes)
+            if hybrid_res is not None:
+                resp, cont, info = hybrid_res
+            else:
+                resp, cont, info = self.base.take(query_bytes, response_bytes, holdout_bytes)
         self.last_book_source = 'text'
         if self.last_book_source != prev_src:
             self.shared_page_bytes.clear()
@@ -2164,7 +2178,8 @@ class UnifiedWorldPort:
         self._pending_commit = None
         return dict(committed=pending['kind'], stage_changed=stage_changed,
                     stage=self.care_plan_tracker.stage,
-                    plan_version=self.care_plan_tracker.version)
+                    plan_version=self.care_plan_tracker.version,
+                    gaze=gaze_receipt)
 
     def maybe_reflect_and_adapt(
         self,
@@ -2326,6 +2341,7 @@ class UnifiedWorldPort:
                 recent_metal_g=list(self.recent_metal_g),
                 inbox_offset=int(self.inbox_offset),
                 sidecar_cursor=(None if self.sidecar is None else int(self.sidecar.cursor)),
+                english_sidecar_cursor=(None if self.english_sidecar is None else int(self.english_sidecar.cursor)),
                 dialogue_cursor=(None if self.dialogue_demo is None else int(self.dialogue_demo.cursor)),
                 care_plan_tracker=self.care_plan_tracker.state_dict(),
                 pending_tool_notes=list(self._pending_tool_notes),
@@ -2385,6 +2401,8 @@ class UnifiedWorldPort:
             self.inbox_offset = int(uwp.get('inbox_offset', 0))
             if self.sidecar is not None and uwp.get('sidecar_cursor') is not None:
                 self.sidecar.cursor = int(uwp['sidecar_cursor']) % len(self.sidecar.data)
+            if self.english_sidecar is not None and uwp.get('english_sidecar_cursor') is not None:
+                self.english_sidecar.cursor = int(uwp['english_sidecar_cursor']) % len(self.english_sidecar.data)
             if self.dialogue_demo is not None and uwp.get('dialogue_cursor') is not None:
                 self.dialogue_demo.cursor = int(uwp['dialogue_cursor']) % len(self.dialogue_demo.scenes)
             if isinstance(uwp.get('care_plan_tracker'), dict):

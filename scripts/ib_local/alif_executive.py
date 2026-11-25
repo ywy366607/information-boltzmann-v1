@@ -342,7 +342,12 @@ def _step_quiet_physics(engine) -> float:
     return float((engine.recurrent - before).norm())
 
 
-def hippocampal_anchor_loss(engine, features: torch.Tensor) -> tuple[torch.Tensor, dict]:
+def hippocampal_anchor_loss(
+    engine,
+    features: torch.Tensor,
+    *,
+    exclude_internal_slots: torch.Tensor | None = None,
+) -> tuple[torch.Tensor, dict]:
     """Fast (~10 ms) hippocampal old-fact & transition replay anchoring `model.encoder`.
 
     Replays ONLY real historical memory/archive observations (zero fabricated labels,
@@ -388,6 +393,9 @@ def hippocampal_anchor_loss(engine, features: torch.Tensor) -> tuple[torch.Tenso
         if m is not None and hasattr(m, 'internal_valid') and hasattr(engine, 'replay_rng'):
             from scripts.ib_local.navigation_internal_rollout import next_boundary_prediction
             valid = (m.occupied & m.internal_valid & (m.count == 1) & (m.internal_stamp == m.last_write))
+            if exclude_internal_slots is not None and len(exclude_internal_slots) > 0:
+                valid = valid.clone()
+                valid[exclude_internal_slots.to(device=valid.device, dtype=torch.long)] = False
             slots = torch.nonzero(valid).flatten()
             if len(slots) > 0:
                 batch_cap = int(getattr(engine, 'replay_batch', 32 * replay_mult))
