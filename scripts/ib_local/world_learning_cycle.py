@@ -737,7 +737,8 @@ def world_cycle_step(engine, directions, age_ablate=False):
         ce = F.cross_entropy(diag['logits'][0].detach(), target[0], reduction='none').cpu().numpy()
         if index == 0 and own > 0:
             self_speech_nll = float(ce[:own].mean())
-        errors.append(ce[skip_n:] if skip_n < len(ce) else ce)
+        ce_keep = ce[mask[0].detach().cpu().numpy() > 0.5]
+        errors.append(ce_keep if len(ce_keep) else (ce[own:] if (index == 0 and own < len(ce)) else ce))
         if index == 0:
             first_diag = diag
             if engine.prev is not None:
