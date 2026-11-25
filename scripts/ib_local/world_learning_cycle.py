@@ -452,11 +452,17 @@ def _complete_self_evolution_beat(
 
         # 4. Zero external bytes were observed: do NOT pad/advance memory.clock or commit a fabricated
         #    `long_successor == source` episode into episodic memory / Wood / causal relations.
-        #    Discard any pre-world causal_use receipt cleanly and score witness_post with clean context.
-        engine.causal_use_pending = None
+        #    Settle pre-world causal_use & native_amortization receipts with `committed=False, slot=None`
+        #    so per-turn teacher queues/checks reset cleanly without recording any fake world label.
+        from scripts.ib_local.causal_use_value import settle as settle_use
         engine._finite_use_commit_pending = None
         engine._mother_boundary_target = None
         engine._internal_label = None
+        if getattr(engine, 'causal_use_schema', None) == 1 and getattr(engine, 'causal_use_pending', None) is not None:
+            _, use_receipt = settle_use(engine, 0.0, slot=None, merged=False)
+        else:
+            engine.causal_use_pending = None
+            use_receipt = dict(skipped='self_evolution_no_external_observation')
 
         witness_post = engine.witness_nll()
         witness_g = float(witness_pre - witness_post)
@@ -472,7 +478,6 @@ def _complete_self_evolution_beat(
             g = witness_g
             ev_avail = False
         slot, merged = None, False
-        use_receipt = dict(skipped='self_evolution_no_external_observation')
 
         # Update bodily interoception honestly for this internal self-evolution beat.
         intero_surprise = (

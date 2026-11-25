@@ -235,10 +235,13 @@ def settle(engine, text_gain, *, slot=None, merged=None):
     comparisons = []
     finite_report = None
     if engine.causal_use_arm == 'C2':
-        if slot is None or merged is None:
+        if target is None and slot is None:
+            comparisons, finite_report = [], dict(committed=False, reason='no external observation')
+        elif slot is None or merged is None:
             raise ValueError('finite U settlement requires actual episode allocation')
-        from scripts.ib_local.finite_use_value import observed as observed_finite
-        comparisons, finite_report = observed_finite(engine, receipt, slot, merged)
+        else:
+            from scripts.ib_local.finite_use_value import observed as observed_finite
+            comparisons, finite_report = observed_finite(engine, receipt, slot, merged)
     elif target is not None:
         incoming = F.linear(target.reshape(1, -1), receipt['encoder'], receipt['encoder_bias'])
         residual = incoming-receipt['incoming_base']
@@ -261,7 +264,7 @@ def settle(engine, text_gain, *, slot=None, merged=None):
         raise FloatingPointError('nonfinite real use settlement')
     arm = engine.causal_use_arm
     result = (receipt['coefficient'] if target is not None else 0.) if arm == 'B' else observed if arm in ('C', 'C2') else text_gain
-    if active(engine):
+    if active(engine) and (slot is not None or target is not None):
         gain_target = receipt['gain_base'].clone()
         gain_target[3] = 10*result
         engine.causal_use_value_evidence.observe(receipt['choice'], gain_target,
