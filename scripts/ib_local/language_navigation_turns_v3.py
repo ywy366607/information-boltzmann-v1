@@ -45,7 +45,7 @@ class DecisionGraphV3:
         else:
             self.ids, self.table = packed
         hnet = getattr(getattr(model, 'body', None), 'hnet_chunker', None)
-        self._hnet_section24 = (hnet is not None and hnet.target_ratio > 1.0)
+        self._hnet_section24 = (hnet is not None and hnet.target_ratio > 1.0 and int(getattr(hnet, 'min_seq_len', 1)) <= 1)
         self._hnet_step_state = None
         self._hnet_graphs = False
         self._hnet_step_idx = 0

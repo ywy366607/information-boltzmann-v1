@@ -461,11 +461,9 @@ def _span_masked_table_probs(table, pending: int, chunk: np.ndarray, spans: list
     """Compute Fast Table probs across arbitrary masked/unmasked spans.
 
     Masked spans (identity cards, speaker/tool headers) are strictly READ-ONLY
-    (`frozen_table_logp`), while unmasked spoken/storybook spans update the table
-    via `run_credit` as usual.
+    (`read_only_live_probs` from live `table.history`), while unmasked spoken/storybook
+    spans update the table via `run_credit` as usual.
     """
-    from scripts.ib_local.navigation_live_witness import frozen_table_logp
-
     n = int(len(chunk))
     if not spans:
         _, probs, _ = table.run_credit(

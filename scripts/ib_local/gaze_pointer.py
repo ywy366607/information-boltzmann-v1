@@ -1010,7 +1010,7 @@ class GazeObjectPointer(nn.Module):
                             action_shift=action_shift_val,
                         )
 
-            if total_loss.requires_grad:
+            if total_loss.requires_grad and bool(torch.isfinite(total_loss).all()):
                 # Restrict autograd strictly to GazeObjectPointer + `_dual_channel` + `_other_world_model`
                 # so frozen body modules (`encoder`, `long_predictor`, `mother_from_boundary`) never get `.grad`.
                 main_params = [p for p in self.parameters() if p.requires_grad]
@@ -1029,31 +1029,47 @@ class GazeObjectPointer(nn.Module):
                 main_has_grad = False
                 dual_has_grad = False
                 other_has_grad = False
+                main_finite = True
+                dual_finite = True
+                other_finite = True
                 n_main = len(main_params)
                 n_dual = len(dual_params)
                 for p, g in zip(main_params, grads[:n_main]):
                     if g is not None:
-                        p.grad = g.detach()
-                        main_has_grad = True
+                        if not bool(torch.isfinite(g).all()):
+                            main_finite = False
+                        else:
+                            p.grad = g.detach()
+                            main_has_grad = True
                 for p, g in zip(dual_params, grads[n_main:n_main + n_dual]):
                     if g is not None:
-                        p.grad = g.detach()
-                        dual_has_grad = True
+                        if not bool(torch.isfinite(g).all()):
+                            dual_finite = False
+                        else:
+                            p.grad = g.detach()
+                            dual_has_grad = True
                 for p, g in zip(other_params, grads[n_main + n_dual:]):
                     if g is not None:
-                        p.grad = g.detach()
-                        other_has_grad = True
-                if main_has_grad:
+                        if not bool(torch.isfinite(g).all()):
+                            other_finite = False
+                        else:
+                            p.grad = g.detach()
+                            other_has_grad = True
+                if main_has_grad and main_finite:
                     torch.nn.utils.clip_grad_norm_(main_params, 1.0)
                     self._opt.step()
-                if dual_has_grad:
+                if dual_has_grad and dual_finite:
                     torch.nn.utils.clip_grad_norm_(dual_params, 1.0)
                     self._dual_opt.step()
                     with torch.no_grad():
                         dual_m = self._dual()
+                        if not bool(torch.isfinite(dual_m.in_null_logit).all()):
+                            dual_m.in_null_logit.zero_()
+                        if not bool(torch.isfinite(dual_m.out_null_logit).all()):
+                            dual_m.out_null_logit.zero_()
                         dual_m.in_null_logit.clamp_(-3.0, 1.5)
                         dual_m.out_null_logit.clamp_(-3.0, 1.5)
-                if other_has_grad and self._other_opt is not None:
+                if other_has_grad and other_finite and self._other_opt is not None:
                     torch.nn.utils.clip_grad_norm_(other_params, 1.0)
                     self._other_opt.step()
 

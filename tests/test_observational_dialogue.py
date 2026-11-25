@@ -102,10 +102,10 @@ def test_multi_source_stream_contract_spans_and_utf8_safety(tmp_path: Path):
 
 
 def test_span_masked_table_never_writes_headers_to_fast_table(tmp_path: Path, monkeypatch):
-    def _fake_frozen(table, seq):
-        return np.full((len(seq), 256), -np.log(256.0), dtype=np.float32)
+    def _fake_read_only(table, seq, *, advance_history=True):
+        return np.full((len(seq), 256), 1.0 / 256.0, dtype=np.float32)
 
-    monkeypatch.setattr('scripts.ib_local.navigation_live_witness.frozen_table_logp', _fake_frozen)
+    monkeypatch.setattr('scripts.ib_local.language_action.read_only_live_probs', _fake_read_only)
 
     corpus = _write_sample_corpus(tmp_path)
     stream = MultiSourceEventStream(corpus)

@@ -114,9 +114,13 @@ def _dispatch(engine):
     if engine.autonomous_event_clock >= 2**63-1:
         raise OverflowError('autonomous event clock exhausted')
     if engine.autonomous_ready:
+        from scripts.ib_local.world_learning_cycle import _SelfEvolutionCompleted
         adaptive = getattr(engine.model.body.base, '_adaptive_quiet', None)
         before_theta = adaptive.theta.detach().clone() if adaptive is not None else None
-        row = engine.step(torch.randn(engine.model.encoder.out_features, 32, device=engine.device))
+        try:
+            row = engine.step(torch.randn(engine.model.encoder.out_features, 32, device=engine.device))
+        except _SelfEvolutionCompleted as done:
+            row = done.row
         if adaptive is not None:
             row['adaptive_dynamics'] = adaptive.diagnostics()
             row['adaptive_dynamics']['per_layer_parameter_step'] = (

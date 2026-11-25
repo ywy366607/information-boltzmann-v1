@@ -175,8 +175,14 @@ class TableGDN(nn.Module):
             raise ValueError('state-only execution is for known no-gradient payloads')
         base = self.base
         hnet = getattr(self, 'hnet_chunker', None)
-        hnet_active = (hnet is not None and hnet.active_for(ids.shape[1]))
         step_st = getattr(self, '_hnet_step_state', None)
+        # Unscoped 1-byte calls outside `hnet_step_scope` cleanly bypass H-Net instead of
+        # forcing a boundary + skip residual on every byte.
+        hnet_active = (
+            hnet is not None
+            and hnet.active_for(ids.shape[1])
+            and (ids.shape[1] > 1 or step_st is not None)
+        )
         if hnet_active and step_st is not None and ids.shape[1] == 1:
             hnet._pending_ratio_loss = None
             core_start = hnet.enc_layers
@@ -245,9 +251,36 @@ class TableGDN(nn.Module):
                 h, incoming, work_diag = field.exchange(layer, h, incoming,
                     packed[:, layer.state_size:], field_keys, field_bias)
                 packed = packed[:, :layer.state_size]
-            h, next_state, layer_diag = layer(h, packed)
+            if (hnet_pack is not None and h.shape[0] > 1
+                    and int(hnet_pack['counts'].min().item()) < int(hnet_pack['M_max'])):
+                # Exact B>1 padded deep-core state: step each row strictly up to its own boundary
+                # count `m` so shorter rows' recurrent state is never over-advanced through padding.
+                B_cur = h.shape[0]
+                counts_l = hnet_pack['counts'].tolist()
+                h_rows, st_rows = [], []
+                layer_diag = {}
+                for bi in range(B_cur):
+                    m_i = max(1, int(counts_l[bi]))
+                    h_i, st_i, diag_i = layer(h[bi:bi + 1, :m_i], packed[bi:bi + 1])
+                    if m_i < h.shape[1]:
+                        h_i = F.pad(h_i, (0, 0, 0, h.shape[1] - m_i))
+                    h_rows.append(h_i)
+                    st_rows.append(st_i)
+                    layer_diag = diag_i
+                h = torch.cat(h_rows, dim=0)
+                next_state = torch.cat(st_rows, dim=0)
+            else:
+                h, next_state, layer_diag = layer(h, packed)
             if field is not None:
-                next_state = torch.cat((next_state, incoming[:, -1].flatten(1)), -1)
+                if (hnet_pack is not None and h.shape[0] > 1
+                        and int(hnet_pack['counts'].min().item()) < int(hnet_pack['M_max'])):
+                    last_inc = torch.stack([
+                        incoming[bi, max(0, int(hnet_pack['counts'][bi].item()) - 1)].flatten()
+                        for bi in range(h.shape[0])
+                    ], dim=0)
+                    next_state = torch.cat((next_state, last_inc), -1)
+                else:
+                    next_state = torch.cat((next_state, incoming[:, -1].flatten(1)), -1)
                 layer_diag.update(work_diag)
             states.append(next_state)
             for key_name, value in layer_diag.items():

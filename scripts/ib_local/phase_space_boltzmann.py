@@ -229,6 +229,8 @@ class PhaseSpaceBoltzmann(nn.Module):
         entropy = float((log_z - (probs * lg).sum(dim=-1)).mean().item())
         beta_lang = max(1e-6, float(self.lang_inv_temp_scale().detach().item()))
         free_energy = float((-log_z.mean().item()) / beta_lang)
+        if not (math.isfinite(entropy) and math.isfinite(free_energy)):
+            return dict(applied=False, non_finite=True)
         self.last_entropy.fill_(entropy)
         self.last_free_energy.fill_(free_energy)
 
@@ -240,11 +242,16 @@ class PhaseSpaceBoltzmann(nn.Module):
         else:
             h_ema = float(self.entropy_ema.item())
             h_var = float(self.entropy_var.item())
-            diff = entropy - h_ema
-            std = math.sqrt(max(h_var, 1e-4))
-            pressure = math.tanh(diff / std)
-            self.entropy_ema.mul_(self.ema_decay).add_(entropy * (1.0 - self.ema_decay))
-            self.entropy_var.mul_(self.ema_decay).add_((diff * diff) * (1.0 - self.ema_decay))
+            if not (math.isfinite(h_ema) and math.isfinite(h_var)):
+                self.entropy_ema.fill_(entropy)
+                self.entropy_var.zero_()
+                pressure = 0.0
+            else:
+                diff = entropy - h_ema
+                std = math.sqrt(max(h_var, 1e-4))
+                pressure = math.tanh(diff / std)
+                self.entropy_ema.mul_(self.ema_decay).add_(entropy * (1.0 - self.ema_decay))
+                self.entropy_var.mul_(self.ema_decay).add_((diff * diff) * (1.0 - self.ema_decay))
             self.entropy_count.add_(1)
         self.last_pressure.fill_(pressure)
 
@@ -253,20 +260,21 @@ class PhaseSpaceBoltzmann(nn.Module):
         if self.enable_thermostat and momenta:
             e_kin = self._kinetic_energy(momenta)
             e_ema = float(self.kinetic_ema.item())
-            if int(self.kinetic_count.item()) > 0 and e_ema > 0.0:
-                u_pos = max(0.0, math.log((e_kin + 1e-12) / (e_ema + 1e-12)))
-            else:
-                u_pos = 0.0
-            # Theorems 4 & 5: strict contraction above NESS ceiling η/γ,
-            # Theorem 6: positive free-energy pressure amplifies P.
-            log_scale = 0.5 * (self.eta_free_energy * pressure - self.gamma_diss * u_pos)
-            log_scale = max(-self.max_log_scale, min(self.max_log_scale, log_scale))
-            scale = math.exp(log_scale)
-            for p in momenta:
-                if torch.is_tensor(p):
-                    p.mul_(scale)
-            engine.model._momentum_current = momenta
-            self.thermostat_steps.add_(1)
+            if math.isfinite(e_kin):
+                if int(self.kinetic_count.item()) > 0 and math.isfinite(e_ema) and e_ema > 0.0:
+                    u_pos = max(0.0, math.log((e_kin + 1e-12) / (e_ema + 1e-12)))
+                else:
+                    u_pos = 0.0
+                # EMA-relative damping above kinetic_ema; positive free-energy pressure amplifies P.
+                log_scale = 0.5 * (self.eta_free_energy * pressure - self.gamma_diss * u_pos)
+                if math.isfinite(log_scale):
+                    log_scale = max(-self.max_log_scale, min(self.max_log_scale, log_scale))
+                    scale = math.exp(log_scale)
+                    for p in momenta:
+                        if torch.is_tensor(p):
+                            p.mul_(scale)
+                    engine.model._momentum_current = momenta
+                    self.thermostat_steps.add_(1)
         self.last_thermostat_scale.fill_(scale)
 
         phase_info = self.refresh_live_phase_state(engine, query_raw=query_raw, update_ema=True)

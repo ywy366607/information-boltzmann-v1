@@ -272,6 +272,8 @@ class WitnessEngine(ImaginingEngine):
         if getattr(self, 'reward_memory_kind', 'td') == 'observed':
             return
         prev, memory = self.prev, self.model.memory
+        if prev.get('slot') is None:
+            return
         memory.progress[prev['slot']] = y
         if hasattr(self, 'settlement_versions'):
             # TD overwrites this scalar; it is no longer a mixed average.
@@ -283,7 +285,7 @@ class WitnessEngine(ImaginingEngine):
         self._write_return_label(y)
         target = SCALE*y
         out = dict(g=prev['g'], y=y, imagined=prev['value'], choice=prev['choice'], actor=None, advantage=0.)
-        if getattr(self, 'reward_memory_kind', 'td') == 'observed':
+        if getattr(self, 'reward_memory_kind', 'td') == 'observed' and prev.get('slot') is not None:
             memory = self.model.memory
             out.update(memory_label_kind='observed_gain',
                        memory_gain=float(memory.progress[prev['slot']]),

@@ -81,9 +81,10 @@ def _load_or_lock_eval_facts(engine, work_dir: Path):
                     break
             if len(fresh) == 64:
                 break
-    save_path = (PROJECT / 'data/eval/locked_eval_facts_64.pt').resolve()
+    save_path = (work_dir / 'fallback_eval_facts_64.pt').resolve()
     save_path.parent.mkdir(parents=True, exist_ok=True)
     torch.save(fresh, save_path)
+    print(f'[WARN] Locked external 64-fact anchor missing; using work-local fallback ({save_path.name}).', flush=True)
     return torch.load(save_path, map_location=engine.device, weights_only=False)
 
 

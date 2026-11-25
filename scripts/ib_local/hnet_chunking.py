@@ -392,6 +392,11 @@ def configure(
     base = body.base
     if enc_layers + dec_layers >= base.num_layers:
         raise ValueError(f'enc_layers({enc_layers}) + dec_layers({dec_layers}) must be < num_layers({base.num_layers})')
+    exp_layer = getattr(model, 'experience_layer', None)
+    if exp_layer is not None and int(exp_layer) < base.num_layers - dec_layers:
+        raise ValueError(
+            f'experience_layer({exp_layer}) must be >= num_layers({base.num_layers}) - dec_layers({dec_layers})'
+        )
     w = base.source.embedding.weight
     if not hasattr(body, 'hnet_chunker') or body.hnet_chunker is None:
         chunker = HNetDynamicChunker(
