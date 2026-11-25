@@ -111,6 +111,49 @@ test('GET error is visible and does not trigger automatic retries', async () => 
   assert.equal(client.getSnapshot().error, 'Denied'); assert.equal(count, 1);
 });
 
+test('live_steward observing state recovers from prior telemetry error and reports running status', async () => {
+  const f = fixture();
+  let failOnce = true;
+  const client = createMetricsClient({
+    getBridge: () => f.bridge,
+    fetcher: async () => failOnce
+      ? (failOnce = false, { ok: true, json: async () => ({ error: 'Invalid explicit observation storage roots', history: { rows: [] }, life: { card: null } }) })
+      : { ok: true, json: async () => f.telemetry },
+  });
+  await client.open();
+  assert.equal(client.getSnapshot().error, 'Invalid explicit observation storage roots');
+  const card = {
+    schema: 1,
+    identity: { individual_id: 'mengli-1' },
+    branch_id: 'v13-clean',
+    source: { checkpoint: 'D:\\v13\\body\\last.pt.gz', cycle: 6675 },
+    age: { cycles: 6675, byte_events: 12700000 },
+  };
+  f.update(
+    [{ status: 'committed', cursor: 6676, branch_id: 'v13-clean', cycle: 6676, row: { cycle: 6676, updates: 2, response_nll: 1.42 } }],
+    {
+      mode: 'observing',
+      read_only: false,
+      live_steward: true,
+      loaded: false,
+      busy: false,
+      error: null,
+      individual_id: 'mengli-1',
+      branch_id: 'v13-clean',
+      checkpoint: 'D:\\v13\\body\\last.pt.gz',
+      cycle: 6676,
+      observation: { status: 'running', live_steward: true, latest_completed_cycle: 6676, saved_cycle: 6675 },
+      life_card_data: card,
+    },
+  );
+  assert.equal(client.getSnapshot().error, null);
+  assert.equal(client.getSnapshot().source.branch_id, 'v13-clean');
+  assert.equal(client.getSnapshot().source.cycle, 6676);
+  assert.equal(client.getSnapshot().rows.at(-1).cycle, 6676);
+  assert.equal(lifeStatus(client.getSnapshot()), '训练中');
+  client.dispose();
+});
+
 test('build synchronously emits independent package, native guide entries, and Cordis insert', () => {
   const built = buildMetricsClient();
   const rows = metricsPatchRows();

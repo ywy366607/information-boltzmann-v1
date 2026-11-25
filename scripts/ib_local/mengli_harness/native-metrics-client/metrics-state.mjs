@@ -47,9 +47,10 @@ export function metricViewport(allPoints, range = {}) {
   if(low>=high)return {error:'数值下限须小于上限'};
   return {points,minX,maxX,low,high,error:null};
 }
+const isObservingState = state => Boolean(state && (state.mode === 'observing' || state.read_only || state.live_steward));
 export function lifeStatus(snapshot) {
   const state = snapshot.family?.state;
-  if (state?.read_only) {
+  if (isObservingState(state)) {
     const labels = { running: '训练中', complete: '训练完成', stopped: '已保存停止', interrupted: '训练中断', failed: '训练失败', waiting_resources: '等待资源', unavailable: '观察不可用' };
     return snapshot.family?.connected ? labels[state.observation?.status] ?? '已连接' : '连接中断';
   }
@@ -109,13 +110,14 @@ export function createMetricsClient({ fetcher = globalThis.fetch, getBridge = ()
     if (family) {
       publish({ family });
       const state = family.state;
-      if (state?.read_only && state.error) {
+      const observing = isObservingState(state);
+      if (observing && state.error) {
         seen.clear(); lastCursor = -1;
         publish({ error: state.error, card: null, rows: [], history: null, latestEvent: null,
           source: { kind: 'research_observation', observation: state.observation } });
         return;
       }
-      if (state?.read_only) {
+      if (observing) {
         const card = state.life_card_data;
         // Only a server-validated saved card can restore the attachment. A
         // previous mismatch deliberately removed source.branch_id: requiring
@@ -134,7 +136,7 @@ export function createMetricsClient({ fetcher = globalThis.fetch, getBridge = ()
       }
       // Initial family cycle is often zero. Only saved events advance the display.
       if (snapshot.source) for (const event of family.state?.events ?? []) adoptEvent(event);
-      if (state?.read_only && snapshot.source?.branch_id === state.branch_id) {
+      if (observing && snapshot.source?.branch_id === state.branch_id) {
         publish({ source: { ...snapshot.source, cycle: state.cycle } });
       }
     }
