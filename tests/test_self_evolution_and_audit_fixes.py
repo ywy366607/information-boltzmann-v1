@@ -221,15 +221,16 @@ def test_hnet_b_gt_1_exact_core_state_unscoped_1byte_bypass_and_experience_layer
     assert torch.allclose(st_b[:, 0:1], st_0, atol=1e-5)
     assert torch.allclose(st_b[:, 1:2], st_1, atol=1e-5)
 
-    # #9: Unscoped 1-byte call outside hnet_step_scope cleanly bypasses H-Net (matches hnet_bypass)!
+    # #9 invariant: 1-byte eager forward (used by `_policy_grad` when own==0) MUST match
+    # step 0 of `hnet_step_scope` bit-for-bit (`b_0=1, p_0=1` + skip residual `W_res x_0`).
     id1 = torch.tensor([[70]], dtype=torch.long)
     lp1 = torch.log_softmax(torch.randn(1, 1, 256), dim=-1)
     with torch.no_grad():
-        l_unscoped, st_unscoped, _ = body.predict(id1, s0, lp1)
-        with hnet_mod.hnet_bypass(body):
-            l_bypass, st_bypass, _ = body.predict(id1, s0, lp1)
-    assert torch.allclose(l_unscoped, l_bypass, atol=1e-6)
-    assert torch.allclose(st_unscoped, st_bypass, atol=1e-6)
+        l_eager, st_eager, _ = body.predict(id1, s0, lp1)
+        with hnet_mod.hnet_step_scope(body):
+            l_scoped, st_scoped, _ = body.predict(id1, s0, lp1)
+    assert torch.allclose(l_eager, l_scoped, atol=1e-6)
+    assert torch.allclose(st_eager, st_scoped, atol=1e-6)
 
     # #11: configure() rejects experience_layer < num_layers - dec_layers
     fake_eng = SimpleNamespace(

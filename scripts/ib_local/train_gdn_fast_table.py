@@ -176,13 +176,7 @@ class TableGDN(nn.Module):
         base = self.base
         hnet = getattr(self, 'hnet_chunker', None)
         step_st = getattr(self, '_hnet_step_state', None)
-        # Unscoped 1-byte calls outside `hnet_step_scope` cleanly bypass H-Net instead of
-        # forcing a boundary + skip residual on every byte.
-        hnet_active = (
-            hnet is not None
-            and hnet.active_for(ids.shape[1])
-            and (ids.shape[1] > 1 or step_st is not None)
-        )
+        hnet_active = (hnet is not None and hnet.active_for(ids.shape[1]))
         if hnet_active and step_st is not None and ids.shape[1] == 1:
             hnet._pending_ratio_loss = None
             core_start = hnet.enc_layers
