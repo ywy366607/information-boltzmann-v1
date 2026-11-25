@@ -173,7 +173,7 @@ function apply(ctx) {
               h('div', { className: 'umwelt-traj-body' },
                 h('div', { className: 'umwelt-traj-cell', title: it.utterance || '（安静）' }, h('span', null, '梦漓'), it.utterance || '（安静）'),
                 h('div', { className: 'umwelt-traj-cell', title: it.reply }, h('span', null, it.isSocial ? '回应' : '书页'), it.reply || '—')),
-              it.learningTrace && h(LearningTraceDisclosure, { trace: it.learningTrace }))));
+              it.learningTrace && h(LearningTraceDisclosure, { trace: it.learningTrace })))));
   }
   function LearningTraceDisclosure({ trace }) {
     const sit = trace.situation ?? {};
