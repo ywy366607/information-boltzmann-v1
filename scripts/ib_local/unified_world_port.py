@@ -197,12 +197,14 @@ class SidecarCorpusStream:
         return actual if actual < expected else 0
 
     def _slice_from(self, start: int, response_bytes: int, holdout_bytes: int) -> tuple[np.ndarray, np.ndarray, int, int, int]:
-        total = int(response_bytes) + int(holdout_bytes)
+        response_bytes = int(response_bytes)
+        holdout_bytes = int(holdout_bytes)
+        total = response_bytes + holdout_bytes
         n = len(self.data)
         start = self._align_utf8_start(start)
         if start + total <= n:
             buf = self.data[start:start + total].copy()
-            prior_resp = int(self.seen[start:start + response_bytes].sum())
+            prior_resp = int(self.seen[start:start + response_bytes].sum()) if response_bytes > 0 else 0
             prior_hold = int(self.seen[start + response_bytes:start + total].sum())
             self.seen[start:start + total] = True
             raw_end = start + total
@@ -212,7 +214,7 @@ class SidecarCorpusStream:
             part2 = self.data[:rem]
             buf = np.concatenate((part1, part2)).copy()
             seen_wrap = np.concatenate((self.seen[start:], self.seen[:rem]))
-            prior_resp = int(seen_wrap[:response_bytes].sum())
+            prior_resp = int(seen_wrap[:response_bytes].sum()) if response_bytes > 0 else 0
             prior_hold = int(seen_wrap[response_bytes:].sum())
             self.seen[start:] = True
             self.seen[:rem] = True
@@ -226,11 +228,12 @@ class SidecarCorpusStream:
         else:
             next_cursor = self._align_utf8_start(raw_end)
         self.cursor = next_cursor
-        return buf[:response_bytes], buf[response_bytes:], start, prior_resp, prior_hold
+        resp_arr = buf[:response_bytes] if response_bytes > 0 else np.empty((0,), dtype=np.uint8)
+        return resp_arr, buf[response_bytes:], start, prior_resp, prior_hold
 
     def take_ambient(self, response_bytes: int, holdout_bytes: int) -> tuple[np.ndarray, np.ndarray, dict]:
-        if response_bytes < 1 or holdout_bytes < 1:
-            raise ValueError('positive response and holdout lengths required')
+        if response_bytes < 0 or holdout_bytes < 1:
+            raise ValueError('non-negative response and positive holdout lengths required')
         resp, cont, start, prior_resp, prior_hold = self._slice_from(self.cursor, response_bytes, holdout_bytes)
         info = dict(
             start=int(start),
@@ -248,8 +251,8 @@ class SidecarCorpusStream:
 
     def take(self, utterance: bytes, response_bytes: int, holdout_bytes: int) -> tuple[np.ndarray, np.ndarray, dict]:
         """Navigate the Chinese/sidecar storybook via Hybrid EmbeddingGemma-2 + e-means + IDF search."""
-        if response_bytes < 1 or holdout_bytes < 1:
-            raise ValueError('positive response and holdout lengths required')
+        if response_bytes < 0 or holdout_bytes < 1:
+            raise ValueError('non-negative response and positive holdout lengths required')
         query_text = clean_utf8_excerpt(utterance, max_chars=96) if utterance else ''
 
         if query_text and self.hybrid_index is not None:
@@ -1100,12 +1103,53 @@ class UnifiedWorldPort:
             record_ledger=False,
         )
 
+    def _take_base_zero_response(self, holdout_bytes: int):
+        """Consume ONLY `holdout_bytes` from `self.base` when 0 response book bytes remain."""
+        inner = getattr(self.base, 'base', self.base)
+        data = getattr(inner, 'data', None)
+        seen = getattr(inner, 'seen', None)
+        if isinstance(data, np.ndarray) and isinstance(seen, np.ndarray) and hasattr(inner, 'cursor'):
+            n = int(len(data))
+            req = int(holdout_bytes)
+            start = int(getattr(inner, 'cursor', 0))
+            if start + req > n:
+                start = 0
+            end = start + req
+            prior_hold = int(seen[start:end].sum())
+            seen[start:end] = True
+            inner.cursor = int(end)
+            if hasattr(inner, 'anchor'):
+                inner.anchor = int(start)
+            if hasattr(inner, 'offset'):
+                win = max(1, int(getattr(inner, 'window', req)))
+                inner.offset = int(req % win)
+            cont = data[start:end].copy()
+            info = dict(
+                start=int(start),
+                anchor=int(start),
+                match=0,
+                navigation_response_bytes=0,
+                response_previously_seen_bytes=0,
+                holdout_previously_seen_bytes=prior_hold,
+                holdout_position_fresh=(prior_hold == 0),
+                source='topic',
+            )
+            return np.empty((0,), dtype=np.uint8), cont, info
+        # Fallback for minimal unit-test stubs that do not expose raw arrays.
+        _, cont, info = self.base.take(b'', 1, holdout_bytes)
+        info = dict(info, navigation_response_bytes=0)
+        return np.empty((0,), dtype=np.uint8), cont, info
+
     def _take_passive_ambient(self, response_bytes: int, holdout_bytes: int):
-        """Advance passive background storybook WITHOUT navigating on a social/tool utterance."""
+        """Advance passive background storybook by ONLY the exact delivered `(response_bytes, holdout_bytes)`."""
+        response_bytes = max(0, int(response_bytes))
+        holdout_bytes = int(holdout_bytes)
         if self.sidecar is not None and self.last_book_source == 'chinese_storybook':
             return self.sidecar.take_ambient(response_bytes, holdout_bytes)
         if self.english_sidecar is not None:
             return self.english_sidecar.take_ambient(response_bytes, holdout_bytes)
+        if response_bytes == 0:
+            return self._take_base_zero_response(holdout_bytes)
         return self.base.take(b'', response_bytes, holdout_bytes)
 
     def _ensure_base_hybrid_index(self):
@@ -1153,7 +1197,10 @@ class UnifiedWorldPort:
         hit = idx.search(query_clean, cursor=cur_rel)
         if hit is None:
             # Below relevance threshold (garbled/1-char noise) -> calm sequential read, zero random jump.
-            resp, cont, info = self.base.take(b'', response_bytes, holdout_bytes)
+            if int(response_bytes) == 0:
+                resp, cont, info = self._take_base_zero_response(holdout_bytes)
+            else:
+                resp, cont, info = self.base.take(b'', response_bytes, holdout_bytes)
             info = dict(info, match=0, retrieval_method='hybrid_gated_continue')
             return resp, cont, info
         start = self._base_hybrid_offset + int(hit['start'])
@@ -1162,7 +1209,7 @@ class UnifiedWorldPort:
             start = max(self._base_hybrid_offset, n - req)
         # Keep exact base-world cursor/seen/anchor bookkeeping intact.
         end = start + req
-        prior_resp = int(inner.seen[start:start + response_bytes].sum())
+        prior_resp = int(inner.seen[start:start + response_bytes].sum()) if response_bytes > 0 else 0
         prior_hold = int(inner.seen[start + response_bytes:end].sum())
         inner.seen[start:end] = True
         inner.anchor = int(start)
@@ -1170,7 +1217,7 @@ class UnifiedWorldPort:
         inner.cursor = int(end)
         if hasattr(inner, 'moves'):
             inner.moves = int(inner.moves) + 1
-        resp = inner.data[start:start + response_bytes].copy()
+        resp = inner.data[start:start + response_bytes].copy() if response_bytes > 0 else np.empty((0,), dtype=np.uint8)
         cont = inner.data[start + response_bytes:end].copy()
         info = dict(
             start=int(start),
@@ -1207,7 +1254,10 @@ class UnifiedWorldPort:
             if hybrid_res is not None:
                 resp, cont, info = hybrid_res
             else:
-                resp, cont, info = self.base.take(query_bytes, response_bytes, holdout_bytes)
+                if int(response_bytes) == 0:
+                    resp, cont, info = self._take_base_zero_response(holdout_bytes)
+                else:
+                    resp, cont, info = self.base.take(query_bytes, response_bytes, holdout_bytes)
         self.last_book_source = 'text'
         if self.last_book_source != prev_src:
             self.shared_page_bytes.clear()
@@ -1230,16 +1280,39 @@ class UnifiedWorldPort:
             out = f'error: {exc}'
         return name, out or 'ok'
 
-    def _pack_prefix_bytes(self, text: str, ambient: np.ndarray, response_bytes: int,
-                           *, source_label: str | None = None) -> tuple[np.ndarray, int, int, list[tuple[int, int]]]:
-        """Pack speaker/tool identity prefix + utterance + book-resume marker + ambient tail.
+    @staticmethod
+    def _truncate_utf8_bytes(raw: bytes, max_bytes: int) -> bytes:
+        """Truncate `raw` to at most `max_bytes` without splitting a multi-byte UTF-8 character."""
+        limit = max(0, int(max_bytes))
+        if len(raw) <= limit:
+            return raw
+        cut = raw[:limit]
+        tail = SidecarCorpusStream._incomplete_utf8_tail_len(np.frombuffer(cut, dtype=np.uint8))
+        return cut[:len(cut) - tail] if 0 < tail <= len(cut) else cut
 
-        Returns `(response, said_len, prefix_mask_len, mask_spans)` where `mask_spans` lists
-        every `[start, end)` identity-card / transition-header span (`[在场] ...\\n` + `妈妈：`/`爸爸：`/
-        `[工具:...] ` at turn start, PLUS `书页：` right where the book resumes after a speaker/tool
-        finishes). All spans enter GDN hidden state in full while being masked out of BOTH neural LM
-        loss and Fast-Table writes.
-        """
+    def _plan_roster_prefix(self, response_bytes: int) -> tuple[np.ndarray, int, int, list[tuple[int, int]]]:
+        """Plan optional `[在场] ...\\n` notice BEFORE consuming storybook bytes."""
+        response_bytes = int(response_bytes)
+        if self.envelope_tags and self._roster_dirty_notice:
+            raw_tag = (self._roster_dirty_notice + '\n').encode('utf-8')
+            self._roster_dirty_notice = None
+            tag_bytes = self._truncate_utf8_bytes(raw_tag, response_bytes)
+            tag_arr = np.frombuffer(tag_bytes, dtype=np.uint8).copy()
+            env_prefix_len = int(len(tag_arr))
+            book_body_bytes = max(0, response_bytes - env_prefix_len)
+            spans = [(0, env_prefix_len)] if env_prefix_len > 0 else []
+            return tag_arr, env_prefix_len, book_body_bytes, spans
+        return np.empty((0,), dtype=np.uint8), 0, response_bytes, []
+
+    def _plan_prefix_pack(
+        self,
+        text: str,
+        response_bytes: int,
+        *,
+        source_label: str | None = None,
+    ) -> dict:
+        """Compute exact identity/utterance bytes and remaining `book_body_bytes` BEFORE slicing the book."""
+        response_bytes = int(response_bytes)
         body = text.strip()
         prefix_text = ''
         if self._roster_dirty_notice:
@@ -1250,25 +1323,69 @@ class UnifiedWorldPort:
                 prefix_text += f'{source_label}：'
             elif source_label != '书页':
                 prefix_text += f'[{source_label}] '
-        full = prefix_text + body + '\n'
-        prefix_mask_len = min(len(prefix_text.encode('utf-8')), response_bytes)
-        said = np.frombuffer(full.encode('utf-8')[:response_bytes], dtype=np.uint8)
-        said_len = int(len(said))
+
+        prefix_bytes = self._truncate_utf8_bytes(prefix_text.encode('utf-8'), response_bytes)
+        prefix_mask_len = len(prefix_bytes)
+        body_plus_nl = (body + '\n').encode('utf-8')
+        avail_body = max(0, response_bytes - prefix_mask_len)
+        if len(body_plus_nl) <= avail_body:
+            said_bytes = prefix_bytes + body_plus_nl
+        elif avail_body > 0:
+            body_cut = self._truncate_utf8_bytes(body.encode('utf-8'), avail_body - 1)
+            pad_len = avail_body - len(body_cut)
+            said_bytes = prefix_bytes + body_cut + (b'\n' * pad_len)
+        else:
+            said_bytes = prefix_bytes + (b'\n' * max(0, response_bytes - len(prefix_bytes)))
+
+        said_len = len(said_bytes)
+        rem = max(0, response_bytes - said_len)
+        book_tag_bytes = b''
+        if rem > 0 and self.envelope_tags:
+            cand_tag = '书页：'.encode('utf-8')
+            if rem > len(cand_tag) + 4:
+                book_tag_bytes = cand_tag
+        book_body_bytes = max(0, rem - len(book_tag_bytes))
+        return dict(
+            said_bytes=said_bytes,
+            said_len=said_len,
+            prefix_mask_len=prefix_mask_len,
+            book_tag_bytes=book_tag_bytes,
+            book_body_bytes=book_body_bytes,
+            response_bytes=response_bytes,
+        )
+
+    @staticmethod
+    def _assemble_packed_response(plan: dict, ambient: np.ndarray) -> tuple[np.ndarray, int, int, list[tuple[int, int]]]:
+        """Assemble exact-length `response` from pre-planned speech/headers + exact-length `ambient`."""
+        said = np.frombuffer(plan['said_bytes'], dtype=np.uint8).copy()
+        said_len = int(plan['said_len'])
+        prefix_mask_len = int(plan['prefix_mask_len'])
+        book_tag = np.frombuffer(plan['book_tag_bytes'], dtype=np.uint8).copy()
+        book_body_bytes = int(plan['book_body_bytes'])
+
         mask_spans: list[tuple[int, int]] = []
         if prefix_mask_len > 0:
             mask_spans.append((0, prefix_mask_len))
-        rem = response_bytes - said_len
-        if rem > 0:
-            book_tag = np.frombuffer('书页：'.encode('utf-8'), dtype=np.uint8) if self.envelope_tags else np.empty((0,), dtype=np.uint8)
-            if len(book_tag) > 0 and rem > len(book_tag) + 4:
-                tail = np.concatenate((book_tag, ambient[:rem - len(book_tag)]))
-                mask_spans.append((said_len, said_len + int(len(book_tag))))
-            else:
-                tail = ambient[:rem]
-        else:
-            tail = np.empty((0,), dtype=np.uint8)
-        response = np.concatenate((said, tail))
-        return response, said_len, int(prefix_mask_len), mask_spans
+        if len(book_tag) > 0:
+            mask_spans.append((said_len, said_len + int(len(book_tag))))
+
+        parts = [said]
+        if len(book_tag) > 0:
+            parts.append(book_tag)
+        if book_body_bytes > 0:
+            parts.append(ambient[:book_body_bytes])
+        response = np.concatenate(parts) if len(parts) > 1 else parts[0]
+        return response, said_len, prefix_mask_len, mask_spans
+
+    def _pack_prefix_bytes(self, text: str, ambient: np.ndarray, response_bytes: int,
+                           *, source_label: str | None = None) -> tuple[np.ndarray, int, int, list[tuple[int, int]]]:
+        """Pack speaker/tool identity prefix + utterance + book-resume marker + ambient tail.
+
+        Kept for backward compatibility; internal routing uses `_plan_prefix_pack` before
+        fetching exact `book_body_bytes` so zero storybook bytes are ever discarded.
+        """
+        plan = self._plan_prefix_pack(text, response_bytes, source_label=source_label)
+        return self._assemble_packed_response(plan, ambient)
 
     def _current_stumble_ratio(self) -> float:
         alif_st = getattr(self._engine_ref, 'alif_executive_state', None) if self._engine_ref is not None else None
@@ -1365,10 +1482,11 @@ class UnifiedWorldPort:
             if 'parent' not in self.presence_roster:
                 self.presence_roster['parent'] = dict(kind='parent', label=speaker, description='爸爸实时陪伴与对话')
                 self._roster_dirty_notice = self._format_roster_notice()
-            ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
-            response, said_len, env_prefix_len, env_mask_spans = self._pack_prefix_bytes(
-                raw_text, ambient, response_bytes, source_label=speaker,
-            )
+            pack_plan = self._plan_prefix_pack(raw_text, response_bytes, source_label=speaker)
+            ambient, heldout, info = self._take_passive_ambient(pack_plan['book_body_bytes'], holdout_bytes)
+            response, said_len, env_prefix_len, env_mask_spans = self._assemble_packed_response(pack_plan, ambient)
+            if len(ambient) > 0:
+                self._record_shared_page(ambient)
             self._record_shared_page(heldout)
             self._observe_gaze_object('parent', f'{speaker}：{raw_text}'.encode('utf-8'))
             self.active_interlocutor = 'parent'
@@ -1411,6 +1529,7 @@ class UnifiedWorldPort:
                     active_floor=self.active_floor,
                     book_excerpt=clean_utf8_excerpt(bytes(self.shared_page_bytes), max_chars=220),
                     mother_bytes=said_len,
+                    book_body_bytes=int(len(ambient)),
                     envelope_prefix_bytes=env_prefix_len,
                     envelope_mask_spans=env_mask_spans,
                     mother_reply=delivered_text,
@@ -1526,22 +1645,19 @@ class UnifiedWorldPort:
         if explicit_target == 'book':
             query_bytes = explicit_payload.encode('utf-8') if explicit_payload else utterance_bytes
             query_clean = explicit_payload or child_clean
-            resp, cont, info = self._navigate_book(query_bytes, query_clean, response_bytes, holdout_bytes)
-            self._record_shared_page(resp)
+            tag_arr, env_prefix_len, book_body_bytes, env_mask_spans = self._plan_roster_prefix(response_bytes)
+            book_resp, cont, info = self._navigate_book(query_bytes, query_clean, book_body_bytes, holdout_bytes)
+            if len(book_resp) > 0:
+                self._record_shared_page(book_resp)
             self._record_shared_page(cont)
-            self._observe_gaze_object('book', bytes(resp[:256]))
+            self._observe_gaze_object('book', bytes(book_resp[:256]) if len(book_resp) > 0 else bytes(cont[:256]))
             self.active_floor = 'book'
             self.awaiting_reply_from = None
             self.spikes_since_mother += 1
             self.book_navigation_turns += 1
             self.ambient_fallback_turns += 1
-            env_prefix_len = 0
-            if self.envelope_tags and self._roster_dirty_notice:
-                tag = np.frombuffer((self._roster_dirty_notice + '\n').encode('utf-8'), dtype=np.uint8)
-                self._roster_dirty_notice = None
-                env_prefix_len = min(int(len(tag)), response_bytes)
-                resp = np.concatenate((tag, resp[:max(0, response_bytes - len(tag))]))
-            page_preview = clean_utf8_excerpt(bytes(resp[env_prefix_len:]), max_chars=240)
+            resp = np.concatenate((tag_arr, book_resp)) if env_prefix_len > 0 else book_resp
+            page_preview = clean_utf8_excerpt(bytes(book_resp), max_chars=240)
             return resp, cont, self._finalize_membrane_event(
                 dict(
                     info,
@@ -1550,7 +1666,9 @@ class UnifiedWorldPort:
                     speaker='book',
                     target_object_id='book',
                     navigation_response_bytes=int(len(resp)),
+                    book_body_bytes=int(len(book_resp)),
                     envelope_prefix_bytes=env_prefix_len,
+                    envelope_mask_spans=env_mask_spans,
                     explicit_target='book',
                     routing_reason='explicit_book',
                     active_floor=self.active_floor,
@@ -1613,10 +1731,11 @@ class UnifiedWorldPort:
             obj_kind, obj_name, obj_out = tool_hit
             src_label = f'工具:{obj_name}' if obj_kind == 'tool' else obj_name
             delivered_text = f'[{src_label}] {obj_out}'
-            ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
-            response, said_len, env_prefix_len, env_mask_spans = self._pack_prefix_bytes(
-                obj_out, ambient, response_bytes, source_label=src_label,
-            )
+            pack_plan = self._plan_prefix_pack(obj_out, response_bytes, source_label=src_label)
+            ambient, heldout, info = self._take_passive_ambient(pack_plan['book_body_bytes'], holdout_bytes)
+            response, said_len, env_prefix_len, env_mask_spans = self._assemble_packed_response(pack_plan, ambient)
+            if len(ambient) > 0:
+                self._record_shared_page(ambient)
             self._record_shared_page(heldout)
             if tool_obj_id is not None:
                 self._observe_gaze_object(tool_obj_id, delivered_text.encode('utf-8'))
@@ -1644,6 +1763,7 @@ class UnifiedWorldPort:
                     routing_reason=(('gaze_tool' if obj_kind == 'tool' else 'gaze_object') if via_gaze else ('explicit_tool' if obj_kind == 'tool' else 'explicit_object')),
                     active_floor=self.active_floor,
                     mother_bytes=said_len,
+                    book_body_bytes=int(len(ambient)),
                     envelope_prefix_bytes=env_prefix_len,
                     envelope_mask_spans=env_mask_spans,
                     mother_reply=delivered_text,
@@ -1671,7 +1791,10 @@ class UnifiedWorldPort:
         if explicit_target == 'parent' or vocal_parent_call or gaze_to_parent or (on_parent_floor and child_clean):
             parent_meta = self.presence_roster.get('parent') or {}
             parent_label = str(parent_meta.get('label') or '爸爸')
-            ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
+            tag_arr, env_prefix_len, book_body_bytes, env_mask_spans = self._plan_roster_prefix(response_bytes)
+            book_resp, heldout, info = self._take_passive_ambient(book_body_bytes, holdout_bytes)
+            if len(book_resp) > 0:
+                self._record_shared_page(book_resp)
             self._record_shared_page(heldout)
             if child_clean:
                 self._pending_tool_notes.append(f'孩子刚刚对{parent_label}说：「{child_clean[:96]}」')
@@ -1679,12 +1802,7 @@ class UnifiedWorldPort:
             self.active_floor = 'book'
             self.awaiting_reply_from = None
             self.spikes_since_mother += 1
-            env_prefix_len = 0
-            if self.envelope_tags and self._roster_dirty_notice:
-                tag = np.frombuffer((self._roster_dirty_notice + '\n').encode('utf-8'), dtype=np.uint8)
-                self._roster_dirty_notice = None
-                env_prefix_len = min(int(len(tag)), response_bytes)
-                ambient = np.concatenate((tag, ambient[:max(0, response_bytes - len(tag))]))
+            ambient = np.concatenate((tag_arr, book_resp)) if env_prefix_len > 0 else book_resp
             ch_name = 'reply_to_parent' if (on_parent_floor or self.active_interlocutor == 'parent') else 'call_parent'
             r_reason = (
                 'gaze_parent' if gaze_to_parent
@@ -1699,7 +1817,9 @@ class UnifiedWorldPort:
                     speaker=parent_label,
                     target_object_id='parent',
                     navigation_response_bytes=int(len(ambient)),
+                    book_body_bytes=int(len(book_resp)),
                     envelope_prefix_bytes=env_prefix_len,
+                    envelope_mask_spans=env_mask_spans,
                     explicit_target=explicit_target,
                     gaze_decision=gaze_decision,
                     routing_reason=r_reason,
@@ -1854,10 +1974,13 @@ class UnifiedWorldPort:
                     self.commit_pending_turn()
                     telemetry = getattr(self.caregiver, 'last_telemetry', None) or telemetry
                 api_usage = telemetry.get('api_usage') or {}
-                ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
-                self._record_shared_page(ambient)
+                tag_arr, env_prefix_len, book_body_bytes, env_mask_spans = self._plan_roster_prefix(response_bytes)
+                book_resp, heldout, info = self._take_passive_ambient(book_body_bytes, holdout_bytes)
+                if len(book_resp) > 0:
+                    self._record_shared_page(book_resp)
                 self._record_shared_page(heldout)
-                quiet_preview = clean_utf8_excerpt(bytes(ambient), max_chars=240)
+                ambient = np.concatenate((tag_arr, book_resp)) if env_prefix_len > 0 else book_resp
+                quiet_preview = clean_utf8_excerpt(bytes(book_resp), max_chars=240)
                 return ambient, heldout, self._finalize_membrane_event(
                     dict(
                         {k: v for k, v in info.items() if k != 'text_reply'},
@@ -1882,8 +2005,11 @@ class UnifiedWorldPort:
                         text_reply=quiet_preview,
                         mirror_excerpt=snapshot.stumble_excerpt if perspective_mode == 'mirror_visible' else '',
                         mirror_trigger_cause=snapshot.trigger_cause if perspective_mode == 'mirror_visible' else '',
+                        navigation_response_bytes=int(len(ambient)),
+                        book_body_bytes=int(len(book_resp)),
                         mother_bytes=0,
-                        envelope_prefix_bytes=0,
+                        envelope_prefix_bytes=env_prefix_len,
+                        envelope_mask_spans=env_mask_spans,
                         mother_reply='',
                         child_text=child_display,
                         caregiver_prompt_tokens=api_usage.get('prompt_tokens'),
@@ -1897,7 +2023,7 @@ class UnifiedWorldPort:
                     addressee_id='mengli',
                     is_action_consequence=False,
                     source_transitions=[dict(
-                        offset=0, speaker_id='book', addressee_id='mengli', mask_start=0, mask_end=0,
+                        offset=0, speaker_id='book', addressee_id='mengli', mask_start=0, mask_end=env_prefix_len,
                     )],
                 )
 
@@ -1914,29 +2040,40 @@ class UnifiedWorldPort:
                     self.recent_mother_openings.append(first_clause)
                     del self.recent_mother_openings[:-6]
 
-            # Case M2: Mother actively flips the storybook (`@翻书:<关键词>` -> HybridBookIndex!).
-            if mother_out == 'book' and mother_book_query:
-                ambient, heldout, info = self._navigate_book(
-                    mother_book_query.encode('utf-8'), mother_book_query, response_bytes, holdout_bytes,
-                )
-                self.mother_book_turns += 1
-                self.book_navigation_turns += 1
-            else:
-                # Talking to Mother NEVER triggers a hidden book jump unless Mother explicitly chose `@翻书:...`.
-                ambient, heldout, info = self._take_passive_ambient(response_bytes, holdout_bytes)
-
+            # Plan Mother's identity headers & spoken text FIRST so we consume ONLY the
+            # exact remaining `book_body_bytes` from the storybook (zero skipped book bytes!).
             if reply:
-                response, said_len, env_prefix_len, env_mask_spans = self._pack_prefix_bytes(
-                    reply, ambient, response_bytes, source_label='妈妈',
-                )
+                pack_plan = self._plan_prefix_pack(reply, response_bytes, source_label='妈妈')
+                book_body_bytes = int(pack_plan['book_body_bytes'])
+                if mother_out == 'book' and mother_book_query:
+                    ambient, heldout, info = self._navigate_book(
+                        mother_book_query.encode('utf-8'), mother_book_query, book_body_bytes, holdout_bytes,
+                    )
+                    self.mother_book_turns += 1
+                    self.book_navigation_turns += 1
+                else:
+                    # Talking to Mother NEVER triggers a hidden book jump unless Mother explicitly chose `@翻书:...`.
+                    ambient, heldout, info = self._take_passive_ambient(book_body_bytes, holdout_bytes)
+                response, said_len, env_prefix_len, env_mask_spans = self._assemble_packed_response(pack_plan, ambient)
                 self._observe_gaze_object('mother', f'妈妈：{reply}'.encode('utf-8'))
             else:
                 # Pure `@翻书:<kw>` without spoken text: deliver newly turned page cleanly!
-                response, said_len, env_prefix_len, env_mask_spans = ambient, 0, 0, []
+                tag_arr, env_prefix_len, book_body_bytes, env_mask_spans = self._plan_roster_prefix(response_bytes)
+                if mother_out == 'book' and mother_book_query:
+                    ambient, heldout, info = self._navigate_book(
+                        mother_book_query.encode('utf-8'), mother_book_query, book_body_bytes, holdout_bytes,
+                    )
+                    self.mother_book_turns += 1
+                    self.book_navigation_turns += 1
+                else:
+                    ambient, heldout, info = self._take_passive_ambient(book_body_bytes, holdout_bytes)
+                response = np.concatenate((tag_arr, ambient)) if env_prefix_len > 0 else ambient
+                said_len = 0
+            if len(ambient) > 0:
+                self._record_shared_page(ambient)
             self._record_shared_page(heldout)
             if mother_out == 'book':
-                self._record_shared_page(ambient)
-                self._observe_gaze_object('book', bytes(ambient[:256]))
+                self._observe_gaze_object('book', bytes(ambient[:256]) if len(ambient) > 0 else bytes(heldout[:256]))
 
             transcript_reply = (
                 f'@翻书:{mother_book_query} {reply}'.strip() if mother_out == 'book'
@@ -1990,7 +2127,7 @@ class UnifiedWorldPort:
                 )
             else:
                 mother_trans = [dict(
-                    offset=0, speaker_id='book', addressee_id='mengli', mask_start=0, mask_end=0,
+                    offset=0, speaker_id='book', addressee_id='mengli', mask_start=0, mask_end=env_prefix_len,
                 )]
             if mother_out == 'parent':
                 mother_action_caused = False
@@ -2021,6 +2158,8 @@ class UnifiedWorldPort:
                     text_reply=(turned_preview if (mother_out == 'book' and not reply) else ''),
                     mirror_excerpt=snapshot.stumble_excerpt if perspective_mode == 'mirror_visible' else '',
                     mirror_trigger_cause=snapshot.trigger_cause if perspective_mode == 'mirror_visible' else '',
+                    navigation_response_bytes=int(len(response)),
+                    book_body_bytes=int(len(ambient)),
                     mother_bytes=said_len,
                     envelope_prefix_bytes=env_prefix_len,
                     envelope_mask_spans=env_mask_spans,
@@ -2045,13 +2184,14 @@ class UnifiedWorldPort:
         #   - `out == 'none'` + speech -> `read_aloud_solo` (self-talk while reading calmly; ZERO jump!)
         #   - silent                   -> `quiet_reading` (calm sequential reading).
         is_navigation = bool(child_clean) and (send_target is None or send_target == 'book')
+        tag_arr, env_prefix_len, book_body_bytes, env_mask_spans = self._plan_roster_prefix(response_bytes)
         if is_navigation:
-            resp, cont, info = self._navigate_book(utterance_bytes, child_clean, response_bytes, holdout_bytes)
+            book_resp, cont, info = self._navigate_book(utterance_bytes, child_clean, book_body_bytes, holdout_bytes)
             self.book_navigation_turns += 1
             channel = 'book_navigation'
             routing_reason = 'gaze_book_search' if (send_target == 'book' or gaze_target == 'book') else 'book_floor_navigation'
         else:
-            resp, cont, info = self._take_passive_ambient(response_bytes, holdout_bytes)
+            book_resp, cont, info = self._take_passive_ambient(book_body_bytes, holdout_bytes)
             self.quiet_spikes_since_mother += 1
             is_read_aloud = bool(child_vocal and send_target == 'none')
             channel = ('read_aloud_solo' if is_read_aloud else 'storybook_spike_fallback')
@@ -2059,27 +2199,23 @@ class UnifiedWorldPort:
                 'dual_read_aloud_solo' if is_read_aloud
                 else ('gaze_book_read' if (observe_target == 'book' or gaze_target == 'book') else 'quiet_book_continue')
             )
-        self._record_shared_page(resp)
+        if len(book_resp) > 0:
+            self._record_shared_page(book_resp)
         self._record_shared_page(cont)
-        self._observe_gaze_object('book', bytes(resp[:256]))
+        self._observe_gaze_object('book', bytes(book_resp[:256]) if len(book_resp) > 0 else bytes(cont[:256]))
         self.spikes_since_mother += 1
         self.active_floor = 'book'
         self.awaiting_reply_from = None
         self.consecutive_social_turns = 0
         self.ambient_fallback_turns += 1
-        env_prefix_len = 0
-        if self.envelope_tags and self._roster_dirty_notice:
-            tag = np.frombuffer((self._roster_dirty_notice + '\n').encode('utf-8'), dtype=np.uint8)
-            self._roster_dirty_notice = None
-            env_prefix_len = min(int(len(tag)), response_bytes)
-            resp = np.concatenate((tag, resp[:max(0, response_bytes - len(tag))]))
+        resp = np.concatenate((tag_arr, book_resp)) if env_prefix_len > 0 else book_resp
         gaze_chose_book = (
             (observe_target == 'book' or gaze_target == 'book')
             and isinstance(gaze_decision, dict)
             and bool(gaze_decision.get('sampled', False))
         )
         book_action_caused = bool(is_navigation or gaze_chose_book)
-        page_preview = clean_utf8_excerpt(bytes(resp[env_prefix_len:]), max_chars=240)
+        page_preview = clean_utf8_excerpt(bytes(book_resp), max_chars=240)
         return resp, cont, self._finalize_membrane_event(
             dict(
                 info,
@@ -2091,7 +2227,9 @@ class UnifiedWorldPort:
                 observe_target_id=(observe_target if observe_target is not None else 'book'),
                 interaction_mode=interaction_mode,
                 navigation_response_bytes=int(len(resp)),
+                book_body_bytes=int(len(book_resp)),
                 envelope_prefix_bytes=env_prefix_len,
+                envelope_mask_spans=env_mask_spans,
                 routing_reason=routing_reason,
                 gaze_decision=gaze_decision,
                 active_floor=self.active_floor,

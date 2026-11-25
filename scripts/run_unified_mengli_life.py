@@ -120,6 +120,10 @@ def main():
     parser.add_argument('--max-mother-turns', type=int, default=0,
                         help='If >0, stop cleanly once this many DSH Mother turns complete (great for smoke tests)')
     parser.add_argument('--eval-every-seconds', type=float, default=0.0)
+    parser.add_argument('--eval-paired-chunk-bytes', type=int, default=640,
+                        help='Optional paired FLUX chunk size alongside historical 128B anchor (0=off)')
+    parser.add_argument('--eval-paired-every', type=int, default=2,
+                        help='Run paired chunk-size FLUX probe at t=0 and every N periodic probes (default 2)')
     parser.add_argument('--save-every-seconds', type=float, default=300.0)
 
     # Existing DSH Mother Umwelt bridge & Membrane scheduling (NOT a second Mother).
@@ -377,9 +381,14 @@ def main():
     recent_self_cons_gs: list[float] = []
     recent_mother_nlls: list[float] = []
 
-    def _run_flux_probe(life_s: float) -> dict:
+    flux_probe_count = 0
+
+    def _run_flux_probe(life_s: float, *, force_paired: bool = False) -> dict:
+        nonlocal flux_probe_count
         from scripts.ib_local.wood_policy_measurement import segments, score
         from scripts.run_native_causal_use_value import evaluate as eval_facts
+        probe_idx = flux_probe_count
+        flux_probe_count += 1
         hnet = getattr(engine.model.body, 'hnet_chunker', None)
         saved_hnet = None
         if hnet is not None:
@@ -405,12 +414,26 @@ def main():
             )
             cn_segs = segments(cn_spec)
         facts_payload = _load_or_lock_eval_facts(engine, work)
+        paired_chunk_bytes = int(args.eval_paired_chunk_bytes)
+        run_paired = (
+            paired_chunk_bytes > 0
+            and paired_chunk_bytes != 128
+            and (force_paired or probe_idx == 0 or (probe_idx % max(1, int(args.eval_paired_every)) == 0))
+        )
+        paired_fresh = None
+        paired_classic = None
+        paired_cn = None
         try:
             with torch.no_grad():
-                fresh_res = score(engine, fresh_segs)
-                classic_res = score(engine, classic_segs)
+                fresh_res = score(engine, fresh_segs, chunk_size=128)
+                classic_res = score(engine, classic_segs, chunk_size=128)
                 if cn_segs is not None:
-                    cn_res = score(engine, cn_segs)
+                    cn_res = score(engine, cn_segs, chunk_size=128)
+                if run_paired:
+                    paired_fresh = score(engine, fresh_segs, chunk_size=paired_chunk_bytes)
+                    paired_classic = score(engine, classic_segs, chunk_size=paired_chunk_bytes)
+                    if cn_segs is not None:
+                        paired_cn = score(engine, cn_segs, chunk_size=paired_chunk_bytes)
                 facts_res = eval_facts(engine, facts_payload)
         finally:
             del facts_payload
@@ -425,18 +448,37 @@ def main():
             hnet.mean_boundary_rate_ema.fill_(saved_hnet[4])
             hnet.calibrated.fill_(saved_hnet[5])
         comb = 0.5 * (fresh_res['mean_nll'] + classic_res['mean_nll'])
+        paired_info = None
+        if paired_fresh is not None and paired_classic is not None:
+            p_comb = 0.5 * (paired_fresh['mean_nll'] + paired_classic['mean_nll'])
+            paired_info = dict(
+                chunk_bytes=int(paired_fresh.get('chunk_size', paired_chunk_bytes)),
+                combined_16384_nll=float(p_comb),
+                fresh_8192_nll=float(paired_fresh['mean_nll']),
+                classic_8192_nll=float(paired_classic['mean_nll']),
+                chinese_8192_nll=(None if paired_cn is None else float(paired_cn['mean_nll'])),
+                delta_en_vs_128=float(p_comb - comb),
+                delta_cn_vs_128=(
+                    None if (paired_cn is None or cn_res is None)
+                    else float(paired_cn['mean_nll'] - cn_res['mean_nll'])
+                ),
+            )
+        pb_diag = psb.diagnostics(engine) if psb.enabled(engine) else None
         pt = dict(
             life_seconds=round(life_s, 2),
             run_external_bytes=int(engine.alif_executive_state['total_external_bytes']) - start_ext_bytes,
             cycle=int(cycle),
+            chunk_bytes=128,
             combined_16384_nll=float(comb),
             fresh_8192_nll=float(fresh_res['mean_nll']),
             classic_8192_nll=float(classic_res['mean_nll']),
             chinese_8192_nll=(None if cn_res is None else float(cn_res['mean_nll'])),
+            paired_chunk=paired_info,
             fresh_64_facts_score=float(facts_res['mean_score']),
             fresh_64_facts_mse=float(facts_res['mean_mse']),
             mother_turns=int(port.mother_turns),
             provider_hit_rate=port.telemetry_summary().get('provider_hit_rate'),
+            phase_boltzmann=pb_diag,
         )
         gp_diag = gaze_mod.diagnostics(engine) if gaze_mod.enabled(engine) else None
         owm_ema = (gp_diag.get('other_world_model') if isinstance(gp_diag, dict) else None) or {}
@@ -445,9 +487,19 @@ def main():
         pt['recent_self_cons_g'] = (round(float(np.mean(recent_self_cons_gs)), 5) if recent_self_cons_gs else None)
         pt['recent_mother_nll'] = (round(float(np.mean(recent_mother_nlls)), 4) if recent_mother_nlls else None)
         cn_str = '' if cn_res is None else f' cn_8KB={cn_res["mean_nll"]:.4f}'
+        paired_str = ''
+        if paired_info is not None:
+            p_cn_str = (
+                f' cn={paired_info["chinese_8192_nll"]:.4f}({paired_info["delta_cn_vs_128"]:+.4f})'
+                if paired_info['chinese_8192_nll'] is not None else ''
+            )
+            paired_str = (
+                f' | c{paired_info["chunk_bytes"]}: en={paired_info["combined_16384_nll"]:.4f}'
+                f'({paired_info["delta_en_vs_128"]:+.4f}){p_cn_str}'
+            )
         print(f'  [FLUX @ {life_s:6.1f}s | +{pt["run_external_bytes"]:6d}B | mother={port.mother_turns}] '
               f'16KB_NLL={comb:.6f}{cn_str} 64facts={pt["fresh_64_facts_score"]:.6f} '
-              f'mse={pt["fresh_64_facts_mse"]:.4f} hit={pt["provider_hit_rate"]}', flush=True)
+              f'mse={pt["fresh_64_facts_mse"]:.4f} hit={pt["provider_hit_rate"]}{paired_str}', flush=True)
         m_owm = owm_ema.get('mother') or {}
         b_owm = owm_ema.get('book') or {}
         if pt['recent_self_speech_nll'] is not None or m_owm or b_owm:
@@ -712,6 +764,7 @@ def main():
                         row,
                         gaze_credit=(commit_info.get('gaze') if isinstance(commit_info, dict) else None),
                         learning_trace=learning_trace,
+                        phase_boltzmann=(psb.diagnostics(engine) if psb.enabled(engine) else None),
                         cycle=int(cycle),
                         elapsed_seconds=round(_life_elapsed(), 3),
                         spoke=bool(row.get('self_bytes', 0)),

@@ -694,6 +694,7 @@ def calm_sensory_piece(engine, directions) -> dict:
             **anchor_diag,
             **alif_diag,
         ),
+        phase_boltzmann=(psb.diagnostics(engine) if psb.enabled(engine) else None),
     )
     st['last_event'] = copy.deepcopy(event['alif_executive'])
     return event

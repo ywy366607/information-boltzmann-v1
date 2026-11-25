@@ -52,13 +52,15 @@ def segments(manifest):
 
 
 @torch.no_grad()
-def score(engine, material):
+def score(engine, material, *, chunk_size: int | None = None):
     versions=tuple(p._version for p in engine.model.parameters())
     recurrent=tensor_digest(engine.recurrent)
     before=(int(engine.model.memory.clock),int(engine.table.history),engine.model._causal_archive.db.total_changes)
     rng=torch.get_rng_state();cuda=torch.cuda.get_rng_state_all()
     q=getattr(engine.model,'_question_context',None)
     engine.model._question_context=None
+    req_chunk = 128 if chunk_size is None else max(1, int(chunk_size))
+    chunk=min(req_chunk,engine.model.max_chunk)
     means=[]
     try:
         for raw in material:
@@ -67,7 +69,6 @@ def score(engine, material):
             targets=torch.as_tensor(raw[1:].astype(np.int64),device=engine.device)[None]
             state=engine.recurrent.detach().clone()
             values=[]
-            chunk=min(128,engine.model.max_chunk)
             for start in range(0,len(raw)-1,chunk):
                 end=min(start+chunk,len(raw)-1)
                 logits,state,_=engine.model.predict(ids[:,start:end],state,logp[:,start:end])
@@ -80,7 +81,7 @@ def score(engine, material):
     assert before==(int(engine.model.memory.clock),int(engine.table.history),engine.model._causal_archive.db.total_changes)
     assert torch.equal(rng,torch.get_rng_state())
     assert all(torch.equal(x,y) for x,y in zip(cuda,torch.cuda.get_rng_state_all()))
-    return dict(mean_nll=float(np.mean(means)),segment_nll=means)
+    return dict(mean_nll=float(np.mean(means)),segment_nll=means,chunk_size=int(chunk))
 
 
 @contextmanager

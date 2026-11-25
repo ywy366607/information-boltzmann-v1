@@ -1,0 +1,2001 @@
+{
+  "schema": 1,
+  "source": {
+    "path": "D:\\mengli-umwelt-v13-clean-20261125\\body\\last.pt.gz",
+    "sha256": "fd93ba0c2d0aee5a2a084ee30a516f73200ad04c04e2ec5f137961e0ccba7370",
+    "cycle": 6815
+  },
+  "output": {
+    "checkpoint": "D:\\mengli-umwelt-v14-repaired-20261125\\body\\last.pt.gz",
+    "sha256": "cb5f421dc22e429209766cae37f9497d8548dde65e588d96986c3ce89e184c65",
+    "cycle": 7278
+  },
+  "config": {
+    "schema": 1,
+    "branch_id": "mengli-umwelt-v14e-repaired-20261125",
+    "mirror_version": "v2_evidence_compact",
+    "mother_enabled": true,
+    "mother_harness_url": "http://127.0.0.1:8902",
+    "mother_cooldown": 3,
+    "mother_max_gap": 8,
+    "mirror_ratio": 0.7,
+    "chinese_corpus": "D:\\information-boltzmann-v1\\data\\cgb_chinese_stories_20261124\\train.bin",
+    "chinese_mix_ratio": 0.45,
+    "dialogue_demo_corpus": "D:\\information-boltzmann-v1\\data\\cgb_bilingual_dialogue_20261124\\dialogues.jsonl",
+    "dialogue_demo_ratio": 0.12,
+    "restored_prior_port_state": true
+  },
+  "timing": {
+    "life_seconds": 7477.518,
+    "save_seconds": 5.295,
+    "peak_vram_gib": 1.6627,
+    "run_external_bytes": 904320,
+    "bytes_per_second": 120.94,
+    "run_calm_pieces": 1047,
+    "run_executive_spikes": 463,
+    "mean_calm_seconds": 1.2616,
+    "mean_exec_seconds": 13.2196
+  },
+  "unified_port": {
+    "ambient_reads": 7954,
+    "sidecar_reads": 3257,
+    "spike_turns": 4020,
+    "mother_turns": 1398,
+    "mother_responsive_turns": 1253,
+    "mother_proactive_turns": 134,
+    "book_navigation_turns": 613,
+    "explicit_addressed_turns": 0,
+    "mirror_visible_turns": 978,
+    "book_only_turns": 420,
+    "parent_turns": 0,
+    "tool_turns": 0,
+    "ambient_fallback_turns": 1449,
+    "self_evolution_turns": 1171,
+    "inner_monologue_turns": 937,
+    "mother_quiet_turns": 11,
+    "mother_book_turns": 7,
+    "mother_present": true,
+    "active_floor": "book",
+    "last_book_source": "chinese_storybook",
+    "active_interlocutor": "mother",
+    "awaiting_reply_from": null,
+    "turns_since_name_call": 1390,
+    "care_stage": "reflective_inquiry",
+    "care_plan_version": 61,
+    "stage_transitions": [
+      {
+        "turn": 4,
+        "kind": "mother_autonomous_reflection",
+        "stage": "infant_direct_modeling",
+        "version": 2
+      },
+      {
+        "turn": 11,
+        "kind": "developmental_transition",
+        "from_stage": "infant_direct_modeling",
+        "to_stage": "emerging_scaffolded",
+        "version": 3
+      },
+      {
+        "turn": 25,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 4
+      },
+      {
+        "turn": 30,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "infant_direct_modeling",
+        "version": 5
+      },
+      {
+        "turn": 41,
+        "kind": "developmental_transition",
+        "from_stage": "infant_direct_modeling",
+        "to_stage": "emerging_scaffolded",
+        "version": 6
+      },
+      {
+        "turn": 41,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 7
+      },
+      {
+        "turn": 48,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "infant_direct_modeling",
+        "version": 8
+      },
+      {
+        "turn": 73,
+        "kind": "mother_autonomous_reflection",
+        "stage": "infant_direct_modeling",
+        "version": 9
+      },
+      {
+        "turn": 81,
+        "kind": "developmental_transition",
+        "from_stage": "infant_direct_modeling",
+        "to_stage": "emerging_scaffolded",
+        "version": 10
+      },
+      {
+        "turn": 91,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 11
+      },
+      {
+        "turn": 98,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "infant_direct_modeling",
+        "version": 12
+      },
+      {
+        "turn": 104,
+        "kind": "developmental_transition",
+        "from_stage": "infant_direct_modeling",
+        "to_stage": "emerging_scaffolded",
+        "version": 13
+      },
+      {
+        "turn": 110,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 14
+      },
+      {
+        "turn": 139,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 15
+      },
+      {
+        "turn": 145,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 16
+      },
+      {
+        "turn": 155,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 17
+      },
+      {
+        "turn": 217,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 18
+      },
+      {
+        "turn": 224,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 19
+      },
+      {
+        "turn": 252,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 20
+      },
+      {
+        "turn": 262,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 21
+      },
+      {
+        "turn": 266,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 22
+      },
+      {
+        "turn": 278,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 23
+      },
+      {
+        "turn": 310,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 24
+      },
+      {
+        "turn": 313,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 25
+      },
+      {
+        "turn": 339,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 26
+      },
+      {
+        "turn": 384,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 27
+      },
+      {
+        "turn": 389,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 28
+      },
+      {
+        "turn": 390,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 29
+      },
+      {
+        "turn": 415,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 30
+      },
+      {
+        "turn": 431,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 31
+      },
+      {
+        "turn": 447,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 32
+      },
+      {
+        "turn": 463,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 33
+      },
+      {
+        "turn": 526,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 34
+      },
+      {
+        "turn": 622,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 35
+      },
+      {
+        "turn": 638,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 36
+      },
+      {
+        "turn": 654,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 37
+      },
+      {
+        "turn": 686,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 38
+      },
+      {
+        "turn": 702,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 39
+      },
+      {
+        "turn": 750,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 40
+      },
+      {
+        "turn": 766,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 41
+      },
+      {
+        "turn": 862,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 42
+      },
+      {
+        "turn": 869,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 43
+      },
+      {
+        "turn": 878,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 44
+      },
+      {
+        "turn": 886,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 45
+      },
+      {
+        "turn": 916,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 46
+      },
+      {
+        "turn": 942,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 47
+      },
+      {
+        "turn": 958,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 48
+      },
+      {
+        "turn": 974,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 49
+      },
+      {
+        "turn": 975,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 50
+      },
+      {
+        "turn": 990,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 51
+      },
+      {
+        "turn": 1183,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 52
+      },
+      {
+        "turn": 1198,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 53
+      },
+      {
+        "turn": 1255,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 54
+      },
+      {
+        "turn": 1271,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 55
+      },
+      {
+        "turn": 1287,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 56
+      },
+      {
+        "turn": 1303,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 57
+      },
+      {
+        "turn": 1319,
+        "kind": "mother_autonomous_reflection",
+        "stage": "reflective_inquiry",
+        "version": 58
+      },
+      {
+        "turn": 1342,
+        "kind": "developmental_transition",
+        "from_stage": "reflective_inquiry",
+        "to_stage": "emerging_scaffolded",
+        "version": 59
+      },
+      {
+        "turn": 1367,
+        "kind": "mother_autonomous_reflection",
+        "stage": "emerging_scaffolded",
+        "version": 60
+      },
+      {
+        "turn": 1372,
+        "kind": "developmental_transition",
+        "from_stage": "emerging_scaffolded",
+        "to_stage": "reflective_inquiry",
+        "version": 61
+      }
+    ],
+    "gaze_pointer": {
+      "schema": 2,
+      "centered_target_v1": true,
+      "d_model": 256,
+      "d_gaze": 64,
+      "param_count": 115010,
+      "step_count": 3066,
+      "boundary_steps": 2829,
+      "target_to_action_norm": 15.750836,
+      "raw_fp_max_cos": 0.79475,
+      "rel_fp_max_cos": -0.95861,
+      "delta_unit_sep": 0.83979,
+      "baseline_g": -0.006686,
+      "mean_entropy": 1.0049,
+      "known_objects": [
+        "book",
+        "mother"
+      ],
+      "target_counts": {
+        "book": 1358,
+        "mother": 1349,
+        "none": 359
+      },
+      "target_g_ema": {
+        "book": -0.02342,
+        "mother": 0.00064,
+        "none": 0.0
+      },
+      "interaction_mode_counts": {
+        "quiet_reading": 199,
+        "co_reading_talk": 154,
+        "face_to_face_chat": 306,
+        "read_aloud_to_mother": 236,
+        "book_search": 253,
+        "call_book_and_pause": 250,
+        "self_talk_observing_mother": 180,
+        "quiet_self_evolution": 147,
+        "call_mother_and_pause": 109,
+        "read_aloud_solo": 210,
+        "look_at_mother": 51,
+        "inner_monologue": 212
+      },
+      "other_world_model": {},
+      "last_decision": {
+        "target_id": "mother",
+        "send_target": "mother",
+        "observe_target": "mother",
+        "interaction_mode": "face_to_face_chat",
+        "probs": {
+          "book": 0.1739,
+          "mother": 0.5354,
+          "none": 0.2907
+        },
+        "send_probs": {
+          "book": 0.2984,
+          "mother": 0.414,
+          "none": 0.2876
+        },
+        "observe_probs": {
+          "book": 0.1739,
+          "mother": 0.5354,
+          "none": 0.2907
+        },
+        "habit_logits": {
+          "book": -0.438,
+          "mother": 0.6866,
+          "none": 0.0761
+        },
+        "send_habit_logits": {
+          "book": -0.1699,
+          "mother": 0.1591,
+          "none": -0.2059
+        },
+        "causal_values": {
+          "book": -0.28285,
+          "mother": -0.28422
+        },
+        "observe_causal_values": {
+          "book": -0.28347,
+          "mother": -0.28351
+        },
+        "null_causal_value": -0.28362,
+        "observe_causal_prior": {
+          "book": 0.0001,
+          "mother": 0.0,
+          "none": -0.0001
+        },
+        "entropy": 1.0411,
+        "num_candidates": 2,
+        "sampled": true,
+        "dual_channel": true,
+        "prior_status": "evaluated"
+      }
+    },
+    "summary_version": 1,
+    "provider_hit_rate": 0.997361358987173,
+    "usage_totals": {
+      "reply_usage": {
+        "prompt_tokens": 183339832,
+        "completion_tokens": 58591,
+        "cache_hit_tokens": 182856064,
+        "cache_miss_tokens": 483768,
+        "total_tokens": 183398423
+      },
+      "summary_usage": null,
+      "source_counts": {
+        "api": 1246,
+        "local": 9,
+        "shared": 4
+      },
+      "api_calls": 1246,
+      "failures": 0
+    }
+  },
+  "hnet": {
+    "schema": 1,
+    "enc_layers": 4,
+    "dec_layers": 4,
+    "target_ratio": 4.0,
+    "ratio_loss_weight": 0.25,
+    "min_seq_len": 1,
+    "router_scale": 6.0,
+    "router_thresh": 0.026599057018756866,
+    "calibrated": true,
+    "calls": 53777,
+    "last_boundary_rate": 0.25524476170539856,
+    "last_compression_ratio": 3.9178080558776855,
+    "mean_boundary_rate_ema": 0.2825738191604614,
+    "effective_compression_ema": 3.538898270798907,
+    "last_ratio_loss": 1.0071475505828857,
+    "residual_weight_rms": 0.03405960649251938,
+    "wiener_mean_gate": 0.04030686989426613
+  },
+  "flux_trajectory": [
+    {
+      "life_seconds": 0.0,
+      "run_external_bytes": 0,
+      "cycle": 6815,
+      "combined_16384_nll": 1.6151463966816664,
+      "fresh_8192_nll": 1.6532033327966928,
+      "classic_8192_nll": 1.57708946056664,
+      "chinese_8192_nll": 1.2492565112188458,
+      "fresh_64_facts_score": -0.38254180073272437,
+      "fresh_64_facts_mse": 0.170203322020825,
+      "mother_turns": 1239,
+      "provider_hit_rate": 0.9977193057350063,
+      "other_world_model": {},
+      "recent_self_speech_nll": null,
+      "recent_self_cons_g": null,
+      "recent_mother_nll": null
+    },
+    {
+      "life_seconds": 1806.07,
+      "run_external_bytes": 202880,
+      "cycle": 6927,
+      "combined_16384_nll": 1.5933275958523154,
+      "fresh_8192_nll": 1.6391623374074697,
+      "classic_8192_nll": 1.547492854297161,
+      "chinese_8192_nll": 1.2351021291688085,
+      "fresh_64_facts_score": -0.39434514357708395,
+      "fresh_64_facts_mse": 0.17187256884062663,
+      "mother_turns": 1291,
+      "provider_hit_rate": 0.9975983453620889,
+      "other_world_model": {},
+      "recent_self_speech_nll": 2.0483,
+      "recent_self_cons_g": -0.0,
+      "recent_mother_nll": 1.6174
+    },
+    {
+      "life_seconds": 3603.56,
+      "run_external_bytes": 437120,
+      "cycle": 7046,
+      "combined_16384_nll": 1.5876418594270945,
+      "fresh_8192_nll": 1.6260230150073767,
+      "classic_8192_nll": 1.5492607038468122,
+      "chinese_8192_nll": 1.2184144984930754,
+      "fresh_64_facts_score": -0.377147092949599,
+      "fresh_64_facts_mse": 0.16398591216420755,
+      "mother_turns": 1323,
+      "provider_hit_rate": 0.9975178087908756,
+      "other_world_model": {},
+      "recent_self_speech_nll": 1.7912,
+      "recent_self_cons_g": 0.0,
+      "recent_mother_nll": 1.5641
+    },
+    {
+      "life_seconds": 5401.18,
+      "run_external_bytes": 657600,
+      "cycle": 7158,
+      "combined_16384_nll": 1.6070495145395398,
+      "fresh_8192_nll": 1.6605432126671076,
+      "classic_8192_nll": 1.553555816411972,
+      "chinese_8192_nll": 1.2087855506688356,
+      "fresh_64_facts_score": -0.3734079774003476,
+      "fresh_64_facts_mse": 0.16221554263029248,
+      "mother_turns": 1360,
+      "provider_hit_rate": 0.9974397301243253,
+      "other_world_model": {},
+      "recent_self_speech_nll": 1.9733,
+      "recent_self_cons_g": 0.0,
+      "recent_mother_nll": 1.5229
+    },
+    {
+      "life_seconds": 7200.92,
+      "run_external_bytes": 880320,
+      "cycle": 7267,
+      "combined_16384_nll": 1.5842088358476758,
+      "fresh_8192_nll": 1.6207549460232258,
+      "classic_8192_nll": 1.5476627256721258,
+      "chinese_8192_nll": 1.2219528844580054,
+      "fresh_64_facts_score": -0.3625547580886632,
+      "fresh_64_facts_mse": 0.1562423453433439,
+      "mother_turns": 1392,
+      "provider_hit_rate": 0.997366273797741,
+      "other_world_model": {},
+      "recent_self_speech_nll": 1.8606,
+      "recent_self_cons_g": -0.0,
+      "recent_mother_nll": 1.5391
+    }
+  ],
+  "dialogue_samples": [
+    {
+      "cycle": 7218,
+      "life_seconds": 6267.25,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 77,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 77,
+          "mask_end": 86
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "emerging_scaffolded",
+      "care_plan_version": 59,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "",
+      "child_text": "i. Eds are show as rebber of people who",
+      "reply_text": "\"People\"—I caught people in the middle of all that. Who are they?",
+      "metal_g": 0.001024393830448389,
+      "cache_hit_tokens": 19584,
+      "cache_miss_tokens": 160,
+      "turn_hit_rate": 0.9918962722852512,
+      "provider_hit_rate": 0.9974108622882634,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7220,
+      "life_seconds": 6293.29,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 107,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 107,
+          "mask_end": 116
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "emerging_scaffolded",
+      "care_plan_version": 60,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "Figure 1, world stocks-to-use ratios for wheat and coarse grains",
+      "child_text": "7. I-5r用看到",
+      "reply_text": "7 和 I-5 这些数字又冒出来了，看得有点乱吧。不读这页了，咱们松口气。",
+      "metal_g": 0.012702033389359713,
+      "cache_hit_tokens": 19712,
+      "cache_miss_tokens": 289,
+      "turn_hit_rate": 0.9855507224638768,
+      "provider_hit_rate": 0.9974095635377991,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7223,
+      "life_seconds": 6341.32,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 89,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 89,
+          "mask_end": 98
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "emerging_scaffolded",
+      "care_plan_version": 60,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "的发型做标记。他今天晚些时候要去美容师那里",
+      "child_text": "worket tos concepts don't place is corrinci",
+      "reply_text": "\"Concepts\"—a nice big word there. You're reaching into grown-up language now.",
+      "metal_g": -0.005026410333812237,
+      "cache_hit_tokens": 19968,
+      "cache_miss_tokens": 196,
+      "turn_hit_rate": 0.9902797064074589,
+      "provider_hit_rate": 0.9974087765032987,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7224,
+      "life_seconds": 6365.51,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 88,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 88,
+          "mask_end": 97
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "emerging_scaffolded",
+      "care_plan_version": 60,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "珍妮。她当时三岁。 一天晚上，当珍妮躺在床上",
+      "child_text": "克e’re winking on wi",
+      "reply_text": "珍妮三岁，躺在床上呢。这页安安静静的，正合适夜里读。",
+      "metal_g": -0.005158021114766598,
+      "cache_hit_tokens": 20096,
+      "cache_miss_tokens": 213,
+      "turn_hit_rate": 0.9895120389974889,
+      "provider_hit_rate": 0.9974078986454148,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7225,
+      "life_seconds": 6395.1,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 100,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 100,
+          "mask_end": 109
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "emerging_scaffolded",
+      "care_plan_version": 60,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "",
+      "child_text": "il morely. The gra",
+      "reply_text": "\"The\"—just that little word poked out. This page is full of country names, all business.",
+      "metal_g": 0.013483516871929169,
+      "cache_hit_tokens": 20224,
+      "cache_miss_tokens": 188,
+      "turn_hit_rate": 0.9907897315304722,
+      "provider_hit_rate": 0.9974071592738575,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7228,
+      "life_seconds": 6446.48,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 97,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 97,
+          "mask_end": 106
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "emerging_scaffolded",
+      "care_plan_version": 60,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "体贴男孩想要骑自行车。他穿上鞋子，拉上夹克",
+      "child_text": "。 有一天，为她很小心把这样了眼睛，继",
+      "reply_text": "有一天，为她很小心……这句妈妈听着，是有人在小心照顾谁吗？",
+      "metal_g": 0.01070136297494173,
+      "cache_hit_tokens": 20352,
+      "cache_miss_tokens": 234,
+      "turn_hit_rate": 0.9886330515884582,
+      "provider_hit_rate": 0.9974061707994034,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": true
+    },
+    {
+      "cycle": 7229,
+      "life_seconds": 6463.62,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 100,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 100,
+          "mask_end": 109
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "体贴男孩想要骑自行车。他穿上鞋子，拉上夹克",
+      "child_text": "rpend Riters Europericades Creasons producti",
+      "reply_text": "\"Euro—\" like Europe again. And \"product\"—you're circling the big grown-up words today.",
+      "metal_g": -0.0034576943144202232,
+      "cache_hit_tokens": 20480,
+      "cache_miss_tokens": 401,
+      "turn_hit_rate": 0.9807959388918155,
+      "provider_hit_rate": 0.9974042729231775,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7230,
+      "life_seconds": 6484.29,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 78,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 78,
+          "mask_end": 87
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "",
+      "child_text": "Advannual recovers the are tr",
+      "reply_text": "\"Recovers\"—there's a hopeful word. Something getting better again.",
+      "metal_g": -0.010688174981623888,
+      "cache_hit_tokens": 20736,
+      "cache_miss_tokens": 213,
+      "turn_hit_rate": 0.9898324502362881,
+      "provider_hit_rate": 0.9974034050528355,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7231,
+      "life_seconds": 6505.57,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 118,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 118,
+          "mask_end": 127
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "有所不同是可以的，即使某人不喜欢同一个对象",
+      "child_text": "。他认",
+      "reply_text": "他认——是想说他认出了什么吗？这页的话挺好的，喜欢不一样的东西也没关系。",
+      "metal_g": -0.0029626088216900826,
+      "cache_hit_tokens": 20864,
+      "cache_miss_tokens": 231,
+      "turn_hit_rate": 0.9890495378051671,
+      "provider_hit_rate": 0.997402440983893,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7235,
+      "life_seconds": 6566.57,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 105,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 105,
+          "mask_end": 114
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "babble",
+      "mirror_excerpt": "拉的CEO马斯克一年的收入是普能员工的4万多倍",
+      "child_text": "r",
+      "reply_text": "就一个 \"r\" 呢，妈妈听到了。这页讲大老板挣多少钱，跟咱们关系不大。",
+      "metal_g": 0.006451462395489216,
+      "cache_hit_tokens": 20992,
+      "cache_miss_tokens": 216,
+      "turn_hit_rate": 0.989815164089023,
+      "provider_hit_rate": 0.9974015607942446,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7241,
+      "life_seconds": 6666.91,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 127,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 127,
+          "mask_end": 136
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "",
+      "child_text": "弃m Survive Nothat most of the EPA possibili",
+      "reply_text": "A bird, and something about surviving—you mixed both languages together there. Birds keep coming back to you today.",
+      "metal_g": -0.006354332668706775,
+      "cache_hit_tokens": 21120,
+      "cache_miss_tokens": 214,
+      "turn_hit_rate": 0.9899690634667667,
+      "provider_hit_rate": 0.997400693538905,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7242,
+      "life_seconds": 6714.5,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 103,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 103,
+          "mask_end": 112
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "24 is only 16 permutations. If you subtract 1111 and 2222 you ar",
+      "child_text": "了，还了",
+      "reply_text": "了，还了——这样短短地说也挺好。这页全是数字，看得眼睛都累了。",
+      "metal_g": -0.0006647054105997086,
+      "cache_hit_tokens": 21248,
+      "cache_miss_tokens": 243,
+      "turn_hit_rate": 0.9886929412312131,
+      "provider_hit_rate": 0.9973996701243815,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7243,
+      "life_seconds": 6747.48,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 73,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 73,
+          "mask_end": 82
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "掘工具。那是一把小铲子。蒂姆在泥土里挖啊",
+      "child_text": "在花",
+      "reply_text": "在花——蒂姆在花旁边挖呢，拿着那把小铲子。",
+      "metal_g": -0.005112078040838242,
+      "cache_hit_tokens": 21376,
+      "cache_miss_tokens": 249,
+      "turn_hit_rate": 0.988485549132948,
+      "provider_hit_rate": 0.9973986160477925,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7247,
+      "life_seconds": 6818.37,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 91,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 91,
+          "mask_end": 100
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "babble",
+      "mirror_excerpt": "欢游乐设施，所以她拍着手说：“耶！我们走",
+      "child_text": "t正页咎拉",
+      "reply_text": "这一句有点散，妈妈没接住。不过听着像是在说要去哪里玩。",
+      "metal_g": -0.00031499285250902176,
+      "cache_hit_tokens": 21632,
+      "cache_miss_tokens": 138,
+      "turn_hit_rate": 0.9936610013780431,
+      "provider_hit_rate": 0.997398171171988,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7248,
+      "life_seconds": 6835.15,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 78,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 78,
+          "mask_end": 87
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "",
+      "child_text": "hilt you have to droput and t",
+      "reply_text": "\"You have to\"—that's a full little phrase. What do you have to do?",
+      "metal_g": 0.006456760689616203,
+      "cache_hit_tokens": 21632,
+      "cache_miss_tokens": 211,
+      "turn_hit_rate": 0.9903401547406492,
+      "provider_hit_rate": 0.9973973283634637,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7249,
+      "life_seconds": 6852.45,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 108,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 108,
+          "mask_end": 117
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "孔雀！孔雀的羽毛颜色各异，它走来走去，炫耀",
+      "child_text": "change the Rossi Mostemantly c",
+      "reply_text": "\"Change\"—good word. And there's a peacock on that page, walking around showing off its feathers.",
+      "metal_g": -0.0031176955671980977,
+      "cache_hit_tokens": 21760,
+      "cache_miss_tokens": 254,
+      "turn_hit_rate": 0.9884618878895248,
+      "provider_hit_rate": 0.9973962531451965,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7250,
+      "life_seconds": 6880.76,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 106,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 106,
+          "mask_end": 115
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "babble",
+      "mirror_excerpt": "ron (iron deficiency). - Iron: 60-170 mcg/dL TIBC : 240-450 mcg/",
+      "child_text": "i",
+      "reply_text": "又是数字和化验单，真不是好念的一页。咱们翻过去吧，换个有故事的。",
+      "metal_g": -0.012981250882148743,
+      "cache_hit_tokens": 22016,
+      "cache_miss_tokens": 199,
+      "turn_hit_rate": 0.9910420886788206,
+      "provider_hit_rate": 0.9973728244986249,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7255,
+      "life_seconds": 6968.45,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 101,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 101,
+          "mask_end": 110
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "",
+      "child_text": "出ton, we is a bit to result sp",
+      "reply_text": "\"Result\"—I caught result. \"Bit\"—that one too. Two little words out of the whole jumble.",
+      "metal_g": 0.006952946074306965,
+      "cache_hit_tokens": 22144,
+      "cache_miss_tokens": 144,
+      "turn_hit_rate": 0.9935391241923905,
+      "provider_hit_rate": 0.997372357614757,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7256,
+      "life_seconds": 6990.46,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 109,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 109,
+          "mask_end": 118
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "cury; Venus; Lava Flows; Helium; Saturn; Uranus; Neptune; Pluto;",
+      "child_text": "o still frimate I late; “Noes Alex’ F",
+      "reply_text": "\"Still\"—there it is, nice and steady. This page is all planets, Venus and Saturn out in the dark.",
+      "metal_g": 0.010272527113556862,
+      "cache_hit_tokens": 22272,
+      "cache_miss_tokens": 217,
+      "turn_hit_rate": 0.9903508381875583,
+      "provider_hit_rate": 0.9973714948994736,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7260,
+      "life_seconds": 7056.09,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 91,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 91,
+          "mask_end": 100
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "babble",
+      "mirror_excerpt": "Shaijumon M. Manikoth, Ashavani Kumar, and Saravanababu Murugesa",
+      "child_text": "发行真”她",
+      "reply_text": "发行真，她——这句妈妈接不太上。是有人在卖什么东西吗？",
+      "metal_g": 0.04517165292054415,
+      "cache_hit_tokens": 22400,
+      "cache_miss_tokens": 245,
+      "turn_hit_rate": 0.9891808346213292,
+      "provider_hit_rate": 0.9973704816794676,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7261,
+      "life_seconds": 7074.39,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 88,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 88,
+          "mask_end": 97
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "silent",
+      "mirror_excerpt": "",
+      "child_text": "",
+      "reply_text": "安安静静抬头看我呢。那就这样待一会儿，不说话也很好。",
+      "metal_g": -0.001786978216841817,
+      "cache_hit_tokens": 22528,
+      "cache_miss_tokens": 163,
+      "turn_hit_rate": 0.9928165351901636,
+      "provider_hit_rate": 0.9973699172622582,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7262,
+      "life_seconds": 7094.69,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 77,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 77,
+          "mask_end": 86
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "babble",
+      "mirror_excerpt": "mbs. NASA, ESA and the Hubble Heritage (STScI/AURA)-ESA/Hubble C",
+      "child_text": "ac",
+      "reply_text": "\"ac—\" 又是半截。NASA 那种词不好念，咱们跳过它。",
+      "metal_g": 0.0015078106662258506,
+      "cache_hit_tokens": 22656,
+      "cache_miss_tokens": 181,
+      "turn_hit_rate": 0.9920742654464246,
+      "provider_hit_rate": 0.9973692567772057,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7263,
+      "life_seconds": 7117.19,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 97,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 97,
+          "mask_end": 106
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "had their first symptoms earlier,\" said Mitch Earleywine, an ass",
+      "child_text": "发们一起",
+      "reply_text": "发们一起——是一起发生什么了吗？你说话有点快，妈妈慢慢跟。",
+      "metal_g": 0.03335059620440006,
+      "cache_hit_tokens": 22784,
+      "cache_miss_tokens": 192,
+      "turn_hit_rate": 0.9916434540389972,
+      "provider_hit_rate": 0.9973685383862918,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7264,
+      "life_seconds": 7135.82,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 91,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 91,
+          "mask_end": 100
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "枚导弹。它不像任何普通导弹。这种导弹很受欢",
+      "child_text": "ant power to apr",
+      "reply_text": "\"Power\"—a strong word. This page has a clown who ate too much cake, poor thing.",
+      "metal_g": -0.007802367210388184,
+      "cache_hit_tokens": 22912,
+      "cache_miss_tokens": 320,
+      "turn_hit_rate": 0.9862258953168044,
+      "provider_hit_rate": 0.9973671249711104,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7265,
+      "life_seconds": 7157.15,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 85,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 85,
+          "mask_end": 94
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "",
+      "child_text": "Pars.As C",
+      "reply_text": "\"Pars\"—maybe \"parts\"? And a \"C\" trailing after. Just fragments this time.",
+      "metal_g": -0.0023754676803946495,
+      "cache_hit_tokens": 23168,
+      "cache_miss_tokens": 134,
+      "turn_hit_rate": 0.994249420650588,
+      "provider_hit_rate": 0.9973667283573252,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7267,
+      "life_seconds": 7196.78,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 103,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 103,
+          "mask_end": 112
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "和轮子。她微笑着握住妈妈的手。 飞机起飞并飞",
+      "child_text": "小鸟，很高兴了如果你利在鼠一会儿。她想",
+      "reply_text": "小鸟很高兴呢。你想说她想再待一会儿吧？这个“一会儿”用得挺好。",
+      "metal_g": 0.0068799653090536594,
+      "cache_hit_tokens": 23296,
+      "cache_miss_tokens": 145,
+      "turn_hit_rate": 0.9938142570709441,
+      "provider_hit_rate": 0.997366273797741,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7269,
+      "life_seconds": 7242.2,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 78,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 78,
+          "mask_end": 87
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "g solitude. This period of pondering preceded his baptism by Joh",
+      "child_text": "oing Grours or pa",
+      "reply_text": "\"Or\"—a tiny hinge word. The rest slid by, but that one you caught.",
+      "metal_g": 0.023476106114685535,
+      "cache_hit_tokens": 23424,
+      "cache_miss_tokens": 187,
+      "turn_hit_rate": 0.9920799627292364,
+      "provider_hit_rate": 0.9973655925654361,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7270,
+      "life_seconds": 7269.48,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 137,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 137,
+          "mask_end": 146
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "coherent",
+      "mirror_excerpt": "",
+      "child_text": "stablishat special situation within hi",
+      "reply_text": "\"Special situation\"—that's a grown-up phrase, and you got both words out. Bobby found a little zipper in the dirt, didn't he?",
+      "metal_g": 0.019023810513317585,
+      "cache_hit_tokens": 23552,
+      "cache_miss_tokens": 218,
+      "turn_hit_rate": 0.9908287757677745,
+      "provider_hit_rate": 0.9973647446211974,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7273,
+      "life_seconds": 7322.11,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 129,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 129,
+          "mask_end": 138
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "Kyden：I'm so angry right now! Boss：What's wrong? Kyden：I c",
+      "child_text": "t think, Nanothers to foral wo",
+      "reply_text": "\"Think\"—I heard think, and maybe \"mother\" tucked in there too. Someone on this page is angry; that's a heavy feeling.",
+      "metal_g": -0.001813587499782443,
+      "cache_hit_tokens": 23680,
+      "cache_miss_tokens": 259,
+      "turn_hit_rate": 0.9891808346213292,
+      "provider_hit_rate": 0.9973636756108346,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7274,
+      "life_seconds": 7373.34,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 102,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 102,
+          "mask_end": 111
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "要撒一些种子了，今年夏天我想为我们种些粮食",
+      "child_text": "blactions: bi",
+      "reply_text": "The page says someone wants to plant seeds for summer food. That's a hopeful plan, isn't it?",
+      "metal_g": -0.011015919968485832,
+      "cache_hit_tokens": 23936,
+      "cache_miss_tokens": 163,
+      "turn_hit_rate": 0.9932362338686253,
+      "provider_hit_rate": 0.9973631329381837,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7277,
+      "life_seconds": 7444.16,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 60,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 60,
+          "mask_end": 69
+        }
+      ],
+      "perspective_mode": "book_only",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "babble",
+      "mirror_excerpt": "",
+      "child_text": "Vi",
+      "reply_text": "\"Vi—\" 开头，妈妈猜不出是哪个词呢。",
+      "metal_g": 6.168032996356487e-05,
+      "cache_hit_tokens": 23936,
+      "cache_miss_tokens": 221,
+      "turn_hit_rate": 0.9908515130190007,
+      "provider_hit_rate": 0.997362274848325,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    },
+    {
+      "cycle": 7278,
+      "life_seconds": 7477.52,
+      "channel": "dsh_mother",
+      "speaker": "mother",
+      "speaker_id": "mother",
+      "addressee_id": "mengli",
+      "is_action_consequence": true,
+      "source_transitions": [
+        {
+          "offset": 0,
+          "speaker_id": "mother",
+          "addressee_id": "mengli",
+          "mask_start": 0,
+          "mask_end": 9
+        },
+        {
+          "offset": 102,
+          "speaker_id": "book",
+          "addressee_id": "mengli",
+          "mask_start": 102,
+          "mask_end": 111
+        }
+      ],
+      "perspective_mode": "mirror_visible",
+      "care_stage": "reflective_inquiry",
+      "care_plan_version": 61,
+      "utterance_kind": "fragments",
+      "mirror_excerpt": "妈妈准备蔬菜。吃着吃着，莉莉想起了之前吃",
+      "child_text": "on ducts have",
+      "reply_text": "\"Have\"—there's a little verb. Lilу's eating vegetables and remembering something earlier.",
+      "metal_g": -0.013163686729967594,
+      "cache_hit_tokens": 24064,
+      "cache_miss_tokens": 232,
+      "turn_hit_rate": 0.9904511030622325,
+      "provider_hit_rate": 0.997361358987173,
+      "caregiver_source": "api",
+      "summary_version": 1,
+      "stage_changed": false
+    }
+  ],
+  "evaluation": {
+    "checkpoint": "D:\\mengli-umwelt-v14-repaired-20261125\\body\\last.pt.gz",
+    "cycle": 7278,
+    "load_seconds": 22.501,
+    "fresh_8192_nll": {
+      "mean_nll": 1.6563548501580954,
+      "segment_nll": [
+        1.7248423546552658,
+        1.759730376303196,
+        1.5768717601895332,
+        1.5639749094843864
+      ]
+    },
+    "classic_8192_nll": {
+      "mean_nll": 1.5517048817127943,
+      "segment_nll": [
+        1.3459867388010025,
+        1.7723275199532509,
+        1.5312954485416412,
+        1.5572098195552826
+      ]
+    },
+    "combined_16384_mean_nll": 1.6040298659354448,
+    "fresh_64_facts": {
+      "mean_score": -0.3618591041304171,
+      "mean_mse": 0.156152113864664
+    },
+    "scale_diagnostics": {
+      "relation_ridge": 0.6425339579582214,
+      "relation_ridge_gate": 0.9620451331138611,
+      "relation_ridge_lr": 0.0003,
+      "memory_temperature": 0.21116796135902405,
+      "memory_temperature_gate": 0.0,
+      "memory_temperature_lr": 0.0003
+    },
+    "optimizer_mean_gate": 0.11339225877265212,
+    "optimizer_alive_frac": 0.6099443319838057,
+    "alif_restored": {
+      "v": 0.0,
+      "a": 2.0744580747380246,
+      "executive_spikes": 4381,
+      "calm_pieces": 8871,
+      "total_external_bytes": 10412800,
+      "total_learned_bytes": 10412800,
+      "pending_spike": false
+    }
+  },
+  "restore_exact": true
+}

@@ -94,6 +94,26 @@ class PhaseSpaceBoltzmann(nn.Module):
         self.register_buffer('last_kinetic_energy', torch.zeros((), device=device, dtype=dt))
         self.register_buffer('last_pressure', torch.zeros((), device=device, dtype=dt))
 
+        # Purely observational telemetry (kept off state_dict buffers so legacy 4-param checkpoints load strictly).
+        self._prev_post_log_e_kin: float | None = None
+        self._prev_post_log_e_ema: float | None = None
+        self._last_centered_free_energy: float | None = None
+        self._last_kl_to_uniform: float | None = None
+        self._last_energy_ledger: dict[str, float | str | None] = dict(
+            source=None,
+            log_e_kin_before=None,
+            log_e_kin_after=None,
+            log_e_ema_before=None,
+            log_e_ema_after=None,
+            delta_log_e_body=0.0,
+            delta_log_e_thermostat=0.0,
+            delta_log_e_ema=0.0,
+            delta_log_e_total=0.0,
+            u_before=None,
+            u_after=None,
+            delta_u=0.0,
+        )
+
     # --- Differentiable bounded physical couplings (Theorems 1, 2, 3) ---
 
     def alpha_p(self) -> torch.Tensor:
@@ -160,7 +180,8 @@ class PhaseSpaceBoltzmann(nn.Module):
 
     @torch.no_grad()
     def refresh_live_phase_state(self, engine, query_raw: torch.Tensor | None = None,
-                                 *, update_ema: bool = True) -> dict:
+                                 *, update_ema: bool = True,
+                                 _from_thermostat: bool = False) -> dict:
         """Update fixed-address `(live_momentum_dir, live_z_kin)` at a real boundary.
 
         NEVER called mid-draft so CUDA graph drafting and batched proposal replay
@@ -172,6 +193,7 @@ class PhaseSpaceBoltzmann(nn.Module):
 
         cnt = int(self.kinetic_count.item())
         eps = 1e-12
+        e_ema_before = float(self.kinetic_ema.item()) if cnt > 0 else e_kin
         if cnt == 0:
             z_kin = 0.0
             if update_ema and e_kin > 0.0:
@@ -185,6 +207,37 @@ class PhaseSpaceBoltzmann(nn.Module):
                 self.kinetic_ema.mul_(self.ema_decay).add_(e_kin * (1.0 - self.ema_decay))
                 self.kinetic_count.add_(1)
         self.live_z_kin.fill_(z_kin)
+
+        if update_ema and not _from_thermostat and math.isfinite(e_kin) and e_kin > 0.0:
+            e_ema_after = float(self.kinetic_ema.item())
+            log_e_after = math.log(e_kin + eps)
+            log_ema_after = math.log(max(e_ema_after, 0.0) + eps)
+            if self._prev_post_log_e_kin is not None and self._prev_post_log_e_ema is not None:
+                log_e_before = self._prev_post_log_e_kin
+                log_ema_before = self._prev_post_log_e_ema
+            else:
+                log_e_before = log_e_after
+                log_ema_before = math.log(max(e_ema_before, 0.0) + eps) if cnt > 0 else log_ema_after
+            delta_body = log_e_after - log_e_before
+            delta_ema = log_ema_after - log_ema_before
+            u_before = log_e_before - log_ema_before
+            u_after = log_e_after - log_ema_after
+            self._last_energy_ledger = dict(
+                source='boundary_refresh',
+                log_e_kin_before=log_e_before,
+                log_e_kin_after=log_e_after,
+                log_e_ema_before=log_ema_before,
+                log_e_ema_after=log_ema_after,
+                delta_log_e_body=delta_body,
+                delta_log_e_thermostat=0.0,
+                delta_log_e_ema=delta_ema,
+                delta_log_e_total=delta_body,
+                u_before=u_before,
+                u_after=u_after,
+                delta_u=u_after - u_before,
+            )
+            self._prev_post_log_e_kin = log_e_after
+            self._prev_post_log_e_ema = log_ema_after
 
         # Read live 32-layer momentum direction into latent trajectory space.
         model = engine.model
@@ -229,10 +282,17 @@ class PhaseSpaceBoltzmann(nn.Module):
         entropy = float((log_z - (probs * lg).sum(dim=-1)).mean().item())
         beta_lang = max(1e-6, float(self.lang_inv_temp_scale().detach().item()))
         free_energy = float((-log_z.mean().item()) / beta_lang)
-        if not (math.isfinite(entropy) and math.isfinite(free_energy)):
+        # Shift-invariant gauge-fixed free energy (zero-mean logits) & KL-to-uniform telemetry.
+        lg_centered = lg - lg.mean(dim=-1, keepdim=True)
+        log_z_centered = torch.logsumexp(lg_centered, dim=-1)
+        centered_free_energy = float((-log_z_centered.mean().item()) / beta_lang)
+        kl_to_uniform = float(math.log(max(1, int(lg.shape[-1]))) - entropy)
+        if not (math.isfinite(entropy) and math.isfinite(free_energy) and math.isfinite(centered_free_energy)):
             return dict(applied=False, non_finite=True)
         self.last_entropy.fill_(entropy)
         self.last_free_energy.fill_(free_energy)
+        self._last_centered_free_energy = centered_free_energy
+        self._last_kl_to_uniform = kl_to_uniform
 
         cnt = int(self.entropy_count.item())
         if cnt == 0:
@@ -255,14 +315,18 @@ class PhaseSpaceBoltzmann(nn.Module):
             self.entropy_count.add_(1)
         self.last_pressure.fill_(pressure)
 
+        eps = 1e-12
         scale = 1.0
         momenta = getattr(engine, 'bfss_momenta', None)
+        e_kin_before = self._kinetic_energy(momenta) if momenta else 0.0
+        had_prev_ema = int(self.kinetic_count.item()) > 0 and float(self.kinetic_ema.item()) > 0.0
+        e_ema_before = float(self.kinetic_ema.item()) if had_prev_ema else e_kin_before
         if self.enable_thermostat and momenta:
-            e_kin = self._kinetic_energy(momenta)
+            e_kin = e_kin_before
             e_ema = float(self.kinetic_ema.item())
             if math.isfinite(e_kin):
                 if int(self.kinetic_count.item()) > 0 and math.isfinite(e_ema) and e_ema > 0.0:
-                    u_pos = max(0.0, math.log((e_kin + 1e-12) / (e_ema + 1e-12)))
+                    u_pos = max(0.0, math.log((e_kin + eps) / (e_ema + eps)))
                 else:
                     u_pos = 0.0
                 # EMA-relative damping above kinetic_ema; positive free-energy pressure amplifies P.
@@ -277,13 +341,53 @@ class PhaseSpaceBoltzmann(nn.Module):
                     self.thermostat_steps.add_(1)
         self.last_thermostat_scale.fill_(scale)
 
-        phase_info = self.refresh_live_phase_state(engine, query_raw=query_raw, update_ema=True)
+        phase_info = self.refresh_live_phase_state(
+            engine, query_raw=query_raw, update_ema=True, _from_thermostat=True,
+        )
+        e_kin_after = float(phase_info['e_kin'])
+        e_ema_after = float(self.kinetic_ema.item())
+        if math.isfinite(e_kin_before) and math.isfinite(e_kin_after) and (e_kin_before > 0.0 or e_kin_after > 0.0):
+            log_e_pre = math.log(max(e_kin_before, 0.0) + eps)
+            log_e_after = math.log(max(e_kin_after, 0.0) + eps)
+            log_ema_after = math.log(max(e_ema_after, 0.0) + eps)
+            if self._prev_post_log_e_kin is not None and self._prev_post_log_e_ema is not None:
+                log_e_prev = self._prev_post_log_e_kin
+                log_ema_prev = self._prev_post_log_e_ema
+            else:
+                log_e_prev = log_e_pre
+                log_ema_prev = math.log(max(e_ema_before, 0.0) + eps) if had_prev_ema else log_ema_after
+            delta_body = log_e_pre - log_e_prev
+            delta_thermo = 2.0 * math.log(max(scale, eps))
+            delta_total = log_e_after - log_e_prev
+            delta_ema = log_ema_after - log_ema_prev
+            u_before = log_e_prev - log_ema_prev
+            u_after = log_e_after - log_ema_after
+            self._last_energy_ledger = dict(
+                source='thermostat',
+                log_e_kin_before=log_e_prev,
+                log_e_kin_pre_thermostat=log_e_pre,
+                log_e_kin_after=log_e_after,
+                log_e_ema_before=log_ema_prev,
+                log_e_ema_after=log_ema_after,
+                delta_log_e_body=delta_body,
+                delta_log_e_thermostat=delta_thermo,
+                delta_log_e_ema=delta_ema,
+                delta_log_e_total=delta_total,
+                u_before=u_before,
+                u_after=u_after,
+                delta_u=u_after - u_before,
+            )
+            self._prev_post_log_e_kin = log_e_after
+            self._prev_post_log_e_ema = log_ema_after
         return dict(
             applied=True,
             entropy=entropy,
             free_energy=free_energy,
+            centered_free_energy=centered_free_energy,
+            kl_to_uniform=kl_to_uniform,
             pressure=pressure,
             thermostat_scale=scale,
+            energy_ledger=dict(self._last_energy_ledger),
             **phase_info,
         )
 
@@ -308,10 +412,14 @@ class PhaseSpaceBoltzmann(nn.Module):
             entropy_ema=float(self.entropy_ema.item()),
             last_entropy=float(self.last_entropy.item()),
             last_free_energy=float(self.last_free_energy.item()),
+            last_centered_free_energy=self._last_centered_free_energy,
+            last_kl_to_uniform=self._last_kl_to_uniform,
+            last_kinetic_energy=float(self.last_kinetic_energy.item()),
             last_pressure=float(self.last_pressure.item()),
             last_thermostat_scale=float(self.last_thermostat_scale.item()),
             thermostat_steps=int(self.thermostat_steps.item()),
             momentum_dir_norm=float(self.live_momentum_dir.norm().item()),
+            energy_ledger=dict(self._last_energy_ledger),
             wiener_mean_gate=wiener_gate,
             enable_momentum_read=self.enable_momentum_read,
             enable_kinetic_temp=self.enable_kinetic_temp,
